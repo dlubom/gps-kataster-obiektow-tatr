@@ -43,10 +43,20 @@ PBI-003 is complete:
 - fallback prefixes `PL` and `SK` are configured,
 - tests detect missing or stale valley-prefix mappings and invalid prefix format.
 
-PBI-004 is next:
+PBI-004 is complete:
 
-- define JSON Schema files for object, cave and relation YAML,
-- add `schema/CHANGELOG.md` for `schema_version: 1`.
+- `schema/object.schema.json`, `schema/cave.schema.json` and
+  `schema/relation.schema.json` exist,
+- `schema/CHANGELOG.md` documents `schema_version: 1`,
+- `jsonschema` is available as a dev dependency,
+- schema tests cover valid fixtures plus expected failures for a missing object
+  ID, bad cave object ID, bad relation type and missing manual-best reason.
+
+PBI-005 is next:
+
+- add the minimal domain fixture set named in the backlog,
+- keep it aligned with the new JSON Schemas,
+- prepare those fixtures for later cross-reference validation.
 
 ## Current data inventory
 
@@ -101,3 +111,16 @@ After PBI-003:
 - `uv run ruff format src tests` passed with no changes.
 - `uv run ruff check src tests` passed.
 - `uv run pytest` passed with 3 tests.
+
+After PBI-004:
+
+- `schema/object.schema.json` validates the V1 `Obiekt` shape including
+  measurements, best measurement, external refs, attachments and audit fields.
+- `schema/cave.schema.json` validates the V1 `Jaskinia` shape including
+  cave-level external refs and object ID format.
+- `schema/relation.schema.json` validates V1 object-object relation records.
+- `tests/fixtures/schema/` contains focused valid and invalid schema fixtures.
+- `uv sync` completed successfully after adding `jsonschema`.
+- `uv run ruff format src tests` passed with no changes.
+- `uv run ruff check src tests` passed after removing one unused import.
+- `uv run pytest` passed with 10 tests.

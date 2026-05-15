@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/gps-kataster-obiektow-tatr/schema/cave.schema.json",
+  "title": "Jaskinia",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "name",
+    "external_refs",
+    "object_ids",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/caveId"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "system_name": {
+      "$ref": "#/$defs/nullableString"
+    },
+    "external_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/externalReference"
+      },
+      "uniqueItems": true
+    },
+    "object_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/objectId"
+      },
+      "uniqueItems": true
+    },
+    "notes": {
+      "$ref": "#/$defs/nullableString"
+    },
+    "created_at": {
+      "$ref": "#/$defs/dateTime"
+    },
+    "created_by": {
+      "$ref": "#/$defs/personId"
+    },
+    "updated_at": {
+      "$ref": "#/$defs/dateTime"
+    },
+    "updated_by": {
+      "$ref": "#/$defs/personId"
+    }
+  },
+  "$defs": {
+    "caveId": {
+      "type": "string",
+      "pattern": "^C-[0-9]{4,}$"
+    },
+    "dateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "externalReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "system",
+        "ref_type",
+        "external_id"
+      ],
+      "properties": {
+        "system": {
+          "enum": [
+            "TPN",
+            "PIG",
+            "geoportal",
+            "NR_INWENT",
+            "inne"
+          ]
+        },
+        "ref_type": {
+          "enum": [
+            "source_globalid",
+            "inventory_number",
+            "catalog_id",
+            "url",
+            "source_row",
+            "other"
+          ]
+        },
+        "external_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scope": {
+          "enum": [
+            "object",
+            "cave",
+            "cave_system",
+            "inventory_entry",
+            "unknown",
+            null
+          ]
+        },
+        "notes": {
+          "$ref": "#/$defs/nullableString"
+        }
+      }
+    },
+    "nullableString": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "objectId": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,3}-[0-9]{4,}$"
+    },
+    "personId": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

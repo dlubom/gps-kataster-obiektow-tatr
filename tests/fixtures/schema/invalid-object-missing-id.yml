@@ -1,0 +1,29 @@
+schema_version: 1
+category: jaskinia_otwor
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSW
+external_refs: []
+measurements:
+  - id: m-001
+    lat: 49.2423
+    lon: 19.8145
+    x_1992: 558123.45
+    y_1992: 150456.78
+    source: TPN
+    observed_date: "2022-05-25"
+    method: source_record
+    verification_status: nieweryfikowany
+    created_at: "2026-05-15T10:00:00Z"
+    created_by: dl
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  updated_at: "2026-05-15T10:00:00Z"
+  updated_by: dl
+attachments: []
+created_at: "2026-05-15T10:00:00Z"
+created_by: dl
+updated_at: "2026-05-15T10:00:00Z"
+updated_by: dl

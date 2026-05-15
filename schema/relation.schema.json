@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/gps-kataster-obiektow-tatr/schema/relation.schema.json",
+  "title": "Relacja",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "from_object_id",
+    "to_object_id",
+    "relation_type"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^R-[0-9]{4,}$"
+    },
+    "from_object_id": {
+      "$ref": "#/$defs/objectId"
+    },
+    "to_object_id": {
+      "$ref": "#/$defs/objectId"
+    },
+    "relation_type": {
+      "enum": [
+        "sasiad",
+        "czesc_systemu",
+        "mozliwy_duplikat",
+        "inne"
+      ]
+    },
+    "notes": {
+      "$ref": "#/$defs/nullableString"
+    }
+  },
+  "$defs": {
+    "nullableString": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "objectId": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,3}-[0-9]{4,}$"
+    }
+  }
+}

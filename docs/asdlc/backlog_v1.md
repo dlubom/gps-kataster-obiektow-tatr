@@ -8,6 +8,7 @@ Stan na: 2026-05-15
 - Pamiec operacyjna: dodano `AGENTS.md` i `docs/asdlc/context.md`, zeby kolejny agent mogl odtworzyc stan projektu bez historii rozmowy.
 - PBI-002: wykonane 2026-05-15. Dodano `pyproject.toml`, `uv.lock`, minimalny pakiet pod `src/`, test dymny oraz konfiguracje `ruff` i `pytest`.
 - PBI-003: wykonane 2026-05-15. Dodano `config/prefixes.yml` z mapowaniem 18 dolin oraz fallbackami `PL` i `SK`; testy sprawdzaja zgodnosc z `data/shapes/doliny.shp` i format prefixow.
+- PBI-004: wykonane 2026-05-15. Dodano JSON Schema dla `Obiekt`, `Jaskinia` i `Relacja`, `schema/CHANGELOG.md`, zaleznosc `jsonschema` oraz testy valid/invalid fixture'ow schematu.
 
 ## Przyjęty poziom AS-DLC
 
@@ -36,6 +37,9 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `data/shapes/README.md` | istnieje | Opisuje warstwy i algorytm prefixow. |
 | `config/prefixes.yml` | 18 dolin + 2 fallbacki | Zrodlo prawdy dla prefixow ID. |
 | `tests/test_prefixes.py` | 2 testy | Sprawdza mapowanie `doliny.shp` i format prefixow. |
+| `schema/*.schema.json` | 3 schematy | Kontrakty YAML dla `Obiekt`, `Jaskinia` i `Relacja`. |
+| `schema/CHANGELOG.md` | istnieje | Wpis dla `schema_version: 1`. |
+| `tests/test_schemas.py` | 7 testow | Sprawdza poprawnosc schematow oraz valid/invalid fixture'y PBI-004. |
 
 ## Bramka kontekstu
 
@@ -99,6 +103,8 @@ Weryfikacja:
 ## Milestone 1: kontrakty danych
 
 ### PBI-004: Zdefiniowac JSON Schema dla YAML
+
+Status: wykonane 2026-05-15.
 
 Zakres:
 

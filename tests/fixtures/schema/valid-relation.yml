@@ -1,0 +1,6 @@
+schema_version: 1
+id: R-0001
+from_object_id: KSW-0001
+to_object_id: KSW-0002
+relation_type: czesc_systemu
+notes: null

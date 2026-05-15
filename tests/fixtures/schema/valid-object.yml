@@ -1,0 +1,59 @@
+schema_version: 1
+id: KSW-0001
+category: jaskinia_otwor
+name_local: "Jaskinia testowa - otwor glowny"
+cave_id: C-0001
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSW
+  prefix_override_reason: null
+external_refs:
+  - system: TPN
+    ref_type: source_globalid
+    external_id: "{71432220-CA17-4420-ACC8-394596EDF79F}"
+    scope: object
+measurements:
+  - id: m-001
+    lat: 49.2423
+    lon: 19.8145
+    x_1992: 558123.45
+    y_1992: 150456.78
+    elevation_m: 1240.0
+    elevation_datum: unknown
+    elevation_source: source_record
+    horizontal_accuracy_m: null
+    vertical_accuracy_m: null
+    source: TPN
+    source_ref: "TPN:{71432220-CA17-4420-ACC8-394596EDF79F}"
+    observed_date: "2022-05-25"
+    source_date: "2022-05-25"
+    method: source_record
+    device: null
+    tags: []
+    verification_status: nieweryfikowany
+    verified_by: null
+    verified_at: null
+    notes: "Fixture schematu dla PBI-004."
+    created_at: "2026-05-15T10:00:00Z"
+    created_by: dl
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: "2026-05-15T10:00:00Z"
+  updated_by: dl
+attachments:
+  - id: a-001
+    kind: zdjecie
+    measurement_id: m-001
+    path: data/attachments/KSW/KSW-0001/test.jpg
+    caption: null
+    date: "2026-05-15"
+    created_at: "2026-05-15T10:00:00Z"
+    created_by: dl
+notes: null
+created_at: "2026-05-15T10:00:00Z"
+created_by: dl
+updated_at: "2026-05-15T10:00:00Z"
+updated_by: dl

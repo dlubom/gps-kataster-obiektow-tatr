@@ -1,0 +1,531 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/gps-kataster-obiektow-tatr/schema/object.schema.json",
+  "title": "Obiekt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "category",
+    "id_assignment",
+    "external_refs",
+    "measurements",
+    "best_measurement",
+    "attachments",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/objectId"
+    },
+    "category": {
+      "enum": [
+        "jaskinia_otwor",
+        "ponor",
+        "wywierzysko",
+        "sztolnia",
+        "inne"
+      ]
+    },
+    "name_local": {
+      "$ref": "#/$defs/nullableString"
+    },
+    "cave_id": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/caveId"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "id_assignment": {
+      "$ref": "#/$defs/idAssignment"
+    },
+    "external_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/externalReference"
+      },
+      "uniqueItems": true
+    },
+    "measurements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/measurement"
+      }
+    },
+    "best_measurement": {
+      "$ref": "#/$defs/bestMeasurement"
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/attachment"
+      },
+      "uniqueItems": true
+    },
+    "notes": {
+      "$ref": "#/$defs/nullableString"
+    },
+    "created_at": {
+      "$ref": "#/$defs/dateTime"
+    },
+    "created_by": {
+      "$ref": "#/$defs/personId"
+    },
+    "updated_at": {
+      "$ref": "#/$defs/dateTime"
+    },
+    "updated_by": {
+      "$ref": "#/$defs/personId"
+    }
+  },
+  "$defs": {
+    "attachment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "path",
+        "created_at",
+        "created_by"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^a-[0-9]{3,}$"
+        },
+        "kind": {
+          "enum": [
+            "raport_gnss",
+            "zdjecie",
+            "inne"
+          ]
+        },
+        "measurement_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/measurementId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "caption": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "date": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "created_by": {
+          "$ref": "#/$defs/personId"
+        }
+      }
+    },
+    "bestMeasurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "measurement_id",
+        "updated_at",
+        "updated_by"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "auto",
+            "manual"
+          ]
+        },
+        "measurement_id": {
+          "$ref": "#/$defs/measurementId"
+        },
+        "reason": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "updated_by": {
+          "$ref": "#/$defs/personId"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "manual"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "reason"
+            ],
+            "properties": {
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "caveId": {
+      "type": "string",
+      "pattern": "^C-[0-9]{4,}$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "dateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "externalReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "system",
+        "ref_type",
+        "external_id"
+      ],
+      "properties": {
+        "system": {
+          "enum": [
+            "TPN",
+            "PIG",
+            "geoportal",
+            "NR_INWENT",
+            "inne"
+          ]
+        },
+        "ref_type": {
+          "enum": [
+            "source_globalid",
+            "inventory_number",
+            "catalog_id",
+            "url",
+            "source_row",
+            "other"
+          ]
+        },
+        "external_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scope": {
+          "enum": [
+            "object",
+            "cave",
+            "cave_system",
+            "inventory_entry",
+            "unknown",
+            null
+          ]
+        },
+        "notes": {
+          "$ref": "#/$defs/nullableString"
+        }
+      }
+    },
+    "idAssignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "assigned_from_measurement_id",
+        "assigned_prefix"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "auto",
+            "manual"
+          ]
+        },
+        "assigned_from_measurement_id": {
+          "$ref": "#/$defs/measurementId"
+        },
+        "assigned_prefix": {
+          "$ref": "#/$defs/prefix"
+        },
+        "prefix_override_reason": {
+          "$ref": "#/$defs/nullableString"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "const": "manual"
+              }
+            },
+            "required": [
+              "method"
+            ]
+          },
+          "then": {
+            "required": [
+              "prefix_override_reason"
+            ],
+            "properties": {
+              "prefix_override_reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "lat",
+        "lon",
+        "x_1992",
+        "y_1992",
+        "source",
+        "observed_date",
+        "method",
+        "verification_status",
+        "created_at",
+        "created_by"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/measurementId"
+        },
+        "lat": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "lon": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "x_1992": {
+          "type": "number"
+        },
+        "y_1992": {
+          "type": "number"
+        },
+        "elevation_m": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "elevation_datum": {
+          "enum": [
+            "unknown",
+            "ellipsoidal",
+            "PL-EVRF2007-NH",
+            "Kronstadt86",
+            "other",
+            null
+          ]
+        },
+        "elevation_source": {
+          "enum": [
+            "gps",
+            "gnss",
+            "map",
+            "dem",
+            "barometric",
+            "source_record",
+            "unknown",
+            "other",
+            null
+          ]
+        },
+        "horizontal_accuracy_m": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "vertical_accuracy_m": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "source": {
+          "enum": [
+            "TPN",
+            "PIG",
+            "geoportal",
+            "wlasne",
+            "publikacja",
+            "inne"
+          ]
+        },
+        "source_ref": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/dateTime"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observed_date": {
+          "$ref": "#/$defs/date"
+        },
+        "source_date": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "method": {
+          "enum": [
+            "gps_receiver",
+            "gnss",
+            "smartfon",
+            "mapa_topo",
+            "source_record",
+            "ustalenie",
+            "inne"
+          ]
+        },
+        "device": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "verification_status": {
+          "enum": [
+            "nieweryfikowany",
+            "zweryfikowany",
+            "odrzucony"
+          ]
+        },
+        "verified_by": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/personId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verified_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/dateTime"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "created_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "created_by": {
+          "$ref": "#/$defs/personId"
+        }
+      }
+    },
+    "measurementId": {
+      "type": "string",
+      "pattern": "^m-[0-9]{3,}$"
+    },
+    "nullableNonNegativeNumber": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableNumber": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "nullableString": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "objectId": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,3}-[0-9]{4,}$"
+    },
+    "personId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prefix": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,3}$"
+    }
+  }
+}
