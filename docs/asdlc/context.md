@@ -76,11 +76,25 @@ PBI-006 is complete:
 - `tests/test_coordinates.py` covers round-trip conversion for Tatra points,
   PIG-style axis values and axis-swap detection.
 
-PBI-007 is next:
+PBI-007 is complete:
 
-- read reference shapefiles from `data/shapes/`,
-- resolve a point to a valley prefix with PL/SK fallback,
-- return warning/error states for outside-valley and outside-country points.
+- `src/gps_kataster_obiektow_tatr/prefix_resolver.py` reads
+  `config/prefixes.yml` plus `data/shapes/doliny.shp`,
+  `data/shapes/granica_polski.shp` and
+  `data/shapes/granica_slowacji.shp`,
+- it converts WGS84 to PL-1992 using the project axis convention, then tests
+  shapefile geometry as GIS easting/northing,
+- valley matches return `status=ok` and the valley prefix,
+- points in PL/SK but outside configured valley polygons return fallback
+  prefix `PL` or `SK` with `status=warning`,
+- points outside PL/SK return `status=error` and no prefix.
+
+PBI-008 is next:
+
+- add `scripts/assign_id.py`,
+- accept `lat lon`, call the prefix resolver and find the next number under
+  `data/objects/{PREFIX}/`,
+- print the proposed ID plus resolver warnings.
 
 ## Current data inventory
 
@@ -172,3 +186,15 @@ After PBI-006:
 - `uv run ruff format src tests` passed with no changes.
 - `uv run ruff check src tests` passed.
 - `uv run pytest` passed with 24 tests.
+
+After PBI-007:
+
+- `pyshp>=2.3.1` and `PyYAML>=6.0.2` are runtime dependencies because prefix
+  resolution now reads shapefiles and `config/prefixes.yml` from application
+  code.
+- `tests/test_prefix_resolver.py` covers four PBI cases:
+  `KSW` for a point in `Dolina Kościeliska - Wschód`, `PL` warning for Warsaw,
+  `SK` warning for Stary Smokovec and an error for Prague.
+- `uv run ruff format src tests` passed with no changes.
+- `uv run ruff check src tests` passed.
+- `uv run pytest` passed with 28 tests.

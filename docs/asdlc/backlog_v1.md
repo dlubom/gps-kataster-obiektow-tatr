@@ -11,6 +11,7 @@ Stan na: 2026-05-15
 - PBI-004: wykonane 2026-05-15. Dodano JSON Schema dla `Obiekt`, `Jaskinia` i `Relacja`, `schema/CHANGELOG.md`, zaleznosc `jsonschema` oraz testy valid/invalid fixture'ow schematu.
 - PBI-005: wykonane 2026-05-15. Dodano minimalne fixture'y domenowe dla obiektow i jaskin oraz testy zgodnosci ze schematem i spojnosci cross-reference.
 - PBI-006: wykonane 2026-05-15. Dodano modul konwersji WGS84 <-> EPSG:2180 oparty o PyProj, utrwalono konwencje osi `x_1992 = northing`, `y_1992 = easting` oraz testy round-trip i wykrywania zamiany osi.
+- PBI-007: wykonane 2026-05-15. Dodano resolver prefixow czytajacy `config/prefixes.yml` i shapefile z `data/shapes/`; wynik rozroznia trafienie w doline, fallback PL/SK z warningiem oraz punkt poza PL/SK jako error.
 
 ## Przyjęty poziom AS-DLC
 
@@ -46,6 +47,8 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_domain_fixtures.py` | 9 testow | Sprawdza zgodnosc fixture'ow domenowych ze schematami oraz referencje `cave_id` / `object_ids`. |
 | `src/gps_kataster_obiektow_tatr/coordinates.py` | istnieje | Konwersja WGS84 <-> EPSG:2180 przez PyProj, z projektowa konwencja osi `x_1992 = northing`, `y_1992 = easting`. |
 | `tests/test_coordinates.py` | 5 testow | Sprawdza round-trip kilku punktow tatrzanskich, zgodnosc z osiami PIG/PL-1992 i wykrywanie zamiany osi. |
+| `src/gps_kataster_obiektow_tatr/prefix_resolver.py` | istnieje | Resolver prefixow ID: doliny przez point-in-polygon, fallback PL/SK i jawne statusy `ok` / `warning` / `error`. |
+| `tests/test_prefix_resolver.py` | 4 testy | Sprawdza punkt w dolinie, punkt w Polsce poza dolinami, punkt po stronie slowackiej i punkt poza PL/SK. |
 
 ## Bramka kontekstu
 
@@ -159,6 +162,8 @@ Weryfikacja:
 - test wykrywajacy zamiane osi.
 
 ### PBI-007: Zaimplementowac resolver prefixu
+
+Status: wykonane 2026-05-15.
 
 Zakres:
 
