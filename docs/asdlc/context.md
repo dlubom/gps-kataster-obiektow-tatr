@@ -99,11 +99,20 @@ PBI-008 is complete:
 - points outside Poland and Slovakia exit nonzero without an ID proposal,
 - conflict detection remains assigned to the future validator.
 
-PBI-009 is next:
+PBI-009 is complete:
 
-- add a YAML data loader for objects, caves and relations,
-- preserve file paths for validation reports,
-- normalize missing lists in code only, without rewriting YAML.
+- `src/gps_kataster_obiektow_tatr/data_loader.py` loads object, cave and
+  relation YAML from `data/objects/`, `data/caves/` and `data/relations/`,
+- every loaded record carries its `Path` for future validation reports,
+- missing list fields are normalized on the loaded copy only; source YAML and
+  `raw_data` are left unchanged,
+- bad YAML raises `YamlDataLoadError` with the source path in the message.
+
+PBI-010 is next:
+
+- implement local validation rules with error/warning severity,
+- include rule code, severity, file and description in reports,
+- exit nonzero only when validation errors are present.
 
 ## Current data inventory
 
@@ -220,3 +229,18 @@ After PBI-008:
 - `uv run ruff format src tests scripts` passed with no changes.
 - `uv run ruff check src tests scripts` passed.
 - `uv run pytest` passed with 34 tests.
+
+After PBI-009:
+
+- `load_dataset(...)` returns `LoadedDataset(objects, caves, relations)`.
+- `LoadedYamlRecord` stores `kind`, `path`, normalized `data` and untouched
+  `raw_data`.
+- Object list defaults currently cover `external_refs`, `measurements`,
+  `attachments` and nested measurement `tags`; cave defaults cover
+  `external_refs` and `object_ids`.
+- `tests/test_data_loader.py` covers fixture loading, path retention,
+  in-memory-only normalization and bad YAML path reporting.
+- `uv run ruff format src tests` reformatted the new test file.
+- `uv run ruff format --check src tests` passed.
+- `uv run ruff check src tests` passed.
+- `uv run pytest` passed with 37 tests.

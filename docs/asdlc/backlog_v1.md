@@ -13,6 +13,7 @@ Stan na: 2026-05-15
 - PBI-006: wykonane 2026-05-15. Dodano modul konwersji WGS84 <-> EPSG:2180 oparty o PyProj, utrwalono konwencje osi `x_1992 = northing`, `y_1992 = easting` oraz testy round-trip i wykrywania zamiany osi.
 - PBI-007: wykonane 2026-05-15. Dodano resolver prefixow czytajacy `config/prefixes.yml` i shapefile z `data/shapes/`; wynik rozroznia trafienie w doline, fallback PL/SK z warningiem oraz punkt poza PL/SK jako error.
 - PBI-008: wykonane 2026-05-15. Dodano `scripts/assign_id.py`, ktory przyjmuje `lat lon`, uzywa resolvera prefixow, liczy kolejny numer z `data/objects/{PREFIX}/` i wypisuje propozycje ID razem z ostrzezeniami.
+- PBI-009: wykonane 2026-05-15. Dodano loader YAML dla `data/objects/`, `data/caves/` i `data/relations/`, rekordy zachowuja sciezke pliku, a brakujace listy sa normalizowane tylko w pamieci.
 
 ## Przyjęty poziom AS-DLC
 
@@ -52,6 +53,8 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_prefix_resolver.py` | 4 testy | Sprawdza punkt w dolinie, punkt w Polsce poza dolinami, punkt po stronie slowackiej i punkt poza PL/SK. |
 | `scripts/assign_id.py` | istnieje | CLI i helpery do proponowania kolejnego ID z `lat lon`, resolvera prefixu i plikow w `data/objects/{PREFIX}/`. |
 | `tests/test_assign_id.py` | 6 testow | Sprawdza pusty prefix, istniejace pliki, licznik ponad `9999`, warningi resolvera, blad bez prefixu i uruchomienie CLI. |
+| `src/gps_kataster_obiektow_tatr/data_loader.py` | istnieje | Loader zrodlowych YAML: obiekty, jaskinie i relacje z `data/`, sciezki plikow dla raportow oraz pamieciowe domyslne puste listy. |
+| `tests/test_data_loader.py` | 3 testy | Sprawdza wczytanie fixture'ow, zachowanie sciezek, normalizacje list bez zapisu do YAML oraz blad skladni YAML z czytelna sciezka. |
 
 ## Bramka kontekstu
 
@@ -203,6 +206,8 @@ Weryfikacja:
 ## Milestone 3: walidator lokalny
 
 ### PBI-009: Loader danych YAML
+
+Status: wykonane 2026-05-15.
 
 Zakres:
 
