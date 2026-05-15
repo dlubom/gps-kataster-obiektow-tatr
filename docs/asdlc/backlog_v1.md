@@ -10,6 +10,7 @@ Stan na: 2026-05-15
 - PBI-003: wykonane 2026-05-15. Dodano `config/prefixes.yml` z mapowaniem 18 dolin oraz fallbackami `PL` i `SK`; testy sprawdzaja zgodnosc z `data/shapes/doliny.shp` i format prefixow.
 - PBI-004: wykonane 2026-05-15. Dodano JSON Schema dla `Obiekt`, `Jaskinia` i `Relacja`, `schema/CHANGELOG.md`, zaleznosc `jsonschema` oraz testy valid/invalid fixture'ow schematu.
 - PBI-005: wykonane 2026-05-15. Dodano minimalne fixture'y domenowe dla obiektow i jaskin oraz testy zgodnosci ze schematem i spojnosci cross-reference.
+- PBI-006: wykonane 2026-05-15. Dodano modul konwersji WGS84 <-> EPSG:2180 oparty o PyProj, utrwalono konwencje osi `x_1992 = northing`, `y_1992 = easting` oraz testy round-trip i wykrywania zamiany osi.
 
 ## Przyjęty poziom AS-DLC
 
@@ -43,6 +44,8 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_schemas.py` | 7 testow | Sprawdza poprawnosc schematow oraz valid/invalid fixture'y PBI-004. |
 | `tests/fixtures/*.yml` | 5 fixture'ow | Minimalny zestaw domenowy PBI-005: obiekt, jaskinia, TPN `GLOBALID`, PIG + `NR_INWENT`, reczny `best_measurement`. |
 | `tests/test_domain_fixtures.py` | 9 testow | Sprawdza zgodnosc fixture'ow domenowych ze schematami oraz referencje `cave_id` / `object_ids`. |
+| `src/gps_kataster_obiektow_tatr/coordinates.py` | istnieje | Konwersja WGS84 <-> EPSG:2180 przez PyProj, z projektowa konwencja osi `x_1992 = northing`, `y_1992 = easting`. |
+| `tests/test_coordinates.py` | 5 testow | Sprawdza round-trip kilku punktow tatrzanskich, zgodnosc z osiami PIG/PL-1992 i wykrywanie zamiany osi. |
 
 ## Bramka kontekstu
 
@@ -141,6 +144,8 @@ Weryfikacja:
 ## Milestone 2: geografia i ID
 
 ### PBI-006: Wprowadzic konwersje WGS84 <-> EPSG:2180
+
+Status: wykonane 2026-05-15.
 
 Zakres:
 

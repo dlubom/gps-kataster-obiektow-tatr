@@ -65,12 +65,22 @@ PBI-005 is complete:
 - `tests/test_domain_fixtures.py` validates those fixtures against the schemas
   and checks object/cave cross-references.
 
-PBI-006 is next:
+PBI-006 is complete:
 
-- add deterministic WGS84 <-> EPSG:2180 conversion,
-- preserve the spec's axis convention: `x_1992 = northing`,
+- `src/gps_kataster_obiektow_tatr/coordinates.py` adds deterministic WGS84
+  <-> EPSG:2180 conversion through PyProj,
+- the module preserves the spec's axis convention: `x_1992 = northing`,
   `y_1992 = easting`,
-- add tests for round-trip conversion and axis-swap detection.
+- `coordinates_are_consistent(...)` uses a default 0.5 m tolerance for cached
+  YAML coordinate checks,
+- `tests/test_coordinates.py` covers round-trip conversion for Tatra points,
+  PIG-style axis values and axis-swap detection.
+
+PBI-007 is next:
+
+- read reference shapefiles from `data/shapes/`,
+- resolve a point to a valley prefix with PL/SK fallback,
+- return warning/error states for outside-valley and outside-country points.
 
 ## Current data inventory
 
@@ -149,3 +159,16 @@ After PBI-005:
 - `uv run ruff format src tests` reformatted the new test file.
 - `uv run ruff check src tests` passed.
 - `uv run pytest` passed with 19 tests.
+
+After PBI-006:
+
+- `pyproj>=3.7.0` is a runtime dependency because the specification requires
+  deterministic conversion through PyProj.
+- `wgs84_to_1992(...)` returns project YAML fields where `x_1992` is northing
+  and `y_1992` is easting.
+- `pl1992_to_wgs84(...)` accepts the same project YAML field convention.
+- `coordinates_are_consistent(...)` and `coordinate_consistency_error_m(...)`
+  provide the reusable tolerance check expected by the future validator.
+- `uv run ruff format src tests` passed with no changes.
+- `uv run ruff check src tests` passed.
+- `uv run pytest` passed with 24 tests.
