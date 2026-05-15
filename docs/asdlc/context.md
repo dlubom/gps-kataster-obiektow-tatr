@@ -52,11 +52,25 @@ PBI-004 is complete:
 - schema tests cover valid fixtures plus expected failures for a missing object
   ID, bad cave object ID, bad relation type and missing manual-best reason.
 
-PBI-005 is next:
+PBI-005 is complete:
 
-- add the minimal domain fixture set named in the backlog,
-- keep it aligned with the new JSON Schemas,
-- prepare those fixtures for later cross-reference validation.
+- `tests/fixtures/valid-object.yml` and `tests/fixtures/valid-cave.yml` provide
+  a minimal linked object/cave pair,
+- `tests/fixtures/object-with-tpn-globalid.yml` keeps TPN `GLOBALID` on
+  `Obiekt.external_refs`,
+- `tests/fixtures/cave-with-pig-and-nr-inwent.yml` keeps PIG and inventory
+  references on `Jaskinia.external_refs`,
+- `tests/fixtures/object-with-manual-best.yml` exercises manual
+  `best_measurement` with a reason,
+- `tests/test_domain_fixtures.py` validates those fixtures against the schemas
+  and checks object/cave cross-references.
+
+PBI-006 is next:
+
+- add deterministic WGS84 <-> EPSG:2180 conversion,
+- preserve the spec's axis convention: `x_1992 = northing`,
+  `y_1992 = easting`,
+- add tests for round-trip conversion and axis-swap detection.
 
 ## Current data inventory
 
@@ -124,3 +138,14 @@ After PBI-004:
 - `uv run ruff format src tests` passed with no changes.
 - `uv run ruff check src tests` passed after removing one unused import.
 - `uv run pytest` passed with 10 tests.
+
+After PBI-005:
+
+- `tests/fixtures/` contains the five minimal domain fixtures named in the
+  backlog.
+- `tests/test_domain_fixtures.py` checks schema validity, `cave_id` /
+  `object_ids` symmetry, local measurement references, TPN object references
+  and cave-level PIG / `NR_INWENT` references.
+- `uv run ruff format src tests` reformatted the new test file.
+- `uv run ruff check src tests` passed.
+- `uv run pytest` passed with 19 tests.

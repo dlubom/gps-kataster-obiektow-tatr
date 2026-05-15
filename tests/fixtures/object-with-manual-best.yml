@@ -1,0 +1,74 @@
+schema_version: 1
+id: KSW-0003
+category: jaskinia_otwor
+name_local: "Jaskinia testowa - drugi otwor"
+cave_id: C-0001
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSW
+  prefix_override_reason: null
+external_refs: []
+measurements:
+  - id: m-001
+    lat: 49.2425
+    lon: 19.8147
+    x_1992: 558145.55
+    y_1992: 150471.22
+    elevation_m: 1242.0
+    elevation_datum: PL-EVRF2007-NH
+    elevation_source: gnss
+    horizontal_accuracy_m: 0.5
+    vertical_accuracy_m: 1.0
+    source: wlasne
+    source_ref: "teren:2026-05-15:gnss"
+    observed_at: "2026-05-15T09:10:00Z"
+    observed_date: "2026-05-15"
+    source_date: null
+    method: gnss
+    device: "Emlid Reach"
+    tags:
+      - weryfikacja_terenowa
+    verification_status: zweryfikowany
+    verified_by: dl
+    verified_at: "2026-05-15T10:30:00Z"
+    notes: "Dokladny pomiar GNSS utrzymany jako najlepszy recznie."
+    created_at: "2026-05-15T10:00:00Z"
+    created_by: dl
+  - id: m-002
+    lat: 49.2426
+    lon: 19.8148
+    x_1992: 558156.10
+    y_1992: 150478.40
+    elevation_m: 1243.0
+    elevation_datum: unknown
+    elevation_source: gps
+    horizontal_accuracy_m: 12.0
+    vertical_accuracy_m: 20.0
+    source: wlasne
+    source_ref: "teren:2026-05-16:smartfon"
+    observed_at: "2026-05-16T09:10:00Z"
+    observed_date: "2026-05-16"
+    source_date: null
+    method: smartfon
+    device: "telefon"
+    tags:
+      - kontrolny
+    verification_status: zweryfikowany
+    verified_by: dl
+    verified_at: "2026-05-16T10:30:00Z"
+    notes: "Nowszy, ale mniej dokladny pomiar kontrolny."
+    created_at: "2026-05-16T10:00:00Z"
+    created_by: dl
+best_measurement:
+  mode: manual
+  measurement_id: m-001
+  reason: "Pomiar m-001 ma wyraznie lepsza dokladnosc pozioma niz nowszy pomiar smartfonem."
+  updated_at: "2026-05-16T10:30:00Z"
+  updated_by: dl
+attachments: []
+notes: null
+created_at: "2026-05-15T10:00:00Z"
+created_by: dl
+updated_at: "2026-05-16T10:30:00Z"
+updated_by: dl

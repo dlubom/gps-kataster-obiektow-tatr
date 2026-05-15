@@ -1,0 +1,29 @@
+schema_version: 1
+id: C-0002
+name: "Jaskinia katalogowa PIG"
+system_name: null
+external_refs:
+  - system: NR_INWENT
+    ref_type: inventory_number
+    external_id: "T.D-08.07"
+    scope: cave
+    notes: "Numer inwentarzowy dotyczy jaskini, nie pojedynczego otworu."
+  - system: PIG
+    ref_type: catalog_id
+    external_id: "1094"
+    url: "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094"
+    scope: cave
+    notes: "Identyfikator rekordu katalogowego PIG."
+  - system: PIG
+    ref_type: url
+    external_id: "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094"
+    url: "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094"
+    scope: cave
+    notes: "Link do rekordu katalogowego PIG."
+object_ids:
+  - KSW-0002
+notes: null
+created_at: "2026-05-15T10:00:00Z"
+created_by: dl
+updated_at: "2026-05-15T10:00:00Z"
+updated_by: dl

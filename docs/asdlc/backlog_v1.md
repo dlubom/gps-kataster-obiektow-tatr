@@ -9,6 +9,7 @@ Stan na: 2026-05-15
 - PBI-002: wykonane 2026-05-15. Dodano `pyproject.toml`, `uv.lock`, minimalny pakiet pod `src/`, test dymny oraz konfiguracje `ruff` i `pytest`.
 - PBI-003: wykonane 2026-05-15. Dodano `config/prefixes.yml` z mapowaniem 18 dolin oraz fallbackami `PL` i `SK`; testy sprawdzaja zgodnosc z `data/shapes/doliny.shp` i format prefixow.
 - PBI-004: wykonane 2026-05-15. Dodano JSON Schema dla `Obiekt`, `Jaskinia` i `Relacja`, `schema/CHANGELOG.md`, zaleznosc `jsonschema` oraz testy valid/invalid fixture'ow schematu.
+- PBI-005: wykonane 2026-05-15. Dodano minimalne fixture'y domenowe dla obiektow i jaskin oraz testy zgodnosci ze schematem i spojnosci cross-reference.
 
 ## Przyjęty poziom AS-DLC
 
@@ -40,6 +41,8 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `schema/*.schema.json` | 3 schematy | Kontrakty YAML dla `Obiekt`, `Jaskinia` i `Relacja`. |
 | `schema/CHANGELOG.md` | istnieje | Wpis dla `schema_version: 1`. |
 | `tests/test_schemas.py` | 7 testow | Sprawdza poprawnosc schematow oraz valid/invalid fixture'y PBI-004. |
+| `tests/fixtures/*.yml` | 5 fixture'ow | Minimalny zestaw domenowy PBI-005: obiekt, jaskinia, TPN `GLOBALID`, PIG + `NR_INWENT`, reczny `best_measurement`. |
+| `tests/test_domain_fixtures.py` | 9 testow | Sprawdza zgodnosc fixture'ow domenowych ze schematami oraz referencje `cave_id` / `object_ids`. |
 
 ## Bramka kontekstu
 
@@ -119,6 +122,8 @@ Weryfikacja:
 - negatywne fixture'y padaja na oczekiwanych polach.
 
 ### PBI-005: Dodac minimalne fixture'y domenowe
+
+Status: wykonane 2026-05-15.
 
 Zakres:
 

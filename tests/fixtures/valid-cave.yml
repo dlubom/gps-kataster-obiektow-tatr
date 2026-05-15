@@ -1,0 +1,13 @@
+schema_version: 1
+id: C-0001
+name: "Jaskinia testowa"
+system_name: null
+external_refs: []
+object_ids:
+  - KSW-0001
+  - KSW-0003
+notes: "Fixture grupujacy dwa obiekty jednej jaskini."
+created_at: "2026-05-15T10:00:00Z"
+created_by: dl
+updated_at: "2026-05-15T10:30:00Z"
+updated_by: dl

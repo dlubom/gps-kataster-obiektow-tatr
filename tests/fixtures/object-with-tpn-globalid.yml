@@ -1,0 +1,53 @@
+schema_version: 1
+id: KSW-0002
+category: jaskinia_otwor
+name_local: "Jaskinia z rekordem TPN - otwor"
+cave_id: C-0002
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSW
+  prefix_override_reason: null
+external_refs:
+  - system: TPN
+    ref_type: source_globalid
+    external_id: "{71432220-CA17-4420-ACC8-394596EDF79F}"
+    scope: object
+    notes: "GLOBALID identyfikuje punktowy rekord TPN."
+measurements:
+  - id: m-001
+    lat: 49.2424
+    lon: 19.8146
+    x_1992: 558134.12
+    y_1992: 150463.99
+    elevation_m: 1241.0
+    elevation_datum: unknown
+    elevation_source: source_record
+    horizontal_accuracy_m: null
+    vertical_accuracy_m: null
+    source: TPN
+    source_ref: "TPN:{71432220-CA17-4420-ACC8-394596EDF79F}"
+    observed_date: "2022-05-25"
+    source_date: "2022-05-25"
+    method: source_record
+    device: null
+    tags:
+      - tpn
+    verification_status: nieweryfikowany
+    verified_by: null
+    verified_at: null
+    notes: "Pomiar z rekordu punktowego TPN."
+    created_at: "2026-05-15T10:00:00Z"
+    created_by: dl
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: "2026-05-15T10:00:00Z"
+  updated_by: dl
+attachments: []
+notes: null
+created_at: "2026-05-15T10:00:00Z"
+created_by: dl
+updated_at: "2026-05-15T10:00:00Z"
+updated_by: dl
