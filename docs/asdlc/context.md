@@ -36,12 +36,17 @@ PBI-002 is complete:
 - a minimal package exists under `src/gps_kataster_obiektow_tatr/`,
 - a smoke test exists in `tests/test_package.py`.
 
-PBI-003 is next:
+PBI-003 is complete:
 
-- create `config/prefixes.yml`,
-- map the 18 valley names from `data/shapes/doliny.shp`,
-- add `PL` and `SK` fallback prefixes,
-- add a test that detects missing valley-prefix mappings.
+- `config/prefixes.yml` exists,
+- the 18 `NAME` values from `data/shapes/doliny.shp` are mapped to prefixes,
+- fallback prefixes `PL` and `SK` are configured,
+- tests detect missing or stale valley-prefix mappings and invalid prefix format.
+
+PBI-004 is next:
+
+- define JSON Schema files for object, cave and relation YAML,
+- add `schema/CHANGELOG.md` for `schema_version: 1`.
 
 ## Current data inventory
 
@@ -85,3 +90,14 @@ After PBI-002:
 - `uv run ruff check src tests` passed.
 - `uv run ruff format --check src tests` passed.
 - `uv run pytest` passed with 1 test.
+
+After PBI-003:
+
+- `config/prefixes.yml` contains 18 valley prefix mappings and two country
+  fallback prefixes.
+- `tests/test_prefixes.py` checks all `doliny.shp` `NAME` values are mapped.
+- `uv sync` completed successfully after adding `pyshp` and `PyYAML` dev
+  dependencies.
+- `uv run ruff format src tests` passed with no changes.
+- `uv run ruff check src tests` passed.
+- `uv run pytest` passed with 3 tests.

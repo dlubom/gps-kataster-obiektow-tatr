@@ -7,6 +7,7 @@ Stan na: 2026-05-15
 - PBI-001: wykonane 2026-05-15. Struktura katalogow zostala utworzona, shapefile przeniesione do `data/shapes/`, dodano podstawowy `.gitignore`.
 - Pamiec operacyjna: dodano `AGENTS.md` i `docs/asdlc/context.md`, zeby kolejny agent mogl odtworzyc stan projektu bez historii rozmowy.
 - PBI-002: wykonane 2026-05-15. Dodano `pyproject.toml`, `uv.lock`, minimalny pakiet pod `src/`, test dymny oraz konfiguracje `ruff` i `pytest`.
+- PBI-003: wykonane 2026-05-15. Dodano `config/prefixes.yml` z mapowaniem 18 dolin oraz fallbackami `PL` i `SK`; testy sprawdzaja zgodnosc z `data/shapes/doliny.shp` i format prefixow.
 
 ## Przyjęty poziom AS-DLC
 
@@ -20,7 +21,7 @@ Dla tego projektu wybieramy lekki wariant `spec-anchored`:
 
 ## Przeglad aktualnych plikow
 
-Repo jest na etapie zalazka. Wszystkie obecne pliki sa niezatwierdzone w git.
+Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 
 | Plik / katalog | Stan | Uwagi |
 |---|---:|---|
@@ -33,6 +34,8 @@ Repo jest na etapie zalazka. Wszystkie obecne pliki sa niezatwierdzone w git.
 | `data/shapes/granica_polski.*` | 1 feature, EPSG:2180 | Fallback granicy Polski. |
 | `data/shapes/granica_slowacji.*` | 1 feature, EPSG:2180 | Fallback granicy Slowacji. |
 | `data/shapes/README.md` | istnieje | Opisuje warstwy i algorytm prefixow. |
+| `config/prefixes.yml` | 18 dolin + 2 fallbacki | Zrodlo prawdy dla prefixow ID. |
+| `tests/test_prefixes.py` | 2 testy | Sprawdza mapowanie `doliny.shp` i format prefixow. |
 
 ## Bramka kontekstu
 
@@ -78,6 +81,8 @@ Weryfikacja:
 - `uv run pytest`.
 
 ### PBI-003: Dodac konfiguracje prefixow
+
+Status: wykonane 2026-05-15.
 
 Zakres:
 

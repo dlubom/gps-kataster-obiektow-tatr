@@ -1,0 +1,25 @@
+schema_version: 1
+
+valley_prefixes:
+  Dolina Chochołowska - Zachód: CHZ
+  Dolina Chochołowska - Wschód: CHW
+  Dolina Lejowa: LEJ
+  Dolina Kościeliska - Zachód: KSZ
+  Dolina Kościeliska - Wschód: KSW
+  Dolina Miętusia - Zachód: MTZ
+  Dolina Miętusia - Wschód: MTW
+  Staników Żleb: STN
+  Dolina Małej Łąki - Zachód: MLZ
+  Dolina Małej Łąki - Wschód: MLW
+  Mały Żlebek, D. za Bramką i Suchy Żleb: BRA
+  Dolina Strążyska: STR
+  Dolina ku Dziurze i Spadowiec: DZI
+  Dolina Białego i nad Capkami: BIA
+  Dolina Bystrej - Zachód: BYZ
+  Dolina Bystrej - Wschód: BYW
+  Dolina Olczyska, Sucha i Chłabowska: OLC
+  Dolina Suchej Wody: SUW
+
+fallback_prefixes:
+  polska: PL
+  slowacja: SK
