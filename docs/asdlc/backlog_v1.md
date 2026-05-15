@@ -12,6 +12,7 @@ Stan na: 2026-05-15
 - PBI-005: wykonane 2026-05-15. Dodano minimalne fixture'y domenowe dla obiektow i jaskin oraz testy zgodnosci ze schematem i spojnosci cross-reference.
 - PBI-006: wykonane 2026-05-15. Dodano modul konwersji WGS84 <-> EPSG:2180 oparty o PyProj, utrwalono konwencje osi `x_1992 = northing`, `y_1992 = easting` oraz testy round-trip i wykrywania zamiany osi.
 - PBI-007: wykonane 2026-05-15. Dodano resolver prefixow czytajacy `config/prefixes.yml` i shapefile z `data/shapes/`; wynik rozroznia trafienie w doline, fallback PL/SK z warningiem oraz punkt poza PL/SK jako error.
+- PBI-008: wykonane 2026-05-15. Dodano `scripts/assign_id.py`, ktory przyjmuje `lat lon`, uzywa resolvera prefixow, liczy kolejny numer z `data/objects/{PREFIX}/` i wypisuje propozycje ID razem z ostrzezeniami.
 
 ## Przyjęty poziom AS-DLC
 
@@ -49,6 +50,8 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_coordinates.py` | 5 testow | Sprawdza round-trip kilku punktow tatrzanskich, zgodnosc z osiami PIG/PL-1992 i wykrywanie zamiany osi. |
 | `src/gps_kataster_obiektow_tatr/prefix_resolver.py` | istnieje | Resolver prefixow ID: doliny przez point-in-polygon, fallback PL/SK i jawne statusy `ok` / `warning` / `error`. |
 | `tests/test_prefix_resolver.py` | 4 testy | Sprawdza punkt w dolinie, punkt w Polsce poza dolinami, punkt po stronie slowackiej i punkt poza PL/SK. |
+| `scripts/assign_id.py` | istnieje | CLI i helpery do proponowania kolejnego ID z `lat lon`, resolvera prefixu i plikow w `data/objects/{PREFIX}/`. |
+| `tests/test_assign_id.py` | 6 testow | Sprawdza pusty prefix, istniejace pliki, licznik ponad `9999`, warningi resolvera, blad bez prefixu i uruchomienie CLI. |
 
 ## Bramka kontekstu
 
@@ -181,6 +184,8 @@ Weryfikacja:
 - test punktu poza PL/SK.
 
 ### PBI-008: Dodac `scripts/assign_id.py`
+
+Status: wykonane 2026-05-15.
 
 Zakres:
 

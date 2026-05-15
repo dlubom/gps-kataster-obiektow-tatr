@@ -89,12 +89,21 @@ PBI-007 is complete:
   prefix `PL` or `SK` with `status=warning`,
 - points outside PL/SK return `status=error` and no prefix.
 
-PBI-008 is next:
+PBI-008 is complete:
 
-- add `scripts/assign_id.py`,
-- accept `lat lon`, call the prefix resolver and find the next number under
-  `data/objects/{PREFIX}/`,
-- print the proposed ID plus resolver warnings.
+- `scripts/assign_id.py` accepts `lat lon`,
+- it calls the prefix resolver, proposes the next object ID from existing
+  `{PREFIX}-{NNNN}.yml` files under `data/objects/{PREFIX}/`,
+- fallback `PL` / `SK` resolutions still print a proposed ID plus the resolver
+  warning,
+- points outside Poland and Slovakia exit nonzero without an ID proposal,
+- conflict detection remains assigned to the future validator.
+
+PBI-009 is next:
+
+- add a YAML data loader for objects, caves and relations,
+- preserve file paths for validation reports,
+- normalize missing lists in code only, without rewriting YAML.
 
 ## Current data inventory
 
@@ -198,3 +207,16 @@ After PBI-007:
 - `uv run ruff format src tests` passed with no changes.
 - `uv run ruff check src tests` passed.
 - `uv run pytest` passed with 28 tests.
+
+After PBI-008:
+
+- `scripts/assign_id.py` is the first V1 developer CLI.
+- `next_object_id(...)` returns `{PREFIX}-0001` when
+  `data/objects/{PREFIX}/` is empty or missing.
+- Existing `{PREFIX}-{NNNN}.yml` files drive the next number by `max + 1`; the
+  formatter naturally extends beyond four digits, e.g. `{PREFIX}-10000`.
+- Resolver warnings are printed alongside the proposal, while resolver errors
+  exit nonzero.
+- `uv run ruff format src tests scripts` passed with no changes.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 34 tests.
