@@ -28,12 +28,20 @@ PBI-001 is complete:
 - `.gitignore` exists,
 - placeholder `.gitkeep` files keep empty target directories visible.
 
-PBI-002 is next:
+PBI-002 is complete:
 
-- create `pyproject.toml`,
-- configure `uv`, `ruff`, `pytest`,
-- add a minimal package under `src/`,
-- make local commands align with future CI.
+- `pyproject.toml` exists,
+- `uv.lock` exists,
+- `ruff` and `pytest` are configured,
+- a minimal package exists under `src/gps_kataster_obiektow_tatr/`,
+- a smoke test exists in `tests/test_package.py`.
+
+PBI-003 is next:
+
+- create `config/prefixes.yml`,
+- map the 18 valley names from `data/shapes/doliny.shp`,
+- add `PL` and `SK` fallback prefixes,
+- add a test that detects missing valley-prefix mappings.
 
 ## Current data inventory
 
@@ -70,3 +78,10 @@ After PBI-001:
   reports 1 feature.
 - `ogrinfo -al -so data/shapes/granica_slowacji.shp` opens successfully and
   reports 1 feature.
+
+After PBI-002:
+
+- `uv sync` completed successfully with CPython 3.14.4.
+- `uv run ruff check src tests` passed.
+- `uv run ruff format --check src tests` passed.
+- `uv run pytest` passed with 1 test.

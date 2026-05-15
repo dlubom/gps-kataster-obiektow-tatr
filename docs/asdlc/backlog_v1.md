@@ -6,6 +6,7 @@ Stan na: 2026-05-15
 
 - PBI-001: wykonane 2026-05-15. Struktura katalogow zostala utworzona, shapefile przeniesione do `data/shapes/`, dodano podstawowy `.gitignore`.
 - Pamiec operacyjna: dodano `AGENTS.md` i `docs/asdlc/context.md`, zeby kolejny agent mogl odtworzyc stan projektu bez historii rozmowy.
+- PBI-002: wykonane 2026-05-15. Dodano `pyproject.toml`, `uv.lock`, minimalny pakiet pod `src/`, test dymny oraz konfiguracje `ruff` i `pytest`.
 
 ## Przyjęty poziom AS-DLC
 
@@ -60,6 +61,8 @@ Weryfikacja:
 - shapefile po przeniesieniu nadal otwieraja sie przez `ogrinfo`.
 
 ### PBI-002: Utworzyc minimalny projekt Pythonowy
+
+Status: wykonane 2026-05-15.
 
 Zakres:
 
