@@ -108,11 +108,29 @@ PBI-009 is complete:
   `raw_data` are left unchanged,
 - bad YAML raises `YamlDataLoadError` with the source path in the message.
 
-PBI-010 is next:
+PBI-010 is complete:
 
-- implement local validation rules with error/warning severity,
-- include rule code, severity, file and description in reports,
-- exit nonzero only when validation errors are present.
+- `src/gps_kataster_obiektow_tatr/validator.py` validates loaded YAML records
+  and reports rule code, severity, file path and description,
+- `scripts/validate.py` is the local CLI entrypoint for the same validation
+  intended for CI,
+- validator errors cover YAML/schema problems, duplicate object IDs,
+  file-vs-ID mismatches, broken cross-references, attachment references,
+  coordinate mismatch, points outside PL/SK and duplicate TPN `GLOBALID`,
+- validator warnings cover points outside configured valley polygons,
+  object prefix mismatch against the current best measurement, missing
+  `horizontal_accuracy_m`, missing `source_ref`, far-apart measurements,
+  `jaskinia_otwor` without `cave_id`, and object-level PIG/NR_INWENT catalog
+  references,
+- the CLI exits nonzero only when at least one `error` issue is present.
+
+PBI-011 is next:
+
+- extract and harden the `best_measurement` algorithm behavior with dedicated
+  priority/tie-break tests,
+- keep manual mode authoritative,
+- warn when `mode: auto` points to a measurement other than the default
+  algorithm result.
 
 ## Current data inventory
 
@@ -244,3 +262,20 @@ After PBI-009:
 - `uv run ruff format --check src tests` passed.
 - `uv run ruff check src tests` passed.
 - `uv run pytest` passed with 37 tests.
+
+After PBI-010:
+
+- `validate_data_dir(...)` catches YAML loader errors as `YAML_INVALID` issues
+  and otherwise validates all object, cave and relation records.
+- JSON Schema validation is reported as `SCHEMA_VALIDATION`; `schema_version`
+  drift is additionally reported as `SCHEMA_VERSION_INVALID`.
+- Cross-record checks cover object-to-cave, cave-to-object, relation-to-object,
+  best-measurement and attachment-measurement references.
+- Coordinate checks use the existing PyProj helpers and the default 0.5 m
+  tolerance; spatial checks reuse the prefix resolver and PL/SK fallback
+  boundaries.
+- `scripts/validate.py` on the current repository prints `OK: no validation
+  issues`.
+- `uv run ruff format src tests scripts` passed.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 43 tests.
