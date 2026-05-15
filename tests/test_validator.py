@@ -137,6 +137,63 @@ def test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors(tmp_path
     assert "BEST_MEASUREMENT_MISSING" in error_result.stdout
 
 
+def test_reports_warning_for_auto_best_measurement_mismatch() -> None:
+    with _validation_tmp_data() as data_dir:
+        object_data = _valid_object()
+        object_data["measurements"] = [
+            _measurement_variant("m-001", source="PIG", observed_date="2026-05-16"),
+            _measurement_variant("m-002", source="TPN", observed_date="2026-05-15"),
+        ]
+        object_data["best_measurement"]["measurement_id"] = "m-001"
+        _write_object(data_dir, object_data)
+
+        issues = validate_data_dir(data_dir)
+
+    assert _codes(issues) >= {"BEST_MEASUREMENT_AUTO_MISMATCH"}
+    assert _severities(issues, "BEST_MEASUREMENT_AUTO_MISMATCH") == {ValidationSeverity.WARNING}
+
+
+def test_manual_best_measurement_is_not_checked_against_auto_algorithm() -> None:
+    with _validation_tmp_data() as data_dir:
+        object_data = _valid_object()
+        object_data["measurements"] = [
+            _measurement_variant("m-001", source="PIG", observed_date="2026-05-16"),
+            _measurement_variant("m-002", source="TPN", observed_date="2026-05-15"),
+        ]
+        object_data["best_measurement"] = {
+            "mode": "manual",
+            "measurement_id": "m-001",
+            "reason": "Operator utrzymuje starszy pomiar PIG do czasu rozstrzygniecia TPN.",
+            "updated_at": "2026-05-15T10:30:00Z",
+            "updated_by": "dl",
+        }
+        _write_object(data_dir, object_data)
+
+        issues = validate_data_dir(data_dir)
+
+    assert "BEST_MEASUREMENT_AUTO_MISMATCH" not in _codes(issues)
+
+
+def test_reports_warning_when_auto_best_measurement_uses_rejected_fallback() -> None:
+    with _validation_tmp_data() as data_dir:
+        object_data = _valid_object()
+        object_data["measurements"] = [
+            _measurement_variant(
+                "m-001",
+                source="TPN",
+                observed_date="2026-05-15",
+                status="odrzucony",
+            )
+        ]
+        object_data["best_measurement"]["measurement_id"] = "m-001"
+        _write_object(data_dir, object_data)
+
+        issues = validate_data_dir(data_dir)
+
+    assert _codes(issues) >= {"BEST_MEASUREMENT_REJECTED_FALLBACK"}
+    assert _severities(issues, "BEST_MEASUREMENT_REJECTED_FALLBACK") == {ValidationSeverity.WARNING}
+
+
 class _validation_tmp_data:
     def __enter__(self) -> Path:
         from tempfile import TemporaryDirectory
@@ -208,6 +265,30 @@ def _valid_measurement() -> dict[str, Any]:
         "created_at": "2026-05-15T10:00:00Z",
         "created_by": "dl",
     }
+
+
+def _measurement_variant(
+    measurement_id: str,
+    *,
+    source: str,
+    observed_date: str,
+    status: str = "nieweryfikowany",
+) -> dict[str, Any]:
+    measurement = _valid_measurement()
+    measurement.update(
+        {
+            "id": measurement_id,
+            "source": source,
+            "source_ref": f"{source}:{measurement_id}",
+            "observed_at": None,
+            "observed_date": observed_date,
+            "method": "source_record" if source in {"TPN", "PIG", "geoportal"} else "ustalenie",
+            "verification_status": status,
+            "verified_by": "dl" if status == "zweryfikowany" else None,
+            "verified_at": "2026-05-15T10:30:00Z" if status == "zweryfikowany" else None,
+        }
+    )
+    return measurement
 
 
 def _valid_cave(object_id: str = "KSW-0001") -> dict[str, Any]:

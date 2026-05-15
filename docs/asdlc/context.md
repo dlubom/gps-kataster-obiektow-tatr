@@ -124,13 +124,25 @@ PBI-010 is complete:
   references,
 - the CLI exits nonzero only when at least one `error` issue is present.
 
-PBI-011 is next:
+PBI-011 is complete:
 
-- extract and harden the `best_measurement` algorithm behavior with dedicated
-  priority/tie-break tests,
-- keep manual mode authoritative,
-- warn when `mode: auto` points to a measurement other than the default
-  algorithm result.
+- `src/gps_kataster_obiektow_tatr/best_measurement.py` holds the reusable V1
+  default selection algorithm for `best_measurement.mode: auto`,
+- selection priority is `wlasne` verified, TPN, `wlasne` unverified, PIG,
+  other non-rejected sources, then rejected fallback,
+- within one priority the algorithm chooses latest observation, then lower
+  `horizontal_accuracy_m`, then stable `measurement.id`,
+- the validator warns when `mode: auto` points somewhere else, keeps
+  `mode: manual` authoritative, and warns when the default can only select an
+  `odrzucony` measurement.
+
+PBI-012 is next:
+
+- profile the PIG and TPN source files,
+- count key missing values and duplicates,
+- check coordinate ranges,
+- save the report under `build/reports/source-profile.*`,
+- do not create final YAML yet.
 
 ## Current data inventory
 
@@ -279,3 +291,19 @@ After PBI-010:
 - `uv run ruff format src tests scripts` passed.
 - `uv run ruff check src tests scripts` passed.
 - `uv run pytest` passed with 43 tests.
+
+After PBI-011:
+
+- `select_default_best_measurement_id(...)` is reusable outside the validator
+  for future build/export logic.
+- `tests/test_best_measurement.py` covers all default priorities, the grouped
+  `geoportal` / `publikacja` / `inne` priority, latest observation date/time,
+  lower horizontal accuracy, stable ID tie-breaks and rejected-only fallback.
+- `tests/test_validator.py` covers the warning for `auto` mismatch, confirms
+  `manual` best measurement is not checked against the auto algorithm, and
+  covers rejected-only fallback warning.
+- `uv run ruff format src tests` reformatted the new/changed Python files.
+- `uv run ruff format --check src tests scripts` passed.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 57 tests.
+- `uv run python scripts/validate.py` printed `OK: no validation issues`.

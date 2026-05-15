@@ -7,7 +7,6 @@ from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from enum import StrEnum
 from itertools import combinations
-from math import inf
 from pathlib import Path
 from typing import Any, Protocol
 from urllib.parse import urlparse
@@ -15,6 +14,10 @@ from urllib.parse import urlparse
 from jsonschema import Draft202012Validator, FormatChecker
 from jsonschema.exceptions import ValidationError
 
+from gps_kataster_obiektow_tatr.best_measurement import (
+    select_default_best_measurement_id,
+    selected_default_uses_rejected_fallback,
+)
 from gps_kataster_obiektow_tatr.coordinates import (
     DEFAULT_CONSISTENCY_TOLERANCE_M,
     coordinate_consistency_error_m,
@@ -619,22 +622,37 @@ def _validate_best_measurement_auto(
     if not isinstance(best_measurement, dict) or best_measurement.get("mode") != "auto":
         return ()
 
+    issues: list[ValidationIssue] = []
     measurement_id = best_measurement.get("measurement_id")
-    computed_measurement_id = _default_best_measurement_id(object_record)
-    if computed_measurement_id is None or measurement_id == computed_measurement_id:
-        return ()
-
-    return (
-        ValidationIssue(
-            code="BEST_MEASUREMENT_AUTO_MISMATCH",
-            severity=ValidationSeverity.WARNING,
-            path=object_record.path,
-            description=(
-                f"Object {object_id} auto best_measurement points to {measurement_id}, "
-                f"but default priority selects {computed_measurement_id}."
+    measurements = list(_iter_dicts(object_record.data.get("measurements")))
+    computed_measurement_id = select_default_best_measurement_id(measurements)
+    if computed_measurement_id is not None and measurement_id != computed_measurement_id:
+        issues.append(
+            ValidationIssue(
+                code="BEST_MEASUREMENT_AUTO_MISMATCH",
+                severity=ValidationSeverity.WARNING,
+                path=object_record.path,
+                description=(
+                    f"Object {object_id} auto best_measurement points to {measurement_id}, "
+                    f"but default priority selects {computed_measurement_id}."
+                ),
             ),
-        ),
-    )
+        )
+
+    if selected_default_uses_rejected_fallback(measurements):
+        issues.append(
+            ValidationIssue(
+                code="BEST_MEASUREMENT_REJECTED_FALLBACK",
+                severity=ValidationSeverity.WARNING,
+                path=object_record.path,
+                description=(
+                    f"Object {object_id} default best_measurement can only select a rejected "
+                    "measurement."
+                ),
+            )
+        )
+
+    return tuple(issues)
 
 
 def _validate_duplicate_tpn_globalids(
@@ -669,77 +687,6 @@ def _validate_duplicate_tpn_globalids(
             )
 
     return tuple(issues)
-
-
-def _default_best_measurement_id(object_record: LoadedYamlRecord) -> str | None:
-    measurements = list(_iter_dicts(object_record.data.get("measurements")))
-    if not measurements:
-        return None
-
-    for priority in range(6):
-        priority_measurements = [
-            measurement
-            for measurement in measurements
-            if _measurement_priority(measurement) == priority
-            and isinstance(measurement.get("id"), str)
-        ]
-        if priority_measurements:
-            return _best_measurement_within_priority(priority_measurements)["id"]
-
-    return None
-
-
-def _measurement_priority(measurement: dict[str, Any]) -> int:
-    source = measurement.get("source")
-    status = measurement.get("verification_status")
-    is_rejected = status == "odrzucony"
-
-    if source == "wlasne" and status == "zweryfikowany":
-        return 0
-    if source == "TPN" and not is_rejected:
-        return 1
-    if source == "wlasne" and not is_rejected:
-        return 2
-    if source == "PIG" and not is_rejected:
-        return 3
-    if not is_rejected:
-        return 4
-    return 5
-
-
-def _best_measurement_within_priority(measurements: Sequence[dict[str, Any]]) -> dict[str, Any]:
-    latest_observed = max(
-        _measurement_observed_sort_value(measurement) for measurement in measurements
-    )
-    latest_measurements = [
-        measurement
-        for measurement in measurements
-        if _measurement_observed_sort_value(measurement) == latest_observed
-    ]
-    return min(
-        latest_measurements,
-        key=lambda measurement: (
-            _measurement_accuracy_sort_value(measurement),
-            str(measurement.get("id", "")),
-        ),
-    )
-
-
-def _measurement_observed_sort_value(measurement: dict[str, Any]) -> str:
-    observed_at = measurement.get("observed_at")
-    if isinstance(observed_at, str):
-        return observed_at
-    observed_date = measurement.get("observed_date")
-    if isinstance(observed_date, str):
-        return observed_date
-    return ""
-
-
-def _measurement_accuracy_sort_value(measurement: dict[str, Any]) -> float:
-    accuracy = measurement.get("horizontal_accuracy_m")
-    if isinstance(accuracy, int | float):
-        return float(accuracy)
-    return inf
 
 
 def _record_path_matches_id(

@@ -15,6 +15,7 @@ Stan na: 2026-05-15
 - PBI-008: wykonane 2026-05-15. Dodano `scripts/assign_id.py`, ktory przyjmuje `lat lon`, uzywa resolvera prefixow, liczy kolejny numer z `data/objects/{PREFIX}/` i wypisuje propozycje ID razem z ostrzezeniami.
 - PBI-009: wykonane 2026-05-15. Dodano loader YAML dla `data/objects/`, `data/caves/` i `data/relations/`, rekordy zachowuja sciezke pliku, a brakujace listy sa normalizowane tylko w pamieci.
 - PBI-010: wykonane 2026-05-15. Dodano lokalny walidator danych YAML z kodami regul, poziomami `error` / `warning`, sciezka pliku i opisem; CLI `scripts/validate.py` zwraca kod != 0 tylko przy bledach.
+- PBI-011: wykonane 2026-05-15. Wyodrebniono algorytm `best_measurement` do modulu aplikacyjnego, dodano testy priorytetow, dat, dokladnosci, stabilnego remisu, trybu manual oraz ostrzezenia walidatora dla rozjazdu `auto`.
 
 ## Przyjęty poziom AS-DLC
 
@@ -56,9 +57,11 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_assign_id.py` | 6 testow | Sprawdza pusty prefix, istniejace pliki, licznik ponad `9999`, warningi resolvera, blad bez prefixu i uruchomienie CLI. |
 | `src/gps_kataster_obiektow_tatr/data_loader.py` | istnieje | Loader zrodlowych YAML: obiekty, jaskinie i relacje z `data/`, sciezki plikow dla raportow oraz pamieciowe domyslne puste listy. |
 | `tests/test_data_loader.py` | 3 testy | Sprawdza wczytanie fixture'ow, zachowanie sciezek, normalizacje list bez zapisu do YAML oraz blad skladni YAML z czytelna sciezka. |
+| `src/gps_kataster_obiektow_tatr/best_measurement.py` | istnieje | Domyslny algorytm `best_measurement.mode: auto`: priorytet zrodel, data, dokladnosc i stabilny remis po `measurement.id`. |
+| `tests/test_best_measurement.py` | 11 testow | Sprawdza wszystkie priorytety wyboru, remis dat/dokladnosci/ID oraz fallback do odrzuconych pomiarow. |
 | `src/gps_kataster_obiektow_tatr/validator.py` | istnieje | Walidator lokalny: JSON Schema, unikalnosc ID, referencje cross-file, spojnosci wspolrzednych, reguly przestrzenne i ostrzezenia domenowe. |
 | `scripts/validate.py` | istnieje | CLI walidatora; wypisuje `kod`, `poziom`, `plik`, `opis` i konczy kodem 1 tylko dla error. |
-| `tests/test_validator.py` | 6 testow | Sprawdza duplikat ID, zly `best_measurement`, brak `manual.reason`, zle wspolrzedne, ostrzezenia PBI-010 oraz exit code CLI. |
+| `tests/test_validator.py` | 9 testow | Sprawdza duplikat ID, zly `best_measurement`, brak `manual.reason`, zle wspolrzedne, ostrzezenia PBI-010, warningi `best_measurement` PBI-011 oraz exit code CLI. |
 
 ## Bramka kontekstu
 
@@ -240,6 +243,8 @@ Weryfikacja:
 - test warningow dla braku `horizontal_accuracy_m`, `category: jaskinia_otwor` bez `cave_id`, zlej lokalizacji referencji PIG/NR_INWENT.
 
 ### PBI-011: Algorytm `best_measurement`
+
+Status: wykonane 2026-05-15.
 
 Zakres:
 
