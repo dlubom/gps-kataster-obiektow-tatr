@@ -1,0 +1,19 @@
+# Generated artifacts
+build/
+dist/
+*.egg-info/
+
+# Python tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+
+# Local environment
+.env
+.env.*
+
+# OS/editor noise
+.DS_Store
