@@ -163,6 +163,27 @@ PBI-013 is complete:
 - tests cover CSV import, XLSX import, coordinate-mismatch cave-only fallback,
   report writing and the guarantee that no final YAML is written under `data/`.
 
+PBI-014 is complete:
+
+- `src/gps_kataster_obiektow_tatr/source_table.py` is the shared CSV/XLSX table
+  reader used by staging importers,
+- `src/gps_kataster_obiektow_tatr/tpn_staging.py` builds reviewable TPN
+  measurement proposals without writing final YAML,
+- `scripts/importers/import_tpn.py` reads TPN CSV or XLSX and writes
+  `build/staging/tpn/tpn-staging.json` plus `tpn-staging.md`,
+- TPN `GLOBALID` is proposed on `Obiekt.external_refs`; `NR_INWENT` is
+  proposed on `Jaskinia.external_refs`,
+- matching checks final YAML records and, when present, the PIG staging JSON;
+  order is `GLOBALID`, then `NR_INWENT`, then normalized name plus distance,
+- rows are classified for operator review as `matched`, `new`, `unresolved`
+  or `rejected`; ambiguous duplicate inventory rows stay unresolved,
+- new TPN objects receive a TPN source-record measurement with
+  `verification_status: nieweryfikowany`, no horizontal accuracy and
+  `best_measurement.mode: auto` only inside the staging proposal,
+- tests cover matched measurement updates, new object/cave proposals,
+  unresolved duplicate inventory rows, XLSX reading, report writing, CLI
+  execution and the guarantee that no final YAML is written under `data/`.
+
 ## Current data inventory
 
 - PIG workbook: `pig_otwory_jaskin_.xlsx`, sheet `Export`, 861 rows including
@@ -370,3 +391,21 @@ After PBI-013:
 - `uv run ruff check src tests scripts` passed.
 - `uv run pytest` passed with 66 tests.
 - `uv run python scripts/validate.py` printed `OK: no validation issues`.
+
+After PBI-014:
+
+- `uv run python scripts/importers/import_tpn.py --generated-at
+  2026-05-16T09:00:00Z` generated `build/staging/tpn/tpn-staging.json` and
+  `build/staging/tpn/tpn-staging.md` from the CSV export using the PIG staging
+  JSON as a matching baseline.
+- `uv run python scripts/importers/import_tpn.py --tpn-source
+  tpn_otwory_jaskin.xlsx --output-dir build/staging/tpn-xlsx --generated-at
+  2026-05-16T09:00:00Z` verified the XLSX path on the real workbook.
+- Both CSV and XLSX staging runs produced 1005 records: 858 matched, 142 new,
+  5 unresolved and 0 rejected.
+- The generated TPN reports currently contain 263 review issues, mostly
+  distance-review warnings for `NR_INWENT` matches plus unresolved duplicate
+  inventory cases.
+- `find data/objects data/caves data/relations -maxdepth 2 -type f -print`
+  still listed only the existing `.gitkeep` files; the importer did not create
+  final YAML.
