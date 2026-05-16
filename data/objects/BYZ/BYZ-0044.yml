@@ -1,0 +1,54 @@
+schema_version: 1
+id: BYZ-0044
+category: jaskinia_otwor
+name_local: Dziura w Kondratowych Basztach
+cave_id: C-0873
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: BYZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{D22B814F-00F6-46BE-A245-547F46E810C1}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.244897288407174
+  lon: 19.934478361468294
+  x_1992: 153463.41
+  y_1992: 567993.52
+  elevation_m: 1657.875924
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{D22B814F-00F6-46BE-A245-547F46E810C1}
+  observed_date: '2023-06-27'
+  source_date: '2023-06-27'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

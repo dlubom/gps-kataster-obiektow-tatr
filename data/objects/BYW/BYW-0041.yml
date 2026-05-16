@@ -1,0 +1,54 @@
+schema_version: 1
+id: BYW-0041
+category: jaskinia_otwor
+name_local: Koleba w Zawracie Kasprowym
+cave_id: C-0911
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: BYW
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{0A918778-2BA0-4AE8-8DBD-1B8B7C319066}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.25047079129676
+  lon: 19.987629871715807
+  x_1992: 154131.96
+  y_1992: 571852.73
+  elevation_m: 1494.573578
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{0A918778-2BA0-4AE8-8DBD-1B8B7C319066}
+  observed_date: '2024-09-16'
+  source_date: '2024-09-16'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

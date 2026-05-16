@@ -8,7 +8,12 @@ id_assignment:
   assigned_from_measurement_id: m-001
   assigned_prefix: MTW
   prefix_override_reason: null
-external_refs: []
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{A588E4CA-D489-4EFA-8864-B4DE76CE5344}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
   lat: 49.24035365
@@ -36,15 +41,40 @@ measurements:
     Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1576'
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
+- id: m-002
+  lat: 49.240773946068074
+  lon: 19.913697637916712
+  x_1992: 152986.69
+  y_1992: 566487.05
+  elevation_m: 1846.585792
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{A588E4CA-D489-4EFA-8864-B4DE76CE5344}
+  observed_date: '2024-09-24'
+  source_date: '2024-09-24'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-001
+  measurement_id: m-002
   reason: null
-  updated_at: '2026-05-16T10:22:49Z'
-  updated_by: importer:pig
+  updated_at: '2026-05-16T14:00:00Z'
+  updated_by: dl
 attachments: []
 notes: Staging proposal from PIG; requires operator review before final YAML.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:22:49Z'
-updated_by: importer:pig
+updated_at: '2026-05-16T14:00:00Z'
+updated_by: dl

@@ -1,0 +1,54 @@
+schema_version: 1
+id: BYZ-0058
+category: jaskinia_otwor
+name_local: Nyża w Kondratowych Basztach
+cave_id: C-0985
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: BYZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{F9C94562-FC14-4560-A452-5735CBD6F611}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.24388867349731
+  lon: 19.93730149061453
+  x_1992: 153353.86
+  y_1992: 568200.32
+  elevation_m: 1631.908632
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{F9C94562-FC14-4560-A452-5735CBD6F611}
+  observed_date: '2023-06-27'
+  source_date: '2023-06-27'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

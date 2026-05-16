@@ -675,3 +675,24 @@ After maintainer review of PIG `POINT_OUTSIDE_VALLEYS` on 2026-05-16:
   `MISSING_HORIZONTAL_ACCURACY` warnings from source-record measurements and 88
   `MEASUREMENT_OUTSIDE_VALLEYS` warnings for the reviewed fallback-`PL`
   measurements.
+
+After maintainer acceptance of TPN distance-review and TPN-only rows on
+2026-05-16:
+
+- The maintainer approved all remaining `TPN_MATCH_DISTANCE_REVIEW` rows and
+  all `TPN_NEW_ONLY` rows, including TPN-only `POINT_OUTSIDE_VALLEYS` rows.
+- `build/staging/review/decisions-tpn-distance-and-new.yml` materialized 248
+  TPN measurement additions plus 142 new TPN-only caves and 142 new TPN-only
+  objects; `apply_review.py` reported 532 decisions, 780 written YAML files and
+  0 review issues.
+- Left for later from the TPN staging report: 5 `TPN_NR_INWENT_AMBIGUOUS` rows
+  and the one clean duplicate match for `Smocza Jama` / row 476.
+- Current final YAML inventory is 1002 objects, 1002 caves, 1859 measurements
+  and 0 relations.
+- `best-measurements` exports now include flattened reference columns
+  `nr_inwent`, `pig_id`, `pig_url` and `tpn_globalid`.
+- The rebuilt best-measurements export has 999 best rows from TPN and 3 best
+  rows still from PIG.
+- Validation has 0 errors and 2048 warnings: 1859
+  `MISSING_HORIZONTAL_ACCURACY`, 101 `MEASUREMENT_OUTSIDE_VALLEYS`, 72
+  `MEASUREMENT_DISTANCE_OUTLIER` and 16 `OBJECT_PREFIX_MISMATCH`.

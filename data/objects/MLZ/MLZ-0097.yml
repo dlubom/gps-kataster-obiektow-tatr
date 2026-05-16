@@ -1,0 +1,54 @@
+schema_version: 1
+id: MLZ-0097
+category: jaskinia_otwor
+name_local: Rura pod Okapami
+cave_id: C-0935
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MLZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{DF21DAC8-E66A-4F29-979D-9E0703DB68E2}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.24734349938207
+  lon: 19.91899023106926
+  x_1992: 153721.46
+  y_1992: 566863.3
+  elevation_m: 1434.761671
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{DF21DAC8-E66A-4F29-979D-9E0703DB68E2}
+  observed_date: '2025-01-18'
+  source_date: '2025-01-18'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

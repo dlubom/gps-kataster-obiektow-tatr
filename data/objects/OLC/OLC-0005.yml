@@ -1,0 +1,54 @@
+schema_version: 1
+id: OLC-0005
+category: jaskinia_otwor
+name_local: Szczelina przy Piórze
+cave_id: C-0892
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: OLC
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{25604785-57C9-44E3-A432-B94C85D4551B}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.280283592143576
+  lon: 19.99569860790336
+  x_1992: 157452.89
+  y_1992: 572396.11
+  elevation_m: 1015.597953
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{25604785-57C9-44E3-A432-B94C85D4551B}
+  observed_date: '2025-05-17'
+  source_date: '2025-05-17'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

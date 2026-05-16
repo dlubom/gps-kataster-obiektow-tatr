@@ -1,0 +1,54 @@
+schema_version: 1
+id: KSW-0241
+category: jaskinia_otwor
+name_local: Gawra we Wysrankach
+cave_id: C-0879
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSW
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{4C30384D-7D8D-48D8-8D57-AEA8CC59687C}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.24975075016535
+  lon: 19.876947696655524
+  x_1992: 153952.67
+  y_1992: 563801.33
+  elevation_m: 1199.427985
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{4C30384D-7D8D-48D8-8D57-AEA8CC59687C}
+  observed_date: '2024-03-22'
+  source_date: '2024-03-22'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

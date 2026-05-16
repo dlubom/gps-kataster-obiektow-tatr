@@ -1,0 +1,54 @@
+schema_version: 1
+id: CHW-0044
+category: jaskinia_otwor
+name_local: Schronisko przy Ścianach II
+cave_id: C-0880
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: CHW
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{1B23AA17-69C9-486D-B03B-089AADB88194}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.24988341041455
+  lon: 19.822417381013818
+  x_1992: 153922.84
+  y_1992: 559833.92
+  elevation_m: 1165.372298
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{1B23AA17-69C9-486D-B03B-089AADB88194}
+  observed_date: '2022-05-25'
+  source_date: '2022-05-25'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

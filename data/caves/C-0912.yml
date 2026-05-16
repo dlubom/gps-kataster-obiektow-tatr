@@ -1,0 +1,18 @@
+schema_version: 1
+id: C-0912
+name: Szczelina w Niżniej Świstówce II
+system_name: null
+external_refs: []
+object_ids:
+- MLW-0039
+notes: 'TPN length: 5,2
+
+  TPN depth: 3,4
+
+  TPN denivelation: 0
+
+  TPN verification/location note: 30-07-2021 FF ortofoto'
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

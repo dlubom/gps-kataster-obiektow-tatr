@@ -1,0 +1,20 @@
+schema_version: 1
+id: C-0917
+name: Dziura nad Piórem
+system_name: null
+external_refs: []
+object_ids:
+- OLC-0007
+notes: 'TPN length: 5
+
+  TPN depth: 0
+
+  TPN denivelation: 2
+
+  TPN verification/location note: TZK 20230704 GPS, dem
+
+  TPN notes: dane morf. orientacyjne, do dokumentacji'
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

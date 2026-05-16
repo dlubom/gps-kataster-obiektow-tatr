@@ -1,0 +1,18 @@
+schema_version: 1
+id: C-0993
+name: Szczelina w Koprowym Żlebie
+system_name: null
+external_refs: []
+object_ids:
+- MLW-0052
+notes: 'TPN length: 4,8
+
+  TPN depth: 1,8
+
+  TPN denivelation: 1,8
+
+  TPN verification/location note: 29.07.2021 FF NMT'
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

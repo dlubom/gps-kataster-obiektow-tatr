@@ -1,0 +1,54 @@
+schema_version: 1
+id: BYZ-0049
+category: jaskinia_otwor
+name_local: Kalacka Nyża IV
+cave_id: C-0919
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: BYZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{68642D6B-F4C0-4C24-A3CA-ED50C8EE96BA}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.2562055009751
+  lon: 19.96276850704363
+  x_1992: 154745.96
+  y_1992: 570035.91
+  elevation_m: 1337.360927
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{68642D6B-F4C0-4C24-A3CA-ED50C8EE96BA}
+  observed_date: '2025-10-21'
+  source_date: '2025-10-21'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

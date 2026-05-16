@@ -1,0 +1,54 @@
+schema_version: 1
+id: KSW-0239
+category: jaskinia_otwor
+name_local: Dziura w Burcie
+cave_id: C-0874
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSW
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{BA97358D-C961-45B2-8A59-F1423AD3E8A9}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.252254857829726
+  lon: 19.86767224893319
+  x_1992: 154223.18
+  y_1992: 563123.32
+  elevation_m: 1105.003896
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{BA97358D-C961-45B2-8A59-F1423AD3E8A9}
+  observed_date: '2022-05-25'
+  source_date: '2022-05-25'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

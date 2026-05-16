@@ -1,0 +1,18 @@
+schema_version: 1
+id: C-0867
+name: Sztolnia na Klinowej Czubie nr 8
+system_name: null
+external_refs: []
+object_ids:
+- CHW-0043
+notes: 'TPN length: 1,7
+
+  TPN depth: 0
+
+  TPN denivelation: 0
+
+  TPN notes: Sztolnia nr 8 wg Jach Jaskinie nr 3 (28) 2002'
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

@@ -49,6 +49,13 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
     assert feature["properties"]["object_id"] == "KSW-0001"
     assert feature["properties"]["measurement_id"] == "m-002"
     assert feature["properties"]["source"] == "TPN"
+    assert feature["properties"]["nr_inwent"] == "T.E-08.75"
+    assert feature["properties"]["pig_id"] == "1094"
+    assert (
+        feature["properties"]["pig_url"]
+        == "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094"
+    )
+    assert feature["properties"]["tpn_globalid"] == "{38626571-CAA6-4317-8900-D61A995020E9}"
     assert "m-001" not in result.geojson_path.read_text(encoding="utf-8")
 
     csv_rows = list(csv.DictReader(result.csv_path.open(encoding="utf-8", newline="")))
@@ -59,6 +66,10 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
     assert csv_rows[0]["lon"] == str(KSW_LON)
     assert csv_rows[0]["x_1992"]
     assert csv_rows[0]["y_1992"]
+    assert csv_rows[0]["nr_inwent"] == "T.E-08.75"
+    assert csv_rows[0]["pig_id"] == "1094"
+    assert csv_rows[0]["pig_url"] == "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094"
+    assert csv_rows[0]["tpn_globalid"] == "{38626571-CAA6-4317-8900-D61A995020E9}"
 
     gpx_root = ET.parse(result.gpx_path).getroot()
     waypoints = gpx_root.findall("{http://www.topografix.com/GPX/1/1}wpt")
@@ -85,6 +96,9 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
     assert list(shape.points[0]) == [pl_1992.y_1992, pl_1992.x_1992]
     assert record["object_id"] == "KSW-0001"
     assert record["meas_id"] == "m-002"
+    assert record["nr_inwent"] == "T.E-08.75"
+    assert record["pig_id"] == "1094"
+    assert record["tpn_gid"] == "{38626571-CAA6-4317-8900-D61A995020E9}"
 
 
 def test_export_writes_metadata_snapshot(tmp_path: Path) -> None:
@@ -219,13 +233,20 @@ def _valid_cave() -> dict[str, object]:
         "system_name": None,
         "external_refs": [
             {
+                "system": "NR_INWENT",
+                "ref_type": "inventory_number",
+                "external_id": "T.E-08.75",
+                "scope": "cave",
+                "notes": "Inventory number belongs to the cave/catalog entry.",
+            },
+            {
                 "system": "PIG",
                 "ref_type": "catalog_id",
                 "external_id": "1094",
                 "url": "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094",
                 "scope": "cave",
                 "notes": "PIG catalog record identifier.",
-            }
+            },
         ],
         "object_ids": ["KSW-0001"],
         "notes": None,

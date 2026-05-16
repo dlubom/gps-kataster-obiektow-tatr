@@ -1,0 +1,18 @@
+schema_version: 1
+id: C-0966
+name: Sztolnia - Kopalnia w Wantulach I
+system_name: null
+external_refs: []
+object_ids:
+- MTW-0068
+notes: 'TPN length: 8,4
+
+  TPN depth: 4,7
+
+  TPN denivelation: 4,7
+
+  TPN verification/location note: FF'
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

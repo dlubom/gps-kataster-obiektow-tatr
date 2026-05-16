@@ -1,0 +1,54 @@
+schema_version: 1
+id: MTZ-0066
+category: jaskinia_otwor
+name_local: Ptasia Studnia dolny otwór
+cave_id: C-0997
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MTZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{964DB8E1-2BE8-4126-A9D2-2DA687C5CD0D}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.240622872266776
+  lon: 19.90440099410811
+  x_1992: 152961.77
+  y_1992: 565810.77
+  elevation_m: 1481.389212
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{964DB8E1-2BE8-4126-A9D2-2DA687C5CD0D}
+  observed_date: '2024-07-31'
+  source_date: '2024-07-31'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

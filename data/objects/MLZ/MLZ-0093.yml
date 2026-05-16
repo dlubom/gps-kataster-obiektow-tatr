@@ -1,0 +1,54 @@
+schema_version: 1
+id: MLZ-0093
+category: jaskinia_otwor
+name_local: Jaskinia przy Tunelu Małołąckim
+cave_id: C-0899
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MLZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{F8892AF0-67AE-47D1-8E94-9683FD539C7E}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.2477516557235
+  lon: 19.917914732514028
+  x_1992: 153765.87
+  y_1992: 566784.5
+  elevation_m: 1397.164616
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{F8892AF0-67AE-47D1-8E94-9683FD539C7E}
+  observed_date: '2022-05-25'
+  source_date: '2022-05-25'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

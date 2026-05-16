@@ -1,0 +1,18 @@
+schema_version: 1
+id: C-0872
+name: Schron przy Zagonie
+system_name: null
+external_refs: []
+object_ids:
+- MLZ-0088
+notes: 'TPN length: 3,5
+
+  TPN depth: -1,1
+
+  TPN denivelation: 1,1
+
+  TPN verification/location note: 7-12-2020 FF'
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

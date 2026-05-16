@@ -78,6 +78,10 @@ class BestMeasurementExportRow:
     verification_status: str
     horizontal_accuracy_m: float | None
     vertical_accuracy_m: float | None
+    nr_inwent: str | None
+    pig_id: str | None
+    pig_url: str | None
+    tpn_globalid: str | None
 
 
 @dataclass(frozen=True, slots=True)
@@ -153,6 +157,7 @@ def export_best_measurements(
 
 def _collect_best_measurement_rows(dataset: LoadedDataset) -> tuple[BestMeasurementExportRow, ...]:
     rows: list[BestMeasurementExportRow] = []
+    caves_by_id = {str(cave_record.data["id"]): cave_record.data for cave_record in dataset.caves}
 
     for object_record in sorted(dataset.objects, key=lambda record: str(record.data["id"])):
         object_data = object_record.data
@@ -162,13 +167,15 @@ def _collect_best_measurement_rows(dataset: LoadedDataset) -> tuple[BestMeasurem
         computed_best_measurement_id = select_default_best_measurement_id(
             _measurement_dicts(object_data.get("measurements"))
         )
+        cave_id = _optional_str(object_data.get("cave_id"))
+        cave_data = caves_by_id.get(cave_id or "")
 
         rows.append(
             BestMeasurementExportRow(
                 object_id=str(object_data["id"]),
                 category=str(object_data["category"]),
                 name_local=_optional_str(object_data.get("name_local")),
-                cave_id=_optional_str(object_data.get("cave_id")),
+                cave_id=cave_id,
                 measurement_id=measurement_id,
                 best_mode=str(best_measurement["mode"]),
                 computed_best_measurement_id=computed_best_measurement_id,
@@ -186,6 +193,10 @@ def _collect_best_measurement_rows(dataset: LoadedDataset) -> tuple[BestMeasurem
                 verification_status=str(measurement["verification_status"]),
                 horizontal_accuracy_m=_optional_number(measurement.get("horizontal_accuracy_m")),
                 vertical_accuracy_m=_optional_number(measurement.get("vertical_accuracy_m")),
+                nr_inwent=_joined_values(_ref_external_ids(cave_data, "NR_INWENT")),
+                pig_id=_joined_values(_ref_external_ids(cave_data, "PIG", ref_type="catalog_id")),
+                pig_url=_joined_values(_pig_urls(cave_data)),
+                tpn_globalid=_joined_values(_tpn_globalids(object_data)),
             )
         )
 
@@ -285,6 +296,10 @@ def _write_shapefile_zip(rows: tuple[BestMeasurementExportRow, ...], path: Path)
                     row.y_1992,
                     row.elevation_m,
                     row.source,
+                    _text_or_empty(row.nr_inwent),
+                    _text_or_empty(row.pig_id),
+                    _text_or_empty(row.pig_url),
+                    _text_or_empty(row.tpn_globalid),
                     row.observed_date,
                     row.verification_status,
                 )
@@ -345,6 +360,10 @@ def _define_shapefile_fields(writer: shapefile.Writer) -> None:
     writer.field("y_1992", "F", decimal=3)
     writer.field("elev_m", "F", decimal=2)
     writer.field("source", "C", size=16)
+    writer.field("nr_inwent", "C", size=40)
+    writer.field("pig_id", "C", size=80)
+    writer.field("pig_url", "C", size=254)
+    writer.field("tpn_gid", "C", size=80)
     writer.field("obs_date", "C", size=10)
     writer.field("status", "C", size=24)
 
@@ -366,6 +385,10 @@ def _row_properties(row: BestMeasurementExportRow) -> dict[str, Any]:
         "elevation_m": row.elevation_m,
         "source": row.source,
         "source_ref": row.source_ref,
+        "nr_inwent": row.nr_inwent,
+        "pig_id": row.pig_id,
+        "pig_url": row.pig_url,
+        "tpn_globalid": row.tpn_globalid,
         "observed_at": row.observed_at,
         "observed_date": row.observed_date,
         "method": row.method,
@@ -402,6 +425,10 @@ def _empty_row() -> BestMeasurementExportRow:
         verification_status="",
         horizontal_accuracy_m=None,
         vertical_accuracy_m=None,
+        nr_inwent=None,
+        pig_id=None,
+        pig_url=None,
+        tpn_globalid=None,
     )
 
 
@@ -426,6 +453,74 @@ def _measurement_dicts(value: object) -> tuple[dict[str, Any], ...]:
     if not isinstance(value, list):
         return ()
     return tuple(item for item in value if isinstance(item, dict))
+
+
+def _dicts(value: object) -> tuple[dict[str, Any], ...]:
+    if not isinstance(value, list):
+        return ()
+    return tuple(item for item in value if isinstance(item, dict))
+
+
+def _ref_external_ids(
+    data: dict[str, Any] | None,
+    system: str,
+    *,
+    ref_type: str | None = None,
+) -> tuple[str, ...]:
+    if data is None:
+        return ()
+    values: list[str] = []
+    for ref in _dicts(data.get("external_refs")):
+        if ref.get("system") != system:
+            continue
+        if ref_type is not None and ref.get("ref_type") != ref_type:
+            continue
+        external_id = _optional_str(ref.get("external_id"))
+        if external_id:
+            values.append(external_id)
+    return tuple(values)
+
+
+def _pig_urls(cave_data: dict[str, Any] | None) -> tuple[str, ...]:
+    if cave_data is None:
+        return ()
+    urls: list[str] = []
+    for ref in _dicts(cave_data.get("external_refs")):
+        if ref.get("system") != "PIG":
+            continue
+        url = _optional_str(ref.get("url"))
+        if url:
+            urls.append(url)
+        elif ref.get("ref_type") == "url":
+            external_id = _optional_str(ref.get("external_id"))
+            if external_id:
+                urls.append(external_id)
+    return tuple(urls)
+
+
+def _tpn_globalids(object_data: dict[str, Any]) -> tuple[str, ...]:
+    values = list(_ref_external_ids(object_data, "TPN", ref_type="source_globalid"))
+    for measurement in _measurement_dicts(object_data.get("measurements")):
+        source_ref = _optional_str(measurement.get("source_ref"))
+        if source_ref and source_ref.startswith("TPN:"):
+            external_id = source_ref.removeprefix("TPN:")
+            if external_id.startswith("{") and external_id.endswith("}"):
+                values.append(external_id)
+    return tuple(values)
+
+
+def _joined_values(values: tuple[str, ...]) -> str | None:
+    unique_values: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        clean_value = value.strip()
+        if not clean_value or clean_value in seen:
+            continue
+        unique_values.append(clean_value)
+        seen.add(clean_value)
+    if not unique_values:
+        return None
+    return ";".join(unique_values)
 
 
 def _number(value: object) -> float:

@@ -1,0 +1,54 @@
+schema_version: 1
+id: BYZ-0053
+category: jaskinia_otwor
+name_local: Schron pod Kopą Kondracką
+cave_id: C-0949
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: BYZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{C79E6CC1-3C7B-4E74-9399-6AA3199C1A07}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.2386612921507
+  lon: 19.93564970114666
+  x_1992: 152771.43
+  y_1992: 568087.32
+  elevation_m: 1843.000934
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{C79E6CC1-3C7B-4E74-9399-6AA3199C1A07}
+  observed_date: '2022-05-25'
+  source_date: '2022-05-25'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn

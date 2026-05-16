@@ -1,0 +1,54 @@
+schema_version: 1
+id: PL-0048
+category: jaskinia_otwor
+name_local: Sztolnia w Żlebie Piekło
+cave_id: C-0878
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: PL
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{5DEECEF0-D133-4954-9235-6229FC686B9F}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.22930470884965
+  lon: 19.82190027295327
+  x_1992: 151635.42
+  y_1992: 559821.15
+  elevation_m: 1336.180803
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{5DEECEF0-D133-4954-9235-6229FC686B9F}
+  observed_date: '2022-05-25'
+  source_date: '2022-05-25'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:52Z'
+  updated_by: importer:tpn
+attachments: []
+notes: Staging proposal from TPN; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+updated_at: '2026-05-16T10:22:52Z'
+updated_by: importer:tpn
