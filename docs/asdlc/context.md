@@ -222,6 +222,21 @@ PBI-016 is complete:
   `best_geom_1992`; SpatiaLite initialization remains a later enhancement if
   export/QGIS needs require it.
 
+PBI-017 is complete:
+
+- `src/gps_kataster_obiektow_tatr/best_measurements_export.py` exports one
+  authoritative `best_measurement.measurement_id` row per object after YAML
+  validation,
+- `scripts/export_best_measurements.py` writes `build/exports/` by default and
+  supports `--data-dir`, `--output-dir` and deterministic `--generated-at` for
+  tests,
+- the export artifacts are `best-measurements.geojson`, `best-measurements.csv`,
+  `best-measurements.gpx` and `best-measurements.shp.zip`,
+- GeoJSON and GPX use WGS84 point coordinates; CSV includes both WGS84 and
+  EPSG:2180; Shapefile geometry is written in EPSG:2180 using GIS order
+  easting/northing from project fields `y_1992`/`x_1992`,
+- validation errors block all export files.
+
 ## Current data inventory
 
 - PIG workbook: `pig_otwory_jaskin_.xlsx`, sheet `Export`, 861 rows including
@@ -478,3 +493,20 @@ After PBI-016:
   generated `build/katalog.sqlite` from current `data/`; current final YAML
   inventory is still empty, so the SQLite summary was 0 objects, 0 caves and
   0 measurements.
+
+After PBI-017:
+
+- `uv run pytest tests/test_best_measurements_export.py` passed with 3 tests.
+- The export tests create a temporary valid YAML dataset and verify that only
+  the authoritative best measurement is written to GeoJSON, CSV, GPX and a
+  readable Shapefile ZIP.
+- The export tests also verify the CLI and that validation errors block export
+  file creation.
+- `uv run ruff format --check src tests scripts` passed.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 81 tests.
+- `uv run python scripts/validate.py` printed `OK: no validation issues`.
+- `uv run python scripts/export_best_measurements.py --generated-at
+  2026-05-16T12:00:00Z` generated all four `build/exports/`
+  best-measurements artifacts from current `data/`; current final YAML
+  inventory is still empty, so the export summary was 0 features.

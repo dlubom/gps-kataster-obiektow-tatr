@@ -21,6 +21,7 @@ Stan na: 2026-05-16
 - PBI-014: wykonane 2026-05-16. Dodano importer staging TPN dla CSV/XLSX, dopasowania do finalnych YAML i staging PIG, propozycje pomiarow TPN z `GLOBALID` na obiekcie, `NR_INWENT` na jaskini oraz raport statusow: dopasowane, nowe, nierozstrzygniete i odrzucone.
 - PBI-015: wykonane 2026-05-16. Dodano format decyzji operatora, applier staging review i CLI `scripts/importers/apply_review.py`; decyzje `create_cave`, `create_object`, `add_measurement`, `link_cave`, `reject` i `unresolved` materializuja finalne YAML dopiero po poprawnym review.
 - PBI-016: wykonane 2026-05-16. Dodano build SQLite `build/katalog.sqlite` z walidowanych YAML, tabelami logicznymi V1, metadanymi licznikow, flagami walidacji i najlepszymi geometriami obiektow w WKT.
+- PBI-017: wykonane 2026-05-16. Dodano eksport `best-measurements` z walidowanych YAML do GeoJSON, CSV, GPX i ZIP Shapefile EPSG:2180.
 
 ## Przyjęty poziom AS-DLC
 
@@ -69,6 +70,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `src/gps_kataster_obiektow_tatr/tpn_staging.py` | istnieje | Importer staging TPN: czyta CSV/XLSX, tworzy propozycje pomiarow TPN, dopasowuje do YAML/staging PIG i raportuje statusy review. |
 | `src/gps_kataster_obiektow_tatr/staging_review.py` | istnieje | Applier decyzji operatora: materializuje staging do finalnych YAML, dopisuje pomiary TPN, laczy obiekty z jaskiniami i blokuje zapis przy blednych decyzjach. |
 | `src/gps_kataster_obiektow_tatr/build_db.py` | istnieje | Build SQLite: waliduje YAML, tworzy tabele logiczne, zapisuje pomiary, referencje, relacje, `metadata`, `validation_flags` oraz najlepsze geometrie obiektow. |
+| `src/gps_kataster_obiektow_tatr/best_measurements_export.py` | istnieje | Eksport najlepszych pomiarow: GeoJSON WGS84, CSV WGS84 + EPSG:2180, GPX WGS84 oraz Shapefile ZIP EPSG:2180. |
 | `tests/test_best_measurement.py` | 11 testow | Sprawdza wszystkie priorytety wyboru, remis dat/dokladnosci/ID oraz fallback do odrzuconych pomiarow. |
 | `src/gps_kataster_obiektow_tatr/validator.py` | istnieje | Walidator lokalny: JSON Schema, unikalnosc ID, referencje cross-file, spojnosci wspolrzednych, reguly przestrzenne i ostrzezenia domenowe. |
 | `scripts/validate.py` | istnieje | CLI walidatora; wypisuje `kod`, `poziom`, `plik`, `opis` i konczy kodem 1 tylko dla error. |
@@ -77,6 +79,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `scripts/importers/import_tpn.py` | istnieje | CLI generujace `build/staging/tpn/tpn-staging.json` i `.md` bez zapisu finalnych YAML. |
 | `scripts/importers/apply_review.py` | istnieje | CLI stosujace plik decyzji operatora do staging PIG/TPN i zapisujace raport review oraz finalne YAML. |
 | `scripts/build_db.py` | istnieje | CLI generujace `build/katalog.sqlite` z `data/` albo wskazanego katalogu testowego. |
+| `scripts/export_best_measurements.py` | istnieje | CLI generujace `build/exports/best-measurements.geojson`, `.csv`, `.gpx` i `.shp.zip`. |
 | `docs/asdlc/staging_review_decisions.md` | istnieje | Dokumentuje format pliku decyzji operatora i znaczenie akcji PBI-015. |
 | `tests/test_validator.py` | 9 testow | Sprawdza duplikat ID, zly `best_measurement`, brak `manual.reason`, zle wspolrzedne, ostrzezenia PBI-010, warningi `best_measurement` PBI-011 oraz exit code CLI. |
 | `tests/test_source_profile.py` | 4 testy | Sprawdza profilowanie brakow, duplikatow, zakresow wspolrzednych, zapis raportow i brak tworzenia finalnych YAML. |
@@ -84,6 +87,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_tpn_staging.py` | 6 testow | Sprawdza dopasowanie TPN do staging PIG, nowe obiekty, nierozstrzygniete duplikaty, XLSX, raporty i CLI bez zapisu finalnych YAML. |
 | `tests/test_staging_review.py` | 3 testy | Sprawdza sample staging -> decyzje -> finalne YAML -> `validate.py`, decyzje link/reject/unresolved oraz blokade zapisu przy bledach. |
 | `tests/test_build_db.py` | 3 testy | Sprawdza build SQLite na fixture'ach, liczby w `metadata`, najlepsze geometrie, CLI i blokade buildu przy bledach walidacji. |
+| `tests/test_best_measurements_export.py` | 3 testy | Sprawdza eksport tylko najlepszych pomiarow do GeoJSON/CSV/GPX/Shapefile ZIP, CLI oraz blokade przy blednej walidacji YAML. |
 
 ## Bramka kontekstu
 
@@ -365,6 +369,8 @@ Weryfikacja:
 - liczby w `metadata` zgadzaja sie z liczba plikow YAML.
 
 ### PBI-017: Eksport `best-measurements`
+
+Status: wykonane 2026-05-16.
 
 Zakres:
 
