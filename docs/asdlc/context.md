@@ -1,6 +1,6 @@
 # AS-DLC project context
 
-Last updated: 2026-05-15
+Last updated: 2026-05-16
 
 ## Current mode
 
@@ -136,13 +136,16 @@ PBI-011 is complete:
   `mode: manual` authoritative, and warns when the default can only select an
   `odrzucony` measurement.
 
-PBI-012 is next:
+PBI-012 is complete:
 
-- profile the PIG and TPN source files,
-- count key missing values and duplicates,
-- check coordinate ranges,
-- save the report under `build/reports/source-profile.*`,
-- do not create final YAML yet.
+- `src/gps_kataster_obiektow_tatr/source_profile.py` profiles CSV exports for
+  key missing values, duplicate identifiers and coordinate/elevation ranges,
+- `scripts/profile_sources.py` writes `build/reports/source-profile.json` and
+  `build/reports/source-profile.md`,
+- the generated reports are build artifacts, so they are ignored by git through
+  the existing `build/` rule,
+- PBI-012 intentionally does not create final YAML under `data/objects/` or
+  `data/caves/`.
 
 ## Current data inventory
 
@@ -306,4 +309,28 @@ After PBI-011:
 - `uv run ruff format --check src tests scripts` passed.
 - `uv run ruff check src tests scripts` passed.
 - `uv run pytest` passed with 57 tests.
+- `uv run python scripts/validate.py` printed `OK: no validation issues`.
+
+After PBI-012:
+
+- `uv run python scripts/profile_sources.py` generated
+  `build/reports/source-profile.json` and `build/reports/source-profile.md`.
+- PIG profile: 860 records, 15 columns, no missing expected columns, no missing
+  key values for `ID`, `Nazwa`, `Nr inw.`, `X 1992`, `Y 1992`, `B`, `L` or
+  `Link`, and no duplicates in `ID` or `Nr inw.`.
+- PIG coordinate ranges: `X 1992` 146571.18..157933.10, `Y 1992`
+  558156.83..579383.12, `B` 49.18160173..49.28416666, `L`
+  19.79967485..20.09027783, `H (wg PIG)` 915.0..2250.0 with 8 missing.
+- TPN profile: 1005 records, 23 columns, no missing expected columns,
+  `GLOBALID` complete and unique, `NR_INWENT` missing in 143 records, `NAZWA`
+  missing in 1 record.
+- TPN duplicates: `NR_INWENT` has 4 duplicate groups / 8 records:
+  `T.D-08.07`, `T.D-08.08`, `T.D-12.10`, `T.E-08.04`.
+- TPN coordinate ranges: `X1992` 146571.18..157933.10, `Y1992`
+  557539.51..579383.12, `Z` 909.7399765..2144.220728.
+- `find data -type f` confirmed no final YAML object/cave records were created
+  by PBI-012; only existing `.gitkeep` files and shapefiles are present.
+- `uv run ruff format --check src tests scripts` passed.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 61 tests.
 - `uv run python scripts/validate.py` printed `OK: no validation issues`.
