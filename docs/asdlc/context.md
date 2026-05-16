@@ -730,12 +730,12 @@ After release follow-up PBIs 022-024 on 2026-05-16:
   `KSW-0081` for TPN row 700 / "wyjscie z trasy turystycznej" and `KSW-0256`
   for TPN row 982 / "wejście na trasę turystyczną". The PIG dump states
   `other_entrances="2 - ku NE, 1100 m n.p.m."`.
-- Two Slovak records were added: `SK-0001` / `C-1003` for `Nova Kresanica`
-  at E19.91418777 N49.22918839, 2016 m, and `SK-0002` for
-  `Obcasna Vyvieracka` as `category: wywierzysko`.
+- Two Slovak caves were added: `SK-0001` / `C-1003` for `Nova Kresanica`
+  at E19.91418777 N49.22918839, 2016 m, and `SK-0002` / `C-1004` for
+  `Obcasna Vyvieracka` as `category: jaskinia_otwor`.
 - `Obcasna Vyvieracka` source DMS `E19:55:47.53 N49:13:35.8` was converted to
   lon `19.92986944`, lat `49.22661111` before writing YAML.
-- Current final YAML inventory is 1005 objects, 1003 caves, 0 relations and
+- Current final YAML inventory is 1005 objects, 1004 caves, 0 relations and
   1862 measurements. `scripts/validate.py` exits 0 with 2053 warnings:
   1862 `MISSING_HORIZONTAL_ACCURACY`, 103 `MEASUREMENT_OUTSIDE_VALLEYS`, 72
   `MEASUREMENT_DISTANCE_OUTLIER` and 16 `OBJECT_PREFIX_MISMATCH`.

@@ -28,7 +28,7 @@ Stan na: 2026-05-16
 - PBI-021: wykonane 2026-05-16. Dodano `docs/operations.md` z procedurami recznego pomiaru, walidacji, miesiecznej paczki danych i statusow weryfikacji oraz test dokumentacji.
 - PBI-022: wykonane 2026-05-16. Naprawiono kategorie sztolni z TPN: importer rozpoznaje `GENEZA` / nazwe, a 26 istniejacych obiektow `Sztolnia...` ma `category: sztolnia`.
 - PBI-023: wykonane 2026-05-16. Dodano ludzkie `README.md`, przeniesiono surowe PIG/TPN XLSX/CSV do `data/sources/`, dodano opis zrodel i skopiowano pelny dump PIG JSONL do review brakujacych otworow.
-- PBI-024: wykonane 2026-05-16. Rozdzielono Mrozna na drugi obiekt otworowy z TPN row 982 oraz dodano slowackie rekordy `Nova Kresanica` i `Obcasna Vyvieracka`.
+- PBI-024: wykonane 2026-05-16. Rozdzielono Mrozna na drugi obiekt otworowy z TPN row 982 oraz dodano slowackie jaskinie `Nova Kresanica` i `Obcasna Vyvieracka`.
 
 ## Przyjęty poziom AS-DLC
 
@@ -55,7 +55,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv` | 1005 rekordow danych | Eksport CSV TPN; kolumny m.in. `NR_INWENT`, `NAZWA`, `GLOBALID`, `X1992`, `Y1992`, `Z`. |
 | `data/sources/README.md` | istnieje | Opisuje zrodla, zakres dumpu PIG i workflow grep/review dla brakujacych otworow. |
 | `data/objects/` | 1005 finalnych YAML | Obiekty terenowe po imporcie/review, w tym `sztolnia`, `wywierzysko` i fallback `SK`. |
-| `data/caves/` | 1003 finalne YAML | Jaskinie / pozycje katalogowe; jedna jaskinia moze wskazywac wiele obiektow. |
+| `data/caves/` | 1004 finalne YAML | Jaskinie / pozycje katalogowe; jedna jaskinia moze wskazywac wiele obiektow. |
 | `data/shapes/doliny.*` | 18 feature'ow, EPSG:2180 | Polygony dolin, pole kluczowe `NAME`. |
 | `data/shapes/granica_polski.*` | 1 feature, EPSG:2180 | Fallback granicy Polski. |
 | `data/shapes/granica_slowacji.*` | 1 feature, EPSG:2180 | Fallback granicy Slowacji. |
@@ -513,7 +513,8 @@ Zakres:
   `KSW-0081` i `KSW-0256`,
 - dopisac `KSW-0256` do `C-0267.object_ids`,
 - dodac slowacka `Nova Kresanica` jako `SK-0001` / `C-1003`,
-- dodac `Obcasna Vyvieracka` jako `SK-0002` z `category: wywierzysko`,
+- dodac `Obcasna Vyvieracka` jako `SK-0002` / `C-1004` z
+  `category: jaskinia_otwor`,
 - zapisac przeliczenie `E19:55:47.53 N49:13:35.8` na WGS84 decimal:
   lon `19.92986944`, lat `49.22661111`.
 

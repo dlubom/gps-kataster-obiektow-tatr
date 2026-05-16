@@ -108,6 +108,23 @@ starszych pomiarow z importu PIG/TPN, jezeli nie maja `horizontal_accuracy_m`.
 Jezeli `best_measurement.mode: auto` wskazuje inny pomiar niz algorytm, popraw
 `measurement_id` albo ustaw `mode: manual` z powodem.
 
+## Domyslny algorytm `auto`
+
+`best_measurement.mode: auto` jest deterministycznym wskazaniem najlepszego
+aktualnego pomiaru. Priorytet zrodel:
+
+1. najnowszy wlasny pomiar ze statusem `zweryfikowany`,
+2. najlepszy nieodrzucony pomiar z TPN,
+3. najlepszy nieodrzucony wlasny pomiar `nieweryfikowany`,
+4. najlepszy nieodrzucony pomiar z PIG,
+5. najlepszy nieodrzucony pomiar z innych zrodel.
+
+W tym samym priorytecie wygrywa nowszy `observed_date` / `observed_at`, potem
+nizsze `horizontal_accuracy_m`, a na koncu stabilny porzadek po
+`measurement.id`. Jezeli wszystkie pomiary sa odrzucone, algorytm wskaze
+fallback i walidator pokaze ostrzezenie. `mode: manual` zawsze ma pierwszenstwo,
+ale wymaga pola `reason`.
+
 ## Walidacja
 
 Przed commitem uruchom lokalna bramke:

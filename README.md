@@ -17,7 +17,8 @@ Shapefile są artefaktami generowanymi z tych YAML-i.
   ręcznego review.
 - `schema/` - JSON Schema dla YAML-i.
 - `scripts/` - lokalne komendy walidacji, importu staging i budowy artefaktów.
-- `docs/operations.md` - praktyczny workflow utrzymania danych.
+- [docs/operations.md](docs/operations.md) - praktyczny workflow utrzymania
+  danych.
 
 ## Szybki start
 
@@ -38,6 +39,17 @@ bo opisuje punkt źródłowy.
 
 W V1 każdy obiekt ma kategorię: `jaskinia_otwor`, `sztolnia`, `ponor`,
 `wywierzysko` albo `inne`.
+
+## Jak działa `auto`
+
+`best_measurement.mode: auto` deterministycznie wybiera aktualny pomiar:
+najpierw własny zweryfikowany, potem TPN, własny nieweryfikowany, PIG, a na
+końcu inne nieodrzucone źródła. W remisie wygrywa nowsza data, potem niższe
+`horizontal_accuracy_m`, potem stabilny porządek po `measurement.id`. Decyzję
+operatorską zapisujemy jako `mode: manual` z `reason`.
+
+Pełny workflow pracy na danych jest w
+[docs/operations.md](docs/operations.md).
 
 ## Walidacja i release
 

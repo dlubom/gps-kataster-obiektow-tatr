@@ -1,0 +1,13 @@
+schema_version: 1
+id: C-1004
+name: Obcasna Vyvieracka
+system_name: null
+external_refs: []
+object_ids:
+- SK-0002
+notes: 'Slovak cave added from maintainer-supplied coordinates on 2026-05-16.
+  DATA_SOURCE: Oblastna skupina SSS Ruzomberok.'
+created_at: '2026-05-16T19:35:23Z'
+created_by: dl
+updated_at: '2026-05-16T19:35:23Z'
+updated_by: dl
