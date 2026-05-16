@@ -604,6 +604,20 @@ PBI-020 is complete:
   `gh release create`; imported external source data still requires legal/source
   license confirmation before public release.
 
+PBI-021 is complete:
+
+- `docs/operations.md` documents the V1 operational workflow for manual
+  measurements, local validation, monthly data-package builds and verification
+  statuses.
+- The manual-measurement path describes editing object YAML, assigning the next
+  local `m-NNN` measurement ID, keeping both WGS84 and project EPSG:2180 fields,
+  and updating `best_measurement`.
+- The documentation keeps `build/` as generated output, points monthly package
+  generation to `scripts/build_release_artifacts.py`, and repeats the release
+  license guard.
+- `tests/test_operational_docs.py` guards the expected PBI-021 sections and the
+  rule that generated `build/` artifacts are not committed.
+
 After PBI-020:
 
 - `uv run python scripts/build_release_artifacts.py --generated-at
@@ -618,3 +632,18 @@ After PBI-020:
 - `uv run python scripts/validate.py` exited 0 and reported 1381
   `MISSING_HORIZONTAL_ACCURACY` warnings from the already imported PIG/TPN
   source-record measurements.
+
+After PBI-021:
+
+- A temporary copy of `data/caves/C-0002.yml` and
+  `data/objects/KSW/KSW-0001.yml` with an added exercise measurement `m-003`
+  validated successfully; the only issues were the two existing
+  `MISSING_HORIZONTAL_ACCURACY` warnings from source-record PIG/TPN
+  measurements.
+- `uv run pytest tests/test_operational_docs.py` passed with 2 tests.
+- `uv run ruff format --check src tests scripts` passed.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 91 tests.
+- `uv run python scripts/validate.py` exited 0 and still reported only 1381
+  `MISSING_HORIZONTAL_ACCURACY` warnings from imported source-record
+  measurements.

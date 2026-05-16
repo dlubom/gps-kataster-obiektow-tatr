@@ -25,6 +25,7 @@ Stan na: 2026-05-16
 - PBI-018: wykonane 2026-05-16. Eksport release zapisuje `metadata.json` z timestampem, wersjami schematow oraz licznikami obiektow, jaskin, relacji, pomiarow i walidacji.
 - PBI-019: wykonane 2026-05-16. Dodano workflow `.github/workflows/validate.yml` uruchamiajacy lokalna bramke `uv sync`, Ruff, pytest i `scripts/validate.py` bez budowania release.
 - PBI-020: wykonane 2026-05-16. Dodano lokalny builder artefaktow release, workflow `build.yml` dla `main`, workflow `release.yml` dla tagow `v*` oraz bramke `SOURCE_LICENSE_CONFIRMED=true` przed publikacja release.
+- PBI-021: wykonane 2026-05-16. Dodano `docs/operations.md` z procedurami recznego pomiaru, walidacji, miesiecznej paczki danych i statusow weryfikacji oraz test dokumentacji.
 
 ## Przyjęty poziom AS-DLC
 
@@ -88,6 +89,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `.github/workflows/validate.yml` | istnieje | Workflow CI dla PR i push do `main`: `uv sync`, Ruff, pytest i `scripts/validate.py`; bez build/release. |
 | `.github/workflows/build.yml` | istnieje | Workflow po push/merge do `main`: waliduje YAML, buduje artefakty release i publikuje je jako GitHub Actions artifact. |
 | `.github/workflows/release.yml` | istnieje | Workflow dla tagow `v*`: wymaga `SOURCE_LICENSE_CONFIRMED=true`, buduje artefakty i publikuje GitHub Release. |
+| `docs/operations.md` | istnieje | Dokumentacja operacyjna PBI-021: reczny pomiar, walidacja, miesieczna paczka danych, statusy `zweryfikowany` / `odrzucony`. |
 | `docs/asdlc/staging_review_decisions.md` | istnieje | Dokumentuje format pliku decyzji operatora i znaczenie akcji PBI-015. |
 | `tests/test_validator.py` | 9 testow | Sprawdza duplikat ID, zly `best_measurement`, brak `manual.reason`, zle wspolrzedne, ostrzezenia PBI-010, warningi `best_measurement` PBI-011 oraz exit code CLI. |
 | `tests/test_source_profile.py` | 4 testy | Sprawdza profilowanie brakow, duplikatow, zakresow wspolrzednych, zapis raportow i brak tworzenia finalnych YAML. |
@@ -98,6 +100,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_best_measurements_export.py` | 4 testy | Sprawdza eksport tylko najlepszych pomiarow do GeoJSON/CSV/GPX/Shapefile ZIP, snapshot `metadata.json`, CLI oraz blokade przy blednej walidacji YAML. |
 | `tests/test_ci_workflow.py` | 5 testow | Sprawdza workflow walidacyjny, build/release triggery, upload artefaktow i bramke licencji przed release. |
 | `tests/test_release_artifacts.py` | 2 testy | Sprawdza wspolny lokalny dry-run artefaktow release, w tym `katalog.sqlite.zip` i CLI. |
+| `tests/test_operational_docs.py` | 2 testy | Sprawdza, ze dokumentacja operacyjna pokrywa zakres PBI-021 i przypomina, ze `build/` nie jest zrodlem prawdy. |
 
 ## Bramka kontekstu
 
@@ -440,6 +443,8 @@ Weryfikacja:
 - release nie probuje publikowac danych bez potwierdzenia licencji zrodel.
 
 ### PBI-021: Dokumentacja operacyjna
+
+Status: wykonane 2026-05-16.
 
 Zakres:
 

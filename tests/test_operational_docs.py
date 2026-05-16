@@ -1,0 +1,26 @@
+from pathlib import Path
+
+
+def test_operational_documentation_covers_pbi_021_scope() -> None:
+    text = Path("docs/operations.md").read_text(encoding="utf-8")
+
+    required_phrases = [
+        "## Dodanie recznego pomiaru",
+        "## Walidacja",
+        "## Miesieczna paczka danych",
+        "## Statusy weryfikacji pomiarow",
+        "zweryfikowany",
+        "odrzucony",
+        "uv run python scripts/validate.py --data-dir",
+        "uv run python scripts/build_release_artifacts.py",
+        "best-measurements.geojson",
+    ]
+
+    for phrase in required_phrases:
+        assert phrase in text
+
+
+def test_operational_documentation_keeps_build_outputs_out_of_git() -> None:
+    text = Path("docs/operations.md").read_text(encoding="utf-8")
+
+    assert "Nie dodawaj `build/`" in text
