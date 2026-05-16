@@ -145,6 +145,33 @@ def test_new_tpn_row_creates_object_globalid_and_cave_nr_ref(tmp_path: Path) -> 
     assert measurement["horizontal_accuracy_m"] is None
 
 
+def test_new_tpn_sztolnia_row_keeps_sztolnia_category(tmp_path: Path) -> None:
+    tpn_csv = tmp_path / "tpn.csv"
+    _write_tpn_csv(
+        tpn_csv,
+        [
+            _tpn_row(
+                nr_inwent="",
+                name="Sztolnia w Dolinie Białego nr 1",
+                globalid="{0606A079-D986-44F9-BC11-22BE576A107E}",
+                x_1992="156532,54",
+                y_1992="569519,71",
+                geneza="sztolnia",
+            )
+        ],
+    )
+
+    report = build_tpn_staging(
+        tpn_csv,
+        generated_at="2026-05-16T09:00:00Z",
+        data_dir=tmp_path / "data",
+        pig_staging_path=None,
+        prefix_resolver=StubResolver(prefix="BIA"),
+    )
+
+    assert report.proposed_objects[0]["category"] == "sztolnia"
+
+
 def test_duplicate_nr_without_name_distance_resolution_is_unresolved(tmp_path: Path) -> None:
     tpn_csv = tmp_path / "tpn.csv"
     pig_staging = tmp_path / "pig-staging.json"
@@ -342,6 +369,7 @@ def _tpn_row(
     globalid: str,
     x_1992: str,
     y_1992: str,
+    geneza: str = "jaskinia",
 ) -> list[str]:
     return [
         nr_inwent,
@@ -356,7 +384,7 @@ def _tpn_row(
         "",
         "",
         "1",
-        "jaskinia",
+        geneza,
         "0",
         "",
         "",

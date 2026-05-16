@@ -1,0 +1,57 @@
+schema_version: 1
+id: SK-0002
+category: wywierzysko
+name_local: Obcasna Vyvieracka
+cave_id: null
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: SK
+  prefix_override_reason: null
+external_refs:
+- system: inne
+  ref_type: other
+  external_id: Oblastna skupina SSS Ruzomberok
+  scope: object
+  notes: DATA_SOURCE from maintainer note.
+measurements:
+- id: m-001
+  lat: 49.22661111
+  lon: 19.92986944
+  x_1992: 151427.05
+  y_1992: 567683.16
+  elevation_m: 1453.0
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: inne
+  source_ref: 'Oblastna skupina SSS Ruzomberok: Obcasna Vyvieracka'
+  observed_date: '2026-05-16'
+  source_date: null
+  method: source_record
+  device: null
+  tags:
+  - slovakia
+  - external_source
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'DMS source coordinate E19:55:47.53 N49:13:35.8 converted to decimal
+    WGS84 lon=19.92986944, lat=49.22661111.'
+  created_at: '2026-05-16T19:04:29Z'
+  created_by: dl
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T19:04:29Z'
+  updated_by: dl
+attachments: []
+notes: 'Slovak intermittent resurgence added from maintainer-supplied source
+  coordinates. Prefix SK is a country fallback because the point is outside
+  configured valley polygons.'
+created_at: '2026-05-16T19:04:29Z'
+created_by: dl
+updated_at: '2026-05-16T19:04:29Z'
+updated_by: dl

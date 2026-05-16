@@ -26,6 +26,9 @@ Stan na: 2026-05-16
 - PBI-019: wykonane 2026-05-16. Dodano workflow `.github/workflows/validate.yml` uruchamiajacy lokalna bramke `uv sync`, Ruff, pytest i `scripts/validate.py` bez budowania release.
 - PBI-020: wykonane 2026-05-16. Dodano lokalny builder artefaktow release, workflow `build.yml` dla `main`, workflow `release.yml` dla tagow `v*` oraz bramke `SOURCE_LICENSE_CONFIRMED=true` przed publikacja release.
 - PBI-021: wykonane 2026-05-16. Dodano `docs/operations.md` z procedurami recznego pomiaru, walidacji, miesiecznej paczki danych i statusow weryfikacji oraz test dokumentacji.
+- PBI-022: wykonane 2026-05-16. Naprawiono kategorie sztolni z TPN: importer rozpoznaje `GENEZA` / nazwe, a 26 istniejacych obiektow `Sztolnia...` ma `category: sztolnia`.
+- PBI-023: wykonane 2026-05-16. Dodano ludzkie `README.md`, przeniesiono surowe PIG/TPN XLSX/CSV do `data/sources/`, dodano opis zrodel i skopiowano pelny dump PIG JSONL do review brakujacych otworow.
+- PBI-024: wykonane 2026-05-16. Rozdzielono Mrozna na drugi obiekt otworowy z TPN row 982 oraz dodano slowackie rekordy `Nova Kresanica` i `Obcasna Vyvieracka`.
 
 ## Przyjęty poziom AS-DLC
 
@@ -44,10 +47,15 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | Plik / katalog | Stan | Uwagi |
 |---|---:|---|
 | `specyfikacja_gps_kataster_obiektow_tatr_v_2.md` | 42 959 B | Specyfikacja draft v2, opisuje model domeny, ID, import, walidacje, build i etapy. |
-| `pig_otwory_jaskin_.xlsx` | 1 arkusz `Export`, 861 wierszy, 15 kolumn | Zrodlo PIG / Jaskinie Polski. |
-| `pig_otwory_jaskin_.xlsx.-.Export.csv` | 860 rekordow danych | Eksport CSV PIG; kolumny m.in. `ID`, `Nazwa`, `Nr inw.`, `X 1992`, `Y 1992`, `B`, `L`, `Link`. |
-| `tpn_otwory_jaskin.xlsx` | 1 arkusz `Export`, 1006 wierszy, 23 kolumny | Zrodlo TPN. |
-| `tpn_otwory_jaskin.xlsx.-.Export.csv` | 1005 rekordow danych | Eksport CSV TPN; kolumny m.in. `NR_INWENT`, `NAZWA`, `GLOBALID`, `X1992`, `Y1992`, `Z`. |
+| `README.md` | istnieje | Ludzkie wejscie do repo: cel projektu, struktura, model i komendy startowe. |
+| `data/sources/pig/pig_otwory_jaskin_.xlsx` | 1 arkusz `Export`, 861 wierszy, 15 kolumn | Zrodlo PIG / Jaskinie Polski. |
+| `data/sources/pig/pig_otwory_jaskin_.xlsx.-.Export.csv` | 860 rekordow danych | Eksport CSV PIG; kolumny m.in. `ID`, `Nazwa`, `Nr inw.`, `X 1992`, `Y 1992`, `B`, `L`, `Link`. |
+| `data/sources/pig/jaskinie_polski_pig_dump.jsonl` | 5388 rekordow JSONL | Pelniejszy dump PIG do recznego sprawdzania opisow jaskin, liczby otworow i nazw otworow. |
+| `data/sources/tpn/tpn_otwory_jaskin.xlsx` | 1 arkusz `Export`, 1006 wierszy, 23 kolumny | Zrodlo TPN. |
+| `data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv` | 1005 rekordow danych | Eksport CSV TPN; kolumny m.in. `NR_INWENT`, `NAZWA`, `GLOBALID`, `X1992`, `Y1992`, `Z`. |
+| `data/sources/README.md` | istnieje | Opisuje zrodla, zakres dumpu PIG i workflow grep/review dla brakujacych otworow. |
+| `data/objects/` | 1005 finalnych YAML | Obiekty terenowe po imporcie/review, w tym `sztolnia`, `wywierzysko` i fallback `SK`. |
+| `data/caves/` | 1003 finalne YAML | Jaskinie / pozycje katalogowe; jedna jaskinia moze wskazywac wiele obiektow. |
 | `data/shapes/doliny.*` | 18 feature'ow, EPSG:2180 | Polygony dolin, pole kluczowe `NAME`. |
 | `data/shapes/granica_polski.*` | 1 feature, EPSG:2180 | Fallback granicy Polski. |
 | `data/shapes/granica_slowacji.*` | 1 feature, EPSG:2180 | Fallback granicy Slowacji. |
@@ -456,6 +464,64 @@ Zakres:
 Weryfikacja:
 
 - nowa osoba moze na podstawie dokumentu dodac fixture'owy pomiar i przejsc walidacje.
+
+## Milestone 7: poprawki po pierwszym release
+
+### PBI-022: Poprawic kategorie sztolni z TPN
+
+Status: wykonane 2026-05-16.
+
+Zakres:
+
+- importer staging TPN rozpoznaje `category` z `GENEZA` i nazwy obiektu,
+- `sztolnia` w `GENEZA` albo nazwie daje `category: sztolnia`,
+- istniejace finalne obiekty `Sztolnia...` zostaly przestawione z
+  `jaskinia_otwor` na `sztolnia`.
+
+Weryfikacja:
+
+- test importera dla nowej sztolni z TPN,
+- kontrola 26 istniejacych obiektow o nazwie zawierajacej `sztoln`,
+- `scripts/validate.py` bez errorow.
+
+### PBI-023: Uporzadkowac zrodla i dokumentacje dla ludzi
+
+Status: wykonane 2026-05-16.
+
+Zakres:
+
+- dodac top-level `README.md` z opisem projektu dla GitHuba,
+- przeniesc PIG/TPN XLSX i CSV z root do `data/sources/{pig,tpn}/`,
+- dodac `data/sources/README.md`,
+- skopiowac `jaskinie_polski_pig_dump.jsonl` do `data/sources/pig/`,
+- opisac w `docs/operations.md` workflow grep/review dla brakujacych otworow.
+
+Weryfikacja:
+
+- domyslne sciezki importerow i profilowania wskazuja `data/sources/`,
+- `rg -n "Mroźna" data/sources/pig/jaskinie_polski_pig_dump.jsonl` znajduje
+  rekord PIG z informacja o drugim otworze,
+- lokalna walidacja danych przechodzi bez errorow.
+
+### PBI-024: Dopelnic znane brakujace obiekty
+
+Status: wykonane 2026-05-16.
+
+Zakres:
+
+- rozdzielic Jaskinie Mrozna na dwa obiekty otworowe:
+  `KSW-0081` i `KSW-0256`,
+- dopisac `KSW-0256` do `C-0267.object_ids`,
+- dodac slowacka `Nova Kresanica` jako `SK-0001` / `C-1003`,
+- dodac `Obcasna Vyvieracka` jako `SK-0002` z `category: wywierzysko`,
+- zapisac przeliczenie `E19:55:47.53 N49:13:35.8` na WGS84 decimal:
+  lon `19.92986944`, lat `49.22661111`.
+
+Weryfikacja:
+
+- `scripts/assign_id.py` wskazuje prefix `KSW` dla drugiego otworu Mroznej i
+  fallback `SK` dla obu slowackich punktow,
+- `scripts/validate.py` bez errorow; znane ostrzezenia pozostaja nieblokujace.
 
 ## Proponowana kolejnosc startowa
 

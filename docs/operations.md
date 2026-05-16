@@ -180,6 +180,36 @@ Pomiar odrzucony moze zostac w `measurements`, ale zwykle nie powinien byc
 wskazany jako `best_measurement`. Jezeli wszystkie pomiary sa odrzucone,
 walidator moze wskazac to jako ostrzezenie.
 
+## Dopelnianie brakujacych otworow
+
+Gdy staging TPN zostawia `TPN_NR_INWENT_AMBIGUOUS`, czesto oznacza to kilka
+otworow tej samej jaskini pod jednym numerem inwentarzowym. Wtedy nie tworz
+automatycznie nowej jaskini tylko dlatego, ze jest drugi punkt.
+
+1. Znajdz rekord PIG po nazwie albo numerze inwentarzowym:
+
+   ```bash
+   rg -n "Mroźna" data/sources/pig/jaskinie_polski_pig_dump.jsonl
+   ```
+
+2. W znalezionym JSONL sprawdz szczegolnie pola `other_entrances`,
+   `entrance_access_description`, `cave_description`, `documentation_history`
+   oraz opisy `images`.
+3. Jesli opis potwierdza dodatkowy otwor istniejacej jaskini:
+
+   - dodaj nowy `Obiekt` z wlasnym ID,
+   - ustaw `cave_id` na istniejaca jaskinie,
+   - dopisz nowe ID do `Jaskinia.object_ids`,
+   - zachowaj TPN `GLOBALID` na obiekcie i PIG / `NR_INWENT` na jaskini,
+   - w notatkach zapisz, z ktorego wiersza TPN i z ktorego pola PIG wynika
+     rozstrzygniecie.
+
+4. Jesli opis mowi o osobnej jaskini albo obiekcie nie-jaskiniowym, utworz
+   osobna `Jaskinia` tylko dla `jaskinia_otwor`; dla `ponor`, `wywierzysko`,
+   `sztolnia` albo `inne` `cave_id` moze zostac `null`, o ile nie ma logicznej
+   pozycji katalogowej do powiazania.
+5. Uruchom `uv run python scripts/validate.py` i przeczytaj nowe ostrzezenia.
+
 ## Commit operacyjny
 
 Po przejsciu bramki:

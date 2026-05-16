@@ -23,7 +23,7 @@ from gps_kataster_obiektow_tatr.source_table import read_source_table
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-DEFAULT_PIG_SOURCE = REPO_ROOT / "pig_otwory_jaskin_.xlsx.-.Export.csv"
+DEFAULT_PIG_SOURCE = REPO_ROOT / "data" / "sources" / "pig" / "pig_otwory_jaskin_.xlsx.-.Export.csv"
 DEFAULT_PIG_STAGING_DIR = REPO_ROOT / "build" / "staging" / "pig"
 DEFAULT_IMPORT_AUTHOR = "importer:pig"
 

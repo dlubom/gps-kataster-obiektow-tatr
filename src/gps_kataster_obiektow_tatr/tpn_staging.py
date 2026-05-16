@@ -22,7 +22,7 @@ from gps_kataster_obiektow_tatr.source_table import read_source_table
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-DEFAULT_TPN_SOURCE = REPO_ROOT / "tpn_otwory_jaskin.xlsx.-.Export.csv"
+DEFAULT_TPN_SOURCE = REPO_ROOT / "data" / "sources" / "tpn" / "tpn_otwory_jaskin.xlsx.-.Export.csv"
 DEFAULT_TPN_STAGING_DIR = REPO_ROOT / "build" / "staging" / "tpn"
 DEFAULT_PIG_STAGING_PATH = REPO_ROOT / "build" / "staging" / "pig" / "pig-staging.json"
 DEFAULT_IMPORT_AUTHOR = "importer:tpn"
@@ -708,7 +708,7 @@ def _build_object_proposal(
     return {
         "schema_version": 1,
         "id": object_id,
-        "category": "jaskinia_otwor",
+        "category": _infer_tpn_object_category(row=row, name=name),
         "name_local": name,
         "cave_id": cave_id,
         "id_assignment": {
@@ -823,6 +823,19 @@ def _tpn_object_notes(row: dict[str, str]) -> str:
     if otwor:
         note += f"\nTPN opening: {otwor}"
     return note
+
+
+def _infer_tpn_object_category(*, row: dict[str, str], name: str) -> str:
+    source_category = _normalize_name(row.get("GENEZA", ""))
+    normalized_name = _normalize_name(name)
+    combined = f"{source_category} {normalized_name}"
+    if "sztolnia" in combined:
+        return "sztolnia"
+    if "wywierzysko" in combined or "wyvieracka" in combined or "vyvieracka" in combined:
+        return "wywierzysko"
+    if "ponor" in combined:
+        return "ponor"
+    return "jaskinia_otwor"
 
 
 def _load_existing_candidates(data_dir: Path) -> tuple[_Candidate, ...]:

@@ -250,12 +250,16 @@ PBI-018 is complete:
 
 ## Current data inventory
 
-- PIG workbook: `pig_otwory_jaskin_.xlsx`, sheet `Export`, 861 rows including
-  header, 15 columns.
-- PIG CSV: `pig_otwory_jaskin_.xlsx.-.Export.csv`, 860 data records.
-- TPN workbook: `tpn_otwory_jaskin.xlsx`, sheet `Export`, 1006 rows including
-  header, 23 columns.
-- TPN CSV: `tpn_otwory_jaskin.xlsx.-.Export.csv`, 1005 data records.
+- PIG workbook: `data/sources/pig/pig_otwory_jaskin_.xlsx`, sheet `Export`,
+  861 rows including header, 15 columns.
+- PIG CSV: `data/sources/pig/pig_otwory_jaskin_.xlsx.-.Export.csv`, 860 data
+  records.
+- PIG full dump: `data/sources/pig/jaskinie_polski_pig_dump.jsonl`, 5388 JSONL
+  records.
+- TPN workbook: `data/sources/tpn/tpn_otwory_jaskin.xlsx`, sheet `Export`,
+  1006 rows including header, 23 columns.
+- TPN CSV: `data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv`, 1005 data
+  records.
 - `data/shapes/doliny.shp`: 18 features, EPSG:2180, key field `NAME`.
 - `data/shapes/granica_polski.shp`: 1 feature, EPSG:2180.
 - `data/shapes/granica_slowacji.shp`: 1 feature, EPSG:2180.
@@ -442,7 +446,7 @@ After PBI-013:
   2026-05-16T08:00:00Z` generated `build/staging/pig/pig-staging.json` and
   `build/staging/pig/pig-staging.md` from the CSV export.
 - `uv run python scripts/importers/import_pig.py --pig-source
-  pig_otwory_jaskin_.xlsx --output-dir build/staging/pig-xlsx --generated-at
+  data/sources/pig/pig_otwory_jaskin_.xlsx --output-dir build/staging/pig-xlsx --generated-at
   2026-05-16T08:00:00Z` verified the XLSX path on the real workbook.
 - Both CSV and XLSX staging runs produced 860 records, 860 cave proposals and
   860 object proposals.
@@ -463,7 +467,7 @@ After PBI-014:
   `build/staging/tpn/tpn-staging.md` from the CSV export using the PIG staging
   JSON as a matching baseline.
 - `uv run python scripts/importers/import_tpn.py --tpn-source
-  tpn_otwory_jaskin.xlsx --output-dir build/staging/tpn-xlsx --generated-at
+  data/sources/tpn/tpn_otwory_jaskin.xlsx --output-dir build/staging/tpn-xlsx --generated-at
   2026-05-16T09:00:00Z` verified the XLSX path on the real workbook.
 - Both CSV and XLSX staging runs produced 1005 records: 858 matched, 142 new,
   5 unresolved and 0 rejected.
@@ -562,8 +566,8 @@ After PBI-019:
 After conservative PIG/TPN review import on 2026-05-16:
 
 - Real local PIG/TPN staging was generated from
-  `pig_otwory_jaskin_.xlsx.-.Export.csv` and
-  `tpn_otwory_jaskin.xlsx.-.Export.csv`.
+  `data/sources/pig/pig_otwory_jaskin_.xlsx.-.Export.csv` and
+  `data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv`.
 - The operator-approved conservative policy was: import PIG rows without
   staging issues and TPN matched rows without staging issues only when their
   target object came from a clean PIG row.
@@ -704,3 +708,34 @@ Release-readiness cleanup before tagging:
   "Imported from {source} source record after operator review", rewrites source
   measurement notes to say they were imported after operator review, and removes
   the `staging` measurement tag from final `data/`.
+
+After release follow-up PBIs 022-024 on 2026-05-16:
+
+- TPN-derived sztolnie are no longer exported as `jaskinia_otwor`: the TPN
+  staging importer infers `sztolnia` from `GENEZA` or the normalized name, and
+  26 existing final objects with `name_local` containing `sztoln` now have
+  `category: sztolnia`.
+- Source files were moved out of the repository root into
+  `data/sources/pig/` and `data/sources/tpn/`; default source paths in
+  `pig_staging.py`, `tpn_staging.py` and `scripts/profile_sources.py` now point
+  there.
+- Top-level `README.md` is the human GitHub entrypoint. `data/sources/README.md`
+  documents source provenance and the PIG dump review path.
+- `data/sources/pig/jaskinie_polski_pig_dump.jsonl` was copied from
+  `/Users/dariuszlubomski/proj/Jaskiniowy-Kataster-Tatr-Zachodnich/doc/` and
+  has 5388 JSONL records. Use `rg -n "Mroźna" data/sources/pig/jaskinie_polski_pig_dump.jsonl`
+  to find full PIG descriptions, including fields such as `other_entrances`,
+  before adding missing cave openings.
+- Jaskinia Mroźna (`C-0267`, `T.D-08.07`) now has two object IDs:
+  `KSW-0081` for TPN row 700 / "wyjscie z trasy turystycznej" and `KSW-0256`
+  for TPN row 982 / "wejście na trasę turystyczną". The PIG dump states
+  `other_entrances="2 - ku NE, 1100 m n.p.m."`.
+- Two Slovak records were added: `SK-0001` / `C-1003` for `Nova Kresanica`
+  at E19.91418777 N49.22918839, 2016 m, and `SK-0002` for
+  `Obcasna Vyvieracka` as `category: wywierzysko`.
+- `Obcasna Vyvieracka` source DMS `E19:55:47.53 N49:13:35.8` was converted to
+  lon `19.92986944`, lat `49.22661111` before writing YAML.
+- Current final YAML inventory is 1005 objects, 1003 caves, 0 relations and
+  1862 measurements. `scripts/validate.py` exits 0 with 2053 warnings:
+  1862 `MISSING_HORIZONTAL_ACCURACY`, 103 `MEASUREMENT_OUTSIDE_VALLEYS`, 72
+  `MEASUREMENT_DISTANCE_OUTLIER` and 16 `OBJECT_PREFIX_MISMATCH`.

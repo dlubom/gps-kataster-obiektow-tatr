@@ -19,8 +19,8 @@ from gps_kataster_obiektow_tatr.source_profile import (  # noqa: E402
     write_report_files,
 )
 
-DEFAULT_PIG_CSV = REPO_ROOT / "pig_otwory_jaskin_.xlsx.-.Export.csv"
-DEFAULT_TPN_CSV = REPO_ROOT / "tpn_otwory_jaskin.xlsx.-.Export.csv"
+DEFAULT_PIG_CSV = REPO_ROOT / "data" / "sources" / "pig" / "pig_otwory_jaskin_.xlsx.-.Export.csv"
+DEFAULT_TPN_CSV = REPO_ROOT / "data" / "sources" / "tpn" / "tpn_otwory_jaskin.xlsx.-.Export.csv"
 DEFAULT_OUTPUT_DIR = REPO_ROOT / "build" / "reports"
 
 

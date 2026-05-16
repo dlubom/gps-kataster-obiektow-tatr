@@ -1,0 +1,13 @@
+schema_version: 1
+id: C-1003
+name: Nova Kresanica
+system_name: null
+external_refs: []
+object_ids:
+- SK-0001
+notes: 'Slovak cave added from maintainer-supplied coordinates on 2026-05-16.
+  Source accepted for repository use as CC-BY-4.0.'
+created_at: '2026-05-16T19:04:29Z'
+created_by: dl
+updated_at: '2026-05-16T19:04:29Z'
+updated_by: dl
