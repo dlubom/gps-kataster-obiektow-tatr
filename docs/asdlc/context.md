@@ -618,6 +618,15 @@ PBI-021 is complete:
 - `tests/test_operational_docs.py` guards the expected PBI-021 sections and the
   rule that generated `build/` artifacts are not committed.
 
+Initial release licensing:
+
+- Source-data redistribution for the initial public release was confirmed by
+  the maintainer on 2026-05-16.
+- Top-level `LICENSE` records Creative Commons Attribution 4.0 International
+  (`CC-BY-4.0`) for repository data, documentation and generated data exports,
+  with an explicit note that source references from PIG / Jaskinie Polski and
+  TPN should be retained for attribution.
+
 After PBI-020:
 
 - `uv run python scripts/build_release_artifacts.py --generated-at

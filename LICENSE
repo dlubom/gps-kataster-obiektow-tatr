@@ -1,0 +1,26 @@
+Creative Commons Attribution 4.0 International
+
+SPDX-License-Identifier: CC-BY-4.0
+
+The catalog data, repository documentation, and generated data exports in this
+project are licensed under the Creative Commons Attribution 4.0 International
+License.
+
+You are free to share and adapt the material for any purpose, provided that
+appropriate credit is given, a link to the license is provided, and changes are
+indicated.
+
+License text:
+https://creativecommons.org/licenses/by/4.0/
+
+Initial release source-data confirmation:
+
+The initial public release includes catalog records and source-record
+measurements imported from the local PIG / Jaskinie Polski and TPN exports.
+The project maintainer confirmed on 2026-05-16 that these data may be
+redistributed as part of this public repository and its generated release
+artifacts under CC BY 4.0.
+
+Attribution should retain the source references already recorded in YAML
+records and generated exports, including PIG catalog identifiers, PIG links,
+TPN GLOBALID values, and NR_INWENT inventory references where present.
