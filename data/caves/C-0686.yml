@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0686
+name: Szczelina w Iglicy
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.D-12.08
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1223'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1223
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1223
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1223
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- MLZ-0071
+notes: 'PIG aliases: Jaskinia w Iglicy, ZT - 1
+
+  PIG sector: D. Małej Łąki - Zach.
+
+  PIG morphometry: length_m=22, depth_m=4,3, denivelation_m=8
+
+  PIG source state year: 2010'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0395
+name: Dziura w Kończystej Niżnia
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.B-09.02
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '962'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/962
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/962
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/962
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- MTW-0031
+notes: 'PIG aliases: Kończysta Niżnia, Niżnia w Kończystej
+
+  PIG sector: D. Miętusia - Wsch.
+
+  PIG morphometry: length_m=3, depth_m=0, denivelation_m=0
+
+  PIG source state year: 2010'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:41:53Z'
+updated_by: dl

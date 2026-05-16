@@ -1,0 +1,80 @@
+schema_version: 1
+id: MLZ-0003
+category: jaskinia_otwor
+name_local: Jaskinia z Dolomitami
+cave_id: C-0022
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MLZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{114AF8F2-4DBC-49D0-BED6-F85CAC8FCD7E}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.24164446
+  lon: 19.92023333
+  x_1992: 153089.2
+  y_1992: 566961.45
+  elevation_m: 1845.6
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: PIG
+  source_ref: PIG:1542
+  observed_date: '2010-12-31'
+  source_date: '2010-12-31'
+  method: source_record
+  device: null
+  tags:
+  - pig
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'PIG source-record measurement imported into staging; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1542'
+  created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+- id: m-002
+  lat: 49.241644462302325
+  lon: 19.920233333076897
+  x_1992: 153089.2
+  y_1992: 566961.45
+  elevation_m: 1845.387842
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{114AF8F2-4DBC-49D0-BED6-F85CAC8FCD7E}
+  observed_date: '2022-05-25'
+  source_date: '2022-05-25'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-002
+  reason: null
+  updated_at: '2026-05-16T10:41:53Z'
+  updated_by: dl
+attachments: []
+notes: Staging proposal from PIG; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:41:53Z'
+updated_by: dl

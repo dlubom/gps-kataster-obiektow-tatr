@@ -559,6 +559,31 @@ After PBI-019:
 - `uv run pytest` passed with 84 tests.
 - `uv run python scripts/validate.py` printed `OK: no validation issues`.
 
+After conservative PIG/TPN review import on 2026-05-16:
+
+- Real local PIG/TPN staging was generated from
+  `pig_otwory_jaskin_.xlsx.-.Export.csv` and
+  `tpn_otwory_jaskin.xlsx.-.Export.csv`.
+- The operator-approved conservative policy was: import PIG rows without
+  staging issues and TPN matched rows without staging issues only when their
+  target object came from a clean PIG row.
+- `build/staging/review/decisions-clean.yml` materialized 814 PIG caves,
+  814 PIG objects and 567 TPN measurement additions.
+- The import wrote 814 final cave YAML files and 814 final object YAML files;
+  `data/relations/` still has no relation YAML.
+- `uv run python scripts/validate.py` exits 0 on the imported data and reports
+  1381 warnings, all `MISSING_HORIZONTAL_ACCURACY`, because source-record PIG
+  and TPN measurements do not declare `horizontal_accuracy_m`.
+- `uv run python scripts/build_db.py` generated `build/katalog.sqlite` with
+  814 objects, 814 caves, 1381 measurements, 0 relations, 0 validation errors
+  and 1381 validation warnings.
+- `uv run python scripts/export_best_measurements.py` generated GeoJSON, CSV,
+  GPX, Shapefile ZIP and `metadata.json`; the best-measurements export contains
+  814 features.
+- Excluded from this conservative import: PIG `POINT_OUTSIDE_VALLEYS` rows, TPN
+  distance-review matches, TPN ambiguous `NR_INWENT` rows, new TPN-only rows and
+  duplicate clean TPN match row 476 for `KSW-0065` / Smocza Jama.
+
 PBI-020 is complete:
 
 - `src/gps_kataster_obiektow_tatr/release_artifacts.py` builds the shared

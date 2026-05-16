@@ -1,0 +1,36 @@
+schema_version: 1
+id: C-0288
+name: Mnichowa Studnia Wyżnia
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.E-13.03
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1574'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1574
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1574
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1574
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- MLW-0009
+notes: 'PIG aliases: Jaskinia Mnichowa Wyżnia, Jaskinia pod Zadnimi Mnichami, Jaskinia
+  w Mnichach, Mnichowa, Wyżnia Mnichowa Studnia
+
+  PIG sector: D. Małej Łąki - Wsch.
+
+  PIG morphometry: length_m=79, depth_m=31,5, denivelation_m=31,5
+
+  PIG source state year: 2014'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:41:53Z'
+updated_by: dl

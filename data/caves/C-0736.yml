@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0736
+name: Schron nad Lejową
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.E-07.12
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1307'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1307
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1307
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1307
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- LEJ-0024
+notes: 'PIG aliases: Dziura z Blokiem
+
+  PIG sector: D. Lejowa
+
+  PIG morphometry: length_m=14, depth_m=2,5, denivelation_m=2,5
+
+  PIG source state year: 2010'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:41:53Z'
+updated_by: dl

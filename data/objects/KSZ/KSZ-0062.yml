@@ -1,0 +1,50 @@
+schema_version: 1
+id: KSZ-0062
+category: jaskinia_otwor
+name_local: Sokole Okno
+cave_id: C-0552
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSZ
+  prefix_override_reason: null
+external_refs: []
+measurements:
+- id: m-001
+  lat: 49.23912177
+  lon: 19.86089235
+  x_1992: 152758.0
+  y_1992: 562646.7
+  elevation_m: 1200.0
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: PIG
+  source_ref: PIG:1366
+  observed_date: '2010-12-31'
+  source_date: '2010-12-31'
+  method: source_record
+  device: null
+  tags:
+  - pig
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'PIG source-record measurement imported into staging; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1366'
+  created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:49Z'
+  updated_by: importer:pig
+attachments: []
+notes: Staging proposal from PIG; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

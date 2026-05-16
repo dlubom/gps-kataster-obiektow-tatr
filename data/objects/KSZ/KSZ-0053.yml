@@ -1,0 +1,80 @@
+schema_version: 1
+id: KSZ-0053
+category: jaskinia_otwor
+name_local: Wiśniakowa Jama
+cave_id: C-0479
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{90721570-515B-4EB9-A3F6-D01B25187407}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.2415038
+  lon: 19.85173252
+  x_1992: 153015.18
+  y_1992: 561977.17
+  elevation_m: 1440.0
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: PIG
+  source_ref: PIG:1325
+  observed_date: '2010-12-31'
+  source_date: '2010-12-31'
+  method: source_record
+  device: null
+  tags:
+  - pig
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'PIG source-record measurement imported into staging; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1325'
+  created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+- id: m-002
+  lat: 49.241503800611575
+  lon: 19.851732515999505
+  x_1992: 153015.18
+  y_1992: 561977.17
+  elevation_m: 1476.261877
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{90721570-515B-4EB9-A3F6-D01B25187407}
+  observed_date: '2022-05-25'
+  source_date: '2022-05-25'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-002
+  reason: null
+  updated_at: '2026-05-16T10:41:53Z'
+  updated_by: dl
+attachments: []
+notes: Staging proposal from PIG; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:41:53Z'
+updated_by: dl

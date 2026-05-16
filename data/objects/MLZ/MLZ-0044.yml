@@ -1,0 +1,50 @@
+schema_version: 1
+id: MLZ-0044
+category: jaskinia_otwor
+name_local: Jaskinia Mała Zaruskiego
+cave_id: C-0456
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MLZ
+  prefix_override_reason: null
+external_refs: []
+measurements:
+- id: m-001
+  lat: 49.24436947
+  lon: 19.91942774
+  x_1992: 153391.33
+  y_1992: 566899.15
+  elevation_m: 1773.2
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: PIG
+  source_ref: PIG:1557
+  observed_date: '2013-12-31'
+  source_date: '2013-12-31'
+  method: source_record
+  device: null
+  tags:
+  - pig
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'PIG source-record measurement imported into staging; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1557'
+  created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:49Z'
+  updated_by: importer:pig
+attachments: []
+notes: Staging proposal from PIG; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0072
+name: Jaskinia nad Dachem
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.E-11.09
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1474'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1474
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1474
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1474
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- MTW-0004
+notes: 'PIG aliases: SYSTEM Ptasia Studnia
+
+  PIG sector: D. Miętusia - Wsch.
+
+  PIG morphometry: length_m=750, depth_m=140, denivelation_m=163
+
+  PIG source state year: 2013'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

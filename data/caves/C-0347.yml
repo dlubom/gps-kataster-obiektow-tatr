@@ -1,0 +1,33 @@
+schema_version: 1
+id: C-0347
+name: Dziura Stanikowa Wyżnia
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.B-09.04
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '970'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/970
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/970
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/970
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- STN-0002
+notes: 'PIG sector: Staników Żleb
+
+  PIG morphometry: length_m=13, depth_m=0, denivelation_m=0
+
+  PIG source state year: 2010'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

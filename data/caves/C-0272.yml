@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0272
+name: Dziura pod Żródłem Ratusz
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.E-12.19
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1554'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1554
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1554
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1554
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- MLZ-0027
+notes: 'PIG aliases: Dziura pod Ratuszem
+
+  PIG sector: D. Małej Łąki - Zach.
+
+  PIG morphometry: length_m=20, depth_m=1,1, denivelation_m=6,7
+
+  PIG source state year: 2010'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0057
+name: Jaskinia Zakopiańska
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.D-09.01
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1172'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1172
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1172
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1172
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- KSW-0015
+notes: 'PIG aliases: Wielka Upłaziańska
+
+  PIG sector: D. Kościeliska - Wsch.
+
+  PIG morphometry: length_m=46, depth_m=11, denivelation_m=12
+
+  PIG source state year: 2013'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

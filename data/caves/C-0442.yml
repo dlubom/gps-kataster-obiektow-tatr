@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0442
+name: Jaskinia pod Szczytem
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.D-17.04
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1071'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1071
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1071
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1071
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- BYW-0019
+notes: 'PIG aliases: Jaskinia za Iglicą, Jaskinia przy Szczycie
+
+  PIG sector: D. Bystrej - Wsch.
+
+  PIG morphometry: length_m=28, depth_m=0, denivelation_m=14,5
+
+  PIG source state year: 2013'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0491
+name: Jaskinia Pomarańczarnia
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.E-13.05
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1580'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1580
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1580
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1580
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- MLW-0018
+notes: 'PIG aliases: Studnia w Babkach - Dziadkach, Szczelina Mnichowa
+
+  PIG sector: D. Małej Łąki - Wsch.
+
+  PIG morphometry: length_m=36, depth_m=26, denivelation_m=26
+
+  PIG source state year: 2014'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:41:53Z'
+updated_by: dl

@@ -1,0 +1,36 @@
+schema_version: 1
+id: C-0095
+name: Jaskinie Pawlikowskiego
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T-Jaskinie Pawlikowskiego
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '10935'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/10935
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/10935
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/10935
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- KSZ-0009
+notes: 'PIG aliases: Jaskinia Mylna T.E-08.04, Jaskinia Obłazkowa T.E-08.035 Jaskinia
+  Raptawicka T.E-08.03, SYSTEM Mylna-Obłazkowa
+
+  PIG sector: D. Kościeliska - Zach.
+
+  PIG morphometry: length_m=2404, depth_m=71,3, denivelation_m=76,1
+
+  PIG source state year: 2015'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

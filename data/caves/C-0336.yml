@@ -1,0 +1,33 @@
+schema_version: 1
+id: C-0336
+name: Szczelina nad Mostkiem
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.D-08.22
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1112'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1112
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1112
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1112
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- KSZ-0041
+notes: 'PIG sector: D. Kościeliska - Zach.
+
+  PIG morphometry: length_m=5, depth_m=0, denivelation_m=1,7
+
+  PIG source state year: 2010'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:41:53Z'
+updated_by: dl

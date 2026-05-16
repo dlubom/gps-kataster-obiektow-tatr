@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0111
+name: Bliźniacza Studnia
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.E-13.09
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1592'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1592
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1592
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1592
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- MLZ-0012
+notes: 'PIG aliases: Bliźniacze Studnie, Dwoista Studnia, Trzy Studnie
+
+  PIG sector: D. Małej Łąki - Zach.
+
+  PIG morphometry: length_m=80, depth_m=45, denivelation_m=45
+
+  PIG source state year: 2013'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:41:53Z'
+updated_by: dl

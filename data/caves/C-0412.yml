@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0412
+name: Jaskinia za Siedmiu Progami
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.F-09.13
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1667'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1667
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1667
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1667
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- KSW-0123
+notes: 'PIG aliases: SYSTEM Jaskinia Wysoka
+
+  PIG sector: D. Kościeliska - Wsch.
+
+  PIG morphometry: length_m=6150, depth_m=216, denivelation_m=222
+
+  PIG source state year: 2013'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

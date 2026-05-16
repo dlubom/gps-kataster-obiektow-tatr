@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0440
+name: Schronisko w Dolinie za Bramką
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.B-12.11
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '4106'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/4106
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/4106
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/4106
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- BRA-0001
+notes: 'PIG aliases: Jaskinia za Bramką
+
+  PIG sector: Mały Żlebek, D. za Bramką i Suchy Żleb
+
+  PIG morphometry: length_m=9, depth_m=0, denivelation_m=5,4
+
+  PIG source state year: 2014'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

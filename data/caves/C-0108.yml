@@ -1,0 +1,35 @@
+schema_version: 1
+id: C-0108
+name: Jaskinia Kasprowa Średnia
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.D-17.02
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1247'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1247
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1247
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1247
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- BYW-0004
+notes: 'PIG aliases: Wyżnia Grota Kasprowa, Jaskinia Jaworzyńska
+
+  PIG sector: D. Bystrej - Wsch.
+
+  PIG morphometry: length_m=150, depth_m=45, denivelation_m=53
+
+  PIG source state year: 2013'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

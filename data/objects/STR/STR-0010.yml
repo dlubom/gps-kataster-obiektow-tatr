@@ -1,0 +1,50 @@
+schema_version: 1
+id: STR-0010
+category: jaskinia_otwor
+name_local: Jaskinia w Jatkach
+cave_id: C-0354
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: STR
+  prefix_override_reason: null
+external_refs: []
+measurements:
+- id: m-001
+  lat: 49.26357249
+  lon: 19.92103016
+  x_1992: 155526.87
+  y_1992: 566989.75
+  elevation_m: 1360.0
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: PIG
+  source_ref: PIG:1012
+  observed_date: '2010-12-31'
+  source_date: '2010-12-31'
+  method: source_record
+  device: null
+  tags:
+  - pig
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'PIG source-record measurement imported into staging; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1012'
+  created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T10:22:49Z'
+  updated_by: importer:pig
+attachments: []
+notes: Staging proposal from PIG; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:22:49Z'
+updated_by: importer:pig

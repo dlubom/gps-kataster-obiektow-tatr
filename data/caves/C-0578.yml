@@ -1,0 +1,36 @@
+schema_version: 1
+id: C-0578
+name: Dziura
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.B-14.01
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '1018'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1018
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/1018
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1018
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- DZI-0004
+notes: 'PIG aliases: w Dolinie ku Dziurze, Jaskinia Strążyska, Zbójnicka Jama, Jaskinia
+  Dziura
+
+  PIG sector: D. ku Dziurze i Spadowiec
+
+  PIG morphometry: length_m=175, depth_m=15,6, denivelation_m=40,4
+
+  PIG source state year: 2014'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T10:41:53Z'
+updated_by: dl
