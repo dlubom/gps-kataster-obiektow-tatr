@@ -184,6 +184,24 @@ PBI-014 is complete:
   unresolved duplicate inventory rows, XLSX reading, report writing, CLI
   execution and the guarantee that no final YAML is written under `data/`.
 
+PBI-015 is complete:
+
+- `docs/asdlc/staging_review_decisions.md` documents the operator decision YAML
+  format and the V1 review actions,
+- `src/gps_kataster_obiektow_tatr/staging_review.py` applies decisions against
+  PIG/TPN staging reports and final YAML loaded from `data/`,
+- `scripts/importers/apply_review.py` requires a decision file before writing
+  any final YAML and emits `build/staging/review/staging-review.json` plus
+  `staging-review.md`,
+- supported review actions are `create_cave`, `create_object`,
+  `add_measurement`, `link_cave`, `reject` and `unresolved`,
+- `add_measurement` materializes matched TPN measurement updates, adds TPN
+  object refs and cave refs, and refreshes `best_measurement.mode: auto`,
+- invalid decisions block all final YAML writes, so review application is
+  all-or-nothing for the given decision file,
+- TPN matched measurement updates now include `record_number` in the staging
+  JSON to make decisions point to source rows directly.
+
 ## Current data inventory
 
 - PIG workbook: `pig_otwory_jaskin_.xlsx`, sheet `Export`, 861 rows including
@@ -409,3 +427,16 @@ After PBI-014:
 - `find data/objects data/caves data/relations -maxdepth 2 -type f -print`
   still listed only the existing `.gitkeep` files; the importer did not create
   final YAML.
+
+After PBI-015:
+
+- `uv run pytest tests/test_staging_review.py` passed with 3 tests.
+- The review sample test runs `scripts/importers/apply_review.py`, writes
+  `C-0001.yml` and `KSW-0001.yml` in a temporary `data/` tree, then verifies
+  that `scripts/validate.py --data-dir ...` exits 0.
+- The review tests also cover `link_cave`, `reject`, `unresolved` and the
+  guarantee that one invalid decision blocks all final YAML writes.
+- `uv run ruff format --check src tests scripts` passed.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 75 tests.
+- `uv run python scripts/validate.py` printed `OK: no validation issues`.

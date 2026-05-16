@@ -19,6 +19,7 @@ Stan na: 2026-05-16
 - PBI-012: wykonane 2026-05-16. Dodano profilowanie eksportow CSV PIG i TPN, raport JSON/Markdown w `build/reports/source-profile.*` oraz testy bramek: liczby rekordow, braki, duplikaty i zakresy wspolrzednych; finalne YAML nie sa tworzone.
 - PBI-013: wykonane 2026-05-16. Dodano importer staging PIG dla CSV/XLSX, raport JSON/Markdown w `build/staging/pig/`, propozycje `Jaskinia` i wstepnych `Obiekt` z pomiarem PIG oraz testy gwarantujace, ze finalne YAML nie sa zapisywane bez review.
 - PBI-014: wykonane 2026-05-16. Dodano importer staging TPN dla CSV/XLSX, dopasowania do finalnych YAML i staging PIG, propozycje pomiarow TPN z `GLOBALID` na obiekcie, `NR_INWENT` na jaskini oraz raport statusow: dopasowane, nowe, nierozstrzygniete i odrzucone.
+- PBI-015: wykonane 2026-05-16. Dodano format decyzji operatora, applier staging review i CLI `scripts/importers/apply_review.py`; decyzje `create_cave`, `create_object`, `add_measurement`, `link_cave`, `reject` i `unresolved` materializuja finalne YAML dopiero po poprawnym review.
 
 ## Przyjęty poziom AS-DLC
 
@@ -65,16 +66,20 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `src/gps_kataster_obiektow_tatr/source_profile.py` | istnieje | Profilowanie CSV PIG/TPN przed importem staging: braki kluczowych pol, duplikaty i zakresy kolumn liczbowych. |
 | `src/gps_kataster_obiektow_tatr/pig_staging.py` | istnieje | Importer staging PIG: czyta CSV/XLSX, tworzy propozycje `Jaskinia` i wstepnych `Obiekt` z niskopriorytetowym pomiarem PIG oraz raport JSON/Markdown. |
 | `src/gps_kataster_obiektow_tatr/tpn_staging.py` | istnieje | Importer staging TPN: czyta CSV/XLSX, tworzy propozycje pomiarow TPN, dopasowuje do YAML/staging PIG i raportuje statusy review. |
+| `src/gps_kataster_obiektow_tatr/staging_review.py` | istnieje | Applier decyzji operatora: materializuje staging do finalnych YAML, dopisuje pomiary TPN, laczy obiekty z jaskiniami i blokuje zapis przy blednych decyzjach. |
 | `tests/test_best_measurement.py` | 11 testow | Sprawdza wszystkie priorytety wyboru, remis dat/dokladnosci/ID oraz fallback do odrzuconych pomiarow. |
 | `src/gps_kataster_obiektow_tatr/validator.py` | istnieje | Walidator lokalny: JSON Schema, unikalnosc ID, referencje cross-file, spojnosci wspolrzednych, reguly przestrzenne i ostrzezenia domenowe. |
 | `scripts/validate.py` | istnieje | CLI walidatora; wypisuje `kod`, `poziom`, `plik`, `opis` i konczy kodem 1 tylko dla error. |
 | `scripts/profile_sources.py` | istnieje | CLI generujace `build/reports/source-profile.json` i `build/reports/source-profile.md` z eksportow CSV PIG/TPN. |
 | `scripts/importers/import_pig.py` | istnieje | CLI generujace `build/staging/pig/pig-staging.json` i `.md` bez zapisu finalnych YAML. |
 | `scripts/importers/import_tpn.py` | istnieje | CLI generujace `build/staging/tpn/tpn-staging.json` i `.md` bez zapisu finalnych YAML. |
+| `scripts/importers/apply_review.py` | istnieje | CLI stosujace plik decyzji operatora do staging PIG/TPN i zapisujace raport review oraz finalne YAML. |
+| `docs/asdlc/staging_review_decisions.md` | istnieje | Dokumentuje format pliku decyzji operatora i znaczenie akcji PBI-015. |
 | `tests/test_validator.py` | 9 testow | Sprawdza duplikat ID, zly `best_measurement`, brak `manual.reason`, zle wspolrzedne, ostrzezenia PBI-010, warningi `best_measurement` PBI-011 oraz exit code CLI. |
 | `tests/test_source_profile.py` | 4 testy | Sprawdza profilowanie brakow, duplikatow, zakresow wspolrzednych, zapis raportow i brak tworzenia finalnych YAML. |
 | `tests/test_pig_staging.py` | 5 testow | Sprawdza mapowanie referencji PIG/NR_INWENT na jaskinie, niskopriorytetowe pomiary PIG, czytanie XLSX, raport staging oraz brak finalnych YAML. |
 | `tests/test_tpn_staging.py` | 6 testow | Sprawdza dopasowanie TPN do staging PIG, nowe obiekty, nierozstrzygniete duplikaty, XLSX, raporty i CLI bez zapisu finalnych YAML. |
+| `tests/test_staging_review.py` | 3 testy | Sprawdza sample staging -> decyzje -> finalne YAML -> `validate.py`, decyzje link/reject/unresolved oraz blokade zapisu przy bledach. |
 
 ## Bramka kontekstu
 
@@ -324,6 +329,8 @@ Weryfikacja:
 
 ### PBI-015: Operator review dla staging
 
+Status: wykonane 2026-05-16.
+
 Zakres:
 
 - przygotowac format raportu decyzji operatora,
@@ -332,7 +339,8 @@ Zakres:
 
 Weryfikacja:
 
-- sample staging -> decyzje -> finalne YAML przechodzi `validate.py`.
+- sample staging -> decyzje -> finalne YAML przechodzi `validate.py`;
+- bledna decyzja blokuje zapis finalnych YAML.
 
 ## Milestone 5: build i eksporty
 

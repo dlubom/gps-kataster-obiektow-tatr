@@ -242,6 +242,7 @@ def build_tpn_staging(
             matched_measurements.append(
                 _build_measurement_update(
                     row=row,
+                    record_number=record_number,
                     point=point,
                     match=match,
                     globalid=globalid,
@@ -638,6 +639,7 @@ def _try_build_new_ids(
 def _build_measurement_update(
     *,
     row: dict[str, str],
+    record_number: int,
     point: TpnPoint,
     match: _Match,
     globalid: str,
@@ -646,6 +648,7 @@ def _build_measurement_update(
 ) -> dict[str, Any]:
     return {
         "status": "matched",
+        "record_number": record_number,
         "target_object_id": match.candidate.object_id,
         "target_cave_id": match.candidate.cave_id,
         "match": {
