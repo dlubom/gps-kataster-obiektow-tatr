@@ -33,11 +33,10 @@ measurements:
   device: null
   tags:
   - pig
-  - staging
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'PIG source-record measurement imported into staging; not field-verified.
+  notes: 'PIG source-record measurement imported after operator review; not field-verified.
     Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1706'
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
@@ -59,11 +58,10 @@ measurements:
   device: null
   tags:
   - tpn
-  - staging
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: TPN source-record measurement imported into staging; not field-verified.
+  notes: TPN source-record measurement imported after operator review; not field-verified.
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 best_measurement:
@@ -73,7 +71,7 @@ best_measurement:
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
-notes: Staging proposal from PIG; requires operator review before final YAML.
+notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
 updated_at: '2026-05-16T14:00:00Z'

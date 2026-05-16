@@ -696,3 +696,11 @@ After maintainer acceptance of TPN distance-review and TPN-only rows on
 - Validation has 0 errors and 2048 warnings: 1859
   `MISSING_HORIZONTAL_ACCURACY`, 101 `MEASUREMENT_OUTSIDE_VALLEYS`, 72
   `MEASUREMENT_DISTANCE_OUTLIER` and 16 `OBJECT_PREFIX_MISMATCH`.
+
+Release-readiness cleanup before tagging:
+
+- Final YAML materialized from staging must not retain staging-only review
+  language. The review applier now rewrites staging proposal notes to
+  "Imported from {source} source record after operator review", rewrites source
+  measurement notes to say they were imported after operator review, and removes
+  the `staging` measurement tag from final `data/`.

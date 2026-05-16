@@ -25,6 +25,16 @@ DEFAULT_PIG_STAGING_PATH = REPO_ROOT / "build" / "staging" / "pig" / "pig-stagin
 DEFAULT_TPN_STAGING_PATH = REPO_ROOT / "build" / "staging" / "tpn" / "tpn-staging.json"
 DEFAULT_REVIEW_OUTPUT_DIR = REPO_ROOT / "build" / "staging" / "review"
 DEFAULT_REVIEW_AUTHOR = "operator:staging-review"
+_STAGING_PROPOSAL_NOTE_PREFIX = (
+    "Staging proposal from {source}; requires operator review before final YAML."
+)
+_FINAL_PROPOSAL_NOTE_PREFIX = "Imported from {source} source record after operator review."
+_STAGING_MEASUREMENT_NOTE_PREFIX = (
+    "{source} source-record measurement imported into staging; not field-verified."
+)
+_FINAL_MEASUREMENT_NOTE_PREFIX = (
+    "{source} source-record measurement imported after operator review; not field-verified."
+)
 
 _CREATE_CAVE = "create_cave"
 _CREATE_OBJECT = "create_object"
@@ -426,7 +436,7 @@ def _apply_create_cave(
         )
         return
 
-    caves[cave_id] = deepcopy(proposal)
+    caves[cave_id] = _finalize_staging_record(proposal, source=source)
     dirty_caves.add(cave_id)
     applied.append(
         AppliedDecision(
@@ -487,7 +497,7 @@ def _apply_create_object(
         )
         return
 
-    objects[object_id] = deepcopy(proposal)
+    objects[object_id] = _finalize_staging_record(proposal, source=source)
     dirty_objects.add(object_id)
     applied.append(
         AppliedDecision(
@@ -590,7 +600,7 @@ def _apply_add_measurement(
         )
         return
 
-    object_data.setdefault("measurements", []).append(measurement)
+    object_data.setdefault("measurements", []).append(_finalize_staging_measurement(measurement))
     _append_unique_dicts(
         object_data.setdefault("external_refs", []), update.get("object_external_refs")
     )
@@ -938,6 +948,47 @@ def _append_unique_dicts(target: list[Any], additions: Any) -> None:
             continue
         target.append(deepcopy(item))
         seen.add(identity)
+
+
+def _finalize_staging_record(data: dict[str, Any], *, source: str) -> dict[str, Any]:
+    finalized = deepcopy(data)
+    finalized["notes"] = _finalized_note(
+        finalized.get("notes"),
+        staging_prefix=_STAGING_PROPOSAL_NOTE_PREFIX.format(source=source),
+        final_prefix=_FINAL_PROPOSAL_NOTE_PREFIX.format(source=source),
+    )
+    measurements = finalized.get("measurements")
+    if isinstance(measurements, list):
+        finalized["measurements"] = [
+            _finalize_staging_measurement(measurement)
+            if isinstance(measurement, dict)
+            else measurement
+            for measurement in measurements
+        ]
+    return finalized
+
+
+def _finalize_staging_measurement(measurement: dict[str, Any]) -> dict[str, Any]:
+    finalized = deepcopy(measurement)
+    source = _clean_value(finalized.get("source")).upper()
+    tags = finalized.get("tags")
+    if isinstance(tags, list):
+        finalized["tags"] = [tag for tag in tags if tag != "staging"]
+    if source:
+        finalized["notes"] = _finalized_note(
+            finalized.get("notes"),
+            staging_prefix=_STAGING_MEASUREMENT_NOTE_PREFIX.format(source=source),
+            final_prefix=_FINAL_MEASUREMENT_NOTE_PREFIX.format(source=source),
+        )
+    return finalized
+
+
+def _finalized_note(value: object, *, staging_prefix: str, final_prefix: str) -> object:
+    if not isinstance(value, str):
+        return value
+    if not value.startswith(staging_prefix):
+        return value
+    return f"{final_prefix}{value.removeprefix(staging_prefix)}"
 
 
 def _dict_identity(item: dict[str, Any]) -> tuple[str, str, str, str]:

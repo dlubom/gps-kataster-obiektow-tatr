@@ -82,6 +82,17 @@ def test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py(
         "m-001",
         "m-002",
     ]
+    assert object_data["notes"] == "Imported from PIG source record after operator review."
+    assert object_data["measurements"][0]["tags"] == ["pig"]
+    assert (
+        object_data["measurements"][0]["notes"]
+        == "PIG source-record measurement imported after operator review; not field-verified."
+    )
+    assert object_data["measurements"][1]["tags"] == ["tpn"]
+    assert (
+        object_data["measurements"][1]["notes"]
+        == "TPN source-record measurement imported after operator review; not field-verified."
+    )
     assert object_data["best_measurement"]["measurement_id"] == "m-002"
     assert object_data["external_refs"][0]["external_id"] == TPN_GLOBALID
     assert cave_data["object_ids"] == ["KSW-0001"]
@@ -337,11 +348,15 @@ def _measurement(
         "source_date": "2026-05-16",
         "method": "source_record" if source in {"PIG", "TPN"} else "gps_receiver",
         "device": None,
-        "tags": [source.lower()],
+        "tags": [source.lower(), "staging"] if source in {"PIG", "TPN"} else [source.lower()],
         "verification_status": "nieweryfikowany",
         "verified_by": None,
         "verified_at": None,
-        "notes": f"{source} review fixture measurement.",
+        "notes": (
+            f"{source} source-record measurement imported into staging; not field-verified."
+            if source in {"PIG", "TPN"}
+            else f"{source} review fixture measurement."
+        ),
         "created_at": "2026-05-16T08:00:00Z",
         "created_by": f"importer:{source.lower()}",
     }
