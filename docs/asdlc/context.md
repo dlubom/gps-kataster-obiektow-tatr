@@ -147,6 +147,22 @@ PBI-012 is complete:
 - PBI-012 intentionally does not create final YAML under `data/objects/` or
   `data/caves/`.
 
+PBI-013 is complete:
+
+- `src/gps_kataster_obiektow_tatr/pig_staging.py` builds reviewable staging
+  proposals from the PIG export without writing final YAML,
+- `scripts/importers/import_pig.py` reads PIG CSV or XLSX and writes
+  `build/staging/pig/pig-staging.json` plus `pig-staging.md`,
+- each PIG row becomes a staging `Jaskinia` proposal with PIG `ID`, PIG `Link`
+  and `Nr inw.` on `Jaskinia.external_refs`,
+- an initial `Obiekt` proposal is created only when coordinate parsing,
+  WGS84/PL-1992 consistency and prefix resolution produce a usable point,
+- proposed PIG measurements use `source: PIG`, `method: source_record`,
+  `verification_status: nieweryfikowany`, no horizontal accuracy, and
+  `best_measurement.mode: auto` only inside the staging proposal,
+- tests cover CSV import, XLSX import, coordinate-mismatch cave-only fallback,
+  report writing and the guarantee that no final YAML is written under `data/`.
+
 ## Current data inventory
 
 - PIG workbook: `pig_otwory_jaskin_.xlsx`, sheet `Export`, 861 rows including
@@ -333,4 +349,24 @@ After PBI-012:
 - `uv run ruff format --check src tests scripts` passed.
 - `uv run ruff check src tests scripts` passed.
 - `uv run pytest` passed with 61 tests.
+- `uv run python scripts/validate.py` printed `OK: no validation issues`.
+
+After PBI-013:
+
+- `uv run python scripts/importers/import_pig.py --generated-at
+  2026-05-16T08:00:00Z` generated `build/staging/pig/pig-staging.json` and
+  `build/staging/pig/pig-staging.md` from the CSV export.
+- `uv run python scripts/importers/import_pig.py --pig-source
+  pig_otwory_jaskin_.xlsx --output-dir build/staging/pig-xlsx --generated-at
+  2026-05-16T08:00:00Z` verified the XLSX path on the real workbook.
+- Both CSV and XLSX staging runs produced 860 records, 860 cave proposals and
+  860 object proposals.
+- The only staging issues were 46 `POINT_OUTSIDE_VALLEYS` warnings, i.e.
+  fallback-prefix cases that require operator review.
+- `find data/objects data/caves data/relations -maxdepth 2 -type f -print`
+  still listed only the existing `.gitkeep` files; the importer did not create
+  final YAML.
+- `uv run ruff format --check src tests scripts` passed.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 66 tests.
 - `uv run python scripts/validate.py` printed `OK: no validation issues`.
