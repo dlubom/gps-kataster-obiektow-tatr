@@ -1,0 +1,48 @@
+name: mutation
+
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mutation:
+    name: Mutation tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Sync dependencies
+        run: uv sync
+
+      - name: Baseline tests
+        run: uv run pytest
+
+      - name: Run mutation tests
+        run: uv run mutmut run --max-children 2
+
+      - name: Export mutation stats
+        if: always()
+        run: uv run mutmut export-cicd-stats
+
+      - name: Upload mutation stats
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutmut-cicd-stats
+          path: mutants/mutmut-cicd-stats.json
+          if-no-files-found: warn

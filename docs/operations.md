@@ -146,6 +146,32 @@ Jesli lokalny cache `uv` nie jest dostepny w srodowisku sandboxowym, uzyj:
 UV_CACHE_DIR=/private/tmp/uv-cache uv run pytest
 ```
 
+## Testy mutacyjne
+
+Testy mutacyjne sa lokalna lub recznie uruchamiana bramka dla krytycznej logiki,
+ktorej ciche zepsucie mogloby uszkodzic katalog danych:
+
+- wybor najlepszego pomiaru,
+- przeliczanie i walidacja wspolrzednych,
+- przypisanie prefixu,
+- rozroznienie `error` / `warning` w walidatorze,
+- staging importu PIG/TPN i materializacja decyzji operatora.
+
+Konfiguracja `mutmut` znajduje sie w `pyproject.toml` i ogranicza zakres do
+wybranych modulow oraz powiazanych testow jednostkowych. Testy CLI oparte o
+`subprocess` zostaja w zwyklej bramce `pytest`, bo `mutmut` uruchamia mutowany
+pakiet w osobnym katalogu roboczym.
+
+Pelny przebieg uruchom:
+
+```bash
+uv run mutmut run --max-children 2
+uv run mutmut results
+```
+
+`mutmut` zapisuje stan pracy w `mutants/`. Ten katalog jest ignorowany przez
+git, zeby wyniki lokalnych eksperymentow nie trafialy do commitow.
+
 ## Miesieczna paczka danych
 
 Miesieczna paczka powinna byc generowana z czystego checkoutu po review zmian

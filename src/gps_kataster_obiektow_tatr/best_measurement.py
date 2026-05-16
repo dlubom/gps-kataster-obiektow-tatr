@@ -17,7 +17,7 @@ def select_default_best_measurement_id(measurements: Iterable[dict[str, Any]]) -
     if not candidates:
         return None
 
-    for priority in range(6):
+    for priority in (0, 1, 2, 3, 4, 5):
         priority_measurements = [
             measurement
             for measurement in candidates
@@ -73,7 +73,7 @@ def _best_measurement_within_priority(measurements: Sequence[dict[str, Any]]) ->
         latest_measurements,
         key=lambda measurement: (
             _measurement_accuracy_sort_value(measurement),
-            str(measurement.get("id", "")),
+            measurement["id"],
         ),
     )
 

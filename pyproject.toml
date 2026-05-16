@@ -12,6 +12,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "jsonschema>=4.23.0",
+    "mutmut>=3.5,<4",
     "pytest>=8.3.0",
     "ruff>=0.8.0",
 ]
@@ -26,6 +27,38 @@ packages = ["src/gps_kataster_obiektow_tatr"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+
+[tool.mutmut]
+paths_to_mutate = [
+    "src/gps_kataster_obiektow_tatr/best_measurement.py",
+    "src/gps_kataster_obiektow_tatr/coordinates.py",
+    "src/gps_kataster_obiektow_tatr/prefix_resolver.py",
+    "src/gps_kataster_obiektow_tatr/validator.py",
+    "src/gps_kataster_obiektow_tatr/pig_staging.py",
+    "src/gps_kataster_obiektow_tatr/tpn_staging.py",
+    "src/gps_kataster_obiektow_tatr/staging_review.py",
+]
+tests_dir = [
+    "tests/test_best_measurement.py",
+    "tests/test_coordinates.py",
+    "tests/test_prefix_resolver.py",
+    "tests/test_validator.py",
+    "tests/test_pig_staging.py",
+    "tests/test_tpn_staging.py",
+    "tests/test_staging_review.py",
+]
+pytest_add_cli_args_test_selection = [
+    "-k",
+    "not test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors and not test_cli_writes_staging_artifacts_without_final_yaml and not test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py",
+]
+also_copy = [
+    "src/gps_kataster_obiektow_tatr",
+    "scripts",
+    "config",
+    "schema",
+    "data/shapes",
+]
+max_stack_depth = 8
 
 [tool.ruff]
 line-length = 100

@@ -767,3 +767,25 @@ After PBI-025 on 2026-05-16:
   1875 measurements. `scripts/validate.py` exits 0 with 2066 warnings:
   1875 `MISSING_HORIZONTAL_ACCURACY`, 103 `MEASUREMENT_OUTSIDE_VALLEYS`, 72
   `MEASUREMENT_DISTANCE_OUTLIER` and 16 `OBJECT_PREFIX_MISMATCH`.
+
+After PBI-026 on 2026-05-16:
+
+- Mutation testing is now available through `mutmut>=3.5,<4` in the dev
+  dependency group and a `[tool.mutmut]` section in `pyproject.toml`.
+- The mutation scope is intentionally limited to critical data-safety modules:
+  `best_measurement.py`, `coordinates.py`, `prefix_resolver.py`,
+  `validator.py`, `pig_staging.py`, `tpn_staging.py` and
+  `staging_review.py`.
+- Standard PR validation still stays fast and unchanged. The full mutation run
+  is local or manual through `.github/workflows/mutation.yml`
+  (`workflow_dispatch`), using `uv run mutmut run --max-children 2`.
+- CLI tests based on `subprocess` remain in the normal pytest gate and are
+  deselected only for `mutmut`, because mutation stats run tests from the
+  copied `mutants/` tree.
+- Local mutation state lives under `mutants/`, which is ignored by git.
+- `uv run mutmut run --max-children 2 'gps_kataster_obiektow_tatr.best_measurement*'`
+  completed with zero surviving mutants for `best_measurement` after the
+  selector was made stricter and easier to mutate.
+- The normal local gate passed after PBI-026: Ruff format check, Ruff lint,
+  `uv run pytest` with 95 tests, and `scripts/validate.py` with only known
+  warnings.

@@ -62,5 +62,12 @@ uv run pytest
 uv run python scripts/validate.py
 ```
 
+Testy mutacyjne krytycznej logiki mozna uruchomic lokalnie:
+
+```bash
+uv run mutmut run --max-children 2
+uv run mutmut results
+```
+
 Publiczny release danych wymaga potwierdzonej licencji źródeł. Lokalne paczki
 można budować przez `scripts/build_release_artifacts.py`.

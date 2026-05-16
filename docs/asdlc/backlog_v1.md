@@ -30,6 +30,7 @@ Stan na: 2026-05-16
 - PBI-023: wykonane 2026-05-16. Dodano ludzkie `README.md`, przeniesiono surowe PIG/TPN XLSX/CSV do `data/sources/`, dodano opis zrodel i skopiowano pelny dump PIG JSONL do review brakujacych otworow.
 - PBI-024: wykonane 2026-05-16. Rozdzielono Mrozna na drugi obiekt otworowy z TPN row 982 oraz dodano slowackie jaskinie `Nova Kresanica` i `Obcasna Vyvieracka`.
 - PBI-025: wykonane 2026-05-16. Rozstrzygnieto pozostale wielootworowe przypadki TPN, dodano nowe pomiary GNSS/LIDAR, podlaczono Czarna III do Jaskini Czarnej i nazwano bezimienny rekord TPN jako `BEZ_NAZWY_001`.
+- PBI-026: wykonane 2026-05-16. Wprowadzono testy mutacyjne przez `mutmut` dla krytycznych modulow, lokalna konfiguracje w `pyproject.toml`, reczny workflow `mutation.yml`, ignorowanie `mutants/` i dokumentacje uruchamiania.
 
 ## Przyjęty poziom AS-DLC
 
@@ -96,6 +97,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `scripts/export_best_measurements.py` | istnieje | CLI generujace `build/exports/best-measurements.geojson`, `.csv`, `.gpx`, `.shp.zip` i `metadata.json`. |
 | `scripts/build_release_artifacts.py` | istnieje | Lokalny dry-run buildu/release generujacy pelny zestaw artefaktow: SQLite, eksporty, metadata i ZIP SQLite. |
 | `.github/workflows/validate.yml` | istnieje | Workflow CI dla PR i push do `main`: `uv sync`, Ruff, pytest i `scripts/validate.py`; bez build/release. |
+| `.github/workflows/mutation.yml` | istnieje | Reczny workflow `workflow_dispatch` uruchamiajacy baseline pytest, `mutmut run` i eksport statystyk mutacyjnych. |
 | `.github/workflows/build.yml` | istnieje | Workflow po push/merge do `main`: waliduje YAML, buduje artefakty release i publikuje je jako GitHub Actions artifact. |
 | `.github/workflows/release.yml` | istnieje | Workflow dla tagow `v*`: wymaga `SOURCE_LICENSE_CONFIRMED=true`, buduje artefakty i publikuje GitHub Release. |
 | `docs/operations.md` | istnieje | Dokumentacja operacyjna PBI-021: reczny pomiar, walidacja, miesieczna paczka danych, statusy `zweryfikowany` / `odrzucony`. |
@@ -108,6 +110,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_build_db.py` | 3 testy | Sprawdza build SQLite na fixture'ach, liczby w `metadata`, najlepsze geometrie, CLI i blokade buildu przy bledach walidacji. |
 | `tests/test_best_measurements_export.py` | 4 testy | Sprawdza eksport tylko najlepszych pomiarow do GeoJSON/CSV/GPX/Shapefile ZIP, snapshot `metadata.json`, CLI oraz blokade przy blednej walidacji YAML. |
 | `tests/test_ci_workflow.py` | 5 testow | Sprawdza workflow walidacyjny, build/release triggery, upload artefaktow i bramke licencji przed release. |
+| `tests/test_mutation_tooling.py` | 3 testy | Sprawdza zaleznosc i konfiguracje `mutmut`, reczny workflow mutacyjny oraz ignorowanie katalogu `mutants/`. |
 | `tests/test_release_artifacts.py` | 2 testy | Sprawdza wspolny lokalny dry-run artefaktow release, w tym `katalog.sqlite.zip` i CLI. |
 | `tests/test_operational_docs.py` | 2 testy | Sprawdza, ze dokumentacja operacyjna pokrywa zakres PBI-021 i przypomina, ze `build/` nie jest zrodlem prawdy. |
 
@@ -554,6 +557,30 @@ Weryfikacja:
 - znane ostrzezenia walidatora pozostaja nieblokujace:
   `MISSING_HORIZONTAL_ACCURACY`, `MEASUREMENT_OUTSIDE_VALLEYS`,
   `MEASUREMENT_DISTANCE_OUTLIER` i `OBJECT_PREFIX_MISMATCH`.
+
+### PBI-026: Wprowadzic testy mutacyjne
+
+Status: wykonane 2026-05-16.
+
+Zakres:
+
+- dodac `mutmut` jako zaleznosc developerska utrwalona w `uv.lock`,
+- skonfigurowac zakres mutacji w `pyproject.toml` dla krytycznych modulow:
+  `best_measurement`, `coordinates`, `prefix_resolver`, `validator`,
+  staging PIG/TPN oraz `staging_review`,
+- dodac reczny workflow `.github/workflows/mutation.yml` uruchamiany przez
+  `workflow_dispatch`, bez obciazania standardowego PR CI,
+- ignorowac lokalny katalog wynikow `mutants/`,
+- opisac uruchamianie w `README.md` i `docs/operations.md`.
+
+Weryfikacja:
+
+- test konfiguracji `mutmut`,
+- test workflow mutacyjnego,
+- `uv run mutmut run --max-children 2 'gps_kataster_obiektow_tatr.best_measurement*'`
+  przechodzi dla `best_measurement` bez przezytych mutantow,
+- pelna lokalna bramka Ruff, pytest i `scripts/validate.py` przechodzi bez
+  errorow.
 
 ## Proponowana kolejnosc startowa
 
