@@ -202,6 +202,26 @@ PBI-015 is complete:
 - TPN matched measurement updates now include `record_number` in the staging
   JSON to make decisions point to source rows directly.
 
+PBI-016 is complete:
+
+- `src/gps_kataster_obiektow_tatr/build_db.py` builds a generated SQLite
+  snapshot from validated YAML loaded through the existing data loader,
+- `scripts/build_db.py` writes `build/katalog.sqlite` by default and supports
+  `--data-dir`, `--output` and deterministic `--generated-at` for tests,
+- validation errors block the SQLite build; validation warnings are preserved
+  in the `validation_flags` table,
+- the SQLite schema includes the V1 logical tables: `objects`, `caves`,
+  `measurements`, `object_external_refs`, `cave_external_refs`, `attachments`,
+  `relations`, `best_measurements`, `validation_flags` and `metadata`,
+- `metadata` stores `generated_at`, schema version and object/cave/relation/
+  measurement plus validation issue counts as key-value rows,
+- object best geometries are derived from the authoritative YAML
+  `best_measurement.measurement_id`; the default computed best measurement is
+  stored separately as `computed_best_measurement_id`,
+- PBI-016 uses WKT text for `geom_wgs84`, `geom_1992`, `best_geom_wgs84` and
+  `best_geom_1992`; SpatiaLite initialization remains a later enhancement if
+  export/QGIS needs require it.
+
 ## Current data inventory
 
 - PIG workbook: `pig_otwory_jaskin_.xlsx`, sheet `Export`, 861 rows including
@@ -440,3 +460,21 @@ After PBI-015:
 - `uv run ruff check src tests scripts` passed.
 - `uv run pytest` passed with 75 tests.
 - `uv run python scripts/validate.py` printed `OK: no validation issues`.
+
+After PBI-016:
+
+- `uv run pytest tests/test_build_db.py` passed with 3 tests.
+- The build tests create a temporary valid YAML dataset, run
+  `build_sqlite_database(...)` and `scripts/build_db.py`, then verify SQLite
+  tables, `metadata` counts, best-measurement geometries and external-ref
+  inserts.
+- The build tests also verify that validation errors block SQLite creation.
+- `uv run ruff format src tests scripts` reformatted the new Python files.
+- `uv run ruff format --check src tests scripts` passed.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 78 tests.
+- `uv run python scripts/validate.py` printed `OK: no validation issues`.
+- `uv run python scripts/build_db.py --generated-at 2026-05-16T12:00:00Z`
+  generated `build/katalog.sqlite` from current `data/`; current final YAML
+  inventory is still empty, so the SQLite summary was 0 objects, 0 caves and
+  0 measurements.
