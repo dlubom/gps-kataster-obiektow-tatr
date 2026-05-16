@@ -23,6 +23,7 @@ Stan na: 2026-05-16
 - PBI-016: wykonane 2026-05-16. Dodano build SQLite `build/katalog.sqlite` z walidowanych YAML, tabelami logicznymi V1, metadanymi licznikow, flagami walidacji i najlepszymi geometriami obiektow w WKT.
 - PBI-017: wykonane 2026-05-16. Dodano eksport `best-measurements` z walidowanych YAML do GeoJSON, CSV, GPX i ZIP Shapefile EPSG:2180.
 - PBI-018: wykonane 2026-05-16. Eksport release zapisuje `metadata.json` z timestampem, wersjami schematow oraz licznikami obiektow, jaskin, relacji, pomiarow i walidacji.
+- PBI-019: wykonane 2026-05-16. Dodano workflow `.github/workflows/validate.yml` uruchamiajacy lokalna bramke `uv sync`, Ruff, pytest i `scripts/validate.py` bez budowania release.
 
 ## Przyjęty poziom AS-DLC
 
@@ -81,6 +82,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `scripts/importers/apply_review.py` | istnieje | CLI stosujace plik decyzji operatora do staging PIG/TPN i zapisujace raport review oraz finalne YAML. |
 | `scripts/build_db.py` | istnieje | CLI generujace `build/katalog.sqlite` z `data/` albo wskazanego katalogu testowego. |
 | `scripts/export_best_measurements.py` | istnieje | CLI generujace `build/exports/best-measurements.geojson`, `.csv`, `.gpx`, `.shp.zip` i `metadata.json`. |
+| `.github/workflows/validate.yml` | istnieje | Workflow CI dla PR i push do `main`: `uv sync`, Ruff, pytest i `scripts/validate.py`; bez build/release. |
 | `docs/asdlc/staging_review_decisions.md` | istnieje | Dokumentuje format pliku decyzji operatora i znaczenie akcji PBI-015. |
 | `tests/test_validator.py` | 9 testow | Sprawdza duplikat ID, zly `best_measurement`, brak `manual.reason`, zle wspolrzedne, ostrzezenia PBI-010, warningi `best_measurement` PBI-011 oraz exit code CLI. |
 | `tests/test_source_profile.py` | 4 testy | Sprawdza profilowanie brakow, duplikatow, zakresow wspolrzednych, zapis raportow i brak tworzenia finalnych YAML. |
@@ -89,6 +91,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_staging_review.py` | 3 testy | Sprawdza sample staging -> decyzje -> finalne YAML -> `validate.py`, decyzje link/reject/unresolved oraz blokade zapisu przy bledach. |
 | `tests/test_build_db.py` | 3 testy | Sprawdza build SQLite na fixture'ach, liczby w `metadata`, najlepsze geometrie, CLI i blokade buildu przy bledach walidacji. |
 | `tests/test_best_measurements_export.py` | 4 testy | Sprawdza eksport tylko najlepszych pomiarow do GeoJSON/CSV/GPX/Shapefile ZIP, snapshot `metadata.json`, CLI oraz blokade przy blednej walidacji YAML. |
+| `tests/test_ci_workflow.py` | 2 testy | Sprawdza, ze workflow walidacyjny uzywa lokalnej bramki i nie buduje artefaktow release. |
 
 ## Bramka kontekstu
 
@@ -402,6 +405,8 @@ Weryfikacja:
 ## Milestone 6: CI, release, operacje
 
 ### PBI-019: CI walidacyjne
+
+Status: wykonane 2026-05-16.
 
 Zakres:
 

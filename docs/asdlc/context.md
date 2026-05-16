@@ -537,3 +537,24 @@ After PBI-018:
   `metadata.json`; current final YAML inventory is still empty, so the metadata
   counts are 0 objects, 0 caves, 0 relations, 0 measurements and 0 validation
   issues.
+
+PBI-019 is complete:
+
+- `.github/workflows/validate.yml` runs on pull requests and pushes to `main`.
+- The CI job installs Python 3.12 and `uv`, then runs the same local validation
+  gate used for PBI work: `uv sync`, `uv run ruff format --check src tests
+  scripts`, `uv run ruff check src tests scripts`, `uv run pytest` and
+  `uv run python scripts/validate.py`.
+- The validate workflow intentionally does not build SQLite, export release
+  artifacts or upload release artifacts; build/release automation remains
+  PBI-020.
+
+After PBI-019:
+
+- `uv sync` completed successfully.
+- `uv run pytest tests/test_ci_workflow.py` passed with 2 tests.
+- `uv run ruff format src tests scripts` reformatted the new workflow test.
+- `uv run ruff format --check src tests scripts` passed.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 84 tests.
+- `uv run python scripts/validate.py` printed `OK: no validation issues`.
