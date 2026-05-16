@@ -1,0 +1,80 @@
+schema_version: 1
+id: PL-0022
+category: jaskinia_otwor
+name_local: Szpara pod Rysami
+cave_id: C-0382
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: PL
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{527AEE0B-533C-4CB4-BC8B-443DE48EB624}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.18160173
+  lon: 20.08095271
+  x_1992: 146571.18
+  y_1992: 578751.45
+  elevation_m: 2047.0
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: PIG
+  source_ref: PIG:1748
+  observed_date: '2010-12-31'
+  source_date: '2010-12-31'
+  method: source_record
+  device: null
+  tags:
+  - pig
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'PIG source-record measurement imported into staging; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1748'
+  created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+- id: m-002
+  lat: 49.181601734619925
+  lon: 20.08095270814154
+  x_1992: 146571.18
+  y_1992: 578751.45
+  elevation_m: 2046.032745
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{527AEE0B-533C-4CB4-BC8B-443DE48EB624}
+  observed_date: '2022-05-25'
+  source_date: '2022-05-25'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-002
+  reason: null
+  updated_at: '2026-05-16T13:00:00Z'
+  updated_by: dl
+attachments: []
+notes: Staging proposal from PIG; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T13:00:00Z'
+updated_by: dl

@@ -1,0 +1,31 @@
+schema_version: 1
+id: C-0575
+name: Wyżnia Koszowa Dziura
+system_name: null
+external_refs:
+- system: NR_INWENT
+  ref_type: inventory_number
+  external_id: T.D-22.01
+  scope: cave
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+- system: PIG
+  ref_type: catalog_id
+  external_id: '4721'
+  scope: cave
+  notes: PIG catalog record identifier.
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/4721
+- system: PIG
+  ref_type: url
+  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/4721
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/4721
+  scope: cave
+  notes: PIG catalog record link.
+object_ids:
+- PL-0031
+notes: 'PIG morphometry: length_m=8, depth_m=6,2, denivelation_m=6,2
+
+  PIG source state year: 2014'
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T13:00:00Z'
+updated_by: dl

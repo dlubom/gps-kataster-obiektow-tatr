@@ -1,0 +1,80 @@
+schema_version: 1
+id: PL-0045
+category: jaskinia_otwor
+name_local: Mnichowy Komin
+cave_id: C-0818
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: PL
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{30F0A3B7-A808-4C9A-A066-0A758D526192}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.19353411
+  lon: 20.05534987
+  x_1992: 147870.94
+  y_1992: 576867.73
+  elevation_m: 1900.0
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: PIG
+  source_ref: PIG:1727
+  observed_date: '2010-12-31'
+  source_date: '2010-12-31'
+  method: source_record
+  device: null
+  tags:
+  - pig
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'PIG source-record measurement imported into staging; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1727'
+  created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+- id: m-002
+  lat: 49.1935341149306
+  lon: 20.055349874962655
+  x_1992: 147870.94
+  y_1992: 576867.73
+  elevation_m: 1879.100532
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{30F0A3B7-A808-4C9A-A066-0A758D526192}
+  observed_date: '2022-05-25'
+  source_date: '2022-05-25'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-002
+  reason: null
+  updated_at: '2026-05-16T13:00:00Z'
+  updated_by: dl
+attachments: []
+notes: Staging proposal from PIG; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T13:00:00Z'
+updated_by: dl

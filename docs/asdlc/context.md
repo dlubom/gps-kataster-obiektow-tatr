@@ -580,9 +580,10 @@ After conservative PIG/TPN review import on 2026-05-16:
 - `uv run python scripts/export_best_measurements.py` generated GeoJSON, CSV,
   GPX, Shapefile ZIP and `metadata.json`; the best-measurements export contains
   814 features.
-- Excluded from this conservative import: PIG `POINT_OUTSIDE_VALLEYS` rows, TPN
-  distance-review matches, TPN ambiguous `NR_INWENT` rows, new TPN-only rows and
-  duplicate clean TPN match row 476 for `KSW-0065` / Smocza Jama.
+- Initially excluded from this conservative import: PIG
+  `POINT_OUTSIDE_VALLEYS` rows, TPN distance-review matches, TPN ambiguous
+  `NR_INWENT` rows, new TPN-only rows and duplicate clean TPN match row 476 for
+  `KSW-0065` / Smocza Jama.
 
 PBI-020 is complete:
 
@@ -655,4 +656,22 @@ After PBI-021:
 - `uv run pytest` passed with 91 tests.
 - `uv run python scripts/validate.py` exited 0 and still reported only 1381
   `MISSING_HORIZONTAL_ACCURACY` warnings from imported source-record
+  measurements.
+
+After maintainer review of PIG `POINT_OUTSIDE_VALLEYS` on 2026-05-16:
+
+- The maintainer confirmed that all 46 PIG `POINT_OUTSIDE_VALLEYS` rows are
+  correctly outside configured `VALLEYS` polygons and approved them for final
+  data.
+- `build/staging/review/decisions-point-outside-valleys.yml` materialized 46
+  PIG caves, 46 PIG objects under `data/objects/PL/PL-0001.yml` through
+  `data/objects/PL/PL-0046.yml`, and 42 clean TPN measurement additions for
+  those newly accepted objects.
+- Four TPN rows targeting accepted `PL` objects remain excluded because they
+  still have `TPN_MATCH_DISTANCE_REVIEW`: records 126, 493, 747 and 889.
+- Current final YAML inventory is 860 objects, 860 caves, 1469 measurements and
+  0 relations.
+- Validation has 0 errors and 1557 warnings: 1469
+  `MISSING_HORIZONTAL_ACCURACY` warnings from source-record measurements and 88
+  `MEASUREMENT_OUTSIDE_VALLEYS` warnings for the reviewed fallback-`PL`
   measurements.

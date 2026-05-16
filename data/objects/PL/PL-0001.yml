@@ -1,0 +1,80 @@
+schema_version: 1
+id: PL-0001
+category: jaskinia_otwor
+name_local: Jaskinia Filipczańska Niżnia
+cave_id: C-0001
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: PL
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{26B5F0D2-23CD-4E5B-A1CC-EAA0929C9A6D}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
+measurements:
+- id: m-001
+  lat: 49.27391671
+  lon: 20.07713884
+  x_1992: 156826.5
+  y_1992: 578327.52
+  elevation_m: 1190.0
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: PIG
+  source_ref: PIG:1036
+  observed_date: '2010-12-31'
+  source_date: '2010-12-31'
+  method: source_record
+  device: null
+  tags:
+  - pig
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'PIG source-record measurement imported into staging; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1036'
+  created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+- id: m-002
+  lat: 49.273938062927
+  lon: 20.077136282212635
+  x_1992: 156828.87
+  y_1992: 578327.3
+  elevation_m: 1190.945786
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{26B5F0D2-23CD-4E5B-A1CC-EAA0929C9A6D}
+  observed_date: '2022-05-25'
+  source_date: '2022-05-25'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  - staging
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: TPN source-record measurement imported into staging; not field-verified.
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+best_measurement:
+  mode: auto
+  measurement_id: m-002
+  reason: null
+  updated_at: '2026-05-16T13:00:00Z'
+  updated_by: dl
+attachments: []
+notes: Staging proposal from PIG; requires operator review before final YAML.
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+updated_at: '2026-05-16T13:00:00Z'
+updated_by: dl
