@@ -237,6 +237,17 @@ PBI-017 is complete:
   easting/northing from project fields `y_1992`/`x_1992`,
 - validation errors block all export files.
 
+PBI-018 is complete:
+
+- the same release export now also writes `build/exports/metadata.json`,
+- `metadata.json` records `generated_at`, release metadata schema version,
+  data schema version and counts for objects, caves, relations, measurements,
+  validation warnings and validation errors,
+- the CLI prints the metadata path together with the GeoJSON, CSV, GPX and
+  Shapefile ZIP artifacts,
+- the metadata snapshot test uses a temporary fixture with one validator
+  warning to verify the warning count.
+
 ## Current data inventory
 
 - PIG workbook: `pig_otwory_jaskin_.xlsx`, sheet `Export`, 861 rows including
@@ -510,3 +521,19 @@ After PBI-017:
   2026-05-16T12:00:00Z` generated all four `build/exports/`
   best-measurements artifacts from current `data/`; current final YAML
   inventory is still empty, so the export summary was 0 features.
+
+After PBI-018:
+
+- `uv run pytest tests/test_best_measurements_export.py` passed with 4 tests.
+- The metadata snapshot test verifies `metadata_schema_version`,
+  `data_schema_version`, `generated_at`, object/cave/relation/measurement
+  counts and validation warning/error counts.
+- `uv run ruff format --check src tests scripts` passed.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 82 tests.
+- `uv run python scripts/validate.py` printed `OK: no validation issues`.
+- `uv run python scripts/export_best_measurements.py --generated-at
+  2026-05-16T12:00:00Z` generated GeoJSON, CSV, GPX, Shapefile ZIP and
+  `metadata.json`; current final YAML inventory is still empty, so the metadata
+  counts are 0 objects, 0 caves, 0 relations, 0 measurements and 0 validation
+  issues.

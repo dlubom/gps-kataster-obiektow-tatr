@@ -40,6 +40,7 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
     assert result.csv_path == output_dir / "best-measurements.csv"
     assert result.gpx_path == output_dir / "best-measurements.gpx"
     assert result.shapefile_zip_path == output_dir / "best-measurements.shp.zip"
+    assert result.metadata_path == output_dir / "metadata.json"
 
     geojson = json.loads(result.geojson_path.read_text(encoding="utf-8"))
     feature = geojson["features"][0]
@@ -86,6 +87,37 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
     assert record["meas_id"] == "m-002"
 
 
+def test_export_writes_metadata_snapshot(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    output_dir = tmp_path / "build" / "exports"
+    object_data = _valid_object()
+    object_data.pop("cave_id")
+    _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", object_data)
+    _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
+
+    result = export_best_measurements(
+        data_dir=data_dir,
+        output_dir=output_dir,
+        generated_at=GENERATED_AT,
+    )
+
+    expected_metadata = {
+        "metadata_schema_version": 1,
+        "data_schema_version": 1,
+        "generated_at": GENERATED_AT,
+        "counts": {
+            "objects": 1,
+            "caves": 1,
+            "relations": 0,
+            "measurements": 2,
+            "validation_warnings": 1,
+            "validation_errors": 0,
+        },
+    }
+    assert result.metadata == expected_metadata
+    assert json.loads(result.metadata_path.read_text(encoding="utf-8")) == expected_metadata
+
+
 def test_export_cli_writes_artifacts(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
     output_dir = tmp_path / "build" / "exports"
@@ -113,6 +145,7 @@ def test_export_cli_writes_artifacts(tmp_path: Path) -> None:
     assert (output_dir / "best-measurements.csv").exists()
     assert (output_dir / "best-measurements.gpx").exists()
     assert (output_dir / "best-measurements.shp.zip").exists()
+    assert (output_dir / "metadata.json").exists()
     assert "best-measurements export: 1 features" in result.stdout
 
 

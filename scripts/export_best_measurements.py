@@ -70,6 +70,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(f"wrote: {result.csv_path}")
     print(f"wrote: {result.gpx_path}")
     print(f"wrote: {result.shapefile_zip_path}")
+    print(f"wrote: {result.metadata_path}")
     print(f"best-measurements export: {result.feature_count} features")
     return 0
 

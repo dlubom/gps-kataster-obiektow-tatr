@@ -34,6 +34,9 @@ GEOJSON_FILENAME = "best-measurements.geojson"
 CSV_FILENAME = "best-measurements.csv"
 GPX_FILENAME = "best-measurements.gpx"
 SHAPEFILE_ZIP_FILENAME = "best-measurements.shp.zip"
+METADATA_FILENAME = "metadata.json"
+RELEASE_METADATA_SCHEMA_VERSION = 1
+DATA_SCHEMA_VERSION = 1
 GPX_NS = "http://www.topografix.com/GPX/1/1"
 EPSG_2180_PRJ = (
     'PROJCS["ETRF2000-PL_CS92",'
@@ -86,6 +89,8 @@ class BestMeasurementsExportResult:
     csv_path: Path
     gpx_path: Path
     shapefile_zip_path: Path
+    metadata_path: Path
+    metadata: dict[str, Any]
     feature_count: int
     validation_issues: tuple[ValidationIssue, ...]
 
@@ -120,11 +125,18 @@ def export_best_measurements(
     csv_path = output_dir / CSV_FILENAME
     gpx_path = output_dir / GPX_FILENAME
     shapefile_zip_path = output_dir / SHAPEFILE_ZIP_FILENAME
+    metadata_path = output_dir / METADATA_FILENAME
+    metadata = _build_release_metadata(
+        dataset,
+        generated_at=timestamp,
+        validation_issues=validation_issues,
+    )
 
     _write_geojson(rows, geojson_path, generated_at=timestamp)
     _write_csv(rows, csv_path)
     _write_gpx(rows, gpx_path, generated_at=timestamp)
     _write_shapefile_zip(rows, shapefile_zip_path)
+    _write_metadata(metadata, metadata_path)
 
     return BestMeasurementsExportResult(
         output_dir=output_dir,
@@ -132,6 +144,8 @@ def export_best_measurements(
         csv_path=csv_path,
         gpx_path=gpx_path,
         shapefile_zip_path=shapefile_zip_path,
+        metadata_path=metadata_path,
+        metadata=metadata,
         feature_count=len(rows),
         validation_issues=validation_issues,
     )
@@ -284,6 +298,39 @@ def _write_shapefile_zip(rows: tuple[BestMeasurementExportRow, ...], path: Path)
             for suffix in (".shp", ".shx", ".dbf", ".prj", ".cpg"):
                 file_path = tmp_dir / f"best-measurements{suffix}"
                 archive.write(file_path, arcname=file_path.name)
+
+
+def _write_metadata(metadata: dict[str, Any], path: Path) -> None:
+    path.write_text(
+        json.dumps(metadata, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _build_release_metadata(
+    dataset: LoadedDataset,
+    *,
+    generated_at: str,
+    validation_issues: tuple[ValidationIssue, ...],
+) -> dict[str, Any]:
+    warning_count = sum(1 for issue in validation_issues if issue.severity == "warning")
+    error_count = sum(1 for issue in validation_issues if issue.severity == "error")
+    measurement_count = sum(
+        len(_measurement_dicts(record.data.get("measurements"))) for record in dataset.objects
+    )
+    return {
+        "metadata_schema_version": RELEASE_METADATA_SCHEMA_VERSION,
+        "data_schema_version": DATA_SCHEMA_VERSION,
+        "generated_at": generated_at,
+        "counts": {
+            "objects": len(dataset.objects),
+            "caves": len(dataset.caves),
+            "relations": len(dataset.relations),
+            "measurements": measurement_count,
+            "validation_warnings": warning_count,
+            "validation_errors": error_count,
+        },
+    }
 
 
 def _define_shapefile_fields(writer: shapefile.Writer) -> None:
