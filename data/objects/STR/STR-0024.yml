@@ -1,7 +1,7 @@
 schema_version: 1
 id: STR-0024
 category: jaskinia_otwor
-name_local: TPN row 273
+name_local: BEZ_NAZWY_001
 cave_id: C-0903
 id_assignment:
   method: auto
@@ -46,8 +46,10 @@ best_measurement:
   updated_at: '2026-05-16T10:22:52Z'
   updated_by: importer:tpn
 attachments: []
-notes: Imported from TPN source record after operator review.
+notes: 'Imported from TPN source record after operator review. Source TPN row
+  273 has empty NR_INWENT and NAZWA; maintainer review 2026-05-16 assigned the
+  working name BEZ_NAZWY_001.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-05-16T19:30:00Z'
+updated_by: dl

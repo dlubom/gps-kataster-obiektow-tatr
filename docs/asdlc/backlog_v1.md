@@ -29,6 +29,7 @@ Stan na: 2026-05-16
 - PBI-022: wykonane 2026-05-16. Naprawiono kategorie sztolni z TPN: importer rozpoznaje `GENEZA` / nazwe, a 26 istniejacych obiektow `Sztolnia...` ma `category: sztolnia`.
 - PBI-023: wykonane 2026-05-16. Dodano ludzkie `README.md`, przeniesiono surowe PIG/TPN XLSX/CSV do `data/sources/`, dodano opis zrodel i skopiowano pelny dump PIG JSONL do review brakujacych otworow.
 - PBI-024: wykonane 2026-05-16. Rozdzielono Mrozna na drugi obiekt otworowy z TPN row 982 oraz dodano slowackie jaskinie `Nova Kresanica` i `Obcasna Vyvieracka`.
+- PBI-025: wykonane 2026-05-16. Rozstrzygnieto pozostale wielootworowe przypadki TPN, dodano nowe pomiary GNSS/LIDAR, podlaczono Czarna III do Jaskini Czarnej i nazwano bezimienny rekord TPN jako `BEZ_NAZWY_001`.
 
 ## Przyjęty poziom AS-DLC
 
@@ -523,6 +524,36 @@ Weryfikacja:
 - `scripts/assign_id.py` wskazuje prefix `KSW` dla drugiego otworu Mroznej i
   fallback `SK` dla obu slowackich punktow,
 - `scripts/validate.py` bez errorow; znane ostrzezenia pozostaja nieblokujace.
+
+### PBI-025: Rozstrzygnac wielootworowe przypadki i nowe pomiary
+
+Status: wykonane 2026-05-16.
+
+Zakres:
+
+- rozdzielic Jaskinie Bandzioch Kominiarski na gorny obiekt `LEJ-0002` i nowy
+  dolny obiekt `KSZ-0112`,
+- dodac gorny otwor Jaskini Zimnej / Jaskinie Biala jako `KSW-0257`, bez
+  tworzenia osobnej jaskini,
+- podlaczyc `KSW-0240` jako Jaskinie Czarna III do `C-0699` i usunac
+  duplikatowa jaskinie `C-0876`,
+- dopisac pomiary GNSS+LIDAR z 2026-05-09 dla glownego otworu Jaskini Czarnej
+  i Jaskini Czarnej III, z opisem odczytu Dariusza Lubomskiego z
+  `https://cloud.wrogeo.pl/`,
+- oznaczyc `Jaskinie Pawlikowskiego` jako system dla Mylnej, Oblazkowej i
+  Raptawickiej, dodac pomiary Pawlikowskiego i materializowac polnocny otwor
+  Mylnej jako `KSZ-0113`,
+- dodac wschodni / SE otwor Jaskini nad Korytem jako `MLZ-0108`,
+- dopisac pomiar `Wysoka7Progow` do istniejacej Jaskini Wysokiej `KSW-0189`,
+- nazwac bezimienny TPN row 273 / `STR-0024` jako `BEZ_NAZWY_001`.
+
+Weryfikacja:
+
+- `scripts/validate.py` bez errorow,
+- finalny katalog ma 1009 obiektow, 1003 jaskinie i 1875 pomiarow,
+- znane ostrzezenia walidatora pozostaja nieblokujace:
+  `MISSING_HORIZONTAL_ACCURACY`, `MEASUREMENT_OUTSIDE_VALLEYS`,
+  `MEASUREMENT_DISTANCE_OUTLIER` i `OBJECT_PREFIX_MISMATCH`.
 
 ## Proponowana kolejnosc startowa
 

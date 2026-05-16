@@ -64,15 +64,41 @@ measurements:
   notes: TPN source-record measurement imported after operator review; not field-verified.
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-003
+  lat: 49.2398675351
+  lon: 19.8622197642
+  x_1992: 152841.98
+  y_1992: 562742.35
+  elevation_m: 1141.31
+  elevation_datum: unknown
+  elevation_source: gnss
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: inne
+  source_ref: unknown:gnss:Pawlikowskiego:Raptawicka
+  observed_date: '2026-05-16'
+  source_date: null
+  method: gnss
+  device: null
+  tags:
+  - gnss
+  - source_unknown
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Source provided as Pawlikowskiego:Raptawicka, unknown GNSS. PIG dump
+    identifies Jaskinia Raptawicka as part of system Jaskinie Pawlikowskiego.'
+  created_at: '2026-05-16T19:30:00Z'
+  created_by: dl
 best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T10:41:53Z'
+  mode: manual
+  measurement_id: m-003
+  reason: Supplied Pawlikowskiego GNSS point is the reviewed current coordinate.
+  updated_at: '2026-05-16T19:30:00Z'
   updated_by: dl
 attachments: []
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
+updated_at: '2026-05-16T19:30:00Z'
 updated_by: dl

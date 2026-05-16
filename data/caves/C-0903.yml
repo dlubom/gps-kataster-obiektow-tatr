@@ -1,6 +1,6 @@
 schema_version: 1
 id: C-0903
-name: TPN row 273
+name: BEZ_NAZWY_001
 system_name: null
 external_refs: []
 object_ids:
@@ -13,8 +13,11 @@ notes: 'TPN length: 0
 
   TPN verification/location note: 15-5-2024 TZK
 
-  TPN notes: zasypana, ale widoczne belkowanie stropu'
+  TPN notes: zasypana, ale widoczne belkowanie stropu
+
+  Maintainer review 2026-05-16: source TPN row 273 has empty NR_INWENT and
+  NAZWA, so the working name BEZ_NAZWY_001 was assigned.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-05-16T19:30:00Z'
+updated_by: dl

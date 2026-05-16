@@ -22,12 +22,19 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - KSW-0201
+- KSW-0240
 notes: 'PIG sector: D. Kościeliska - Wsch.
 
   PIG morphometry: length_m=6500, depth_m=241,5, denivelation_m=303,5
 
-  PIG source state year: 2013'
+  PIG source state year: 2013
+
+  Multi-opening review 2026-05-16: full PIG dump lists additional openings,
+  including 3 - ku NNE, 1404 m n.p.m.; KSW-0240 is linked here as Jaskinia
+  Czarna III. Dariusz Lubomski read the 2026-05-09 main and III points from
+  https://cloud.wrogeo.pl/ LIDAR anchored by GNSS, then converted PL-1992
+  easting/northing to WGS84 with cs2cs.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
+updated_at: '2026-05-16T19:30:00Z'
 updated_by: dl

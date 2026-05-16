@@ -22,14 +22,19 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - KSW-0090
+- KSW-0257
 notes: 'PIG aliases: Duda, Jaskinia Biała, Biała nad Łukami
 
   PIG sector: D. Kościeliska - Wsch.
 
   PIG morphometry: length_m=5335, depth_m=156, denivelation_m=176
 
-  PIG source state year: 2014'
+  PIG source state year: 2014
+
+  Multi-opening review 2026-05-16: PIG dump states other_entrances="2
+  (Jaskinia Biała) - ku SW, 1260 m n.p.m."; KSW-0257 was created as the upper
+  opening, linked to TPN row 290 and the supplied unknown-GNSS point.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
+updated_at: '2026-05-16T19:30:00Z'
 updated_by: dl

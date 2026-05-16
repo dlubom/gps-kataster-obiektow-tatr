@@ -1,0 +1,53 @@
+schema_version: 1
+id: KSZ-0112
+category: jaskinia_otwor
+name_local: Jaskinia Bańdzioch Kominiarski - otwór dolny
+cave_id: C-0078
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSZ
+  prefix_override_reason: null
+external_refs: []
+measurements:
+- id: m-001
+  lat: 49.24258746
+  lon: 19.8495785
+  x_1992: 153133.85
+  y_1992: 561819.08
+  elevation_m: 1451.06
+  elevation_datum: unknown
+  elevation_source: gnss
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: inne
+  source_ref: unknown:gnss:BandziochKominiarskiDolny
+  observed_date: '2026-05-16'
+  source_date: null
+  method: gnss
+  device: null
+  tags:
+  - gnss
+  - source_unknown
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Source provided as unknown GNSS for Bandzioch Kominiarski Dolny.
+    PIG dump places the lower/main and upper openings separately for
+    Jaskinia Bańdzioch Kominiarski.'
+  created_at: '2026-05-16T19:30:00Z'
+  created_by: dl
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: null
+  updated_at: '2026-05-16T19:30:00Z'
+  updated_by: dl
+attachments: []
+notes: 'Created during multi-opening review from a supplied unknown-GNSS point.
+  The existing LEJ-0002 object is treated as the upper opening; this object
+  records the lower opening.'
+created_at: '2026-05-16T19:30:00Z'
+created_by: dl
+updated_at: '2026-05-16T19:30:00Z'
+updated_by: dl

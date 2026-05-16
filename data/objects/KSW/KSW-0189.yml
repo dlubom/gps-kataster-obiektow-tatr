@@ -1,7 +1,7 @@
 schema_version: 1
 id: KSW-0189
 category: jaskinia_otwor
-name_local: Jaskinia Wysoka
+name_local: Jaskinia Wysoka - Wysoka7Progow
 cave_id: C-0665
 id_assignment:
   method: auto
@@ -64,15 +64,43 @@ measurements:
   notes: TPN source-record measurement imported after operator review; not field-verified.
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-003
+  lat: 49.2336413
+  lon: 19.88454604
+  x_1992: 152168.79
+  y_1992: 564375.07
+  elevation_m: 1486.69
+  elevation_datum: unknown
+  elevation_source: gnss
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: inne
+  source_ref: unknown:gnss:Wysoka7Progow
+  observed_date: '2026-05-16'
+  source_date: null
+  method: gnss
+  device: null
+  tags:
+  - gnss
+  - source_unknown
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Source provided as unknown GNSS for Wysoka7Progow. The point lies on
+    the existing Jaskinia Wysoka object rather than creating a separate cave.'
+  created_at: '2026-05-16T19:30:00Z'
+  created_by: dl
 best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T14:00:00Z'
+  mode: manual
+  measurement_id: m-003
+  reason: Supplied Wysoka7Progow GNSS point is the reviewed current coordinate.
+  updated_at: '2026-05-16T19:30:00Z'
   updated_by: dl
 attachments: []
-notes: Imported from PIG source record after operator review.
+notes: 'Imported from PIG source record after operator review. Multi-opening
+  review 2026-05-16 added supplied Wysoka7Progow unknown-GNSS point to this
+  existing Jaskinia Wysoka object.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
+updated_at: '2026-05-16T19:30:00Z'
 updated_by: dl

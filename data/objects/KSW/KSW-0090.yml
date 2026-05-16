@@ -1,7 +1,7 @@
 schema_version: 1
 id: KSW-0090
 category: jaskinia_otwor
-name_local: Jaskinia Zimna
+name_local: Jaskinia Zimna - otwór dolny
 cave_id: C-0297
 id_assignment:
   method: auto
@@ -71,8 +71,10 @@ best_measurement:
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
-notes: Imported from PIG source record after operator review.
+notes: 'Imported from PIG source record after operator review. Multi-opening
+  review 2026-05-16 treats this object as the lower opening of Jaskinia Zimna;
+  KSW-0257 records the Jaskinia Biała upper opening.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
+updated_at: '2026-05-16T19:30:00Z'
 updated_by: dl

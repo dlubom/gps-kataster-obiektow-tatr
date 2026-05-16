@@ -8,7 +8,12 @@ id_assignment:
   assigned_from_measurement_id: m-001
   assigned_prefix: KSZ
   prefix_override_reason: null
-external_refs: []
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{CECF8620-A1C8-4941-A5B1-6C2226DC1F88}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
   lat: 49.2394028
@@ -35,15 +40,68 @@ measurements:
     Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1349'
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
+- id: m-002
+  lat: 49.2393700747
+  lon: 19.8620205028
+  x_1992: 152786.53
+  y_1992: 562728.48
+  elevation_m: 1098.924832
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{CECF8620-A1C8-4941-A5B1-6C2226DC1F88}
+  observed_date: '2023-08-28'
+  source_date: '2023-08-28'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'TPN source-record measurement imported after multi-opening review;
+    not field-verified. TPN row 225 has OTWÓR=S for Jaskinia Mylna.'
+  created_at: '2026-05-16T19:30:00Z'
+  created_by: dl
+- id: m-003
+  lat: 49.2393861277
+  lon: 19.8622047217
+  x_1992: 152788.47
+  y_1992: 562741.86
+  elevation_m: 1098.0
+  elevation_datum: unknown
+  elevation_source: gnss
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: inne
+  source_ref: unknown:gnss:Pawlikowskiego:Mylna
+  observed_date: '2026-05-16'
+  source_date: null
+  method: gnss
+  device: null
+  tags:
+  - gnss
+  - source_unknown
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Source provided as Pawlikowskiego:Mylna, unknown GNSS. PIG dump
+    identifies Jaskinia Mylna as part of system Jaskinie Pawlikowskiego.'
+  created_at: '2026-05-16T19:30:00Z'
+  created_by: dl
 best_measurement:
-  mode: auto
-  measurement_id: m-001
-  reason: null
-  updated_at: '2026-05-16T10:22:49Z'
-  updated_by: importer:pig
+  mode: manual
+  measurement_id: m-003
+  reason: Supplied Pawlikowskiego GNSS point is the reviewed current coordinate.
+  updated_at: '2026-05-16T19:30:00Z'
+  updated_by: dl
 attachments: []
-notes: Imported from PIG source record after operator review.
+notes: 'Imported from PIG source record after operator review. Multi-opening
+  review 2026-05-16 links TPN row 225 to the main/southern Mylna opening and
+  KSZ-0113 to the northern opening.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:22:49Z'
-updated_by: importer:pig
+updated_at: '2026-05-16T19:30:00Z'
+updated_by: dl

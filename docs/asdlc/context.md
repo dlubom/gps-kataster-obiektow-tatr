@@ -739,3 +739,31 @@ After release follow-up PBIs 022-024 on 2026-05-16:
   1862 measurements. `scripts/validate.py` exits 0 with 2053 warnings:
   1862 `MISSING_HORIZONTAL_ACCURACY`, 103 `MEASUREMENT_OUTSIDE_VALLEYS`, 72
   `MEASUREMENT_DISTANCE_OUTLIER` and 16 `OBJECT_PREFIX_MISMATCH`.
+
+After PBI-025 on 2026-05-16:
+
+- The remaining known `TPN_NR_INWENT_AMBIGUOUS` rows were reviewed against the
+  PIG JSONL dump instead of being treated as new caves by default:
+  row 225 became a TPN measurement on `KSZ-0064`, row 759 became new Mylna
+  northern opening `KSZ-0113`, row 290 became Jaskinia Biala / upper opening of
+  Jaskinia Zimna `KSW-0257`, and row 672 became east/SE opening of Jaskinia nad
+  Korytem `MLZ-0108`. Row 982 for Mrozna had already been handled in PBI-024.
+- `KSW-0240` is no longer a separate `C-0876` Jaskinia Czarna duplicate; it is
+  linked to `C-0699` as Jaskinia Czarna III. The old `C-0876.yml` file was
+  deleted.
+- Dariusz Lubomski's 2026-05-09 readings from `https://cloud.wrogeo.pl/`
+  were recorded for Jaskinia Czarna main entrance and Jaskinia Czarna III as
+  `wlasne` verified measurements. The notes state that the points came from
+  GNSS-anchored LIDAR in PL-1992 EPSG:2180 plus PL-KRON86-NH and were converted
+  to WGS84 with `cs2cs`.
+- Source-unknown GNSS measurements were added for Bandzioch Kominiarski Dolny
+  and Gorny, Pawlikowskiego/Mylna, Pawlikowskiego/Oblazkowa,
+  Pawlikowskiego/Raptawicka, Jaskinia Biala / Zimna upper opening, and
+  Wysoka7Progow. Where these should drive exports despite unknown provenance,
+  `best_measurement.mode` was set to `manual` with a reason.
+- TPN row 273 had empty `NR_INWENT` and `NAZWA`; final records `C-0903` and
+  `STR-0024` now use the working name `BEZ_NAZWY_001`.
+- Current final YAML inventory is 1009 objects, 1003 caves, 0 relations and
+  1875 measurements. `scripts/validate.py` exits 0 with 2066 warnings:
+  1875 `MISSING_HORIZONTAL_ACCURACY`, 103 `MEASUREMENT_OUTSIDE_VALLEYS`, 72
+  `MEASUREMENT_DISTANCE_OUTLIER` and 16 `OBJECT_PREFIX_MISMATCH`.

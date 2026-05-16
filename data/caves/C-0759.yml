@@ -1,7 +1,7 @@
 schema_version: 1
 id: C-0759
 name: Jaskinia Obłazkowa
-system_name: null
+system_name: Jaskinie Pawlikowskiego
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -28,8 +28,12 @@ notes: 'PIG aliases: SYSTEM Jaskinia Mylna, Obłazkowa Jama, Jaskinie Pawlikowsk
 
   PIG morphometry: length_m=214, depth_m=0, denivelation_m=8,1
 
-  PIG source state year: 2015'
+  PIG source state year: 2015
+
+  Multi-opening review 2026-05-16: marked as part of system Jaskinie
+  Pawlikowskiego and added supplied Pawlikowskiego:Oblazkowa unknown-GNSS
+  measurement to KSZ-0090.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
+updated_at: '2026-05-16T19:30:00Z'
 updated_by: dl
