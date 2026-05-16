@@ -24,6 +24,7 @@ Stan na: 2026-05-16
 - PBI-017: wykonane 2026-05-16. Dodano eksport `best-measurements` z walidowanych YAML do GeoJSON, CSV, GPX i ZIP Shapefile EPSG:2180.
 - PBI-018: wykonane 2026-05-16. Eksport release zapisuje `metadata.json` z timestampem, wersjami schematow oraz licznikami obiektow, jaskin, relacji, pomiarow i walidacji.
 - PBI-019: wykonane 2026-05-16. Dodano workflow `.github/workflows/validate.yml` uruchamiajacy lokalna bramke `uv sync`, Ruff, pytest i `scripts/validate.py` bez budowania release.
+- PBI-020: wykonane 2026-05-16. Dodano lokalny builder artefaktow release, workflow `build.yml` dla `main`, workflow `release.yml` dla tagow `v*` oraz bramke `SOURCE_LICENSE_CONFIRMED=true` przed publikacja release.
 
 ## Przyjęty poziom AS-DLC
 
@@ -73,6 +74,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `src/gps_kataster_obiektow_tatr/staging_review.py` | istnieje | Applier decyzji operatora: materializuje staging do finalnych YAML, dopisuje pomiary TPN, laczy obiekty z jaskiniami i blokuje zapis przy blednych decyzjach. |
 | `src/gps_kataster_obiektow_tatr/build_db.py` | istnieje | Build SQLite: waliduje YAML, tworzy tabele logiczne, zapisuje pomiary, referencje, relacje, `metadata`, `validation_flags` oraz najlepsze geometrie obiektow. |
 | `src/gps_kataster_obiektow_tatr/best_measurements_export.py` | istnieje | Eksport najlepszych pomiarow: GeoJSON WGS84, CSV WGS84 + EPSG:2180, GPX WGS84, Shapefile ZIP EPSG:2180 oraz `metadata.json`. |
+| `src/gps_kataster_obiektow_tatr/release_artifacts.py` | istnieje | Wspolny builder artefaktow release: SQLite, eksporty best-measurements, metadata i `katalog.sqlite.zip`. |
 | `tests/test_best_measurement.py` | 11 testow | Sprawdza wszystkie priorytety wyboru, remis dat/dokladnosci/ID oraz fallback do odrzuconych pomiarow. |
 | `src/gps_kataster_obiektow_tatr/validator.py` | istnieje | Walidator lokalny: JSON Schema, unikalnosc ID, referencje cross-file, spojnosci wspolrzednych, reguly przestrzenne i ostrzezenia domenowe. |
 | `scripts/validate.py` | istnieje | CLI walidatora; wypisuje `kod`, `poziom`, `plik`, `opis` i konczy kodem 1 tylko dla error. |
@@ -82,7 +84,10 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `scripts/importers/apply_review.py` | istnieje | CLI stosujace plik decyzji operatora do staging PIG/TPN i zapisujace raport review oraz finalne YAML. |
 | `scripts/build_db.py` | istnieje | CLI generujace `build/katalog.sqlite` z `data/` albo wskazanego katalogu testowego. |
 | `scripts/export_best_measurements.py` | istnieje | CLI generujace `build/exports/best-measurements.geojson`, `.csv`, `.gpx`, `.shp.zip` i `metadata.json`. |
+| `scripts/build_release_artifacts.py` | istnieje | Lokalny dry-run buildu/release generujacy pelny zestaw artefaktow: SQLite, eksporty, metadata i ZIP SQLite. |
 | `.github/workflows/validate.yml` | istnieje | Workflow CI dla PR i push do `main`: `uv sync`, Ruff, pytest i `scripts/validate.py`; bez build/release. |
+| `.github/workflows/build.yml` | istnieje | Workflow po push/merge do `main`: waliduje YAML, buduje artefakty release i publikuje je jako GitHub Actions artifact. |
+| `.github/workflows/release.yml` | istnieje | Workflow dla tagow `v*`: wymaga `SOURCE_LICENSE_CONFIRMED=true`, buduje artefakty i publikuje GitHub Release. |
 | `docs/asdlc/staging_review_decisions.md` | istnieje | Dokumentuje format pliku decyzji operatora i znaczenie akcji PBI-015. |
 | `tests/test_validator.py` | 9 testow | Sprawdza duplikat ID, zly `best_measurement`, brak `manual.reason`, zle wspolrzedne, ostrzezenia PBI-010, warningi `best_measurement` PBI-011 oraz exit code CLI. |
 | `tests/test_source_profile.py` | 4 testy | Sprawdza profilowanie brakow, duplikatow, zakresow wspolrzednych, zapis raportow i brak tworzenia finalnych YAML. |
@@ -91,7 +96,8 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_staging_review.py` | 3 testy | Sprawdza sample staging -> decyzje -> finalne YAML -> `validate.py`, decyzje link/reject/unresolved oraz blokade zapisu przy bledach. |
 | `tests/test_build_db.py` | 3 testy | Sprawdza build SQLite na fixture'ach, liczby w `metadata`, najlepsze geometrie, CLI i blokade buildu przy bledach walidacji. |
 | `tests/test_best_measurements_export.py` | 4 testy | Sprawdza eksport tylko najlepszych pomiarow do GeoJSON/CSV/GPX/Shapefile ZIP, snapshot `metadata.json`, CLI oraz blokade przy blednej walidacji YAML. |
-| `tests/test_ci_workflow.py` | 2 testy | Sprawdza, ze workflow walidacyjny uzywa lokalnej bramki i nie buduje artefaktow release. |
+| `tests/test_ci_workflow.py` | 5 testow | Sprawdza workflow walidacyjny, build/release triggery, upload artefaktow i bramke licencji przed release. |
+| `tests/test_release_artifacts.py` | 2 testy | Sprawdza wspolny lokalny dry-run artefaktow release, w tym `katalog.sqlite.zip` i CLI. |
 
 ## Bramka kontekstu
 
@@ -419,6 +425,8 @@ Weryfikacja:
 - workflow nie buduje release'ow.
 
 ### PBI-020: Build/release workflow
+
+Status: wykonane 2026-05-16.
 
 Zakres:
 

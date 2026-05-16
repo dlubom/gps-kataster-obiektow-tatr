@@ -1,0 +1,53 @@
+name: build
+
+"on":
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build generated artifacts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Sync dependencies
+        run: uv sync
+
+      - name: Validate YAML data
+        run: uv run python scripts/validate.py
+
+      - name: Build release artifacts
+        run: uv run python scripts/build_release_artifacts.py
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gps-kataster-build-${{ github.sha }}
+          path: |
+            build/katalog.sqlite
+            build/exports/best-measurements.geojson
+            build/exports/best-measurements.csv
+            build/exports/best-measurements.gpx
+            build/exports/best-measurements.shp.zip
+            build/exports/katalog.sqlite.zip
+            build/exports/metadata.json
+          if-no-files-found: error
+          retention-days: 30

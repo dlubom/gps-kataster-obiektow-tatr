@@ -558,3 +558,38 @@ After PBI-019:
 - `uv run ruff check src tests scripts` passed.
 - `uv run pytest` passed with 84 tests.
 - `uv run python scripts/validate.py` printed `OK: no validation issues`.
+
+PBI-020 is complete:
+
+- `src/gps_kataster_obiektow_tatr/release_artifacts.py` builds the shared
+  release artifact set from YAML: `build/katalog.sqlite`,
+  `best-measurements.geojson`, `best-measurements.csv`,
+  `best-measurements.gpx`, `best-measurements.shp.zip`, `metadata.json` and
+  `katalog.sqlite.zip`.
+- `scripts/build_release_artifacts.py` is the local dry-run entrypoint used by
+  both GitHub Actions workflows.
+- `.github/workflows/build.yml` runs on push to `main` and `workflow_dispatch`,
+  validates YAML, builds the release artifact set and uploads it as a GitHub
+  Actions artifact.
+- `.github/workflows/release.yml` runs only on tags `v*`. The `release` job
+  depends on `license_guard`, which requires repository variable
+  `SOURCE_LICENSE_CONFIRMED=true` before any GitHub Release publish command can
+  run.
+- The release job publishes only the generated release files through
+  `gh release create`; imported external source data still requires legal/source
+  license confirmation before public release.
+
+After PBI-020:
+
+- `uv run python scripts/build_release_artifacts.py --generated-at
+  2026-05-16T12:00:00Z` generated the full local dry-run artifact set.
+- The local dry-run reported 814 objects, 814 caves, 1381 measurements and
+  1381 validation warnings.
+- `uv run ruff format src tests scripts` reformatted the new release-artifact
+  test file.
+- `uv run ruff format --check src tests scripts` passed.
+- `uv run ruff check src tests scripts` passed.
+- `uv run pytest` passed with 89 tests.
+- `uv run python scripts/validate.py` exited 0 and reported 1381
+  `MISSING_HORIZONTAL_ACCURACY` warnings from the already imported PIG/TPN
+  source-record measurements.
