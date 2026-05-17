@@ -82,6 +82,9 @@ class BestMeasurementExportRow:
     pig_id: str | None
     pig_url: str | None
     tpn_globalid: str | None
+    object_notes: str | None
+    cave_notes: str | None
+    measurement_notes: str | None
 
 
 @dataclass(frozen=True, slots=True)
@@ -197,6 +200,9 @@ def _collect_best_measurement_rows(dataset: LoadedDataset) -> tuple[BestMeasurem
                 pig_id=_joined_values(_ref_external_ids(cave_data, "PIG", ref_type="catalog_id")),
                 pig_url=_joined_values(_pig_urls(cave_data)),
                 tpn_globalid=_joined_values(_tpn_globalids(object_data)),
+                object_notes=_optional_str(object_data.get("notes")),
+                cave_notes=_optional_str(cave_data.get("notes")) if cave_data is not None else None,
+                measurement_notes=_optional_str(measurement.get("notes")),
             )
         )
 
@@ -302,6 +308,9 @@ def _write_shapefile_zip(rows: tuple[BestMeasurementExportRow, ...], path: Path)
                     _text_or_empty(row.tpn_globalid),
                     row.observed_date,
                     row.verification_status,
+                    _truncated_text(row.object_notes, max_length=254),
+                    _truncated_text(row.cave_notes, max_length=254),
+                    _truncated_text(row.measurement_notes, max_length=254),
                 )
         finally:
             writer.close()
@@ -366,6 +375,9 @@ def _define_shapefile_fields(writer: shapefile.Writer) -> None:
     writer.field("tpn_gid", "C", size=80)
     writer.field("obs_date", "C", size=10)
     writer.field("status", "C", size=24)
+    writer.field("obj_notes", "C", size=254)
+    writer.field("cave_notes", "C", size=254)
+    writer.field("meas_notes", "C", size=254)
 
 
 def _row_properties(row: BestMeasurementExportRow) -> dict[str, Any]:
@@ -395,6 +407,9 @@ def _row_properties(row: BestMeasurementExportRow) -> dict[str, Any]:
         "verification_status": row.verification_status,
         "horizontal_accuracy_m": row.horizontal_accuracy_m,
         "vertical_accuracy_m": row.vertical_accuracy_m,
+        "object_notes": row.object_notes,
+        "cave_notes": row.cave_notes,
+        "measurement_notes": row.measurement_notes,
     }
 
 
@@ -429,6 +444,9 @@ def _empty_row() -> BestMeasurementExportRow:
         pig_id=None,
         pig_url=None,
         tpn_globalid=None,
+        object_notes=None,
+        cave_notes=None,
+        measurement_notes=None,
     )
 
 
@@ -553,6 +571,12 @@ def _text_or_empty(value: str | None) -> str:
     return "" if value is None else value
 
 
+def _truncated_text(value: str | None, *, max_length: int) -> str:
+    if value is None:
+        return ""
+    return value[:max_length]
+
+
 def _float_text(value: float) -> str:
     return f"{value:.12g}"
 
@@ -564,6 +588,13 @@ def _gpx_description(row: BestMeasurementExportRow) -> str:
         f"source {row.source}",
         f"observed {row.observed_date}",
     ]
+    for label, note in (
+        ("object notes", row.object_notes),
+        ("cave notes", row.cave_notes),
+        ("measurement notes", row.measurement_notes),
+    ):
+        if note:
+            parts.append(f"{label}: {note}")
     return "; ".join(parts)
 
 

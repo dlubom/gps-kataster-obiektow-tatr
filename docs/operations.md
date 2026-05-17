@@ -207,6 +207,9 @@ w YAML:
    - `metadata.json`,
    - `katalog.sqlite.zip`.
 
+   Dokladny przeglad kolumn i pol tych plikow jest w
+   `docs/release_artifacts.md`.
+
 6. Publiczny release tagiem `v*` wymaga potwierdzenia licencji zrodel przez
    `SOURCE_LICENSE_CONFIRMED=true`. Bez tego wolno robic lokalny dry-run, ale
    nie nalezy publikowac paczki jako oficjalnego release.

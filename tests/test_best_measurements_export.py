@@ -56,6 +56,9 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
         == "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094"
     )
     assert feature["properties"]["tpn_globalid"] == "{38626571-CAA6-4317-8900-D61A995020E9}"
+    assert feature["properties"]["object_notes"] == "Object terrain note."
+    assert feature["properties"]["cave_notes"] == "Cave catalog note."
+    assert feature["properties"]["measurement_notes"] == "TPN measurement note."
     assert "m-001" not in result.geojson_path.read_text(encoding="utf-8")
 
     csv_rows = list(csv.DictReader(result.csv_path.open(encoding="utf-8", newline="")))
@@ -70,6 +73,9 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
     assert csv_rows[0]["pig_id"] == "1094"
     assert csv_rows[0]["pig_url"] == "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094"
     assert csv_rows[0]["tpn_globalid"] == "{38626571-CAA6-4317-8900-D61A995020E9}"
+    assert csv_rows[0]["object_notes"] == "Object terrain note."
+    assert csv_rows[0]["cave_notes"] == "Cave catalog note."
+    assert csv_rows[0]["measurement_notes"] == "TPN measurement note."
 
     gpx_root = ET.parse(result.gpx_path).getroot()
     waypoints = gpx_root.findall("{http://www.topografix.com/GPX/1/1}wpt")
@@ -77,6 +83,9 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
     assert waypoints[0].attrib["lat"] == str(KSW_LAT)
     assert waypoints[0].attrib["lon"] == str(KSW_LON)
     assert waypoints[0].findtext("{http://www.topografix.com/GPX/1/1}name") == "KSW-0001"
+    assert "TPN measurement note." in (
+        waypoints[0].findtext("{http://www.topografix.com/GPX/1/1}desc") or ""
+    )
 
     with zipfile.ZipFile(result.shapefile_zip_path) as archive:
         assert set(archive.namelist()) == {
@@ -99,6 +108,9 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
     assert record["nr_inwent"] == "T.E-08.75"
     assert record["pig_id"] == "1094"
     assert record["tpn_gid"] == "{38626571-CAA6-4317-8900-D61A995020E9}"
+    assert record["obj_notes"] == "Object terrain note."
+    assert record["cave_notes"] == "Cave catalog note."
+    assert record["meas_notes"] == "TPN measurement note."
 
 
 def test_export_writes_metadata_snapshot(tmp_path: Path) -> None:
@@ -217,7 +229,7 @@ def _valid_object() -> dict[str, object]:
             "updated_by": "dl",
         },
         "attachments": [],
-        "notes": None,
+        "notes": "Object terrain note.",
         "created_at": "2026-05-15T10:00:00Z",
         "created_by": "dl",
         "updated_at": "2026-05-16T10:30:00Z",
@@ -249,7 +261,7 @@ def _valid_cave() -> dict[str, object]:
             },
         ],
         "object_ids": ["KSW-0001"],
-        "notes": None,
+        "notes": "Cave catalog note.",
         "created_at": "2026-05-15T10:00:00Z",
         "created_by": "dl",
         "updated_at": "2026-05-16T10:30:00Z",
@@ -286,7 +298,7 @@ def _measurement(
         "verification_status": "nieweryfikowany",
         "verified_by": None,
         "verified_at": None,
-        "notes": None,
+        "notes": f"{source} measurement note.",
         "created_at": "2026-05-15T10:00:00Z",
         "created_by": "dl",
     }

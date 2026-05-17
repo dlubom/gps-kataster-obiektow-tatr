@@ -1,6 +1,6 @@
 # AS-DLC project context
 
-Last updated: 2026-05-16
+Last updated: 2026-05-17
 
 ## Current mode
 
@@ -801,3 +801,19 @@ After PBI-027 on 2026-05-16:
 - Do not bulk-change imported PIG/TPN measurements to `zweryfikowany`; update
   that status only after real review, a better field measurement, or an
   explicit operator decision.
+
+After PBI-028 on 2026-05-17:
+
+- `docs/release_artifacts.md` is the durable review surface for release files:
+  it lists the generated SQLite, CSV, GeoJSON, GPX, Shapefile ZIP,
+  `metadata.json` and zipped SQLite artifacts, including the columns and fields
+  each consumer should expect.
+- Flat `best-measurements` exports now carry separated notes instead of one
+  ambiguous `notes` field: `object_notes`, `cave_notes` and
+  `measurement_notes` in CSV/GeoJSON, `obj_notes`, `cave_notes` and
+  `meas_notes` in Shapefile DBF, and the same notes appended to GPX waypoint
+  descriptions when present.
+- SQLite already keeps full notes on `objects`, `caves`, `measurements` and
+  external-reference tables; external-reference notes were intentionally left
+  out of the flat exports to avoid duplicating `source_ref`, `pig_url` and
+  `tpn_globalid`.

@@ -76,4 +76,6 @@ uv run mutmut results
 ```
 
 Publiczny release danych wymaga potwierdzonej licencji źródeł. Lokalne paczki
-można budować przez `scripts/build_release_artifacts.py`.
+można budować przez `scripts/build_release_artifacts.py`. Przegląd plików,
+kolumn i pól release jest w
+[docs/release_artifacts.md](docs/release_artifacts.md).

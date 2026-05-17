@@ -1,6 +1,6 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-05-16
+Stan na: 2026-05-17
 
 ## Status realizacji
 
@@ -32,6 +32,7 @@ Stan na: 2026-05-16
 - PBI-025: wykonane 2026-05-16. Rozstrzygnieto pozostale wielootworowe przypadki TPN, dodano nowe pomiary GNSS/LIDAR, podlaczono Czarna III do Jaskini Czarnej i nazwano bezimienny rekord TPN jako `BEZ_NAZWY_001`.
 - PBI-026: wykonane 2026-05-16. Wprowadzono testy mutacyjne przez `mutmut` dla krytycznych modulow, lokalna konfiguracje w `pyproject.toml`, reczny workflow `mutation.yml`, ignorowanie `mutants/` i dokumentacje uruchamiania.
 - PBI-027: wykonane 2026-05-16. Doprecyzowano w README i dokumentacji operacyjnej, ze `verification_status: nieweryfikowany` w release jest oczekiwany dla importow PIG/TPN i nie oznacza automatycznie bledu danych.
+- PBI-028: wykonane 2026-05-17. Udokumentowano kolumny i pola artefaktow release oraz dodano `object_notes`, `cave_notes` i `measurement_notes` do plaskich eksportow `best-measurements`.
 
 ## Przyjęty poziom AS-DLC
 
@@ -85,7 +86,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `src/gps_kataster_obiektow_tatr/tpn_staging.py` | istnieje | Importer staging TPN: czyta CSV/XLSX, tworzy propozycje pomiarow TPN, dopasowuje do YAML/staging PIG i raportuje statusy review. |
 | `src/gps_kataster_obiektow_tatr/staging_review.py` | istnieje | Applier decyzji operatora: materializuje staging do finalnych YAML, dopisuje pomiary TPN, laczy obiekty z jaskiniami i blokuje zapis przy blednych decyzjach. |
 | `src/gps_kataster_obiektow_tatr/build_db.py` | istnieje | Build SQLite: waliduje YAML, tworzy tabele logiczne, zapisuje pomiary, referencje, relacje, `metadata`, `validation_flags` oraz najlepsze geometrie obiektow. |
-| `src/gps_kataster_obiektow_tatr/best_measurements_export.py` | istnieje | Eksport najlepszych pomiarow: GeoJSON WGS84, CSV WGS84 + EPSG:2180, GPX WGS84, Shapefile ZIP EPSG:2180 oraz `metadata.json`. |
+| `src/gps_kataster_obiektow_tatr/best_measurements_export.py` | istnieje | Eksport najlepszych pomiarow: GeoJSON WGS84, CSV WGS84 + EPSG:2180, GPX WGS84, Shapefile ZIP EPSG:2180, notatki obiektu/jaskini/pomiaru oraz `metadata.json`. |
 | `src/gps_kataster_obiektow_tatr/release_artifacts.py` | istnieje | Wspolny builder artefaktow release: SQLite, eksporty best-measurements, metadata i `katalog.sqlite.zip`. |
 | `tests/test_best_measurement.py` | 11 testow | Sprawdza wszystkie priorytety wyboru, remis dat/dokladnosci/ID oraz fallback do odrzuconych pomiarow. |
 | `src/gps_kataster_obiektow_tatr/validator.py` | istnieje | Walidator lokalny: JSON Schema, unikalnosc ID, referencje cross-file, spojnosci wspolrzednych, reguly przestrzenne i ostrzezenia domenowe. |
@@ -102,6 +103,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `.github/workflows/build.yml` | istnieje | Workflow po push/merge do `main`: waliduje YAML, buduje artefakty release i publikuje je jako GitHub Actions artifact. |
 | `.github/workflows/release.yml` | istnieje | Workflow dla tagow `v*`: wymaga `SOURCE_LICENSE_CONFIRMED=true`, buduje artefakty i publikuje GitHub Release. |
 | `docs/operations.md` | istnieje | Dokumentacja operacyjna PBI-021: reczny pomiar, walidacja, miesieczna paczka danych, statusy `zweryfikowany` / `odrzucony`. |
+| `docs/release_artifacts.md` | istnieje | Przeglad plikow release, kolumn/pol CSV, GeoJSON, Shapefile, GPX, metadata i SQLite oraz decyzja o rozdzieleniu notatek. |
 | `docs/asdlc/staging_review_decisions.md` | istnieje | Dokumentuje format pliku decyzji operatora i znaczenie akcji PBI-015. |
 | `tests/test_validator.py` | 9 testow | Sprawdza duplikat ID, zly `best_measurement`, brak `manual.reason`, zle wspolrzedne, ostrzezenia PBI-010, warningi `best_measurement` PBI-011 oraz exit code CLI. |
 | `tests/test_source_profile.py` | 4 testy | Sprawdza profilowanie brakow, duplikatow, zakresow wspolrzednych, zapis raportow i brak tworzenia finalnych YAML. |
@@ -109,7 +111,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_tpn_staging.py` | 6 testow | Sprawdza dopasowanie TPN do staging PIG, nowe obiekty, nierozstrzygniete duplikaty, XLSX, raporty i CLI bez zapisu finalnych YAML. |
 | `tests/test_staging_review.py` | 3 testy | Sprawdza sample staging -> decyzje -> finalne YAML -> `validate.py`, decyzje link/reject/unresolved oraz blokade zapisu przy bledach. |
 | `tests/test_build_db.py` | 3 testy | Sprawdza build SQLite na fixture'ach, liczby w `metadata`, najlepsze geometrie, CLI i blokade buildu przy bledach walidacji. |
-| `tests/test_best_measurements_export.py` | 4 testy | Sprawdza eksport tylko najlepszych pomiarow do GeoJSON/CSV/GPX/Shapefile ZIP, snapshot `metadata.json`, CLI oraz blokade przy blednej walidacji YAML. |
+| `tests/test_best_measurements_export.py` | 4 testy | Sprawdza eksport tylko najlepszych pomiarow do GeoJSON/CSV/GPX/Shapefile ZIP, notatki w plaskich eksportach, snapshot `metadata.json`, CLI oraz blokade przy blednej walidacji YAML. |
 | `tests/test_ci_workflow.py` | 5 testow | Sprawdza workflow walidacyjny, build/release triggery, upload artefaktow i bramke licencji przed release. |
 | `tests/test_mutation_tooling.py` | 3 testy | Sprawdza zaleznosc i konfiguracje `mutmut`, reczny workflow mutacyjny oraz ignorowanie katalogu `mutants/`. |
 | `tests/test_release_artifacts.py` | 2 testy | Sprawdza wspolny lokalny dry-run artefaktow release, w tym `katalog.sqlite.zip` i CLI. |
@@ -599,6 +601,27 @@ Zakres:
 Weryfikacja:
 
 - test dokumentacji operacyjnej sprawdza obecnosc wyjasnienia dla release.
+
+### PBI-028: Udokumentowac kolumny release i dodac notatki do eksportow
+
+Status: wykonane 2026-05-17.
+
+Zakres:
+
+- przejrzec lokalny zestaw release: SQLite, CSV, GeoJSON, GPX, Shapefile ZIP i
+  `metadata.json`,
+- dodac dokument `docs/release_artifacts.md` opisujacy, ktory plik zawiera
+  jakie kolumny albo pola,
+- dodac do plaskich eksportow `best-measurements` rozdzielone notatki:
+  `object_notes`, `cave_notes`, `measurement_notes`,
+- w Shapefile uzyc skroconych nazw DBF: `obj_notes`, `cave_notes`,
+  `meas_notes`,
+- dopisac notatki do opisu waypointow GPX.
+
+Weryfikacja:
+
+- test eksportu sprawdza notatki w GeoJSON, CSV, GPX i Shapefile,
+- pelna lokalna bramka Ruff, pytest, walidacja YAML i build artefaktow release.
 
 ## Proponowana kolejnosc startowa
 
