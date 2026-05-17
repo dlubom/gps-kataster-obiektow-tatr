@@ -6,6 +6,18 @@ udokumentowane w tym pliku.
 Format jest oparty o [Keep a Changelog](https://keepachangelog.com/), a
 wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
+## [v1.0.1] - 2026-05-17
+
+Patch release z korekta wysokosci dla Jaskini Bandzioch Kominiarski.
+
+### Naprawiono
+
+- Uzupelniono wysokosc recznego pomiaru GNSS gornego otworu Bandziocha
+  Kominiarskiego (`LEJ-0002`, `BandziochKom:136`) na `1675.02 m`.
+- Dolny otwor Bandziocha (`KSZ-0112`, `BandziochKom:000`) pozostaje z
+  wysokoscia `1451.06 m`; eksporty `best-measurements` zawieraja teraz
+  wysokosci obu otworow.
+
 ## [v1.0.0] - 2026-05-17
 
 Pierwsze formalne wydanie semver dla katalogu GPS/GNSS obiektow tatrzanskich.

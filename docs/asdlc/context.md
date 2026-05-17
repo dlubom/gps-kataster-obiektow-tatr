@@ -843,3 +843,10 @@ After PBI-030 on 2026-05-17:
 - `uv run python scripts/validate.py` exits 0 with 2066 known warnings, and
   `uv run python scripts/build_release_artifacts.py --generated-at 2026-05-17T06:43:08Z`
   regenerated the local release artifacts.
+
+Release prep for v1.0.1 on 2026-05-17:
+
+- `CHANGELOG.md` has a `v1.0.1` entry describing the Bandzioch upper-opening
+  elevation fix.
+- Project/package version moved from `1.0.0` to `1.0.1`; publish by pushing
+  `main` and then annotated tag `v1.0.1`.

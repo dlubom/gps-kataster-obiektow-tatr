@@ -14,5 +14,6 @@ def test_changelog_has_semver_release_entry() -> None:
     text = Path("CHANGELOG.md").read_text(encoding="utf-8")
 
     assert "Semantic Versioning" in text
+    assert "## [v1.0.1] - 2026-05-17" in text
     assert "## [v1.0.0] - 2026-05-17" in text
     assert "GitHub Release" in text

@@ -1,6 +1,6 @@
 [project]
 name = "gps-kataster-obiektow-tatr"
-version = "1.0.0"
+version = "1.0.1"
 description = "Git-native catalog of GPS/GNSS measurements for Tatra karst and cave objects."
 requires-python = ">=3.12"
 dependencies = [
