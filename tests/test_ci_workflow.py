@@ -4,7 +4,6 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VALIDATE_WORKFLOW = REPO_ROOT / ".github" / "workflows" / "validate.yml"
-BUILD_WORKFLOW = REPO_ROOT / ".github" / "workflows" / "build.yml"
 RELEASE_WORKFLOW = REPO_ROOT / ".github" / "workflows" / "release.yml"
 
 
@@ -38,35 +37,8 @@ def test_validate_workflow_does_not_build_release_artifacts() -> None:
         assert forbidden_step not in workflow_text
 
 
-def test_build_workflow_generates_and_uploads_artifacts_after_main_merge() -> None:
-    workflow = yaml.safe_load(BUILD_WORKFLOW.read_text(encoding="utf-8"))
-
-    assert workflow["name"] == "build"
-    assert workflow["on"]["push"]["branches"] == ["main"]
-    assert "workflow_dispatch" in workflow["on"]
-    assert workflow["permissions"] == {"contents": "read"}
-
-    steps = workflow["jobs"]["build"]["steps"]
-    run_commands = [step["run"].strip() for step in steps if "run" in step]
-    assert run_commands == [
-        "uv sync",
-        "uv run python scripts/validate.py",
-        "uv run python scripts/build_release_artifacts.py",
-    ]
-
-    upload_step = next(step for step in steps if step["name"] == "Upload build artifacts")
-    assert upload_step["uses"] == "actions/upload-artifact@v4"
-    assert upload_step["with"]["if-no-files-found"] == "error"
-    upload_paths = set(upload_step["with"]["path"].splitlines())
-    assert upload_paths == {
-        "build/katalog.sqlite",
-        "build/exports/best-measurements.geojson",
-        "build/exports/best-measurements.csv",
-        "build/exports/best-measurements.gpx",
-        "build/exports/best-measurements.shp.zip",
-        "build/exports/katalog.sqlite.zip",
-        "build/exports/metadata.json",
-    }
+def test_no_automatic_build_workflow_after_main_merge() -> None:
+    assert not (REPO_ROOT / ".github" / "workflows" / "build.yml").exists()
 
 
 def test_release_workflow_is_tagged_and_requires_license_confirmation() -> None:
@@ -91,23 +63,22 @@ def test_release_workflow_publishes_expected_files_only_after_guard() -> None:
 
     steps = workflow["jobs"]["release"]["steps"]
     run_commands = [step["run"].strip() for step in steps if "run" in step]
-    assert run_commands == [
-        "uv sync",
-        "uv run python scripts/validate.py",
-        "uv run python scripts/build_release_artifacts.py",
-        (
-            'gh release create "${GITHUB_REF_NAME}" \\\n'
-            "  build/exports/best-measurements.geojson \\\n"
-            "  build/exports/best-measurements.csv \\\n"
-            "  build/exports/best-measurements.gpx \\\n"
-            "  build/exports/best-measurements.shp.zip \\\n"
-            "  build/exports/katalog.sqlite.zip \\\n"
-            "  build/exports/metadata.json \\\n"
-            '  --title "${GITHUB_REF_NAME}" \\\n'
-            '  --notes "Generated catalog artifacts for ${GITHUB_REF_NAME}."'
-        ),
-    ]
+    assert "uv sync" in run_commands
+    assert "uv run python scripts/validate.py" in run_commands
+    assert "uv run python scripts/build_release_artifacts.py" in run_commands
+
+    notes_step = next(
+        step for step in steps if step["name"] == "Extract release notes from CHANGELOG.md"
+    )
+    assert "CHANGELOG.md > release_notes.md" in notes_step["run"]
+    assert "No CHANGELOG.md entry found" in notes_step["run"]
 
     release_step = steps[-1]
     assert release_step["name"] == "Publish GitHub Release"
     assert release_step["env"] == {"GH_TOKEN": "${{ github.token }}"}
+    assert 'gh release create "${{ steps.version.outputs.VERSION }}"' in release_step["run"]
+    assert "--notes-file release_notes.md" in release_step["run"]
+    assert '--title "${{ steps.version.outputs.VERSION }}"' in release_step["run"]
+    assert "build/exports/best-measurements.geojson" in release_step["run"]
+    assert "build/exports/katalog.sqlite.zip" in release_step["run"]
+    assert "build/exports/metadata.json" in release_step["run"]

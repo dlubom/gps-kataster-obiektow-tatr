@@ -32,6 +32,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -51,16 +55,24 @@ jobs:
       - name: Build release artifacts
         run: uv run python scripts/build_release_artifacts.py
 
+      - name: Extract release notes from CHANGELOG.md
+        run: |
+          awk '/^## \['"${{ steps.version.outputs.VERSION }}"'\]/{found=1; next} found && /^## \[/{exit} found{print}' CHANGELOG.md > release_notes.md
+          if [ ! -s release_notes.md ]; then
+            echo "No CHANGELOG.md entry found for ${{ steps.version.outputs.VERSION }}."
+            exit 1
+          fi
+
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${GITHUB_REF_NAME}" \
+          gh release create "${{ steps.version.outputs.VERSION }}" \
             build/exports/best-measurements.geojson \
             build/exports/best-measurements.csv \
             build/exports/best-measurements.gpx \
             build/exports/best-measurements.shp.zip \
             build/exports/katalog.sqlite.zip \
             build/exports/metadata.json \
-            --title "${GITHUB_REF_NAME}" \
-            --notes "Generated catalog artifacts for ${GITHUB_REF_NAME}."
+            --title "${{ steps.version.outputs.VERSION }}" \
+            --notes-file release_notes.md

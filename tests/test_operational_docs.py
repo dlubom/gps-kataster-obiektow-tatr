@@ -7,8 +7,10 @@ def test_operational_documentation_covers_pbi_021_scope() -> None:
     required_phrases = [
         "## Dodanie recznego pomiaru",
         "## Walidacja",
-        "## Miesieczna paczka danych",
+        "## Tagowany release danych",
         "## Statusy weryfikacji pomiarow",
+        "CHANGELOG.md",
+        "annotated tag",
         "duzy udzial statusu",
         "najlepsza dostepna lokalizacja",
         "zweryfikowany",

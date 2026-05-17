@@ -172,10 +172,10 @@ uv run mutmut results
 `mutmut` zapisuje stan pracy w `mutants/`. Ten katalog jest ignorowany przez
 git, zeby wyniki lokalnych eksperymentow nie trafialy do commitow.
 
-## Miesieczna paczka danych
+## Tagowany release danych
 
-Miesieczna paczka powinna byc generowana z czystego checkoutu po review zmian
-w YAML:
+Oficjalna paczka danych powinna byc publikowana recznie przez tag `vX.Y.Z` z
+czystego checkoutu po review zmian w YAML:
 
 1. Zaktualizuj repo i upewnij sie, ze nie ma przypadkowych zmian:
 
@@ -183,14 +183,15 @@ w YAML:
    git status --short
    ```
 
-2. Uruchom pelna bramke walidacyjna z poprzedniej sekcji.
-3. Zbuduj artefakty release:
+2. Upewnij sie, ze `CHANGELOG.md` ma nowy wpis `## [vX.Y.Z] - YYYY-MM-DD`.
+3. Uruchom pelna bramke walidacyjna z poprzedniej sekcji.
+4. Zbuduj artefakty release lokalnie jako dry-run:
 
    ```bash
    uv run python scripts/build_release_artifacts.py
    ```
 
-4. Sprawdz `build/exports/metadata.json`, zwlaszcza liczniki:
+5. Sprawdz `build/exports/metadata.json`, zwlaszcza liczniki:
 
    - `object_count`,
    - `cave_count`,
@@ -198,7 +199,7 @@ w YAML:
    - `validation_error_count`,
    - `validation_warning_count`.
 
-5. Paczka lokalna znajduje sie w `build/exports/`:
+6. Paczka lokalna znajduje sie w `build/exports/`:
 
    - `best-measurements.geojson`,
    - `best-measurements.csv`,
@@ -210,9 +211,25 @@ w YAML:
    Dokladny przeglad kolumn i pol tych plikow jest w
    `docs/release_artifacts.md`.
 
-6. Publiczny release tagiem `v*` wymaga potwierdzenia licencji zrodel przez
-   `SOURCE_LICENSE_CONFIRMED=true`. Bez tego wolno robic lokalny dry-run, ale
-   nie nalezy publikowac paczki jako oficjalnego release.
+7. Zacommituj zmiany i utworz annotated tag:
+
+   ```bash
+   git tag -a vX.Y.Z -m "vX.Y.Z - krotki opis"
+   ```
+
+8. Wypchnij commit i tag:
+
+   ```bash
+   git push origin main
+   git push origin vX.Y.Z
+   ```
+
+   GitHub Actions publikuje release wylacznie po pushu taga `v*` i bierze
+   notatki z odpowiadajacego wpisu `CHANGELOG.md`.
+
+Publiczny release tagiem `v*` wymaga potwierdzenia licencji zrodel przez
+`SOURCE_LICENSE_CONFIRMED=true`. Bez tego wolno robic lokalny dry-run, ale nie
+nalezy publikowac paczki jako oficjalnego release.
 
 W poczatkowych paczkach danych duzy udzial statusu
 `verification_status: nieweryfikowany` jest oczekiwany. Import z PIG/TPN tworzy

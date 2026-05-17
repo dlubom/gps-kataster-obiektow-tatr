@@ -9,6 +9,12 @@ uv run python scripts/build_release_artifacts.py
 Zrodlem prawdy pozostaja YAML-e w `data/`. Pliki w `build/` sa artefaktami
 pochodnymi i nie sa commitowane.
 
+## Wersjonowanie
+
+Oficjalne wydania sa wersjonowane semver tagami `vX.Y.Z`. Release jest
+publikowany recznie przez annotated tag, a notatki GitHub Release pochodza z
+sekcji `CHANGELOG.md` o tym samym numerze wersji.
+
 ## Zestaw plikow
 
 | Plik | Rola | Geometria / format |

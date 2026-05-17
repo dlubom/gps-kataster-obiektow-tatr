@@ -24,8 +24,8 @@ Stan na: 2026-05-17
 - PBI-017: wykonane 2026-05-16. Dodano eksport `best-measurements` z walidowanych YAML do GeoJSON, CSV, GPX i ZIP Shapefile EPSG:2180.
 - PBI-018: wykonane 2026-05-16. Eksport release zapisuje `metadata.json` z timestampem, wersjami schematow oraz licznikami obiektow, jaskin, relacji, pomiarow i walidacji.
 - PBI-019: wykonane 2026-05-16. Dodano workflow `.github/workflows/validate.yml` uruchamiajacy lokalna bramke `uv sync`, Ruff, pytest i `scripts/validate.py` bez budowania release.
-- PBI-020: wykonane 2026-05-16. Dodano lokalny builder artefaktow release, workflow `build.yml` dla `main`, workflow `release.yml` dla tagow `v*` oraz bramke `SOURCE_LICENSE_CONFIRMED=true` przed publikacja release.
-- PBI-021: wykonane 2026-05-16. Dodano `docs/operations.md` z procedurami recznego pomiaru, walidacji, miesiecznej paczki danych i statusow weryfikacji oraz test dokumentacji.
+- PBI-020: wykonane 2026-05-16, skorygowane w PBI-029. Dodano lokalny builder artefaktow release oraz workflow `release.yml` dla tagow `v*`; automatyczny build po `main` zostal usuniety.
+- PBI-021: wykonane 2026-05-16, skorygowane w PBI-029. Dodano `docs/operations.md` z procedurami recznego pomiaru, walidacji, recznie tagowanego release danych i statusow weryfikacji oraz test dokumentacji.
 - PBI-022: wykonane 2026-05-16. Naprawiono kategorie sztolni z TPN: importer rozpoznaje `GENEZA` / nazwe, a 26 istniejacych obiektow `Sztolnia...` ma `category: sztolnia`.
 - PBI-023: wykonane 2026-05-16. Dodano ludzkie `README.md`, przeniesiono surowe PIG/TPN XLSX/CSV do `data/sources/`, dodano opis zrodel i skopiowano pelny dump PIG JSONL do review brakujacych otworow.
 - PBI-024: wykonane 2026-05-16. Rozdzielono Mrozna na drugi obiekt otworowy z TPN row 982 oraz dodano slowackie jaskinie `Nova Kresanica` i `Obcasna Vyvieracka`.
@@ -33,6 +33,7 @@ Stan na: 2026-05-17
 - PBI-026: wykonane 2026-05-16. Wprowadzono testy mutacyjne przez `mutmut` dla krytycznych modulow, lokalna konfiguracje w `pyproject.toml`, reczny workflow `mutation.yml`, ignorowanie `mutants/` i dokumentacje uruchamiania.
 - PBI-027: wykonane 2026-05-16. Doprecyzowano w README i dokumentacji operacyjnej, ze `verification_status: nieweryfikowany` w release jest oczekiwany dla importow PIG/TPN i nie oznacza automatycznie bledu danych.
 - PBI-028: wykonane 2026-05-17. Udokumentowano kolumny i pola artefaktow release oraz dodano `object_notes`, `cave_notes` i `measurement_notes` do plaskich eksportow `best-measurements`.
+- PBI-029: wykonane 2026-05-17. Przestawiono wydania na reczny semver jak w JKTZ: `CHANGELOG.md`, annotated tag `vX.Y.Z`, release notes z changeloga, link do najnowszego GitHub Release w README oraz brak automatycznego build workflow po `main`.
 
 ## Przyjęty poziom AS-DLC
 
@@ -100,9 +101,9 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `scripts/build_release_artifacts.py` | istnieje | Lokalny dry-run buildu/release generujacy pelny zestaw artefaktow: SQLite, eksporty, metadata i ZIP SQLite. |
 | `.github/workflows/validate.yml` | istnieje | Workflow CI dla PR i push do `main`: `uv sync`, Ruff, pytest i `scripts/validate.py`; bez build/release. |
 | `.github/workflows/mutation.yml` | istnieje | Reczny workflow `workflow_dispatch` uruchamiajacy baseline pytest, `mutmut run` i eksport statystyk mutacyjnych. |
-| `.github/workflows/build.yml` | istnieje | Workflow po push/merge do `main`: waliduje YAML, buduje artefakty release i publikuje je jako GitHub Actions artifact. |
 | `.github/workflows/release.yml` | istnieje | Workflow dla tagow `v*`: wymaga `SOURCE_LICENSE_CONFIRMED=true`, buduje artefakty i publikuje GitHub Release. |
-| `docs/operations.md` | istnieje | Dokumentacja operacyjna PBI-021: reczny pomiar, walidacja, miesieczna paczka danych, statusy `zweryfikowany` / `odrzucony`. |
+| `CHANGELOG.md` | istnieje | Historia wersji semver i zrodlo notatek GitHub Release. |
+| `docs/operations.md` | istnieje | Dokumentacja operacyjna PBI-021/PBI-029: reczny pomiar, walidacja, tagowany release danych, statusy `zweryfikowany` / `odrzucony`. |
 | `docs/release_artifacts.md` | istnieje | Przeglad plikow release, kolumn/pol CSV, GeoJSON, Shapefile, GPX, metadata i SQLite oraz decyzja o rozdzieleniu notatek. |
 | `docs/asdlc/staging_review_decisions.md` | istnieje | Dokumentuje format pliku decyzji operatora i znaczenie akcji PBI-015. |
 | `tests/test_validator.py` | 9 testow | Sprawdza duplikat ID, zly `best_measurement`, brak `manual.reason`, zle wspolrzedne, ostrzezenia PBI-010, warningi `best_measurement` PBI-011 oraz exit code CLI. |
@@ -444,18 +445,19 @@ Weryfikacja:
 
 ### PBI-020: Build/release workflow
 
-Status: wykonane 2026-05-16.
+Status: wykonane 2026-05-16, skorygowane PBI-029 2026-05-17.
 
 Zakres:
 
-- dodac `build.yml` po merge do `main`,
+- zachowac lokalny builder artefaktow release,
 - dodac `release.yml` dla tagow `v*`,
-- publikowac artefakty buildu/release.
+- publikowac artefakty release tylko po recznym pushu taga.
 
 Weryfikacja:
 
 - dry-run lokalny buildu generuje wszystkie oczekiwane pliki,
 - release nie probuje publikowac danych bez potwierdzenia licencji zrodel.
+- repo nie ma automatycznego `build.yml` uruchamianego po pushu na `main`.
 
 ### PBI-021: Dokumentacja operacyjna
 
@@ -465,7 +467,7 @@ Zakres:
 
 - opisac jak dodac nowy pomiar recznie,
 - opisac jak uruchomic walidacje,
-- opisac jak przygotowac miesieczna paczke danych,
+- opisac jak przygotowac tagowany release danych,
 - opisac zasady weryfikacji `zweryfikowany` / `odrzucony`.
 
 Weryfikacja:
@@ -621,6 +623,28 @@ Zakres:
 Weryfikacja:
 
 - test eksportu sprawdza notatki w GeoJSON, CSV, GPX i Shapefile,
+- pelna lokalna bramka Ruff, pytest, walidacja YAML i build artefaktow release.
+
+### PBI-029: Przestawic release na reczny semver tagowy
+
+Status: wykonane 2026-05-17.
+
+Zakres:
+
+- dodac glowny `CHANGELOG.md` zgodny z Keep a Changelog / semver,
+- ustawic formalna wersje projektu na `1.0.0`,
+- usunac automatyczny build artefaktow po `main`,
+- zostawic publikacje GitHub Release wylacznie po recznym tagu `v*`,
+- pobierac notatki GitHub Release z wpisu `CHANGELOG.md` dla danego taga,
+- dodac w README link do najnowszego release i link do changeloga,
+- zmienic dokumentacje operacyjna z cyklicznej paczki na tagowany release.
+
+Weryfikacja:
+
+- testy workflow sprawdzaja brak `build.yml`, tag-only release i release notes
+  z `CHANGELOG.md`,
+- testy dokumentacji sprawdzaja link do najnowszego release, changelog i
+  tagowany proces wydania,
 - pelna lokalna bramka Ruff, pytest, walidacja YAML i build artefaktow release.
 
 ## Proponowana kolejnosc startowa

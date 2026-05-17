@@ -1,5 +1,9 @@
 # GPS Kataster Obiektów Tatr
 
+[![Latest Release](https://img.shields.io/github/v/release/dlubom/gps-kataster-obiektow-tatr)](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest)
+
+[Pobierz najnowszą wersję danych](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest)
+
 Repozytorium utrzymuje git-native katalog punktów terenowych ważnych dla
 speleologii i krasu w Tatrach: otworów jaskiń, sztolni, ponorów, wywierzysk i
 obiektów pokrewnych.
@@ -19,6 +23,14 @@ Shapefile są artefaktami generowanymi z tych YAML-i.
 - `scripts/` - lokalne komendy walidacji, importu staging i budowy artefaktów.
 - [docs/operations.md](docs/operations.md) - praktyczny workflow utrzymania
   danych.
+- [CHANGELOG.md](CHANGELOG.md) - historia wersji i notatki wydań.
+
+## Najnowsza wersja
+
+Tu możesz pobrać najnowszą wersję danych:
+[GitHub Releases](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest).
+Wydanie zawiera gotowe artefakty do pracy w GIS i w terenie: GeoJSON, CSV, GPX,
+Shapefile ZIP, spakowany snapshot SQLite oraz `metadata.json`.
 
 ## Szybki start
 
@@ -79,3 +91,8 @@ Publiczny release danych wymaga potwierdzonej licencji źródeł. Lokalne paczki
 można budować przez `scripts/build_release_artifacts.py`. Przegląd plików,
 kolumn i pól release jest w
 [docs/release_artifacts.md](docs/release_artifacts.md).
+
+Wydania publiczne są wersjonowane semver tagami `vX.Y.Z`. Proces jest ręczny:
+uzupełnij [CHANGELOG.md](CHANGELOG.md), zacommituj zmianę, utwórz annotated tag
+`git tag -a vX.Y.Z -m "vX.Y.Z - opis"` i wypchnij tag. GitHub Actions publikuje
+release wyłącznie po pushu taga.

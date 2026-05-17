@@ -596,29 +596,29 @@ PBI-020 is complete:
   `best-measurements.geojson`, `best-measurements.csv`,
   `best-measurements.gpx`, `best-measurements.shp.zip`, `metadata.json` and
   `katalog.sqlite.zip`.
-- `scripts/build_release_artifacts.py` is the local dry-run entrypoint used by
-  both GitHub Actions workflows.
-- `.github/workflows/build.yml` runs on push to `main` and `workflow_dispatch`,
-  validates YAML, builds the release artifact set and uploads it as a GitHub
-  Actions artifact.
+- `scripts/build_release_artifacts.py` is the local dry-run entrypoint used
+  before publishing a tagged release.
+- `.github/workflows/build.yml` was removed in PBI-029; there is no automatic
+  artifact build on push to `main`.
 - `.github/workflows/release.yml` runs only on tags `v*`. The `release` job
   depends on `license_guard`, which requires repository variable
   `SOURCE_LICENSE_CONFIRMED=true` before any GitHub Release publish command can
   run.
 - The release job publishes only the generated release files through
-  `gh release create`; imported external source data still requires legal/source
-  license confirmation before public release.
+  `gh release create` and uses the matching `CHANGELOG.md` section as release
+  notes; imported external source data still requires legal/source license
+  confirmation before public release.
 
 PBI-021 is complete:
 
 - `docs/operations.md` documents the V1 operational workflow for manual
-  measurements, local validation, monthly data-package builds and verification
+  measurements, local validation, tagged data releases and verification
   statuses.
 - The manual-measurement path describes editing object YAML, assigning the next
   local `m-NNN` measurement ID, keeping both WGS84 and project EPSG:2180 fields,
   and updating `best_measurement`.
-- The documentation keeps `build/` as generated output, points monthly package
-  generation to `scripts/build_release_artifacts.py`, and repeats the release
+- The documentation keeps `build/` as generated output, points tagged release
+  dry-runs to `scripts/build_release_artifacts.py`, and repeats the release
   license guard.
 - `tests/test_operational_docs.py` guards the expected PBI-021 sections and the
   rule that generated `build/` artifacts are not committed.
@@ -817,3 +817,17 @@ After PBI-028 on 2026-05-17:
   external-reference tables; external-reference notes were intentionally left
   out of the flat exports to avoid duplicating `source_ref`, `pig_url` and
   `tpn_globalid`.
+
+After PBI-029 on 2026-05-17:
+
+- The project now follows the JKTZ-style release model: semver tags `vX.Y.Z`,
+  a top-level `CHANGELOG.md`, annotated tags as the manual release trigger, and
+  GitHub Release notes extracted from the matching changelog section.
+- Formal package/project version is `1.0.0`; the intended release tag for this
+  process change is `v1.0.0`.
+- README links to the latest GitHub Release and to `CHANGELOG.md`, and tells
+  users that the release page is where to download the newest generated data
+  package.
+- `.github/workflows/build.yml` is intentionally absent. The only generated
+  artifact publication path is `.github/workflows/release.yml` on a pushed tag
+  `v*`; local dry-runs still use `uv run python scripts/build_release_artifacts.py`.
