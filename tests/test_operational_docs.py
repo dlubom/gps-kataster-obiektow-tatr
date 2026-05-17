@@ -9,6 +9,8 @@ def test_operational_documentation_covers_pbi_021_scope() -> None:
         "## Walidacja",
         "## Miesieczna paczka danych",
         "## Statusy weryfikacji pomiarow",
+        "duzy udzial statusu",
+        "najlepsza dostepna lokalizacja",
         "zweryfikowany",
         "odrzucony",
         "uv run python scripts/validate.py --data-dir",

@@ -31,6 +31,7 @@ Stan na: 2026-05-16
 - PBI-024: wykonane 2026-05-16. Rozdzielono Mrozna na drugi obiekt otworowy z TPN row 982 oraz dodano slowackie jaskinie `Nova Kresanica` i `Obcasna Vyvieracka`.
 - PBI-025: wykonane 2026-05-16. Rozstrzygnieto pozostale wielootworowe przypadki TPN, dodano nowe pomiary GNSS/LIDAR, podlaczono Czarna III do Jaskini Czarnej i nazwano bezimienny rekord TPN jako `BEZ_NAZWY_001`.
 - PBI-026: wykonane 2026-05-16. Wprowadzono testy mutacyjne przez `mutmut` dla krytycznych modulow, lokalna konfiguracje w `pyproject.toml`, reczny workflow `mutation.yml`, ignorowanie `mutants/` i dokumentacje uruchamiania.
+- PBI-027: wykonane 2026-05-16. Doprecyzowano w README i dokumentacji operacyjnej, ze `verification_status: nieweryfikowany` w release jest oczekiwany dla importow PIG/TPN i nie oznacza automatycznie bledu danych.
 
 ## Przyjęty poziom AS-DLC
 
@@ -581,6 +582,23 @@ Weryfikacja:
   przechodzi dla `best_measurement` bez przezytych mutantow,
 - pelna lokalna bramka Ruff, pytest i `scripts/validate.py` przechodzi bez
   errorow.
+
+### PBI-027: Wyjasnic `nieweryfikowany` w release
+
+Status: wykonane 2026-05-16.
+
+Zakres:
+
+- dopisac w `README.md`, ze poczatkowe release'y moga miec wiekszosc
+  najlepszych pomiarow jako `verification_status: nieweryfikowany`,
+- dopisac w `docs/operations.md`, ze status oznacza brak projektowego review,
+  a nie automatyczny blad danych albo brak proweniencji,
+- utrwalic zasade, ze statusow importow PIG/TPN nie zmieniamy hurtowo na
+  `zweryfikowany`.
+
+Weryfikacja:
+
+- test dokumentacji operacyjnej sprawdza obecnosc wyjasnienia dla release.
 
 ## Proponowana kolejnosc startowa
 

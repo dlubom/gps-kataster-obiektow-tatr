@@ -211,11 +211,19 @@ w YAML:
    `SOURCE_LICENSE_CONFIRMED=true`. Bez tego wolno robic lokalny dry-run, ale
    nie nalezy publikowac paczki jako oficjalnego release.
 
+W poczatkowych paczkach danych duzy udzial statusu
+`verification_status: nieweryfikowany` jest oczekiwany. Import z PIG/TPN tworzy
+pomiary zrodlowe, a nie potwierdzone pomiary terenowe projektu. Taki status w
+release oznacza: "najlepsza dostepna lokalizacja z zachowana proweniencja, ale
+jeszcze bez projektowej weryfikacji operatora". Nie nalezy zmieniac tych
+statusow hurtowo na `zweryfikowany`; robimy to tylko po realnym review albo
+pomiarze terenowym.
+
 ## Statusy weryfikacji pomiarow
 
 | Status | Kiedy uzyc |
 |---|---|
-| `nieweryfikowany` | Domyslnie dla importu PIG/TPN, nowego pomiaru terenowego przed review i wpisu przepisanego z notatek. |
+| `nieweryfikowany` | Domyslnie dla importu PIG/TPN, nowego pomiaru terenowego przed review i wpisu przepisanego z notatek. Status jest normalny w release, dopoki projekt nie potwierdzil punktu niezaleznie. |
 | `zweryfikowany` | Po sprawdzeniu przez operatora/maintainera; dla pomiaru wlasnego oznacza, ze mozna mu ufac w wyborze `best_measurement`. |
 | `odrzucony` | Dla pomiaru znanego, ale blednego albo nieuzytecznego. Nie usuwaj go z historii; dodaj notatke wyjasniajaca powod. |
 

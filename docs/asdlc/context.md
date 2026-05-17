@@ -789,3 +789,15 @@ After PBI-026 on 2026-05-16:
 - The normal local gate passed after PBI-026: Ruff format check, Ruff lint,
   `uv run pytest` with 95 tests, and `scripts/validate.py` with only known
   warnings.
+
+After PBI-027 on 2026-05-16:
+
+- README and `docs/operations.md` now explain that initial releases can have a
+  large share of `verification_status: nieweryfikowany` in best-measurement
+  exports.
+- For imported PIG/TPN measurements, `nieweryfikowany` means source/imported
+  location without project-level operator or field review. It does not by
+  itself mean a bad point or missing provenance.
+- Do not bulk-change imported PIG/TPN measurements to `zweryfikowany`; update
+  that status only after real review, a better field measurement, or an
+  explicit operator decision.

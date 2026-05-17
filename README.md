@@ -48,6 +48,12 @@ końcu inne nieodrzucone źródła. W remisie wygrywa nowsza data, potem niższe
 `horizontal_accuracy_m`, potem stabilny porządek po `measurement.id`. Decyzję
 operatorską zapisujemy jako `mode: manual` z `reason`.
 
+W początkowych release'ach większość najlepszych pomiarów może mieć
+`verification_status: nieweryfikowany`. To znaczy, że punkt pochodzi z importu
+albo przepisanego źródła i nie przeszedł jeszcze projektowego review
+terenowego/operatora. Nie oznacza to automatycznie błędu ani braku źródła; do
+czasu lepszego pomiaru taki rekord pozostaje najlepszą dostępną lokalizacją.
+
 Pełny workflow pracy na danych jest w
 [docs/operations.md](docs/operations.md).
 
