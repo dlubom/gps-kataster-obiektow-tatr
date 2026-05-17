@@ -1,6 +1,13 @@
+from datetime import UTC, date, datetime, time
+from math import inf
+
 import pytest
 
 from gps_kataster_obiektow_tatr.best_measurement import (
+    _measurement_accuracy_sort_value,
+    _measurement_observed_sort_value,
+    _parse_observed_at,
+    _parse_observed_date,
     select_default_best_measurement_id,
     selected_default_uses_rejected_fallback,
 )
@@ -102,6 +109,81 @@ def test_detects_rejected_fallback_only_when_no_non_rejected_measurement_exists(
 
     assert selected_default_uses_rejected_fallback(rejected_measurements)
     assert not selected_default_uses_rejected_fallback(mixed_measurements)
+
+
+def test_ignores_records_without_string_measurement_id() -> None:
+    measurements = [
+        {"id": 123, "source": "TPN", "verification_status": "nieweryfikowany"},
+        {"source": "wlasne", "verification_status": "zweryfikowany"},
+    ]
+
+    assert select_default_best_measurement_id(measurements) is None
+    assert not selected_default_uses_rejected_fallback(measurements)
+
+
+def test_observed_at_is_normalized_to_utc_for_latest_selection() -> None:
+    measurements = [
+        _measurement("m-aware", source="TPN", observed_at="2026-05-16T13:30:00+02:00"),
+        _measurement("m-naive", source="TPN", observed_at="2026-05-16T12:00:00"),
+        _measurement("m-date", source="TPN", observed_date="2026-05-16"),
+    ]
+
+    selected_id = select_default_best_measurement_id(measurements)
+
+    assert selected_id == "m-naive"
+
+
+def test_invalid_observed_values_sort_before_valid_dates() -> None:
+    measurements = [
+        _measurement("m-invalid-at", source="TPN", observed_at="not-a-date"),
+        _measurement("m-invalid-date", source="TPN", observed_date="not-a-date"),
+        _measurement("m-valid", source="TPN", observed_date="2026-01-01"),
+    ]
+
+    selected_id = select_default_best_measurement_id(measurements)
+
+    assert selected_id == "m-valid"
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("2026-05-16T12:00:00", datetime(2026, 5, 16, 12, 0, tzinfo=UTC)),
+        ("2026-05-16T13:30:00+02:00", datetime(2026, 5, 16, 11, 30, tzinfo=UTC)),
+        ("not-a-date", datetime.min.replace(tzinfo=UTC)),
+    ],
+)
+def test_parse_observed_at(value: str, expected: datetime) -> None:
+    assert _parse_observed_at(value) == expected
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("2026-05-16", datetime.combine(date(2026, 5, 16), time.min, tzinfo=UTC)),
+        ("not-a-date", datetime.min.replace(tzinfo=UTC)),
+    ],
+)
+def test_parse_observed_date(value: str, expected: datetime) -> None:
+    assert _parse_observed_date(value) == expected
+
+
+def test_measurement_observed_sort_value_uses_observed_date_and_missing_fallback() -> None:
+    assert _measurement_observed_sort_value({"observed_date": "2026-05-16"}) == datetime(
+        2026,
+        5,
+        16,
+        tzinfo=UTC,
+    )
+    assert _measurement_observed_sort_value({}) == datetime.min.replace(tzinfo=UTC)
+
+
+@pytest.mark.parametrize(
+    ("accuracy", "expected"),
+    [(0, 0.0), (1.25, 1.25), (None, inf), ("1.25", inf)],
+)
+def test_measurement_accuracy_sort_value(accuracy: object, expected: float) -> None:
+    assert _measurement_accuracy_sort_value({"horizontal_accuracy_m": accuracy}) == expected
 
 
 def _priority_candidate(candidate: str) -> dict[str, object]:

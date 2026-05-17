@@ -1,16 +1,23 @@
 import json
 import subprocess
 import sys
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
+import pytest
 import yaml
 
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
 from gps_kataster_obiektow_tatr.staging_review import (
+    ReviewDecisionError,
+    ReviewSeverity,
     StagingReports,
     apply_review_decisions,
+    load_review_decisions,
+    load_staging_reports,
     render_review_markdown,
+    write_review_report_files,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -19,6 +26,122 @@ VALIDATE_SCRIPT = REPO_ROOT / "scripts" / "validate.py"
 KSW_LAT = 49.23459299
 KSW_LON = 19.87589498
 TPN_GLOBALID = "{38626571-CAA6-4317-8900-D61A995020E9}"
+
+
+def test_apply_review_directly_materializes_pig_and_tpn_decisions(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+
+    result = apply_review_decisions(
+        {
+            "reviewed_at": "2026-05-16T10:00:00Z",
+            "reviewed_by": "dl",
+            "decisions": [
+                {"action": "create_cave", "source": "PIG", "record_number": 1},
+                {"action": "create_object", "source": "PIG", "record_number": 1},
+                {"action": "add_measurement", "source": "TPN", "record_number": 1},
+            ],
+        },
+        staging_reports=StagingReports(pig=_pig_staging(), tpn=_tpn_staging()),
+        data_dir=data_dir,
+    )
+
+    object_path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
+    cave_path = data_dir / "caves" / "C-0001.yml"
+    object_data = _read_yaml(object_path)
+    cave_data = _read_yaml(cave_path)
+
+    assert result.has_errors is False
+    assert result.written_paths == (cave_path, object_path)
+    assert [decision.status for decision in result.applied_decisions] == [
+        "materialized",
+        "materialized",
+        "materialized",
+    ]
+    assert [measurement["id"] for measurement in object_data["measurements"]] == [
+        "m-001",
+        "m-002",
+    ]
+    assert object_data["best_measurement"] == {
+        "mode": "auto",
+        "measurement_id": "m-002",
+        "reason": None,
+        "updated_at": "2026-05-16T10:00:00Z",
+        "updated_by": "dl",
+    }
+    assert object_data["measurements"][0]["tags"] == ["pig"]
+    assert object_data["measurements"][1]["tags"] == ["tpn"]
+    assert object_data["external_refs"] == [
+        {
+            "system": "TPN",
+            "ref_type": "source_globalid",
+            "external_id": TPN_GLOBALID,
+            "scope": "object",
+            "notes": "TPN GLOBALID belongs to the object/source feature.",
+        }
+    ]
+    assert cave_data["external_refs"] == [
+        _nr_inwent_ref(),
+        {
+            "system": "PIG",
+            "ref_type": "catalog_id",
+            "external_id": "1692",
+            "url": "https://jaskiniepolski.pgi.gov.pl/Details/Information/1692",
+            "scope": "cave",
+            "notes": "PIG catalog record identifier.",
+        },
+    ]
+
+
+def test_write_review_report_files_serializes_decisions_issues_and_paths(tmp_path: Path) -> None:
+    result = apply_review_decisions(
+        {
+            "reviewed_at": "2026-05-16T10:15:00Z",
+            "reviewed_by": "dl",
+            "decisions": [
+                {"action": "unresolved", "source": "TPN", "record_number": 3},
+            ],
+        },
+        staging_reports=StagingReports(tpn=_tpn_review_only_staging()),
+        data_dir=tmp_path / "data",
+        write=False,
+    )
+
+    json_path, markdown_path = write_review_report_files(result, output_dir=tmp_path / "review")
+    json_data = json.loads(json_path.read_text(encoding="utf-8"))
+    markdown = markdown_path.read_text(encoding="utf-8")
+
+    assert json_data["has_errors"] is False
+    assert json_data["decision_count"] == 1
+    assert json_data["issue_count"] == 1
+    assert json_data["decisions"][0]["description"] == "No reason provided."
+    assert json_data["issues"][0]["code"] == "DECISION_REASON_MISSING"
+    assert "| `warning` | `DECISION_REASON_MISSING` |" in markdown
+    assert "No reason provided." in markdown
+
+
+def test_load_review_decisions_rejects_invalid_yaml_and_non_mapping(tmp_path: Path) -> None:
+    invalid_yaml = tmp_path / "invalid.yml"
+    invalid_yaml.write_text("decisions: [\n", encoding="utf-8")
+    non_mapping = tmp_path / "non-mapping.yml"
+    non_mapping.write_text("- action: reject\n", encoding="utf-8")
+
+    with pytest.raises(ReviewDecisionError, match="invalid YAML"):
+        load_review_decisions(invalid_yaml)
+    with pytest.raises(ReviewDecisionError, match="decision file must be a mapping"):
+        load_review_decisions(non_mapping)
+
+
+def test_load_staging_reports_handles_missing_paths_and_rejects_non_objects(
+    tmp_path: Path,
+) -> None:
+    bad_json = tmp_path / "bad-staging.json"
+    bad_json.write_text("[]\n", encoding="utf-8")
+
+    assert load_staging_reports(pig_staging_path=None, tpn_staging_path=tmp_path / "missing") == (
+        StagingReports()
+    )
+    with pytest.raises(ReviewDecisionError, match="staging report must be a JSON object"):
+        load_staging_reports(pig_staging_path=bad_json, tpn_staging_path=None)
 
 
 def test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py(
@@ -164,6 +287,140 @@ def test_invalid_decision_blocks_all_final_yaml_writes(tmp_path: Path) -> None:
     assert result.has_errors is True
     assert result.written_paths == ()
     assert not (data_dir / "caves" / "C-0001.yml").exists()
+
+
+def test_invalid_decision_shapes_and_non_materialized_warnings_are_reported(
+    tmp_path: Path,
+) -> None:
+    invalid_list = apply_review_decisions(
+        {"reviewed_at": "2026-05-16T10:30:00Z", "reviewed_by": "dl", "decisions": "bad"},
+        staging_reports=StagingReports(),
+        data_dir=tmp_path / "data-invalid-list",
+    )
+    mixed = apply_review_decisions(
+        {
+            "reviewed_at": "2026-05-16T10:31:00Z",
+            "reviewed_by": "dl",
+            "decisions": [
+                None,
+                {"action": "unknown"},
+                {"action": "reject", "source": "bad", "record_number": 0},
+                {"action": "reject", "source": "TPN", "record_number": 2},
+            ],
+        },
+        staging_reports=StagingReports(tpn=_tpn_review_only_staging()),
+        data_dir=tmp_path / "data-mixed",
+        write=False,
+    )
+
+    assert _issue_codes(invalid_list) == ["DECISIONS_INVALID"]
+    assert _issue_codes(mixed) == [
+        "DECISION_INVALID",
+        "DECISION_ACTION_INVALID",
+        "DECISION_SOURCE_INVALID",
+        "DECISION_RECORD_INVALID",
+        "DECISION_REASON_MISSING",
+    ]
+    assert mixed.issues[-1].severity == ReviewSeverity.WARNING
+    assert mixed.applied_decisions[0].description == "No reason provided."
+
+
+def test_duplicate_create_decisions_report_existing_final_records(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", _object_data(cave_id="C-0001"))
+    _write_yaml(data_dir / "caves" / "C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+
+    result = apply_review_decisions(
+        {
+            "reviewed_at": "2026-05-16T10:32:00Z",
+            "reviewed_by": "dl",
+            "decisions": [
+                {"action": "create_cave", "source": "PIG", "record_number": 1},
+                {"action": "create_object", "source": "PIG", "record_number": 1},
+            ],
+        },
+        staging_reports=StagingReports(pig=_pig_staging()),
+        data_dir=data_dir,
+        write=False,
+    )
+
+    assert _issue_codes(result) == ["CAVE_ALREADY_EXISTS", "OBJECT_ALREADY_EXISTS"]
+    assert result.applied_decisions == ()
+
+
+def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
+    unsupported_source = apply_review_decisions(
+        {
+            "reviewed_at": "2026-05-16T10:33:00Z",
+            "reviewed_by": "dl",
+            "decisions": [{"action": "add_measurement", "source": "PIG", "record_number": 1}],
+        },
+        staging_reports=StagingReports(pig=_pig_staging()),
+        data_dir=tmp_path / "data-unsupported",
+        write=False,
+    )
+    missing_update = apply_review_decisions(
+        {
+            "reviewed_at": "2026-05-16T10:34:00Z",
+            "reviewed_by": "dl",
+            "decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 2}],
+        },
+        staging_reports=StagingReports(tpn=_tpn_review_only_staging()),
+        data_dir=tmp_path / "data-missing-update",
+        write=False,
+    )
+    target_missing = apply_review_decisions(
+        {
+            "reviewed_at": "2026-05-16T10:35:00Z",
+            "reviewed_by": "dl",
+            "decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}],
+        },
+        staging_reports=StagingReports(tpn=_tpn_staging()),
+        data_dir=tmp_path / "data-target-missing",
+        write=False,
+    )
+
+    invalid_measurement_dir = tmp_path / "data-invalid-measurement"
+    _write_yaml(
+        invalid_measurement_dir / "objects" / "KSW" / "KSW-0001.yml",
+        _object_data(cave_id="C-0001"),
+    )
+    invalid_tpn = deepcopy(_tpn_staging())
+    invalid_tpn["matched_measurements"][0]["measurement"] = None
+    invalid_measurement = apply_review_decisions(
+        {
+            "reviewed_at": "2026-05-16T10:36:00Z",
+            "reviewed_by": "dl",
+            "decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}],
+        },
+        staging_reports=StagingReports(tpn=invalid_tpn),
+        data_dir=invalid_measurement_dir,
+        write=False,
+    )
+
+    duplicate_dir = tmp_path / "data-duplicate-measurement"
+    _write_yaml(
+        duplicate_dir / "objects" / "KSW" / "KSW-0001.yml",
+        _object_data(
+            cave_id="C-0001", measurement=_measurement("m-002", source="TPN", source_ref="")
+        ),
+    )
+    duplicate = apply_review_decisions(
+        {
+            "reviewed_at": "2026-05-16T10:37:00Z",
+            "reviewed_by": "dl",
+            "decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}],
+        },
+        staging_reports=StagingReports(tpn=_tpn_staging()),
+        data_dir=duplicate_dir,
+        write=False,
+    )
+
+    assert _issue_codes(unsupported_source) == ["MEASUREMENT_SOURCE_UNSUPPORTED"]
+    assert _issue_codes(missing_update) == ["STAGING_MEASUREMENT_UPDATE_MISSING"]
+    assert _issue_codes(target_missing) == ["TARGET_OBJECT_MISSING"]
+    assert _issue_codes(invalid_measurement) == ["STAGING_MEASUREMENT_INVALID"]
+    assert _issue_codes(duplicate) == ["MEASUREMENT_ALREADY_EXISTS"]
 
 
 def _pig_staging() -> dict[str, Any]:
@@ -370,6 +627,10 @@ def _nr_inwent_ref() -> dict[str, Any]:
         "scope": "cave",
         "notes": "Inventory number belongs to the cave/catalog entry, not the object.",
     }
+
+
+def _issue_codes(result: Any) -> list[str]:
+    return [issue.code for issue in result.issues]
 
 
 def _write_json(path: Path, data: dict[str, Any]) -> None:
