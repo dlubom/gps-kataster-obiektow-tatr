@@ -69,7 +69,7 @@ measurements:
   lon: 19.8437239672
   x_1992: 153126.39
   y_1992: 561393.11
-  elevation_m: null
+  elevation_m: 1675.02
   elevation_datum: unknown
   elevation_source: gnss
   horizontal_accuracy_m: null
@@ -87,7 +87,8 @@ measurements:
   verified_by: null
   verified_at: null
   notes: 'Source provided as unknown GNSS for Bandzioch Kominiarski Gorny.
-    PIG dump confirms Jaskinia Bańdzioch Kominiarski has lower and upper openings.'
+    Elevation 1675.02 m supplied with the BandziochKom:136 fix. PIG dump
+    confirms Jaskinia Bańdzioch Kominiarski has lower and upper openings.'
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
 best_measurement:
@@ -100,5 +101,5 @@ attachments: []
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T19:30:00Z'
+updated_at: '2026-05-17T06:43:08Z'
 updated_by: dl

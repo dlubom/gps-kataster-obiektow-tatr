@@ -34,6 +34,7 @@ Stan na: 2026-05-17
 - PBI-027: wykonane 2026-05-16. Doprecyzowano w README i dokumentacji operacyjnej, ze `verification_status: nieweryfikowany` w release jest oczekiwany dla importow PIG/TPN i nie oznacza automatycznie bledu danych.
 - PBI-028: wykonane 2026-05-17. Udokumentowano kolumny i pola artefaktow release oraz dodano `object_notes`, `cave_notes` i `measurement_notes` do plaskich eksportow `best-measurements`.
 - PBI-029: wykonane 2026-05-17. Przestawiono wydania na reczny semver jak w JKTZ: `CHANGELOG.md`, annotated tag `vX.Y.Z`, release notes z changeloga, link do najnowszego GitHub Release w README oraz brak automatycznego build workflow po `main`.
+- PBI-030: wykonane 2026-05-17. Uzupelniono wysokosc recznego pomiaru GNSS gornego otworu Bandziocha Kominiarskiego `LEJ-0002` / `BandziochKom:136` na `1675.02 m`.
 
 ## Przyjęty poziom AS-DLC
 
@@ -646,6 +647,27 @@ Weryfikacja:
 - testy dokumentacji sprawdzaja link do najnowszego release, changelog i
   tagowany proces wydania,
 - pelna lokalna bramka Ruff, pytest, walidacja YAML i build artefaktow release.
+
+### PBI-030: Uzupelnic wysokosc gornego Bandziocha
+
+Status: wykonane 2026-05-17.
+
+Zakres:
+
+- uzupelnic reczny pomiar GNSS `m-003` w `LEJ-0002` o wysokosc `1675.02 m`
+  z dostarczonego wpisu `BandziochKom:136`,
+- zachowac dolny otwor `KSZ-0112` / `BandziochKom:000` z wysokoscia
+  `1451.06 m`,
+- odswiezyc lokalne artefakty release, zeby `best-measurements` pokazywaly
+  wysokosc obu otworow.
+
+Weryfikacja:
+
+- `uv run python scripts/validate.py` bez errorow,
+- `uv run python scripts/build_release_artifacts.py --generated-at 2026-05-17T06:43:08Z`
+  bez errorow,
+- `build/exports/best-measurements.csv`, GeoJSON i GPX zawieraja `1675.02`
+  dla `LEJ-0002`.
 
 ## Proponowana kolejnosc startowa
 

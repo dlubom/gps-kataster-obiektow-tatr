@@ -831,3 +831,15 @@ After PBI-029 on 2026-05-17:
 - `.github/workflows/build.yml` is intentionally absent. The only generated
   artifact publication path is `.github/workflows/release.yml` on a pushed tag
   `v*`; local dry-runs still use `uv run python scripts/build_release_artifacts.py`.
+
+After PBI-030 on 2026-05-17:
+
+- Bandzioch Kominiarski upper opening `LEJ-0002` / source ref
+  `unknown:gnss:BandziochKominiarskiGorny` now keeps the supplied
+  `BandziochKom:136` elevation as `elevation_m: 1675.02`.
+- Bandzioch Kominiarski lower opening `KSZ-0112` already had
+  `elevation_m: 1451.06`; both openings now export elevations in
+  `best-measurements` CSV, GeoJSON and GPX.
+- `uv run python scripts/validate.py` exits 0 with 2066 known warnings, and
+  `uv run python scripts/build_release_artifacts.py --generated-at 2026-05-17T06:43:08Z`
+  regenerated the local release artifacts.
