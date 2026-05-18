@@ -8,6 +8,8 @@ def test_readme_links_latest_release_and_changelog() -> None:
     assert "[CHANGELOG.md](CHANGELOG.md)" in text
     assert "Tu możesz pobrać najnowszą wersję danych" in text
     assert "vX.Y.Z" in text
+    assert "Creative Commons Attribution 4.0" in text
+    assert "SOURCE_LICENSE_CONFIRMED" not in text
 
 
 def test_changelog_has_semver_release_entry() -> None:

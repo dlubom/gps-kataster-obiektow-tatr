@@ -1,6 +1,6 @@
 # AS-DLC project context
 
-Last updated: 2026-05-17
+Last updated: 2026-05-18
 
 ## Current mode
 
@@ -600,14 +600,13 @@ PBI-020 is complete:
   before publishing a tagged release.
 - `.github/workflows/build.yml` was removed in PBI-029; there is no automatic
   artifact build on push to `main`.
-- `.github/workflows/release.yml` runs only on tags `v*`. The `release` job
-  depends on `license_guard`, which requires repository variable
-  `SOURCE_LICENSE_CONFIRMED=true` before any GitHub Release publish command can
-  run.
+- `.github/workflows/release.yml` runs only on tags `v*`. It no longer has a
+  runtime license-confirmation guard; the project license state is documented
+  in `LICENSE` and the release job publishes from a tag after the normal review
+  path.
 - The release job publishes only the generated release files through
   `gh release create` and uses the matching `CHANGELOG.md` section as release
-  notes; imported external source data still requires legal/source license
-  confirmation before public release.
+  notes.
 
 PBI-021 is complete:
 
@@ -617,9 +616,8 @@ PBI-021 is complete:
 - The manual-measurement path describes editing object YAML, assigning the next
   local `m-NNN` measurement ID, keeping both WGS84 and project EPSG:2180 fields,
   and updating `best_measurement`.
-- The documentation keeps `build/` as generated output, points tagged release
-  dry-runs to `scripts/build_release_artifacts.py`, and repeats the release
-  license guard.
+- The documentation keeps `build/` as generated output and points tagged
+  release dry-runs to `scripts/build_release_artifacts.py`.
 - `tests/test_operational_docs.py` guards the expected PBI-021 sections and the
   rule that generated `build/` artifacts are not committed.
 
@@ -631,6 +629,8 @@ Initial release licensing:
   (`CC-BY-4.0`) for repository data, documentation and generated data exports,
   with an explicit note that source references from PIG / Jaskinie Polski and
   TPN should be retained for attribution.
+- No workflow variable is required to re-confirm that license state at release
+  runtime.
 
 After PBI-020:
 
@@ -850,3 +850,16 @@ Release prep for v1.0.1 on 2026-05-17:
   elevation fix.
 - Project/package version moved from `1.0.0` to `1.0.1`; publish by pushing
   `main` and then annotated tag `v1.0.1`.
+
+After PBI-031 on 2026-05-18:
+
+- A documentation/code consistency pass aligned the spec, backlog, context,
+  README, operational docs, workflow tests and `.github/workflows/release.yml`
+  with the current release contract.
+- `.github/workflows/build.yml` remains absent; release artifacts are not built
+  automatically on `main`.
+- Public releases remain manual semver releases triggered only by pushed
+  annotated tags `vX.Y.Z`, with notes extracted from `CHANGELOG.md`.
+- The release license guard was removed from workflow, tests and docs. The repo
+  quietly relies on the existing CC BY 4.0 license state in `LICENSE`, while
+  retaining source references in YAML and exports for attribution.

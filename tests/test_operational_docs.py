@@ -28,3 +28,4 @@ def test_operational_documentation_keeps_build_outputs_out_of_git() -> None:
     text = Path("docs/operations.md").read_text(encoding="utf-8")
 
     assert "Nie dodawaj `build/`" in text
+    assert "SOURCE_LICENSE_CONFIRMED" not in text

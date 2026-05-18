@@ -41,24 +41,21 @@ def test_no_automatic_build_workflow_after_main_merge() -> None:
     assert not (REPO_ROOT / ".github" / "workflows" / "build.yml").exists()
 
 
-def test_release_workflow_is_tagged_and_requires_license_confirmation() -> None:
+def test_release_workflow_is_tagged_without_license_confirmation_guard() -> None:
     workflow = yaml.safe_load(RELEASE_WORKFLOW.read_text(encoding="utf-8"))
+    workflow_text = RELEASE_WORKFLOW.read_text(encoding="utf-8")
 
     assert workflow["name"] == "release"
     assert workflow["on"]["push"]["tags"] == ["v*"]
     assert set(workflow["on"]) == {"push"}
     assert workflow["permissions"] == {"contents": "write"}
-    assert workflow["jobs"]["release"]["needs"] == "license_guard"
-
-    guard_step = workflow["jobs"]["license_guard"]["steps"][0]
-    assert guard_step["name"] == "Confirm source data redistribution"
-    assert guard_step["env"] == {"SOURCE_LICENSE_CONFIRMED": "${{ vars.SOURCE_LICENSE_CONFIRMED }}"}
-    assert "SOURCE_LICENSE_CONFIRMED" in guard_step["run"]
-    assert '!= "true"' in guard_step["run"]
-    assert "gh release create" not in guard_step["run"]
+    assert set(workflow["jobs"]) == {"release"}
+    assert "needs" not in workflow["jobs"]["release"]
+    assert "SOURCE_LICENSE_CONFIRMED" not in workflow_text
+    assert "license_guard" not in workflow_text
 
 
-def test_release_workflow_publishes_expected_files_only_after_guard() -> None:
+def test_release_workflow_publishes_expected_files_from_changelog() -> None:
     workflow = yaml.safe_load(RELEASE_WORKFLOW.read_text(encoding="utf-8"))
 
     steps = workflow["jobs"]["release"]["steps"]

@@ -87,9 +87,10 @@ uv run mutmut run --max-children 2
 uv run mutmut results
 ```
 
-Publiczny release danych wymaga potwierdzonej licencji źródeł. Lokalne paczki
-można budować przez `scripts/build_release_artifacts.py`. Przegląd plików,
-kolumn i pól release jest w
+Repozytorium, dokumentacja i generowane eksporty danych są licencjonowane jako
+Creative Commons Attribution 4.0 International, zgodnie z plikiem `LICENSE`.
+Lokalne paczki można budować przez `scripts/build_release_artifacts.py`.
+Przegląd plików, kolumn i pól release jest w
 [docs/release_artifacts.md](docs/release_artifacts.md).
 
 Wydania publiczne są wersjonowane semver tagami `vX.Y.Z`. Proces jest ręczny:

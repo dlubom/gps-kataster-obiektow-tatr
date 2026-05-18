@@ -1,6 +1,6 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-05-17
+Stan na: 2026-05-18
 
 ## Status realizacji
 
@@ -35,6 +35,7 @@ Stan na: 2026-05-17
 - PBI-028: wykonane 2026-05-17. Udokumentowano kolumny i pola artefaktow release oraz dodano `object_notes`, `cave_notes` i `measurement_notes` do plaskich eksportow `best-measurements`.
 - PBI-029: wykonane 2026-05-17. Przestawiono wydania na reczny semver jak w JKTZ: `CHANGELOG.md`, annotated tag `vX.Y.Z`, release notes z changeloga, link do najnowszego GitHub Release w README oraz brak automatycznego build workflow po `main`.
 - PBI-030: wykonane 2026-05-17. Uzupelniono wysokosc recznego pomiaru GNSS gornego otworu Bandziocha Kominiarskiego `LEJ-0002` / `BandziochKom:136` na `1675.02 m`.
+- PBI-031: wykonane 2026-05-18. Przejrzano spojnosci AS-DLC/spec/docs/kod dla release: usunieto runtime'owa flage licencyjna, potwierdzono brak automatycznego build workflow po `main` i ujednolicono dokumentacje na reczny semver tag.
 
 ## Przyjęty poziom AS-DLC
 
@@ -48,11 +49,13 @@ Dla tego projektu wybieramy lekki wariant `spec-anchored`:
 
 ## Przeglad aktualnych plikow
 
-Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
+Repo ma dzialajacy przeplyw od YAML przez walidacje, build SQLite, eksporty
+GIS i reczny tagowany release. Zmiany sa nadal zatwierdzane po kolejnych PBI
+albo rownowaznych malych krokach.
 
 | Plik / katalog | Stan | Uwagi |
 |---|---:|---|
-| `specyfikacja_gps_kataster_obiektow_tatr_v_2.md` | 42 959 B | Specyfikacja draft v2, opisuje model domeny, ID, import, walidacje, build i etapy. |
+| `specyfikacja_gps_kataster_obiektow_tatr_v_2.md` | 43 205 B | Specyfikacja draft v2, opisuje model domeny, ID, import, walidacje, build i etapy. |
 | `README.md` | istnieje | Ludzkie wejscie do repo: cel projektu, struktura, model i komendy startowe. |
 | `data/sources/pig/pig_otwory_jaskin_.xlsx` | 1 arkusz `Export`, 861 wierszy, 15 kolumn | Zrodlo PIG / Jaskinie Polski. |
 | `data/sources/pig/pig_otwory_jaskin_.xlsx.-.Export.csv` | 860 rekordow danych | Eksport CSV PIG; kolumny m.in. `ID`, `Nazwa`, `Nr inw.`, `X 1992`, `Y 1992`, `B`, `L`, `Link`. |
@@ -60,8 +63,8 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `data/sources/tpn/tpn_otwory_jaskin.xlsx` | 1 arkusz `Export`, 1006 wierszy, 23 kolumny | Zrodlo TPN. |
 | `data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv` | 1005 rekordow danych | Eksport CSV TPN; kolumny m.in. `NR_INWENT`, `NAZWA`, `GLOBALID`, `X1992`, `Y1992`, `Z`. |
 | `data/sources/README.md` | istnieje | Opisuje zrodla, zakres dumpu PIG i workflow grep/review dla brakujacych otworow. |
-| `data/objects/` | 1005 finalnych YAML | Obiekty terenowe po imporcie/review, w tym `sztolnia`, `wywierzysko` i fallback `SK`. |
-| `data/caves/` | 1004 finalne YAML | Jaskinie / pozycje katalogowe; jedna jaskinia moze wskazywac wiele obiektow. |
+| `data/objects/` | 1009 finalnych YAML | Obiekty terenowe po imporcie/review, w tym `sztolnia`, `wywierzysko` i fallback `SK`. |
+| `data/caves/` | 1003 finalne YAML | Jaskinie / pozycje katalogowe; jedna jaskinia moze wskazywac wiele obiektow. |
 | `data/shapes/doliny.*` | 18 feature'ow, EPSG:2180 | Polygony dolin, pole kluczowe `NAME`. |
 | `data/shapes/granica_polski.*` | 1 feature, EPSG:2180 | Fallback granicy Polski. |
 | `data/shapes/granica_slowacji.*` | 1 feature, EPSG:2180 | Fallback granicy Slowacji. |
@@ -102,7 +105,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `scripts/build_release_artifacts.py` | istnieje | Lokalny dry-run buildu/release generujacy pelny zestaw artefaktow: SQLite, eksporty, metadata i ZIP SQLite. |
 | `.github/workflows/validate.yml` | istnieje | Workflow CI dla PR i push do `main`: `uv sync`, Ruff, pytest i `scripts/validate.py`; bez build/release. |
 | `.github/workflows/mutation.yml` | istnieje | Reczny workflow `workflow_dispatch` uruchamiajacy baseline pytest, `mutmut run` i eksport statystyk mutacyjnych. |
-| `.github/workflows/release.yml` | istnieje | Workflow dla tagow `v*`: wymaga `SOURCE_LICENSE_CONFIRMED=true`, buduje artefakty i publikuje GitHub Release. |
+| `.github/workflows/release.yml` | istnieje | Workflow dla tagow `v*`: buduje artefakty i publikuje GitHub Release bez dodatkowej flagi licencyjnej. |
 | `CHANGELOG.md` | istnieje | Historia wersji semver i zrodlo notatek GitHub Release. |
 | `docs/operations.md` | istnieje | Dokumentacja operacyjna PBI-021/PBI-029: reczny pomiar, walidacja, tagowany release danych, statusy `zweryfikowany` / `odrzucony`. |
 | `docs/release_artifacts.md` | istnieje | Przeglad plikow release, kolumn/pol CSV, GeoJSON, Shapefile, GPX, metadata i SQLite oraz decyzja o rozdzieleniu notatek. |
@@ -114,7 +117,7 @@ Repo jest na etapie zalazka. Zmiany sa zatwierdzane po kolejnych PBI.
 | `tests/test_staging_review.py` | 3 testy | Sprawdza sample staging -> decyzje -> finalne YAML -> `validate.py`, decyzje link/reject/unresolved oraz blokade zapisu przy bledach. |
 | `tests/test_build_db.py` | 3 testy | Sprawdza build SQLite na fixture'ach, liczby w `metadata`, najlepsze geometrie, CLI i blokade buildu przy bledach walidacji. |
 | `tests/test_best_measurements_export.py` | 4 testy | Sprawdza eksport tylko najlepszych pomiarow do GeoJSON/CSV/GPX/Shapefile ZIP, notatki w plaskich eksportach, snapshot `metadata.json`, CLI oraz blokade przy blednej walidacji YAML. |
-| `tests/test_ci_workflow.py` | 5 testow | Sprawdza workflow walidacyjny, build/release triggery, upload artefaktow i bramke licencji przed release. |
+| `tests/test_ci_workflow.py` | 5 testow | Sprawdza workflow walidacyjny, brak automatycznego build workflow po `main`, tag-only release i brak dodatkowej flagi licencyjnej. |
 | `tests/test_mutation_tooling.py` | 3 testy | Sprawdza zaleznosc i konfiguracje `mutmut`, reczny workflow mutacyjny oraz ignorowanie katalogu `mutants/`. |
 | `tests/test_release_artifacts.py` | 2 testy | Sprawdza wspolny lokalny dry-run artefaktow release, w tym `katalog.sqlite.zip` i CLI. |
 | `tests/test_operational_docs.py` | 2 testy | Sprawdza, ze dokumentacja operacyjna pokrywa zakres PBI-021 i przypomina, ze `build/` nie jest zrodlem prawdy. |
@@ -457,7 +460,7 @@ Zakres:
 Weryfikacja:
 
 - dry-run lokalny buildu generuje wszystkie oczekiwane pliki,
-- release nie probuje publikowac danych bez potwierdzenia licencji zrodel.
+- release jest tag-only i nie zalezy od runtime'owej flagi licencyjnej.
 - repo nie ma automatycznego `build.yml` uruchamianego po pushu na `main`.
 
 ### PBI-021: Dokumentacja operacyjna
@@ -668,6 +671,29 @@ Weryfikacja:
   bez errorow,
 - `build/exports/best-measurements.csv`, GeoJSON i GPX zawieraja `1675.02`
   dla `LEJ-0002`.
+
+### PBI-031: Ujednolicic dokumentacje release i licencji z aktualnym kodem
+
+Status: wykonane 2026-05-18.
+
+Zakres:
+
+- przejrzec specyfikacje, backlog, kontekst AS-DLC, README, dokumentacje
+  operacyjna, workflow i testy pod katem aktualnego modelu release,
+- usunac runtime'owa bramke licencyjna z `release.yml`,
+- zostawic licencje CC BY 4.0 jako stan projektu opisany w `LICENSE` i
+  dokumentacji, bez dodatkowej flagi w CI,
+- upewnic sie, ze dokumentacja nie opisuje automatycznego release/builda po
+  `main`; release pozostaje reczny, semverowy i tagowany.
+
+Weryfikacja:
+
+- workflow release nie zawiera dodatkowej bramki licencyjnej,
+- `.github/workflows/build.yml` nie istnieje, a dokumentacja opisuje tylko
+  reczny release przez semver tag,
+- testy workflow sprawdzaja brak dodatkowej bramki licencyjnej i brak
+  automatycznego `build.yml`,
+- pelna lokalna bramka Ruff, pytest, walidacja YAML i build artefaktow release.
 
 ## Proponowana kolejnosc startowa
 

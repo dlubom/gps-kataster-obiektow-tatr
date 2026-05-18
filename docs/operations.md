@@ -211,25 +211,26 @@ czystego checkoutu po review zmian w YAML:
    Dokladny przeglad kolumn i pol tych plikow jest w
    `docs/release_artifacts.md`.
 
-7. Zacommituj zmiany i utworz annotated tag:
+7. Zacommituj zmiany, przeprowadz review w PR i po merge do `main` utworz
+   annotated tag:
 
    ```bash
    git tag -a vX.Y.Z -m "vX.Y.Z - krotki opis"
    ```
 
-8. Wypchnij commit i tag:
+8. Wypchnij tag:
 
    ```bash
-   git push origin main
    git push origin vX.Y.Z
    ```
 
    GitHub Actions publikuje release wylacznie po pushu taga `v*` i bierze
    notatki z odpowiadajacego wpisu `CHANGELOG.md`.
 
-Publiczny release tagiem `v*` wymaga potwierdzenia licencji zrodel przez
-`SOURCE_LICENSE_CONFIRMED=true`. Bez tego wolno robic lokalny dry-run, ale nie
-nalezy publikowac paczki jako oficjalnego release.
+Repozytorium, dokumentacja i generowane eksporty danych sa licencjonowane jako
+Creative Commons Attribution 4.0 International, zgodnie z plikiem `LICENSE`.
+Referencje zrodlowe zapisane w YAML i eksportach trzeba zachowywac jako
+atrybucje danych.
 
 W poczatkowych paczkach danych duzy udzial statusu
 `verification_status: nieweryfikowany` jest oczekiwany. Import z PIG/TPN tworzy

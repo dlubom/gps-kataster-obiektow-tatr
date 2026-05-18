@@ -6,6 +6,15 @@ udokumentowane w tym pliku.
 Format jest oparty o [Keep a Changelog](https://keepachangelog.com/), a
 wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Zmieniono
+
+- Usunieto dodatkowa runtime'owa bramke licencyjna z workflow release;
+  licencja CC BY 4.0 pozostaje opisana w `LICENSE` i dokumentacji.
+- Doprecyzowano dokumentacje AS-DLC/spec/operacyjna: release pozostaje reczny,
+  semverowy i tagowany, bez automatycznego buildu po `main`.
+
 ## [v1.0.1] - 2026-05-17
 
 Patch release z korekta wysokosci dla Jaskini Bandzioch Kominiarski.
