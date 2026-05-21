@@ -863,3 +863,10 @@ After PBI-031 on 2026-05-18:
 - The release license guard was removed from workflow, tests and docs. The repo
   quietly relies on the existing CC BY 4.0 license state in `LICENSE`, while
   retaining source references in YAML and exports for attribution.
+
+Release prep for v1.0.2 on 2026-05-21:
+
+- `CHANGELOG.md` has a `v1.0.2` entry for the release workflow/docs alignment.
+- Project/package version moved from `1.0.1` to `1.0.2`.
+- Publish path: mark PR #1 ready for review, merge it, then push annotated tag
+  `v1.0.2` from the merged main commit.

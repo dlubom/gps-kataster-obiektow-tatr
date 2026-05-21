@@ -36,6 +36,7 @@ Stan na: 2026-05-18
 - PBI-029: wykonane 2026-05-17. Przestawiono wydania na reczny semver jak w JKTZ: `CHANGELOG.md`, annotated tag `vX.Y.Z`, release notes z changeloga, link do najnowszego GitHub Release w README oraz brak automatycznego build workflow po `main`.
 - PBI-030: wykonane 2026-05-17. Uzupelniono wysokosc recznego pomiaru GNSS gornego otworu Bandziocha Kominiarskiego `LEJ-0002` / `BandziochKom:136` na `1675.02 m`.
 - PBI-031: wykonane 2026-05-18. Przejrzano spojnosci AS-DLC/spec/docs/kod dla release: usunieto runtime'owa flage licencyjna, potwierdzono brak automatycznego build workflow po `main` i ujednolicono dokumentacje na reczny semver tag.
+- PBI-032: wykonane 2026-05-21. Przygotowano release `v1.0.2` dla zmian PBI-031: changelog, wersja pakietu i test wersji wskazuja faktyczna nowa wersje.
 
 ## Przyjęty poziom AS-DLC
 
@@ -694,6 +695,22 @@ Weryfikacja:
 - testy workflow sprawdzaja brak dodatkowej bramki licencyjnej i brak
   automatycznego `build.yml`,
 - pelna lokalna bramka Ruff, pytest, walidacja YAML i build artefaktow release.
+
+### PBI-032: Przygotowac release `v1.0.2`
+
+Status: wykonane 2026-05-21.
+
+Zakres:
+
+- zamienic wpis `Unreleased` w `CHANGELOG.md` na `v1.0.2`,
+- podbic wersje projektu w `pyproject.toml` i `__version__`,
+- zaktualizowac testy wersji i changeloga,
+- przeprowadzic PR -> merge -> annotated tag `v1.0.2` -> GitHub Release.
+
+Weryfikacja:
+
+- pelna lokalna bramka Ruff, pytest, walidacja YAML i build artefaktow release,
+- po tagu `v1.0.2`: sprawdzenie GitHub Release i najnowszego release.
 
 ## Proponowana kolejnosc startowa
 

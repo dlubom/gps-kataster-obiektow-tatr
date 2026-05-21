@@ -6,7 +6,7 @@ udokumentowane w tym pliku.
 Format jest oparty o [Keep a Changelog](https://keepachangelog.com/), a
 wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [v1.0.2] - 2026-05-21
 
 ### Zmieniono
 
