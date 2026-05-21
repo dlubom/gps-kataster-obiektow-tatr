@@ -642,11 +642,13 @@ Konsekwencje:
 ├── scripts/
 │   ├── assign_id.py
 │   ├── build_db.py
-│   ├── export.py
+│   ├── export_best_measurements.py
+│   ├── build_release_artifacts.py
 │   ├── validate.py
 │   └── importers/
 │       ├── import_tpn.py
-│       └── import_pig.py
+│       ├── import_pig.py
+│       └── apply_review.py
 ├── build/
 │   ├── katalog.sqlite
 │   └── exports/
@@ -654,9 +656,8 @@ Konsekwencje:
 │   └── fixtures/
 ├── .github/workflows/
 │   ├── validate.yml
-│   ├── build.yml
 │   └── release.yml
-└── SPECYFIKACJA.md
+└── specyfikacja_gps_kataster_obiektow_tatr_v_2.md
 ```
 
 `build/` jest generowane i gitignored.
@@ -807,17 +808,19 @@ Walidacje typu warning:
 - PIG `ID` przypisany do `Obiekt.external_refs` zamiast `Jaskinia.external_refs`,
 - `best_measurement.mode = auto`, ale wskazanie nie zgadza się z algorytmem default.
 
-### 11.2 `build.yml`
+### 11.2 Lokalny build artefaktów
 
-Uruchamiany po merge do `main`.
+Artefakty danych buduje się deterministycznie lokalnie przez
+`scripts/build_release_artifacts.py`. Katalog `build/` pozostaje generowany i
+nie jest commitowany. Repo nie ma automatycznego workflow budującego artefakty
+po pushu na `main`.
 
 Zadania:
 
 - rebuild `build/katalog.sqlite`,
-- wygenerowanie indeksów przestrzennych,
-- wygenerowanie GeoJSON dla obiektów i najlepszych pomiarów,
-- wygenerowanie pomocniczych raportów walidacyjnych,
-- publikacja artefaktów GitHub Actions.
+- eksport `best-measurements` do GeoJSON, CSV, GPX i Shapefile,
+- zapakowanie SQLite,
+- wygenerowanie `metadata.json`.
 
 ### 11.3 `release.yml`
 
@@ -877,13 +880,13 @@ Minimalny schemat logiczny:
 Tag release:
 
 ```text
-v{YYYY}.{MM}.{patch}
+v{major}.{minor}.{patch}
 ```
 
 Przykład:
 
 ```text
-v2026.05.1
+v1.0.1
 ```
 
 Każdy release zawiera:
@@ -897,7 +900,7 @@ Każdy release zawiera:
 | `katalog.sqlite.zip` | SQLite + SpatiaLite | Pełny snapshot. |
 | `metadata.json` | JSON | Liczby obiektów, pomiarów, jaskiń, data buildu, wersja schematu. |
 
-Repo i eksporty są publiczne. Dane projektu są licencjonowane jako **Creative Commons Attribution 4.0 International (CC BY 4.0)**, z zastrzeżeniem że importowane dane zewnętrzne mogą wymagać osobnego potwierdzenia prawnego przed redystrybucją.
+Repo i eksporty są publiczne. Dane projektu, dokumentacja repozytorium oraz generowane eksporty są licencjonowane jako **Creative Commons Attribution 4.0 International (CC BY 4.0)**. Atrybucję źródeł zachowujemy przez referencje zapisane w YAML i eksportach.
 
 W V1 nie wprowadzamy mechanizmu `sensitivity`, ukrywania lokalizacji ani generalizacji eksportów.
 
@@ -926,9 +929,8 @@ W aktualnym modelu nie planujemy aplikacji terenowej.
 Docelowy proces operacyjny:
 
 1. Osoby wykonujące pomiary zbierają dane dowolnymi narzędziami: GPS / GNSS, GPX, CSV, notatka w telefonie, zdjęcie, kartka.
-2. Raz w miesiącu jedna wyznaczona osoba dostaje mail z nowymi pomiarami i materiałami.
-3. Ta osoba porządkuje dane, dopisuje lub aktualizuje YAML, uruchamia walidację i otwiera PR.
-4. Po review i merge generowane są aktualne artefakty.
+2. Wyznaczona osoba porządkuje dostarczone dane, dopisuje lub aktualizuje YAML, uruchamia walidację i otwiera PR.
+3. Po review i merge aktualne artefakty można zbudować lokalnie albo opublikować przez ręczny tag release.
 
 Nie przewidujemy w tym zakresie:
 
@@ -1104,9 +1106,9 @@ Zasady:
 - brak mechanizmu ukrywania lokalizacji w V1,
 - brak pola `sensitivity`,
 - publiczne eksporty zawierają dokładne współrzędne najlepszych pomiarów,
-- dane importowane z TPN, PIG, Geoportalu lub publikacji wymagają potwierdzenia, że mogą być redystrybuowane w ramach publicznego repo / release.
+- dane importowane z TPN, PIG, Geoportalu lub publikacji zachowują referencje źródłowe potrzebne do atrybucji w publicznym repo / release.
 
-Do doprecyzowania przed dużym importem:
+Do doprecyzowania przy nowych kategoriach źródeł:
 
 - warunki wykorzystania danych TPN,
 - warunki wykorzystania danych PIG / Jaskinie Polski,
@@ -1146,7 +1148,7 @@ Zakres:
 - `release.yml`,
 - eksport `best-measurements.*`,
 - GitHub Release,
-- miesięczny proces aktualizacji na podstawie maila z nowymi pomiarami,
+- ręczny proces aktualizacji przez PR i semver tag `vX.Y.Z`,
 - dokumentacja operacyjna: jak przygotować paczkę danych, jak dopisać pomiary, jak zrobić release.
 
 ### Import początkowy — ad hoc
@@ -1177,7 +1179,7 @@ Na później:
 4. Pełna lista kategorii / podtypów dla `inne`.
 5. Szczegółowa semantyka relacji.
 6. Polityka dużych załączników, jeśli zdjęcia i raporty zaczną być liczne albo ciężkie.
-7. Formalna procedura potwierdzania licencji źródeł zewnętrznych.
+7. Szczegółowe zasady atrybucji, jeśli pojawią się nowe kategorie źródeł.
 8. Reguły dla systemów transgranicznych PL/SK.
 9. Czy dane morfometryczne jaskini wprowadzać jako pola `Jaskinia`, czy zostawić jako referencje do źródeł.
 
@@ -1209,4 +1211,3 @@ Aktualne / planowane artefakty repo:
 - `scripts/` — narzędzia lokalne,
 - `.github/workflows/` — CI/CD,
 - `build/` — artefakty generowane lokalnie i w CI.
-

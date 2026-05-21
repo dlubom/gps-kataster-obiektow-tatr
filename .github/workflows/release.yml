@@ -9,24 +9,9 @@ permissions:
   contents: write
 
 jobs:
-  license_guard:
-    name: Confirm source licenses
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Confirm source data redistribution
-        env:
-          SOURCE_LICENSE_CONFIRMED: ${{ vars.SOURCE_LICENSE_CONFIRMED }}
-        run: |
-          if [ "${SOURCE_LICENSE_CONFIRMED}" != "true" ]; then
-            echo "Set repository variable SOURCE_LICENSE_CONFIRMED=true only after source license confirmation."
-            exit 1
-          fi
-
   release:
     name: Publish GitHub Release
     runs-on: ubuntu-latest
-    needs: license_guard
 
     steps:
       - name: Checkout
