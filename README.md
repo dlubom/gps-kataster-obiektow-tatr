@@ -2,16 +2,46 @@
 
 [![Latest Release](https://img.shields.io/github/v/release/dlubom/gps-kataster-obiektow-tatr)](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest)
 
-[Pobierz najnowszą wersję danych](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest)
+## Opis projektu
 
-Repozytorium utrzymuje git-native katalog punktów terenowych ważnych dla
-speleologii i krasu w Tatrach: otworów jaskiń, sztolni, ponorów, wywierzysk i
-obiektów pokrewnych.
+GPS Kataster Obiektów Tatr to otwarta baza lokalizacji obiektów ważnych dla
+speleologii i krasu w całych Tatrach: otworów jaskiń, sztolni, ponorów,
+wywierzysk oraz obiektów pokrewnych.
+
+Projekt porządkuje dane z katalogów, danych instytucjonalnych i pomiarów
+terenowych. Zachowuje ich pochodzenie, dokładność oraz status weryfikacji,
+więc nowy pomiar może uzupełnić lub zastąpić starszą lokalizację bez utraty
+historii.
+
+Kataster służy do pracy terenowej, analiz GIS i aktualizacji danych
+kartograficznych. Jest także źródłem współrzędnych wejść wykorzystywanych przez
+[Jaskiniowy Kataster Tatr](https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich).
+
+## Pobierz dane
+
+Tu możesz pobrać najnowszą wersję danych:
+[GitHub Releases](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest).
+Wydanie zawiera gotowe artefakty do pracy w GIS i w terenie: GeoJSON, CSV, GPX,
+Shapefile ZIP, spakowany snapshot SQLite oraz `metadata.json`.
+
+## Jak czytać dane
+
+Dokładność i stopień weryfikacji punktów mogą się różnić. Każdy rekord
+zachowuje informację o źródle pomiaru, aby dane można było świadomie dobierać
+do celu — od orientacji w terenie po dalszą weryfikację.
+
+W początkowych release'ach większość najlepszych pomiarów może mieć
+`verification_status: nieweryfikowany`. To znaczy, że punkt pochodzi z importu
+albo przepisanego źródła i nie przeszedł jeszcze projektowego review
+terenowego/operatora. Nie oznacza to automatycznie błędu ani braku źródła; do
+czasu lepszego pomiaru taki rekord pozostaje najlepszą dostępną lokalizacją.
+
+## Utrzymanie danych i rozwój projektu
 
 Źródłem prawdy są pliki YAML w `data/`. Bazy SQLite, GeoJSON, GPX, CSV i
 Shapefile są artefaktami generowanymi z tych YAML-i.
 
-## Co tu jest
+### Struktura repozytorium
 
 - `data/objects/` - konkretne punkty terenowe z trwałymi ID projektu.
 - `data/caves/` - logiczne rekordy jaskiń / pozycji katalogowych grupujące
@@ -25,14 +55,7 @@ Shapefile są artefaktami generowanymi z tych YAML-i.
   danych.
 - [CHANGELOG.md](CHANGELOG.md) - historia wersji i notatki wydań.
 
-## Najnowsza wersja
-
-Tu możesz pobrać najnowszą wersję danych:
-[GitHub Releases](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest).
-Wydanie zawiera gotowe artefakty do pracy w GIS i w terenie: GeoJSON, CSV, GPX,
-Shapefile ZIP, spakowany snapshot SQLite oraz `metadata.json`.
-
-## Szybki start
+### Szybki start
 
 ```bash
 uv sync
@@ -42,7 +65,7 @@ uv run python scripts/build_release_artifacts.py
 
 Artefakty lokalne powstają w `build/` i nie są commitowane.
 
-## Model danych w skrócie
+### Model danych w skrócie
 
 `Obiekt` to konkretny punkt w terenie. Jedna jaskinia może mieć wiele obiektów,
 np. kilka otworów. `Jaskinia` jest encją katalogową/logiczna i trzyma
@@ -52,7 +75,7 @@ bo opisuje punkt źródłowy.
 W V1 każdy obiekt ma kategorię: `jaskinia_otwor`, `sztolnia`, `ponor`,
 `wywierzysko` albo `inne`.
 
-## Jak działa `auto`
+### Jak działa `auto`
 
 `best_measurement.mode: auto` deterministycznie wybiera aktualny pomiar:
 najpierw własny zweryfikowany, potem TPN, własny nieweryfikowany, PIG, a na
@@ -60,16 +83,10 @@ końcu inne nieodrzucone źródła. W remisie wygrywa nowsza data, potem niższe
 `horizontal_accuracy_m`, potem stabilny porządek po `measurement.id`. Decyzję
 operatorską zapisujemy jako `mode: manual` z `reason`.
 
-W początkowych release'ach większość najlepszych pomiarów może mieć
-`verification_status: nieweryfikowany`. To znaczy, że punkt pochodzi z importu
-albo przepisanego źródła i nie przeszedł jeszcze projektowego review
-terenowego/operatora. Nie oznacza to automatycznie błędu ani braku źródła; do
-czasu lepszego pomiaru taki rekord pozostaje najlepszą dostępną lokalizacją.
-
 Pełny workflow pracy na danych jest w
 [docs/operations.md](docs/operations.md).
 
-## Walidacja i release
+### Walidacja i release
 
 Przed zmianami danych uruchom:
 
