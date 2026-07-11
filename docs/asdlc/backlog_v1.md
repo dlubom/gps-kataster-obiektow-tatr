@@ -37,7 +37,7 @@ Stan na: 2026-07-11
 - PBI-030: wykonane 2026-05-17. Uzupelniono wysokosc recznego pomiaru GNSS gornego otworu Bandziocha Kominiarskiego `LEJ-0002` / `BandziochKom:136` na `1675.02 m`.
 - PBI-031: wykonane 2026-05-18. Przejrzano spojnosci AS-DLC/spec/docs/kod dla release: usunieto runtime'owa flage licencyjna, potwierdzono brak automatycznego build workflow po `main` i ujednolicono dokumentacje na reczny semver tag.
 - PBI-032: wykonane 2026-05-21. Przygotowano release `v1.0.2` dla zmian PBI-031: changelog, wersja pakietu i test wersji wskazuja faktyczna nowa wersje.
-- PBI-033: wykonane 2026-07-11. Przebudowano README pod grotolazow i speleologow, dodano wersje slowacka oraz opisano role GPS Katastru, Jaskiniowego Katastru Tatr i Georeferencera.
+- PBI-033: wykonane 2026-07-11. Przebudowano README pod grotolazow i speleologow, dodano wersje angielska i slowacka oraz opisano role GPS Katastru, Jaskiniowego Katastru Tatr i Georeferencera.
 
 ## Przyjęty poziom AS-DLC
 
@@ -713,7 +713,7 @@ Weryfikacja:
 - pelna lokalna bramka Ruff, pytest, walidacja YAML i build artefaktow release,
 - po tagu `v1.0.2`: sprawdzenie GitHub Release i najnowszego release.
 
-### PBI-033: Przebudowac README dla uzytkownikow PL/SK
+### PBI-033: Przebudowac README dla uzytkownikow PL/EN/SK
 
 Status: wykonane 2026-07-11.
 
@@ -721,7 +721,8 @@ Zakres:
 
 - postawic potrzeby grotolazow, speleologow i uzytkownikow GIS przed opisem
   implementacji,
-- przygotowac rownolegle `README.md` po polsku i `README.sk.md` po slowacku,
+- przygotowac rownolegle `README.md` po polsku, `README.en.md` po angielsku i
+  `README.sk.md` po slowacku,
 - opisac formaty gotowych danych, ich zroznicowana dokladnosc i status
   weryfikacji,
 - wyjasnic role trzech powiazanych projektow i jawnie wskazac GPS Kataster jako
@@ -731,7 +732,7 @@ Zakres:
 
 Weryfikacja:
 
-- test dokumentacji sprawdza przelacznik PL/SK, linki do repozytoriow i ich
+- test dokumentacji sprawdza przelacznik PL/EN/SK, linki do repozytoriow i ich
   najnowszych wydan oraz istniejace kontrakty release,
 - `git diff --check` nie zglasza bledow formatowania.
 

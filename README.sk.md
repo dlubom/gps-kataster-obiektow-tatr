@@ -1,4 +1,4 @@
-[🇵🇱 Polski](README.md) | 🇸🇰 **Slovenčina**
+[🇵🇱 Polski](README.md) | [🇬🇧 English](README.en.md) | 🇸🇰 **Slovenčina**
 
 # GPS kataster objektov Tatier
 

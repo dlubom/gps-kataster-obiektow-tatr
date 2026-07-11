@@ -873,8 +873,9 @@ Release prep for v1.0.2 on 2026-05-21:
 
 After PBI-033 on 2026-07-11:
 
-- `README.md` is the Polish user-facing entrypoint and `README.sk.md` provides
-  the matching Slovak version; both keep a language switch at the top.
+- `README.md` is the Polish user-facing entrypoint, while `README.en.md` and
+  `README.sk.md` provide matching English and Slovak versions; all three keep
+  a language switch at the top.
 - The primary audience is now cavers, speleologists and GIS users. Download
   formats, practical uses, accuracy and verification are explained before the
   implementation details.

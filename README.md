@@ -1,4 +1,4 @@
-🇵🇱 **Polski** | [🇸🇰 Slovenčina](README.sk.md)
+🇵🇱 **Polski** | [🇬🇧 English](README.en.md) | [🇸🇰 Slovenčina](README.sk.md)
 
 # GPS Kataster Obiektów Tatr
 
