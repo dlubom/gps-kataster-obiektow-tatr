@@ -12,6 +12,29 @@ def test_readme_links_latest_release_and_changelog() -> None:
     assert "SOURCE_LICENSE_CONFIRMED" not in text
 
 
+def test_readmes_are_bilingual_and_link_the_project_ecosystem() -> None:
+    polish = Path("README.md").read_text(encoding="utf-8")
+    slovak = Path("README.sk.md").read_text(encoding="utf-8")
+
+    assert "[🇸🇰 Slovenčina](README.sk.md)" in polish
+    assert "[🇵🇱 Polski](README.md)" in slovak
+
+    required_links = [
+        "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest",
+        "https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich",
+        "https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/releases/latest",
+        "https://github.com/dlubom/Georeferencer",
+        "https://github.com/dlubom/Georeferencer/releases/latest",
+    ]
+
+    for text in (polish, slovak):
+        for link in required_links:
+            assert link in text
+        assert "[CHANGELOG.md](CHANGELOG.md)" in text
+        assert "Creative Commons Attribution 4.0" in text
+        assert "vX.Y.Z" in text
+
+
 def test_changelog_has_semver_release_entry() -> None:
     text = Path("CHANGELOG.md").read_text(encoding="utf-8")
 
