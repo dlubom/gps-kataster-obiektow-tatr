@@ -1,99 +1,108 @@
+🇵🇱 **Polski** | [🇬🇧 English](README.en.md) | [🇸🇰 Slovenčina](README.sk.md)
+
 # GPS Kataster Obiektów Tatr
 
 [![Latest Release](https://img.shields.io/github/v/release/dlubom/gps-kataster-obiektow-tatr)](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest)
 
-[Pobierz najnowszą wersję danych](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest)
+[Pobierz najnowsze dane](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest)
 
-Repozytorium utrzymuje git-native katalog punktów terenowych ważnych dla
-speleologii i krasu w Tatrach: otworów jaskiń, sztolni, ponorów, wywierzysk i
-obiektów pokrewnych.
+## Opis projektu
 
-Źródłem prawdy są pliki YAML w `data/`. Bazy SQLite, GeoJSON, GPX, CSV i
-Shapefile są artefaktami generowanymi z tych YAML-i.
+GPS Kataster Obiektów Tatr to otwarty, rozwijany zbiór współrzędnych
+otworów jaskiń i innych obiektów ważnych dla speleologii i krasu po obu
+stronach Tatr: sztolni, ponorów, wywierzysk oraz obiektów pokrewnych.
 
-## Co tu jest
+Projekt łączy pomiary terenowe GPS i GNSS z danymi katalogowymi oraz
+instytucjonalnymi. Przy każdej lokalizacji zachowuje jej źródło, dokładność,
+status weryfikacji i historię. Każdy konkretny otwór jest osobnym obiektem,
+dlatego można prawidłowo opisać także jaskinie wielootworowe.
 
-- `data/objects/` - konkretne punkty terenowe z trwałymi ID projektu.
-- `data/caves/` - logiczne rekordy jaskiń / pozycji katalogowych grupujące
-  jeden albo więcej obiektów.
-- `data/shapes/` - warstwy granic i dolin używane do nadawania prefixów ID.
-- `data/sources/` - źródłowe eksporty PIG / TPN i pomocniczy dump PIG do
-  ręcznego review.
-- `schema/` - JSON Schema dla YAML-i.
-- `scripts/` - lokalne komendy walidacji, importu staging i budowy artefaktów.
-- [docs/operations.md](docs/operations.md) - praktyczny workflow utrzymania
-  danych.
-- [CHANGELOG.md](CHANGELOG.md) - historia wersji i notatki wydań.
+Grotołaz może pobrać punkty do odbiornika GPS lub telefonu, a kartograf i
+badacz wykorzystać je w GIS oraz sprawdzić, na ile dana lokalizacja została
+zweryfikowana.
 
-## Najnowsza wersja
+## Pobierz dane
 
 Tu możesz pobrać najnowszą wersję danych:
 [GitHub Releases](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest).
-Wydanie zawiera gotowe artefakty do pracy w GIS i w terenie: GeoJSON, CSV, GPX,
-Shapefile ZIP, spakowany snapshot SQLite oraz `metadata.json`.
 
-## Szybki start
+Każde wydanie zawiera gotowe pliki do pracy w terenie i przy komputerze:
+
+| Format | Do czego najlepiej go użyć |
+|---|---|
+| GPX | punkty w odbiorniku GPS lub aplikacji terenowej |
+| GeoJSON i Shapefile | mapa, analiza i łączenie warstw w QGIS lub innym GIS |
+| CSV | przeglądanie, filtrowanie i łączenie danych w tabeli |
+| SQLite | pełniejsza analiza obiektów, jaskiń, pomiarów i ich historii |
+
+W paczce znajduje się również `metadata.json` z wersją danych i podstawowymi
+licznikami wydania.
+
+## Dokładność i weryfikacja
+
+Punkty pochodzą z różnych lat, urządzeń i źródeł, dlatego ich dokładność
+nie jest jednakowa. Wskazanie „najlepszego dostępnego pomiaru” nie oznacza
+automatycznie, że został on potwierdzony w terenie. Przed użyciem punktu sprawdź
+źródło, status weryfikacji, deklarowaną dokładność i notatki.
+
+W początkowych wydaniach większość najlepszych pomiarów może mieć
+`verification_status: nieweryfikowany`. Oznacza to, że punkt pochodzi z importu
+albo przepisanego źródła i nie przeszedł jeszcze projektowej weryfikacji
+terenowej lub operatorskiej. Nie oznacza to automatycznie błędu ani braku
+źródła; do czasu uzyskania lepszego pomiaru pozostaje najlepszą dostępną
+lokalizacją.
+
+## Trzy powiązane projekty
+
+Trzy repozytoria opisują ten sam teren z różnych stron:
+
+| Projekt | Odpowiada na pytanie | Co udostępnia |
+|---|---|---|
+| **GPS Kataster Obiektów Tatr** (ten projekt) | Gdzie znajduje się konkretny otwór lub inny obiekt terenowy? | Najlepsze dostępne współrzędne wraz ze źródłem, historią i statusem weryfikacji. |
+| [Jaskiniowy Kataster Tatr](https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich) | Jak przebiegają pomierzone ciągi i geometria podziemi? | Dane pomiarowe Walls i Survex, wizualizacje 2D oraz [model 3D](https://dlubom.github.io/Jaskiniowy-Kataster-Tatr-Zachodnich/) dla jaskiń z dostępnymi pomiarami; gotowe pliki są w [najnowszym wydaniu](https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/releases/latest). |
+| [Georeferencer](https://github.com/dlubom/Georeferencer) | Jak zeskanowany plan jaskini układa się na mapie? | Georeferencjonowane skany planów w formacie GeoTIFF, także dla jaskiń bez ciągów pomiarowych w Jaskiniowym Katastrze; paczka jest w [najnowszym wydaniu](https://github.com/dlubom/Georeferencer/releases/latest). |
+
+GPS Kataster jest wspólnym źródłem współrzędnych wejść: zarówno
+Jaskiniowy Kataster Tatr, jak i Georeferencer korzystają z publikowanych tutaj
+najlepszych pomiarów.
+
+## Jak możesz pomóc
+
+Jeżeli masz dokładniejszy pomiar GPS/GNSS, znasz brakujący otwór albo widzisz
+błędne przypisanie, dodaj
+[zgłoszenie](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues) lub
+przygotuj pull request. Podaj nazwę jaskini i konkretnego otworu, współrzędne,
+datę, metodę lub urządzenie, szacowaną dokładność oraz źródło danych.
+Rozróżnienie otworów tej samej jaskini jest szczególnie ważne.
+
+## Dla osób rozwijających i utrzymujących dane
+
+Źródłem prawdy są pliki YAML w `data/`. SQLite, GeoJSON, GPX, CSV i
+Shapefile są artefaktami generowanymi z tych plików.
+
+`Obiekt` oznacza konkretny punkt w terenie, a `Jaskinia` jest rekordem
+katalogowym grupującym jeden lub więcej otworów. Każdy obiekt zachowuje pełną
+historię pomiarów i wskazanie najlepszego aktualnego pomiaru.
+
+### Szybki start
 
 ```bash
 uv sync
+uv run pytest
 uv run python scripts/validate.py
 uv run python scripts/build_release_artifacts.py
 ```
 
 Artefakty lokalne powstają w `build/` i nie są commitowane.
 
-## Model danych w skrócie
+### Dokumentacja projektu
 
-`Obiekt` to konkretny punkt w terenie. Jedna jaskinia może mieć wiele obiektów,
-np. kilka otworów. `Jaskinia` jest encją katalogową/logiczna i trzyma
-referencje PIG oraz numery inwentarzowe. TPN `GLOBALID` trzymamy przy obiekcie,
-bo opisuje punkt źródłowy.
+- [Specyfikacja i model domeny](specyfikacja_gps_kataster_obiektow_tatr_v_2.md)
+- [Dodawanie i weryfikacja pomiarów](docs/operations.md)
+- [Formaty i pola plików wydania](docs/release_artifacts.md)
+- [CHANGELOG.md](CHANGELOG.md)
 
-W V1 każdy obiekt ma kategorię: `jaskinia_otwor`, `sztolnia`, `ponor`,
-`wywierzysko` albo `inne`.
-
-## Jak działa `auto`
-
-`best_measurement.mode: auto` deterministycznie wybiera aktualny pomiar:
-najpierw własny zweryfikowany, potem TPN, własny nieweryfikowany, PIG, a na
-końcu inne nieodrzucone źródła. W remisie wygrywa nowsza data, potem niższe
-`horizontal_accuracy_m`, potem stabilny porządek po `measurement.id`. Decyzję
-operatorską zapisujemy jako `mode: manual` z `reason`.
-
-W początkowych release'ach większość najlepszych pomiarów może mieć
-`verification_status: nieweryfikowany`. To znaczy, że punkt pochodzi z importu
-albo przepisanego źródła i nie przeszedł jeszcze projektowego review
-terenowego/operatora. Nie oznacza to automatycznie błędu ani braku źródła; do
-czasu lepszego pomiaru taki rekord pozostaje najlepszą dostępną lokalizacją.
-
-Pełny workflow pracy na danych jest w
-[docs/operations.md](docs/operations.md).
-
-## Walidacja i release
-
-Przed zmianami danych uruchom:
-
-```bash
-uv run ruff format --check src tests scripts
-uv run ruff check src tests scripts
-uv run pytest
-uv run python scripts/validate.py
-```
-
-Testy mutacyjne krytycznej logiki mozna uruchomic lokalnie:
-
-```bash
-uv run mutmut run --max-children 2
-uv run mutmut results
-```
-
-Repozytorium, dokumentacja i generowane eksporty danych są licencjonowane jako
-Creative Commons Attribution 4.0 International, zgodnie z plikiem `LICENSE`.
-Lokalne paczki można budować przez `scripts/build_release_artifacts.py`.
-Przegląd plików, kolumn i pól release jest w
-[docs/release_artifacts.md](docs/release_artifacts.md).
-
-Wydania publiczne są wersjonowane semver tagami `vX.Y.Z`. Proces jest ręczny:
-uzupełnij [CHANGELOG.md](CHANGELOG.md), zacommituj zmianę, utwórz annotated tag
-`git tag -a vX.Y.Z -m "vX.Y.Z - opis"` i wypchnij tag. GitHub Actions publikuje
-release wyłącznie po pushu taga.
+Publiczne wydania są wersjonowane semantycznie tagami `vX.Y.Z` i publikowane
+ręcznie. Repozytorium, dokumentacja i generowane eksporty danych są
+licencjonowane na warunkach Creative Commons Attribution 4.0 International,
+zgodnie z plikiem [LICENSE](LICENSE).

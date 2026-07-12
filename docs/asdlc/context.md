@@ -1,6 +1,6 @@
 # AS-DLC project context
 
-Last updated: 2026-05-18
+Last updated: 2026-07-11
 
 ## Current mode
 
@@ -870,3 +870,24 @@ Release prep for v1.0.2 on 2026-05-21:
 - Project/package version moved from `1.0.1` to `1.0.2`.
 - Publish path: mark PR #1 ready for review, merge it, then push annotated tag
   `v1.0.2` from the merged main commit.
+
+After PBI-033 on 2026-07-11:
+
+- `README.md` is the Polish user-facing entrypoint, while `README.en.md` and
+  `README.sk.md` provide matching English and Slovak versions; all three keep
+  a language switch at the top.
+- The primary audience is now cavers, speleologists and GIS users. Download
+  formats, practical uses, accuracy and verification are explained before the
+  implementation details.
+- The README documents the three-project ecosystem: this repository answers
+  where a concrete entrance or field object is, Jaskiniowy Kataster Tatr
+  provides cave survey data and a spatial model, and Georeferencer publishes
+  georeferenced plan scans as GeoTIFF.
+- Jaskiniowy Kataster Tatr and Georeferencer both consume the published best
+  coordinates from this repository, so the GPS Kataster is described as their
+  shared entrance-coordinate source rather than as a symmetric peer
+  dependency.
+- Developer onboarding remains at the end of each README. Detailed maintenance
+  and artifact contracts stay in `docs/operations.md`,
+  `docs/release_artifacts.md` and the project specification instead of being
+  duplicated in another developer README.
