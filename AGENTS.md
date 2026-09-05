@@ -11,6 +11,25 @@ Read these files before making changes:
    specification and domain model.
 2. `docs/asdlc/backlog_v1.md` - V1 backlog, PBI order, scope and verification.
 3. `docs/asdlc/context.md` - compact current state and operating agreements.
+4. For the review-remediation series, `docs/asdlc/remediation_runbook.md`
+   and `docs/asdlc/remediation_plan.md` - session protocol and PBI cards.
+
+## Review remediation from 2026-09-05
+
+- Use branch `codex/review-remediation`; fetch and inspect its current remote
+  state before choosing work. Do not restart the series from `main`.
+- Implement exactly one ready PBI per session unless the user explicitly
+  requests more. Current statuses are in the remediation section of the
+  backlog; use `context.md` for the latest handoff and verify it against Git.
+- Follow the runbook's full verification, scoped commit, frequent push and
+  remote-SHA/CI checks for each completed small step. Keep evidence in
+  `docs/asdlc/verification/PBI-NNN.md`, including unfinished work.
+- A clean session must be able to continue from tracked files and origin.
+  Do not make continuation depend on chat, account memory, `build/` or `/tmp`.
+- The current request authorizes planning and delivery of PBI-034. Start
+  implementation PBI-035 only in a subsequent execution request.
+- Do not merge to `main`, tag or publish a release as part of this series
+  without a separate user instruction.
 
 ## Operating mode
 

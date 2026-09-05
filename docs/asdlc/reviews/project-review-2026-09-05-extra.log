@@ -1,0 +1,11 @@
+tpn_multiple_updates {'statuses': ['matched', 'matched'], 'measurement_ids': ['m-002', 'm-002'], 'apply_issues': ['MEASUREMENT_ALREADY_EXISTS'], 'written': 0}
+tpn_final_plus_pig_staging {'statuses': ['unresolved', 'unresolved'], 'issues': ['TPN_NR_INWENT_AMBIGUOUS', 'TPN_NR_INWENT_AMBIGUOUS']}
+operator_resolve_ambiguous_row ['STAGING_MEASUREMENT_UPDATE_MISSING']
+assign_with_yaml_extension KSW-0001
+update_yaml_extension {'has_errors': False, 'files': ['KSW-0001.yaml', 'KSW-0001.yml'], 'validation': ['DUPLICATE_OBJECT_ID', 'DUPLICATE_OBJECT_ID']}
+utf8_truncation UnicodeDecodeError 'utf-8' codec can't decode byte 0xc3 in position 253: unexpected end of data
+duplicate_attachment_validation []
+prefix_mismatch_without_reason 16
+best_sources [('PIG', 2), ('TPN', 996), ('inne', 9), ('wlasne', 2)]
+best_statuses [('nieweryfikowany', 1007), ('zweryfikowany', 2)]
+repeat_release_changed_hashes ['best-measurements.shp.zip', 'katalog.sqlite.zip']

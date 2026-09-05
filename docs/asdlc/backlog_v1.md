@@ -1,6 +1,48 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-07-11
+Stan na: 2026-09-05
+
+## Naprawy po przegladzie 2026-09-05
+
+Branch: `codex/review-remediation`. Poniższa tabela jest źródłem aktualnych
+statusów serii. Zakres, zależności i odbiór:
+[karty PBI-034–054](remediation_plan.md). Procedura czystej sesji,
+weryfikacji, commitów i pushów: [runbook](remediation_runbook.md).
+Historyczny [raport R01–R13](reviews/project-review-2026-09-05.md) jest w git.
+
+Statusy: `planowane`, `w toku`, `zweryfikowane — do dostarczenia`,
+`wykonane`, `zablokowane` (z powodem i warunkiem wznowienia w logu).
+`Wykonane` wymaga pełnej bramki i dostarczenia commitu na origin;
+następna sesja potwierdza Git i CI, nie tylko treść tabeli.
+
+| PBI | Zadanie | Status | Dowody |
+|---|---|---|---|
+| PBI-034 | Utrwalić plan, raport i protokół kontynuacji | zweryfikowane — do dostarczenia | [log](verification/PBI-034.md) |
+| PBI-035 | Pełna odtwarzalna bramka lokalna i CI | planowane | — |
+| PBI-036 | Duplikaty kluczy YAML | planowane | — |
+| PBI-037 | Unikalność ID wszystkich encji | planowane | — |
+| PBI-038 | Symetria obiekt–jaskinia i link_cave | planowane | — |
+| PBI-039 | Rozszerzenia YAML i ścieżki aktualizacji | planowane | — |
+| PBI-040 | Walidacja wejścia i wyniku review przed zapisem | planowane | — |
+| PBI-041 | Ochrona zapisu partii przy błędzie I/O | planowane | — |
+| PBI-042 | Skończone wartości liczbowe | planowane | — |
+| PBI-043 | Brakujący katalog wejściowy | planowane | — |
+| PBI-044 | Referencje i prefix przydziału ID | planowane | — |
+| PBI-045 | Deduplikacja kandydatów finalnych/staging | planowane | — |
+| PBI-046 | Numeracja pomiarów w partii | planowane | — |
+| PBI-047 | Payload wierszy unresolved | planowane | — |
+| PBI-048 | Jawne rozstrzyganie unresolved | planowane | — |
+| PBI-049 | UTF-8 w polach DBF | planowane | — |
+| PBI-050 | Deterministyczne archiwa release | planowane | — |
+| PBI-051 | Dowody i powody 16 rozbieżności prefixu | planowane | — |
+| PBI-052 | Egzekwowanie powodów rozbieżności | planowane | — |
+| PBI-053 | Zgodność dokumentacji i kontraktów | planowane | — |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
+
+Pierwsze zadanie implementacyjne: PBI-035, po dostarczeniu PBI-034.
+PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
+lecz definiuje osobne naprawy. Nie oznaczaj R06 jako zamkniętego po samej
+poprawce technicznej PBI-044 — wymagane są też PBI-051 i PBI-052.
 
 ## Status realizacji
 

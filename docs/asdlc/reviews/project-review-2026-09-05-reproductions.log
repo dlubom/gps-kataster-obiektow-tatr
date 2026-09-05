@@ -1,0 +1,19 @@
+baseline {'error': {}, 'warning': {}}
+duplicate_measurement {'error': {}, 'warning': {}} {'exception': 'IntegrityError', 'message': 'UNIQUE constraint failed: measurements.object_id, measurements.id'}
+duplicate_measurement_export 1240.0
+duplicate_cave {'error': {}, 'warning': {}} {'exception': 'IntegrityError', 'message': 'UNIQUE constraint failed: caves.id'}
+nan_cache {'error': {}, 'warning': {}} {'exception': 'IntegrityError', 'message': 'NOT NULL constraint failed: measurements.x_1992'}
+nan_geojson True
+two_caves_claim_object {'error': {}, 'warning': {}} {'objects': '1', 'status': 'success'}
+relink {'errors': False, 'old_cave_objects': ['KSW-0001'], 'validation': {'error': {}, 'warning': {}}}
+create_object_only {'errors': False, 'written': 1, 'validation': {'error': {'CAVE_REFERENCE_MISSING': 1}, 'warning': {}}}
+invalid_id_assignment {'error': {}, 'warning': {}}
+duplicate_yaml_key {'error': {}, 'warning': {}} {'objects': '1', 'status': 'success'}
+nonexistent_data {'error': {}, 'warning': {}} {'objects': '0', 'status': 'success'}
+source_comparison pig {'xlsx': 860, 'csv': 860, 'differences': 4292, 'first_differences': [(1, 'X 1992', '156826,5', '156826.5'), (1, 'Y 1992', '578327,52', '578327.52'), (1, 'B', '49,27391671', '49.27391671'), (1, 'L', '20,07713884', '20.07713884'), (1, 'Deniwelacja [m]', '1,5', '1.5'), (2, 'X 1992', '152267,23', '152267.23')]}
+source_comparison tpn {'xlsx': 1005, 'csv': 1005, 'differences': 4075, 'first_differences': [(1, 'DLUGOSC', '2,3', '2.3'), (1, 'Z', '1297,367139', '1297.36713906'), (1, 'X1992', '152971,36', '152971.36'), (1, 'Y1992', '562235,67', '562235.67'), (2, 'Z', '1375,830628', '1375.83062845'), (2, 'X1992', '154416,5', '154416.5')]}
+tpn_date_differences 0 []
+shapefile_read_success 1009
+database_integrity [('ok',)] []
+actual_cave_link_inconsistencies (0,)
+actual_missing_inverse_links (0,)

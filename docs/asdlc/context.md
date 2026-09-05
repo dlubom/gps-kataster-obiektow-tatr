@@ -1,6 +1,40 @@
 # AS-DLC project context
 
-Last updated: 2026-07-11
+Last updated: 2026-09-05
+
+## Current handoff — review remediation
+
+- Active branch: `codex/review-remediation`, tracking target on `origin`.
+  Series base: `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`; `origin/main`
+  was fetched and matched that base when planning started on 2026-09-05.
+- Current step: PBI-034, persisting the plan and clean-session protocol.
+  Implementation has not started. After delivery, the next ready step is
+  **PBI-035**; do not redo the project review or restart at PBI-001.
+- [Backlog](backlog_v1.md#naprawy-po-przegladzie-2026-09-05) is authoritative
+  for current PBI status; [plan](remediation_plan.md) defines scope and
+  dependencies, [runbook](remediation_runbook.md) defines full verification
+  and delivery, and [PBI-034 log](verification/PBI-034.md) records evidence.
+- Work one PBI per session, with verified small commits and frequent pushes
+  on this branch. Check remote SHA and CI, then stop at the handoff. Merge,
+  tags and release publication require a separate user instruction.
+- The [13-finding audit](reviews/project-review-2026-09-05.md) is tracked.
+  Its baseline is 123 passing tests; 1009 objects, 1003 caves, 1875
+  measurements, no relations; 0 validation errors and 2066 known warnings.
+  Re-run checks for each implementation rather than treating this as a
+  current result. No application code or final data is changed by PBI-034.
+- Important dependency: review must validate raw loaded input before
+  indexing by ID, then the full proposed dataset with relations and original
+  file paths. Symmetry validation and `link_cave` repair ship together.
+- R06 has 16 historical prefix mismatches without reasons. PBI-044 only
+  validates structural ID-assignment references. PBI-051 establishes real
+  reasons; PBI-052 enforces them after the data is ready. Preserve IDs and
+  measurements; do not invent operator decisions to keep the gate green.
+- Existing CI triggers PR/main only. PBI-035 adds this branch and a shared
+  verification command. Until then, lack of a branch workflow is recorded
+  as not applicable, not a passing CI result.
+
+The sections below retain historical implementation facts. They do not
+override this handoff, the current backlog or live Git state.
 
 ## Current mode
 
