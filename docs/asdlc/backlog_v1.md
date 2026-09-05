@@ -17,7 +17,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 
 | PBI | Zadanie | Status | Dowody |
 |---|---|---|---|
-| PBI-034 | Utrwalić plan, raport i protokół kontynuacji | zweryfikowane — do dostarczenia | [log](verification/PBI-034.md) |
+| PBI-034 | Utrwalić plan, raport i protokół kontynuacji | wykonane 2026-09-05 | [log](verification/PBI-034.md) |
 | PBI-035 | Pełna odtwarzalna bramka lokalna i CI | planowane | — |
 | PBI-036 | Duplikaty kluczy YAML | planowane | — |
 | PBI-037 | Unikalność ID wszystkich encji | planowane | — |
@@ -39,7 +39,8 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-053 | Zgodność dokumentacji i kontraktów | planowane | — |
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
 
-Pierwsze zadanie implementacyjne: PBI-035, po dostarczeniu PBI-034.
+Następne gotowe zadanie: **PBI-035**. Plan PBI-034 dostarczono w commicie
+`15604cc276f2b5e998ac820216099014e3b7a273` na `origin/codex/review-remediation`.
 PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
 lecz definiuje osobne naprawy. Nie oznaczaj R06 jako zamkniętego po samej
 poprawce technicznej PBI-044 — wymagane są też PBI-051 i PBI-052.

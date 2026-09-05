@@ -7,9 +7,12 @@ Last updated: 2026-09-05
 - Active branch: `codex/review-remediation`, tracking target on `origin`.
   Series base: `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`; `origin/main`
   was fetched and matched that base when planning started on 2026-09-05.
-- Current step: PBI-034, persisting the plan and clean-session protocol.
-  Implementation has not started. After delivery, the next ready step is
-  **PBI-035**; do not redo the project review or restart at PBI-001.
+- PBI-034 is complete: the plan and clean-session protocol were verified,
+  committed and pushed as `15604cc276f2b5e998ac820216099014e3b7a273`.
+  The remote branch SHA was read back and matched the delivered commit.
+  Implementation has not started. The next ready step is **PBI-035**;
+  do not redo the project review or restart at PBI-001. Verify publication
+  of the following documentation checkpoint against live Git on resume.
 - [Backlog](backlog_v1.md#naprawy-po-przegladzie-2026-09-05) is authoritative
   for current PBI status; [plan](remediation_plan.md) defines scope and
   dependencies, [runbook](remediation_runbook.md) defines full verification
