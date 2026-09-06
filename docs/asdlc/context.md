@@ -12,11 +12,17 @@ Last updated: 2026-09-06
   The remote branch SHA was read back and matched the delivered commit.
   Its documentation checkpoint `7f6b4a8eaea1ec1a052c5c11744c097a160dd858`
   was confirmed against live origin before PBI-035.
-- PBI-035 is verified locally and awaiting delivery. It adds
+- PBI-035 is complete. Implementation `8f096455a491fbf00fdd21319e18372e09878b93`
+  was pushed, its remote SHA matched, and workflow `validate` run
+  `34012763897` succeeded for that exact SHA. It adds
   `scripts/verify_project.py`, fresh artifact readback, source identity and
   unchanged-data checks, and the shared frozen CI gate for PR/main and
   this remediation branch. See [PBI-035 log](verification/PBI-035.md).
-  Finish its code push/CI and documentation checkpoint before PBI-036;
+  The final local gate passed 170 tests and read back all 7 artifacts;
+  catalog counts and the 2066 known warnings are unchanged. Independent
+  review found a missing SHX check; it was fixed and re-reviewed with no
+  open findings. The next ready task is **PBI-036**. On resume confirm the
+  documentation checkpoint against origin/CI before starting that one PBI;
   do not redo the project review or restart at PBI-001.
 - [Backlog](backlog_v1.md#naprawy-po-przegladzie-2026-09-05) is authoritative
   for current PBI status; [plan](remediation_plan.md) defines scope and
@@ -37,7 +43,7 @@ Last updated: 2026-09-06
   validates structural ID-assignment references. PBI-051 establishes real
   reasons; PBI-052 enforces them after the data is ready. Preserve IDs and
   measurements; do not invent operator decisions to keep the gate green.
-- PBI-035 adds the CI trigger for this branch. From its first push, verify
+- PBI-035 added the CI trigger for this branch. For each further push verify
   workflow `validate` for the exact delivered SHA. A local green gate is
   not a substitute for a successful remote run.
 
