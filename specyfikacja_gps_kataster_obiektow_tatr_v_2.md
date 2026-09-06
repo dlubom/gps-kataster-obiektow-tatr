@@ -783,7 +783,10 @@ artefaktów ani release; publikacja pozostaje zadaniem `release.yml` po tagu.
 
 Walidacje typu error:
 
-- poprawność YAML,
+- poprawność YAML: unikalne klucze w każdym mapowaniu danych i decyzji,
+  z błędem wskazującym plik oraz linię; aliasy `*nazwa` i scalanie `<<`
+  są niedozwolone, typy skalarne i daty zachowują semantykę SafeLoader
+  (szczegóły: `docs/operations.md`, „Reguły zapisu YAML”),
 - zgodność z JSON Schema,
 - obecność `schema_version: 1`,
 - unikalność `Obiekt.id` globalnie,

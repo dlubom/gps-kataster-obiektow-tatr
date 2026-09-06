@@ -16,6 +16,7 @@ MUTATED_PATHS = [
     "src/gps_kataster_obiektow_tatr/pig_staging.py",
     "src/gps_kataster_obiektow_tatr/tpn_staging.py",
     "src/gps_kataster_obiektow_tatr/staging_review.py",
+    "src/gps_kataster_obiektow_tatr/yaml_loader.py",
 ]
 
 MUTATION_TEST_SELECTION = [
@@ -26,6 +27,7 @@ MUTATION_TEST_SELECTION = [
     "tests/test_pig_staging.py",
     "tests/test_tpn_staging.py",
     "tests/test_staging_review.py",
+    "tests/test_yaml_policy.py",
 ]
 
 MUTATION_PYTEST_SELECTION_ARGS = [
@@ -57,7 +59,7 @@ def test_mutmut_is_configured_for_critical_modules() -> None:
     assert mutmut_config["tests_dir"] == MUTATION_TEST_SELECTION
     assert mutmut_config["pytest_add_cli_args_test_selection"] == MUTATION_PYTEST_SELECTION_ARGS
     assert mutmut_config["also_copy"] == MUTATION_SUPPORT_PATHS
-    assert mutmut_config["max_stack_depth"] == 8
+    assert mutmut_config["max_stack_depth"] == -1
 
     for relative_path in MUTATED_PATHS + MUTATION_TEST_SELECTION + MUTATION_SUPPORT_PATHS:
         assert (REPO_ROOT / relative_path).exists()

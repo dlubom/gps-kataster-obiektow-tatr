@@ -11,6 +11,8 @@ from typing import Any
 
 import yaml
 
+from gps_kataster_obiektow_tatr.yaml_loader import load_yaml
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_DIR = REPO_ROOT / "data"
 
@@ -126,8 +128,7 @@ def _load_record(
 
 def _load_yaml_mapping(path: Path) -> dict[str, Any]:
     try:
-        with path.open(encoding="utf-8") as yaml_file:
-            data = yaml.safe_load(yaml_file)
+        data = load_yaml(path)
     except yaml.YAMLError as exc:
         raise YamlDataLoadError(path, f"invalid YAML: {exc}") from exc
 

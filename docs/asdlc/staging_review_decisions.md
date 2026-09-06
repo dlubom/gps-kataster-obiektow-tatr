@@ -53,9 +53,18 @@ dziala na finalnych ID i nie wymaga `source`.
 
 ## Bezpieczenstwo
 
+Klucze YAML muszą być unikalne na każdym poziomie: np. drugi `action`
+w jednej decyzji jest błędem także przy identycznej wartości. Aliasy
+`*nazwa` i scalanie `<<` są niedozwolone; wartości zapisuj jawnie.
+Obowiązuje wspólna [polityka YAML](../operations.md#reguły-zapisu-yaml)
+dla decyzji i finalnych danych, z zachowaniem dotychczasowego parsowania dat.
+Powtórzony klucz w finalnych danych również blokuje całą partię review.
+
 `apply_review.py` najpierw sprawdza caly plik decyzji. Jezeli ktorakolwiek
-decyzja ma blad, finalne YAML nie sa zapisywane. Niezaleznie od wyniku powstaje
-raport:
+decyzja ma blad, finalne YAML nie sa zapisywane. Błąd parsowania pliku
+decyzji jest zgłaszany na stderr z plikiem i linią, bez tworzenia raportów.
+Po poprawnym odczycie decyzji powstaje raport, także przy błędzie finalnego
+YAML:
 
 - `build/staging/review/staging-review.json`
 - `build/staging/review/staging-review.md`

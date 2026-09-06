@@ -4,6 +4,16 @@ Last updated: 2026-09-06
 
 ## Current handoff — review remediation
 
+- PBI-036 is verified locally, awaiting delivery. The common YAML loader
+  rejects duplicate keys, aliases, merge keys and scalar-tagged mappings;
+  it preserves actual scalar/date types. The full gate passes 274 tests,
+  reads back all 7 artifacts and confirms unchanged data. Independent
+  review found a scalar-tagged mapping bypass, now fixed and re-reviewed
+  with no open findings. Targeted mutations: 66 killed, 24 analyzed survivors,
+  no untested mutants or timeouts. See [PBI-036 log](verification/PBI-036.md).
+  Resume with commit/push and exact-SHA CI checks, then the documentation
+  checkpoint. PBI-037 becomes the next ready task only after delivery.
+
 - Active branch: `codex/review-remediation`, tracking target on `origin`.
   Series base: `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`; `origin/main`
   was fetched and matched that base when planning started on 2026-09-05.

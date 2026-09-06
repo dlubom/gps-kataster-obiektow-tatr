@@ -18,6 +18,7 @@ from gps_kataster_obiektow_tatr.data_loader import (
     YamlDataLoadError,
     load_dataset,
 )
+from gps_kataster_obiektow_tatr.yaml_loader import load_yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -129,7 +130,7 @@ def load_review_decisions(decisions_path: Path) -> dict[str, Any]:
     """Load a YAML operator decision file."""
 
     try:
-        data = yaml.safe_load(decisions_path.read_text(encoding="utf-8"))
+        data = load_yaml(decisions_path)
     except yaml.YAMLError as exc:
         raise ReviewDecisionError(f"{decisions_path}: invalid YAML: {exc}") from exc
 

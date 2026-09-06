@@ -5,6 +5,32 @@ pliki w `data/`; katalog `build/` zawiera tylko artefakty wygenerowane lokalnie.
 
 ## Dodanie recznego pomiaru
 
+### Reguły zapisu YAML
+
+Pliki obiektów, jaskiń, relacji i decyzji operatora używają tej samej
+bezpiecznej polityki parsowania. Każdy klucz mapowania musi być unikalny,
+również wewnątrz pomiaru lub decyzji. Drugi `measurements`, `id` albo
+`action` jest błędem, nawet gdy obie wartości są identyczne. Komunikat
+wskazuje plik, klucz oraz linie pierwszego i drugiego wystąpienia.
+Powtórzenia nazw kluczy w różnych mapowaniach są dozwolone.
+
+Wartości zapisuj jawnie: aliasy YAML (`*nazwa`) i scalanie mapowań (`<<`)
+są odrzucane z lokalizacją błędu. Zapobiega to ukrytym nadpisaniom oraz
+współdzieleniu struktur podczas edycji danych w pamięci. Sama kotwica
+`&nazwa` bez użycia aliasu jest dozwolona; ujęty w cudzysłowy klucz `"<<"`
+pozostaje zwykłym tekstem podlegającym schematowi. Rozpoznawanie dat,
+timestampów, null, liczb i wartości logicznych pozostaje jak w PyYAML
+`SafeLoader`; daty zapisane w cudzysłowach pozostają tekstem.
+Mapowania oznaczone tagiem skalarnym, np. `!!str {=: tekst, ...}`, są
+odrzucane: parser nie może wydobyć jednej wartości i pominąć reszty kluczy.
+
+Niepoprawny YAML blokuje walidację, build SQLite, eksporty i zapis finalnych
+danych przez review. Istniejące dane i artefakty pozostają bez zmian.
+Ta kontrola nie zastępuje walidacji schematu ani unikalności identyfikatorów
+w listach.
+
+### Przygotowanie pomiaru
+
 1. Znajdz obiekt w `data/objects/{PREFIX}/{OBJECT_ID}.yml`.
 2. Dopisz nowy wpis na koncu `measurements`.
 3. Nadaj kolejny lokalny identyfikator `m-NNN`, np. po `m-002` wpisz `m-003`.
@@ -189,6 +215,11 @@ Konfiguracja `mutmut` znajduje sie w `pyproject.toml` i ogranicza zakres do
 wybranych modulow oraz powiazanych testow jednostkowych. Testy CLI oparte o
 `subprocess` zostaja w zwyklej bramce `pytest`, bo `mutmut` uruchamia mutowany
 pakiet w osobnym katalogu roboczym.
+
+Zakres obejmuje również wspólny parser `yaml_loader.py` i jego regresje.
+`max_stack_depth = -1` wyłącza limit głębokości śledzenia: PyYAML wywołuje
+konstruktory parsera przez więcej niż osiem ramek, więc wcześniejszy limit
+błędnie oznaczał ich mutacje jako `no tests`.
 
 Pelny przebieg uruchom:
 

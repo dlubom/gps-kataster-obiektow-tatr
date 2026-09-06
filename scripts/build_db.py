@@ -19,7 +19,7 @@ from gps_kataster_obiektow_tatr.build_db import (  # noqa: E402
     BuildDatabaseValidationError,
     build_sqlite_database,
 )
-from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR  # noqa: E402
+from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR, YamlDataLoadError  # noqa: E402
 from gps_kataster_obiektow_tatr.validator import format_issue  # noqa: E402
 
 
@@ -59,6 +59,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             output_path=args.output,
             generated_at=generated_at,
         )
+    except YamlDataLoadError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
     except BuildDatabaseValidationError as exc:
         for issue in exc.issues:
             print(format_issue(issue))

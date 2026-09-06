@@ -1,6 +1,6 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-09-05
+Stan na: 2026-09-06
 
 ## Naprawy po przegladzie 2026-09-05
 
@@ -19,7 +19,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 |---|---|---|---|
 | PBI-034 | Utrwalić plan, raport i protokół kontynuacji | wykonane 2026-09-05 | [log](verification/PBI-034.md) |
 | PBI-035 | Pełna odtwarzalna bramka lokalna i CI | wykonane 2026-09-06 | [log](verification/PBI-035.md) |
-| PBI-036 | Duplikaty kluczy YAML | planowane | — |
+| PBI-036 | Duplikaty kluczy YAML | zweryfikowane — do dostarczenia | [log](verification/PBI-036.md) |
 | PBI-037 | Unikalność ID wszystkich encji | planowane | — |
 | PBI-038 | Symetria obiekt–jaskinia i link_cave | planowane | — |
 | PBI-039 | Rozszerzenia YAML i ścieżki aktualizacji | planowane | — |
