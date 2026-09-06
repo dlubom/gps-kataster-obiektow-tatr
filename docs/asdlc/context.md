@@ -1,6 +1,6 @@
 # AS-DLC project context
 
-Last updated: 2026-09-05
+Last updated: 2026-09-06
 
 ## Current handoff — review remediation
 
@@ -10,9 +10,14 @@ Last updated: 2026-09-05
 - PBI-034 is complete: the plan and clean-session protocol were verified,
   committed and pushed as `15604cc276f2b5e998ac820216099014e3b7a273`.
   The remote branch SHA was read back and matched the delivered commit.
-  Implementation has not started. The next ready step is **PBI-035**;
-  do not redo the project review or restart at PBI-001. Verify publication
-  of the following documentation checkpoint against live Git on resume.
+  Its documentation checkpoint `7f6b4a8eaea1ec1a052c5c11744c097a160dd858`
+  was confirmed against live origin before PBI-035.
+- PBI-035 is verified locally and awaiting delivery. It adds
+  `scripts/verify_project.py`, fresh artifact readback, source identity and
+  unchanged-data checks, and the shared frozen CI gate for PR/main and
+  this remediation branch. See [PBI-035 log](verification/PBI-035.md).
+  Finish its code push/CI and documentation checkpoint before PBI-036;
+  do not redo the project review or restart at PBI-001.
 - [Backlog](backlog_v1.md#naprawy-po-przegladzie-2026-09-05) is authoritative
   for current PBI status; [plan](remediation_plan.md) defines scope and
   dependencies, [runbook](remediation_runbook.md) defines full verification
@@ -32,9 +37,9 @@ Last updated: 2026-09-05
   validates structural ID-assignment references. PBI-051 establishes real
   reasons; PBI-052 enforces them after the data is ready. Preserve IDs and
   measurements; do not invent operator decisions to keep the gate green.
-- Existing CI triggers PR/main only. PBI-035 adds this branch and a shared
-  verification command. Until then, lack of a branch workflow is recorded
-  as not applicable, not a passing CI result.
+- PBI-035 adds the CI trigger for this branch. From its first push, verify
+  workflow `validate` for the exact delivered SHA. A local green gate is
+  not a substitute for a successful remote run.
 
 The sections below retain historical implementation facts. They do not
 override this handoff, the current backlog or live Git state.

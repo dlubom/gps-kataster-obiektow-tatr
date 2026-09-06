@@ -18,7 +18,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI | Zadanie | Status | Dowody |
 |---|---|---|---|
 | PBI-034 | Utrwalić plan, raport i protokół kontynuacji | wykonane 2026-09-05 | [log](verification/PBI-034.md) |
-| PBI-035 | Pełna odtwarzalna bramka lokalna i CI | planowane | — |
+| PBI-035 | Pełna odtwarzalna bramka lokalna i CI | zweryfikowane — do dostarczenia | [log](verification/PBI-035.md) |
 | PBI-036 | Duplikaty kluczy YAML | planowane | — |
 | PBI-037 | Unikalność ID wszystkich encji | planowane | — |
 | PBI-038 | Symetria obiekt–jaskinia i link_cave | planowane | — |

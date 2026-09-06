@@ -763,18 +763,23 @@ updated_by: dl
 
 ### 11.1 `validate.yml`
 
-Uruchamiany na PR i push.
+Uruchamiany na PR oraz push na `main` i `codex/review-remediation`.
 
 Workflow CI używa tego samego toolingu co środowisko lokalne: `uv`, `ruff`, `pytest` i skrypty z repo.
 
 Kroki techniczne:
 
-- instalacja zależności przez `uv sync`,
-- `ruff check .`,
-- `ruff format --check .`,
-- `pytest`,
-- testy mutacyjne dla krytycznych modułów, jeśli czas wykonania jest akceptowalny dla PR,
-- `scripts/validate.py`.
+- instalacja zależności przez `uv sync --frozen`,
+- wspólna bramka `uv run --frozen python scripts/verify_project.py`: Ruff
+  format/lint, wszystkie testy, `scripts/validate.py`, izolowany build oraz
+  readback wszystkich artefaktów względem YAML,
+- raport w nowym `build/verification/run-*/`, z kodami etapów, wersjami,
+  bazowym SHA, hashem drzewa i kontrolą niezmienności źródeł,
+- testy mutacyjne krytycznych modułów pozostają osobną bramką zgodnie
+  z `docs/operations.md`; nie są uruchamiane przez runner przy każdym PR.
+
+Build w bramce jest lokalną kontrolą wygenerowanych plików. Nie publikuje
+artefaktów ani release; publikacja pozostaje zadaniem `release.yml` po tagu.
 
 Walidacje typu error:
 

@@ -12,19 +12,16 @@ def test_validate_workflow_uses_local_validation_gate() -> None:
 
     assert workflow["name"] == "validate"
     assert set(workflow["on"]) == {"pull_request", "push"}
-    assert workflow["on"]["push"]["branches"] == ["main"]
+    assert workflow["on"]["push"]["branches"] == ["main", "codex/review-remediation"]
 
     run_commands = [step["run"] for step in workflow["jobs"]["validate"]["steps"] if "run" in step]
     assert run_commands == [
-        "uv sync",
-        "uv run ruff format --check src tests scripts",
-        "uv run ruff check src tests scripts",
-        "uv run pytest",
-        "uv run python scripts/validate.py",
+        "uv sync --frozen",
+        "uv run --frozen python scripts/verify_project.py",
     ]
 
 
-def test_validate_workflow_does_not_build_release_artifacts() -> None:
+def test_validate_workflow_does_not_publish_release_artifacts() -> None:
     workflow_text = VALIDATE_WORKFLOW.read_text(encoding="utf-8")
 
     forbidden_release_steps = [

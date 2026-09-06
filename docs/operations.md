@@ -127,24 +127,52 @@ ale wymaga pola `reason`.
 
 ## Walidacja
 
-Przed commitem uruchom lokalna bramke:
+Przed commitem uruchom pełną bramkę z katalogu repozytorium:
 
 ```bash
-uv run ruff format --check src tests scripts
-uv run ruff check src tests scripts
-uv run pytest
-uv run python scripts/validate.py
+uv sync --frozen
+uv run --frozen python scripts/verify_project.py
+git diff --check
 ```
 
-`scripts/validate.py` zwraca kod niezerowy tylko dla `error`. Ostrzezenia trzeba
-przeczytac i zrozumiec; obecny import PIG/TPN ma znane ostrzezenia
-`MISSING_HORIZONTAL_ACCURACY`, bo zrodla nie podaja dokladnosci poziomej.
+Ta sama bramka działa w `validate.yml` dla PR oraz push na `main` i
+`codex/review-remediation`. Runner uruchamia kolejno Ruff format/lint,
+cały pytest, `scripts/validate.py`, izolowany lokalny build release i
+ponowny odczyt wszystkich siedmiu artefaktów. Każdy przebieg tworzy nowy
+`build/verification/run-*/`; nie korzysta z wcześniejszych eksportów.
 
-Jesli lokalny cache `uv` nie jest dostepny w srodowisku sandboxowym, uzyj:
+Odczyt porównuje z YAML liczniki, ID, wybrany pomiar (w tym `manual`),
+powiązania jaskinia–obiekt w obu kierunkach oraz współrzędne i ich osie.
+Sprawdza integralność i klucze obce SQLite, zawartość i CRC archiwów,
+każdy rekord DBF jako UTF-8, zgodność indeksu SHX z odczytem sekwencyjnym
+SHP oraz metadane. Porównanie CSV/GPX ma tolerancję 0,000001 w jednostce
+pola; dla DBF tolerancja odpowiada zaokrągleniu do 8 miejsc po przecinku
+w stopniach, 3 w metrach PL-1992 i 2 dla wysokości. Pełna walidacja YAML
+zachowuje dotychczasowe reguły.
 
-```bash
-UV_CACHE_DIR=/private/tmp/uv-cache uv run pytest
-```
+`report.json` zapisuje komendy, kody wyjścia, ścieżki logów, wersje
+Pythona i pakietów, SHA bazowego HEAD oraz hash rzeczywistego drzewa
+przed i po. Logi `uv-version.log` i `git-version.log` podają wersje tych
+narzędzi. Hash drzewa obejmuje śledzone i nieignorowane nowe pliki
+(względna ścieżka, typ/wykonywalność i SHA-256 zawartości); pomija
+wygenerowany `build/`. Osobny hash całego `data/` uwzględnia także
+ignorowane pliki źródłowe. Raport zawiera liczniki, ostrzeżenia według
+kodów i SHA-256 artefaktów, jeżeli odczyt zakończył się powodzeniem.
+
+Błąd etapu zatrzymuje następne etapy i daje niezerowy wynik całej bramki;
+raport zachowuje oryginalny kod polecenia. Kontrola niezmienności źródeł
+wykonuje się także po błędzie. Nie edytuj repo podczas przebiegu — zmiana
+weryfikowanego drzewa również oznacza niepowodzenie. Runner nie zmienia
+danych, nie commituje ani nie publikuje artefaktów. Wynik bramki sprawdza
+bieżące kontrakty; nie oznacza zamknięcia wszystkich znalezisk R01–R13.
+
+`scripts/validate.py` zwraca kod niezerowy tylko dla `error`. Ostrzeżenia
+trzeba przeczytać i zrozumieć. Można uruchomić sam walidator do szybkiej
+kontroli, ale nie zastępuje to pełnej bramki przed commitem.
+
+Jeśli lokalny cache `uv` nie jest dostępny w sandboxie, ustaw `UV_CACHE_DIR`
+na zapisywalny katalog tymczasowy dla obu poleceń `uv`. `--offline` można
+dodać do synchronizacji, gdy komplet zależności jest dostępny lokalnie.
 
 ## Testy mutacyjne
 

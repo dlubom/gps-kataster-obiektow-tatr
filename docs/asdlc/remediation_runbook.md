@@ -71,7 +71,9 @@ Zależności instaluj przez `uv sync --frozen`. Przy ograniczonym cache użyj
 obejścia sandboxa. `--offline` można dodać, gdy komplet zależności jest
 dostępny; brak zależności nie oznacza powodzenia weryfikacji.
 
-Do zakończenia PBI-035 wykonuj osobno i sprawdzaj exit code każdego kroku:
+PBI-035 dostarcza wspólny runner. Podczas jego wdrożenia wykonano także
+osobno poniższe polecenia i sprawdzono exit code każdego kroku
+(historyczna bramka PBI-034/035):
 
 ```bash
 uv sync --frozen
@@ -87,13 +89,20 @@ git diff --check
 ```
 
 Podmień `PBI-034` na bieżące zadanie; użyj nowego pustego katalogu przebiegu,
-jeżeli poprzedni wynik już istnieje. Po PBI-035 pełny odpowiednik wykonuje:
+jeżeli poprzedni wynik już istnieje. Od PBI-035 pełną bramkę wykonuje:
 
 ```bash
 uv sync --frozen
 uv run --frozen python scripts/verify_project.py
 git diff --check
 ```
+
+Każdy przebieg zapisuje `build/verification/run-*/report.json` i logi;
+nowy katalog chroni przed zaliczeniem starych artefaktów. Raport obejmuje
+komendy/exit codes, wersje, bazowy HEAD, hash drzewa i całego `data/`
+przed/po oraz wyniki readback i sumy artefaktów. Błąd zatrzymuje dalsze
+etapy i daje niezerowy wynik, a zmiana źródeł podczas bramki także jest
+błędem. Szczegóły i tolerancje: [operations](../operations.md#walidacja).
 
 Runner nie zastępuje testu reprodukcji ani review diffu. Przed jego
 wdrożeniem ponowny odczyt artefaktów wykonaj istniejącymi bibliotekami
