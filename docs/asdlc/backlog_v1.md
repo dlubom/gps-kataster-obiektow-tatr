@@ -1,6 +1,6 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-09-06
+Stan na: 2026-09-07
 
 ## Naprawy po przegladzie 2026-09-05
 
@@ -19,7 +19,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 |---|---|---|---|
 | PBI-034 | Utrwalić plan, raport i protokół kontynuacji | wykonane 2026-09-05 | [log](verification/PBI-034.md) |
 | PBI-035 | Pełna odtwarzalna bramka lokalna i CI | wykonane 2026-09-06 | [log](verification/PBI-035.md) |
-| PBI-036 | Duplikaty kluczy YAML | zweryfikowane — do dostarczenia | [log](verification/PBI-036.md) |
+| PBI-036 | Duplikaty kluczy YAML | wykonane 2026-09-06 | [log](verification/PBI-036.md) |
 | PBI-037 | Unikalność ID wszystkich encji | planowane | — |
 | PBI-038 | Symetria obiekt–jaskinia i link_cave | planowane | — |
 | PBI-039 | Rozszerzenia YAML i ścieżki aktualizacji | planowane | — |
@@ -39,9 +39,9 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-053 | Zgodność dokumentacji i kontraktów | planowane | — |
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
 
-Następne gotowe zadanie: **PBI-036**. PBI-035 dostarczono w commicie
-`8f096455a491fbf00fdd21319e18372e09878b93` na `origin/codex/review-remediation`;
-CI `validate` dla tego SHA zakończyło się powodzeniem. Dowody w logu PBI-035.
+Następne gotowe zadanie: **PBI-037**. PBI-036 dostarczono w commicie
+`66905d4ad17e602106ae64b11652ac132eff6ba5` na `origin/codex/review-remediation`;
+CI `validate` dla tego SHA zakończyło się powodzeniem. Dowody w logu PBI-036.
 PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
 lecz definiuje osobne naprawy. Nie oznaczaj R06 jako zamkniętego po samej
 poprawce technicznej PBI-044 — wymagane są też PBI-051 i PBI-052.

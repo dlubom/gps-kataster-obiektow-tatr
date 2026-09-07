@@ -1,18 +1,21 @@
 # AS-DLC project context
 
-Last updated: 2026-09-06
+Last updated: 2026-09-07
 
 ## Current handoff — review remediation
 
-- PBI-036 is verified locally, awaiting delivery. The common YAML loader
+- PBI-036 is complete. The common YAML loader
   rejects duplicate keys, aliases, merge keys and scalar-tagged mappings;
   it preserves actual scalar/date types. The full gate passes 274 tests,
   reads back all 7 artifacts and confirms unchanged data. Independent
   review found a scalar-tagged mapping bypass, now fixed and re-reviewed
   with no open findings. Targeted mutations: 66 killed, 24 analyzed survivors,
   no untested mutants or timeouts. See [PBI-036 log](verification/PBI-036.md).
-  Resume with commit/push and exact-SHA CI checks, then the documentation
-  checkpoint. PBI-037 becomes the next ready task only after delivery.
+  Implementation `66905d4ad17e602106ae64b11652ac132eff6ba5` was pushed and
+  confirmed by `git ls-remote`. CI `validate` run `34036069357` succeeded
+  for that exact SHA. On resume confirm this documentation checkpoint
+  against origin/CI, then execute exactly **PBI-037**, the next ready task.
+  Do not repeat PBI-036 or start another PBI in the current session.
 
 - Active branch: `codex/review-remediation`, tracking target on `origin`.
   Series base: `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`; `origin/main`
@@ -31,9 +34,10 @@ Last updated: 2026-09-06
   The final local gate passed 170 tests and read back all 7 artifacts;
   catalog counts and the 2066 known warnings are unchanged. Independent
   review found a missing SHX check; it was fixed and re-reviewed with no
-  open findings. The next ready task is **PBI-036**. On resume confirm the
-  documentation checkpoint against origin/CI before starting that one PBI;
-  do not redo the project review or restart at PBI-001.
+  open findings. Before PBI-036, documentation checkpoint
+  `d827fbf51fca5d4e79cbf59c36765f825c077fb2` was confirmed against origin
+  and successful CI run `34012860429`. Do not redo the project review
+  or restart at PBI-001.
 - [Backlog](backlog_v1.md#naprawy-po-przegladzie-2026-09-05) is authoritative
   for current PBI status; [plan](remediation_plan.md) defines scope and
   dependencies, [runbook](remediation_runbook.md) defines full verification
