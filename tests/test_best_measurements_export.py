@@ -119,7 +119,9 @@ def test_export_writes_metadata_snapshot(tmp_path: Path) -> None:
     object_data = _valid_object()
     object_data.pop("cave_id")
     _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", object_data)
-    _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
+    cave_data = _valid_cave()
+    cave_data["object_ids"] = []
+    _write_yaml(data_dir / "caves" / "C-0001.yml", cave_data)
 
     result = export_best_measurements(
         data_dir=data_dir,

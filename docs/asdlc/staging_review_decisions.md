@@ -43,13 +43,24 @@ decisions:
 | `create_cave` | Nowa `Jaskinia` ze staging PIG/TPN. | Tworzy `data/caves/{CAVE-ID}.yml`. |
 | `create_object` | Nowy `Obiekt` ze staging PIG/TPN. | Tworzy `data/objects/{PREFIX}/{OBJECT-ID}.yml`. |
 | `add_measurement` | Nowy `Pomiar` dla istniejacego albo wczesniej utworzonego `Obiektu`. | Dopisuje pomiar i referencje TPN, a dla `best_measurement.mode: auto` przelicza wskazanie. |
-| `link_cave` | Powiazanie obiektu z jaskinia. | Ustawia `Obiekt.cave_id` i dopisuje obiekt do `Jaskinia.object_ids`. |
+| `link_cave` | Powiazanie obiektu z jaskinia. | Ustawia `Obiekt.cave_id`, usuwa obiekt z `object_ids` poprzedniej jaskini i dopisuje go do `object_ids` docelowej jaskini. |
 | `reject` | Rekord importu odrzucony. | Nie zapisuje finalnego YAML, ale trafia do raportu review. |
 | `unresolved` | Rekord zostaje nierozstrzygniety. | Nie zapisuje finalnego YAML, ale trafia do raportu review. |
 
 `source` jest wymagane dla akcji opartych o staging i przyjmuje `PIG` albo
 `TPN`. `record_number` wskazuje numer wiersza z raportu staging. `link_cave`
 dziala na finalnych ID i nie wymaga `source`.
+
+`link_cave` przy przeniesieniu A→B zapisuje obiekt i obie jaskinie wraz
+z `updated_at` / `updated_by` z decyzji. Zachowuje trwałe ID, pomiary,
+`best_measurement`, referencje i pozostałe pola. Stara jaskinia może zostać
+bez otworów. Ponowne powiązanie z tą samą jaskinią nie dodaje duplikatu
+ani nie usuwa i nie przestawia wpisu; aktualizuje audyt obiektu i jaskini.
+Można również przypisać obiekt, który dotąd nie miał `cave_id`.
+Walidator sprawdza oba kierunki powiązań i odrzuca wskazanie jednego
+obiektu przez dwie różne jaskinie. Pełna walidacja wejścia i wyniku review
+przed zapisem jest osobnym zakresem PBI-040; zachowanie ścieżek `.yaml`
+przy aktualizacji jest zakresem PBI-039.
 
 ## Bezpieczenstwo
 

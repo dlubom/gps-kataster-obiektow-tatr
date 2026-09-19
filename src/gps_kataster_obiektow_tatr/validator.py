@@ -120,6 +120,7 @@ def validate_dataset(
         issues.extend(_validate_duplicate_record_ids(records, code=code, label=label))
     issues.extend(_validate_duplicate_local_ids(dataset.objects))
     issues.extend(_validate_cross_references(dataset))
+    issues.extend(_validate_cave_memberships(dataset))
     issues.extend(_validate_object_records(dataset.objects, resolver=resolver, repo_root=repo_root))
     issues.extend(_validate_duplicate_tpn_globalids(dataset.objects))
 
@@ -363,6 +364,50 @@ def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue,
                     )
                 )
 
+    return tuple(issues)
+
+
+def _validate_cave_memberships(dataset: LoadedDataset) -> tuple[ValidationIssue, ...]:
+    issues: list[ValidationIssue] = []
+    objects = _records_by_id(dataset.objects)
+    caves = _records_by_id(dataset.caves)
+
+    for object_record in dataset.objects:
+        object_id = _record_id(object_record)
+        cave_id = object_record.data.get("cave_id")
+        if not isinstance(cave_id, str):
+            continue  # An object may have no cave; schema handles invalid types.
+        for cave_record in caves.get(cave_id, []):
+            if object_id not in _iter_strings(cave_record.data.get("object_ids")):
+                issues.append(
+                    ValidationIssue(
+                        code="OBJECT_CAVE_MEMBERSHIP_MISSING",
+                        severity=ValidationSeverity.ERROR,
+                        path=object_record.path,
+                        description=(
+                            f"Object {object_id} references cave {cave_id}, "
+                            f"but {cave_record.path} does not list it in object_ids."
+                        ),
+                    )
+                )
+
+    for cave_record in dataset.caves:
+        cave_id = _record_id(cave_record)
+        for object_id in _iter_strings(cave_record.data.get("object_ids")):
+            for object_record in objects.get(object_id, []):
+                if object_record.data.get("cave_id") != cave_id:
+                    issues.append(
+                        ValidationIssue(
+                            code="CAVE_OBJECT_MEMBERSHIP_MISMATCH",
+                            severity=ValidationSeverity.ERROR,
+                            path=cave_record.path,
+                            description=(
+                                f"Cave {cave_id} lists object {object_id}, "
+                                f"but {object_record.path} has cave_id "
+                                f"{object_record.data.get('cave_id')!r}."
+                            ),
+                        )
+                    )
     return tuple(issues)
 
 

@@ -803,6 +803,12 @@ Walidacje typu error:
 - `best_measurement.mode = manual` ma `reason`,
 - `cave_id` wskazuje istniejącą jaskinię,
 - `Jaskinia.object_ids` wskazują istniejące obiekty,
+- przynależność jest dwustronna: `Obiekt.cave_id = C` wtedy i tylko wtedy,
+  gdy `C.object_ids` zawiera ID obiektu; jeden obiekt należy do najwyżej
+  jednej jaskini. Brak wpisu odwrotnego daje `OBJECT_CAVE_MEMBERSHIP_MISSING`,
+  a lista jaskini sprzeczna z `Obiekt.cave_id` daje
+  `CAVE_OBJECT_MEMBERSHIP_MISMATCH`. Pusta lista otworów jaskini i obiekt
+  bez `cave_id` (niewymieniony w żadnej jaskini) pozostają dozwolone,
 - relacje wskazują istniejące obiekty,
 - `Attachment.measurement_id` wskazuje pomiar tego samego obiektu,
 - lokalny `Attachment.path` istnieje,

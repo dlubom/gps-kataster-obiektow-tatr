@@ -21,7 +21,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-035 | Pełna odtwarzalna bramka lokalna i CI | wykonane 2026-09-06 | [log](verification/PBI-035.md) |
 | PBI-036 | Duplikaty kluczy YAML | wykonane 2026-09-06 | [log](verification/PBI-036.md) |
 | PBI-037 | Unikalność ID wszystkich encji | wykonane 2026-09-19 | [log](verification/PBI-037.md) |
-| PBI-038 | Symetria obiekt–jaskinia i link_cave | planowane | — |
+| PBI-038 | Symetria obiekt–jaskinia i link_cave | zweryfikowane — do dostarczenia | [log](verification/PBI-038.md) |
 | PBI-039 | Rozszerzenia YAML i ścieżki aktualizacji | planowane | — |
 | PBI-040 | Walidacja wejścia i wyniku review przed zapisem | planowane | — |
 | PBI-041 | Ochrona zapisu partii przy błędzie I/O | planowane | — |

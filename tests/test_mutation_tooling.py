@@ -25,6 +25,7 @@ MUTATION_TEST_SELECTION = [
     "tests/test_prefix_resolver.py",
     "tests/test_validator.py",
     "tests/test_identifier_scopes.py",
+    "tests/test_cave_membership.py",
     "tests/test_pig_staging.py",
     "tests/test_tpn_staging.py",
     "tests/test_staging_review.py",
