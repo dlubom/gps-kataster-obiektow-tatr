@@ -22,7 +22,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-036 | Duplikaty kluczy YAML | wykonane 2026-09-06 | [log](verification/PBI-036.md) |
 | PBI-037 | Unikalność ID wszystkich encji | wykonane 2026-09-19 | [log](verification/PBI-037.md) |
 | PBI-038 | Symetria obiekt–jaskinia i link_cave | wykonane 2026-09-19 | [log](verification/PBI-038.md) |
-| PBI-039 | Rozszerzenia YAML i ścieżki aktualizacji | zweryfikowane — do dostarczenia | [log](verification/PBI-039.md) |
+| PBI-039 | Rozszerzenia YAML i ścieżki aktualizacji | wykonane 2026-09-19 | [log](verification/PBI-039.md) |
 | PBI-040 | Walidacja wejścia i wyniku review przed zapisem | planowane | — |
 | PBI-041 | Ochrona zapisu partii przy błędzie I/O | planowane | — |
 | PBI-042 | Skończone wartości liczbowe | planowane | — |
@@ -39,9 +39,9 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-053 | Zgodność dokumentacji i kontraktów | planowane | — |
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
 
-Następne gotowe zadanie: **PBI-039**. PBI-038 dostarczono w commicie
-`8729c88158756efb1a0e4ed6617d24c554943e68` na `origin/codex/review-remediation`;
-CI `validate` dla tego SHA zakończyło się powodzeniem. Dowody w logu PBI-038.
+Następne gotowe zadanie: **PBI-040**. PBI-039 dostarczono w commicie
+`53931b1ddf22010782509980334048db1794291b` na `origin/codex/review-remediation`;
+CI `validate` dla tego SHA zakończyło się powodzeniem. Dowody w logu PBI-039.
 PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
 lecz definiuje osobne naprawy. Nie oznaczaj R06 jako zamkniętego po samej
 poprawce technicznej PBI-044 — wymagane są też PBI-051 i PBI-052.
