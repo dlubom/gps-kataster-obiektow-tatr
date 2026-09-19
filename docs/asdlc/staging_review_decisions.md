@@ -58,8 +58,8 @@ bez otworów. Ponowne powiązanie z tą samą jaskinią nie dodaje duplikatu
 ani nie usuwa i nie przestawia wpisu; aktualizuje audyt obiektu i jaskini.
 Można również przypisać obiekt, który dotąd nie miał `cave_id`.
 Walidator sprawdza oba kierunki powiązań i odrzuca wskazanie jednego
-obiektu przez dwie różne jaskinie. Pełna walidacja wejścia i wyniku review
-przed zapisem jest osobnym zakresem PBI-040.
+obiektu przez dwie różne jaskinie. Wejście i pełny wynik review
+są walidowane przed zapisem (PBI-040).
 
 Aktualizacje `add_measurement` i `link_cave` zachowują ścieżkę oraz
 rozszerzenie wczytanego pliku (`.yml` albo `.yaml`), także dla obu jaskiń
@@ -79,7 +79,34 @@ Obowiązuje wspólna [polityka YAML](../operations.md#reguły-zapisu-yaml)
 dla decyzji i finalnych danych, z zachowaniem dotychczasowego parsowania dat.
 Powtórzony klucz w finalnych danych również blokuje całą partię review.
 
-`apply_review.py` najpierw sprawdza caly plik decyzji. Jezeli ktorakolwiek
+`apply_review.py` sprawdza cały wejściowy katalog przed indeksowaniem po ID.
+Błędy schematu, ścieżek, duplikatów, powiązań lub relacji kończą operację
+jako `FINAL_DATA_INVALID`. Review nie naprawia błędnego wejścia przy okazji
+innych decyzji; najpierw popraw dane i uruchom walidator.
+
+Decyzje są stosowane na kopii. Struktura kontenerów staging jest sprawdzana przed indeksowaniem
+(`STAGING_REPORT_INVALID`). Kształt wybranych propozycji i pomiarów
+jest sprawdzany przed użyciem (`STAGING_PROPOSAL_INVALID`), a pełny wynik
+całej partii przed pierwszym zapisem (`PROPOSED_DATA_INVALID`). Sprawdzane
+są również niezmienione relacje, oryginalne ścieżki oraz nowe ścieżki `.yml`.
+Komunikaty zawierają kody walidatora, ścieżki i opis błędu. Sama propozycja
+obiektu z brakującą jaskinią albo jaskini z brakującym otworem jest błędem;
+para `create_object` + `create_cave` w jednej partii działa w obu kolejnościach.
+`--dry-run` wykonuje te same kontrole, bez zapisywania finalnego YAML.
+Ostrzeżenia katalogu nie blokują review; ich pełny wykaz daje `validate.py`.
+
+W `add_measurement` można podać `target_object_id`. Referencje katalogowe
+trafiają do faktycznej jaskini tego obiektu po całej partii,
+nie do starego `target_cave_id` raportu staging. Jawny `target_cave_id`
+w decyzji musi zgadzać się z tym powiązaniem (`TARGET_CAVE_MISMATCH`).
+Jeżeli nie ma jaskini dla referencji, operacja daje `TARGET_CAVE_MISSING`;
+utwórz/powiąż ją w tej samej partii. Pomiar bez referencji katalogowych
+może być dodany do obiektu bez jaskini.
+
+Błąd walidacji blokuje wszystkie zapisy partii. Odtwarzanie plików po awarii
+I/O jest osobnym zakresem PBI-041; ten krok nie zapewnia rollbacku zapisu.
+
+`apply_review.py` sprawdza także caly plik decyzji. Jezeli ktorakolwiek
 decyzja ma blad, finalne YAML nie sa zapisywane. Błąd parsowania pliku
 decyzji jest zgłaszany na stderr z plikiem i linią, bez tworzenia raportów.
 Po poprawnym odczycie decyzji powstaje raport, także przy błędzie finalnego

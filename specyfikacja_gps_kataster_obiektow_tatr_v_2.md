@@ -569,6 +569,17 @@ Operator decyduje:
 5. odrzucenie rekordu importu,
 6. pozostawienie jako nierozstrzygnięty przypadek.
 
+Przed zastosowaniem decyzji review waliduje cały wczytany katalog, zanim
+zaindeksuje rekordy po ID. Decyzje stosuje na kopii i przed pierwszym zapisem
+waliduje pełny wynik partii, z relacjami i rzeczywistymi ścieżkami plików.
+Błąd blokuje wszystkie zapisy; `--dry-run` wykonuje identyczne kontrole.
+Spójność powiązań ocenia się po całej partii, więc nowy obiekt i jego
+jaskinia mogą powstać w oddzielnych decyzjach tej samej partii.
+Referencje katalogowe dodawanego pomiaru trafiają do faktycznej jaskini
+obiektu docelowego po zastosowaniu całej partii. Jawny cel jaskini
+sprzeczny z tym powiązaniem jest błędem. Szczegóły raportów i granice
+obsługi błędów opisuje [format decyzji](docs/asdlc/staging_review_decisions.md).
+
 Pełny model merge/split obiektów zostaje poza V1.
 
 ---

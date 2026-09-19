@@ -23,7 +23,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-037 | Unikalność ID wszystkich encji | wykonane 2026-09-19 | [log](verification/PBI-037.md) |
 | PBI-038 | Symetria obiekt–jaskinia i link_cave | wykonane 2026-09-19 | [log](verification/PBI-038.md) |
 | PBI-039 | Rozszerzenia YAML i ścieżki aktualizacji | wykonane 2026-09-19 | [log](verification/PBI-039.md) |
-| PBI-040 | Walidacja wejścia i wyniku review przed zapisem | planowane | — |
+| PBI-040 | Walidacja wejścia i wyniku review przed zapisem | zweryfikowane — do dostarczenia | [log](verification/PBI-040.md) |
 | PBI-041 | Ochrona zapisu partii przy błędzie I/O | planowane | — |
 | PBI-042 | Skończone wartości liczbowe | planowane | — |
 | PBI-043 | Brakujący katalog wejściowy | planowane | — |

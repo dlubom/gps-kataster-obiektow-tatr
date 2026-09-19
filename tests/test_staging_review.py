@@ -314,6 +314,12 @@ def test_invalid_decision_shapes_and_non_materialized_warnings_are_reported(
     )
 
     assert _issue_codes(invalid_list) == ["DECISIONS_INVALID"]
+    assert invalid_list.has_errors and invalid_list.applied_decisions == ()
+    assert invalid_list.written_paths == ()
+    assert invalid_list.issues[0].description
+    assert invalid_list.reviewed_at == "2026-05-16T10:30:00Z"
+    assert invalid_list.reviewed_by == "dl"
+    assert invalid_list.data_dir == tmp_path / "data-invalid-list"
     assert _issue_codes(mixed) == [
         "DECISION_INVALID",
         "DECISION_ACTION_INVALID",
@@ -385,6 +391,7 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
         invalid_measurement_dir / "objects" / "KSW" / "KSW-0001.yml",
         _object_data(cave_id="C-0001"),
     )
+    _write_yaml(invalid_measurement_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
     invalid_tpn = deepcopy(_tpn_staging())
     invalid_tpn["matched_measurements"][0]["measurement"] = None
     invalid_measurement = apply_review_decisions(
@@ -405,6 +412,10 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
             cave_id="C-0001", measurement=_measurement("m-002", source="TPN", source_ref="")
         ),
     )
+    _write_yaml(duplicate_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    duplicate_object = _read_yaml(duplicate_dir / "objects/KSW/KSW-0001.yml")
+    duplicate_object["best_measurement"]["measurement_id"] = "m-002"
+    _write_yaml(duplicate_dir / "objects/KSW/KSW-0001.yml", duplicate_object)
     duplicate = apply_review_decisions(
         {
             "reviewed_at": "2026-05-16T10:37:00Z",

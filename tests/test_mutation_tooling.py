@@ -30,6 +30,7 @@ MUTATION_TEST_SELECTION = [
     "tests/test_pig_staging.py",
     "tests/test_tpn_staging.py",
     "tests/test_staging_review.py",
+    "tests/test_review_validation.py",
     "tests/test_yaml_policy.py",
     "tests/test_yaml_paths.py",
 ]
@@ -37,6 +38,7 @@ MUTATION_TEST_SELECTION = [
 MUTATION_PYTEST_SELECTION_ARGS = [
     "-k",
     (
+        "not test_cli_review_validation and "
         "not test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors "
         "and not test_cli_writes_staging_artifacts_without_final_yaml "
         "and not test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py "

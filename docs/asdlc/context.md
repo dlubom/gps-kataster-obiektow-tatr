@@ -4,6 +4,15 @@ Last updated: 2026-09-19
 
 ## Current handoff — review remediation
 
+- PBI-040 is verified, pending delivery, on base `7d82c8af2ecd37dc9cbf9571b0e9d76143880270`.
+  Input schema/domain validation precedes indexing; review validates the
+  complete proposed catalog before writes and routes catalog references
+  to the final target cave. Full gate: 494 tests and 7 artifact readbacks,
+  unchanged data/warnings. Independent review findings were fixed and
+  re-reviewed with no blockers. Mutations: 899 killed / 107 analyzed
+  survivors across the fresh campaign and targeted reruns. Delivery remains open; see [PBI-040 log](verification/PBI-040.md). Do not start
+  PBI-041 before finishing and confirming this delivery.
+
 - PBI-039 is complete. Shared YAML discovery and ID allocation handle
   both extensions; review retains original object/cave paths and refuses
   ambiguous IDs before applying decisions. New records use .yml.

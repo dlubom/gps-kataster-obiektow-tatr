@@ -107,10 +107,9 @@ def validate_dataset(
     """Validate an already-loaded dataset and return all issues."""
 
     resolver = prefix_resolver or default_prefix_resolver()
-    validators = _load_schema_validators(schema_dir)
     issues: list[ValidationIssue] = []
 
-    issues.extend(_validate_schema(dataset.records(), validators))
+    issues.extend(validate_record_schemas(dataset.records(), schema_dir=schema_dir))
     issues.extend(_validate_file_id_paths(dataset.records(), data_dir=data_dir))
     for records, code, label in (
         (dataset.objects, "DUPLICATE_OBJECT_ID", "Obiekt.id"),
@@ -125,6 +124,16 @@ def validate_dataset(
     issues.extend(_validate_duplicate_tpn_globalids(dataset.objects))
 
     return tuple(issues)
+
+
+def validate_record_schemas(
+    records: Sequence[LoadedYamlRecord],
+    *,
+    schema_dir: Path = DEFAULT_SCHEMA_DIR,
+) -> tuple[ValidationIssue, ...]:
+    """Check record shapes before review mutates a potentially incomplete batch."""
+
+    return _validate_schema(records, _load_schema_validators(schema_dir))
 
 
 def format_issue(issue: ValidationIssue) -> str:

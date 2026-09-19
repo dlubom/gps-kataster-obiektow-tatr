@@ -85,6 +85,14 @@ def test_review_preserves_original_paths_and_history(tmp_path, action, layout):
     }
     before = _snapshot(tmp_path)
     dry = apply_review_decisions(decisions, staging_reports=reports, data_dir=tmp_path, write=False)
+    if layout == "nested":
+        assert dry.has_errors and dry.written_paths == ()
+        result = apply_review_decisions(decisions, staging_reports=reports, data_dir=tmp_path)
+        assert result.has_errors and result.written_paths == ()
+        assert all(code == "FILE_ID_MISMATCH" for code, _ in initial_errors)
+        assert all(str(path) in result.issues[0].description for path in paths.values())
+        assert _snapshot(tmp_path) == before
+        return
     assert not dry.has_errors and dry.written_paths == ()
     assert _snapshot(tmp_path) == before
     result = apply_review_decisions(decisions, staging_reports=reports, data_dir=tmp_path)
@@ -108,15 +116,7 @@ def test_review_preserves_original_paths_and_history(tmp_path, action, layout):
         if id_ not in touched:
             assert path.read_bytes() == before[str(path.relative_to(tmp_path))]
     final_errors = {(i.code, i.path) for i in validate_data_dir(tmp_path) if i.severity == "error"}
-    if layout == "nested":
-        # Discovery preserves paths; the existing validator requires the canonical layout.
-        assert (
-            final_errors
-            == initial_errors
-            == {("FILE_ID_MISMATCH", path) for path in paths.values()}
-        )
-    else:
-        assert not final_errors
+    assert not final_errors
 
 
 @pytest.mark.parametrize("relative", ["objects/KSW/KSW-0001.yml", "caves/C-0001.yml"])
