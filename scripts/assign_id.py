@@ -179,6 +179,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     except IdAssignmentError as exc:
         print(format_error(exc), file=sys.stderr)
         return 1
+    except ValueError as exc:
+        print(f"Invalid coordinates: {exc}", file=sys.stderr)
+        return 1
 
     print(format_proposal(proposal))
     return 0

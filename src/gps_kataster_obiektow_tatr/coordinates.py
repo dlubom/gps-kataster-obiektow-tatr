@@ -5,6 +5,8 @@ from math import hypot
 
 from pyproj import Transformer
 
+from gps_kataster_obiektow_tatr.numeric import require_finite_numbers
+
 WGS84_CRS = "EPSG:4326"
 PL_1992_CRS = "EPSG:2180"
 DEFAULT_CONSISTENCY_TOLERANCE_M = 0.5
@@ -32,16 +34,20 @@ class PL1992Coordinate:
 def wgs84_to_1992(lat: float, lon: float) -> PL1992Coordinate:
     """Convert WGS84 latitude/longitude to project PL-1992 fields."""
 
+    require_finite_numbers(lat=lat, lon=lon)
     # PyProj returns GIS easting/northing; YAML stores Polish X/Y as northing/easting.
     easting, northing = _WGS84_TO_PL_1992.transform(lon, lat)
+    require_finite_numbers(x_1992=northing, y_1992=easting)
     return PL1992Coordinate(x_1992=northing, y_1992=easting)
 
 
 def pl1992_to_wgs84(x_1992: float, y_1992: float) -> WGS84Coordinate:
     """Convert project PL-1992 fields to WGS84 latitude/longitude."""
 
+    require_finite_numbers(x_1992=x_1992, y_1992=y_1992)
     # Inverse transform expects GIS easting/northing, so project Y/X become inputs.
     lon, lat = _PL_1992_TO_WGS84.transform(y_1992, x_1992)
+    require_finite_numbers(lat=lat, lon=lon)
     return WGS84Coordinate(lat=lat, lon=lon)
 
 
@@ -54,8 +60,11 @@ def coordinate_consistency_error_m(
 ) -> float:
     """Return planar PL-1992 error between WGS84 and cached PL-1992 fields."""
 
+    require_finite_numbers(x_1992=x_1992, y_1992=y_1992)
     expected = wgs84_to_1992(lat=lat, lon=lon)
-    return hypot(expected.x_1992 - x_1992, expected.y_1992 - y_1992)
+    error = hypot(expected.x_1992 - x_1992, expected.y_1992 - y_1992)
+    require_finite_numbers(error=error)
+    return error
 
 
 def coordinates_are_consistent(
@@ -68,6 +77,7 @@ def coordinates_are_consistent(
 ) -> bool:
     """Check whether WGS84 and project PL-1992 fields agree within a tolerance."""
 
+    require_finite_numbers(tolerance_m=tolerance_m)
     return (
         coordinate_consistency_error_m(
             lat=lat,

@@ -11,6 +11,8 @@ MUTATION_WORKFLOW = REPO_ROOT / ".github" / "workflows" / "mutation.yml"
 MUTATED_PATHS = [
     "src/gps_kataster_obiektow_tatr/best_measurement.py",
     "src/gps_kataster_obiektow_tatr/coordinates.py",
+    "src/gps_kataster_obiektow_tatr/numeric.py",
+    "src/gps_kataster_obiektow_tatr/source_profile.py",
     "src/gps_kataster_obiektow_tatr/prefix_resolver.py",
     "src/gps_kataster_obiektow_tatr/validator.py",
     "src/gps_kataster_obiektow_tatr/pig_staging.py",
@@ -24,6 +26,8 @@ MUTATED_PATHS = [
 MUTATION_TEST_SELECTION = [
     "tests/test_best_measurement.py",
     "tests/test_coordinates.py",
+    "tests/test_finite_numbers.py",
+    "tests/test_source_profile.py",
     "tests/test_prefix_resolver.py",
     "tests/test_validator.py",
     "tests/test_identifier_scopes.py",
@@ -44,7 +48,8 @@ MUTATION_PYTEST_SELECTION_ARGS = [
         "not test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors "
         "and not test_cli_writes_staging_artifacts_without_final_yaml "
         "and not test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py "
-        "and not test_cli_duplicate_ids_preserve_artifacts"
+        "and not test_cli_duplicate_ids_preserve_artifacts "
+        "and not test_cli_writes_reports_without_final_yaml"
     ),
 ]
 

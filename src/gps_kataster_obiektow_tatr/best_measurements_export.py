@@ -237,7 +237,7 @@ def _write_geojson(
         ],
     }
     path.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        json.dumps(payload, allow_nan=False, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
 
@@ -326,7 +326,7 @@ def _write_shapefile_zip(rows: tuple[BestMeasurementExportRow, ...], path: Path)
 
 def _write_metadata(metadata: dict[str, Any], path: Path) -> None:
     path.write_text(
-        json.dumps(metadata, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        json.dumps(metadata, allow_nan=False, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
 

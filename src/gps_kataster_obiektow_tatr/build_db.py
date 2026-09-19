@@ -639,7 +639,7 @@ def _geom_1992(measurement: dict[str, Any] | None) -> str | None:
 
 
 def _json(value: object) -> str:
-    return json.dumps(value, ensure_ascii=False, sort_keys=True)
+    return json.dumps(value, allow_nan=False, ensure_ascii=False, sort_keys=True)
 
 
 def _utc_timestamp() -> str:

@@ -7,6 +7,8 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
+from gps_kataster_obiektow_tatr.numeric import parse_decimal as _parse_decimal
+
 MAX_DUPLICATE_EXAMPLES = 10
 MAX_DUPLICATE_ROW_NUMBERS = 20
 
@@ -143,7 +145,10 @@ def write_report_files(
 
     json_path.write_text(
         json.dumps(
-            _report_to_json_data(report, generated_at=generated_at), ensure_ascii=False, indent=2
+            _report_to_json_data(report, generated_at=generated_at),
+            allow_nan=False,
+            ensure_ascii=False,
+            indent=2,
         )
         + "\n",
         encoding="utf-8",
@@ -382,7 +387,10 @@ def _profile_numeric_column(
             missing_count += 1
             continue
 
-        number = _parse_decimal(raw_value)
+        try:
+            number = _parse_decimal(raw_value)
+        except ValueError:
+            number = None
         if number is None:
             non_numeric_count += 1
         else:
@@ -396,19 +404,6 @@ def _profile_numeric_column(
         minimum=min(values) if values else None,
         maximum=max(values) if values else None,
     )
-
-
-def _parse_decimal(raw_value: str | None) -> float | None:
-    text = _clean_value(raw_value)
-    if text == "":
-        return None
-
-    text = text.replace("\u00a0", " ").replace(" ", "")
-    text = text.replace(",", ".")
-    try:
-        return float(text)
-    except ValueError:
-        return None
 
 
 def _is_blank(raw_value: str | None) -> bool:

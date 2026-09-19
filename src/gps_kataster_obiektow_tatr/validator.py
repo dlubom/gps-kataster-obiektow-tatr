@@ -31,6 +31,7 @@ from gps_kataster_obiektow_tatr.data_loader import (
     YamlDataLoadError,
     load_dataset,
 )
+from gps_kataster_obiektow_tatr.numeric import is_finite_number, nonfinite_paths
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
     PrefixResolutionStatus,
@@ -120,7 +121,8 @@ def validate_dataset(
     issues.extend(_validate_duplicate_local_ids(dataset.objects))
     issues.extend(_validate_cross_references(dataset))
     issues.extend(_validate_cave_memberships(dataset))
-    issues.extend(_validate_object_records(dataset.objects, resolver=resolver, repo_root=repo_root))
+    safe_objects = tuple(r for r in dataset.objects if not nonfinite_paths(r.raw_data))
+    issues.extend(_validate_object_records(safe_objects, resolver=resolver, repo_root=repo_root))
     issues.extend(_validate_duplicate_tpn_globalids(dataset.objects))
 
     return tuple(issues)
@@ -133,7 +135,17 @@ def validate_record_schemas(
 ) -> tuple[ValidationIssue, ...]:
     """Check record shapes before review mutates a potentially incomplete batch."""
 
-    return _validate_schema(records, _load_schema_validators(schema_dir))
+    finite_issues = tuple(
+        ValidationIssue(
+            code="NON_FINITE_NUMBER",
+            severity=ValidationSeverity.ERROR,
+            path=record.path,
+            description=f"{field}: expected a finite number.",
+        )
+        for record in records
+        for field in nonfinite_paths(record.raw_data)
+    )
+    return (*finite_issues, *_validate_schema(records, _load_schema_validators(schema_dir)))
 
 
 def format_issue(issue: ValidationIssue) -> str:
@@ -577,12 +589,23 @@ def _validate_object_measurements(
             continue
 
         lat, lon, x_1992, y_1992 = coordinate_values
-        coordinate_error = coordinate_consistency_error_m(
-            lat=lat,
-            lon=lon,
-            x_1992=x_1992,
-            y_1992=y_1992,
-        )
+        try:
+            coordinate_error = coordinate_consistency_error_m(
+                lat=lat,
+                lon=lon,
+                x_1992=x_1992,
+                y_1992=y_1992,
+            )
+        except ValueError as exc:
+            issues.append(
+                ValidationIssue(
+                    code="COORDINATE_INVALID",
+                    severity=ValidationSeverity.ERROR,
+                    path=object_record.path,
+                    description=f"Object {object_id} measurement {measurement_id}: {exc}",
+                )
+            )
+            continue
         if coordinate_error > DEFAULT_CONSISTENCY_TOLERANCE_M:
             issues.append(
                 ValidationIssue(
@@ -657,7 +680,11 @@ def _validate_prefix_matches_best_measurement(
         return ()
 
     lat, lon, _x_1992, _y_1992 = coordinate_values
-    resolution = resolver.resolve(lat=lat, lon=lon)
+    try:
+        resolution = resolver.resolve(lat=lat, lon=lon)
+    except ValueError:
+        # The measurement validation above already reports conversion failures.
+        return ()
     if resolution.prefix is None or resolution.prefix == object_prefix:
         return ()
 
@@ -878,7 +905,7 @@ def _iter_strings(value: object) -> tuple[str, ...]:
 
 
 def _is_number(value: object) -> bool:
-    return isinstance(value, int | float) and not isinstance(value, bool)
+    return is_finite_number(value)
 
 
 def _is_url_like(value: str) -> bool:

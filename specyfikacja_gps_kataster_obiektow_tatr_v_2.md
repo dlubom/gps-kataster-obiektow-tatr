@@ -837,6 +837,11 @@ Walidacje typu error:
 - `Attachment.measurement_id` wskazuje pomiar tego samego obiektu,
 - lokalny `Attachment.path` istnieje,
 - URL w `Attachment.path` ma poprawny format,
+- wszystkie liczby domenowe są skończone i reprezentowalne jako float;
+  `NON_FINITE_NUMBER` blokuje NaN i nieskończoności przed obliczeniami
+  i zapisem. Dotyczy współrzędnych, wysokości i dokładności; `null`
+  pozostaje dozwolone w polach opcjonalnych według schematu. Importy
+  zgłaszają błędne podane wartości zamiast zamieniać je na brak,
 - WGS84 ↔ PL-1992 są spójne w tolerancji,
 - punkt pomiaru mieści się w granicach Polski albo Słowacji według `data/shapes/granica_polski.shp` i `data/shapes/granica_slowacji.shp`,
 - brak duplikatów TPN `GLOBALID` w `Obiekt.external_refs`, chyba że jawnie dopuszczone w przyszłej regule.

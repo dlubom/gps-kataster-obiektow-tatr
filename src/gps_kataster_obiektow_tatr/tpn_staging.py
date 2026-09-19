@@ -13,6 +13,8 @@ from typing import Any, Protocol
 
 from gps_kataster_obiektow_tatr.coordinates import pl1992_to_wgs84
 from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR, load_dataset
+from gps_kataster_obiektow_tatr.numeric import nonfinite_paths, require_finite_numbers
+from gps_kataster_obiektow_tatr.numeric import parse_decimal as _parse_decimal
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
     PrefixResolutionStatus,
@@ -130,6 +132,7 @@ def build_tpn_staging(
 ) -> TpnStagingReport:
     """Build TPN measurement/object proposals without writing final YAML."""
 
+    require_finite_numbers(duplicate_radius_m=duplicate_radius_m)
     table = read_source_table(source_path)
     candidates = (
         *_load_existing_candidates(data_dir),
@@ -343,7 +346,8 @@ def write_staging_files(report: TpnStagingReport, *, output_dir: Path) -> tuple[
     markdown_path = output_dir / "tpn-staging.md"
 
     json_path.write_text(
-        json.dumps(_report_to_json_data(report), ensure_ascii=False, indent=2) + "\n",
+        json.dumps(_report_to_json_data(report), allow_nan=False, ensure_ascii=False, indent=2)
+        + "\n",
         encoding="utf-8",
     )
     markdown_path.write_text(render_markdown_report(report), encoding="utf-8")
@@ -432,10 +436,31 @@ def _parse_tpn_point(
     generated_at: str,
     issues: list[TpnStagingIssue],
 ) -> TpnPoint | None:
-    x_1992 = _parse_decimal(row.get("X1992"))
-    y_1992 = _parse_decimal(row.get("Y1992"))
-
-    if x_1992 is None or y_1992 is None:
+    values = {}
+    for field in ("X1992", "Y1992", "Z"):
+        try:
+            value = _parse_decimal(row.get(field))
+            if value is None and field != "Z":
+                raise ValueError("required coordinate is missing")
+        except ValueError as exc:
+            issues.append(
+                TpnStagingIssue(
+                    code="TPN_POINT_COORDINATES_INVALID"
+                    if field != "Z"
+                    else "TPN_ELEVATION_INVALID",
+                    severity="warning",
+                    record_number=record_number,
+                    globalid=globalid or None,
+                    nr_inwent=nr_inwent or None,
+                    description=f"{field}: {exc}; row rejected.",
+                )
+            )
+            return None
+        values[field] = value
+    x_1992, y_1992 = values["X1992"], values["Y1992"]
+    try:
+        wgs84 = pl1992_to_wgs84(x_1992=x_1992, y_1992=y_1992)
+    except ValueError as exc:
         issues.append(
             TpnStagingIssue(
                 code="TPN_POINT_COORDINATES_INVALID",
@@ -443,19 +468,17 @@ def _parse_tpn_point(
                 record_number=record_number,
                 globalid=globalid or None,
                 nr_inwent=nr_inwent or None,
-                description="Missing or invalid PL-1992 coordinates; row rejected.",
+                description=f"Invalid coordinate conversion: {exc}; row rejected.",
             )
         )
         return None
-
     source_date = _parse_source_date(row) or _date_part(generated_at)
-    wgs84 = pl1992_to_wgs84(x_1992=x_1992, y_1992=y_1992)
     return TpnPoint(
         lat=wgs84.lat,
         lon=wgs84.lon,
         x_1992=x_1992,
         y_1992=y_1992,
-        elevation_m=_parse_decimal(row.get("Z")),
+        elevation_m=values["Z"],
         observed_date=source_date,
         source_date=source_date,
     )
@@ -841,6 +864,10 @@ def _infer_tpn_object_category(*, row: dict[str, str], name: str) -> str:
 
 def _load_existing_candidates(data_dir: Path) -> tuple[_Candidate, ...]:
     dataset = load_dataset(data_dir)
+    for record in dataset.records():
+        invalid = nonfinite_paths(record.raw_data)
+        if invalid:
+            raise ValueError(f"{record.path}: non-finite numbers at {invalid}.")
     caves_by_id = {_clean_value(record.data.get("id")): record.data for record in dataset.caves}
     cave_id_by_object_id: dict[str, str] = {}
     for cave_id, cave in caves_by_id.items():
@@ -880,6 +907,9 @@ def _load_pig_staging_candidates(pig_staging_path: Path | None) -> tuple[_Candid
         return ()
 
     data = json.loads(pig_staging_path.read_text(encoding="utf-8"))
+    invalid = nonfinite_paths(data)
+    if invalid:
+        raise ValueError(f"{pig_staging_path}: non-finite numbers at {invalid}.")
     rows_by_object_id = {
         _clean_value(row.get("object_id")): row
         for row in data.get("rows", [])
@@ -1137,19 +1167,6 @@ def _parse_object_id(object_id: str) -> tuple[str, int] | None:
 def _parse_prefixed_number(value: str, *, prefix: str) -> int:
     match = re.fullmatch(rf"{re.escape(prefix)}-(\d+)", _clean_value(value))
     return int(match.group(1)) if match else 0
-
-
-def _parse_decimal(raw_value: Any) -> float | None:
-    text = _clean_value(raw_value)
-    if text == "":
-        return None
-
-    text = text.replace("\u00a0", " ").replace(" ", "")
-    text = text.replace(",", ".")
-    try:
-        return float(text)
-    except ValueError:
-        return None
 
 
 def _clean_value(raw_value: Any) -> str:

@@ -25,7 +25,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-039 | Rozszerzenia YAML i ścieżki aktualizacji | wykonane 2026-09-19 | [log](verification/PBI-039.md) |
 | PBI-040 | Walidacja wejścia i wyniku review przed zapisem | wykonane 2026-09-19 | [log](verification/PBI-040.md) |
 | PBI-041 | Ochrona zapisu partii przy błędzie I/O | wykonane 2026-09-19 | [log](verification/PBI-041.md) |
-| PBI-042 | Skończone wartości liczbowe | planowane | — |
+| PBI-042 | Skończone wartości liczbowe | zweryfikowane — do dostarczenia | [log](verification/PBI-042.md) |
 | PBI-043 | Brakujący katalog wejściowy | planowane | — |
 | PBI-044 | Referencje i prefix przydziału ID | planowane | — |
 | PBI-045 | Deduplikacja kandydatów finalnych/staging | planowane | — |
@@ -38,11 +38,12 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-052 | Egzekwowanie powodów rozbieżności | planowane | — |
 | PBI-053 | Zgodność dokumentacji i kontraktów | planowane | — |
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
+| PBI-055 | Skończone duże int w polach REAL SQLite | planowane | [opis](#pbi-055-skonczone-duze-int-w-polach-real-sqlite) |
 
-Następne gotowe zadanie: **PBI-042**. PBI-041 dostarczono w commicie
-`105a890ac7cb9f49bd2d80684ef87133086d4c8c` na `origin/codex/review-remediation`;
-CI `validate` dla tego SHA zakończyło się powodzeniem. Dowody w logu PBI-041.
-Pozostają PBI-042–054; bieżąca sesja kończy się po PBI-041.
+PBI-042 jest zweryfikowane; pozostaje commit/push oraz potwierdzenie SHA/CI.
+Po dostarczeniu następne gotowe zadanie to **PBI-043** (zależność PBI-040
+wykonana). Pozostają PBI-043–054 i niezależne PBI-055; bieżąca sesja kończy
+się po dostarczeniu PBI-042. Dowody w logu PBI-042.
 PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
 lecz definiuje osobne naprawy. Nie oznaczaj R06 jako zamkniętego po samej
 poprawce technicznej PBI-044 — wymagane są też PBI-051 i PBI-052.
@@ -795,3 +796,22 @@ Najmniejsza sensowna sciezka do pierwszego dzialajacego przeplywu:
 8. PBI-016 + PBI-017: minimalny build i eksport.
 
 Import PIG/TPN warto zaczac dopiero po dzialajacym walidatorze, bo inaczej szybko powstanie duzo danych bez bramek jakosci.
+
+
+## PBI-055: Skonczone duze int w polach REAL SQLite
+
+Status: planowane; niezależne znalezisko review PBI-042, bez implementacji.
+Zależność: PBI-042. Priorytet P2; rozstrzygnąć przed końcowym odbiorem PBI-054.
+Nie zmienia najbliższego kroku PBI-043.
+
+Reprodukcja: poprawny obiekt z `elevation_m: 9223372036854775808` (2**63)
+przechodzi walidację skończoności, lecz `build_sqlite_database` rzuca
+`OverflowError: Python int too large to convert to SQLite INTEGER`.
+`build_db._insert_measurements` przekazuje do sqlite3 surowy int dla pola REAL.
+To istniejący problem reprezentacji skończonych liczb, odrębny od NaN/Inf.
+
+Zakres: spójna reprezentacja domenowych pól REAL przed bindingiem SQLite,
+czytelne odrzucenie wartości niereprezentowalnych bez zmiany danych źródłowych.
+Odbiór: regresja `2**63` i `-(2**63)-1`, dodatnia granica `-2**63`, wszystkie pola liczbowe
+pomiaru, build/readback oraz ochrona dotychczasowej bazy przy błędzie.
+Nie wprowadzać arbitralnych fizycznych progów wysokości/dokładności.

@@ -403,7 +403,8 @@ def write_review_report_files(
     markdown_path = output_dir / "staging-review.md"
 
     json_path.write_text(
-        json.dumps(_result_to_json_data(result), ensure_ascii=False, indent=2) + "\n",
+        json.dumps(_result_to_json_data(result), allow_nan=False, ensure_ascii=False, indent=2)
+        + "\n",
         encoding="utf-8",
     )
     markdown_path.write_text(render_review_markdown(result), encoding="utf-8")
@@ -1283,7 +1284,7 @@ def _applied_status_counts(decisions: tuple[AppliedDecision, ...]) -> dict[str, 
 def _parse_positive_int(value: Any) -> int | None:
     try:
         parsed = int(value)
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, OverflowError):
         return None
     return parsed if parsed > 0 else None
 

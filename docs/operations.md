@@ -354,3 +354,28 @@ git commit -m "docs: add operational workflow"
 
 Dobierz `git add` do faktycznego zakresu zmiany. Nie dodawaj `build/`, chyba ze
 backlog jawnie zmieni zasade traktowania artefaktow generowanych.
+
+## Skończone wartości liczbowe
+
+Wszystkie liczby domenowe muszą być skończone i reprezentowalne jako float.
+Walidator zgłasza `NON_FINITE_NUMBER` z plikiem i ścieżką pola dla NaN,
+plus/minus Infinity i przepełnionych wartości, zanim nastąpią obliczenia,
+review, build SQLite lub eksport. Dotyczy to również wysokości i obu
+pól dokładności, a także pomiarów historycznych i odrzuconych. `null`
+pozostaje dozwolone wyłącznie w polach opcjonalnych według schematu.
+
+Importery PIG/TPN dla CSV i XLSX odrzucają cały punkt, jeżeli podana
+współrzędna lub wysokość jest błędna, np. `NaN`, `Infinity`, `-Infinity`,
+`1e999` lub nieliczbowy tekst. Raport zachowuje numer wiersza, nazwę pola
+oraz powód; błędna wysokość nie jest zamieniana na pozornie poprawny brak.
+PIG pozostawia propozycję jaskini bez punktu (`cave_only`), TPN oznacza
+wiersz `rejected`. To ostrzeżenia stagingu; poprawne pozostałe wiersze
+nadal są przetwarzane. Puste opcjonalne pole wysokości daje `null`.
+Profiler CSV liczy nie-skończone wartości w `non_numeric_count`, a nie
+`missing_count`, i pomija je przy wyliczaniu minimum/maksimum.
+
+TPN blokuje generowanie raportu przy nie-skończonych liczbach w katalogu
+kandydatów YAML lub raporcie PIG. Konwersje współrzędnych sprawdzają
+wejścia i wyniki; błędna transformacja daje czytelny błąd.
+Serializacja JSON katalogu i stagingu stosuje dodatkowo `allow_nan=False`.
+Nie wprowadza to nowych progów dopuszczalnej wysokości czy dokładności.

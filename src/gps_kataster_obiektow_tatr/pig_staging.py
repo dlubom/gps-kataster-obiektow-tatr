@@ -14,6 +14,7 @@ from gps_kataster_obiektow_tatr.coordinates import (
     coordinate_consistency_error_m,
 )
 from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR
+from gps_kataster_obiektow_tatr.numeric import parse_decimal as _parse_decimal
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
     PrefixResolutionStatus,
@@ -183,7 +184,8 @@ def write_staging_files(report: PigStagingReport, *, output_dir: Path) -> tuple[
     markdown_path = output_dir / "pig-staging.md"
 
     json_path.write_text(
-        json.dumps(_report_to_json_data(report), ensure_ascii=False, indent=2) + "\n",
+        json.dumps(_report_to_json_data(report), allow_nan=False, ensure_ascii=False, indent=2)
+        + "\n",
         encoding="utf-8",
     )
     markdown_path.write_text(render_markdown_report(report), encoding="utf-8")
@@ -436,19 +438,38 @@ def _parse_pig_point(
     generated_at: str,
     issues: list[PigStagingIssue],
 ) -> PigPoint | None:
-    lat = _parse_decimal(row.get("B"))
-    lon = _parse_decimal(row.get("L"))
-    x_1992 = _parse_decimal(row.get("X 1992"))
-    y_1992 = _parse_decimal(row.get("Y 1992"))
-
-    if lat is None or lon is None or x_1992 is None or y_1992 is None:
+    values = {}
+    for field in ("B", "L", "X 1992", "Y 1992", "H (wg PIG)"):
+        try:
+            value = _parse_decimal(row.get(field))
+            if value is None and field != "H (wg PIG)":
+                raise ValueError("required coordinate is missing")
+        except ValueError as exc:
+            issues.append(
+                PigStagingIssue(
+                    code="PIG_POINT_COORDINATES_INVALID"
+                    if field != "H (wg PIG)"
+                    else "PIG_ELEVATION_INVALID",
+                    severity="warning",
+                    record_number=record_number,
+                    pig_id=pig_id or None,
+                    description=f"{field}: {exc}; object proposal skipped.",
+                )
+            )
+            return None
+        values[field] = value
+    lat, lon = values["B"], values["L"]
+    x_1992, y_1992 = values["X 1992"], values["Y 1992"]
+    try:
+        coordinate_consistency_error_m(lat=lat, lon=lon, x_1992=x_1992, y_1992=y_1992)
+    except ValueError as exc:
         issues.append(
             PigStagingIssue(
                 code="PIG_POINT_COORDINATES_INVALID",
                 severity="warning",
                 record_number=record_number,
                 pig_id=pig_id or None,
-                description="Missing or invalid coordinate fields; object proposal skipped.",
+                description=f"Invalid coordinate conversion: {exc}; object proposal skipped.",
             )
         )
         return None
@@ -471,7 +492,7 @@ def _parse_pig_point(
         lon=lon,
         x_1992=x_1992,
         y_1992=y_1992,
-        elevation_m=_parse_decimal(row.get("H (wg PIG)")),
+        elevation_m=values["H (wg PIG)"],
         observed_date=source_date,
         source_date=source_date,
     )
@@ -613,19 +634,6 @@ def _date_part(timestamp: str) -> str:
     except ValueError:
         return datetime.now(UTC).date().isoformat()
     return parsed.date().isoformat()
-
-
-def _parse_decimal(raw_value: str | None) -> float | None:
-    text = _clean_value(raw_value)
-    if text == "":
-        return None
-
-    text = text.replace("\u00a0", " ").replace(" ", "")
-    text = text.replace(",", ".")
-    try:
-        return float(text)
-    except ValueError:
-        return None
 
 
 def _clean_value(raw_value: str | None) -> str:
