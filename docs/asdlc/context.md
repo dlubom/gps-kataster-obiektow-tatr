@@ -1,8 +1,16 @@
 # AS-DLC project context
 
-Last updated: 2026-09-07
+Last updated: 2026-09-18
 
 ## Current handoff — review remediation
+
+- PBI-037 is verified locally, pending delivery. Global cave/relation IDs
+  and per-object measurement/attachment IDs now reject duplicates before
+  SQLite/export writes. 330 tests and the full artifact readback pass;
+  data and warning counts are unchanged. Mutations: 89 killed, 14 analyzed
+  survivors; independent review has no findings. See
+  [PBI-037 log](verification/PBI-037.md). Finish push and exact-SHA CI,
+  then record the delivery checkpoint. Do not start PBI-038 in this session.
 
 - PBI-036 is complete. The common YAML loader
   rejects duplicate keys, aliases, merge keys and scalar-tagged mappings;
@@ -13,9 +21,9 @@ Last updated: 2026-09-07
   no untested mutants or timeouts. See [PBI-036 log](verification/PBI-036.md).
   Implementation `66905d4ad17e602106ae64b11652ac132eff6ba5` was pushed and
   confirmed by `git ls-remote`. CI `validate` run `34036069357` succeeded
-  for that exact SHA. On resume confirm this documentation checkpoint
-  against origin/CI, then execute exactly **PBI-037**, the next ready task.
-  Do not repeat PBI-036 or start another PBI in the current session.
+  for that exact SHA. Before PBI-037, documentation checkpoint
+  `f0eec502844853c3005f6f35443eef3a6ed82aca` was confirmed against origin
+  and successful CI run `34136322675`. PBI-036 must not be repeated.
 
 - Active branch: `codex/review-remediation`, tracking target on `origin`.
   Series base: `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`; `origin/main`

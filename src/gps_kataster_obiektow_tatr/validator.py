@@ -112,7 +112,13 @@ def validate_dataset(
 
     issues.extend(_validate_schema(dataset.records(), validators))
     issues.extend(_validate_file_id_paths(dataset.records(), data_dir=data_dir))
-    issues.extend(_validate_duplicate_object_ids(dataset.objects))
+    for records, code, label in (
+        (dataset.objects, "DUPLICATE_OBJECT_ID", "Obiekt.id"),
+        (dataset.caves, "DUPLICATE_CAVE_ID", "Jaskinia.id"),
+        (dataset.relations, "DUPLICATE_RELATION_ID", "Relacja.id"),
+    ):
+        issues.extend(_validate_duplicate_record_ids(records, code=code, label=label))
+    issues.extend(_validate_duplicate_local_ids(dataset.objects))
     issues.extend(_validate_cross_references(dataset))
     issues.extend(_validate_object_records(dataset.objects, resolver=resolver, repo_root=repo_root))
     issues.extend(_validate_duplicate_tpn_globalids(dataset.objects))
@@ -212,25 +218,58 @@ def _validate_file_id_paths(
     return tuple(issues)
 
 
-def _validate_duplicate_object_ids(
-    object_records: Sequence[LoadedYamlRecord],
+def _validate_duplicate_record_ids(
+    source_records: Sequence[LoadedYamlRecord],
+    *,
+    code: str,
+    label: str,
 ) -> tuple[ValidationIssue, ...]:
     issues: list[ValidationIssue] = []
 
-    for object_id, records in _records_by_id(object_records).items():
+    for record_id, records in _records_by_id(source_records).items():
         if len(records) <= 1:
             continue
         paths = ", ".join(str(record.path) for record in records)
         for record in records:
             issues.append(
                 ValidationIssue(
-                    code="DUPLICATE_OBJECT_ID",
+                    code=code,
                     severity=ValidationSeverity.ERROR,
                     path=record.path,
-                    description=f"Obiekt.id {object_id} is duplicated in: {paths}.",
+                    description=f"{label} {record_id} is duplicated in: {paths}.",
                 )
             )
 
+    return tuple(issues)
+
+
+def _validate_duplicate_local_ids(
+    object_records: Sequence[LoadedYamlRecord],
+) -> tuple[ValidationIssue, ...]:
+    issues: list[ValidationIssue] = []
+    for record in object_records:
+        for field, code in (
+            ("measurements", "DUPLICATE_MEASUREMENT_ID"),
+            ("attachments", "DUPLICATE_ATTACHMENT_ID"),
+        ):
+            seen: set[str] = set()
+            for item in _iter_dicts(record.data.get(field)):
+                local_id = item.get("id")
+                if not isinstance(local_id, str):
+                    continue  # Invalid types are reported by schema validation.
+                if local_id in seen:
+                    issues.append(
+                        ValidationIssue(
+                            code=code,
+                            severity=ValidationSeverity.ERROR,
+                            path=record.path,
+                            description=(
+                                f"Object {_record_id(record)} {field}.id {local_id} "
+                                "is duplicated within this object."
+                            ),
+                        )
+                    )
+                seen.add(local_id)
     return tuple(issues)
 
 

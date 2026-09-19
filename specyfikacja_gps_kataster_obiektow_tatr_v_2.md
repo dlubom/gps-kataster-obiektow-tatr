@@ -789,7 +789,14 @@ Walidacje typu error:
   (szczegóły: `docs/operations.md`, „Reguły zapisu YAML”),
 - zgodność z JSON Schema,
 - obecność `schema_version: 1`,
-- unikalność `Obiekt.id` globalnie,
+- unikalność `Obiekt.id`, `Jaskinia.id` i `Relacja.id` globalnie w obrębie
+  danego rodzaju encji, również między plikami `.yml` i `.yaml`,
+- unikalność `Pomiar.id` oraz `Attachment.id` osobno w obrębie obiektu;
+  te same `m-001` / `a-001` w różnych obiektach są poprawne,
+- powtórzone ID są błędem także dla identycznych wpisów; walidator zgłasza
+  `DUPLICATE_OBJECT_ID`, `DUPLICATE_CAVE_ID`, `DUPLICATE_RELATION_ID`,
+  `DUPLICATE_MEASUREMENT_ID` lub `DUPLICATE_ATTACHMENT_ID` ze ścieżką
+  i identyfikatorem, zanim build SQLite lub eksport zapisze artefakty,
 - unikalność pliku względem ID,
 - poprawny format ID,
 - `best_measurement.measurement_id` wskazuje istniejący pomiar,
