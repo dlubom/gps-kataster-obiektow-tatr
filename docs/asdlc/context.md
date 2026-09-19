@@ -4,14 +4,22 @@ Last updated: 2026-09-19
 
 ## Current handoff — review remediation
 
-- PBI-041 is verified, pending delivery, on base `b013b2dfa8ad0ce54ff26fc354af0aad63253918`.
-  Origin and successful exact-SHA CI `35444808738` for PBI-040 were confirmed.
-  Recoverable batch writer, CLI diagnostics and operator recovery procedure
-  are implemented. Final full gate passes 524 tests and all 7 artifacts;
-  independent review issues are fixed and delta review has no blockers.
-  Mutations: 510 killed / 84 analyzed survivors; delivery remains. See
-  [PBI-041 log](verification/PBI-041.md). Finish this PBI only.
-  PBI-042 is the next candidate after successful delivery, not this session.
+- PBI-041 is complete. Review prepares all files and original backups before
+  final replacements, rolls back handled I/O failures and retains recovery
+  evidence when rollback/cleanup fails. Leftovers block review and dry-run;
+  CLI preserves diagnostics even if report writing fails. Operator recovery
+  procedure documents partial cleanup and process/power interruption limits.
+  Full gate: 524 tests, 7 artifact readbacks, unchanged data and warnings.
+  Mutations: 510 killed / 84 analyzed survivors; independent review's two
+  P2 findings are fixed and delta review has no blockers. Platform/metadata
+  mutation limitations are recorded in [PBI-041 log](verification/PBI-041.md).
+  Implementation `105a890ac7cb9f49bd2d80684ef87133086d4c8c` was pushed;
+  remote SHA matched and CI `validate` run `35446988957` completed successfully
+  for that exact SHA. On resume confirm this documentation checkpoint
+  against origin/CI, then execute exactly **PBI-042** (finite numbers).
+  Dependency PBI-040 is delivered. Do not start PBI-042 in this session.
+  PBI-040 checkpoint `b013b2dfa8ad0ce54ff26fc354af0aad63253918` was confirmed
+  against origin and successful CI run `35444808738` before this PBI.
 
 - PBI-040 is complete. Review validates raw input before indexing and the
   complete proposed dataset (including relations and real paths) before
