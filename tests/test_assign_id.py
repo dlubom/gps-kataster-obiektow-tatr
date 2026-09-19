@@ -126,3 +126,23 @@ def test_cli_accepts_lat_lon_and_prints_proposed_id(tmp_path: Path) -> None:
     assert "proposed_id: KSW-0001" in result.stdout
     assert "status: ok" in result.stdout
     assert "warning:" not in result.stdout
+
+
+@pytest.mark.parametrize("number", [1, 9999, 10000])
+def test_yaml_extension_reserves_object_number(tmp_path, number):
+    prefix_dir = tmp_path / "KSW"
+    prefix_dir.mkdir()
+    (prefix_dir / f"KSW-{number:04d}.yaml").touch()
+    assert assign_id.next_object_id("KSW", objects_dir=tmp_path) == f"KSW-{number + 1:04d}"
+
+
+def test_mixed_extensions_and_duplicates_reserve_numbers_without_writes(tmp_path):
+    prefix = tmp_path / "KSW"
+    prefix.mkdir()
+    names = ["KSW-0001.yml", "KSW-0001.yaml", "KSW-10000.yaml", "KSW-0003.yml"]
+    for name in names:
+        (prefix / name).touch()
+    (prefix / "KSW-99999.yml").mkdir()
+    assert assign_id.next_object_id("KSW", objects_dir=tmp_path) == "KSW-10001"
+    assert {p.name for p in prefix.iterdir()} == {*names, "KSW-99999.yml"}
+    assert all((prefix / name).read_bytes() == b"" for name in names)

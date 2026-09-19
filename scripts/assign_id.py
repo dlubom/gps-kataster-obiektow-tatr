@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -21,6 +20,7 @@ from gps_kataster_obiektow_tatr.prefix_resolver import (  # noqa: E402
     PrefixResolutionStatus,
     default_prefix_resolver,
 )
+from gps_kataster_obiektow_tatr.yaml_paths import existing_yaml_numbers  # noqa: E402
 
 DEFAULT_OBJECTS_DIR = REPO_ROOT / "data" / "objects"
 
@@ -75,19 +75,9 @@ def next_object_number(prefix: str, *, objects_dir: Path = DEFAULT_OBJECTS_DIR) 
 
 
 def iter_existing_object_numbers(prefix: str, *, prefix_dir: Path) -> tuple[int, ...]:
-    """Read existing ``{PREFIX}-{NNNN}.yml`` file names as object numbers."""
+    """Read existing YAML file names as object numbers, matching the loader."""
 
-    object_file_re = re.compile(rf"^{re.escape(prefix)}-(\d+)\.yml$")
-    numbers: list[int] = []
-
-    for path in prefix_dir.iterdir():
-        if not path.is_file():
-            continue
-        match = object_file_re.fullmatch(path.name)
-        if match:
-            numbers.append(int(match.group(1)))
-
-    return tuple(sorted(numbers))
+    return existing_yaml_numbers(prefix_dir, prefix=prefix)
 
 
 def format_object_id(prefix: str, number: int) -> str:

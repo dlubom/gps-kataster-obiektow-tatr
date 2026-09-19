@@ -17,6 +17,7 @@ MUTATED_PATHS = [
     "src/gps_kataster_obiektow_tatr/tpn_staging.py",
     "src/gps_kataster_obiektow_tatr/staging_review.py",
     "src/gps_kataster_obiektow_tatr/yaml_loader.py",
+    "src/gps_kataster_obiektow_tatr/yaml_paths.py",
 ]
 
 MUTATION_TEST_SELECTION = [
@@ -30,6 +31,7 @@ MUTATION_TEST_SELECTION = [
     "tests/test_tpn_staging.py",
     "tests/test_staging_review.py",
     "tests/test_yaml_policy.py",
+    "tests/test_yaml_paths.py",
 ]
 
 MUTATION_PYTEST_SELECTION_ARGS = [

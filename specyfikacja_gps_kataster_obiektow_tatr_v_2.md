@@ -395,7 +395,13 @@ W V1 zakładamy mały zespół i praktycznie jedną osobę wprowadzającą dane.
 Zasada V1:
 
 - `scripts/assign_id.py lat lon` proponuje prefix i kolejny wolny numer,
-- numer jest wyliczany na podstawie istniejących plików w `data/objects/{PREFIX}/`,
+- numer jest wyliczany na podstawie istniejących plików `.yml` i `.yaml`
+  w `data/objects/{PREFIX}/`; numeracja i loader rozpoznają oba rozszerzenia
+  oraz pliki w podkatalogach, pomijając katalogi nazwane jak pliki,
+- importery PIG/TPN stosują tę samą regułę także dla numerów jaskiń,
+- aktualizacje review zachowują ścieżki wczytanych rekordów; nowe rekordy
+  używają domyślnie `.yml`. Niejednoznaczne ID obiektu lub jaskini w kilku
+  plikach blokuje review przed zapisem i wymaga rozstrzygnięcia w danych,
 - konflikt ID jest wykrywany przez walidator jako błąd,
 - nie wprowadzamy osobnego pliku liczników ani bota nadającego ID.
 

@@ -19,6 +19,7 @@ from gps_kataster_obiektow_tatr.prefix_resolver import (
     default_prefix_resolver,
 )
 from gps_kataster_obiektow_tatr.source_table import read_source_table
+from gps_kataster_obiektow_tatr.yaml_paths import existing_yaml_numbers
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -1123,16 +1124,7 @@ def _max_existing_object_number(objects_dir: Path, prefix: str) -> int:
 
 
 def _max_existing_number(directory: Path, *, prefix: str) -> int:
-    if not directory.exists():
-        return 0
-
-    max_number = 0
-    pattern = re.compile(rf"^{re.escape(prefix)}-(\d+)\.ya?ml$")
-    for path in directory.iterdir():
-        match = pattern.match(path.name)
-        if match:
-            max_number = max(max_number, int(match.group(1)))
-    return max_number
+    return max(existing_yaml_numbers(directory, prefix=prefix), default=0)
 
 
 def _parse_object_id(object_id: str) -> tuple[str, int] | None:

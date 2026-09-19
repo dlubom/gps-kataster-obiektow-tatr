@@ -15,6 +15,7 @@ import yaml
 from gps_kataster_obiektow_tatr.best_measurement import select_default_best_measurement_id
 from gps_kataster_obiektow_tatr.data_loader import (
     DEFAULT_DATA_DIR,
+    LoadedYamlRecord,
     YamlDataLoadError,
     load_dataset,
 )
@@ -186,7 +187,7 @@ def apply_review_decisions(
         )
 
     try:
-        objects, caves = _load_existing_final_data(data_dir)
+        objects, object_paths, caves, cave_paths = _load_existing_final_data(data_dir)
     except YamlDataLoadError as exc:
         issues.append(
             ReviewIssue(
@@ -295,6 +296,8 @@ def apply_review_decisions(
     if write and not has_errors:
         written_paths = _write_dirty_records(
             data_dir=data_dir,
+            object_paths=object_paths,
+            cave_paths=cave_paths,
             objects=objects,
             caves=caves,
             dirty_objects=dirty_objects,
@@ -822,22 +825,42 @@ def _staging_row_exists(
     return record_number in rows
 
 
+def _index_final_records(
+    records: tuple[LoadedYamlRecord, ...],
+) -> tuple[dict[str, dict[str, Any]], dict[str, Path]]:
+    data: dict[str, dict[str, Any]] = {}
+    paths: dict[str, Path] = {}
+    for record in records:
+        record_id = _clean_value(record.data.get("id"))
+        if record_id in paths:
+            raise YamlDataLoadError(
+                record.path,
+                f"Ambiguous ID {record_id!r}: also loaded from {paths[record_id]}.",
+            )
+        data[record_id] = deepcopy(record.raw_data)
+        paths[record_id] = record.path
+    return data, paths
+
+
 def _load_existing_final_data(
     data_dir: Path,
-) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+) -> tuple[
+    dict[str, dict[str, Any]],
+    dict[str, Path],
+    dict[str, dict[str, Any]],
+    dict[str, Path],
+]:
     dataset = load_dataset(data_dir)
-    objects = {
-        _clean_value(record.data.get("id")): deepcopy(record.raw_data) for record in dataset.objects
-    }
-    caves = {
-        _clean_value(record.data.get("id")): deepcopy(record.raw_data) for record in dataset.caves
-    }
-    return objects, caves
+    objects, object_paths = _index_final_records(dataset.objects)
+    caves, cave_paths = _index_final_records(dataset.caves)
+    return objects, object_paths, caves, cave_paths
 
 
 def _write_dirty_records(
     *,
     data_dir: Path,
+    object_paths: dict[str, Path],
+    cave_paths: dict[str, Path],
     objects: dict[str, dict[str, Any]],
     caves: dict[str, dict[str, Any]],
     dirty_objects: set[str],
@@ -846,13 +869,13 @@ def _write_dirty_records(
     paths: list[Path] = []
 
     for cave_id in sorted(dirty_caves):
-        path = data_dir / "caves" / f"{cave_id}.yml"
+        path = cave_paths.get(cave_id, data_dir / "caves" / f"{cave_id}.yml")
         _write_yaml(path, caves[cave_id])
         paths.append(path)
 
     for object_id in sorted(dirty_objects):
         prefix = object_id.split("-", maxsplit=1)[0]
-        path = data_dir / "objects" / prefix / f"{object_id}.yml"
+        path = object_paths.get(object_id, data_dir / "objects" / prefix / f"{object_id}.yml")
         _write_yaml(path, objects[object_id])
         paths.append(path)
 

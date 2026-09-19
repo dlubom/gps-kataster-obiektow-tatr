@@ -12,6 +12,7 @@ from typing import Any
 import yaml
 
 from gps_kataster_obiektow_tatr.yaml_loader import load_yaml
+from gps_kataster_obiektow_tatr.yaml_paths import iter_yaml_paths
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_DIR = REPO_ROOT / "data"
@@ -94,18 +95,6 @@ def load_records(
     return tuple(
         _load_record(path, kind=kind, normalize=normalize) for path in iter_yaml_paths(root_dir)
     )
-
-
-def iter_yaml_paths(root_dir: Path) -> tuple[Path, ...]:
-    """Return all ``.yml`` and ``.yaml`` files below ``root_dir`` sorted by path."""
-
-    if not root_dir.exists():
-        return ()
-
-    paths = [
-        path for suffix in ("*.yml", "*.yaml") for path in root_dir.rglob(suffix) if path.is_file()
-    ]
-    return tuple(sorted(paths))
 
 
 type _Normalizer = Callable[[dict[str, Any]], dict[str, Any]]

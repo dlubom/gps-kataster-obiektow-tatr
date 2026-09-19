@@ -4,6 +4,19 @@ Last updated: 2026-09-19
 
 ## Current handoff — review remediation
 
+- PBI-039 is verified locally; delivery is pending. Shared YAML discovery
+  and ID allocation handle both extensions; review retains original
+  object/cave paths and refuses ambiguous IDs before applying decisions.
+  New records use .yml. Full gate: 380 tests and 7 artifact readbacks;
+  two additional boundary tests pass. Targeted mutations: 304 killed /
+  34 analyzed survivors; independent review and delta review have no findings.
+  Data and warnings are unchanged. See [PBI-039 log](verification/PBI-039.md).
+  A final full gate is required before the implementation commit; push and
+  exact-SHA CI must be confirmed before marking this PBI delivered.
+  Next after delivery: PBI-040, only in a subsequent execution request.
+  PBI-038 documentation checkpoint `65ad477a02a85dae93d6eca6439cb649978552d0`
+  was confirmed against origin and successful CI run `35439278263`.
+
 - PBI-038 is complete. Validator checks both directions of object/cave
   membership; link_cave removes the old membership and writes both caves
   plus the object, preserving IDs/history. Full gate: 351 tests and all

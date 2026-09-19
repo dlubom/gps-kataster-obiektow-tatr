@@ -59,8 +59,16 @@ ani nie usuwa i nie przestawia wpisu; aktualizuje audyt obiektu i jaskini.
 Można również przypisać obiekt, który dotąd nie miał `cave_id`.
 Walidator sprawdza oba kierunki powiązań i odrzuca wskazanie jednego
 obiektu przez dwie różne jaskinie. Pełna walidacja wejścia i wyniku review
-przed zapisem jest osobnym zakresem PBI-040; zachowanie ścieżek `.yaml`
-przy aktualizacji jest zakresem PBI-039.
+przed zapisem jest osobnym zakresem PBI-040.
+
+Aktualizacje `add_measurement` i `link_cave` zachowują ścieżkę oraz
+rozszerzenie wczytanego pliku (`.yml` albo `.yaml`), także dla obu jaskiń
+przy przeniesieniu. Nowe rekordy powstają w ścieżkach `.yml` z tabeli.
+Dwa pliki z tym samym ID obiektu lub jaskini (także o identycznej treści)
+blokują całą partię przed zastosowaniem decyzji: `FINAL_DATA_INVALID`
+wskazuje ID i obie ścieżki. Reguła działa również dla `--dry-run`.
+Operator musi rozstrzygnąć konflikt w danych; review nie wybiera pliku
+według rozszerzenia ani nie scala historii automatycznie.
 
 ## Bezpieczenstwo
 
