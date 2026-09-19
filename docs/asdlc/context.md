@@ -4,14 +4,23 @@ Last updated: 2026-09-19
 
 ## Current handoff — review remediation
 
-- PBI-040 is verified, pending delivery, on base `7d82c8af2ecd37dc9cbf9571b0e9d76143880270`.
-  Input schema/domain validation precedes indexing; review validates the
-  complete proposed catalog before writes and routes catalog references
-  to the final target cave. Full gate: 494 tests and 7 artifact readbacks,
-  unchanged data/warnings. Independent review findings were fixed and
-  re-reviewed with no blockers. Mutations: 899 killed / 107 analyzed
-  survivors across the fresh campaign and targeted reruns. Delivery remains open; see [PBI-040 log](verification/PBI-040.md). Do not start
-  PBI-041 before finishing and confirming this delivery.
+- PBI-040 is complete. Review validates raw input before indexing and the
+  complete proposed dataset (including relations and real paths) before
+  writes. Deferred catalog references follow the final target cave.
+  Malformed staging and proposals return readable errors; dry-run uses
+  the same checks. Full gate: 494 tests, all 7 artifact readbacks, unchanged
+  data and warnings. Mutations: 899 killed / 107 analyzed survivors across
+  the fresh campaign and targeted reruns. Independent review findings
+  are fixed and re-reviewed; remaining coverage gaps are documented in
+  [PBI-040 log](verification/PBI-040.md) for PBI-054.
+  Implementation `9073a8e382a07e48f02d2c1a9c19cb25a268c7a4` was pushed;
+  remote SHA readback matched, and CI `validate` run `35444571814`
+  completed successfully for that exact SHA. On resume confirm this
+  documentation checkpoint against origin/CI, then execute exactly
+  **PBI-041** (recover from partial review writes on handled I/O failures).
+  Dependency PBI-040 is delivered. Do not start it in this session.
+  PBI-039 checkpoint `7d82c8af2ecd37dc9cbf9571b0e9d76143880270` was confirmed
+  against origin and successful CI run `35442627184` before this PBI.
 
 - PBI-039 is complete. Shared YAML discovery and ID allocation handle
   both extensions; review retains original object/cave paths and refuses

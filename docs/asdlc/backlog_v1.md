@@ -23,7 +23,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-037 | Unikalność ID wszystkich encji | wykonane 2026-09-19 | [log](verification/PBI-037.md) |
 | PBI-038 | Symetria obiekt–jaskinia i link_cave | wykonane 2026-09-19 | [log](verification/PBI-038.md) |
 | PBI-039 | Rozszerzenia YAML i ścieżki aktualizacji | wykonane 2026-09-19 | [log](verification/PBI-039.md) |
-| PBI-040 | Walidacja wejścia i wyniku review przed zapisem | zweryfikowane — do dostarczenia | [log](verification/PBI-040.md) |
+| PBI-040 | Walidacja wejścia i wyniku review przed zapisem | wykonane 2026-09-19 | [log](verification/PBI-040.md) |
 | PBI-041 | Ochrona zapisu partii przy błędzie I/O | planowane | — |
 | PBI-042 | Skończone wartości liczbowe | planowane | — |
 | PBI-043 | Brakujący katalog wejściowy | planowane | — |
@@ -39,9 +39,10 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-053 | Zgodność dokumentacji i kontraktów | planowane | — |
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
 
-Następne gotowe zadanie: **PBI-040**. PBI-039 dostarczono w commicie
-`53931b1ddf22010782509980334048db1794291b` na `origin/codex/review-remediation`;
-CI `validate` dla tego SHA zakończyło się powodzeniem. Dowody w logu PBI-039.
+Następne gotowe zadanie: **PBI-041**. PBI-040 dostarczono w commicie
+`9073a8e382a07e48f02d2c1a9c19cb25a268c7a4` na `origin/codex/review-remediation`;
+CI `validate` dla tego SHA zakończyło się powodzeniem. Dowody w logu PBI-040.
+Pozostają PBI-041–054; bieżąca sesja kończy się po PBI-040.
 PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
 lecz definiuje osobne naprawy. Nie oznaczaj R06 jako zamkniętego po samej
 poprawce technicznej PBI-044 — wymagane są też PBI-051 i PBI-052.
