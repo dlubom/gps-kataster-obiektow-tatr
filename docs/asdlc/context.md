@@ -4,15 +4,19 @@ Last updated: 2026-09-19
 
 ## Current handoff — review remediation
 
-- PBI-038 implementation is verified, pending delivery. Validator checks
-  both directions of object/cave membership; link_cave removes the old
-  membership and writes both caves plus the object, preserving IDs/history.
-  Initial full gate: 342 tests and all 7 artifact readbacks; data unchanged.
-  After mutation analysis: 21 dedicated tests, 217 killed / 20 analyzed
-  survivors; independent review and delta review have no findings.
-  See [PBI-038 log](verification/PBI-038.md). Next: run final full gate,
-  commit/push implementation, verify exact-SHA CI, then documentation
-  checkpoint with full gate and push/CI. PBI-039 starts only in a new session.
+- PBI-038 is complete. Validator checks both directions of object/cave
+  membership; link_cave removes the old membership and writes both caves
+  plus the object, preserving IDs/history. Full gate: 351 tests and all
+  7 artifact readbacks; data and warning counts unchanged. Mutations:
+  217 killed / 20 analyzed survivors; independent review and delta review
+  have no findings. See [PBI-038 log](verification/PBI-038.md).
+  Implementation `8729c88158756efb1a0e4ed6617d24c554943e68` was pushed;
+  remote SHA readback matched, and CI `validate` run `35439112805`
+  completed successfully for that exact SHA. SSH became unavailable during
+  delivery; HTTPS with existing gh credentials worked, without changing
+  remote configuration. On resume confirm this documentation checkpoint
+  against origin/CI, then execute exactly **PBI-039** (YAML extensions and
+  update paths). Do not start it in this session.
 
 - PBI-037 is complete. Global cave/relation IDs and per-object
   measurement/attachment IDs now reject duplicates before SQLite/export
