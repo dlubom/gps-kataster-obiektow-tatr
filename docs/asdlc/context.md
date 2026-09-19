@@ -1,16 +1,19 @@
 # AS-DLC project context
 
-Last updated: 2026-09-18
+Last updated: 2026-09-19
 
 ## Current handoff — review remediation
 
-- PBI-037 is verified locally, pending delivery. Global cave/relation IDs
-  and per-object measurement/attachment IDs now reject duplicates before
-  SQLite/export writes. 330 tests and the full artifact readback pass;
-  data and warning counts are unchanged. Mutations: 89 killed, 14 analyzed
-  survivors; independent review has no findings. See
-  [PBI-037 log](verification/PBI-037.md). Finish push and exact-SHA CI,
-  then record the delivery checkpoint. Do not start PBI-038 in this session.
+- PBI-037 is complete. Global cave/relation IDs and per-object
+  measurement/attachment IDs now reject duplicates before SQLite/export
+  writes. 330 tests and all 7 artifact readbacks pass; data and warning
+  counts are unchanged. Mutations: 89 killed, 14 analyzed survivors;
+  independent review has no findings. See [PBI-037 log](verification/PBI-037.md).
+  Implementation `d67c39ea2724c29b74ed11bee8f95c9ac784495d` was pushed;
+  `git ls-remote` confirmed the SHA, and CI `validate` run `35424422380`
+  succeeded for that exact SHA. On resume confirm this documentation
+  checkpoint against origin/CI, then execute exactly **PBI-038**
+  (cave membership symmetry and link_cave). Do not start it in this session.
 
 - PBI-036 is complete. The common YAML loader
   rejects duplicate keys, aliases, merge keys and scalar-tagged mappings;
