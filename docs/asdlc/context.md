@@ -4,17 +4,22 @@ Last updated: 2026-09-19
 
 ## Current handoff — review remediation
 
-- PBI-042 is verified and awaiting delivery on base
-  `2daa811635b09857cf0af8c9b8f0f23b9f242bef`. Validation/import/conversion
-  guards reject non-finite values before calculations or writes; JSON uses
-  an additional serialization guard. Full gate: 707 tests, 7/7 artifact
-  readbacks, unchanged data and warnings. Mutations: 862 killed / 474
-  analyzed survivors, no remaining timeout/tool error; macOS setproctitle
-  workaround and coverage limits are recorded in the
-  [PBI-042 log](verification/PBI-042.md). Independent review has no blockers.
-  Commit/push and exact-SHA CI remain. Next planned step after delivery is
-  PBI-043; do not start it in this session. Separate existing SQLite
-  finite-int binding bug PBI-055 must be resolved before PBI-054 acceptance.
+- PBI-042 is complete. Validation/import/conversion guards reject
+  non-finite values before calculations or writes; JSON uses an additional
+  serialization guard. Full gate: 707 tests, 7/7 artifact readbacks,
+  unchanged data and warnings. Mutations: 862 killed / 474 analyzed
+  survivors, no remaining timeout/tool error. Independent review has no
+  blockers. The macOS setproctitle workaround and remaining coverage limits
+  are recorded in the [PBI-042 log](verification/PBI-042.md).
+  Implementation `796e169e5de1c2bc3883442b681fdbd774985674` was pushed;
+  remote SHA matched and CI validate run `35449507147` succeeded for that
+  exact SHA. On resume confirm this documentation checkpoint against
+  origin/CI, then execute exactly **PBI-043** (missing input directory).
+  Dependency PBI-040 is delivered. Do not start PBI-043 in this session.
+  Separate existing SQLite finite-int binding bug PBI-055 must be resolved
+  before PBI-054 acceptance. PBI-041 checkpoint
+  `2daa811635b09857cf0af8c9b8f0f23b9f242bef` was confirmed against origin
+  and successful CI run `35447188436` before this PBI.
 
 - PBI-041 is complete. Review prepares all files and original backups before
   final replacements, rolls back handled I/O failures and retains recovery
