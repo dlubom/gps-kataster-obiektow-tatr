@@ -4,6 +4,15 @@ Last updated: 2026-09-19
 
 ## Current handoff — review remediation
 
+- PBI-041 is verified, pending delivery, on base `b013b2dfa8ad0ce54ff26fc354af0aad63253918`.
+  Origin and successful exact-SHA CI `35444808738` for PBI-040 were confirmed.
+  Recoverable batch writer, CLI diagnostics and operator recovery procedure
+  are implemented. Final full gate passes 524 tests and all 7 artifacts;
+  independent review issues are fixed and delta review has no blockers.
+  Mutations: 510 killed / 84 analyzed survivors; delivery remains. See
+  [PBI-041 log](verification/PBI-041.md). Finish this PBI only.
+  PBI-042 is the next candidate after successful delivery, not this session.
+
 - PBI-040 is complete. Review validates raw input before indexing and the
   complete proposed dataset (including relations and real paths) before
   writes. Deferred catalog references follow the final target cave.

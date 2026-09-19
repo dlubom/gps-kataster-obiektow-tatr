@@ -582,6 +582,13 @@ obsługi błędów opisuje [format decyzji](docs/asdlc/staging_review_decisions.
 
 Pełny model merge/split obiektów zostaje poza V1.
 
+Zapis review przygotowuje całą partię i kopie oryginałów przed pierwszym
+zastąpieniem pliku. Obsługiwany błąd I/O powoduje rollback; jeśli odzyskanie
+lub sprzątanie zawiedzie, operacja zgłasza błąd i pozostawia dowody recovery,
+które blokują następne review (także dry-run). Nie gwarantuje transakcji
+przy przerwaniu procesu lub zasilania. Procedura operatora i granice:
+[odzyskiwanie review](docs/asdlc/staging_review_decisions.md#odzyskiwanie-po-bledzie-zapisu).
+
 ---
 
 ## 9. Historia i najlepszy aktualny stan

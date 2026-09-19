@@ -103,8 +103,63 @@ Jeżeli nie ma jaskini dla referencji, operacja daje `TARGET_CAVE_MISSING`;
 utwórz/powiąż ją w tej samej partii. Pomiar bez referencji katalogowych
 może być dodany do obiektu bez jaskini.
 
-Błąd walidacji blokuje wszystkie zapisy partii. Odtwarzanie plików po awarii
-I/O jest osobnym zakresem PBI-041; ten krok nie zapewnia rollbacku zapisu.
+Błąd walidacji blokuje wszystkie zapisy partii. Po walidacji PBI-041
+serializuje całą partię, przygotowuje pliki i kopie oryginalnych bajtów
+w `data/.review-recovery/`, a dopiero potem zastępuje finalne pliki.
+Obsługiwany błąd zapisu lub zastąpienia uruchamia rollback: oryginalne
+pliki wracają, nowe są usuwane. Puste katalogi utworzone na potrzeby
+nowych rekordów mogą pozostać. Tryb uprawnień istniejących plików jest
+zachowywany. `REVIEW_WRITE_FAILED` oznacza niepowodzenie bez pozostawienia
+zmienionych finalnych plików; po usunięciu przyczyny można ponowić decyzje.
+
+Nieudany rollback lub sprzątanie daje `REVIEW_RECOVERY_REQUIRED`,
+ścieżkę dowodów i instrukcję odzyskania. Status decyzji to `write_failed`,
+a `written_paths` jest puste: nie jest to gwarancja braku częściowych zmian.
+Przy błędzie sprzątania po zakończonym zapisie cały wynik może już istnieć.
+CLI kończy się kodem 1, drukuje diagnostykę przed próbą zapisania raportu
+i nie ogłasza sukcesu. Awaria samego raportu po udanym zapisie również
+daje kod 1 i liczbę potwierdzonych zapisów; nie należy ponawiać decyzji
+bez sprawdzenia katalogu.
+
+### Odzyskiwanie po bledzie zapisu
+
+Każda pozostałość `data/.review-recovery` (także pusty katalog lub link)
+blokuje następne review, również `--dry-run`, przed wczytaniem katalogu.
+Nie kasuj jej automatycznie. W czasie jednej operacji nie uruchamiaj
+innych zapisów review ani ręcznej edycji tego katalogu. Wyłączność tworzenia
+katalogu recovery chroni aktywny zapis, lecz nie zapewnia izolacji całego
+cyklu odczyt–decyzje–zapis ani blokady dla innych narzędzi.
+
+1. Zatrzymaj zapisujących i skopiuj cały katalog danych wraz z recovery
+   poza katalog roboczy. Zachowaj komunikat błędu i raport, jeśli powstał.
+2. Odczytaj `manifest.json`: `entries` zawiera względną `path`, numer `index`
+   i `original` informujący, czy plik istniał. `N.original` zawiera oryginalne
+   bajty, `N.prepared` jest przygotowanym nowym plikiem (po zastąpieniu może
+   go już nie być). `restore.tmp` i `committed.tmp` są plikami roboczymi.
+3. Jeśli manifest i wszystkie wymagane kopie są kompletne, można przywrócić
+   **całą** partię: dla `original: true` skopiuj `N.original` do wskazanej
+   ścieżki, zachowując uprawnienia; dla `original: false` usuń tylko wskazany
+   nowy plik, jeśli istnieje. Nie używaj niezweryfikowanych ścieżek spoza
+   katalogu danych. Porównaj przywrócone pliki bajtowo z kopiami.
+4. `COMMITTED` jest publikowany dopiero po wszystkich zastąpieniach i oznacza
+   zakończony zapis przed sprzątaniem. W takim przypadku preferuj weryfikację
+   nowego katalogu względem decyzji i pozostawienie wyniku, bez ponawiania.
+   Brak tego znacznika nie dowodzi braku zmian. Przy częściowym sprzątaniu
+   mogą już brakować manifestu lub kopii; wtedy ustal stan na podstawie
+   zachowanej kopii, raportu, decyzji i zmian Git. Nie odtwarzaj brakujących
+   oryginałów ze staging ani nie resetuj niezacommitowanych zmian operatora.
+   Nie usuwaj recovery, dopóki wynik nie jest jednoznaczny.
+5. Sprawdź `git diff` i `uv run --frozen python scripts/validate.py
+   --data-dir ścieżka/do/data`. Dopiero po odtworzeniu oryginałów lub
+   potwierdzeniu całego nowego wyniku usuń recovery. Ponowienie decyzji
+   jest właściwe tylko po odtworzeniu stanu sprzed partii.
+
+Gwarancja dotyczy obsługiwanych wyjątków I/O podczas działania procesu.
+Nie jest to transakcja systemu plików: brak gwarancji przy SIGKILL,
+utracie zasilania lub awarii dysku, brak fsync i atomowości całej partii.
+Przerwanie procesu może zostawić częściowy katalog i recovery; stosuj
+powyższą procedurę. Przy niekompletnych dowodach potrzebna jest kopia
+operatora lub Git z uwzględnieniem lokalnych zmian, a nie automatyczne retry.
 
 `apply_review.py` sprawdza także caly plik decyzji. Jezeli ktorakolwiek
 decyzja ma blad, finalne YAML nie sa zapisywane. Błąd parsowania pliku

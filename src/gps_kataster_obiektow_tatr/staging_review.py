@@ -21,6 +21,11 @@ from gps_kataster_obiektow_tatr.data_loader import (
     YamlDataLoadError,
     load_dataset,
 )
+from gps_kataster_obiektow_tatr.review_writer import (
+    ReviewWriteError,
+    check_review_recovery,
+    write_review_batch,
+)
 from gps_kataster_obiektow_tatr.validator import (
     format_issue,
     has_errors,
@@ -195,6 +200,18 @@ def apply_review_decisions(
         )
 
     try:
+        check_review_recovery(data_dir)
+    except ReviewWriteError as exc:
+        return StagingReviewResult(
+            reviewed_at=reviewed_at,
+            reviewed_by=reviewed_by,
+            data_dir=data_dir,
+            applied_decisions=(),
+            issues=(ReviewIssue(exc.code, ReviewSeverity.ERROR, None, str(exc)),),
+            written_paths=(),
+        )
+
+    try:
         objects, object_paths, caves, cave_paths, dataset = _load_existing_final_data(data_dir)
     except YamlDataLoadError as exc:
         issues.append(
@@ -347,15 +364,22 @@ def apply_review_decisions(
     blocked = any(issue.severity == ReviewSeverity.ERROR for issue in issues)
     written_paths: tuple[Path, ...] = ()
     if write and not blocked:
-        written_paths = _write_dirty_records(
-            data_dir=data_dir,
-            object_paths=object_paths,
-            cave_paths=cave_paths,
-            objects=objects,
-            caves=caves,
-            dirty_objects=dirty_objects,
-            dirty_caves=dirty_caves,
-        )
+        try:
+            written_paths = _write_dirty_records(
+                data_dir=data_dir,
+                object_paths=object_paths,
+                cave_paths=cave_paths,
+                objects=objects,
+                caves=caves,
+                dirty_objects=dirty_objects,
+                dirty_caves=dirty_caves,
+            )
+        except ReviewWriteError as exc:
+            issues.append(ReviewIssue(exc.code, ReviewSeverity.ERROR, None, str(exc)))
+            applied = [
+                replace(item, status="write_failed") if item.status == "materialized" else item
+                for item in applied
+            ]
 
     return StagingReviewResult(
         reviewed_at=reviewed_at,
@@ -1018,25 +1042,15 @@ def _write_dirty_records(
     dirty_objects: set[str],
     dirty_caves: set[str],
 ) -> tuple[Path, ...]:
-    paths: list[Path] = []
-
+    records = {}
     for cave_id in sorted(dirty_caves):
         path = cave_paths.get(cave_id, data_dir / "caves" / f"{cave_id}.yml")
-        _write_yaml(path, caves[cave_id])
-        paths.append(path)
-
+        records[path] = caves[cave_id]
     for object_id in sorted(dirty_objects):
         prefix = object_id.split("-", maxsplit=1)[0]
         path = object_paths.get(object_id, data_dir / "objects" / prefix / f"{object_id}.yml")
-        _write_yaml(path, objects[object_id])
-        paths.append(path)
-
-    return tuple(paths)
-
-
-def _write_yaml(path: Path, data: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8")
+        records[path] = objects[object_id]
+    return write_review_batch(data_dir, records)
 
 
 def _load_staging_json(path: Path | None) -> dict[str, Any] | None:

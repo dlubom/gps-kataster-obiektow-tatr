@@ -324,7 +324,7 @@ def test_cli_review_validation(tmp_path, dry_run, valid):
         assert not has_errors(validate_data_dir(data_dir))
     if not valid:
         assert "CAVE_REFERENCE_MISSING" in report["issues"][0]["description"]
-        assert "final YAML was not written" in result.stderr
+        assert "inspect the report before retrying" in result.stderr
 
 
 @pytest.mark.parametrize(

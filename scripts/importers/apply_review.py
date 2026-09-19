@@ -100,7 +100,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
-    json_path, markdown_path = write_review_report_files(result, output_dir=args.output_dir)
+    for issue in result.issues:
+        print(f"{issue.code}: {issue.description}", file=sys.stderr)
+    try:
+        json_path, markdown_path = write_review_report_files(result, output_dir=args.output_dir)
+    except (OSError, UnicodeError) as exc:
+        print(
+            f"Review report write failed: {exc}; {len(result.written_paths)} final YAML files "
+            "confirmed written. Inspect the catalog and any recovery evidence before retrying.",
+            file=sys.stderr,
+        )
+        return 1
     print(f"wrote: {json_path}")
     print(f"wrote: {markdown_path}")
 
@@ -109,7 +119,8 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if result.has_errors:
         print(
-            f"staging review failed: {len(result.issues)} issues, final YAML was not written",
+            f"staging review failed: {len(result.issues)} issues; "
+            "inspect the report before retrying",
             file=sys.stderr,
         )
         return 1
