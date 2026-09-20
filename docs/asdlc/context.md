@@ -4,7 +4,7 @@ Last updated: 2026-09-20
 
 ## Current handoff — review remediation
 
-- PBI-043 is verified, pending delivery. Missing/file data roots fail before
+- PBI-043 is complete. Missing/file data roots fail before
   validation/build/export writes. Empty existing catalogs remain valid;
   review needs explicit `--init-data-dir` for a new target and validates
   the full batch before creating it. TPN staging retains new-target and
@@ -12,9 +12,12 @@ Last updated: 2026-09-20
   unchanged data/warnings. Mutations: 243 killed / 74 analyzed survivors;
   default-argument wrapper limits checked by direct in-memory mutations.
   Independent review and delta review have no blockers. See the
-  [PBI-043 log](verification/PBI-043.md). Next: deliver implementation and
-  documentation checkpoint, verify remote SHA and exact CI, then stop.
-  After delivery the next ready item is PBI-044 (PBI-037/040 delivered).
+  [PBI-043 log](verification/PBI-043.md). Implementation
+  `8ef11b72bd16f6c0721ac9edeca92e515dc85b1a` was pushed; remote SHA matched
+  and CI validate run `35523985350` succeeded for that exact SHA.
+  On resume confirm this documentation checkpoint against origin/CI,
+  then execute exactly **PBI-044** (ID assignment references/prefix).
+  Dependencies PBI-037/040 are delivered. Do not start it in this session.
   PBI-042 checkpoint `993ddd2c33fbd363b01df7e8b6bb0a84b32d964a` was confirmed
   against origin and successful CI validate run `35449767762` at entry.
 
