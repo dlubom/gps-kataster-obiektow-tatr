@@ -42,7 +42,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--data-dir",
         type=Path,
         default=DEFAULT_DATA_DIR,
-        help="Final data directory to write. Defaults to data/.",
+        help="Existing final data directory. Defaults to data/.",
+    )
+    parser.add_argument(
+        "--init-data-dir",
+        action="store_true",
+        help="Allow a new import target; create it only after successful review validation.",
     )
     parser.add_argument(
         "--pig-staging",
@@ -95,6 +100,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             staging_reports=staging_reports,
             data_dir=args.data_dir,
             write=not args.dry_run,
+            initialize_data_dir=args.init_data_dir,
         )
     except ReviewDecisionError as exc:
         print(f"error: {exc}", file=sys.stderr)

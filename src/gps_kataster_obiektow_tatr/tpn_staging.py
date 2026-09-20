@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from gps_kataster_obiektow_tatr.coordinates import pl1992_to_wgs84
-from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR, load_dataset
+from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR, load_import_target_dataset
 from gps_kataster_obiektow_tatr.numeric import nonfinite_paths, require_finite_numbers
 from gps_kataster_obiektow_tatr.numeric import parse_decimal as _parse_decimal
 from gps_kataster_obiektow_tatr.prefix_resolver import (
@@ -863,7 +863,7 @@ def _infer_tpn_object_category(*, row: dict[str, str], name: str) -> str:
 
 
 def _load_existing_candidates(data_dir: Path) -> tuple[_Candidate, ...]:
-    dataset = load_dataset(data_dir)
+    dataset = load_import_target_dataset(data_dir)
     for record in dataset.records():
         invalid = nonfinite_paths(record.raw_data)
         if invalid:

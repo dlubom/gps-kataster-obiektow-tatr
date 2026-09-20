@@ -5,6 +5,25 @@ pliki w `data/`; katalog `build/` zawiera tylko artefakty wygenerowane lokalnie.
 
 ## Dodanie recznego pomiaru
 
+### Katalog danych wejściowych
+
+Walidacja, build SQLite, eksporty i review wymagają istniejącego katalogu
+`--data-dir`. Brak ścieżki, plik zamiast katalogu lub zerwany link jest
+błędem przed zapisem danych i artefaktów. Walidator podaje
+`DATA_DIRECTORY_INVALID`, review `FINAL_DATA_INVALID`; CLI zwraca kod 1.
+Istniejący pusty katalog jest poprawnym katalogiem z 0 rekordów i może
+świadomie służyć do budowy pustych artefaktów. Brak podkatalogu `objects/`,
+`caves/` lub opcjonalnego `relations/` oznacza brak rekordów tego rodzaju;
+plik zamiast któregokolwiek z tych podkatalogów jest błędem.
+
+Pierwszy import do nieistniejącego celu wymaga `apply_review.py
+--init-data-dir`. Ta opcja nie pomija kontroli istniejącego katalogu:
+nowy katalog powstaje dopiero przy zapisie poprawnej partii decyzji.
+Dry-run, pusta partia i błędne decyzje nie tworzą nowego katalogu.
+Szczegóły i przykład: [review staging](asdlc/staging_review_decisions.md).
+Raport diagnostyczny review może zostać zapisany również przy odmowie
+zmian danych; nie jest artefaktem katalogu.
+
 ### Reguły zapisu YAML
 
 Pliki obiektów, jaskiń, relacji i decyzji operatora używają tej samej

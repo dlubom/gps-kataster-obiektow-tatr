@@ -40,7 +40,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--data-dir",
         type=Path,
         default=DEFAULT_DATA_DIR,
-        help="Existing final data directory used only to avoid proposed ID collisions.",
+        help="Final data baseline for matching and IDs; a new target is allowed without writes.",
     )
     parser.add_argument(
         "--pig-staging",
@@ -83,7 +83,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
         json_path, markdown_path = write_staging_files(report, output_dir=args.output_dir)
     except ValueError as exc:
-        print(f"Invalid numeric input: {exc}", file=sys.stderr)
+        print(f"Invalid input: {exc}", file=sys.stderr)
         return 1
     counts = _status_counts(report)
 

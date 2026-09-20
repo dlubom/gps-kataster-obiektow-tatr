@@ -7,6 +7,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
+from stat import S_ISDIR
 from typing import Any
 
 import yaml
@@ -62,9 +63,38 @@ class YamlDataLoadError(ValueError):
         super().__init__(f"{path}: {message}")
 
 
-def load_dataset(data_dir: Path = DEFAULT_DATA_DIR) -> LoadedDataset:
-    """Load objects, caves and relations from a repository ``data/`` directory."""
+class DataDirectoryError(YamlDataLoadError):
+    """Raised for a missing, inaccessible or non-directory data path."""
 
+
+def check_data_directory(path: Path, *, allow_missing: bool = False) -> bool:
+    """Check a directory without creating it; missing import targets are opt-in."""
+
+    try:
+        mode = path.stat().st_mode
+    except FileNotFoundError as exc:
+        if allow_missing and not path.is_symlink():
+            return False
+        raise DataDirectoryError(path, "data directory does not exist") from exc
+    except OSError as exc:
+        raise DataDirectoryError(path, f"cannot access data directory: {exc}") from exc
+    if not S_ISDIR(mode):
+        raise DataDirectoryError(path, "expected a data directory, found a non-directory path")
+    return True
+
+
+def load_import_target_dataset(data_dir: Path) -> LoadedDataset:
+    """Read an import target, allowing a new directory without creating it."""
+
+    if not check_data_directory(data_dir, allow_missing=True):
+        return LoadedDataset(objects=(), caves=(), relations=())
+    return load_dataset(data_dir)
+
+
+def load_dataset(data_dir: Path = DEFAULT_DATA_DIR) -> LoadedDataset:
+    """Load an existing data directory; an existing empty directory is valid."""
+
+    check_data_directory(data_dir)
     return LoadedDataset(
         objects=load_records(
             data_dir / OBJECTS_DIR_NAME,
@@ -92,6 +122,7 @@ def load_records(
 ) -> tuple[LoadedYamlRecord, ...]:
     """Load all YAML records below ``root_dir`` in deterministic path order."""
 
+    check_data_directory(root_dir, allow_missing=True)
     return tuple(
         _load_record(path, kind=kind, normalize=normalize) for path in iter_yaml_paths(root_dir)
     )

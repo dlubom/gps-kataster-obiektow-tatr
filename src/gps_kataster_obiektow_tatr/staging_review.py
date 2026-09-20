@@ -20,6 +20,7 @@ from gps_kataster_obiektow_tatr.data_loader import (
     LoadedYamlRecord,
     YamlDataLoadError,
     load_dataset,
+    load_import_target_dataset,
 )
 from gps_kataster_obiektow_tatr.review_writer import (
     ReviewWriteError,
@@ -172,6 +173,7 @@ def apply_review_decisions(
     staging_reports: StagingReports,
     data_dir: Path = DEFAULT_DATA_DIR,
     write: bool = True,
+    initialize_data_dir: bool = False,
 ) -> StagingReviewResult:
     """Apply operator decisions and optionally write final YAML under ``data_dir``."""
 
@@ -212,7 +214,9 @@ def apply_review_decisions(
         )
 
     try:
-        objects, object_paths, caves, cave_paths, dataset = _load_existing_final_data(data_dir)
+        objects, object_paths, caves, cave_paths, dataset = _load_existing_final_data(
+            data_dir, initialize_data_dir=initialize_data_dir
+        )
     except YamlDataLoadError as exc:
         issues.append(
             ReviewIssue(
@@ -973,6 +977,8 @@ def _index_final_records(
 
 def _load_existing_final_data(
     data_dir: Path,
+    *,
+    initialize_data_dir: bool = False,
 ) -> tuple[
     dict[str, dict[str, Any]],
     dict[str, Path],
@@ -980,7 +986,9 @@ def _load_existing_final_data(
     dict[str, Path],
     LoadedDataset,
 ]:
-    dataset = load_dataset(data_dir)
+    dataset = (
+        load_import_target_dataset(data_dir) if initialize_data_dir else load_dataset(data_dir)
+    )
     errors = list(validate_record_schemas(dataset.records()))
     if not errors:
         errors = [i for i in validate_dataset(dataset, data_dir=data_dir) if i.severity == "error"]

@@ -8,6 +8,25 @@ uruchomieniu:
 uv run python scripts/importers/apply_review.py --decisions path/to/decisions.yml
 ```
 
+Domyślnie `--data-dir` musi istnieć i być katalogiem. Dla pierwszego
+importu do nowego celu użyj jawnej inicjalizacji:
+
+```bash
+uv run python scripts/importers/apply_review.py \
+  --decisions path/to/decisions.yml --data-dir path/to/new-data --init-data-dir
+```
+
+Nowy cel jest na czas walidacji pustym katalogiem w pamięci. Dopiero
+poprawna partia (np. `create_cave` + `create_object`) tworzy katalog i YAML.
+`--dry-run`, puste decyzje oraz błędna partia nie tworzą celu; raport
+diagnostyczny nadal może powstać w `--output-dir`. Flaga nie ignoruje
+istniejących danych, plików zamiast katalogów ani zerwanych linków.
+API odpowiada argument `initialize_data_dir=True`. Zwykły odczyt
+`load_dataset` pozostaje ścisły; oddzielny `load_import_target_dataset`
+służy wyłącznie do przygotowania nowego celu importu. Staging TPN zachowuje
+możliwość przygotowania propozycji dla jeszcze nieistniejącego celu,
+bez tworzenia finalnych YAML; PIG nadal rezerwuje numery z nazw plików.
+
 Minimalny plik:
 
 ```yaml

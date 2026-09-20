@@ -300,6 +300,7 @@ def test_cli_review_validation(tmp_path, dry_run, valid):
     command = [
         sys.executable,
         str(root / "scripts/importers/apply_review.py"),
+        "--init-data-dir",
         "--decisions",
         str(decisions),
         "--pig-staging",

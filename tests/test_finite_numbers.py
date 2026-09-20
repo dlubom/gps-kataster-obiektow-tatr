@@ -423,7 +423,7 @@ def test_review_json_guard_preserves_existing_reports(tmp_path):
     result = apply_review_decisions(
         _decisions("create_cave", "create_object"),
         staging_reports=StagingReports(pig=_pig_staging()),
-        data_dir=tmp_path / "data",
+        data_dir=tmp_path,
         write=False,
     )
     assert not result.has_errors

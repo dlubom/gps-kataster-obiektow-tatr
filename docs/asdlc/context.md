@@ -1,8 +1,22 @@
 # AS-DLC project context
 
-Last updated: 2026-09-19
+Last updated: 2026-09-20
 
 ## Current handoff — review remediation
+
+- PBI-043 is verified, pending delivery. Missing/file data roots fail before
+  validation/build/export writes. Empty existing catalogs remain valid;
+  review needs explicit `--init-data-dir` for a new target and validates
+  the full batch before creating it. TPN staging retains new-target and
+  existing-catalog matching. Full gate: 747 tests, 7/7 artifact readbacks,
+  unchanged data/warnings. Mutations: 243 killed / 74 analyzed survivors;
+  default-argument wrapper limits checked by direct in-memory mutations.
+  Independent review and delta review have no blockers. See the
+  [PBI-043 log](verification/PBI-043.md). Next: deliver implementation and
+  documentation checkpoint, verify remote SHA and exact CI, then stop.
+  After delivery the next ready item is PBI-044 (PBI-037/040 delivered).
+  PBI-042 checkpoint `993ddd2c33fbd363b01df7e8b6bb0a84b32d964a` was confirmed
+  against origin and successful CI validate run `35449767762` at entry.
 
 - PBI-042 is complete. Validation/import/conversion guards reject
   non-finite values before calculations or writes; JSON uses an additional

@@ -424,6 +424,7 @@ def test_new_pair_can_create_nested_data_directory(tmp_path):
         _decisions("create_cave", "create_object"),
         staging_reports=StagingReports(pig=_pig_staging()),
         data_dir=root,
+        initialize_data_dir=True,
     )
     assert not result.has_errors
     assert len(result.written_paths) == 2

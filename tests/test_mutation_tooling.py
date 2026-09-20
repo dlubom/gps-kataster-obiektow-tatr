@@ -9,6 +9,7 @@ GITIGNORE = REPO_ROOT / ".gitignore"
 MUTATION_WORKFLOW = REPO_ROOT / ".github" / "workflows" / "mutation.yml"
 
 MUTATED_PATHS = [
+    "src/gps_kataster_obiektow_tatr/data_loader.py",
     "src/gps_kataster_obiektow_tatr/best_measurement.py",
     "src/gps_kataster_obiektow_tatr/coordinates.py",
     "src/gps_kataster_obiektow_tatr/numeric.py",
@@ -24,6 +25,8 @@ MUTATED_PATHS = [
 ]
 
 MUTATION_TEST_SELECTION = [
+    "tests/test_data_loader.py",
+    "tests/test_data_directories.py",
     "tests/test_best_measurement.py",
     "tests/test_coordinates.py",
     "tests/test_finite_numbers.py",
@@ -49,7 +52,8 @@ MUTATION_PYTEST_SELECTION_ARGS = [
         "and not test_cli_writes_staging_artifacts_without_final_yaml "
         "and not test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py "
         "and not test_cli_duplicate_ids_preserve_artifacts "
-        "and not test_cli_writes_reports_without_final_yaml"
+        "and not test_cli_writes_reports_without_final_yaml "
+        "and not test_cli_invalid_input_preserves_artifacts"
     ),
 ]
 

@@ -43,6 +43,7 @@ def test_apply_review_directly_materializes_pig_and_tpn_decisions(tmp_path: Path
         },
         staging_reports=StagingReports(pig=_pig_staging(), tpn=_tpn_staging()),
         data_dir=data_dir,
+        initialize_data_dir=True,
     )
 
     object_path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
@@ -102,7 +103,7 @@ def test_write_review_report_files_serializes_decisions_issues_and_paths(tmp_pat
             ],
         },
         staging_reports=StagingReports(tpn=_tpn_review_only_staging()),
-        data_dir=tmp_path / "data",
+        data_dir=tmp_path,
         write=False,
     )
 
@@ -171,6 +172,7 @@ def test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py(
         [
             sys.executable,
             str(APPLY_REVIEW_PATH),
+            "--init-data-dir",
             "--decisions",
             str(decisions_path),
             "--data-dir",
@@ -282,9 +284,11 @@ def test_invalid_decision_blocks_all_final_yaml_writes(tmp_path: Path) -> None:
         },
         staging_reports=StagingReports(pig=_pig_staging()),
         data_dir=data_dir,
+        initialize_data_dir=True,
     )
 
     assert result.has_errors is True
+    assert _issue_codes(result) == ["STAGING_OBJECT_PROPOSAL_MISSING"]
     assert result.written_paths == ()
     assert not (data_dir / "caves" / "C-0001.yml").exists()
 
@@ -309,7 +313,7 @@ def test_invalid_decision_shapes_and_non_materialized_warnings_are_reported(
             ],
         },
         staging_reports=StagingReports(tpn=_tpn_review_only_staging()),
-        data_dir=tmp_path / "data-mixed",
+        data_dir=tmp_path,
         write=False,
     )
 
@@ -362,7 +366,7 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
             "decisions": [{"action": "add_measurement", "source": "PIG", "record_number": 1}],
         },
         staging_reports=StagingReports(pig=_pig_staging()),
-        data_dir=tmp_path / "data-unsupported",
+        data_dir=tmp_path,
         write=False,
     )
     missing_update = apply_review_decisions(
@@ -372,7 +376,7 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
             "decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 2}],
         },
         staging_reports=StagingReports(tpn=_tpn_review_only_staging()),
-        data_dir=tmp_path / "data-missing-update",
+        data_dir=tmp_path,
         write=False,
     )
     target_missing = apply_review_decisions(
@@ -382,7 +386,7 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
             "decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}],
         },
         staging_reports=StagingReports(tpn=_tpn_staging()),
-        data_dir=tmp_path / "data-target-missing",
+        data_dir=tmp_path,
         write=False,
     )
 

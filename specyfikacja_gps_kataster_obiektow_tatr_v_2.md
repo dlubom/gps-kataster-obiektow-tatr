@@ -686,6 +686,15 @@ Konsekwencje:
 
 `build/` jest generowane i gitignored.
 
+Odczyt, walidacja, build, eksport i review wymagają istniejącego katalogu
+danych. Nieistniejąca ścieżka, plik zamiast katalogu lub zerwany link
+powodują błąd przed zapisem. Istniejący pusty katalog oznacza 0 rekordów;
+brak podkatalogów encji oznacza brak ich rekordów (w szczególności relacje
+są opcjonalne). Plik zamiast podkatalogu encji także jest błędem.
+Pierwszy import przez review może jawnie użyć `--init-data-dir`: nowy cel
+powstaje dopiero po walidacji pełnej partii. Dry-run i błędne decyzje nie
+tworzą celu. Reguła nie osłabia walidacji istniejących danych.
+
 ### 10.2 Przykład obiektu YAML
 
 ```yaml
