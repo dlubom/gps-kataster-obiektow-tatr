@@ -77,6 +77,16 @@ w listach.
 7. Zmien `updated_at` i `updated_by` obiektu.
 8. Uruchom walidacje.
 
+`id_assignment.assigned_from_measurement_id` dokumentuje pomiar, na podstawie
+którego nadano trwałe ID, i musi wskazywać pomiar tego samego obiektu.
+`id_assignment.assigned_prefix` musi być równy prefixowi w `Obiekt.id`.
+Walidator zgłasza dla tych naruszeń odpowiednio
+`ID_ASSIGNMENT_MEASUREMENT_MISSING` i `ID_ASSIGNMENT_PREFIX_MISMATCH` jako
+błędy; build i eksport kończą się przed zapisem artefaktów. Dodanie późniejszego
+pomiaru lub zmiana `best_measurement` nie zmienia tych pól ani trwałego ID.
+Rozbieżność ID z lokalizacją aktualnego najlepszego pomiaru pozostaje
+ostrzeżeniem `OBJECT_PREFIX_MISMATCH`.
+
 Pomocniczo, nowe ID obiektu mozna zaproponowac komenda:
 
 ```bash

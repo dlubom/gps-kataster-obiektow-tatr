@@ -317,6 +317,44 @@ def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue,
             )
 
         measurement_ids = _measurement_ids(object_record)
+        id_assignment = object_record.data.get("id_assignment")
+        if isinstance(id_assignment, dict):
+            assigned_measurement_id = id_assignment.get("assigned_from_measurement_id")
+            if (
+                isinstance(assigned_measurement_id, str)
+                and assigned_measurement_id not in measurement_ids
+            ):
+                issues.append(
+                    ValidationIssue(
+                        code="ID_ASSIGNMENT_MEASUREMENT_MISSING",
+                        severity=ValidationSeverity.ERROR,
+                        path=object_record.path,
+                        description=(
+                            f"Object {object_id} id_assignment.assigned_from_measurement_id "
+                            f"{assigned_measurement_id} does not exist in this object."
+                        ),
+                    )
+                )
+
+            assigned_prefix = id_assignment.get("assigned_prefix")
+            durable_prefix = object_id.split("-", maxsplit=1)[0] if "-" in object_id else None
+            if (
+                isinstance(assigned_prefix, str)
+                and durable_prefix is not None
+                and assigned_prefix != durable_prefix
+            ):
+                issues.append(
+                    ValidationIssue(
+                        code="ID_ASSIGNMENT_PREFIX_MISMATCH",
+                        severity=ValidationSeverity.ERROR,
+                        path=object_record.path,
+                        description=(
+                            f"Object {object_id} id_assignment.assigned_prefix "
+                            f"{assigned_prefix} differs from durable ID prefix {durable_prefix}."
+                        ),
+                    )
+                )
+
         best_measurement = object_record.data.get("best_measurement")
         if isinstance(best_measurement, dict):
             measurement_id = best_measurement.get("measurement_id")

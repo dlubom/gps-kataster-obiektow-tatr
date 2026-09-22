@@ -65,7 +65,7 @@ tests_dir = [
 ]
 pytest_add_cli_args_test_selection = [
     "-k",
-    "not test_cli_review_validation and not test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors and not test_cli_writes_staging_artifacts_without_final_yaml and not test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py and not test_cli_duplicate_ids_preserve_artifacts and not test_cli_writes_reports_without_final_yaml and not test_cli_invalid_input_preserves_artifacts",
+    "not test_cli_review_validation and not test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors and not test_cli_writes_staging_artifacts_without_final_yaml and not test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py and not test_cli_duplicate_ids_preserve_artifacts and not test_id_assignment_error_blocks_artifact_writes and not test_cli_writes_reports_without_final_yaml and not test_cli_invalid_input_preserves_artifacts",
 ]
 also_copy = [
     "src/gps_kataster_obiektow_tatr",

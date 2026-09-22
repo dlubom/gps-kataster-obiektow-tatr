@@ -27,7 +27,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-041 | Ochrona zapisu partii przy błędzie I/O | wykonane 2026-09-19 | [log](verification/PBI-041.md) |
 | PBI-042 | Skończone wartości liczbowe | wykonane 2026-09-19 | [log](verification/PBI-042.md) |
 | PBI-043 | Brakujący katalog wejściowy | wykonane 2026-09-20 | [log](verification/PBI-043.md) |
-| PBI-044 | Referencje i prefix przydziału ID | planowane | — |
+| PBI-044 | Referencje i prefix przydziału ID | zweryfikowane — do dostarczenia | [log](verification/PBI-044.md) |
 | PBI-045 | Deduplikacja kandydatów finalnych/staging | planowane | — |
 | PBI-046 | Numeracja pomiarów w partii | planowane | — |
 | PBI-047 | Payload wierszy unresolved | planowane | — |

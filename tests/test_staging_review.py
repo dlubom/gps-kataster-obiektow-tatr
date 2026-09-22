@@ -418,6 +418,7 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
     )
     _write_yaml(duplicate_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
     duplicate_object = _read_yaml(duplicate_dir / "objects/KSW/KSW-0001.yml")
+    duplicate_object["id_assignment"]["assigned_from_measurement_id"] = "m-002"
     duplicate_object["best_measurement"]["measurement_id"] = "m-002"
     _write_yaml(duplicate_dir / "objects/KSW/KSW-0001.yml", duplicate_object)
     duplicate = apply_review_decisions(
