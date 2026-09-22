@@ -4,6 +4,23 @@ Last updated: 2026-09-22
 
 ## Current handoff — review remediation
 
+- PBI-045 jest wykonane: importer TPN scala kandydatów po trwałym ID.
+  Zaakceptowany PIG z zachowanym stagingiem daje jeden finalny obiekt,
+  jeżeli identyfikator źródłowy PIG potwierdza tożsamość; sprzeczna lub
+  niepotwierdzona proweniencja zatrzymuje import. Różne ID pozostają
+  oddzielne, niezależnie od podobnej nazwy i położenia. Pełna bramka:
+  773 testy, 7/7 odczytów artefaktów, niezmienione dane i ostrzeżenia.
+  Mutacje zmienionych funkcji: 367 zabitych / 149 ocalałych przeanalizowanych;
+  niezależny review bez ustaleń blokujących. Szczegóły w
+  [logu PBI-045](verification/PBI-045.md). Implementacja
+  `0692de6a4ae4ceb47ba976a5885f82658cc87e21` została wypchnięta;
+  remote SHA był zgodny i CI validate
+  [35776330625](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/35776330625)
+  zakończyło się sukcesem dla tego SHA. Przy wznowieniu potwierdź ten
+  checkpoint dokumentacji na origin i jego CI, następnie wykonaj dokładnie
+  **PBI-046** (numeracja pomiarów w partii). Zależności PBI-040/045 są
+  dostarczone. Nie zaczynaj PBI-046 w tej sesji.
+
 - PBI-044 jest wykonane: walidator odrzuca brak pomiaru użytego do nadania
   ID w tym samym obiekcie oraz `assigned_prefix` sprzeczny z trwałym ID.
   Historyczna rozbieżność z bieżącym najlepszym pomiarem nadal jest
