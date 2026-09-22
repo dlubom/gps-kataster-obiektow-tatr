@@ -1,6 +1,6 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-09-20
+Stan na: 2026-09-22
 
 ## Naprawy po przegladzie 2026-09-05
 
@@ -27,7 +27,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-041 | Ochrona zapisu partii przy błędzie I/O | wykonane 2026-09-19 | [log](verification/PBI-041.md) |
 | PBI-042 | Skończone wartości liczbowe | wykonane 2026-09-19 | [log](verification/PBI-042.md) |
 | PBI-043 | Brakujący katalog wejściowy | wykonane 2026-09-20 | [log](verification/PBI-043.md) |
-| PBI-044 | Referencje i prefix przydziału ID | zweryfikowane — do dostarczenia | [log](verification/PBI-044.md) |
+| PBI-044 | Referencje i prefix przydziału ID | wykonane 2026-09-22 | [log](verification/PBI-044.md) |
 | PBI-045 | Deduplikacja kandydatów finalnych/staging | planowane | — |
 | PBI-046 | Numeracja pomiarów w partii | planowane | — |
 | PBI-047 | Payload wierszy unresolved | planowane | — |
@@ -40,11 +40,11 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
 | PBI-055 | Skończone duże int w polach REAL SQLite | planowane | [opis](#pbi-055-skonczone-duze-int-w-polach-real-sqlite) |
 
-Następne gotowe zadanie: **PBI-044** (zależności PBI-037 i PBI-040 wykonane).
-PBI-043 dostarczono w commicie `8ef11b72bd16f6c0721ac9edeca92e515dc85b1a`;
-zdalny SHA potwierdzony, CI validate [35523985350](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/35523985350)
-zakończone sukcesem dla tego SHA. Dowody w [logu PBI-043](verification/PBI-043.md).
-Pozostają PBI-044–054 i niezależne PBI-055; ta sesja kończy się po PBI-043.
+Następne gotowe zadanie: **PBI-045** (zależność PBI-040 wykonana).
+PBI-044 dostarczono w commicie `889e640749b510981f79ffdb6115b2bd30821c2a`;
+zdalny SHA potwierdzony, CI validate [35772846807](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/35772846807)
+zakończone sukcesem dla tego SHA. Dowody w [logu PBI-044](verification/PBI-044.md).
+Pozostają PBI-045–054 i niezależne PBI-055; ta sesja kończy się po PBI-044.
 PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
 lecz definiuje osobne naprawy. Nie oznaczaj R06 jako zamkniętego po samej
 poprawce technicznej PBI-044 — wymagane są też PBI-051 i PBI-052.

@@ -1,8 +1,24 @@
 # AS-DLC project context
 
-Last updated: 2026-09-20
+Last updated: 2026-09-22
 
 ## Current handoff — review remediation
+
+- PBI-044 jest wykonane: walidator odrzuca brak pomiaru użytego do nadania
+  ID w tym samym obiekcie oraz `assigned_prefix` sprzeczny z trwałym ID.
+  Historyczna rozbieżność z bieżącym najlepszym pomiarem nadal jest
+  ostrzeżeniem; wymagane powody 16 przypadków należą do PBI-051/052.
+  Pełna bramka: 764 testy, 7/7 odczytów artefaktów, niezmienione dane
+  i ostrzeżenia. Mutacje zmienionej funkcji: 144 zabite / 39 ocalałych
+  przeanalizowanych; niezależny review i delta review bez ustaleń.
+  Szczegóły w [logu PBI-044](verification/PBI-044.md). Implementacja
+  `889e640749b510981f79ffdb6115b2bd30821c2a` została wypchnięta;
+  remote SHA był zgodny i CI validate
+  [35772846807](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/35772846807)
+  zakończyło się sukcesem dla tego SHA. Przy wznowieniu potwierdź ten
+  checkpoint dokumentacji na origin i jego CI, następnie wykonaj dokładnie
+  **PBI-045** (deduplikacja kandydatów finalnych/staging). Zależność PBI-040
+  jest dostarczona. Nie zaczynaj PBI-045 w tej sesji.
 
 - PBI-043 is complete. Missing/file data roots fail before
   validation/build/export writes. Empty existing catalogs remain valid;
