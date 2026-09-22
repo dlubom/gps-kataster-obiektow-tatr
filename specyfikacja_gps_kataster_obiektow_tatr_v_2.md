@@ -551,6 +551,13 @@ Dla nowego pomiaru szukamy kandydatów:
 - po podobieństwie nazw,
 - po kategorii.
 
+Przy łączeniu finalnego katalogu i zachowanego stagingu PIG jeden trwały
+`Obiekt.id` jest jednym kandydatem. Jeżeli finalny obiekt ma zgodną
+proweniencję PIG, jego aktualny stan i kolejny numer pomiaru mają
+pierwszeństwo przed historyczną propozycją staging. Sprzeczna albo
+niepotwierdzona proweniencja dla tego samego ID zatrzymuje import TPN;
+podobieństwo nazwy i położenia nie scala różnych trwałych ID.
+
 Domyślny próg odległości:
 
 ```text

@@ -4,8 +4,13 @@ import json
 import subprocess
 import sys
 import zipfile
+from copy import deepcopy
+from dataclasses import replace
 from html import escape
 from pathlib import Path
+
+import pytest
+import yaml
 
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
@@ -13,6 +18,9 @@ from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolutionStatus,
 )
 from gps_kataster_obiektow_tatr.tpn_staging import (
+    _Candidate,
+    _deduplicate_candidates,
+    _pig_measurement_ids,
     build_tpn_staging,
     write_staging_files,
 )
@@ -86,6 +94,7 @@ def test_csv_staging_matches_pig_by_nr_and_creates_tpn_measurement_update(
 
     assert report.rows[0].status == "matched"
     assert report.rows[0].match_strategy == "nr_inwent"
+    assert report.rows[0].distance_m == 0.0
     assert update["target_object_id"] == "KSW-0001"
     assert update["target_cave_id"] == "C-0001"
     assert update["object_external_refs"] == [
@@ -104,6 +113,263 @@ def test_csv_staging_matches_pig_by_nr_and_creates_tpn_measurement_update(
     assert measurement["verification_status"] == "nieweryfikowany"
     assert report.proposed_caves == ()
     assert report.proposed_objects == ()
+
+
+@pytest.mark.parametrize("with_staging", [False, True])
+def test_accepted_pig_object_is_one_final_candidate(tmp_path: Path, with_staging: bool) -> None:
+    tpn_csv = tmp_path / "tpn.csv"
+    pig_staging = tmp_path / "pig-staging.json"
+    data_dir = tmp_path / "data"
+    _write_tpn_csv(
+        tpn_csv,
+        [
+            _tpn_row(
+                nr_inwent="T.F-09.33",
+                name="Szczelina pod Gankowa II",
+                globalid="{D7C052E6-D584-4320-B886-367312D2219F}",
+                x_1992="152267,23",
+                y_1992="563744,25",
+            )
+        ],
+    )
+    _write_pig_staging(
+        pig_staging,
+        object_id="KSW-0001",
+        cave_id="C-0001",
+        nr_inwent="T.F-09.33",
+        name="Szczelina pod Gankowa II",
+        x_1992=152267.23,
+        y_1992=563744.25,
+    )
+    _write_final_pig_candidate(data_dir)
+
+    report = build_tpn_staging(
+        tpn_csv,
+        generated_at="2026-05-16T09:00:00Z",
+        data_dir=data_dir,
+        pig_staging_path=pig_staging if with_staging else None,
+        prefix_resolver=StubResolver(),
+    )
+
+    assert report.rows[0].status == "matched"
+    assert report.rows[0].object_id == "KSW-0001"
+    assert report.rows[0].match_strategy == "nr_inwent"
+    assert report.issues == ()
+    assert report.matched_measurements[0]["match"]["source"] == "data_yaml"
+    assert report.matched_measurements[0]["measurement"]["id"] == "m-003"
+
+
+def test_final_candidate_wins_independently_of_source_order() -> None:
+    staging = _Candidate(
+        source="pig_staging",
+        cave_id="C-0001",
+        object_id="KSW-0001",
+        nr_inwent="T.F-09.33",
+        name="Szczelina pod Gankowa II",
+        x_1992=152267.23,
+        y_1992=563744.25,
+        globalids=(),
+        next_measurement_id="m-002",
+        pig_ids=("1692",),
+    )
+    final = replace(staging, source="data_yaml", next_measurement_id="m-003")
+    other = replace(staging, object_id="KSW-0002", pig_ids=("9999",))
+
+    assert _deduplicate_candidates((final, staging, other)) == (final, other)
+    assert _deduplicate_candidates((staging, final, other)) == (final, other)
+    assert _deduplicate_candidates((staging, other, final)) == (final, other)
+    assert _deduplicate_candidates((staging, staging, other)) == (staging, other)
+
+
+def test_empty_pig_source_ref_does_not_prove_identity() -> None:
+    assert _pig_measurement_ids({"measurements": [{"source_ref": "PIG:"}]}) == ()
+
+
+def test_conflicting_pig_provenance_for_same_object_id_is_rejected(tmp_path: Path) -> None:
+    tpn_csv = tmp_path / "tpn.csv"
+    pig_staging = tmp_path / "pig-staging.json"
+    data_dir = tmp_path / "data"
+    _write_tpn_csv(
+        tpn_csv,
+        [
+            _tpn_row(
+                nr_inwent="T.F-09.33",
+                name="Szczelina pod Gankowa II",
+                globalid="{D7C052E6-D584-4320-B886-367312D2219F}",
+                x_1992="152267,23",
+                y_1992="563744,25",
+            )
+        ],
+    )
+    _write_pig_staging(
+        pig_staging,
+        object_id="KSW-0001",
+        cave_id="C-0001",
+        nr_inwent="T.F-09.33",
+        name="Szczelina pod Gankowa II",
+        x_1992=152267.23,
+        y_1992=563744.25,
+    )
+    data = json.loads(pig_staging.read_text(encoding="utf-8"))
+    data["rows"][0]["pig_id"] = "9999"
+    data["proposed_objects"][0]["measurements"][0]["source_ref"] = "PIG:9999"
+    pig_staging.write_text(json.dumps(data), encoding="utf-8")
+    _write_final_pig_candidate(data_dir)
+
+    with pytest.raises(ValueError, match="KSW-0001.*PIG provenance"):
+        build_tpn_staging(
+            tpn_csv,
+            generated_at="2026-05-16T09:00:00Z",
+            data_dir=data_dir,
+            pig_staging_path=pig_staging,
+            prefix_resolver=StubResolver(),
+        )
+
+
+def test_distinct_nearby_pig_objects_remain_ambiguous_in_either_order(tmp_path: Path) -> None:
+    tpn_csv = tmp_path / "tpn.csv"
+    pig_staging = tmp_path / "pig-staging.json"
+    _write_tpn_csv(
+        tpn_csv,
+        [
+            _tpn_row(
+                nr_inwent="T.F-09.33",
+                name="Szczelina pod Gankowa II",
+                globalid="{D7C052E6-D584-4320-B886-367312D2219F}",
+                x_1992="152267,23",
+                y_1992="563744,25",
+            )
+        ],
+    )
+    _write_pig_staging(
+        pig_staging,
+        object_id="KSW-0001",
+        cave_id="C-0001",
+        nr_inwent="T.F-09.33",
+        name="Szczelina pod Gankowa II",
+        x_1992=152267.23,
+        y_1992=563744.25,
+    )
+    data = json.loads(pig_staging.read_text(encoding="utf-8"))
+    second_row = {**data["rows"][0], "object_id": "KSW-0002", "cave_id": "C-0002", "pig_id": "9999"}
+    second_object = deepcopy(data["proposed_objects"][0])
+    second_object["id"] = "KSW-0002"
+    second_object["measurements"][0]["x_1992"] += 1
+    data["rows"].append(second_row)
+    data["proposed_objects"].append(second_object)
+
+    for reverse in (False, True):
+        data["rows"] = list(reversed(data["rows"])) if reverse else data["rows"]
+        data["proposed_objects"] = (
+            list(reversed(data["proposed_objects"])) if reverse else data["proposed_objects"]
+        )
+        pig_staging.write_text(json.dumps(data), encoding="utf-8")
+        report = build_tpn_staging(
+            tpn_csv,
+            generated_at="2026-05-16T09:00:00Z",
+            data_dir=tmp_path / "data",
+            pig_staging_path=pig_staging,
+            prefix_resolver=StubResolver(),
+        )
+        assert report.rows[0].status == "unresolved"
+        assert [issue.code for issue in report.issues] == ["TPN_NR_INWENT_AMBIGUOUS"]
+        assert report.matched_measurements == ()
+
+
+def test_conflicting_staging_rows_for_one_object_id_are_rejected(tmp_path: Path) -> None:
+    tpn_csv = tmp_path / "tpn.csv"
+    pig_staging = tmp_path / "pig-staging.json"
+    _write_tpn_csv(tpn_csv, [])
+    _write_pig_staging(
+        pig_staging,
+        object_id="KSW-0001",
+        cave_id="C-0001",
+        nr_inwent="T.F-09.33",
+        name="Szczelina pod Gankowa II",
+        x_1992=152267.23,
+        y_1992=563744.25,
+    )
+    data = json.loads(pig_staging.read_text(encoding="utf-8"))
+    data["rows"].append({**data["rows"][0], "pig_id": "9999"})
+    pig_staging.write_text(json.dumps(data), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="KSW-0001.*conflicting PIG staging rows"):
+        build_tpn_staging(
+            tpn_csv,
+            generated_at="2026-05-16T09:00:00Z",
+            data_dir=tmp_path / "data",
+            pig_staging_path=pig_staging,
+            prefix_resolver=StubResolver(),
+        )
+
+
+def test_cave_only_pig_row_does_not_hide_following_object_candidate(tmp_path: Path) -> None:
+    tpn_csv = tmp_path / "tpn.csv"
+    pig_staging = tmp_path / "pig-staging.json"
+    _write_tpn_csv(
+        tpn_csv,
+        [
+            _tpn_row(
+                nr_inwent="T.F-09.33",
+                name="Szczelina pod Gankowa II",
+                globalid="{D7C052E6-D584-4320-B886-367312D2219F}",
+                x_1992="152267,23",
+                y_1992="563744,25",
+            )
+        ],
+    )
+    _write_pig_staging(
+        pig_staging,
+        object_id="KSW-0001",
+        cave_id="C-0001",
+        nr_inwent="T.F-09.33",
+        name="Szczelina pod Gankowa II",
+        x_1992=152267.23,
+        y_1992=563744.25,
+    )
+    data = json.loads(pig_staging.read_text(encoding="utf-8"))
+    data["rows"].insert(0, {"object_id": None, "cave_id": "C-0002"})
+    orphan = deepcopy(data["proposed_objects"][0])
+    orphan["id"] = "KSW-9999"
+    data["proposed_objects"].insert(0, orphan)
+    pig_staging.write_text(json.dumps(data), encoding="utf-8")
+
+    report = build_tpn_staging(
+        tpn_csv,
+        generated_at="2026-05-16T09:00:00Z",
+        data_dir=tmp_path / "data",
+        pig_staging_path=pig_staging,
+        prefix_resolver=StubResolver(),
+    )
+    assert report.rows[0].status == "matched"
+    assert report.rows[0].object_id == "KSW-0001"
+
+
+def test_staging_row_and_measurement_must_agree_on_pig_identity(tmp_path: Path) -> None:
+    tpn_csv = tmp_path / "tpn.csv"
+    pig_staging = tmp_path / "pig-staging.json"
+    _write_tpn_csv(tpn_csv, [])
+    _write_pig_staging(
+        pig_staging,
+        object_id="KSW-0001",
+        cave_id="C-0001",
+        nr_inwent="T.F-09.33",
+        name="Szczelina pod Gankowa II",
+        x_1992=152267.23,
+        y_1992=563744.25,
+    )
+    data = json.loads(pig_staging.read_text(encoding="utf-8"))
+    data["proposed_objects"][0]["measurements"][0]["source_ref"] = "PIG:9999"
+    pig_staging.write_text(json.dumps(data), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="KSW-0001.*conflicting PIG provenance"):
+        build_tpn_staging(
+            tpn_csv,
+            generated_at="2026-05-16T09:00:00Z",
+            data_dir=tmp_path / "data",
+            pig_staging_path=pig_staging,
+            prefix_resolver=StubResolver(),
+        )
 
 
 def test_new_tpn_row_creates_object_globalid_and_cave_nr_ref(tmp_path: Path) -> None:
@@ -452,6 +718,48 @@ def _write_pig_staging(
             indent=2,
         )
         + "\n",
+        encoding="utf-8",
+    )
+
+
+def _write_final_pig_candidate(data_dir: Path) -> None:
+    object_path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
+    cave_path = data_dir / "caves" / "C-0001.yml"
+    object_path.parent.mkdir(parents=True)
+    cave_path.parent.mkdir(parents=True)
+    object_path.write_text(
+        yaml.safe_dump(
+            {
+                "id": "KSW-0001",
+                "cave_id": "C-0001",
+                "name_local": "Szczelina pod Gankowa II",
+                "measurements": [
+                    {
+                        "id": "m-001",
+                        "source": "PIG",
+                        "source_ref": "PIG:1692",
+                        "x_1992": 152267.23,
+                        "y_1992": 563744.25,
+                    },
+                    {"id": "m-002", "source": "own", "x_1992": 152267.23, "y_1992": 563744.25},
+                ],
+                "best_measurement": {"mode": "manual", "measurement_id": "m-002"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    cave_path.write_text(
+        yaml.safe_dump(
+            {
+                "id": "C-0001",
+                "name": "Szczelina pod Gankowa II",
+                "object_ids": ["KSW-0001"],
+                "external_refs": [
+                    {"system": "NR_INWENT", "external_id": "T.F-09.33"},
+                    {"system": "PIG", "ref_type": "catalog_id", "external_id": "1692"},
+                ],
+            }
+        ),
         encoding="utf-8",
     )
 

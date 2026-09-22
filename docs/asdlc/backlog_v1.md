@@ -28,7 +28,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-042 | Skończone wartości liczbowe | wykonane 2026-09-19 | [log](verification/PBI-042.md) |
 | PBI-043 | Brakujący katalog wejściowy | wykonane 2026-09-20 | [log](verification/PBI-043.md) |
 | PBI-044 | Referencje i prefix przydziału ID | wykonane 2026-09-22 | [log](verification/PBI-044.md) |
-| PBI-045 | Deduplikacja kandydatów finalnych/staging | planowane | — |
+| PBI-045 | Deduplikacja kandydatów finalnych/staging | zweryfikowane — do dostarczenia | [log](verification/PBI-045.md) |
 | PBI-046 | Numeracja pomiarów w partii | planowane | — |
 | PBI-047 | Payload wierszy unresolved | planowane | — |
 | PBI-048 | Jawne rozstrzyganie unresolved | planowane | — |

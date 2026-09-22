@@ -342,6 +342,14 @@ walidator moze wskazac to jako ostrzezenie.
 
 ## Dopelnianie brakujacych otworow
 
+Importer TPN porównuje kandydatów z finalnego YAML i zachowanego stagingu
+PIG po trwałym ID. Zaakceptowany obiekt PIG jest jednym kandydatem, a jego
+finalny YAML wyznacza aktualne powiązanie i następny numer pomiaru. Jeżeli
+ten sam ID ma sprzeczną albo niepotwierdzoną proweniencję PIG, import
+zatrzymuje się z błędem do wyjaśnienia; nie wybiera wersji według kolejności
+wierszy. Różne ID pozostają odrębnymi kandydatami, nawet przy podobnej
+nazwie i położeniu.
+
 Gdy staging TPN zostawia `TPN_NR_INWENT_AMBIGUOUS`, czesto oznacza to kilka
 otworow tej samej jaskini pod jednym numerem inwentarzowym. Wtedy nie tworz
 automatycznie nowej jaskini tylko dlatego, ze jest drugi punkt.

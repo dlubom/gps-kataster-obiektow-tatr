@@ -97,6 +97,7 @@ class _Candidate:
     y_1992: float | None
     globalids: tuple[str, ...]
     next_measurement_id: str
+    pig_ids: tuple[str, ...]
 
 
 @dataclass(frozen=True, slots=True)
@@ -134,9 +135,11 @@ def build_tpn_staging(
 
     require_finite_numbers(duplicate_radius_m=duplicate_radius_m)
     table = read_source_table(source_path)
-    candidates = (
-        *_load_existing_candidates(data_dir),
-        *_load_pig_staging_candidates(pig_staging_path),
+    candidates = _deduplicate_candidates(
+        (
+            *_load_existing_candidates(data_dir),
+            *_load_pig_staging_candidates(pig_staging_path),
+        )
     )
     resolver = prefix_resolver or default_prefix_resolver()
     source_nr_counts = _source_nr_counts(table.rows)
@@ -896,6 +899,7 @@ def _load_existing_candidates(data_dir: Path) -> tuple[_Candidate, ...]:
                 y_1992=_parse_decimal(measurement.get("y_1992") if measurement else None),
                 globalids=tuple(_external_ref_ids(data, system="TPN")),
                 next_measurement_id=_next_measurement_id(data.get("measurements", [])),
+                pig_ids=_pig_measurement_ids(data),
             )
         )
 
@@ -910,17 +914,25 @@ def _load_pig_staging_candidates(pig_staging_path: Path | None) -> tuple[_Candid
     invalid = nonfinite_paths(data)
     if invalid:
         raise ValueError(f"{pig_staging_path}: non-finite numbers at {invalid}.")
-    rows_by_object_id = {
-        _clean_value(row.get("object_id")): row
-        for row in data.get("rows", [])
-        if _clean_value(row.get("object_id"))
-    }
+    rows_by_object_id: dict[str, dict[str, Any]] = {}
+    for row in data.get("rows", []):
+        object_id = _clean_value(row.get("object_id"))
+        if not object_id:
+            continue
+        previous = rows_by_object_id.get(object_id)
+        if previous is not None and previous != row:
+            raise ValueError(f"{object_id}: conflicting PIG staging rows for one object ID.")
+        rows_by_object_id[object_id] = row
     candidates: list[_Candidate] = []
     for proposed_object in data.get("proposed_objects", []):
         object_id = _clean_value(proposed_object.get("id"))
         row = rows_by_object_id.get(object_id)
         if not object_id or row is None:
             continue
+        pig_id = _clean_value(row.get("pig_id"))
+        measurement_pig_ids = _pig_measurement_ids(proposed_object)
+        if pig_id and measurement_pig_ids and pig_id not in measurement_pig_ids:
+            raise ValueError(f"{object_id}: conflicting PIG provenance within staging.")
         measurement = _candidate_measurement(proposed_object)
         candidates.append(
             _Candidate(
@@ -934,9 +946,50 @@ def _load_pig_staging_candidates(pig_staging_path: Path | None) -> tuple[_Candid
                 y_1992=_parse_decimal(measurement.get("y_1992") if measurement else None),
                 globalids=tuple(_external_ref_ids(proposed_object, system="TPN")),
                 next_measurement_id=_next_measurement_id(proposed_object.get("measurements", [])),
+                pig_ids=tuple(sorted({*measurement_pig_ids, *([pig_id] if pig_id else [])})),
             )
         )
     return tuple(candidates)
+
+
+def _pig_measurement_ids(data: dict[str, Any]) -> tuple[str, ...]:
+    measurements = data.get("measurements", [])
+    if not isinstance(measurements, list):
+        return ()
+    return tuple(
+        sorted(
+            {
+                source_ref.removeprefix("PIG:")
+                for measurement in measurements
+                if isinstance(measurement, dict)
+                and (source_ref := measurement.get("source_ref"))
+                and isinstance(source_ref, str)
+                and source_ref.startswith("PIG:")
+                and source_ref != "PIG:"
+            }
+        )
+    )
+
+
+def _deduplicate_candidates(candidates: tuple[_Candidate, ...]) -> tuple[_Candidate, ...]:
+    by_id: dict[str, _Candidate] = {}
+    for candidate in candidates:
+        previous = by_id.get(candidate.object_id)
+        if previous is None:
+            by_id[candidate.object_id] = candidate
+            continue
+        if previous == candidate:
+            continue
+        if {previous.source, candidate.source} == {"data_yaml", "pig_staging"}:
+            if not set(previous.pig_ids).intersection(candidate.pig_ids):
+                raise ValueError(
+                    f"{candidate.object_id}: conflicting or unverified PIG provenance "
+                    "between final YAML and staging."
+                )
+            by_id[candidate.object_id] = previous if previous.source == "data_yaml" else candidate
+            continue
+        raise ValueError(f"{candidate.object_id}: conflicting candidates from {candidate.source}.")
+    return tuple(by_id[object_id] for object_id in sorted(by_id))
 
 
 def _candidate_measurement(data: dict[str, Any]) -> dict[str, Any] | None:
