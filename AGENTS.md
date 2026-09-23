@@ -26,8 +26,8 @@ Read these files before making changes:
   `docs/asdlc/verification/PBI-NNN.md`, including unfinished work.
 - A clean session must be able to continue from tracked files and origin.
   Do not make continuation depend on chat, account memory, `build/` or `/tmp`.
-- The current request authorizes planning and delivery of PBI-034. Start
-  implementation PBI-035 only in a subsequent execution request.
+- A continuation request authorizes exactly one next ready PBI according to
+  the live backlog; check its dependencies and origin before starting.
 - Do not merge to `main`, tag or publish a release as part of this series
   without a separate user instruction.
 

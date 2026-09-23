@@ -29,7 +29,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-043 | Brakujący katalog wejściowy | wykonane 2026-09-20 | [log](verification/PBI-043.md) |
 | PBI-044 | Referencje i prefix przydziału ID | wykonane 2026-09-22 | [log](verification/PBI-044.md) |
 | PBI-045 | Deduplikacja kandydatów finalnych/staging | wykonane 2026-09-22 | [log](verification/PBI-045.md) |
-| PBI-046 | Numeracja pomiarów w partii | zweryfikowane — do dostarczenia | [log](verification/PBI-046.md) |
+| PBI-046 | Numeracja pomiarów w partii | wykonane 2026-09-23 | [log](verification/PBI-046.md) |
 | PBI-047 | Payload wierszy unresolved | planowane | — |
 | PBI-048 | Jawne rozstrzyganie unresolved | planowane | — |
 | PBI-049 | UTF-8 w polach DBF | planowane | — |
@@ -40,11 +40,12 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
 | PBI-055 | Skończone duże int w polach REAL SQLite | planowane | [opis](#pbi-055-skonczone-duze-int-w-polach-real-sqlite) |
 
-Następne gotowe zadanie: **PBI-046** (zależności PBI-040/045 wykonane).
-PBI-045 dostarczono w commicie `0692de6a4ae4ceb47ba976a5885f82658cc87e21`;
-zdalny SHA potwierdzony, CI validate [35776330625](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/35776330625)
-zakończone sukcesem dla tego SHA. Dowody w [logu PBI-045](verification/PBI-045.md).
-Pozostają PBI-046–054 i niezależne PBI-055; ta sesja kończy się po PBI-045.
+Następne gotowe zadanie: **PBI-047** (zależności PBI-042/045 wykonane).
+PBI-046 dostarczono w commicie `6d2d836e8036e1c946605349c210754ab0b494b3`;
+zdalny SHA potwierdzony przez GitHub API, CI validate
+[35828041882](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/35828041882)
+zakończone sukcesem dla tego SHA. Dowody w [logu PBI-046](verification/PBI-046.md).
+Pozostają PBI-047–054 i niezależne PBI-055; ta sesja kończy się po PBI-046.
 PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
 lecz definiuje osobne naprawy. Nie oznaczaj R06 jako zamkniętego po samej
 poprawce technicznej PBI-044 — wymagane są też PBI-051 i PBI-052.

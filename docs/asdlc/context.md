@@ -1,8 +1,25 @@
 # AS-DLC project context
 
-Last updated: 2026-09-22
+Last updated: 2026-09-23
 
 ## Current handoff — review remediation
+
+- PBI-046 jest wykonane: importer TPN rezerwuje numery pomiarów per obiekt,
+  a review nadaje je według faktycznego celu w całej partii, także po ręcznym
+  przekierowaniu i powyżej `m-999`. Retry tej samej obserwacji źródłowej
+  jest blokowane przez `source_ref` i trwały `source_observation_hash`;
+  zmieniona obserwacja z tej samej referencji wymaga jawnego powodu.
+  `manual best` pozostaje bez zmian. Pełna bramka: 782 testy, 7/7 odczytów,
+  niezmienione dane i ostrzeżenia. Mutacje: 551 zabitych / 188 ocalałych
+  przeanalizowanych; niezależny review bez blockerów. Historyczne pomiary
+  bez hasha mają opisane ograniczenie w [logu PBI-046](verification/PBI-046.md).
+  Implementacja `6d2d836e8036e1c946605349c210754ab0b494b3` jest na origin;
+  remote SHA potwierdzony przez GitHub API, CI validate
+  [35828041882](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/35828041882)
+  zakończyło się sukcesem dla tego SHA. Przy wznowieniu potwierdź ten
+  checkpoint dokumentacji na origin i jego CI, następnie wykonaj dokładnie
+  **PBI-047** (payload wierszy `unresolved`). Zależności PBI-042/045 są
+  dostarczone. Nie zaczynaj PBI-047 w tej sesji.
 
 - PBI-045 jest wykonane: importer TPN scala kandydatów po trwałym ID.
   Zaakceptowany PIG z zachowanym stagingiem daje jeden finalny obiekt,
