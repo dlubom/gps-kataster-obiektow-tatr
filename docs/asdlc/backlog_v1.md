@@ -1,6 +1,6 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-09-22
+Stan na: 2026-09-23
 
 ## Naprawy po przegladzie 2026-09-05
 
@@ -29,7 +29,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-043 | Brakujący katalog wejściowy | wykonane 2026-09-20 | [log](verification/PBI-043.md) |
 | PBI-044 | Referencje i prefix przydziału ID | wykonane 2026-09-22 | [log](verification/PBI-044.md) |
 | PBI-045 | Deduplikacja kandydatów finalnych/staging | wykonane 2026-09-22 | [log](verification/PBI-045.md) |
-| PBI-046 | Numeracja pomiarów w partii | planowane | — |
+| PBI-046 | Numeracja pomiarów w partii | zweryfikowane — do dostarczenia | [log](verification/PBI-046.md) |
 | PBI-047 | Payload wierszy unresolved | planowane | — |
 | PBI-048 | Jawne rozstrzyganie unresolved | planowane | — |
 | PBI-049 | UTF-8 w polach DBF | planowane | — |

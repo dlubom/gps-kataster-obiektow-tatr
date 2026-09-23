@@ -151,6 +151,7 @@ def build_tpn_staging(
     proposed_objects: list[dict[str, Any]] = []
     staging_rows: list[TpnStagingRow] = []
     issues: list[TpnStagingIssue] = []
+    next_measurement_numbers: dict[str, int] = {}
 
     for record_number, row in enumerate(table.rows, start=1):
         globalid = _clean_value(row.get("GLOBALID"))
@@ -246,6 +247,11 @@ def build_tpn_staging(
                         ),
                     )
                 )
+            object_id = match.candidate.object_id
+            number = next_measurement_numbers.get(
+                object_id, int(match.candidate.next_measurement_id.removeprefix("m-"))
+            )
+            next_measurement_numbers[object_id] = number + 1
             matched_measurements.append(
                 _build_measurement_update(
                     row=row,
@@ -255,6 +261,7 @@ def build_tpn_staging(
                     globalid=globalid,
                     nr_inwent=nr_inwent,
                     generated_at=generated_at,
+                    measurement_id=f"m-{number:03d}",
                 )
             )
             staging_rows.append(
@@ -672,6 +679,7 @@ def _build_measurement_update(
     globalid: str,
     nr_inwent: str,
     generated_at: str,
+    measurement_id: str,
 ) -> dict[str, Any]:
     return {
         "status": "matched",
@@ -686,7 +694,7 @@ def _build_measurement_update(
         "object_external_refs": [_tpn_object_external_ref(globalid)],
         "cave_external_refs": _tpn_cave_external_refs(row),
         "measurement": _build_tpn_measurement(
-            measurement_id=match.candidate.next_measurement_id,
+            measurement_id=measurement_id,
             point=point,
             globalid=globalid,
             generated_at=generated_at,

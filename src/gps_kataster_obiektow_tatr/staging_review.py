@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import json
+import re
 from copy import deepcopy
 from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from enum import StrEnum
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
@@ -603,6 +605,56 @@ def _apply_create_object(
     )
 
 
+_OBSERVATION_FIELDS = (
+    "source",
+    "source_ref",
+    "observed_at",
+    "observed_date",
+    "source_date",
+    "lat",
+    "lon",
+    "x_1992",
+    "y_1992",
+    "elevation_m",
+    "elevation_datum",
+    "elevation_source",
+    "horizontal_accuracy_m",
+    "vertical_accuracy_m",
+    "method",
+    "device",
+)
+
+
+def _observation_signature(measurement: dict[str, Any]) -> tuple[Any, ...]:
+    """Identify a source observation independently of proposal ID and review metadata."""
+
+    return tuple(measurement.get(field) for field in _OBSERVATION_FIELDS)
+
+
+def _source_observation_hash(measurement: dict[str, Any]) -> str:
+    """Keep source identity stable when final measurement fields are later corrected."""
+
+    payload = json.dumps(
+        _observation_signature(measurement),
+        ensure_ascii=False,
+        separators=(",", ":"),
+        default=str,
+    )
+    return sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _next_object_measurement_id(object_data: dict[str, Any]) -> str:
+    """Allocate after the highest number already present in the actual target."""
+
+    numbers = (
+        int(match.group(1))
+        for item in object_data.get("measurements", [])
+        if isinstance(item, dict)
+        if (match := re.fullmatch(r"m-(\d+)", str(item.get("id", ""))))
+    )
+    return f"m-{max(numbers, default=0) + 1:03d}"
+
+
 def _apply_add_measurement(
     *,
     decision: dict[str, Any],
@@ -671,7 +723,81 @@ def _apply_add_measurement(
         )
         return
 
-    measurement_id = _clean_value(measurement.get("id"))
+    source_ref = measurement.get("source_ref")
+    if not isinstance(source_ref, str) or not source_ref.strip():
+        issues.append(
+            ReviewIssue(
+                code="MEASUREMENT_SOURCE_REF_MISSING",
+                severity=ReviewSeverity.ERROR,
+                decision_index=decision_index,
+                description=f"TPN measurement for row {record_number} needs a source_ref.",
+            )
+        )
+        return
+
+    row = indexes.tpn_rows_by_record.get(record_number)
+    globalid = row.get("globalid") if row else None
+    if (
+        measurement.get("source") != "TPN"
+        or not isinstance(globalid, str)
+        or not globalid.strip()
+        or source_ref != f"TPN:{globalid}"
+    ):
+        issues.append(
+            ReviewIssue(
+                code="MEASUREMENT_SOURCE_MISMATCH",
+                severity=ReviewSeverity.ERROR,
+                decision_index=decision_index,
+                description=(
+                    f"TPN measurement source_ref for row {record_number} must match "
+                    "the row GLOBALID."
+                ),
+            )
+        )
+        return
+
+    observation_hash = _source_observation_hash(measurement)
+    existing_measurements = [
+        item for item in object_data.get("measurements", []) if isinstance(item, dict)
+    ]
+    previous_from_source = [
+        item
+        for item in existing_measurements
+        if item.get("source") == measurement.get("source") and item.get("source_ref") == source_ref
+    ]
+    if any(
+        item.get("source_observation_hash") == observation_hash for item in existing_measurements
+    ) or any(
+        _observation_signature(item) == _observation_signature(measurement)
+        for item in previous_from_source
+    ):
+        issues.append(
+            ReviewIssue(
+                code="MEASUREMENT_SOURCE_ALREADY_IMPORTED",
+                severity=ReviewSeverity.ERROR,
+                decision_index=decision_index,
+                description=f"Object {object_id} already has this observation from {source_ref}.",
+            )
+        )
+        return
+    reason = decision.get("new_observation_reason")
+    if previous_from_source and (not isinstance(reason, str) or not reason.strip()):
+        issues.append(
+            ReviewIssue(
+                code="MEASUREMENT_SOURCE_REUSED",
+                severity=ReviewSeverity.ERROR,
+                decision_index=decision_index,
+                description=(
+                    f"Object {object_id} has another observation from {source_ref}; "
+                    "provide new_observation_reason to add a distinct observation."
+                ),
+            )
+        )
+        return
+
+    measurement_id = _next_object_measurement_id(object_data)
+    measurement["id"] = measurement_id
+    measurement["source_observation_hash"] = observation_hash
     existing_measurement_ids = {
         _clean_value(item.get("id"))
         for item in object_data.get("measurements", [])
@@ -693,7 +819,12 @@ def _apply_add_measurement(
     candidate["external_refs"] = update.get("object_external_refs", [])
     if not _check_proposal_schema(candidate, DataKind.OBJECT, decision_index, issues):
         return
-    object_data.setdefault("measurements", []).append(_finalize_staging_measurement(measurement))
+    finalized = _finalize_staging_measurement(measurement)
+    if previous_from_source:
+        finalized["notes"] = (finalized.get("notes") or "") + (
+            f" New observation of {source_ref}: {reason.strip()}"
+        )
+    object_data.setdefault("measurements", []).append(finalized)
     _append_unique_dicts(
         object_data.setdefault("external_refs", []), update.get("object_external_refs")
     )

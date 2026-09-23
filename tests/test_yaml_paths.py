@@ -57,9 +57,15 @@ def test_review_preserves_original_paths_and_history(tmp_path, action, layout):
         original.rename(path)
         paths[data["id"]] = path
     obj = records["objects/KSW/KSW-0001.yml"]
-    update = {**deepcopy(obj["measurements"][0]), "id": "m-002", "source": "TPN"}
+    update = {
+        **deepcopy(obj["measurements"][0]),
+        "id": "m-002",
+        "source": "TPN",
+        "source_ref": "TPN:{PATH-TEST}",
+    }
     reports = StagingReports(
         tpn={
+            "rows": [{"record_number": 1, "status": "matched", "globalid": "{PATH-TEST}"}],
             "matched_measurements": [
                 {
                     "record_number": 1,
@@ -67,7 +73,7 @@ def test_review_preserves_original_paths_and_history(tmp_path, action, layout):
                     "target_cave_id": "C-0001",
                     "measurement": update,
                 }
-            ]
+            ],
         }
     )
     decision = (
@@ -106,7 +112,12 @@ def test_review_preserves_original_paths_and_history(tmp_path, action, layout):
     assert actual["measurements"][0] == obj["measurements"][0]
     assert actual["id_assignment"] == obj["id_assignment"]
     if action == "add_measurement":
-        assert actual["measurements"] == [*obj["measurements"], update]
+        hash_value = actual["measurements"][1]["source_observation_hash"]
+        assert len(hash_value) == 64 and all(ch in "0123456789abcdef" for ch in hash_value)
+        assert actual["measurements"] == [
+            *obj["measurements"],
+            {**update, "source_observation_hash": hash_value},
+        ]
     else:
         assert actual["measurements"] == obj["measurements"]
         assert actual["cave_id"] == "C-0002"

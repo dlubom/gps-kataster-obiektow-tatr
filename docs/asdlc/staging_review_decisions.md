@@ -122,6 +122,38 @@ Jeżeli nie ma jaskini dla referencji, operacja daje `TARGET_CAVE_MISSING`;
 utwórz/powiąż ją w tej samej partii. Pomiar bez referencji katalogowych
 może być dodany do obiektu bez jaskini.
 
+Importer TPN rezerwuje propozycje `m-NNN` dla każdego dopasowanego obiektu
+w kolejności wierszy. Podczas review `add_measurement` nadaje numer po
+najwyższym numerze w **faktycznym** `target_object_id`, uwzględniając wcześniejsze
+decyzje tej samej partii. Numer ze stagingu jest tylko propozycją. Po `m-999`
+powstaje `m-1000`. Wskazanie `best_measurement.mode: manual` pozostaje bez zmian.
+
+Pomiar TPN musi mieć `source_ref: TPN:{GLOBALID}` zgodny z wierszem stagingu.
+Ten sam obiekt nie przyjmuje drugi raz tej samej obserwacji
+(`MEASUREMENT_SOURCE_ALREADY_IMPORTED`), nawet jeśli
+ponowiony staging proponuje kolejny numer. Obserwację porównuje się przez
+źródło/referencję, dokładny czas lub daty, współrzędne, wysokość, dokładności,
+metodę i urządzenie;
+nowy numer, czas utworzenia, tagi i notatka nie tworzą nowej obserwacji.
+W finalnym YAML zapisuje się `source_observation_hash` z pierwotnego stagingu;
+pozwala to odrzucić ponowienie także po późniejszej korekcie pól pomiaru.
+Jeżeli ta sama referencja źródłowa zawiera **zmienioną** obserwację, decyzja
+wymaga `new_observation_reason`, np.:
+
+```yaml
+- action: add_measurement
+  source: TPN
+  record_number: 2
+  target_object_id: KSW-0001
+  new_observation_reason: "Nowy pomiar TPN z 2026-05-17; zachowujemy poprzedni."
+```
+
+Powód trafia do notatki nowego pomiaru. Brak powodu daje
+`MEASUREMENT_SOURCE_REUSED`; identyczna obserwacja jest odrzucana także
+z powodem. Ponowienie tej samej decyzji po udanym zapisie nie zmienia YAML.
+Brak referencji daje `MEASUREMENT_SOURCE_REF_MISSING`, a niezgodność z
+`GLOBALID` wiersza — `MEASUREMENT_SOURCE_MISMATCH`.
+
 Błąd walidacji blokuje wszystkie zapisy partii. Po walidacji PBI-041
 serializuje całą partię, przygotowuje pliki i kopie oryginalnych bajtów
 w `data/.review-recovery/`, a dopiero potem zastępuje finalne pliki.

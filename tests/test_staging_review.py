@@ -13,6 +13,7 @@ from gps_kataster_obiektow_tatr.staging_review import (
     ReviewDecisionError,
     ReviewSeverity,
     StagingReports,
+    _source_observation_hash,
     apply_review_decisions,
     load_review_decisions,
     load_staging_reports,
@@ -26,6 +27,20 @@ VALIDATE_SCRIPT = REPO_ROOT / "scripts" / "validate.py"
 KSW_LAT = 49.23459299
 KSW_LON = 19.87589498
 TPN_GLOBALID = "{38626571-CAA6-4317-8900-D61A995020E9}"
+
+
+def test_source_observation_hash_has_stable_unicode_encoding() -> None:
+    assert (
+        _source_observation_hash(
+            {
+                "source": "TPN",
+                "source_ref": "TPN:{A}",
+                "observed_date": "2026-05-16",
+                "device": "Łódź",
+            }
+        )
+        == "3ff5101491881d7102b5b59b5afab9c897bf15b945b1956a32b8138cb32b73f0"
+    )
 
 
 def test_apply_review_directly_materializes_pig_and_tpn_decisions(tmp_path: Path) -> None:
@@ -91,6 +106,265 @@ def test_apply_review_directly_materializes_pig_and_tpn_decisions(tmp_path: Path
             "notes": "PIG catalog record identifier.",
         },
     ]
+
+
+def test_two_matched_rows_allocate_distinct_ids_for_one_object(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    tpn = _tpn_staging()
+    second = deepcopy(tpn["matched_measurements"][0])
+    second["record_number"] = 2
+    second["measurement"]["source_ref"] = "TPN:{SECOND-OBSERVATION}"
+    tpn["matched_measurements"].append(second)
+    tpn["rows"].append(
+        {"record_number": 2, "status": "matched", "globalid": "{SECOND-OBSERVATION}"}
+    )
+
+    result = apply_review_decisions(
+        {
+            "reviewed_at": "2026-05-16T10:00:00Z",
+            "reviewed_by": "dl",
+            "decisions": [
+                {"action": "add_measurement", "source": "TPN", "record_number": 1},
+                {"action": "add_measurement", "source": "TPN", "record_number": 2},
+            ],
+        },
+        staging_reports=StagingReports(tpn=tpn),
+        data_dir=data_dir,
+    )
+
+    assert not result.has_errors, result.issues
+    assert [m["id"] for m in _read_yaml(object_path)["measurements"]] == ["m-001", "m-002", "m-003"]
+
+
+def test_distinct_observed_at_allows_new_observation_from_same_source(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    tpn = _tpn_staging()
+    second = deepcopy(tpn["matched_measurements"][0])
+    second["record_number"] = 2
+    second["measurement"]["observed_at"] = "2026-05-16T12:00:00Z"
+    tpn["matched_measurements"].append(second)
+    tpn["rows"].append({"record_number": 2, "status": "matched", "globalid": TPN_GLOBALID})
+
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {"action": "add_measurement", "source": "TPN", "record_number": 1},
+                {
+                    "action": "add_measurement",
+                    "source": "TPN",
+                    "record_number": 2,
+                    "new_observation_reason": "Separate timed observation.",
+                },
+            ]
+        },
+        staging_reports=StagingReports(tpn=tpn),
+        data_dir=data_dir,
+    )
+
+    assert not result.has_errors, result.issues
+    assert [m["id"] for m in _read_yaml(object_path)["measurements"]] == ["m-001", "m-002", "m-003"]
+
+
+def test_redirected_rows_use_target_counter_above_999_and_keep_manual_best(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    source = _object_data(cave_id=None)
+    target = _object_data(cave_id=None)
+    target["id"] = "KSW-0002"
+    target["measurements"].append(_measurement("m-999", source="wlasne", source_ref="teren:other"))
+    target["best_measurement"] = {
+        "mode": "manual",
+        "measurement_id": "m-999",
+        "reason": "Field measurement preferred.",
+        "updated_at": "2026-05-16T08:00:00Z",
+        "updated_by": "dl",
+    }
+    _write_yaml(data_dir / "objects/KSW/KSW-0001.yml", source)
+    target_path = data_dir / "objects/KSW/KSW-0002.yml"
+    _write_yaml(target_path, target)
+    tpn = _tpn_staging()
+    tpn["matched_measurements"][0]["cave_external_refs"] = []
+    second = deepcopy(tpn["matched_measurements"][0])
+    second["record_number"] = 2
+    second["measurement"]["source_ref"] = "TPN:{SECOND-OBSERVATION}"
+    tpn["matched_measurements"].append(second)
+    tpn["rows"].append(
+        {"record_number": 2, "status": "matched", "globalid": "{SECOND-OBSERVATION}"}
+    )
+
+    result = apply_review_decisions(
+        {
+            "reviewed_at": "2026-05-16T10:00:00Z",
+            "reviewed_by": "dl",
+            "decisions": [
+                {
+                    "action": "add_measurement",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "target_object_id": "KSW-0002",
+                },
+                {
+                    "action": "add_measurement",
+                    "source": "TPN",
+                    "record_number": 2,
+                    "target_object_id": "KSW-0002",
+                },
+            ],
+        },
+        staging_reports=StagingReports(tpn=tpn),
+        data_dir=data_dir,
+    )
+
+    assert not result.has_errors, result.issues
+    saved = _read_yaml(target_path)
+    assert [m["id"] for m in saved["measurements"]] == ["m-001", "m-999", "m-1000", "m-1001"]
+    assert saved["best_measurement"] == target["best_measurement"]
+
+
+def test_retry_of_same_source_observation_is_rejected_even_with_fresh_staging_id(
+    tmp_path: Path,
+) -> None:
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    tpn = _tpn_staging()
+    decisions = {
+        "reviewed_at": "2026-05-16T10:00:00Z",
+        "reviewed_by": "dl",
+        "decisions": [
+            {"action": "add_measurement", "source": "TPN", "record_number": 1},
+        ],
+    }
+    first = apply_review_decisions(
+        decisions, staging_reports=StagingReports(tpn=tpn), data_dir=data_dir
+    )
+    assert not first.has_errors
+    before = object_path.read_bytes()
+    tpn["matched_measurements"][0]["measurement"]["id"] = "m-003"
+
+    retry = apply_review_decisions(
+        decisions, staging_reports=StagingReports(tpn=tpn), data_dir=data_dir
+    )
+
+    assert retry.has_errors
+    assert any(issue.code == "MEASUREMENT_SOURCE_ALREADY_IMPORTED" for issue in retry.issues)
+    assert object_path.read_bytes() == before
+
+    for field, value in (("source", "inne"), ("source_ref", "TPN:{OTHER}")):
+        tampered = deepcopy(tpn)
+        tampered["matched_measurements"][0]["measurement"][field] = value
+        result = apply_review_decisions(
+            decisions, staging_reports=StagingReports(tpn=tampered), data_dir=data_dir
+        )
+        assert result.has_errors and result.written_paths == ()
+        assert any(issue.code == "MEASUREMENT_SOURCE_MISMATCH" for issue in result.issues)
+        assert any(issue.severity == ReviewSeverity.ERROR for issue in result.issues)
+        assert object_path.read_bytes() == before
+
+    without_globalid = deepcopy(tpn)
+    without_globalid["rows"][0].pop("globalid")
+    invalid_row = apply_review_decisions(
+        decisions, staging_reports=StagingReports(tpn=without_globalid), data_dir=data_dir
+    )
+    assert invalid_row.has_errors and invalid_row.written_paths == ()
+    assert any(issue.code == "MEASUREMENT_SOURCE_MISMATCH" for issue in invalid_row.issues)
+    assert object_path.read_bytes() == before
+
+
+def test_new_observation_from_same_source_requires_reason_and_is_retry_safe(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    tpn = _tpn_staging()
+    decisions = {
+        "reviewed_at": "2026-05-16T10:00:00Z",
+        "reviewed_by": "dl",
+        "decisions": [
+            {"action": "add_measurement", "source": "TPN", "record_number": 1},
+        ],
+    }
+    assert not apply_review_decisions(
+        decisions, staging_reports=StagingReports(tpn=tpn), data_dir=data_dir
+    ).has_errors
+    tpn["matched_measurements"][0]["measurement"]["source_date"] = "2026-05-17"
+    tpn["matched_measurements"][0]["measurement"]["observed_date"] = "2026-05-17"
+    tpn["matched_measurements"][0]["measurement"]["id"] = "m-003"
+
+    without_reason = apply_review_decisions(
+        decisions, staging_reports=StagingReports(tpn=tpn), data_dir=data_dir
+    )
+    assert without_reason.has_errors and without_reason.written_paths == ()
+    assert any(issue.code == "MEASUREMENT_SOURCE_REUSED" for issue in without_reason.issues)
+    assert without_reason.issues[0].decision_index == 1
+    decisions["decisions"][0]["new_observation_reason"] = "New TPN survey on the next day."
+    intentional = apply_review_decisions(
+        decisions, staging_reports=StagingReports(tpn=tpn), data_dir=data_dir
+    )
+    assert not intentional.has_errors, intentional.issues
+    assert [m["id"] for m in _read_yaml(object_path)["measurements"]] == ["m-001", "m-002", "m-003"]
+    assert _read_yaml(object_path)["measurements"][-1]["notes"] == (
+        "TPN source-record measurement imported after operator review; not field-verified."
+        f" New observation of TPN:{TPN_GLOBALID}: New TPN survey on the next day."
+    )
+
+    corrected = _read_yaml(object_path)
+    assert len(corrected["measurements"][-1]["source_observation_hash"]) == 64
+    corrected["measurements"][-1]["observed_date"] = "2026-05-18"
+    corrected["measurements"][-1]["source_ref"] = "TPN:{CORRECTED-REFERENCE}"
+    _write_yaml(object_path, corrected)
+    before = object_path.read_bytes()
+
+    tpn["matched_measurements"][0]["measurement"]["id"] = "m-004"
+    retry = apply_review_decisions(
+        decisions, staging_reports=StagingReports(tpn=tpn), data_dir=data_dir
+    )
+    assert any(issue.code == "MEASUREMENT_SOURCE_ALREADY_IMPORTED" for issue in retry.issues)
+    assert object_path.read_bytes() == before
+
+
+def test_repeated_source_in_one_batch_and_missing_source_ref_block_all_writes(
+    tmp_path: Path,
+) -> None:
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    tpn = _tpn_staging()
+    second = deepcopy(tpn["matched_measurements"][0])
+    second["record_number"] = 2
+    second["measurement"]["id"] = "m-003"
+    tpn["matched_measurements"].append(second)
+    tpn["rows"].append({"record_number": 2, "status": "matched", "globalid": TPN_GLOBALID})
+    decisions = {
+        "decisions": [
+            {"action": "add_measurement", "source": "TPN", "record_number": 1},
+            {"action": "add_measurement", "source": "TPN", "record_number": 2},
+        ]
+    }
+    before = object_path.read_bytes()
+
+    repeated = apply_review_decisions(
+        decisions, staging_reports=StagingReports(tpn=tpn), data_dir=data_dir
+    )
+    assert any(issue.code == "MEASUREMENT_SOURCE_ALREADY_IMPORTED" for issue in repeated.issues)
+    assert repeated.written_paths == ()
+    assert object_path.read_bytes() == before
+
+    tpn["matched_measurements"][0]["measurement"]["source_ref"] = ""
+    missing_ref = apply_review_decisions(
+        {"decisions": decisions["decisions"][:1]},
+        staging_reports=StagingReports(tpn=tpn),
+        data_dir=data_dir,
+    )
+    assert any(issue.code == "MEASUREMENT_SOURCE_REF_MISSING" for issue in missing_ref.issues)
+    assert object_path.read_bytes() == before
 
 
 def test_write_review_report_files_serializes_decisions_issues_and_paths(tmp_path: Path) -> None:
@@ -413,7 +687,8 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
     _write_yaml(
         duplicate_dir / "objects" / "KSW" / "KSW-0001.yml",
         _object_data(
-            cave_id="C-0001", measurement=_measurement("m-002", source="TPN", source_ref="")
+            cave_id="C-0001",
+            measurement=_measurement("m-002", source="TPN", source_ref=f"TPN:{TPN_GLOBALID}"),
         ),
     )
     _write_yaml(duplicate_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
@@ -436,7 +711,7 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
     assert _issue_codes(missing_update) == ["STAGING_MEASUREMENT_UPDATE_MISSING"]
     assert _issue_codes(target_missing) == ["TARGET_OBJECT_MISSING"]
     assert _issue_codes(invalid_measurement) == ["STAGING_MEASUREMENT_INVALID"]
-    assert _issue_codes(duplicate) == ["MEASUREMENT_ALREADY_EXISTS"]
+    assert _issue_codes(duplicate) == ["MEASUREMENT_SOURCE_ALREADY_IMPORTED"]
 
 
 def _pig_staging() -> dict[str, Any]:

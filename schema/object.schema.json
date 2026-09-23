@@ -405,6 +405,10 @@
         "source_ref": {
           "$ref": "#/$defs/nullableString"
         },
+        "source_observation_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
         "observed_at": {
           "anyOf": [
             {

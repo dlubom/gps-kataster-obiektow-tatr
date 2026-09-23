@@ -53,6 +53,101 @@ class StubResolver:
         )
 
 
+def test_two_matches_to_one_object_get_distinct_proposed_measurement_ids(tmp_path: Path) -> None:
+    source = tmp_path / "tpn.csv"
+    data_dir = tmp_path / "data"
+    _write_final_pig_candidate(data_dir)
+    _write_tpn_csv(
+        source,
+        [
+            _tpn_row(
+                nr_inwent="T.F-09.33",
+                name="Szczelina pod Gankowa II",
+                globalid="{TPN-A}",
+                x_1992="152267,23",
+                y_1992="563744,25",
+            ),
+            _tpn_row(
+                nr_inwent="T.F-09.33",
+                name="Szczelina pod Gankowa II",
+                globalid="{TPN-B}",
+                x_1992="152267,23",
+                y_1992="563744,25",
+            ),
+        ],
+    )
+
+    report = build_tpn_staging(
+        source,
+        generated_at="2026-05-16T09:00:00Z",
+        data_dir=data_dir,
+        pig_staging_path=None,
+        prefix_resolver=StubResolver(),
+    )
+
+    assert [row.status for row in report.rows] == ["matched", "matched"]
+    assert [(row.record_number, row.globalid, row.object_id) for row in report.rows] == [
+        (1, "{TPN-A}", "KSW-0001"),
+        (2, "{TPN-B}", "KSW-0001"),
+    ]
+    assert [item["record_number"] for item in report.matched_measurements] == [1, 2]
+    assert [item["measurement"]["created_at"] for item in report.matched_measurements] == [
+        "2026-05-16T09:00:00Z",
+        "2026-05-16T09:00:00Z",
+    ]
+    assert [item["measurement"]["id"] for item in report.matched_measurements] == ["m-003", "m-004"]
+
+
+def test_matched_objects_keep_separate_measurement_counters(tmp_path: Path) -> None:
+    source = tmp_path / "tpn.csv"
+    data_dir = tmp_path / "data"
+    _write_final_pig_candidate(data_dir)
+    first_object = yaml.safe_load((data_dir / "objects/KSW/KSW-0001.yml").read_text())
+    first_cave = yaml.safe_load((data_dir / "caves/C-0001.yml").read_text())
+    second_object = deepcopy(first_object)
+    second_object.update(id="KSW-0002", cave_id="C-0002", name_local="Other opening")
+    second_object["measurements"] = second_object["measurements"][:1]
+    second_object["best_measurement"] = {"mode": "auto", "measurement_id": "m-001"}
+    second_cave = deepcopy(first_cave)
+    second_cave.update(id="C-0002", name="Other opening", object_ids=["KSW-0002"])
+    second_cave["external_refs"][0]["external_id"] = "T.F-09.34"
+    (data_dir / "objects/KSW/KSW-0002.yml").write_text(yaml.safe_dump(second_object))
+    (data_dir / "caves/C-0002.yml").write_text(yaml.safe_dump(second_cave))
+    _write_tpn_csv(
+        source,
+        [
+            _tpn_row(
+                nr_inwent="T.F-09.33",
+                name="Szczelina pod Gankowa II",
+                globalid="{TPN-A}",
+                x_1992="152267,23",
+                y_1992="563744,25",
+            ),
+            _tpn_row(
+                nr_inwent="T.F-09.34",
+                name="Other opening",
+                globalid="{TPN-B}",
+                x_1992="152267,23",
+                y_1992="563744,25",
+            ),
+        ],
+    )
+
+    report = build_tpn_staging(
+        source,
+        generated_at="2026-05-16T09:00:00Z",
+        data_dir=data_dir,
+        pig_staging_path=None,
+        prefix_resolver=StubResolver(),
+    )
+
+    assert [item["target_object_id"] for item in report.matched_measurements] == [
+        "KSW-0001",
+        "KSW-0002",
+    ]
+    assert [item["measurement"]["id"] for item in report.matched_measurements] == ["m-003", "m-002"]
+
+
 def test_csv_staging_matches_pig_by_nr_and_creates_tpn_measurement_update(
     tmp_path: Path,
 ) -> None:

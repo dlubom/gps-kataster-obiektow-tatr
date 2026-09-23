@@ -1,5 +1,11 @@
 # Schema changelog
 
+## schema_version: 1 - 2026-09-23
+
+- Dodano opcjonalne `Pomiar.source_observation_hash` (SHA-256 danych
+  obserwacji ze stagingu TPN). Pozwala rozpoznać ponowienie tej samej
+  decyzji także po ręcznej korekcie pól pomiaru w finalnym YAML.
+
 ## schema_version: 1 - 2026-05-15
 
 - Dodano kontrakty JSON Schema dla plikow YAML `Obiekt`, `Jaskinia` i `Relacja`.

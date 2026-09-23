@@ -3,6 +3,7 @@
 from copy import deepcopy
 
 import pytest
+import yaml
 from test_cave_membership import _sample, _snapshot, _write
 from test_staging_review import _pig_staging, _tpn_staging
 
@@ -476,7 +477,7 @@ def test_invalid_create_cannot_commit_other_valid_decisions(tmp_path, kind, case
         ("update", "STAGING_MEASUREMENT_UPDATE_MISSING"),
         ("target", "TARGET_OBJECT_MISSING"),
         ("measurement", "STAGING_MEASUREMENT_INVALID"),
-        ("duplicate", "MEASUREMENT_ALREADY_EXISTS"),
+        ("duplicate", "MEASUREMENT_SOURCE_ALREADY_IMPORTED"),
     ],
 )
 @pytest.mark.parametrize("write", [False, True])
@@ -493,7 +494,10 @@ def test_invalid_measurement_cannot_commit_other_valid_decisions(tmp_path, case,
     elif case == "measurement":
         tpn["matched_measurements"][0]["measurement"] = None
     else:
-        tpn["matched_measurements"][0]["measurement"]["id"] = "m-001"
+        obj = yaml.safe_load((tmp_path / "objects/KSW/KSW-0001.yml").read_text(encoding="utf-8"))
+        obj["measurements"] = [deepcopy(tpn["matched_measurements"][0]["measurement"])]
+        obj["measurements"][0]["id"] = "m-001"
+        _write(tmp_path / "objects/KSW/KSW-0001.yml", obj)
     before = _snapshot(tmp_path)
     result = apply_review_decisions(
         {

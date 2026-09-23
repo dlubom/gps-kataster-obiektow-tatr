@@ -168,6 +168,7 @@ Jedna `Jaskinia` ma 1..N powiązanych `Obiektów`, jeśli znane są jej otwory. 
 | `vertical_accuracy_m` | float, opt | Szacowana dokładność pionowa. |
 | `source` | enum | `TPN` \| `PIG` \| `geoportal` \| `wlasne` \| `publikacja` \| `inne`. |
 | `source_ref` | string, opt | Dokładne odniesienie do rekordu źródłowego, np. `TPN:{GLOBALID}` albo `PIG:1094`. |
+| `source_observation_hash` | SHA-256 hex, opt | Trwały odcisk treści obserwacji ze stagingu TPN, niezależny od lokalnego `m-NNN` i późniejszych korekt finalnego pomiaru; służy do wykrywania ponowienia tej samej decyzji. |
 | `observed_at` | datetime, opt | Dokładny czas pomiaru, jeśli znany. |
 | `observed_date` | date | Data pomiaru, ustalenia albo stanu źródła. |
 | `source_date` | date, opt | Data publikacji / aktualności źródła, jeśli różni się od daty pomiaru. |
@@ -458,6 +459,7 @@ Zasady:
 
 - TPN `GLOBALID` jest najlepszym kandydatem na zewnętrzną referencję do konkretnego `Obiektu`.
 - Jeśli obiekt ma wcześniejszy pomiar z PIG i później zostanie dopasowany rekord TPN, pomiar TPN powinien przejąć rolę aktualnego pomiaru w trybie `best_measurement.mode: auto`, chyba że istnieje ręczne wskazanie `manual` albo późniejszy własny zweryfikowany pomiar.
+- Dopasowane pomiary TPN dostają lokalne ID `m-NNN` kolejno dla faktycznego obiektu docelowego w całej partii decyzji; przekierowanie celu przez operatora uwzględnia jego istniejące pomiary. Ponowienie identycznej obserwacji z tej samej `source_ref` jest błędem. Zmieniona obserwacja z tej samej referencji wymaga jawnego `new_observation_reason`, zachowanego w notatce pomiaru; szczegóły opisuje [review staging](docs/asdlc/staging_review_decisions.md).
 - Import TPN służy do uaktualnienia i skorygowania szkieletu utworzonego wcześniej z PIG.
 
 ### 7.2 PIG / Jaskinie Polski
