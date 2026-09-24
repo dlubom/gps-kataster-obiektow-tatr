@@ -1,8 +1,26 @@
 # AS-DLC project context
 
-Last updated: 2026-09-23
+Last updated: 2026-09-24
 
 ## Current handoff — review remediation
+
+- PBI-047 jest wykonane: raport TPN w formacie 2 zachowuje znormalizowany
+  pomiar i referencje w `rows[].payload` poprawnych geograficznie wierszy
+  `unresolved`. Nie nadaje ID ani zgody na materializację. Niepoprawna
+  geometria jest odrzucana; opisano regenerację starszych raportów.
+  Pełna bramka: 802 testy, 7/7 odczytów, niezmienione dane i ostrzeżenia.
+  Mutacje: 470 zabitych / 134 ocalałe przeanalizowane; niezależny review
+  i delta review bez ustaleń. Ograniczenia starszego pokrycia opisuje
+  [log PBI-047](verification/PBI-047.md). Implementacja
+  `8a872a34ca0b1e2bf4cf24402872729b71826bc0` jest na origin;
+  `git ls-remote` potwierdził zgodny SHA, CI validate
+  [36003099925](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36003099925)
+  zakończyło się sukcesem dla tego SHA. Przy wznowieniu potwierdź ten
+  checkpoint dokumentacji na origin i jego CI, następnie wykonaj dokładnie
+  **PBI-048** (jawne rozstrzyganie `unresolved`). Zależności
+  PBI-038/040/041/046/047 są dostarczone. Pozostaje 8 PBI: 048–054 i 055;
+  PBI-055 musi być rozstrzygnięte przed odbiorem PBI-054.
+  Nie zaczynaj PBI-048 w tej sesji.
 
 - PBI-046 jest wykonane: importer TPN rezerwuje numery pomiarów per obiekt,
   a review nadaje je według faktycznego celu w całej partii, także po ręcznym

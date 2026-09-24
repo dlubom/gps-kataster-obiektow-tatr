@@ -30,7 +30,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-044 | Referencje i prefix przydziału ID | wykonane 2026-09-22 | [log](verification/PBI-044.md) |
 | PBI-045 | Deduplikacja kandydatów finalnych/staging | wykonane 2026-09-22 | [log](verification/PBI-045.md) |
 | PBI-046 | Numeracja pomiarów w partii | wykonane 2026-09-23 | [log](verification/PBI-046.md) |
-| PBI-047 | Payload wierszy unresolved | zweryfikowane — do dostarczenia | [log](verification/PBI-047.md) |
+| PBI-047 | Payload wierszy unresolved | wykonane 2026-09-24 | [log](verification/PBI-047.md) |
 | PBI-048 | Jawne rozstrzyganie unresolved | planowane | — |
 | PBI-049 | UTF-8 w polach DBF | planowane | — |
 | PBI-050 | Deterministyczne archiwa release | planowane | — |
@@ -40,11 +40,12 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
 | PBI-055 | Skończone duże int w polach REAL SQLite | planowane | [opis](#pbi-055-skonczone-duze-int-w-polach-real-sqlite) |
 
-Bieżące zadanie: **PBI-047**, zweryfikowane lokalnie; pozostają push,
-potwierdzenie SHA/CI i checkpoint dokumentacji. Dowody w
-[logu PBI-047](verification/PBI-047.md). Po dostarczeniu następne gotowe
-będzie **PBI-048** (zależności PBI-038/040/041/046/047).
-Pozostaną PBI-048–054 i niezależne PBI-055; ta sesja kończy się po PBI-047.
+Następne gotowe zadanie: **PBI-048** (zależności PBI-038/040/041/046/047 wykonane).
+PBI-047 dostarczono w commicie `8a872a34ca0b1e2bf4cf24402872729b71826bc0`;
+`git ls-remote` potwierdził zdalny SHA, CI validate
+[36003099925](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36003099925)
+zakończyło się sukcesem dla tego SHA. Dowody w [logu PBI-047](verification/PBI-047.md).
+Pozostaje 8 zadań: PBI-048–054 i niezależne PBI-055; ta sesja kończy się po PBI-047.
 PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
 lecz definiuje osobne naprawy. Nie oznaczaj R06 jako zamkniętego po samej
 poprawce technicznej PBI-044 — wymagane są też PBI-051 i PBI-052.
