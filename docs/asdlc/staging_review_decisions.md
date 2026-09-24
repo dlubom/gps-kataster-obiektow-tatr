@@ -55,6 +55,54 @@ decisions:
     reason: "Needs field review."
 ```
 
+## Format raportu TPN
+
+Od PBI-047 `tpn-staging.json` ma `format_version: 2`. Jest to wersja
+raportu staging, niezależna od `schema_version: 1` finalnych YAML.
+Starszy raport bez `format_version` traktujemy jako format 1.
+
+Dla poprawnego geograficznie, lecz niejednoznacznego wiersza raport
+zachowuje w `rows[]` status `unresolved` oraz `payload`:
+
+- `measurement`: ten sam znormalizowany pomiar co dla dopasowania TPN,
+  ale bez lokalnego `id`, które można nadać dopiero po ustaleniu obiektu;
+  zawiera oba układy współrzędnych, wysokość, `source_ref: TPN:{GLOBALID}`,
+  `observed_date`, `source_date` i audyt importu;
+- `object_external_refs`: TPN `GLOBALID`; `cave_external_refs`: `NR_INWENT`;
+- `category`, `object_notes`, `cave_notes`: dane potrzebne przy późniejszym
+  rozstrzygnięciu operatora.
+
+Numer źródłowego wiersza (liczony od 1 bez nagłówka), `globalid`,
+`nr_inwent` i `name` pozostają w tym samym wpisie `rows[]`.
+`source_path` i `generated_at` identyfikują wejście oraz czas raportu.
+`object_id`, `cave_id`, `match_strategy` i `distance_m` pozostają `null`.
+Nie rezerwuje się trwałych ID ani numerów pomiarów. `matched_measurements`
+i propozycje nowych encji nadal zawierają wyłącznie dotychczasowe wyniki
+`matched`/`new`, których struktura pozostaje bez zmian.
+
+Niejednoznaczne wiersze z błędnymi liczbami/współrzędnymi lub punktami poza
+Polską oraz Słowacją mają status `rejected` i nie dostają payloadu.
+Poprawny punkt poza dolinami pozostaje
+`unresolved` z danymi i ostrzeżeniem geograficznym; nie otrzymuje ID.
+Pomiar zachowuje status `nieweryfikowany`.
+
+Payload służy zachowaniu danych, nie zatwierdzeniu importu. Obecne review
+nie materializuje go: `add_measurement` dla takiego wiersza nadal zgłasza
+`STAGING_MEASUREMENT_UPDATE_MISSING`, także z podanym `target_object_id`.
+`reject`, `unresolved` i brak decyzji pozostawiają dane finalne bez zmian.
+Jawne rozstrzyganie payloadu oraz bezpieczne wiązanie decyzji z konkretnym
+raportem i tożsamością wiersza należą do PBI-048.
+
+Starsze raporty bez payloadu nadal obsługują wcześniejsze `matched`/`new`
+oraz decyzje `reject`/`unresolved`. Brakujących współrzędnych nie da się
+odtworzyć ze skrótu wiersza: zachowaj stary raport, ponów `import_tpn.py`
+z oryginalnym plikiem źródłowym oraz właściwym katalogiem i stagingiem PIG,
+zapisując wynik do osobnego `--output-dir`. Porównaj `GLOBALID`, numery
+wierszy i dane; ponownie przejrzyj decyzje, ponieważ odtworzenie raportu
+może zmienić kolejność lub dopasowania. Nie dopisuj payloadu ręcznie ani
+nie przenoś automatycznie akceptacji według samego numeru wiersza.
+Bez oryginalnego źródła przypadek pozostaje nierozstrzygnięty.
+
 ## Akcje
 
 | `action` | Znaczenie | Efekt na finalne YAML |

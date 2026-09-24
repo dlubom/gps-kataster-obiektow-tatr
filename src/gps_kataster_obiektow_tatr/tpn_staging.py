@@ -59,7 +59,7 @@ class TpnStagingIssue:
 
 @dataclass(frozen=True, slots=True)
 class TpnStagingRow:
-    """Compact per-row summary used by the Markdown staging report."""
+    """Per-row summary with retained source data for unresolved matches."""
 
     record_number: int
     globalid: str
@@ -70,6 +70,7 @@ class TpnStagingRow:
     object_id: str | None
     match_strategy: str | None
     distance_m: float | None
+    payload: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -210,6 +211,20 @@ def build_tpn_staging(
             duplicate_radius_m=duplicate_radius_m,
         )
         if outcome.status == "unresolved":
+            staging_row = _build_unresolved_row(
+                row=row,
+                point=point,
+                record_number=record_number,
+                globalid=globalid,
+                nr_inwent=nr_inwent,
+                name=name,
+                generated_at=generated_at,
+                resolver=resolver,
+                issues=issues,
+            )
+            staging_rows.append(staging_row)
+            if staging_row.status == "rejected":
+                continue
             issues.append(
                 TpnStagingIssue(
                     code=outcome.issue_code or "TPN_MATCH_UNRESOLVED",
@@ -218,15 +233,6 @@ def build_tpn_staging(
                     globalid=globalid,
                     nr_inwent=nr_inwent or None,
                     description=outcome.issue_description or "TPN row requires operator review.",
-                )
-            )
-            staging_rows.append(
-                _row_summary(
-                    record_number=record_number,
-                    globalid=globalid,
-                    nr_inwent=nr_inwent,
-                    name=name,
-                    status="unresolved",
                 )
             )
             continue
@@ -670,6 +676,59 @@ def _try_build_new_ids(
     return f"{prefix}-{object_numbers[prefix]:04d}"
 
 
+def _build_unresolved_row(
+    *,
+    row: dict[str, str],
+    point: TpnPoint,
+    record_number: int,
+    globalid: str,
+    nr_inwent: str,
+    name: str,
+    generated_at: str,
+    resolver: PrefixResolverLike,
+    issues: list[TpnStagingIssue],
+) -> TpnStagingRow:
+    """Retain an ambiguous observation without allocating IDs or approving it."""
+
+    resolution = resolver.resolve(lat=point.lat, lon=point.lon)
+    rejected = resolution.status == PrefixResolutionStatus.ERROR or resolution.prefix is None
+    if rejected or resolution.status == PrefixResolutionStatus.WARNING:
+        issues.append(
+            TpnStagingIssue(
+                code=resolution.code or "TPN_UNRESOLVED_GEOGRAPHY_REVIEW",
+                severity="warning",
+                record_number=record_number,
+                globalid=globalid,
+                nr_inwent=nr_inwent or None,
+                description=(resolution.message or "Geographic resolution requires review.")
+                + (" Row rejected." if rejected else ""),
+            )
+        )
+    payload = None
+    if not rejected:
+        payload = {
+            "measurement": _build_tpn_measurement(
+                measurement_id=None,
+                point=point,
+                globalid=globalid,
+                generated_at=generated_at,
+            ),
+            "object_external_refs": [_tpn_object_external_ref(globalid)],
+            "cave_external_refs": _tpn_cave_external_refs(row),
+            "category": _infer_tpn_object_category(row=row, name=name),
+            "object_notes": _tpn_object_notes(row),
+            "cave_notes": _tpn_cave_notes(row),
+        }
+    return _row_summary(
+        record_number=record_number,
+        globalid=globalid,
+        nr_inwent=nr_inwent,
+        name=name,
+        status="rejected" if rejected else "unresolved",
+        payload=payload,
+    )
+
+
 def _build_measurement_update(
     *,
     row: dict[str, str],
@@ -779,13 +838,13 @@ def _build_object_proposal(
 
 def _build_tpn_measurement(
     *,
-    measurement_id: str,
+    measurement_id: str | None,
     point: TpnPoint,
     globalid: str,
     generated_at: str,
 ) -> dict[str, Any]:
     return {
-        "id": measurement_id,
+        **({"id": measurement_id} if measurement_id is not None else {}),
         "lat": point.lat,
         "lon": point.lon,
         "x_1992": point.x_1992,
@@ -1078,6 +1137,7 @@ def _seed_object_numbers(
 def _report_to_json_data(report: TpnStagingReport) -> dict[str, Any]:
     counts = _status_counts(report.rows)
     return {
+        "format_version": 2,
         "generated_at": report.generated_at,
         "source_path": str(report.source_path),
         "record_count": report.record_count,
@@ -1097,6 +1157,7 @@ def _report_to_json_data(report: TpnStagingReport) -> dict[str, Any]:
                 "object_id": row.object_id,
                 "match_strategy": row.match_strategy,
                 "distance_m": row.distance_m,
+                **({"payload": row.payload} if row.payload is not None else {}),
             }
             for row in report.rows
         ],
@@ -1128,6 +1189,7 @@ def _row_summary(
     object_id: str | None = None,
     match_strategy: str | None = None,
     distance_m: float | None = None,
+    payload: dict[str, Any] | None = None,
 ) -> TpnStagingRow:
     return TpnStagingRow(
         record_number=record_number,
@@ -1139,6 +1201,7 @@ def _row_summary(
         object_id=object_id,
         match_strategy=match_strategy,
         distance_m=distance_m,
+        payload=payload,
     )
 
 

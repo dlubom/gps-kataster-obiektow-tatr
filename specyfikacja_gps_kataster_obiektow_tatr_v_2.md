@@ -543,6 +543,12 @@ Workflow:
 5. Wygenerowanie propozycji YAML.
 6. Review w PR.
 
+Raport TPN w formacie 2 zachowuje znormalizowany pomiar i referencje
+geograficznie poprawnych wierszy `unresolved` w `rows[].payload`, bez
+przydziału ID i bez zatwierdzenia materializacji. Błędna geometria pozostaje
+odrzucona. Format oraz ścieżkę odtworzenia starszych raportów opisuje
+[dokumentacja staging](docs/asdlc/staging_review_decisions.md#format-raportu-tpn).
+
 ### 8.2 Kandydaci na duplikat
 
 Dla nowego pomiaru szukamy kandydatów:

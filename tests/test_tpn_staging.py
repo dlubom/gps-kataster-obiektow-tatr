@@ -5,19 +5,26 @@ import subprocess
 import sys
 import zipfile
 from copy import deepcopy
-from dataclasses import replace
+from dataclasses import asdict, replace
 from html import escape
 from pathlib import Path
 
 import pytest
 import yaml
 
+from gps_kataster_obiektow_tatr.coordinates import pl1992_to_wgs84, wgs84_to_1992
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
     PrefixResolutionArea,
     PrefixResolutionStatus,
 )
+from gps_kataster_obiektow_tatr.staging_review import (
+    StagingReports,
+    apply_review_decisions,
+    load_staging_reports,
+)
 from gps_kataster_obiektow_tatr.tpn_staging import (
+    TpnStagingReport,
     _Candidate,
     _deduplicate_candidates,
     _pig_measurement_ids,
@@ -51,6 +58,237 @@ class StubResolver:
             y_1992=563744.25,
             valley_name="Dolina Koscieliska - Wschod",
         )
+
+
+def _unresolved_report(tmp_path: Path, *, x: str = "152000", y: str = "563000") -> TpnStagingReport:
+    source = tmp_path / "ambiguous.csv"
+    pig = tmp_path / "pig.json"
+    _write_pig_staging(
+        pig,
+        object_id="KSW-0001",
+        cave_id="C-0001",
+        nr_inwent="T.D-08.07",
+        name="Known opening",
+        x_1992=152267.23,
+        y_1992=563744.25,
+    )
+    rows = [
+        _tpn_row(
+            nr_inwent="T.D-08.07",
+            name=f"Niejednoznaczna nyża {number}",
+            globalid=f"{{UNRESOLVED-{number}}}",
+            x_1992=x,
+            y_1992=y,
+        )
+        for number in (1, 2)
+    ]
+    rows[0][_tpn_header().index("OTWÓR")] = "Otwór południowy"
+    _write_tpn_csv(source, rows)
+    return build_tpn_staging(
+        source,
+        generated_at="2026-09-24T10:00:00Z",
+        data_dir=tmp_path / "data",
+        pig_staging_path=pig,
+    )
+
+
+def test_unresolved_payload_survives_json_round_trip_without_final_data(tmp_path: Path) -> None:
+    report = _unresolved_report(tmp_path)
+    json_path, _ = write_staging_files(report, output_dir=tmp_path / "staging")
+    loaded = load_staging_reports(pig_staging_path=None, tpn_staging_path=json_path).tpn
+    assert loaded is not None
+    assert loaded["format_version"] == 2
+    assert loaded["source_path"] == str(tmp_path / "ambiguous.csv")
+    assert loaded["generated_at"] == "2026-09-24T10:00:00Z"
+    assert loaded["record_count"] == loaded["unresolved_count"] == 2
+    assert loaded["matched_count"] == loaded["new_count"] == loaded["rejected_count"] == 0
+    assert (
+        loaded["matched_measurements"]
+        == loaded["proposed_caves"]
+        == loaded["proposed_objects"]
+        == []
+    )
+    expected_wgs84 = pl1992_to_wgs84(x_1992=152000, y_1992=563000)
+    for number, row in enumerate(loaded["rows"], start=1):
+        assert row["record_number"] == number
+        assert row["globalid"] == f"{{UNRESOLVED-{number}}}"
+        assert row["nr_inwent"] == "T.D-08.07"
+        assert row["name"] == f"Niejednoznaczna nyża {number}"
+        assert row["status"] == "unresolved"
+        assert (
+            row["object_id"] is row["cave_id"] is row["match_strategy"] is row["distance_m"] is None
+        )
+        payload = row["payload"]
+        assert payload == report.rows[number - 1].payload
+        assert payload["category"] == "jaskinia_otwor"
+        measurement = payload["measurement"]
+        assert "id" not in measurement
+        assert measurement["source"] == "TPN"
+        assert measurement["source_ref"] == f"TPN:{{UNRESOLVED-{number}}}"
+        assert measurement["observed_date"] == measurement["source_date"] == "2022-05-25"
+        assert (measurement["lat"], measurement["lon"]) == (expected_wgs84.lat, expected_wgs84.lon)
+        assert (measurement["x_1992"], measurement["y_1992"], measurement["elevation_m"]) == (
+            152000,
+            563000,
+            1266,
+        )
+        assert measurement["verification_status"] == "nieweryfikowany"
+        assert measurement["created_at"] == loaded["generated_at"]
+        assert measurement["created_by"] == "importer:tpn"
+        assert payload["object_external_refs"][0]["external_id"] == row["globalid"]
+        assert payload["object_external_refs"][0]["scope"] == "object"
+        assert payload["cave_external_refs"][0]["external_id"] == row["nr_inwent"]
+        assert payload["cave_external_refs"][0]["scope"] == "cave"
+        assert "TPN length: 3" in payload["cave_notes"]
+    assert "Otwór południowy" in loaded["rows"][0]["payload"]["object_notes"]
+    assert not (tmp_path / "data").exists()
+
+
+@pytest.mark.parametrize("x", ["bad", "", "NaN", "Infinity"])
+def test_unresolved_invalid_coordinates_have_no_payload(tmp_path: Path, x: str) -> None:
+    report = _unresolved_report(tmp_path, x=x)
+    json_path, _ = write_staging_files(report, output_dir=tmp_path / "staging")
+    data = json.loads(json_path.read_text())
+    assert data["rejected_count"] == 2
+    assert all(row["status"] == "rejected" and "payload" not in row for row in data["rows"])
+    assert {issue.code for issue in report.issues} == {"TPN_POINT_COORDINATES_INVALID"}
+    assert not (tmp_path / "data").exists()
+
+
+@pytest.mark.parametrize(
+    ("lat", "lon", "status", "issue_code"),
+    [
+        (48.8566, 2.3522, "rejected", "POINT_OUTSIDE_PL_SK"),
+        (52.2297, 21.0122, "unresolved", "POINT_OUTSIDE_VALLEYS"),
+    ],
+)
+def test_unresolved_payload_respects_geographic_boundary(
+    tmp_path: Path, lat: float, lon: float, status: str, issue_code: str
+) -> None:
+    point = wgs84_to_1992(lat=lat, lon=lon)
+    report = _unresolved_report(tmp_path, x=str(point.x_1992), y=str(point.y_1992))
+    json_path, _ = write_staging_files(report, output_dir=tmp_path / "staging")
+    data = json.loads(json_path.read_text())
+    assert len(data["rows"]) == 2
+    assert data["issues"] == [asdict(issue) for issue in report.issues]
+    assert data["issue_count"] == len(data["issues"])
+    assert all(row["status"] == status for row in data["rows"])
+    assert all(("payload" in row) == (status == "unresolved") for row in data["rows"])
+    assert len(report.issues) == (2 if status == "rejected" else 4)
+    for number in (1, 2):
+        row_issues = [issue for issue in report.issues if issue.record_number == number]
+        assert {issue.code for issue in row_issues} == (
+            {issue_code} if status == "rejected" else {issue_code, "TPN_NR_INWENT_AMBIGUOUS"}
+        )
+        assert all(issue.severity == "warning" for issue in row_issues)
+        assert all(issue.globalid == f"{{UNRESOLVED-{number}}}" for issue in row_issues)
+        assert all(issue.nr_inwent == "T.D-08.07" for issue in row_issues)
+        assert all(issue.description for issue in row_issues)
+        if status == "rejected":
+            assert row_issues[0].description.endswith(" Row rejected.")
+    assert data["matched_measurements"] == data["proposed_caves"] == data["proposed_objects"] == []
+    assert not (tmp_path / "data").exists()
+
+
+@pytest.mark.parametrize("legacy", [False, True])
+@pytest.mark.parametrize(
+    "action", [None, "reject", "unresolved", "add_measurement", "create_object", "create_cave"]
+)
+def test_unresolved_payload_does_not_authorize_materialization(
+    tmp_path: Path, legacy: bool, action: str | None
+) -> None:
+    report = _unresolved_report(tmp_path)
+    json_path, _ = write_staging_files(report, output_dir=tmp_path / "staging")
+    data = json.loads(json_path.read_text())
+    if legacy:
+        data.pop("format_version", None)
+        for row in data["rows"]:
+            row.pop("payload", None)
+    decisions = (
+        []
+        if action is None
+        else [
+            {
+                "action": action,
+                "source": "TPN",
+                "record_number": 1,
+                "target_object_id": "KSW-0001",
+                "reason": "Pending operator review.",
+            }
+        ]
+    )
+    result = apply_review_decisions(
+        {"decisions": decisions},
+        staging_reports=StagingReports(tpn=data),
+        data_dir=tmp_path / "data",
+        initialize_data_dir=True,
+    )
+    assert result.has_errors == (action in {"add_measurement", "create_object", "create_cave"})
+    assert result.written_paths == ()
+    if action == "add_measurement":
+        assert result.issues[0].code == "STAGING_MEASUREMENT_UPDATE_MISSING"
+        assert "row 1" in result.issues[0].description
+    assert not (tmp_path / "data").exists()
+
+
+def test_unresolved_payload_keeps_matched_new_and_rejected_contracts(tmp_path: Path) -> None:
+    _unresolved_report(tmp_path)
+    source = tmp_path / "ambiguous.csv"
+    with source.open(newline="") as handle:
+        rows = list(csv.reader(handle))[1:]
+    rows[0][_tpn_header().index("NAZWA")] = "Sztolnia niejednoznaczna"
+    rows.extend(
+        [
+            _tpn_row(
+                nr_inwent="T.D-08.07",
+                name="Known opening",
+                globalid="{MATCHED}",
+                x_1992="152267.23",
+                y_1992="563744.25",
+            ),
+            _tpn_row(
+                nr_inwent="T.D-00.01",
+                name="New opening",
+                globalid="{NEW}",
+                x_1992="154416.50",
+                y_1992="567679.48",
+            ),
+            _tpn_row(
+                nr_inwent="T.D-08.07",
+                name="Bad opening",
+                globalid="{BAD}",
+                x_1992="bad",
+                y_1992="563000",
+            ),
+        ]
+    )
+    _write_tpn_csv(source, rows)
+    report = build_tpn_staging(
+        source,
+        generated_at="2026-09-24T10:00:00Z",
+        data_dir=tmp_path / "data",
+        pig_staging_path=tmp_path / "pig.json",
+        prefix_resolver=StubResolver(),
+    )
+    json_path, _ = write_staging_files(report, output_dir=tmp_path / "staging")
+    data = json.loads(json_path.read_text())
+    assert [row["status"] for row in data["rows"]] == [
+        "unresolved",
+        "unresolved",
+        "matched",
+        "new",
+        "rejected",
+    ]
+    assert all("payload" not in row for row in data["rows"][2:])
+    assert data["rows"][0]["payload"]["category"] == "sztolnia"
+    assert data["rows"][2]["cave_id"] == "C-0001"
+    assert data["rows"][3]["cave_id"] == "C-0002"
+    assert data["matched_measurements"][0]["target_object_id"] == "KSW-0001"
+    assert data["matched_measurements"][0]["measurement"]["id"] == "m-002"
+    assert data["proposed_objects"][0]["id"] == "KSW-0002"
+    assert data["proposed_objects"][0]["measurements"][0]["id"] == "m-001"
+    assert data["proposed_caves"][0]["id"] == "C-0002"
+    assert not (tmp_path / "data").exists()
 
 
 def test_two_matches_to_one_object_get_distinct_proposed_measurement_ids(tmp_path: Path) -> None:
