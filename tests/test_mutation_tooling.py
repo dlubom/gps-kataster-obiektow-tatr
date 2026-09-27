@@ -54,7 +54,9 @@ MUTATION_PYTEST_SELECTION_ARGS = [
         "and not test_cli_duplicate_ids_preserve_artifacts "
         "and not test_id_assignment_error_blocks_artifact_writes "
         "and not test_cli_writes_reports_without_final_yaml "
-        "and not test_cli_invalid_input_preserves_artifacts"
+        "and not test_cli_invalid_input_preserves_artifacts "
+        "and not test_cli_inspects_unresolved_report_identity_without_decisions "
+        "and not test_real_ambiguous_row_flows_through_cli_review_validation_and_build"
     ),
 ]
 

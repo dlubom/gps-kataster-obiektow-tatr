@@ -24,6 +24,11 @@ from gps_kataster_obiektow_tatr.data_loader import (
     load_dataset,
     load_import_target_dataset,
 )
+from gps_kataster_obiektow_tatr.numeric import is_finite_number
+from gps_kataster_obiektow_tatr.prefix_resolver import (
+    PrefixResolutionStatus,
+    default_prefix_resolver,
+)
 from gps_kataster_obiektow_tatr.review_writer import (
     ReviewWriteError,
     check_review_recovery,
@@ -143,6 +148,18 @@ class _StagingIndexes:
     tpn_objects_by_id: dict[str, dict[str, Any]]
 
 
+def tpn_report_sha256(report: dict[str, Any]) -> str:
+    """Fingerprint the complete parsed TPN report, including row order and payloads."""
+
+    try:
+        canonical = json.dumps(
+            report, sort_keys=True, ensure_ascii=False, separators=(",", ":"), allow_nan=False
+        )
+    except (TypeError, ValueError) as exc:
+        raise ReviewDecisionError(f"TPN report is not canonical JSON: {exc}") from exc
+    return sha256(canonical.encode("utf-8")).hexdigest()
+
+
 def load_review_decisions(decisions_path: Path) -> dict[str, Any]:
     """Load a YAML operator decision file."""
 
@@ -259,6 +276,7 @@ def apply_review_decisions(
     pending_refs: list[tuple[int, str, str, Any]] = []
     dirty_objects: set[str] = set()
     dirty_caves: set[str] = set()
+    reserved_objects, reserved_caves = _selected_proposal_ids(decisions, indexes)
 
     for decision_index, decision in enumerate(decisions, start=1):
         if not isinstance(decision, dict):
@@ -284,6 +302,29 @@ def apply_review_decisions(
             )
             continue
 
+        if (
+            action in {_CREATE_CAVE, _CREATE_OBJECT, _ADD_MEASUREMENT}
+            and _clean_value(decision.get("source")).upper() == "TPN"
+            and "report_sha256" in decision
+            and not _is_unresolved_tpn_row(decision, indexes)
+        ):
+            _unresolved_issue(
+                issues,
+                decision_index,
+                "UNRESOLVED_ROW_STATUS_CHANGED",
+                "Bound TPN decision no longer selects an unresolved row in this report.",
+            )
+            continue
+
+        if action == _CREATE_CAVE and _is_unresolved_tpn_row(decision, indexes):
+            _unresolved_issue(
+                issues,
+                decision_index,
+                "UNRESOLVED_ACTION_UNSUPPORTED",
+                "Create a cave for an unresolved row with create_object and create_cave: true.",
+            )
+            continue
+
         if action == _CREATE_CAVE:
             _apply_create_cave(
                 decision=decision,
@@ -295,16 +336,57 @@ def apply_review_decisions(
                 applied=applied,
             )
         elif action == _CREATE_OBJECT:
-            _apply_create_object(
-                decision=decision,
-                decision_index=decision_index,
-                indexes=indexes,
-                objects=objects,
-                dirty_objects=dirty_objects,
-                issues=issues,
-                applied=applied,
-            )
+            if _is_unresolved_tpn_row(decision, indexes):
+                _apply_unresolved_create_object(
+                    decision=decision,
+                    decision_index=decision_index,
+                    tpn_report=staging_reports.tpn,
+                    indexes=indexes,
+                    objects=objects,
+                    caves=caves,
+                    reserved_objects=reserved_objects,
+                    reserved_caves=reserved_caves,
+                    pending_refs=pending_refs,
+                    dirty_objects=dirty_objects,
+                    dirty_caves=dirty_caves,
+                    reviewed_at=reviewed_at,
+                    reviewed_by=reviewed_by,
+                    issues=issues,
+                    applied=applied,
+                )
+            else:
+                _apply_create_object(
+                    decision=decision,
+                    decision_index=decision_index,
+                    indexes=indexes,
+                    objects=objects,
+                    dirty_objects=dirty_objects,
+                    issues=issues,
+                    applied=applied,
+                )
         elif action == _ADD_MEASUREMENT:
+            unresolved_update = None
+            if _is_unresolved_tpn_row(decision, indexes):
+                payload = _bound_unresolved_payload(
+                    decision=decision,
+                    decision_index=decision_index,
+                    report=staging_reports.tpn,
+                    indexes=indexes,
+                    issues=issues,
+                )
+                if payload is None:
+                    continue
+                if not _clean_value(decision.get("target_object_id")):
+                    issues.append(
+                        ReviewIssue(
+                            "UNRESOLVED_TARGET_MISSING",
+                            ReviewSeverity.ERROR,
+                            decision_index,
+                            "An unresolved TPN row needs an explicit target_object_id.",
+                        )
+                    )
+                    continue
+                unresolved_update = payload
             _apply_add_measurement(
                 decision=decision,
                 decision_index=decision_index,
@@ -316,6 +398,7 @@ def apply_review_decisions(
                 reviewed_by=reviewed_by,
                 issues=issues,
                 applied=applied,
+                update_override=unresolved_update,
             )
         elif action == _LINK_CAVE:
             _apply_link_cave(
@@ -605,6 +688,348 @@ def _apply_create_object(
     )
 
 
+def _is_unresolved_tpn_row(decision: dict[str, Any], indexes: _StagingIndexes) -> bool:
+    record_number = _parse_positive_int(decision.get("record_number"))
+    row = indexes.tpn_rows_by_record.get(record_number) if record_number is not None else None
+    return _clean_value(decision.get("source")).upper() == "TPN" and bool(
+        row and row.get("status") == "unresolved"
+    )
+
+
+def _selected_proposal_ids(
+    decisions: list[Any], indexes: _StagingIndexes
+) -> tuple[set[str], set[str]]:
+    """Reserve accepted staging proposal IDs before allocating unresolved IDs."""
+
+    objects: set[str] = set()
+    caves: set[str] = set()
+    for decision in decisions:
+        if not isinstance(decision, dict):
+            continue
+        action = _clean_value(decision.get("action"))
+        source = _clean_value(decision.get("source")).upper()
+        record_number = _parse_positive_int(decision.get("record_number"))
+        if source not in {"PIG", "TPN"} or record_number is None:
+            continue
+        if action == _CREATE_OBJECT and not _is_unresolved_tpn_row(decision, indexes):
+            proposal = _object_proposal_for_decision(
+                source=source,
+                record_number=record_number,
+                explicit_object_id=_clean_value(decision.get("object_id")) or None,
+                indexes=indexes,
+            )
+            if isinstance(proposal, dict) and (record_id := _clean_value(proposal.get("id"))):
+                objects.add(record_id)
+        elif action == _CREATE_CAVE:
+            proposal = _cave_proposal_for_decision(
+                source=source,
+                record_number=record_number,
+                explicit_cave_id=_clean_value(decision.get("cave_id")) or None,
+                indexes=indexes,
+            )
+            if isinstance(proposal, dict) and (record_id := _clean_value(proposal.get("id"))):
+                caves.add(record_id)
+    return objects, caves
+
+
+def _unresolved_issue(
+    issues: list[ReviewIssue], decision_index: int, code: str, description: str
+) -> None:
+    issues.append(ReviewIssue(code, ReviewSeverity.ERROR, decision_index, description))
+
+
+def _bound_unresolved_payload(
+    *,
+    decision: dict[str, Any],
+    decision_index: int,
+    report: dict[str, Any] | None,
+    indexes: _StagingIndexes,
+    issues: list[ReviewIssue],
+) -> dict[str, Any] | None:
+    """Require a decision to name this exact report and source row before using its payload."""
+
+    record_number = _parse_positive_int(decision.get("record_number"))
+    row = indexes.tpn_rows_by_record.get(record_number) if record_number is not None else None
+    if report is None or report.get("format_version") != 2 or row is None:
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "UNRESOLVED_REPORT_UNSUPPORTED",
+            "Unresolved materialization needs a TPN format 2 report and a present row.",
+        )
+        return None
+    expected_sha = decision.get("report_sha256")
+    if not isinstance(expected_sha, str) or re.fullmatch(r"[0-9a-f]{64}", expected_sha) is None:
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "UNRESOLVED_REPORT_IDENTITY_MISSING",
+            "Decision needs the SHA-256 of the complete TPN staging report.",
+        )
+        return None
+    try:
+        actual_sha = tpn_report_sha256(report)
+    except ReviewDecisionError as exc:
+        _unresolved_issue(issues, decision_index, "STAGING_REPORT_INVALID", str(exc))
+        return None
+    if expected_sha != actual_sha:
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "UNRESOLVED_REPORT_CHANGED",
+            f"TPN staging report differs from decision (actual SHA-256: {actual_sha}).",
+        )
+        return None
+    globalid = row.get("globalid")
+    if (
+        not isinstance(globalid, str)
+        or not globalid.strip()
+        or not isinstance(decision.get("globalid"), str)
+        or decision["globalid"] != globalid
+    ):
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "UNRESOLVED_ROW_IDENTITY_MISMATCH",
+            f"TPN row {record_number} GLOBALID differs from the explicit decision.",
+        )
+        return None
+    if any(row.get(key) is not None for key in ("object_id", "cave_id", "match_strategy")):
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "UNRESOLVED_ROW_INVALID",
+            "Unresolved row contains a match target.",
+        )
+        return None
+    payload = row.get("payload")
+    if not isinstance(payload, dict):
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "UNRESOLVED_PAYLOAD_MISSING",
+            f"TPN row {record_number} has no normalized payload; regenerate staging from source.",
+        )
+        return None
+    measurement = payload.get("measurement")
+    object_refs = payload.get("object_external_refs")
+    cave_refs = payload.get("cave_external_refs")
+    nr_inwent = _clean_value(row.get("nr_inwent"))
+    object_ref_ok = (
+        isinstance(object_refs, list)
+        and len(object_refs) == 1
+        and isinstance(object_refs[0], dict)
+        and all(
+            object_refs[0].get(key) == value
+            for key, value in (
+                ("system", "TPN"),
+                ("ref_type", "source_globalid"),
+                ("external_id", globalid),
+                ("scope", "object"),
+            )
+        )
+    )
+    cave_ref_ok = isinstance(cave_refs, list) and len(cave_refs) == bool(nr_inwent)
+    if cave_ref_ok and nr_inwent:
+        cave_ref_ok = isinstance(cave_refs[0], dict) and all(
+            cave_refs[0].get(key) == value
+            for key, value in (
+                ("system", "NR_INWENT"),
+                ("ref_type", "inventory_number"),
+                ("external_id", nr_inwent),
+                ("scope", "cave"),
+            )
+        )
+    if (
+        not isinstance(measurement, dict)
+        or "id" in measurement
+        or measurement.get("source") != "TPN"
+        or measurement.get("source_ref") != f"TPN:{globalid}"
+        or measurement.get("verification_status") != "nieweryfikowany"
+        or not object_ref_ok
+        or not cave_ref_ok
+    ):
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "UNRESOLVED_PAYLOAD_INVALID",
+            f"TPN row {record_number} payload conflicts with its source identity.",
+        )
+        return None
+    return payload
+
+
+def _apply_unresolved_create_object(
+    *,
+    decision: dict[str, Any],
+    decision_index: int,
+    tpn_report: dict[str, Any] | None,
+    indexes: _StagingIndexes,
+    objects: dict[str, dict[str, Any]],
+    caves: dict[str, dict[str, Any]],
+    reserved_objects: set[str],
+    reserved_caves: set[str],
+    pending_refs: list[tuple[int, str, str, Any]],
+    dirty_objects: set[str],
+    dirty_caves: set[str],
+    reviewed_at: str,
+    reviewed_by: str,
+    issues: list[ReviewIssue],
+    applied: list[AppliedDecision],
+) -> None:
+    payload = _bound_unresolved_payload(
+        decision=decision,
+        decision_index=decision_index,
+        report=tpn_report,
+        indexes=indexes,
+        issues=issues,
+    )
+    if payload is None:
+        return
+    if _clean_value(decision.get("object_id")) or _clean_value(decision.get("target_object_id")):
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "UNRESOLVED_TARGET_CONFLICT",
+            "New unresolved object ID is allocated from its resolved prefix; omit object_id.",
+        )
+        return
+    create_cave = decision.get("create_cave", False)
+    explicit_cave = _clean_value(decision.get("target_cave_id"))
+    if not isinstance(create_cave, bool) or (create_cave and explicit_cave):
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "UNRESOLVED_CAVE_TARGET_INVALID",
+            "Use either target_cave_id or create_cave: true for a new opening.",
+        )
+        return
+    if not create_cave and explicit_cave not in caves:
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "TARGET_CAVE_MISSING",
+            f"Target cave {explicit_cave or '<missing>'} does not exist.",
+        )
+        return
+    measurement = deepcopy(payload["measurement"])
+    if not is_finite_number(measurement.get("lat")) or not is_finite_number(measurement.get("lon")):
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "UNRESOLVED_PAYLOAD_INVALID",
+            "Point needs finite WGS84 coordinates.",
+        )
+        return
+    resolution = default_prefix_resolver().resolve(lat=measurement["lat"], lon=measurement["lon"])
+    if resolution.status == PrefixResolutionStatus.ERROR or resolution.prefix is None:
+        _unresolved_issue(
+            issues, decision_index, "UNRESOLVED_GEOGRAPHY_INVALID", "Point is outside PL/SK."
+        )
+        return
+    prefix_reason = _clean_value(decision.get("prefix_override_reason"))
+    if resolution.status == PrefixResolutionStatus.WARNING and not prefix_reason:
+        _unresolved_issue(
+            issues,
+            decision_index,
+            "UNRESOLVED_PREFIX_REVIEW_REQUIRED",
+            "Fallback PL/SK prefix needs an explicit prefix_override_reason.",
+        )
+        return
+    prefix = resolution.prefix
+    numbers = (
+        int(match.group(1))
+        for object_id in objects.keys() | reserved_objects
+        if (match := re.fullmatch(rf"{re.escape(prefix)}-(\d+)", object_id))
+    )
+    object_id = f"{prefix}-{max(numbers, default=0) + 1:04d}"
+    if create_cave:
+        cave_numbers = (
+            int(match.group(1))
+            for existing_id in caves.keys() | reserved_caves
+            if (match := re.fullmatch(r"C-(\d+)", existing_id))
+        )
+        cave_id = f"C-{max(cave_numbers, default=0) + 1:04d}"
+    else:
+        cave_id = explicit_cave
+    measurement["id"] = "m-001"
+    measurement["source_observation_hash"] = _source_observation_hash(measurement)
+    row = indexes.tpn_rows_by_record[_parse_positive_int(decision["record_number"])]
+    source_at = measurement.get("created_at")
+    source_by = measurement.get("created_by")
+    object_data = {
+        "schema_version": 1,
+        "id": object_id,
+        "category": payload.get("category"),
+        "name_local": row.get("name"),
+        "cave_id": cave_id,
+        "id_assignment": {
+            "method": "manual" if resolution.status == PrefixResolutionStatus.WARNING else "auto",
+            "assigned_from_measurement_id": "m-001",
+            "assigned_prefix": prefix,
+            "prefix_override_reason": prefix_reason or None,
+        },
+        "external_refs": deepcopy(payload["object_external_refs"]),
+        "measurements": [_finalize_staging_measurement(measurement)],
+        "best_measurement": {
+            "mode": "auto",
+            "measurement_id": "m-001",
+            "reason": None,
+            "updated_at": reviewed_at,
+            "updated_by": reviewed_by,
+        },
+        "attachments": [],
+        "notes": payload.get("object_notes"),
+        "created_at": source_at,
+        "created_by": source_by,
+        "updated_at": reviewed_at,
+        "updated_by": reviewed_by,
+    }
+    if not _check_proposal_schema(object_data, DataKind.OBJECT, decision_index, issues):
+        return
+    cave_data = (
+        deepcopy(caves[cave_id])
+        if not create_cave
+        else {
+            "schema_version": 1,
+            "id": cave_id,
+            "name": row.get("name"),
+            "system_name": None,
+            "external_refs": deepcopy(payload["cave_external_refs"]),
+            "object_ids": [],
+            "notes": payload.get("cave_notes"),
+            "created_at": source_at,
+            "created_by": source_by,
+            "updated_at": reviewed_at,
+            "updated_by": reviewed_by,
+        }
+    )
+    cave_data.setdefault("object_ids", []).append(object_id)
+    _append_unique_dicts(cave_data.setdefault("external_refs", []), payload["cave_external_refs"])
+    _touch_record(cave_data, reviewed_at=reviewed_at, reviewed_by=reviewed_by)
+    if not _check_proposal_schema(cave_data, DataKind.CAVE, decision_index, issues):
+        return
+    objects[object_id] = object_data
+    caves[cave_id] = cave_data
+    dirty_objects.add(object_id)
+    dirty_caves.add(cave_id)
+    pending_refs.append(
+        (decision_index, object_id, cave_id, deepcopy(payload["cave_external_refs"]))
+    )
+    applied.append(
+        AppliedDecision(
+            decision_index,
+            _CREATE_OBJECT,
+            "materialized",
+            "TPN",
+            _parse_positive_int(decision["record_number"]),
+            object_id,
+            cave_id,
+            f"Created object {object_id} for unresolved TPN row in cave {cave_id}.",
+        )
+    )
+
+
 _OBSERVATION_FIELDS = (
     "source",
     "source_ref",
@@ -667,6 +1092,7 @@ def _apply_add_measurement(
     reviewed_by: str,
     issues: list[ReviewIssue],
     applied: list[AppliedDecision],
+    update_override: dict[str, Any] | None = None,
 ) -> None:
     source, record_number = _decision_source_record(decision, decision_index, issues)
     if source is None or record_number is None:
@@ -682,7 +1108,7 @@ def _apply_add_measurement(
         )
         return
 
-    update = indexes.tpn_measurements_by_record.get(record_number)
+    update = update_override or indexes.tpn_measurements_by_record.get(record_number)
     if update is None:
         issues.append(
             ReviewIssue(
@@ -1196,7 +1622,10 @@ def _write_dirty_records(
 def _load_staging_json(path: Path | None) -> dict[str, Any] | None:
     if path is None or not path.exists():
         return None
-    data = json.loads(path.read_text(encoding="utf-8"))
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ReviewDecisionError(f"{path}: invalid staging JSON: {exc}") from exc
     if not isinstance(data, dict):
         raise ReviewDecisionError(f"{path}: staging report must be a JSON object")
     return data
@@ -1212,8 +1641,8 @@ def _build_indexes(staging_reports: StagingReports) -> _StagingIndexes:
             records = report.get(field, [])
             if not isinstance(records, list) or any(not isinstance(r, dict) for r in records):
                 raise ReviewDecisionError(f"{source}.{field}: expected a list of mappings.")
-    pig_rows = _rows_by_record(staging_reports.pig)
-    tpn_rows = _rows_by_record(staging_reports.tpn)
+    pig_rows = _rows_by_record(staging_reports.pig, source="PIG")
+    tpn_rows = _rows_by_record(staging_reports.tpn, source="TPN")
     return _StagingIndexes(
         pig_rows_by_record=pig_rows,
         pig_caves_by_id=_records_by_id(staging_reports.pig, "proposed_caves"),
@@ -1228,7 +1657,7 @@ def _build_indexes(staging_reports: StagingReports) -> _StagingIndexes:
     )
 
 
-def _rows_by_record(report: dict[str, Any] | None) -> dict[int, dict[str, Any]]:
+def _rows_by_record(report: dict[str, Any] | None, *, source: str) -> dict[int, dict[str, Any]]:
     if report is None:
         return {}
     rows: dict[int, dict[str, Any]] = {}
@@ -1237,6 +1666,10 @@ def _rows_by_record(report: dict[str, Any] | None) -> dict[int, dict[str, Any]]:
             continue
         record_number = _parse_positive_int(row.get("record_number"))
         if record_number is not None:
+            if record_number in rows:
+                raise ReviewDecisionError(
+                    f"{source}.rows: duplicate record_number {record_number}."
+                )
             rows[record_number] = row
     return rows
 

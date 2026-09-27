@@ -11,7 +11,9 @@ from pathlib import Path
 
 import pytest
 import yaml
+from test_staging_review import _cave_data, _object_data, _write_yaml
 
+from gps_kataster_obiektow_tatr.build_db import build_sqlite_database
 from gps_kataster_obiektow_tatr.coordinates import pl1992_to_wgs84, wgs84_to_1992
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
@@ -22,6 +24,7 @@ from gps_kataster_obiektow_tatr.staging_review import (
     StagingReports,
     apply_review_decisions,
     load_staging_reports,
+    tpn_report_sha256,
 )
 from gps_kataster_obiektow_tatr.tpn_staging import (
     TpnStagingReport,
@@ -31,9 +34,11 @@ from gps_kataster_obiektow_tatr.tpn_staging import (
     build_tpn_staging,
     write_staging_files,
 )
+from gps_kataster_obiektow_tatr.validator import has_errors, validate_data_dir
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 IMPORT_TPN_PATH = REPO_ROOT / "scripts" / "importers" / "import_tpn.py"
+APPLY_REVIEW_PATH = REPO_ROOT / "scripts" / "importers" / "apply_review.py"
 
 spec = importlib.util.spec_from_file_location("import_tpn_script", IMPORT_TPN_PATH)
 assert spec is not None
@@ -144,6 +149,68 @@ def test_unresolved_payload_survives_json_round_trip_without_final_data(tmp_path
     assert not (tmp_path / "data").exists()
 
 
+def test_real_ambiguous_row_flows_through_cli_review_validation_and_build(tmp_path: Path) -> None:
+    report = _unresolved_report(tmp_path)
+    staging_path, _ = write_staging_files(report, output_dir=tmp_path / "staging")
+    loaded = load_staging_reports(pig_staging_path=None, tpn_staging_path=staging_path).tpn
+    assert loaded is not None and [row["status"] for row in loaded["rows"]] == [
+        "unresolved",
+        "unresolved",
+    ]
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    cave_path = data_dir / "caves/C-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(cave_path, _cave_data(object_ids=["KSW-0001"]))
+    decisions_path = tmp_path / "decisions.yml"
+    decisions_path.write_text(
+        yaml.safe_dump(
+            {
+                "reviewed_at": "2026-09-27T10:00:00Z",
+                "reviewed_by": "dl",
+                "decisions": [
+                    {
+                        "action": "add_measurement",
+                        "source": "TPN",
+                        "record_number": 1,
+                        "globalid": "{UNRESOLVED-1}",
+                        "report_sha256": tpn_report_sha256(loaded),
+                        "target_object_id": "KSW-0001",
+                    }
+                ],
+            },
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
+    cli = subprocess.run(
+        [
+            sys.executable,
+            str(APPLY_REVIEW_PATH),
+            "--decisions",
+            str(decisions_path),
+            "--no-pig-staging",
+            "--tpn-staging",
+            str(staging_path),
+            "--data-dir",
+            str(data_dir),
+            "--output-dir",
+            str(tmp_path / "review"),
+        ],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cli.returncode == 0, cli.stderr
+    object_data = yaml.safe_load(object_path.read_text(encoding="utf-8"))
+    assert [m["id"] for m in object_data["measurements"]] == ["m-001", "m-002"]
+    assert object_data["measurements"][1]["source_ref"] == "TPN:{UNRESOLVED-1}"
+    assert not has_errors(validate_data_dir(data_dir))
+    built = build_sqlite_database(data_dir=data_dir, output_path=tmp_path / "catalog.sqlite")
+    assert built.metadata["measurement_count"] == "2"
+
+
 @pytest.mark.parametrize("x", ["bad", "", "NaN", "Infinity"])
 def test_unresolved_invalid_coordinates_have_no_payload(tmp_path: Path, x: str) -> None:
     report = _unresolved_report(tmp_path, x=x)
@@ -226,8 +293,9 @@ def test_unresolved_payload_does_not_authorize_materialization(
     assert result.has_errors == (action in {"add_measurement", "create_object", "create_cave"})
     assert result.written_paths == ()
     if action == "add_measurement":
-        assert result.issues[0].code == "STAGING_MEASUREMENT_UPDATE_MISSING"
-        assert "row 1" in result.issues[0].description
+        assert result.issues[0].code == (
+            "UNRESOLVED_REPORT_UNSUPPORTED" if legacy else "UNRESOLVED_REPORT_IDENTITY_MISSING"
+        )
     assert not (tmp_path / "data").exists()
 
 

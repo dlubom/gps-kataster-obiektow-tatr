@@ -1,13 +1,16 @@
 import json
+import sqlite3
 import subprocess
 import sys
 from copy import deepcopy
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
 import pytest
 import yaml
 
+from gps_kataster_obiektow_tatr.build_db import build_sqlite_database
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
 from gps_kataster_obiektow_tatr.staging_review import (
     ReviewDecisionError,
@@ -18,8 +21,10 @@ from gps_kataster_obiektow_tatr.staging_review import (
     load_review_decisions,
     load_staging_reports,
     render_review_markdown,
+    tpn_report_sha256,
     write_review_report_files,
 )
+from gps_kataster_obiektow_tatr.validator import has_errors, validate_data_dir
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 APPLY_REVIEW_PATH = REPO_ROOT / "scripts" / "importers" / "apply_review.py"
@@ -27,6 +32,802 @@ VALIDATE_SCRIPT = REPO_ROOT / "scripts" / "validate.py"
 KSW_LAT = 49.23459299
 KSW_LON = 19.87589498
 TPN_GLOBALID = "{38626571-CAA6-4317-8900-D61A995020E9}"
+
+
+def _unresolved_tpn_staging() -> dict[str, Any]:
+    report = _tpn_staging()
+    update = report["matched_measurements"].pop()
+    measurement = deepcopy(update["measurement"])
+    measurement.pop("id")
+    report.update(format_version=2, source_path="ambiguous-tpn.csv")
+    report["rows"][0].update(
+        status="unresolved",
+        cave_id=None,
+        object_id=None,
+        match_strategy=None,
+        distance_m=None,
+        payload={
+            "measurement": measurement,
+            "object_external_refs": update["object_external_refs"],
+            "cave_external_refs": update["cave_external_refs"],
+            "category": "jaskinia_otwor",
+            "object_notes": "Otwór południowy",
+            "cave_notes": "TPN source note",
+        },
+    )
+    return report
+
+
+def _report_sha256(report: dict[str, Any]) -> str:
+    canonical = json.dumps(report, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    return sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def test_nonfinite_tpn_report_cannot_be_fingerprinted_or_materialized(tmp_path: Path) -> None:
+    report = _unresolved_tpn_staging()
+    report["rows"][0]["payload"]["measurement"]["lat"] = float("nan")
+    with pytest.raises(ReviewDecisionError, match="not canonical JSON"):
+        tpn_report_sha256(report)
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    cave_path = data_dir / "caves/C-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(cave_path, _cave_data(object_ids=["KSW-0001"]))
+    before = (object_path.read_bytes(), cave_path.read_bytes())
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {
+                    "action": "add_measurement",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": TPN_GLOBALID,
+                    "report_sha256": "0" * 64,
+                    "target_object_id": "KSW-0001",
+                }
+            ]
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert [issue.code for issue in result.issues] == ["STAGING_REPORT_INVALID"]
+    assert [issue.decision_index for issue in result.issues] == [1]
+    assert result.written_paths == ()
+    assert (object_path.read_bytes(), cave_path.read_bytes()) == before
+
+
+def test_explicit_unresolved_row_adds_measurement_to_selected_object(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    cave_path = data_dir / "caves/C-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(cave_path, _cave_data(object_ids=["KSW-0001"]))
+    report = _unresolved_tpn_staging()
+    result = apply_review_decisions(
+        {
+            "reviewed_at": "2026-09-27T10:00:00Z",
+            "reviewed_by": "dl",
+            "decisions": [
+                {
+                    "action": "add_measurement",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": TPN_GLOBALID,
+                    "report_sha256": _report_sha256(report),
+                    "target_object_id": "KSW-0001",
+                }
+            ],
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors, result.issues
+    assert result.written_paths == (cave_path, object_path)
+    object_data = _read_yaml(object_path)
+    assert [m["id"] for m in object_data["measurements"]] == ["m-001", "m-002"]
+    assert object_data["measurements"][1]["source_ref"] == f"TPN:{TPN_GLOBALID}"
+    assert object_data["measurements"][1]["source_observation_hash"]
+    assert object_data["best_measurement"]["measurement_id"] == "m-002"
+    assert _read_yaml(cave_path)["external_refs"] == [_nr_inwent_ref()]
+    assert not has_errors(validate_data_dir(data_dir))
+    built = build_sqlite_database(data_dir=data_dir, output_path=tmp_path / "catalog.sqlite")
+    with sqlite3.connect(built.sqlite_path) as db:
+        assert db.execute("PRAGMA integrity_check").fetchone() == ("ok",)
+        assert db.execute("SELECT count(*) FROM measurements").fetchone() == (2,)
+
+
+def test_explicit_unresolved_row_creates_new_opening_in_selected_cave(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    cave_path = data_dir / "caves/C-0001.yml"
+    _write_yaml(cave_path, _cave_data(object_ids=[]))
+    report = _unresolved_tpn_staging()
+    result = apply_review_decisions(
+        {
+            "reviewed_at": "2026-09-27T10:00:00Z",
+            "reviewed_by": "dl",
+            "decisions": [
+                {
+                    "action": "create_object",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": TPN_GLOBALID,
+                    "report_sha256": _report_sha256(report),
+                    "target_cave_id": "C-0001",
+                }
+            ],
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors, result.issues
+    assert len(result.applied_decisions) == 1
+    assert (
+        result.applied_decisions[0].decision_index,
+        result.applied_decisions[0].action,
+        result.applied_decisions[0].status,
+        result.applied_decisions[0].source,
+        result.applied_decisions[0].record_number,
+        result.applied_decisions[0].object_id,
+        result.applied_decisions[0].cave_id,
+    ) == (1, "create_object", "materialized", "TPN", 1, "KSW-0001", "C-0001")
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    assert result.written_paths == (cave_path, object_path)
+    object_data = _read_yaml(object_path)
+    assert object_data["cave_id"] == "C-0001"
+    assert object_data["id_assignment"]["assigned_prefix"] == "KSW"
+    assert object_data["measurements"][0]["source_ref"] == f"TPN:{TPN_GLOBALID}"
+    assert object_data["name_local"] == report["rows"][0]["name"]
+    assert object_data["notes"] == "Otwór południowy"
+    assert _read_yaml(cave_path)["object_ids"] == ["KSW-0001"]
+    assert not has_errors(validate_data_dir(data_dir))
+    built = build_sqlite_database(data_dir=data_dir, output_path=tmp_path / "catalog.sqlite")
+    with sqlite3.connect(built.sqlite_path) as db:
+        assert db.execute("PRAGMA integrity_check").fetchone() == ("ok",)
+        assert db.execute("SELECT count(*) FROM objects").fetchone() == (1,)
+
+
+def test_explicit_unresolved_row_can_create_its_cave_in_one_review(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    report = _unresolved_tpn_staging()
+    result = apply_review_decisions(
+        {
+            "reviewed_at": "2026-09-27T10:00:00Z",
+            "reviewed_by": "dl",
+            "decisions": [
+                {
+                    "action": "create_object",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": TPN_GLOBALID,
+                    "report_sha256": _report_sha256(report),
+                    "create_cave": True,
+                }
+            ],
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors, result.issues
+    assert _read_yaml(data_dir / "objects/KSW/KSW-0001.yml")["cave_id"] == "C-0001"
+    new_cave = _read_yaml(data_dir / "caves/C-0001.yml")
+    assert new_cave["object_ids"] == ["KSW-0001"]
+    assert new_cave["notes"] == "TPN source note"
+    assert not has_errors(validate_data_dir(data_dir))
+    build_sqlite_database(data_dir=data_dir, output_path=tmp_path / "catalog.sqlite")
+
+
+@pytest.mark.parametrize("unresolved_first", [False, True])
+def test_unresolved_id_allocation_reserves_other_selected_proposals(
+    tmp_path: Path, unresolved_first: bool
+) -> None:
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    pig = _pig_staging()
+    tpn = _unresolved_tpn_staging()
+    unresolved = {
+        "action": "create_object",
+        "source": "TPN",
+        "record_number": 1,
+        "globalid": TPN_GLOBALID,
+        "report_sha256": _report_sha256(tpn),
+        "target_cave_id": "C-0001",
+    }
+    pig_object = {"action": "create_object", "source": "PIG", "record_number": 1}
+    objects = [unresolved, pig_object] if unresolved_first else [pig_object, unresolved]
+    result = apply_review_decisions(
+        {
+            "reviewed_at": "2026-09-27T10:00:00Z",
+            "reviewed_by": "dl",
+            "decisions": [
+                {"action": "create_cave", "source": "PIG", "record_number": 1},
+                *objects,
+            ],
+        },
+        staging_reports=StagingReports(pig=pig, tpn=tpn),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors, result.issues
+    assert _read_yaml(data_dir / "objects/KSW/KSW-0001.yml")["id"] == "KSW-0001"
+    assert _read_yaml(data_dir / "objects/KSW/KSW-0002.yml")["id"] == "KSW-0002"
+    assert set(_read_yaml(data_dir / "caves/C-0001.yml")["object_ids"]) == {
+        "KSW-0001",
+        "KSW-0002",
+    }
+    assert not has_errors(validate_data_dir(data_dir))
+
+
+def test_unresolved_cave_id_allocation_reserves_other_selected_proposals(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    pig = _pig_staging()
+    tpn = _unresolved_tpn_staging()
+    result = apply_review_decisions(
+        {
+            "reviewed_at": "2026-09-27T10:00:00Z",
+            "reviewed_by": "dl",
+            "decisions": [
+                {
+                    "action": "create_object",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": TPN_GLOBALID,
+                    "report_sha256": _report_sha256(tpn),
+                    "create_cave": True,
+                },
+                {"action": "create_cave", "source": "PIG", "record_number": 1},
+                {"action": "create_object", "source": "PIG", "record_number": 1},
+            ],
+        },
+        staging_reports=StagingReports(pig=pig, tpn=tpn),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors, result.issues
+    assert _read_yaml(data_dir / "objects/KSW/KSW-0002.yml")["cave_id"] == "C-0002"
+    assert _read_yaml(data_dir / "caves/C-0002.yml")["object_ids"] == ["KSW-0002"]
+    assert not has_errors(validate_data_dir(data_dir))
+
+
+def test_unresolved_allocation_reserves_explicit_tpn_proposal_id(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=[]))
+    report = _unresolved_tpn_staging()
+    report["rows"].append(
+        {
+            "record_number": 2,
+            "globalid": "{SECOND}",
+            "status": "new",
+            "cave_id": "C-0001",
+            "object_id": None,
+        }
+    )
+    proposal = _object_data(
+        cave_id="C-0001",
+        measurement=_measurement("m-001", source="TPN", source_ref="TPN:{SECOND}"),
+    )
+    report["proposed_objects"] = [proposal]
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {
+                    "action": "create_object",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": TPN_GLOBALID,
+                    "report_sha256": _report_sha256(report),
+                    "target_cave_id": "C-0001",
+                },
+                {
+                    "action": "create_object",
+                    "source": "TPN",
+                    "record_number": 2,
+                    "object_id": "KSW-0001",
+                },
+                {"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0001"},
+            ]
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors, result.issues
+    assert (
+        _read_yaml(data_dir / "objects/KSW/KSW-0001.yml")["measurements"][0]["source_ref"]
+        == "TPN:{SECOND}"
+    )
+    assert (
+        _read_yaml(data_dir / "objects/KSW/KSW-0002.yml")["measurements"][0]["source_ref"]
+        == f"TPN:{TPN_GLOBALID}"
+    )
+    assert set(_read_yaml(data_dir / "caves/C-0001.yml")["object_ids"]) == {
+        "KSW-0001",
+        "KSW-0002",
+    }
+    assert not has_errors(validate_data_dir(data_dir))
+
+
+def test_unresolved_allocation_reserves_explicit_pig_cave_id(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    pig = _pig_staging()
+    pig["rows"][0]["cave_id"] = None
+    tpn = _unresolved_tpn_staging()
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {
+                    "action": "create_object",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": TPN_GLOBALID,
+                    "report_sha256": _report_sha256(tpn),
+                    "create_cave": True,
+                },
+                {"action": "create_cave", "source": "PIG", "record_number": 1, "cave_id": "C-0001"},
+                {"action": "create_object", "source": "PIG", "record_number": 1},
+            ]
+        },
+        staging_reports=StagingReports(pig=pig, tpn=tpn),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors, result.issues
+    assert _read_yaml(data_dir / "objects/KSW/KSW-0001.yml")["cave_id"] == "C-0001"
+    assert _read_yaml(data_dir / "objects/KSW/KSW-0002.yml")["cave_id"] == "C-0002"
+    assert _read_yaml(data_dir / "caves/C-0001.yml")["object_ids"] == ["KSW-0001"]
+    assert _read_yaml(data_dir / "caves/C-0002.yml")["object_ids"] == ["KSW-0002"]
+    assert not has_errors(validate_data_dir(data_dir))
+
+
+@pytest.mark.parametrize(
+    ("case", "expected_code"),
+    [
+        ("missing_digest", "UNRESOLVED_REPORT_IDENTITY_MISSING"),
+        ("changed_report", "UNRESOLVED_REPORT_CHANGED"),
+        ("wrong_globalid", "UNRESOLVED_ROW_IDENTITY_MISMATCH"),
+        ("missing_target", "UNRESOLVED_TARGET_MISSING"),
+        ("unknown_target", "TARGET_OBJECT_MISSING"),
+        ("legacy", "UNRESOLVED_REPORT_UNSUPPORTED"),
+        ("missing_payload", "UNRESOLVED_PAYLOAD_MISSING"),
+        ("wrong_source_ref", "UNRESOLVED_PAYLOAD_INVALID"),
+        ("wrong_object_ref", "UNRESOLVED_PAYLOAD_INVALID"),
+        ("invalid_coordinate", "STAGING_PROPOSAL_INVALID"),
+        ("duplicate_record_number", "STAGING_REPORT_INVALID"),
+    ],
+)
+def test_invalid_unresolved_decision_preserves_final_bytes(
+    tmp_path: Path, case: str, expected_code: str
+) -> None:
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    cave_path = data_dir / "caves/C-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(cave_path, _cave_data(object_ids=["KSW-0001"]))
+    before = (object_path.read_bytes(), cave_path.read_bytes())
+    report = _unresolved_tpn_staging()
+    decision = {
+        "action": "add_measurement",
+        "source": "TPN",
+        "record_number": 1,
+        "globalid": TPN_GLOBALID,
+        "report_sha256": _report_sha256(report),
+        "target_object_id": "KSW-0001",
+    }
+    if case == "missing_digest":
+        decision.pop("report_sha256")
+    elif case == "changed_report":
+        report["source_path"] = "regenerated.csv"
+    elif case == "wrong_globalid":
+        decision["globalid"] = "{OTHER}"
+    elif case == "missing_target":
+        decision.pop("target_object_id")
+    elif case == "unknown_target":
+        decision["target_object_id"] = "KSW-9999"
+    elif case == "legacy":
+        report.pop("format_version")
+        report["rows"][0].pop("payload")
+    elif case == "missing_payload":
+        report["rows"][0].pop("payload")
+    elif case == "wrong_source_ref":
+        report["rows"][0]["payload"]["measurement"]["source_ref"] = "TPN:{OTHER}"
+    elif case == "wrong_object_ref":
+        report["rows"][0]["payload"]["object_external_refs"][0]["external_id"] = "{OTHER}"
+    elif case == "invalid_coordinate":
+        report["rows"][0]["payload"]["measurement"]["lat"] = "bad"
+    elif case == "duplicate_record_number":
+        report["rows"].append(deepcopy(report["rows"][0]))
+    if case not in {
+        "missing_digest",
+        "changed_report",
+        "wrong_globalid",
+        "missing_target",
+        "unknown_target",
+    }:
+        decision["report_sha256"] = _report_sha256(report)
+    result = apply_review_decisions(
+        {"decisions": [decision]},
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert result.has_errors and result.written_paths == ()
+    assert expected_code in [issue.code for issue in result.issues]
+    assert (object_path.read_bytes(), cave_path.read_bytes()) == before
+
+
+@pytest.mark.parametrize(
+    ("case", "expected_code"),
+    [
+        ("row_object_id", "UNRESOLVED_ROW_INVALID"),
+        ("row_cave_id", "UNRESOLVED_ROW_INVALID"),
+        ("row_match_strategy", "UNRESOLVED_ROW_INVALID"),
+        ("extra_cave_ref", "UNRESOLVED_PAYLOAD_INVALID"),
+        ("missing_cave_ref", "UNRESOLVED_PAYLOAD_INVALID"),
+        ("wrong_cave_ref", "UNRESOLVED_PAYLOAD_INVALID"),
+        ("measurement_id", "UNRESOLVED_PAYLOAD_INVALID"),
+        ("empty_globalid", "UNRESOLVED_ROW_IDENTITY_MISMATCH"),
+    ],
+)
+def test_unresolved_source_row_and_payload_must_be_self_consistent(
+    tmp_path: Path, case: str, expected_code: str
+) -> None:
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    cave_path = data_dir / "caves/C-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(cave_path, _cave_data(object_ids=["KSW-0001"]))
+    before = (object_path.read_bytes(), cave_path.read_bytes())
+    report = _unresolved_tpn_staging()
+    row = report["rows"][0]
+    if case == "row_object_id":
+        row["object_id"] = "KSW-0001"
+    elif case == "row_cave_id":
+        row["cave_id"] = "C-0001"
+    elif case == "row_match_strategy":
+        row["match_strategy"] = "globalid"
+    elif case == "extra_cave_ref":
+        row["payload"]["cave_external_refs"].append(_nr_inwent_ref())
+    elif case == "missing_cave_ref":
+        row["payload"]["cave_external_refs"] = []
+    elif case == "wrong_cave_ref":
+        row["payload"]["cave_external_refs"][0]["external_id"] = "9999"
+    elif case == "measurement_id":
+        row["payload"]["measurement"]["id"] = "m-999"
+    elif case == "empty_globalid":
+        row["globalid"] = ""
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {
+                    "action": "add_measurement",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": row["globalid"],
+                    "report_sha256": _report_sha256(report),
+                    "target_object_id": "KSW-0001",
+                }
+            ]
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert [issue.code for issue in result.issues] == [expected_code]
+    assert [issue.decision_index for issue in result.issues] == [1]
+    assert result.written_paths == ()
+    assert (object_path.read_bytes(), cave_path.read_bytes()) == before
+
+
+@pytest.mark.parametrize(
+    ("case", "expected_code"),
+    [
+        ("object_id", "UNRESOLVED_TARGET_CONFLICT"),
+        ("target_object_id", "UNRESOLVED_TARGET_CONFLICT"),
+        ("both_cave_targets", "UNRESOLVED_CAVE_TARGET_INVALID"),
+        ("non_boolean_create_cave", "UNRESOLVED_CAVE_TARGET_INVALID"),
+        ("invalid_lat", "UNRESOLVED_PAYLOAD_INVALID"),
+        ("invalid_lon", "UNRESOLVED_PAYLOAD_INVALID"),
+    ],
+)
+def test_unresolved_new_object_rejects_conflicting_target_or_invalid_point(
+    tmp_path: Path, case: str, expected_code: str
+) -> None:
+    data_dir = tmp_path / "data"
+    cave_path = data_dir / "caves/C-0001.yml"
+    _write_yaml(cave_path, _cave_data(object_ids=[]))
+    before = cave_path.read_bytes()
+    report = _unresolved_tpn_staging()
+    decision: dict[str, Any] = {
+        "action": "create_object",
+        "source": "TPN",
+        "record_number": 1,
+        "globalid": TPN_GLOBALID,
+        "target_cave_id": "C-0001",
+    }
+    if case == "object_id":
+        decision["object_id"] = "KSW-0002"
+    elif case == "target_object_id":
+        decision["target_object_id"] = "KSW-0002"
+    elif case == "both_cave_targets":
+        decision["create_cave"] = True
+    elif case == "non_boolean_create_cave":
+        decision["create_cave"] = 0
+    elif case == "invalid_lat":
+        report["rows"][0]["payload"]["measurement"]["lat"] = "bad"
+    elif case == "invalid_lon":
+        report["rows"][0]["payload"]["measurement"]["lon"] = "bad"
+    decision["report_sha256"] = _report_sha256(report)
+    result = apply_review_decisions(
+        {"decisions": [decision]}, staging_reports=StagingReports(tpn=report), data_dir=data_dir
+    )
+    assert [issue.code for issue in result.issues] == [expected_code]
+    assert [issue.decision_index for issue in result.issues] == [1]
+    assert result.written_paths == ()
+    assert cave_path.read_bytes() == before
+    assert not (data_dir / "objects").exists()
+
+
+def test_unresolved_fallback_prefix_needs_and_records_reason(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    cave_path = data_dir / "caves/C-0001.yml"
+    _write_yaml(cave_path, _cave_data(object_ids=[]))
+    report = _unresolved_tpn_staging()
+    measurement = report["rows"][0]["payload"]["measurement"]
+    measurement["lat"] = 52.23
+    measurement["lon"] = 21.01
+    point = wgs84_to_1992(lat=52.23, lon=21.01)
+    measurement["x_1992"] = point.x_1992
+    measurement["y_1992"] = point.y_1992
+    decision = {
+        "action": "create_object",
+        "source": "TPN",
+        "record_number": 1,
+        "globalid": TPN_GLOBALID,
+        "report_sha256": _report_sha256(report),
+        "target_cave_id": "C-0001",
+    }
+    before = cave_path.read_bytes()
+    blocked = apply_review_decisions(
+        {"decisions": [decision]}, staging_reports=StagingReports(tpn=report), data_dir=data_dir
+    )
+    assert [issue.code for issue in blocked.issues] == ["UNRESOLVED_PREFIX_REVIEW_REQUIRED"]
+    assert blocked.written_paths == () and cave_path.read_bytes() == before
+    decision["prefix_override_reason"] = "Field review confirmed this PL object."
+    accepted = apply_review_decisions(
+        {"decisions": [decision]}, staging_reports=StagingReports(tpn=report), data_dir=data_dir
+    )
+    assert not accepted.has_errors, accepted.issues
+    assignment = _read_yaml(data_dir / "objects/PL/PL-0001.yml")["id_assignment"]
+    assert assignment["method"] == "manual"
+    assert assignment["prefix_override_reason"] == decision["prefix_override_reason"]
+    assert not has_errors(validate_data_dir(data_dir))
+
+
+def test_reordered_unresolved_report_cannot_reuse_decision(tmp_path: Path) -> None:
+    report = _unresolved_tpn_staging()
+    second = deepcopy(report["rows"][0])
+    second["record_number"] = 2
+    second["globalid"] = "{SECOND}"
+    second["payload"]["measurement"]["source_ref"] = "TPN:{SECOND}"
+    second["payload"]["object_external_refs"][0]["external_id"] = "{SECOND}"
+    report["rows"].append(second)
+    original_sha = _report_sha256(report)
+    report["rows"].reverse()
+    data_dir = tmp_path / "data"
+    _write_yaml(data_dir / "objects/KSW/KSW-0001.yml", _object_data(cave_id="C-0001"))
+    _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {
+                    "action": "add_measurement",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": TPN_GLOBALID,
+                    "report_sha256": original_sha,
+                    "target_object_id": "KSW-0001",
+                }
+            ]
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert [issue.code for issue in result.issues] == ["UNRESOLVED_REPORT_CHANGED"]
+    assert result.written_paths == ()
+
+
+@pytest.mark.parametrize(
+    ("action", "new_status"), [("add_measurement", "matched"), ("create_object", "new")]
+)
+def test_bound_unresolved_decision_cannot_fall_back_to_legacy_proposal(
+    tmp_path: Path, action: str, new_status: str
+) -> None:
+    report = _unresolved_tpn_staging()
+    original_sha = _report_sha256(report)
+    report["rows"][0]["status"] = new_status
+    if action == "add_measurement":
+        old_proposal = _tpn_staging()["matched_measurements"][0]
+        report["matched_measurements"] = [old_proposal]
+    else:
+        report["proposed_objects"] = [_pig_staging()["proposed_objects"][0]]
+        report["rows"][0]["object_id"] = "KSW-0001"
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    cave_path = data_dir / "caves/C-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(cave_path, _cave_data(object_ids=["KSW-0001"]))
+    before = (object_path.read_bytes(), cave_path.read_bytes())
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {
+                    "action": action,
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": TPN_GLOBALID,
+                    "report_sha256": original_sha,
+                    "target_object_id": "KSW-0001",
+                    "target_cave_id": "C-0001",
+                }
+            ]
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert [issue.code for issue in result.issues] == ["UNRESOLVED_ROW_STATUS_CHANGED"]
+    assert result.written_paths == ()
+    assert (object_path.read_bytes(), cave_path.read_bytes()) == before
+
+
+def test_unresolved_create_cave_cannot_select_another_rows_proposal(tmp_path: Path) -> None:
+    report = _unresolved_tpn_staging()
+    report["proposed_caves"] = [_pig_staging()["proposed_caves"][0]]
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {
+                    "action": "create_cave",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "cave_id": "C-0001",
+                }
+            ]
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert [issue.code for issue in result.issues] == ["UNRESOLVED_ACTION_UNSUPPORTED"]
+    assert result.written_paths == ()
+    assert not (data_dir / "caves/C-0001.yml").exists()
+
+
+def test_cli_inspects_unresolved_report_identity_without_decisions(tmp_path: Path) -> None:
+    report = _unresolved_tpn_staging()
+    report_path = tmp_path / "tpn-staging.json"
+    _write_json(report_path, report)
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(APPLY_REVIEW_PATH),
+            "--inspect-tpn-staging",
+            "--tpn-staging",
+            str(report_path),
+        ],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert f"report_sha256: {_report_sha256(report)}" in result.stdout
+    assert f"row 1: globalid {TPN_GLOBALID}" in result.stdout
+    assert not (tmp_path / "data").exists()
+    report_path.write_text("{", encoding="utf-8")
+    invalid = subprocess.run(
+        [
+            sys.executable,
+            str(APPLY_REVIEW_PATH),
+            "--inspect-tpn-staging",
+            "--tpn-staging",
+            str(report_path),
+        ],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert invalid.returncode == 1
+    assert "invalid staging JSON" in invalid.stderr
+    assert "Traceback" not in invalid.stderr
+
+
+def test_legacy_matched_decision_may_keep_extra_globalid(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {
+                    "action": "add_measurement",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": TPN_GLOBALID,
+                }
+            ]
+        },
+        staging_reports=StagingReports(tpn=_tpn_staging()),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors, result.issues
+    assert len(_read_yaml(object_path)["measurements"]) == 2
+
+
+def test_unresolved_review_dry_run_and_mixed_invalid_batch_are_write_free(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    cave_path = data_dir / "caves/C-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(cave_path, _cave_data(object_ids=["KSW-0001"]))
+    before = (object_path.read_bytes(), cave_path.read_bytes())
+    report = _unresolved_tpn_staging()
+    first = {
+        "action": "add_measurement",
+        "source": "TPN",
+        "record_number": 1,
+        "globalid": TPN_GLOBALID,
+        "report_sha256": _report_sha256(report),
+        "target_object_id": "KSW-0001",
+    }
+    dry = apply_review_decisions(
+        {"decisions": [first]},
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+        write=False,
+    )
+    assert not dry.has_errors and dry.written_paths == ()
+    mixed = apply_review_decisions(
+        {"decisions": [first, {"action": "link_cave", "object_id": "KSW-0001"}]},
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert mixed.has_errors and mixed.written_paths == ()
+    assert (object_path.read_bytes(), cave_path.read_bytes()) == before
+
+
+def test_unresolved_retry_is_rejected_even_after_final_measurement_edit(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    report = _unresolved_tpn_staging()
+    decisions = {
+        "decisions": [
+            {
+                "action": "add_measurement",
+                "source": "TPN",
+                "record_number": 1,
+                "globalid": TPN_GLOBALID,
+                "report_sha256": _report_sha256(report),
+                "target_object_id": "KSW-0001",
+            }
+        ]
+    }
+    assert not apply_review_decisions(
+        decisions, staging_reports=StagingReports(tpn=report), data_dir=data_dir
+    ).has_errors
+    edited = _read_yaml(object_path)
+    edited["measurements"][-1]["lat"] = KSW_LAT + 0.00001
+    corrected_point = wgs84_to_1992(lat=KSW_LAT + 0.00001, lon=KSW_LON)
+    edited["measurements"][-1]["x_1992"] = corrected_point.x_1992
+    edited["measurements"][-1]["y_1992"] = corrected_point.y_1992
+    _write_yaml(object_path, edited)
+    before = object_path.read_bytes()
+    retry = apply_review_decisions(
+        decisions, staging_reports=StagingReports(tpn=report), data_dir=data_dir
+    )
+    assert retry.has_errors and retry.written_paths == ()
+    assert any(i.code == "MEASUREMENT_SOURCE_ALREADY_IMPORTED" for i in retry.issues)
+    assert object_path.read_bytes() == before
 
 
 def test_source_observation_hash_has_stable_unicode_encoding() -> None:

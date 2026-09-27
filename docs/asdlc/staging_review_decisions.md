@@ -86,12 +86,51 @@ Poprawny punkt poza dolinami pozostaje
 `unresolved` z danymi i ostrzeżeniem geograficznym; nie otrzymuje ID.
 Pomiar zachowuje status `nieweryfikowany`.
 
-Payload służy zachowaniu danych, nie zatwierdzeniu importu. Obecne review
-nie materializuje go: `add_measurement` dla takiego wiersza nadal zgłasza
-`STAGING_MEASUREMENT_UPDATE_MISSING`, także z podanym `target_object_id`.
-`reject`, `unresolved` i brak decyzji pozostawiają dane finalne bez zmian.
-Jawne rozstrzyganie payloadu oraz bezpieczne wiązanie decyzji z konkretnym
-raportem i tożsamością wiersza należą do PBI-048.
+Payload służy zachowaniu danych, nie zatwierdzeniu importu. `reject`,
+`unresolved` i brak decyzji pozostawiają dane finalne bez zmian.
+Materializacja wymaga jawnego `add_measurement` ze wskazanym
+`target_object_id` albo `create_object` ze wskazanym `target_cave_id`.
+`create_object` może zamiast tego użyć `create_cave: true`, aby utworzyć
+jaskinię i jej otwór w jednej decyzji. ID nowego obiektu wyznacza aktualny
+resolver prefixu, po najwyższym już zajętym lub wybranym w partii numerze;
+operator nie podaje `object_id`. Punkt poza skonfigurowanymi dolinami wymaga
+`prefix_override_reason`, zapisywanego wraz z ręcznym przydziałem prefixu.
+
+Każda decyzja materializująca `unresolved` musi zawierać `record_number`,
+`globalid` i `report_sha256` konkretnego raportu TPN. Skrót obejmuje pełną
+parsowaną treść raportu jako kanoniczny JSON (klucze sortowane, UTF-8,
+bez spacji między elementami), więc zmiana payloadu, kolejności wierszy,
+`generated_at` lub innego pola unieważnia decyzję. To **nie** jest SHA-256
+surowych bajtów pliku. Odczytaj właściwe wartości bez zapisu YAML:
+
+```bash
+uv run --frozen python scripts/importers/apply_review.py \
+  --inspect-tpn-staging --tpn-staging path/to/tpn-staging.json
+```
+
+Przykład rozstrzygnięcia jednego wiersza jako nowego pomiaru istniejącego
+obiektu (podstaw rzeczywisty skrót i identyfikatory z inspekcji):
+
+```yaml
+reviewed_at: "2026-09-27T10:00:00Z"
+reviewed_by: dl
+decisions:
+  - action: add_measurement
+    source: TPN
+    record_number: 1
+    globalid: "{SOURCE-GLOBALID}"
+    report_sha256: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    target_object_id: KSW-0001
+```
+
+Dla nowego otworu zamień `action` na `create_object`, usuń
+`target_object_id` i podaj `target_cave_id: C-0001` albo `create_cave: true`.
+Przed akceptacją sprawdź, czy to właściwy obiekt i jaskinia. Wiersz i payload
+muszą mieć zgodny `GLOBALID`, referencję pomiaru `TPN:{GLOBALID}` oraz
+referencje TPN/`NR_INWENT`. Brak celu, brak payloadu, starszy format, zmiana
+raportu lub ponowienie tej samej obserwacji blokują całą partię przed
+zapisem. Zmiana statusu wiersza z `unresolved` także unieważnia decyzję,
+bez przejścia do zwykłej ścieżki propozycji `matched`/`new`.
 
 Starsze raporty bez payloadu nadal obsługują wcześniejsze `matched`/`new`
 oraz decyzje `reject`/`unresolved`. Brakujących współrzędnych nie da się

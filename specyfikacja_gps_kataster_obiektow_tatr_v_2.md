@@ -548,6 +548,12 @@ geograficznie poprawnych wierszy `unresolved` w `rows[].payload`, bez
 przydziału ID i bez zatwierdzenia materializacji. Błędna geometria pozostaje
 odrzucona. Format oraz ścieżkę odtworzenia starszych raportów opisuje
 [dokumentacja staging](docs/asdlc/staging_review_decisions.md#format-raportu-tpn).
+Jawna decyzja operatora może dodać ten pomiar do wskazanego obiektu albo
+utworzyć nowy obiekt i powiązać go z jaskinią. Wymaga związania z pełnym
+skrótem raportu oraz `record_number` i `GLOBALID` wiersza; zmiana raportu
+unieważnia decyzję. Nowy trwały ID jest przydzielany po rozstrzygnięciu
+przez resolver prefixu i wolny numer, a cała partia przechodzi walidację
+przed zapisem.
 
 ### 8.2 Kandydaci na duplikat
 

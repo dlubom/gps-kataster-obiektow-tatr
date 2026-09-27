@@ -22,6 +22,7 @@ from gps_kataster_obiektow_tatr.staging_review import (  # noqa: E402
     apply_review_decisions,
     load_review_decisions,
     load_staging_reports,
+    tpn_report_sha256,
     write_review_report_files,
 )
 
@@ -35,8 +36,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--decisions",
         type=Path,
-        required=True,
         help="Operator decision YAML file.",
+    )
+    parser.add_argument(
+        "--inspect-tpn-staging",
+        action="store_true",
+        help="Print the report SHA-256 and unresolved source-row identities without writing data.",
     )
     parser.add_argument(
         "--data-dir",
@@ -88,7 +93,30 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     """Run the staging-review applier command line interface."""
 
-    args = build_parser().parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.inspect_tpn_staging:
+        try:
+            report = load_staging_reports(
+                pig_staging_path=None,
+                tpn_staging_path=args.tpn_staging,
+            ).tpn
+            if report is None:
+                raise ReviewDecisionError(f"{args.tpn_staging}: TPN staging report is missing")
+            if report.get("format_version") != 2 or not isinstance(report.get("rows"), list):
+                raise ReviewDecisionError(
+                    "TPN staging inspection requires a format 2 report with rows"
+                )
+            print(f"report_sha256: {tpn_report_sha256(report)}")
+            for row in report.get("rows", []):
+                if isinstance(row, dict) and row.get("status") == "unresolved":
+                    print(f"row {row.get('record_number')}: globalid {row.get('globalid')}")
+        except ReviewDecisionError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 1
+        return 0
+    if args.decisions is None:
+        parser.error("--decisions is required unless --inspect-tpn-staging is used")
     try:
         decisions = load_review_decisions(args.decisions)
         staging_reports = load_staging_reports(
