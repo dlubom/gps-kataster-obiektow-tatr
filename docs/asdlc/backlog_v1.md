@@ -31,7 +31,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-045 | Deduplikacja kandydatów finalnych/staging | wykonane 2026-09-22 | [log](verification/PBI-045.md) |
 | PBI-046 | Numeracja pomiarów w partii | wykonane 2026-09-23 | [log](verification/PBI-046.md) |
 | PBI-047 | Payload wierszy unresolved | wykonane 2026-09-24 | [log](verification/PBI-047.md) |
-| PBI-048 | Jawne rozstrzyganie unresolved | zweryfikowane — do dostarczenia | [log](verification/PBI-048.md) |
+| PBI-048 | Jawne rozstrzyganie unresolved | wykonane 2026-09-27 | [log](verification/PBI-048.md) |
 | PBI-049 | UTF-8 w polach DBF | planowane | — |
 | PBI-050 | Deterministyczne archiwa release | planowane | — |
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | planowane | — |
