@@ -7,7 +7,7 @@ id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
   assigned_prefix: BYZ
-  prefix_override_reason: null
+  prefix_override_reason: "Prefiks BYZ w ID BYZ-0020 pochodzi z PIG m-001 (resolver BYZ). Bieżący best TPN m-002 rozwiązuje się do BYW. ID zachowano zgodnie z zasadą niezmienności; oba pomiary mają status nieweryfikowany."
 external_refs:
 - system: TPN
   ref_type: source_globalid

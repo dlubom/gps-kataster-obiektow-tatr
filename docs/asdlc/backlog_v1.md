@@ -34,7 +34,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-048 | Jawne rozstrzyganie unresolved | wykonane 2026-09-27 | [log](verification/PBI-048.md) |
 | PBI-049 | UTF-8 w polach DBF | wykonane 2026-09-28 | [log](verification/PBI-049.md) |
 | PBI-050 | Deterministyczne archiwa release | wykonane 2026-09-28 | [log](verification/PBI-050.md) |
-| PBI-051 | Dowody i powody 16 rozbieżności prefixu | planowane | — |
+| PBI-051 | Dowody i powody 16 rozbieżności prefixu | zweryfikowane — do dostarczenia | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | planowane | — |
 | PBI-053 | Zgodność dokumentacji i kontraktów | planowane | — |
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
