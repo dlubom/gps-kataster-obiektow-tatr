@@ -4,6 +4,24 @@ Last updated: 2026-09-28
 
 ## Current handoff — review remediation
 
+- PBI-052 jest wykonane: walidator wymaga niepustego, niebiałego
+  `id_assignment.prefix_override_reason` dla ręcznego przydziału ID lub
+  trwałego prefixu niezgodnego z aktualnym najlepszym pomiarem. Brak powodu
+  jest osobnym błędem, a `OBJECT_PREFIX_MISMATCH` pozostaje ostrzeżeniem;
+  trwałe ID i `data/` nie zmieniły się. Schemat odrzuca biały tekst przy
+  `method: manual`. Reprodukcja na bazie: 13 failed; regresja i pełna
+  bramka: 889 passed, 7/7 readback, 0 błędów, 2066 ostrzeżeń, w tym
+  16 historycznych niezgodności. Mutacje wybranych funkcji: 245 zabitych,
+  50 ocalałych przeanalizowanych; niezależny review bez P1/P2.
+  Szczegóły w [logu PBI-052](verification/PBI-052.md). Commit implementacji
+  `a823aafe8d7e498c79a941a1bc52df8fb6461f13` jest na origin
+  (GitHub API), a CI validate
+  [36431133236](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36431133236)
+  zakończyło się sukcesem dla tego SHA. Przy wznowieniu potwierdź
+  checkpoint dokumentacji na origin i jego CI, następnie wykonaj dokładnie
+  **PBI-053** (zależności PBI-040, 043, 048 i 050 dostarczone). Pozostają
+  3 PBI: 053–054 i niezależne 055. Nie zaczynaj PBI-053 w tej sesji.
+
 - PBI-051 jest wykonane: dla wszystkich 16 historycznych rozbieżności
   prefixu zapisano w `id_assignment.prefix_override_reason` faktograficzny
   powód. ID wyznaczono z PIG `m-001`, a obecny automatyczny best to później
