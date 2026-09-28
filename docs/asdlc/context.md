@@ -18,8 +18,14 @@ Last updated: 2026-09-28
   ([PBI-057](verification/PBI-057.md)). Pełne testy nie wykonują ścieżki
   dopasowania TPN po `GLOBALID`; to odrębna luka P3
   ([PBI-058](verification/PBI-058.md)). **PBI-054 pozostaje zablokowane**
-  do dostarczenia PBI-056–058 i ponowienia końcowej weryfikacji; bieżąca
-  kampania mutacyjna i checkpoint dowodów są w toku. Następne gotowe PBI:
+  do dostarczenia PBI-056–058 i ponowienia końcowej weryfikacji; bieżącą
+  kampanię mutacyjną przerwano po 5883/8829 sprawdzonych mutantów, bo
+  naprawy dwóch P2 zmienią badane moduły. To nie jest pełny pozytywny
+  wynik; po PBI-056–058 wymagana jest nowa pełna kampania. Checkpoint
+  dowodów `6d8fe7397f8cf3d8419e594fa45eb49acebb841c` jest na origin,
+  a CI validate
+  [36467113754](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36467113754)
+  zakończyło się sukcesem dla tego SHA. Następne gotowe PBI:
   **PBI-056**. W tej sesji nie implementować 056–058 ani nie zamykać 054.
 
 - PBI-055 jest wykonane: siedem pól liczbowych pomiaru trafia do kolumn
