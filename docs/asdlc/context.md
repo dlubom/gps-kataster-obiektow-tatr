@@ -4,6 +4,23 @@ Last updated: 2026-09-28
 
 ## Current handoff — review remediation
 
+- PBI-055 jest wykonane: siedem pól liczbowych pomiaru trafia do kolumn
+  SQLite `REAL` jako `float` lub `None`. Poprawne `2**63`, `-(2**63)-1`
+  i `-2**63` budują się i odczytują jako `REAL`; liczby niereprezentowalne
+  jako skończony `float` nadal dają `NON_FINITE_NUMBER` bez zmiany istniejącej
+  bazy. Nie zmieniono YAML ani nie dodano progów fizycznych. Pełna bramka:
+  900 testów, 7/7 readback, 0 błędów, 2066 znanych ostrzeżeń i niezmienione
+  `data/`. Mutacje funkcji zapisu: 60 zabitych, 33 ocalałe przeanalizowane
+  jako zmiany pól tekstowych/tagów; niezależny review bez P1/P2. Szczegóły w
+  [logu PBI-055](verification/PBI-055.md). Commit implementacji
+  `25ae54a31066c1d5b9062687c2797721390ac88c` jest na origin
+  (GitHub API), a CI validate
+  [36460584995](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36460584995)
+  zakończyło się sukcesem dla tego SHA. Przy wznowieniu potwierdź checkpoint
+  dokumentacji na origin i jego CI, następnie wykonaj dokładnie **PBI-054**
+  (końcowa weryfikacja R01–R13). Pozostało jedno PBI. Nie zaczynaj PBI-054
+  w tej sesji.
+
 - PBI-053 jest wykonane: specyfikacja i instrukcje opisują wdrożony SQLite
   z WKT zamiast obietnicy SpatiaLite, rzeczywiste polecenia CLI, zagnieżdżone
   liczniki `metadata.json` oraz kolumny `attachments`. Poprawiono przykładowe

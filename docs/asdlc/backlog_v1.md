@@ -38,17 +38,16 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
-| PBI-055 | Skończone duże int w polach REAL SQLite | zweryfikowane — do dostarczenia | [log](verification/PBI-055.md) |
+| PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 
-Następne zadanie możliwe do ukończenia: **PBI-055** (zależność PBI-042
-wykonana). PBI-054 pozostaje planowane, ale jego końcowy odbiór wymaga
-wcześniejszego rozstrzygnięcia PBI-055. PBI-053 dostarczono w commicie
-`083eef9dd1369b6e05ff4c5444a9a29276b57c0e`; GitHub API potwierdziło
+Następne gotowe zadanie: **PBI-054**. PBI-055 rozstrzygnięto w commicie
+`25ae54a31066c1d5b9062687c2797721390ac88c`: GitHub API potwierdziło
 zgodny zdalny SHA, a CI validate
-[36457947924](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36457947924)
+[36460584995](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36460584995)
 zakończyło się sukcesem dla dokładnie tego SHA. Dowody w
-[logu PBI-053](verification/PBI-053.md). Pozostają 2 zadania: PBI-055
-i PBI-054. Ta sesja kończy się po PBI-053.
+[logu PBI-055](verification/PBI-055.md). Pozostało jedno zadanie, PBI-054.
+Ta sesja kończy się po PBI-055; checkpoint dokumentacji wymaga własnego
+potwierdzenia SHA i CI.
 PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
 lecz definiuje osobne naprawy. R06 ma teraz pełną regułę i udokumentowane
 16 historycznych powodów; PBI-051/052 nie rozstrzygają poprawności
@@ -806,7 +805,7 @@ Import PIG/TPN warto zaczac dopiero po dzialajacym walidatorze, bo inaczej szybk
 
 ## PBI-055: Skonczone duze int w polach REAL SQLite
 
-Status: zweryfikowane — do dostarczenia; niezależne znalezisko review PBI-042.
+Status: wykonane 2026-09-28; niezależne znalezisko review PBI-042.
 Zależność: PBI-042. Priorytet P2; rozstrzygnąć przed końcowym odbiorem PBI-054.
 
 Reprodukcja: poprawny obiekt z `elevation_m: 9223372036854775808` (2**63)
