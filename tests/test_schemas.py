@@ -93,3 +93,24 @@ def test_invalid_schema_fixtures_fail_on_expected_fields(
 
     assert errors
     assert any(expected_error_fragment in error for error in errors), errors
+
+
+@pytest.mark.parametrize("reason_state", ["absent", "null", "empty", "whitespace", "documented"])
+def test_manual_id_assignment_schema_requires_nonblank_reason(
+    validators: dict[str, Draft202012Validator], reason_state: str
+) -> None:
+    object_data = load_yaml(FIXTURE_DIR / "valid-object.yml")
+    object_data["id_assignment"]["method"] = "manual"
+    if reason_state == "absent":
+        object_data["id_assignment"].pop("prefix_override_reason", None)
+    else:
+        object_data["id_assignment"]["prefix_override_reason"] = {
+            "null": None,
+            "empty": "",
+            "whitespace": " \t\n\u00a0",
+            "documented": "Uzasadniona decyzja operatora.",
+        }[reason_state]
+
+    errors = list(validators["object"].iter_errors(object_data))
+
+    assert bool(errors) == (reason_state != "documented")

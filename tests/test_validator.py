@@ -157,12 +157,118 @@ def test_historical_id_assignment_remains_valid_after_best_measurement_changes(
     coordinates = wgs84_to_1992(lat=later["lat"], lon=later["lon"])
     later["x_1992"], later["y_1992"] = coordinates.x_1992, coordinates.y_1992
     object_data["best_measurement"]["measurement_id"] = "m-002"
+    object_data["id_assignment"]["prefix_override_reason"] = (
+        "Trwałe ID pochodzi od m-001; późniejszy m-002 wskazuje CHZ."
+    )
     _write_object(data_dir, object_data)
 
     issues = validate_data_dir(data_dir)
 
     assert not [issue for issue in issues if issue.severity == ValidationSeverity.ERROR]
     assert "OBJECT_PREFIX_MISMATCH" in _codes(issues)
+
+
+@pytest.mark.parametrize("assignment_method", ["auto", "manual"])
+@pytest.mark.parametrize("best_prefix_mismatch", [False, True])
+@pytest.mark.parametrize("reason_state", ["absent", "null", "empty", "whitespace", "documented"])
+def test_id_assignment_requires_documented_reason_when_manual_or_best_prefix_mismatches(
+    tmp_path: Path,
+    assignment_method: str,
+    best_prefix_mismatch: bool,
+    reason_state: str,
+) -> None:
+    data_dir = tmp_path / "data"
+    object_data = _valid_object()
+    assignment = object_data["id_assignment"]
+    assignment["method"] = assignment_method
+    if reason_state == "absent":
+        assignment.pop("prefix_override_reason", None)
+    else:
+        assignment["prefix_override_reason"] = {
+            "null": None,
+            "empty": "",
+            "whitespace": " \t\n\u00a0",
+            "documented": "Zachowano trwałe ID po nowym pomiarze.",
+        }[reason_state]
+
+    if best_prefix_mismatch:
+        later = _measurement_variant("m-002", source="TPN", observed_date="2022-05-25")
+        later["lat"], later["lon"] = 49.24292969, 19.80613095  # CHZ
+        coordinates = wgs84_to_1992(lat=later["lat"], lon=later["lon"])
+        later["x_1992"], later["y_1992"] = coordinates.x_1992, coordinates.y_1992
+        object_data["measurements"].append(later)
+        object_data["best_measurement"]["measurement_id"] = "m-002"
+    _write_object(data_dir, object_data)
+
+    issues = validate_data_dir(data_dir)
+
+    required = (assignment_method == "manual" or best_prefix_mismatch) and (
+        reason_state != "documented"
+    )
+    reason_issues = [
+        issue for issue in issues if issue.code == "ID_ASSIGNMENT_PREFIX_OVERRIDE_REASON_REQUIRED"
+    ]
+    assert len(reason_issues) == int(required)
+    if required:
+        assert reason_issues[0].severity == ValidationSeverity.ERROR
+        assert reason_issues[0].path == data_dir / "objects/KSW/KSW-0001.yml"
+    assert ("OBJECT_PREFIX_MISMATCH" in _codes(issues)) == best_prefix_mismatch
+    assert _severities(issues, "OBJECT_PREFIX_MISMATCH") <= {ValidationSeverity.WARNING}
+    if not required:
+        assert not [issue for issue in issues if issue.severity == ValidationSeverity.ERROR]
+
+
+@pytest.mark.parametrize("trigger", ["manual", "best_prefix_mismatch"])
+def test_missing_prefix_override_reason_blocks_release_writes(tmp_path: Path, trigger: str) -> None:
+    data_dir = tmp_path / "data"
+    object_data = _valid_object()
+    if trigger == "manual":
+        object_data["id_assignment"]["method"] = "manual"
+        object_data["id_assignment"]["prefix_override_reason"] = " \t"
+    else:
+        later = _measurement_variant("m-002", source="TPN", observed_date="2022-05-25")
+        later["lat"], later["lon"] = 49.24292969, 19.80613095  # CHZ
+        coordinates = wgs84_to_1992(lat=later["lat"], lon=later["lon"])
+        later["x_1992"], later["y_1992"] = coordinates.x_1992, coordinates.y_1992
+        object_data["measurements"].append(later)
+        object_data["best_measurement"]["measurement_id"] = "m-002"
+    _write_object(data_dir, object_data)
+    output_dir = tmp_path / "build"
+    output_dir.mkdir()
+    for name in ("katalog.sqlite", "metadata.json", "best-measurements.geojson"):
+        (output_dir / name).write_bytes(f"old {name}".encode())
+    before = {
+        path.relative_to(tmp_path): path.read_bytes()
+        for path in tmp_path.rglob("*")
+        if path.is_file()
+    }
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(REPO_ROOT / "scripts" / "build_release_artifacts.py"),
+            "--data-dir",
+            str(data_dir),
+            "--sqlite-output",
+            str(output_dir / "katalog.sqlite"),
+            "--output-dir",
+            str(output_dir),
+        ],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert "ID_ASSIGNMENT_PREFIX_OVERRIDE_REASON_REQUIRED" in result.stdout + result.stderr
+    assert "Traceback" not in result.stdout + result.stderr
+    after = {
+        path.relative_to(tmp_path): path.read_bytes()
+        for path in tmp_path.rglob("*")
+        if path.is_file()
+    }
+    assert after == before
 
 
 def test_manual_id_assignment_with_reason_remains_valid(tmp_path: Path) -> None:

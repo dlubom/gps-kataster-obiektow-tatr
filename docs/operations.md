@@ -85,7 +85,12 @@ Walidator zgłasza dla tych naruszeń odpowiednio
 błędy; build i eksport kończą się przed zapisem artefaktów. Dodanie późniejszego
 pomiaru lub zmiana `best_measurement` nie zmienia tych pól ani trwałego ID.
 Rozbieżność ID z lokalizacją aktualnego najlepszego pomiaru pozostaje
-ostrzeżeniem `OBJECT_PREFIX_MISMATCH`.
+ostrzeżeniem `OBJECT_PREFIX_MISMATCH`. Ręczny przydział ID oraz zachowanie
+trwałego prefixu niezgodnego z bieżącym najlepszym pomiarem wymagają
+niepustego uzasadnienia `id_assignment.prefix_override_reason`, zawierającego
+znak inny niż biały. Brak takiego powodu daje osobny błąd
+`ID_ASSIGNMENT_PREFIX_OVERRIDE_REASON_REQUIRED` i blokuje build/eksport;
+ostrzeżenie o niezgodności nadal pozostaje w raporcie.
 
 Pomocniczo, nowe ID obiektu mozna zaproponowac komenda:
 

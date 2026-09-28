@@ -355,6 +355,21 @@ def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue,
                     )
                 )
 
+            if id_assignment.get("method") == "manual" and not _has_prefix_override_reason(
+                id_assignment
+            ):
+                issues.append(
+                    ValidationIssue(
+                        code="ID_ASSIGNMENT_PREFIX_OVERRIDE_REASON_REQUIRED",
+                        severity=ValidationSeverity.ERROR,
+                        path=object_record.path,
+                        description=(
+                            f"Object {object_id} manual ID assignment requires a nonblank "
+                            "id_assignment.prefix_override_reason."
+                        ),
+                    )
+                )
+
         best_measurement = object_record.data.get("best_measurement")
         if isinstance(best_measurement, dict):
             measurement_id = best_measurement.get("measurement_id")
@@ -729,7 +744,7 @@ def _validate_prefix_matches_best_measurement(
     if resolution.prefix is None or resolution.prefix == object_prefix:
         return ()
 
-    return (
+    issues = [
         ValidationIssue(
             code="OBJECT_PREFIX_MISMATCH",
             severity=ValidationSeverity.WARNING,
@@ -738,8 +753,32 @@ def _validate_prefix_matches_best_measurement(
                 f"Object {object_id} prefix {object_prefix} differs from best measurement "
                 f"resolved prefix {resolution.prefix}."
             ),
-        ),
-    )
+        )
+    ]
+    id_assignment = object_record.data.get("id_assignment")
+    if (
+        not isinstance(id_assignment, dict) or id_assignment.get("method") != "manual"
+    ) and not _has_prefix_override_reason(id_assignment):
+        issues.append(
+            ValidationIssue(
+                code="ID_ASSIGNMENT_PREFIX_OVERRIDE_REASON_REQUIRED",
+                severity=ValidationSeverity.ERROR,
+                path=object_record.path,
+                description=(
+                    f"Object {object_id} requires a nonblank "
+                    "id_assignment.prefix_override_reason to retain its durable prefix "
+                    f"when the best measurement resolves to {resolution.prefix}."
+                ),
+            )
+        )
+    return tuple(issues)
+
+
+def _has_prefix_override_reason(id_assignment: object) -> bool:
+    if not isinstance(id_assignment, dict):
+        return False
+    reason = id_assignment.get("prefix_override_reason")
+    return isinstance(reason, str) and bool(reason.strip())
 
 
 def _validate_measurement_distances(

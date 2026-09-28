@@ -35,7 +35,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-049 | UTF-8 w polach DBF | wykonane 2026-09-28 | [log](verification/PBI-049.md) |
 | PBI-050 | Deterministyczne archiwa release | wykonane 2026-09-28 | [log](verification/PBI-050.md) |
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
-| PBI-052 | Egzekwowanie powodów rozbieżności | planowane | — |
+| PBI-052 | Egzekwowanie powodów rozbieżności | zweryfikowane — do dostarczenia | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | planowane | — |
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
 | PBI-055 | Skończone duże int w polach REAL SQLite | planowane | [opis](#pbi-055-skonczone-duze-int-w-polach-real-sqlite) |

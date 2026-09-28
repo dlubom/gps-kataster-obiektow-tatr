@@ -133,7 +133,7 @@ Dopuszczalne wartości:
 | `method` | `auto` \| `manual` | Czy prefix wynikał z algorytmu point-in-polygon, czy został wybrany ręcznie. |
 | `assigned_from_measurement_id` | string | Pomiar użyty do nadania ID; musi istnieć w `measurements` tego obiektu. |
 | `assigned_prefix` | string | Prefix utrwalony w ID; musi być równy części przed `-` w `Obiekt.id`. |
-| `prefix_override_reason` | string, opt | Wymagane, jeśli `method = manual` albo prefix nie zgadza się z aktualnym najlepszym pomiarem. |
+| `prefix_override_reason` | string, opt | Wymagane, jeśli `method = manual` albo prefix nie zgadza się z aktualnym najlepszym pomiarem. Wtedy musi zawierać znak inny niż biały. |
 
 ### 4.2 `Jaskinia`
 
@@ -387,7 +387,7 @@ Zasady:
 - dla nowego obiektu prefix powinien zgadzać się z pomiarem użytym do nadania ID,
 - walidator zgłasza błąd, jeśli `assigned_from_measurement_id` nie wskazuje pomiaru tego obiektu albo `assigned_prefix` różni się od trwałego ID,
 - dla istniejącego obiektu niezgodność prefixu z aktualnym najlepszym pomiarem jest ostrzeżeniem, nie twardym błędem,
-- jeśli prefix został nadany ręcznie albo świadomie pozostaje niezgodny z aktualną lokalizacją, wymagane jest `id_assignment.prefix_override_reason`,
+- jeśli prefix został nadany ręcznie albo pozostaje niezgodny z aktualną lokalizacją najlepszego pomiaru, wymagane jest niepuste i niebiałe `id_assignment.prefix_override_reason`; brak uzasadnienia jest osobnym błędem `ID_ASSIGNMENT_PREFIX_OVERRIDE_REASON_REQUIRED` i nie wycisza ostrzeżenia `OBJECT_PREFIX_MISMATCH`,
 - build może generować flagę `prefix_location_mismatch` w SQLite i raportach walidacji.
 
 ### 5.6 Przydzielanie kolejnego numeru
