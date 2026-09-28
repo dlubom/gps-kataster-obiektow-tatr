@@ -6,6 +6,11 @@ import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 
+from gps_kataster_obiektow_tatr.archive_metadata import (
+    ArchiveTimestamp,
+    resolve_archive_timestamp,
+    write_archive_member,
+)
 from gps_kataster_obiektow_tatr.best_measurements_export import (
     DEFAULT_EXPORT_DIR,
     BestMeasurementsExportResult,
@@ -60,18 +65,19 @@ def build_release_artifacts(
 ) -> ReleaseArtifactsResult:
     """Build SQLite, export best measurements and zip the SQLite snapshot."""
 
+    timestamp = resolve_archive_timestamp(generated_at)
     sqlite_result = build_sqlite_database(
         data_dir=data_dir,
         output_path=sqlite_path,
-        generated_at=generated_at,
+        generated_at=timestamp.text,
     )
     export_result = export_best_measurements(
         data_dir=data_dir,
         output_dir=output_dir,
-        generated_at=generated_at,
+        generated_at=timestamp.text,
     )
     sqlite_zip_path = output_dir / SQLITE_ZIP_FILENAME
-    _write_sqlite_zip(sqlite_result.sqlite_path, sqlite_zip_path)
+    _write_sqlite_zip(sqlite_result.sqlite_path, sqlite_zip_path, timestamp=timestamp)
 
     return ReleaseArtifactsResult(
         sqlite_result=sqlite_result,
@@ -80,7 +86,7 @@ def build_release_artifacts(
     )
 
 
-def _write_sqlite_zip(sqlite_path: Path, zip_path: Path) -> None:
+def _write_sqlite_zip(sqlite_path: Path, zip_path: Path, *, timestamp: ArchiveTimestamp) -> None:
     zip_path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path = zip_path.with_name(f"{zip_path.name}.tmp")
     if tmp_path.exists():
@@ -88,7 +94,7 @@ def _write_sqlite_zip(sqlite_path: Path, zip_path: Path) -> None:
 
     try:
         with zipfile.ZipFile(tmp_path, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
-            archive.write(sqlite_path, arcname=sqlite_path.name)
+            write_archive_member(archive, sqlite_path, timestamp)
         tmp_path.replace(zip_path)
     except Exception:
         tmp_path.unlink(missing_ok=True)

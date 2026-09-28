@@ -9,6 +9,16 @@ uv run python scripts/build_release_artifacts.py
 Zrodlem prawdy pozostaja YAML-e w `data/`. Pliki w `build/` sa artefaktami
 pochodnymi i nie sa commitowane.
 
+Przy tym samym wejsciu i `--generated-at` pelny build daje identyczne bajty
+wszystkich siedmiu artefaktow, niezaleznie od czasu i uprawnien plikow
+roboczych oraz katalogu wyjscia. Jeden czas `generated_at` zasila metadane,
+daty wpisow obu archiwow ZIP i date naglowka DBF. Daty archiwow i DBF sa
+wyznaczane w UTC; ZIP przechowuje sekundy z dokladnoscia do dwoch sekund
+(zaokraglenie w dol). Wpisy ZIP maja staly tryb zwyklego pliku `0644`.
+`generated_at` musi zawierac strefe czasowa, a jego czas w UTC musi przypadac
+od `1980-01-01` do `2107-12-31` wlacznie. Czas poza tym zakresem jest
+odrzucany przed zapisem artefaktow.
+
 ## Wersjonowanie
 
 Oficjalne wydania sa wersjonowane semver tagami `vX.Y.Z`. Release jest

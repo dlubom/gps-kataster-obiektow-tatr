@@ -14,6 +14,7 @@ SRC_DIR = REPO_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
+from gps_kataster_obiektow_tatr.archive_metadata import ArchiveTimestampError  # noqa: E402
 from gps_kataster_obiektow_tatr.best_measurements_export import (  # noqa: E402
     DEFAULT_EXPORT_DIR,
     BestMeasurementsExportValidationError,
@@ -53,7 +54,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     """Run the best-measurements export command line interface."""
 
     args = build_parser().parse_args(argv)
-    generated_at = args.generated_at or _utc_timestamp()
+    generated_at = args.generated_at if args.generated_at is not None else _utc_timestamp()
 
     try:
         result = export_best_measurements(
@@ -67,6 +68,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     except BestMeasurementsExportValidationError as exc:
         for issue in exc.issues:
             print(format_issue(issue))
+        return 1
+    except ArchiveTimestampError as exc:
+        print(f"error: {exc}", file=sys.stderr)
         return 1
 
     print(f"wrote: {result.geojson_path}")

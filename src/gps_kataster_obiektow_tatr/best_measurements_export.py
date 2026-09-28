@@ -14,6 +14,11 @@ from xml.etree import ElementTree as ET
 
 import shapefile
 
+from gps_kataster_obiektow_tatr.archive_metadata import (
+    ArchiveTimestamp,
+    resolve_archive_timestamp,
+    write_archive_member,
+)
 from gps_kataster_obiektow_tatr.best_measurement import select_default_best_measurement_id
 from gps_kataster_obiektow_tatr.data_loader import (
     DEFAULT_DATA_DIR,
@@ -125,7 +130,9 @@ def export_best_measurements(
         raise BestMeasurementsExportValidationError(validation_issues)
 
     rows = _collect_best_measurement_rows(dataset)
-    timestamp = generated_at or _utc_timestamp()
+    timestamp = resolve_archive_timestamp(
+        generated_at if generated_at is not None else _utc_timestamp()
+    )
 
     output_dir.mkdir(parents=True, exist_ok=True)
     geojson_path = output_dir / GEOJSON_FILENAME
@@ -135,14 +142,14 @@ def export_best_measurements(
     metadata_path = output_dir / METADATA_FILENAME
     metadata = _build_release_metadata(
         dataset,
-        generated_at=timestamp,
+        generated_at=timestamp.text,
         validation_issues=validation_issues,
     )
 
-    _write_geojson(rows, geojson_path, generated_at=timestamp)
+    _write_geojson(rows, geojson_path, generated_at=timestamp.text)
     _write_csv(rows, csv_path)
-    _write_gpx(rows, gpx_path, generated_at=timestamp)
-    _write_shapefile_zip(rows, shapefile_zip_path)
+    _write_gpx(rows, gpx_path, generated_at=timestamp.text)
+    _write_shapefile_zip(rows, shapefile_zip_path, timestamp=timestamp)
     _write_metadata(metadata, metadata_path)
 
     return BestMeasurementsExportResult(
@@ -281,7 +288,13 @@ def _write_gpx(
     tree.write(path, encoding="utf-8", xml_declaration=True)
 
 
-def _write_shapefile_zip(rows: tuple[BestMeasurementExportRow, ...], path: Path) -> None:
+def _write_shapefile_zip(
+    rows: tuple[BestMeasurementExportRow, ...],
+    path: Path,
+    *,
+    timestamp: ArchiveTimestamp | None = None,
+) -> None:
+    timestamp = timestamp or resolve_archive_timestamp(None)
     with tempfile.TemporaryDirectory() as tmp_dir_name:
         tmp_dir = Path(tmp_dir_name)
         base_path = tmp_dir / "best-measurements"
@@ -320,13 +333,18 @@ def _write_shapefile_zip(rows: tuple[BestMeasurementExportRow, ...], path: Path)
         finally:
             writer.close()
 
+        # PyShp writes the local system date when it closes the DBF file.
+        with base_path.with_suffix(".dbf").open("r+b") as dbf:
+            dbf.seek(1)
+            dbf.write(timestamp.dbf_date)
+
         (tmp_dir / "best-measurements.prj").write_text(EPSG_2180_PRJ, encoding="ascii")
         (tmp_dir / "best-measurements.cpg").write_text("UTF-8\n", encoding="ascii")
 
         with zipfile.ZipFile(path, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
             for suffix in (".shp", ".shx", ".dbf", ".prj", ".cpg"):
                 file_path = tmp_dir / f"best-measurements{suffix}"
-                archive.write(file_path, arcname=file_path.name)
+                write_archive_member(archive, file_path, timestamp)
 
 
 def _write_metadata(metadata: dict[str, Any], path: Path) -> None:

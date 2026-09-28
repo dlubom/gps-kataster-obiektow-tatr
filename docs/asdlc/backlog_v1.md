@@ -33,14 +33,16 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-047 | Payload wierszy unresolved | wykonane 2026-09-24 | [log](verification/PBI-047.md) |
 | PBI-048 | Jawne rozstrzyganie unresolved | wykonane 2026-09-27 | [log](verification/PBI-048.md) |
 | PBI-049 | UTF-8 w polach DBF | wykonane 2026-09-28 | [log](verification/PBI-049.md) |
-| PBI-050 | Deterministyczne archiwa release | planowane | — |
+| PBI-050 | Deterministyczne archiwa release | zweryfikowane — do dostarczenia | [log](verification/PBI-050.md) |
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | planowane | — |
 | PBI-052 | Egzekwowanie powodów rozbieżności | planowane | — |
 | PBI-053 | Zgodność dokumentacji i kontraktów | planowane | — |
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
 | PBI-055 | Skończone duże int w polach REAL SQLite | planowane | [opis](#pbi-055-skonczone-duze-int-w-polach-real-sqlite) |
 
-Następne gotowe zadanie: **PBI-050** (zależność PBI-049 wykonana).
+PBI-050 jest zweryfikowane lokalnie i czeka na commit, push oraz CI dla
+dokladnego SHA. Po jego dostarczeniu nastepne gotowe zadanie: **PBI-051**
+(zaleznosc PBI-044 wykonana).
 Implementację PBI-049 dostarczono w commicie
 `ce8c0c04b4166697495ef29af71e16f153859dbe`; zdalny SHA był zgodny,
 a CI validate
