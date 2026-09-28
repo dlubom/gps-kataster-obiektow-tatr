@@ -4,6 +4,24 @@ Last updated: 2026-09-28
 
 ## Current handoff — review remediation
 
+- PBI-054 rozpoczęto z czystego `codex/review-remediation` po potwierdzeniu
+  checkpointu PBI-055: bazowy SHA `0d8ce8f42c8ba19da30a5d2fce1ed567b0317064`
+  jest na origin, CI validate
+  [36461249826](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36461249826)
+  jest zielone dla tego SHA. Wstępna pełna bramka PBI-054: 900 testów,
+  7/7 readback, 0 błędów, 2066 znanych ostrzeżeń, niezmieniony hash
+  `data/`; 127 wybranych regresji R01–R13 przeszło, dwa pełne buildy
+  dały identyczne SHA siedmiu artefaktów. Niezależny review odkrył dwa
+  odtworzone P2: zduplikowane indeksy staging po cichu wybierają ostatni
+  wpis ([PBI-056](verification/PBI-056.md)), a jawne ID w decyzji może
+  wybrać propozycję innego wiersza prawidłowego raportu PIG
+  ([PBI-057](verification/PBI-057.md)). Pełne testy nie wykonują ścieżki
+  dopasowania TPN po `GLOBALID`; to odrębna luka P3
+  ([PBI-058](verification/PBI-058.md)). **PBI-054 pozostaje zablokowane**
+  do dostarczenia PBI-056–058 i ponowienia końcowej weryfikacji; bieżąca
+  kampania mutacyjna i checkpoint dowodów są w toku. Następne gotowe PBI:
+  **PBI-056**. W tej sesji nie implementować 056–058 ani nie zamykać 054.
+
 - PBI-055 jest wykonane: siedem pól liczbowych pomiaru trafia do kolumn
   SQLite `REAL` jako `float` lub `None`. Poprawne `2**63`, `-(2**63)-1`
   i `-2**63` budują się i odczytują jako `REAL`; liczby niereprezentowalne

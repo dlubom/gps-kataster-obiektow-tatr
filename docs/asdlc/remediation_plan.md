@@ -41,7 +41,11 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 051 | Udokumentowane przyczyny 16 istniejących rozbieżności prefixu | R06, dane | 044 |
 | 052 | Egzekwowanie uzasadnienia bez zmiany trwałych ID | R06, pełna reguła | 044, 051 |
 | 053 | Dokumentacja zgodna z wdrożonymi kontraktami | uwagi z raportu | 040, 043, 048, 050 |
-| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053 |
+| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–058 |
+| 055 | Poprawne wiązanie skończonych dużych int w SQLite REAL | uzupełnienie R05 | 042 |
+| 056 | Odrzucanie zduplikowanych indeksów staging | nowe ustalenie P2 z PBI-054 | 040, 046, 048 |
+| 057 | Wiązanie jawnie wskazanej propozycji z wierszem źródła | nowe ustalenie P2 z PBI-054 | 040, 056 |
+| 058 | Regresja dopasowania TPN po GLOBALID | luka mutacyjna z PBI-054 | 045, 047 |
 
 PBI-035 celowo poprzedza naprawy: każda kolejna sesja ma móc zweryfikować
 wynik jednym poleceniem. PBI-037–039 przygotowują kontrakty używane przez
@@ -364,3 +368,49 @@ liczników/pomiarów, zielone CI dla finalnego SHA, potwierdzony push,
 czysty checkout i krótka rekomendacja. Merge do `main`, tag i publikacja
 release pozostają osobną decyzją użytkownika.
 Commit: `docs: close remediation verification (PBI-054)`.
+
+### PBI-056 — Odrzucać zduplikowane indeksy staging
+
+Pliki: `staging_review.py`, testy, format raportów/decyzji. Przed
+indeksowaniem całego raportu odrzucać powtórzone ID w `proposed_objects`
+i `proposed_caves` oraz wielokrotne aktualizacje `matched_measurements`
+prowadzące do jednego wiersza TPN, również po fallbacku z `source_ref`.
+Nie wolno wybierać ostatniego wpisu według kolejności listy. Duplikat
+identyczny i sprzeczny mają blokować całą partię bez zapisu.
+
+Odbiór: reprodukcje z [logu odkrycia](verification/PBI-056.md) są czerwone
+na bazie i zielone po naprawie; kolejność wpisów nie wybiera finalnego
+pomiaru ani obiektu. Poprawne staging PIG/TPN i jawne decyzje nadal
+działają. Pełna bramka, mutacje zmienionych funkcji, odczyt artefaktów,
+niezmienione `data/`, push i CI dla dokładnego SHA.
+Commit: `fix: reject duplicate staging proposals (PBI-056)`.
+
+### PBI-057 — Wiązać jawną propozycję z właściwym wierszem
+
+Pliki: `staging_review.py`, testy, dokumentacja decyzji. Dla
+`create_object`/`create_cave` jawny `object_id`/`cave_id` nie może
+materializować propozycji innego wiersza, gdy wybrany wiersz ma już
+jednoznaczne ID i tożsamość źródła. Zachować legalne jawne wskazanie
+propozycji dla wiersza bez przydzielonego ID (istniejący przypadek TPN).
+
+Odbiór: [reprodukcja](verification/PBI-057.md) z dwóch prawidłowych
+wierszy staging PIG odrzuca rozjazd przed zapisem; `applied_decisions`
+nie przypisuje row 1 danych `PIG:1693` z row 2. Poprawna ścieżka TPN
+z jawnym ID nadal działa. Pełna bramka, mutacje zmienionych funkcji,
+niezmienione `data/`, push i CI dla dokładnego SHA.
+Commit: `fix: bind staging proposals to source rows (PBI-057)`.
+
+### PBI-058 — Sprawdzić dopasowanie TPN po GLOBALID
+
+Pliki: testy TPN, ewentualnie dokumentacja weryfikacji. Wstępna analiza
+kampanii PBI-054 i pełnego pytest pod coverage wykazała, że gałąź
+`by_globalid` w `_match_tpn_row` i pomocnicze
+`_unique_candidate_outcome` nie są wywoływane przez 900 obecnych testów;
+17 mutantów pomocnika ma `no tests`. Dodać regresję pierwszeństwa
+GLOBALID nad innym numerem/nazwą/odległością oraz niejednoznacznego
+GLOBALID. Nie zakładać błędu kodu bez reprodukcji.
+
+Odbiór: oba przypadki przeszły zwykłe testy i wybrany zakres mutmut;
+mutant psujący wybór po GLOBALID jest zabity. Pełna bramka, niezmienione
+`data/`, push i CI dla dokładnego SHA.
+Commit: `test: cover TPN GLOBALID matching (PBI-058)`.

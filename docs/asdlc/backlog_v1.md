@@ -6,7 +6,7 @@ Stan na: 2026-09-28
 
 Branch: `codex/review-remediation`. Poniższa tabela jest źródłem aktualnych
 statusów serii. Zakres, zależności i odbiór:
-[karty PBI-034–054](remediation_plan.md). Procedura czystej sesji,
+[karty PBI-034–058](remediation_plan.md). Procedura czystej sesji,
 weryfikacji, commitów i pushów: [runbook](remediation_runbook.md).
 Historyczny [raport R01–R13](reviews/project-review-2026-09-05.md) jest w git.
 
@@ -37,17 +37,30 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — otwarte P2 w PBI-056/057 | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
+| PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | planowane | [log odkrycia](verification/PBI-056.md) |
+| PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | planowane | [log odkrycia](verification/PBI-057.md) |
+| PBI-058 | Dodać regresję dopasowania TPN po GLOBALID | planowane | [log odkrycia](verification/PBI-058.md) |
 
-Następne gotowe zadanie: **PBI-054**. PBI-055 rozstrzygnięto w commicie
+PBI-054 rozpoczęto na czystym branchu, lecz niezależny review odkrył dwa
+odtworzone błędy P2 w granicy staging/review. Zgodnie z kartą PBI-054 nie
+można zamknąć końcowej weryfikacji przy otwartym P1/P2. Następne gotowe
+zadanie: **PBI-056**; po nim PBI-057, a następnie PBI-058 i ponowienie
+PBI-054. Nie implementowano nowych PBI w tej sesji. Szczegóły i dowody:
+[PBI-054](verification/PBI-054.md), [PBI-056](verification/PBI-056.md),
+[PBI-057](verification/PBI-057.md), [PBI-058](verification/PBI-058.md).
+
+PBI-055 rozstrzygnięto w commicie
 `25ae54a31066c1d5b9062687c2797721390ac88c`: GitHub API potwierdziło
 zgodny zdalny SHA, a CI validate
 [36460584995](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36460584995)
 zakończyło się sukcesem dla dokładnie tego SHA. Dowody w
-[logu PBI-055](verification/PBI-055.md). Pozostało jedno zadanie, PBI-054.
-Ta sesja kończy się po PBI-055; checkpoint dokumentacji wymaga własnego
-potwierdzenia SHA i CI.
+[logu PBI-055](verification/PBI-055.md). Jego checkpoint dokumentacji
+`0d8ce8f42c8ba19da30a5d2fce1ed567b0317064` jest na origin i CI
+[36461249826](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36461249826)
+przeszło dla dokładnie tego SHA.
+
 PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
 lecz definiuje osobne naprawy. R06 ma teraz pełną regułę i udokumentowane
 16 historycznych powodów; PBI-051/052 nie rozstrzygają poprawności
