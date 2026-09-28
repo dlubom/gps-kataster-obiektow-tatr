@@ -4,6 +4,25 @@ Last updated: 2026-09-28
 
 ## Current handoff — review remediation
 
+- PBI-050 jest wykonane: jeden czas `generated_at` ustala metadane SQLite,
+  eksportow, daty wpisow obu ZIP i date naglowka DBF. Wpisy ZIP maja stale
+  atrybuty; czas UTC poza latami 1980–2107 lub bez strefy jest odrzucany
+  przed zapisem. Dwa pelne buildy z rozna data zegara, mtime, prawami plikow
+  i katalogami wyjscia daly te same SHA wszystkich 7 artefaktow. Pelna
+  bramka: 862 testy, 7/7 readback, 0 bledow, 2066 dotychczasowych ostrzezen
+  i niezmienione `data/`. Mutacje nowego modulu: 61 zabitych, 9 ocalałych
+  przeanalizowanych; niezalezny review wykryl przypadek pustego
+  `generated_at`, ktory naprawiono, a delta review nie znalazl P1/P2.
+  Szczegoly w [logu PBI-050](verification/PBI-050.md). Commit implementacji
+  `69edc5eb64bc0bb4aab30fe2426268023f45caa9` jest na origin;
+  zdalny SHA potwierdzil GitHub API, a CI validate
+  [36422249824](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36422249824)
+  zakonczylo sie sukcesem dla tego SHA. Przy wznowieniu potwierdz
+  checkpoint dokumentacji na origin i jego CI, potem wykonaj dokladnie
+  **PBI-051** (dowody i powody 16 rozbieznosci prefixu; zaleznosc PBI-044
+  dostarczona). Pozostaje 5 PBI: 051–054 i 055. Nie zaczynaj PBI-051
+  w tej sesji.
+
 - PBI-049 jest wykonane: eksporter przycina każde z 15 pól tekstowych DBF
   według deklarowanej szerokości w bajtach UTF-8, na granicy pełnego znaku.
   Odtworzony `UnicodeDecodeError` dla `253 × a + ó` został usunięty; testy
