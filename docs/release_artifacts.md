@@ -58,8 +58,11 @@ pol:
 `x_1992`, `y_1992`, `elev_m`, `source`, `nr_inwent`, `pig_id`, `pig_url`,
 `tpn_gid`, `obs_date`, `status`, `obj_notes`, `cave_notes`, `meas_notes`.
 
-Uwagi w DBF sa limitowane do 254 znakow na pole, zgodnie z praktycznym limitem
-pol tekstowych Shapefile.
+Pola tekstowe DBF maja limity w bajtach UTF-8, a nie w liczbie znakow.
+`name_local` ma 120 bajtow, `obj_notes`, `cave_notes`, `meas_notes` i
+`pig_url` po 254 bajty; pozostale limity wynikaja z definicji pol DBF.
+Tekst przekraczajacy limit jest skracany na granicy pelnego znaku UTF-8.
+Pelna tresc pozostaje w YAML, SQLite, CSV i GeoJSON.
 
 ## `best-measurements.gpx`
 

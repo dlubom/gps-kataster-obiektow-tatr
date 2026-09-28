@@ -285,32 +285,37 @@ def _write_shapefile_zip(rows: tuple[BestMeasurementExportRow, ...], path: Path)
     with tempfile.TemporaryDirectory() as tmp_dir_name:
         tmp_dir = Path(tmp_dir_name)
         base_path = tmp_dir / "best-measurements"
-        writer = shapefile.Writer(str(base_path), shapeType=shapefile.POINT)
+        writer = shapefile.Writer(str(base_path), shapeType=shapefile.POINT, encoding="utf-8")
         try:
             _define_shapefile_fields(writer)
             for row in rows:
                 writer.point(row.y_1992, row.x_1992)
                 writer.record(
-                    row.object_id,
-                    _text_or_empty(row.name_local),
-                    row.category,
-                    _text_or_empty(row.cave_id),
-                    row.measurement_id,
-                    row.lat,
-                    row.lon,
-                    row.x_1992,
-                    row.y_1992,
-                    row.elevation_m,
-                    row.source,
-                    _text_or_empty(row.nr_inwent),
-                    _text_or_empty(row.pig_id),
-                    _text_or_empty(row.pig_url),
-                    _text_or_empty(row.tpn_globalid),
-                    row.observed_date,
-                    row.verification_status,
-                    _truncated_text(row.object_notes, max_length=254),
-                    _truncated_text(row.cave_notes, max_length=254),
-                    _truncated_text(row.measurement_notes, max_length=254),
+                    *_dbf_record_values(
+                        writer,
+                        (
+                            row.object_id,
+                            row.name_local,
+                            row.category,
+                            row.cave_id,
+                            row.measurement_id,
+                            row.lat,
+                            row.lon,
+                            row.x_1992,
+                            row.y_1992,
+                            row.elevation_m,
+                            row.source,
+                            row.nr_inwent,
+                            row.pig_id,
+                            row.pig_url,
+                            row.tpn_globalid,
+                            row.observed_date,
+                            row.verification_status,
+                            row.object_notes,
+                            row.cave_notes,
+                            row.measurement_notes,
+                        ),
+                    )
                 )
         finally:
             writer.close()
@@ -567,14 +572,23 @@ def _csv_value(value: object) -> str:
     return str(value)
 
 
-def _text_or_empty(value: str | None) -> str:
-    return "" if value is None else value
+def _dbf_record_values(writer: shapefile.Writer, values: tuple[object, ...]) -> tuple[object, ...]:
+    """Fit each text value to its declared DBF byte width before PyShp writes it."""
+
+    return tuple(
+        _truncated_text(value, max_bytes=field.size) if field.field_type == "C" else value
+        for field, value in zip(writer.fields, values, strict=True)
+    )
 
 
-def _truncated_text(value: str | None, *, max_length: int) -> str:
+def _truncated_text(value: str | None, *, max_bytes: int) -> str:
     if value is None:
         return ""
-    return value[:max_length]
+    encoded = value.encode("utf-8")
+    if len(encoded) <= max_bytes:
+        return value
+    # The input bytes are valid UTF-8; only the cut-off final code point can be incomplete.
+    return encoded[:max_bytes].decode("utf-8", errors="ignore")
 
 
 def _float_text(value: float) -> str:
