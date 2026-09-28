@@ -4,6 +4,25 @@ Last updated: 2026-09-28
 
 ## Current handoff — review remediation
 
+- PBI-051 jest wykonane: dla wszystkich 16 historycznych rozbieżności
+  prefixu zapisano w `id_assignment.prefix_override_reason` faktograficzny
+  powód. ID wyznaczono z PIG `m-001`, a obecny automatyczny best to później
+  dodany TPN `m-002` z innym wynikiem resolvera; trwałe ID pozostały bez
+  zmiany. Diff danych to wyłącznie 16 linii powodów; nie zmieniono pomiarów,
+  współrzędnych, `best` ani statusów weryfikacji. [Log PBI-051](verification/PBI-051.md)
+  zawiera tabelę 16/16 ze źródłami i historią Git. Dla PL-0019, MLZ-0045
+  i CHZ-0011 pozostaje niepewność położenia; nie przypisano operatorowi
+  nieudokumentowanej decyzji ani nie oznaczono źródeł jako zweryfikowane
+  terenowo. Pełna bramka: 862 testy, 7/7 readback, 0 błędów, 2066
+  ostrzeżeń, w tym nadal 16 `OBJECT_PREFIX_MISMATCH`; niezależny review
+  bez P1/P2. Commit danych `f5508fa705f3cb05a5866fab9df9c59333e866e0`
+  jest na origin (GitHub API), a CI validate
+  [36425118151](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36425118151)
+  zakończyło się sukcesem dla tego SHA. Przy wznowieniu potwierdź checkpoint
+  dokumentacji na origin i jego CI, następnie wykonaj dokładnie **PBI-052**
+  (egzekwowanie powodów; zależności PBI-044 i PBI-051 dostarczone).
+  Pozostają 4 PBI: 052–054 i 055. Nie zaczynaj PBI-052 w tej sesji.
+
 - PBI-050 jest wykonane: jeden czas `generated_at` ustala metadane SQLite,
   eksportow, daty wpisow obu ZIP i date naglowka DBF. Wpisy ZIP maja stale
   atrybuty; czas UTC poza latami 1980–2107 lub bez strefy jest odrzucany
