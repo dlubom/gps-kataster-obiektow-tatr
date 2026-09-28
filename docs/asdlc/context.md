@@ -4,6 +4,24 @@ Last updated: 2026-09-28
 
 ## Current handoff — review remediation
 
+- PBI-053 jest wykonane: specyfikacja i instrukcje opisują wdrożony SQLite
+  z WKT zamiast obietnicy SpatiaLite, rzeczywiste polecenia CLI, zagnieżdżone
+  liczniki `metadata.json` oraz kolumny `attachments`. Poprawiono przykładowe
+  współrzędne i daty YAML; przykład przeszedł walidację na kopii. Polecenia
+  walidacji i builda działały na kopii fixture, a 31 względnych odnośników
+  ma istniejące cele. Pełna bramka: 889 testów, 7/7 readback, 0 błędów,
+  2066 dotychczasowych ostrzeżeń i niezmienione `data/`. Niezależny review
+  bez P1/P2; dokumentacyjna drobna uwaga została poprawiona. Szczegóły w
+  [logu PBI-053](verification/PBI-053.md). Commit dokumentacji
+  `083eef9dd1369b6e05ff4c5444a9a29276b57c0e` jest na origin
+  (GitHub API), a CI validate
+  [36457947924](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36457947924)
+  zakończyło się sukcesem dla tego SHA. Przy wznowieniu potwierdź checkpoint
+  dokumentacji na origin i jego CI. Następnie wykonaj dokładnie **PBI-055**
+  (zależność PBI-042 dostarczona): PBI-054 można zakończyć dopiero po
+  rozstrzygnięciu PBI-055. Pozostają 2 PBI: 055 i 054. Nie zaczynaj
+  PBI-055 w tej sesji.
+
 - PBI-052 jest wykonane: walidator wymaga niepustego, niebiałego
   `id_assignment.prefix_override_reason` dla ręcznego przydziału ID lub
   trwałego prefixu niezgodnego z aktualnym najlepszym pomiarem. Brak powodu

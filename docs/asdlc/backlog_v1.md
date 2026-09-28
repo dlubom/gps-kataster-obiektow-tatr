@@ -36,18 +36,19 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-050 | Deterministyczne archiwa release | wykonane 2026-09-28 | [log](verification/PBI-050.md) |
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
-| PBI-053 | Zgodność dokumentacji i kontraktów | zweryfikowane — do dostarczenia | [log](verification/PBI-053.md) |
+| PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
 | PBI-055 | Skończone duże int w polach REAL SQLite | planowane | [opis](#pbi-055-skonczone-duze-int-w-polach-real-sqlite) |
 
-Następne gotowe zadanie: **PBI-053** (zależności PBI-040, PBI-043,
-PBI-048 i PBI-050 wykonane). PBI-052 dostarczono w commicie
-`a823aafe8d7e498c79a941a1bc52df8fb6461f13`; GitHub API potwierdziło
+Następne zadanie możliwe do ukończenia: **PBI-055** (zależność PBI-042
+wykonana). PBI-054 pozostaje planowane, ale jego końcowy odbiór wymaga
+wcześniejszego rozstrzygnięcia PBI-055. PBI-053 dostarczono w commicie
+`083eef9dd1369b6e05ff4c5444a9a29276b57c0e`; GitHub API potwierdziło
 zgodny zdalny SHA, a CI validate
-[36431133236](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36431133236)
+[36457947924](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36457947924)
 zakończyło się sukcesem dla dokładnie tego SHA. Dowody w
-[logu PBI-052](verification/PBI-052.md). Pozostają 3 zadania:
-PBI-053–054 i niezależne PBI-055. Ta sesja kończy się po PBI-052.
+[logu PBI-053](verification/PBI-053.md). Pozostają 2 zadania: PBI-055
+i PBI-054. Ta sesja kończy się po PBI-053.
 PBI-001–033 poniżej są historycznie wykonane; raport nie cofa ich statusów,
 lecz definiuje osobne naprawy. R06 ma teraz pełną regułę i udokumentowane
 16 historycznych powodów; PBI-051/052 nie rozstrzygają poprawności
