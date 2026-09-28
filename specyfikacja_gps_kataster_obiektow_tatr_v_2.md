@@ -518,10 +518,10 @@ Dla własnych pomiarów wymagane minimum:
 id: m-001
 lat: 49.2423
 lon: 19.8145
-x_1992: 558123.45
-y_1992: 150456.78
+x_1992: 153073.82
+y_1992: 559266.98
 source: wlasne
-observed_date: 2024-07-15
+observed_date: "2024-07-15"
 method: gps_receiver
 verification_status: nieweryfikowany
 ```
@@ -719,12 +719,15 @@ tworzą celu. Reguła nie osłabia walidacji istniejących danych.
 
 ### 10.2 Przykład obiektu YAML
 
+Poniższy uproszczony przykład pokazuje jeden otwór Jaskini Mroźnej. Współrzędne
+PL-1992 odpowiadają podanym WGS84; drugi otwór pozostaje osobnym obiektem.
+
 ```yaml
 schema_version: 1
-id: KSW-0001
+id: KSW-0256
 category: jaskinia_otwor
 name_local: "Jaskinia Mroźna — wejście na trasę turystyczną"
-cave_id: C-0001
+cave_id: C-0267
 
 id_assignment:
   method: auto
@@ -741,19 +744,19 @@ external_refs:
 
 measurements:
   - id: m-001
-    lat: 49.2423
-    lon: 19.8145
-    x_1992: 558123.45
-    y_1992: 150456.78
-    elevation_m: 1240.0
+    lat: 49.252213736218366
+    lon: 19.870411480933125
+    x_1992: 154220.9
+    y_1992: 563322.65
+    elevation_m: 1092.549975
     elevation_datum: unknown
     elevation_source: source_record
     horizontal_accuracy_m: null
     vertical_accuracy_m: null
     source: TPN
     source_ref: "TPN:{71432220-CA17-4420-ACC8-394596EDF79F}"
-    observed_date: 2022-05-25
-    source_date: 2022-05-25
+    observed_date: "2022-05-25"
+    source_date: "2022-05-25"
     method: source_record
     device: null
     tags: []
@@ -761,21 +764,21 @@ measurements:
     verified_by: null
     verified_at: null
     notes: "Import z rekordu punktowego TPN."
-    created_at: 2026-05-15T10:00:00Z
+    created_at: "2026-05-15T10:00:00Z"
     created_by: dl
 
 best_measurement:
   mode: auto
   measurement_id: m-001
   reason: null
-  updated_at: 2026-05-15T10:00:00Z
+  updated_at: "2026-05-15T10:00:00Z"
   updated_by: dl
 
 attachments: []
 notes: null
-created_at: 2026-05-15T10:00:00Z
+created_at: "2026-05-15T10:00:00Z"
 created_by: dl
-updated_at: 2026-05-15T10:00:00Z
+updated_at: "2026-05-15T10:00:00Z"
 updated_by: dl
 ```
 
@@ -783,7 +786,7 @@ updated_by: dl
 
 ```yaml
 schema_version: 1
-id: C-0001
+id: C-0267
 name: "Jaskinia Mroźna"
 system_name: null
 
@@ -802,13 +805,12 @@ external_refs:
     notes: "Rekord katalogowy PIG."
 
 object_ids:
-  - KSW-0001
-  - KSW-0002
+  - KSW-0256
 
 notes: null
-created_at: 2026-05-15T10:00:00Z
+created_at: "2026-05-15T10:00:00Z"
 created_by: dl
-updated_at: 2026-05-15T10:00:00Z
+updated_at: "2026-05-15T10:00:00Z"
 updated_by: dl
 ```
 
@@ -917,21 +919,16 @@ Zadania:
 
 ---
 
-## 12. Build: SQLite + SpatiaLite
+## 12. Build: SQLite z geometrią WKT
 
-Wybór: SQLite + SpatiaLite.
+Wdrożony wariant V1 to zwykły SQLite. Geometrie są zapisywane jako tekst WKT
+`POINT(...)` w kolumnach `TEXT`; baza nie inicjalizuje SpatiaLite ani indeksów
+przestrzennych. Decyzja z PBI-016 pozwala zbudować i dystrybuować jeden plik
+bez serwera oraz odczytać pełny model katalogu i współrzędne. Źródłem prawdy
+pozostają YAML-e, a baza jest artefaktem pochodnym.
 
-Powody:
-
-- jeden plik,
-- łatwa dystrybucja,
-- QGIS otwiera natywnie,
-- brak serwera DB,
-- indeksy przestrzenne,
-- możliwość użycia lokalnie i w CI,
-- dobre dopasowanie do modelu read-only.
-
-DB jest artefaktem. Nie jest źródłem prawdy.
+SpatiaLite można rozważyć w przyszłości, jeśli potrzeby QGIS lub zapytań
+przestrzennych będą tego wymagały. Nie jest częścią obecnego pliku SQLite.
 
 ### 12.1 Tabele logiczne
 
@@ -945,14 +942,18 @@ Minimalny schemat logiczny:
 - `attachments`,
 - `relations`,
 - `best_measurements`,
-- `validation_flags`.
+- `validation_flags`,
+- `metadata`.
 
 ### 12.2 Geometrie
 
-- `measurements.geom_wgs84` — punkt EPSG:4326,
-- `measurements.geom_1992` — punkt EPSG:2180,
-- `objects.best_geom_wgs84` — geometria z najlepszego pomiaru,
-- `objects.best_geom_1992` — geometria z najlepszego pomiaru.
+- `measurements.geom_wgs84` — WKT `POINT(lon lat)` ze współrzędnych WGS84,
+- `measurements.geom_1992` — WKT `POINT(y_1992 x_1992)` ze współrzędnych EPSG:2180,
+- `objects.best_geom_wgs84` i `objects.best_geom_1992` — ten sam zapis WKT
+  dla autorytatywnego `best_measurement.measurement_id`.
+
+Kolejność WKT to oś pozioma, potem pionowa. Projektowe pola PL-1992
+zachowują konwencję `x_1992 = northing`, `y_1992 = easting`.
 
 ---
 
@@ -978,7 +979,7 @@ Każdy release zawiera:
 | `best-measurements.gpx` | GPX | WGS84, do GPS receiverów. |
 | `best-measurements.csv` | CSV | Oba układy współrzędnych. |
 | `best-measurements.shp.zip` | ESRI Shapefile | EPSG:2180, QGIS / TPN. |
-| `katalog.sqlite.zip` | SQLite + SpatiaLite | Pełny snapshot. |
+| `katalog.sqlite.zip` | SQLite z geometrią WKT | Pełny snapshot bez SpatiaLite. |
 | `metadata.json` | JSON | Liczby obiektów, pomiarów, jaskiń, data buildu, wersja schematu. |
 
 Repo i eksporty są publiczne. Dane projektu, dokumentacja repozytorium oraz generowane eksporty są licencjonowane jako **Creative Commons Attribution 4.0 International (CC BY 4.0)**. Atrybucję źródeł zachowujemy przez referencje zapisane w YAML i eksportach.
@@ -1043,9 +1044,12 @@ Minimalny zestaw V1:
 scripts/assign_id.py lat lon
 scripts/validate.py
 scripts/build_db.py
-scripts/export.py --best
+scripts/export_best_measurements.py
+scripts/build_release_artifacts.py
 scripts/importers/import_tpn.py
 scripts/importers/import_pig.py
+scripts/importers/apply_review.py
+scripts/verify_project.py
 ```
 
 ### 16.1 `assign_id.py`
@@ -1072,11 +1076,11 @@ Zadania:
 Zadania:
 
 - czyta YAML,
-- buduje SQLite + SpatiaLite,
+- buduje SQLite z geometrią WKT w kolumnach tekstowych,
 - tworzy indeksy,
 - zapisuje `build/katalog.sqlite`.
 
-### 16.4 `export.py --best`
+### 16.4 `export_best_measurements.py`
 
 Zadania:
 
@@ -1085,20 +1089,19 @@ Zadania:
 
 ### 16.5 Standardowe komendy developerskie
 
-Docelowo projekt powinien mieć jeden spójny sposób uruchamiania narzędzi lokalnie i w CI, np. przez `uv run`.
-
-Przykładowe komendy:
+Pełna lokalna bramka używa dwóch pierwszych poleceń wspólnych z CI.
+`git diff --check` jest dodatkową kontrolą lokalnego diffu:
 
 ```text
-uv sync
-uv run ruff check .
-uv run ruff format --check .
-uv run pytest
-uv run python scripts/validate.py
-uv run python scripts/build_db.py
+uv sync --frozen
+uv run --frozen python scripts/verify_project.py
+git diff --check
 ```
 
-Wersje zależności są utrwalane w lockfile, aby lokalne środowisko i CI działały powtarzalnie.
+Runner sprawdza Ruff, wszystkie testy, walidację, izolowany build i ponowny
+odczyt siedmiu artefaktów oraz niezmienność źródeł. Osobny lokalny build
+release uruchamia `uv run --frozen python scripts/build_release_artifacts.py`.
+Wersje zależności są utrwalane w lockfile.
 
 ### 16.6 Testy
 

@@ -101,7 +101,11 @@ Pola:
 
 ## `katalog.sqlite`
 
-SQLite trzyma pelniejszy model niz plaskie eksporty. Glowne tabele i kolumny:
+SQLite trzyma pelniejszy model niz plaskie eksporty. Geometrie pomiarow
+`geom_wgs84` i `geom_1992` oraz geometrie najlepszego pomiaru obiektu
+`best_geom_wgs84` i `best_geom_1992` sa tekstem WKT `POINT(...)`, nie
+natywnymi kolumnami SpatiaLite. Kolejnosc wspolrzednych to `lon lat` dla
+WGS84 i `y_1992 x_1992` dla EPSG:2180. Glowne tabele i kolumny:
 
 | Tabela | Kolumny |
 |---|---|
@@ -111,7 +115,7 @@ SQLite trzyma pelniejszy model niz plaskie eksporty. Glowne tabele i kolumny:
 | `best_measurements` | `object_id`, `mode`, `measurement_id`, `computed_best_measurement_id`, `reason`, `updated_at`, `updated_by` |
 | `object_external_refs` | `object_id`, `system`, `ref_type`, `external_id`, `url`, `scope`, `notes` |
 | `cave_external_refs` | `cave_id`, `system`, `ref_type`, `external_id`, `url`, `scope`, `notes` |
-| `attachments` | `object_id`, `path`, `type`, `description`, `created_at`, `created_by` |
+| `attachments` | `object_id`, `id`, `kind`, `measurement_id`, `path`, `caption`, `date`, `created_at`, `created_by` |
 | `relations` | `id`, `schema_version`, `from_object_id`, `to_object_id`, `relation_type`, `notes` |
 | `validation_flags` | `code`, `severity`, `path`, `description` |
 | `metadata` | `key`, `value` |

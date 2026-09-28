@@ -286,11 +286,15 @@ czystego checkoutu po review zmian w YAML:
 
 5. Sprawdz `build/exports/metadata.json`, zwlaszcza liczniki:
 
-   - `object_count`,
-   - `cave_count`,
-   - `measurement_count`,
-   - `validation_error_count`,
-   - `validation_warning_count`.
+   - `counts.objects`,
+   - `counts.caves`,
+   - `counts.relations`,
+   - `counts.measurements`,
+   - `counts.validation_errors`,
+   - `counts.validation_warnings`.
+
+   To klucze JSON w `metadata.json`. Tabela `metadata` wewnątrz SQLite ma
+   osobne klucze tekstowe, np. `object_count` i `validation_warning_count`.
 
 6. Paczka lokalna znajduje sie w `build/exports/`:
 
@@ -358,6 +362,12 @@ nazwie i położeniu.
 Gdy staging TPN zostawia `TPN_NR_INWENT_AMBIGUOUS`, czesto oznacza to kilka
 otworow tej samej jaskini pod jednym numerem inwentarzowym. Wtedy nie tworz
 automatycznie nowej jaskini tylko dlatego, ze jest drugi punkt.
+Raport TPN formatu 2 zachowuje poprawny geograficznie wiersz `unresolved`
+wraz z pomiarem i referencjami, ale nie zapisuje finalnego YAML. Jawna
+decyzja musi wskazać właściwy obiekt albo sposób utworzenia otworu oraz
+wiązać pełny raport i wiersz przez `report_sha256`, `record_number` i
+`globalid`. Polecenie inspekcji, przykłady decyzji i procedura odtworzenia
+starszego raportu są w [formacie decyzji](asdlc/staging_review_decisions.md#format-raportu-tpn).
 
 1. Znajdz rekord PIG po nazwie albo numerze inwentarzowym:
 
