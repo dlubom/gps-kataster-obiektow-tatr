@@ -10,9 +10,13 @@ import yaml
 
 from gps_kataster_obiektow_tatr.build_db import (
     BuildDatabaseValidationError,
+    _create_schema,
+    _insert_measurements,
     build_sqlite_database,
 )
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
+from gps_kataster_obiektow_tatr.data_loader import DataKind, LoadedYamlRecord
+from gps_kataster_obiektow_tatr.validator import validate_data_dir
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 BUILD_DB_SCRIPT = REPO_ROOT / "scripts" / "build_db.py"
@@ -130,6 +134,85 @@ def test_build_sqlite_database_rejects_invalid_yaml(tmp_path: Path) -> None:
 
     assert "BEST_MEASUREMENT_MISSING" in {issue.code for issue in exc_info.value.issues}
     assert not sqlite_path.exists()
+
+
+@pytest.mark.parametrize("value", [2**63, -(2**63) - 1, -(2**63)])
+def test_build_sqlite_database_stores_large_finite_elevation_as_real(
+    tmp_path: Path, value: int
+) -> None:
+    data_dir = tmp_path / "data"
+    sqlite_path = tmp_path / "catalog.sqlite"
+    obj = _valid_object()
+    obj["measurements"][0]["elevation_m"] = value
+    _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", obj)
+    _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
+
+    assert not [issue for issue in validate_data_dir(data_dir) if issue.severity == "error"]
+    build_sqlite_database(data_dir=data_dir, output_path=sqlite_path, generated_at=GENERATED_AT)
+
+    with _connect(sqlite_path) as connection:
+        row = connection.execute(
+            "SELECT elevation_m, typeof(elevation_m) AS storage_type FROM measurements "
+            "WHERE object_id = 'KSW-0001' AND id = 'm-001'"
+        ).fetchone()
+    assert row["storage_type"] == "real"
+    assert row["elevation_m"] == float(value)
+
+
+@pytest.mark.parametrize(
+    "field",
+    (
+        "lat",
+        "lon",
+        "x_1992",
+        "y_1992",
+        "elevation_m",
+        "horizontal_accuracy_m",
+        "vertical_accuracy_m",
+    ),
+)
+def test_measurement_real_fields_bind_large_finite_int_as_float(field: str) -> None:
+    measurement = _measurement("m-001", source="PIG", observed_date="2026-05-15")
+    measurement[field] = 2**63
+    obj = _valid_object()
+    obj["measurements"] = [measurement]
+    record = LoadedYamlRecord(
+        kind=DataKind.OBJECT,
+        path=Path("KSW-0001.yml"),
+        data=obj,
+        raw_data=obj,
+    )
+
+    with sqlite3.connect(":memory:") as connection:
+        _create_schema(connection)
+        _insert_measurements(connection, (record,))
+        row = connection.execute(
+            f"SELECT {field}, typeof({field}) FROM measurements WHERE id = 'm-001'"
+        ).fetchone()
+    assert row == (float(2**63), "real")
+
+
+def test_unrepresentable_number_preserves_existing_database(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    sqlite_path = tmp_path / "catalog.sqlite"
+    _write_sample_data(data_dir)
+    build_sqlite_database(data_dir=data_dir, output_path=sqlite_path, generated_at=GENERATED_AT)
+    before = sqlite_path.read_bytes()
+
+    obj = _valid_object()
+    obj["measurements"][0]["elevation_m"] = 10**400
+    _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", obj)
+
+    with pytest.raises(BuildDatabaseValidationError) as exc_info:
+        build_sqlite_database(data_dir=data_dir, output_path=sqlite_path, generated_at=GENERATED_AT)
+    assert any(
+        issue.code == "NON_FINITE_NUMBER"
+        and issue.path == data_dir / "objects" / "KSW" / "KSW-0001.yml"
+        and "measurements[0].elevation_m" in issue.description
+        for issue in exc_info.value.issues
+    )
+    assert sqlite_path.read_bytes() == before
+    assert not sqlite_path.with_name("catalog.sqlite.tmp").exists()
 
 
 def _write_sample_data(data_dir: Path) -> None:

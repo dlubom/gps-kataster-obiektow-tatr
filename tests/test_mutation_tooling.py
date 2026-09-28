@@ -10,6 +10,7 @@ MUTATION_WORKFLOW = REPO_ROOT / ".github" / "workflows" / "mutation.yml"
 
 MUTATED_PATHS = [
     "src/gps_kataster_obiektow_tatr/archive_metadata.py",
+    "src/gps_kataster_obiektow_tatr/build_db.py",
     "src/gps_kataster_obiektow_tatr/data_loader.py",
     "src/gps_kataster_obiektow_tatr/best_measurement.py",
     "src/gps_kataster_obiektow_tatr/coordinates.py",
@@ -26,6 +27,7 @@ MUTATED_PATHS = [
 ]
 
 MUTATION_TEST_SELECTION = [
+    "tests/test_build_db.py",
     "tests/test_release_artifacts.py",
     "tests/test_best_measurements_export.py",
     "tests/test_data_loader.py",
@@ -50,6 +52,7 @@ MUTATION_TEST_SELECTION = [
 MUTATION_PYTEST_SELECTION_ARGS = [
     "-k",
     (
+        "not test_build_db_cli_creates_sqlite and "
         "not test_cli_review_validation and "
         "not test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors "
         "and not test_cli_writes_staging_artifacts_without_final_yaml "

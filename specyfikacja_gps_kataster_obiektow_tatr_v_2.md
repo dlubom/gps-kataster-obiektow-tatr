@@ -955,6 +955,13 @@ Minimalny schemat logiczny:
 Kolejność WKT to oś pozioma, potem pionowa. Projektowe pola PL-1992
 zachowują konwencję `x_1992 = northing`, `y_1992 = easting`.
 
+Siedem pól liczbowych pomiaru (`lat`, `lon`, `x_1992`, `y_1992`,
+`elevation_m`, `horizontal_accuracy_m`, `vertical_accuracy_m`) jest
+przekazywanych do kolumn SQLite `REAL` jako liczby zmiennoprzecinkowe.
+Skończone wartości całkowite spoza zakresu SQLite `INTEGER` można dzięki
+temu zapisać w `REAL`, z precyzją tego typu. Liczby niereprezentowalne jako
+skończony `float` są odrzucane przez walidację przed zapisem artefaktu.
+
 ---
 
 ## 13. Release i eksporty

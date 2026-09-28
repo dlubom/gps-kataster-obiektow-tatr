@@ -38,7 +38,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
 | PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane | — |
-| PBI-055 | Skończone duże int w polach REAL SQLite | planowane | [opis](#pbi-055-skonczone-duze-int-w-polach-real-sqlite) |
+| PBI-055 | Skończone duże int w polach REAL SQLite | zweryfikowane — do dostarczenia | [log](verification/PBI-055.md) |
 
 Następne zadanie możliwe do ukończenia: **PBI-055** (zależność PBI-042
 wykonana). PBI-054 pozostaje planowane, ale jego końcowy odbiór wymaga
@@ -806,7 +806,7 @@ Import PIG/TPN warto zaczac dopiero po dzialajacym walidatorze, bo inaczej szybk
 
 ## PBI-055: Skonczone duze int w polach REAL SQLite
 
-Status: planowane; niezależne znalezisko review PBI-042, bez implementacji.
+Status: zweryfikowane — do dostarczenia; niezależne znalezisko review PBI-042.
 Zależność: PBI-042. Priorytet P2; rozstrzygnąć przed końcowym odbiorem PBI-054.
 
 Reprodukcja: poprawny obiekt z `elevation_m: 9223372036854775808` (2**63)
