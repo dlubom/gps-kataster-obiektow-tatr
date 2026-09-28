@@ -1,8 +1,25 @@
 # AS-DLC project context
 
-Last updated: 2026-09-27
+Last updated: 2026-09-28
 
 ## Current handoff — review remediation
+
+- PBI-049 jest wykonane: eksporter przycina każde z 15 pól tekstowych DBF
+  według deklarowanej szerokości w bajtach UTF-8, na granicy pełnego znaku.
+  Odtworzony `UnicodeDecodeError` dla `253 × a + ó` został usunięty; testy
+  obejmują polskie i słowackie znaki, granice długości, wszystkie pola,
+  ścisły odczyt DBF i pełne treści w CSV/GeoJSON/SQLite. Pełna bramka:
+  851 testów, 7/7 readback, 0 błędów, 2066 niezmienionych ostrzeżeń,
+  identyczny hash `data/`. Niezależny review nie wykazał P1/P2.
+  Szczegóły w [logu PBI-049](verification/PBI-049.md). Implementacja
+  `ce8c0c04b4166697495ef29af71e16f153859dbe` jest na origin;
+  zdalny SHA był zgodny, a CI validate
+  [36413376007](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36413376007)
+  zakończyło się sukcesem dla tego commitu. Przy wznowieniu potwierdź
+  checkpoint dokumentacji na origin i jego CI, następnie wykonaj dokładnie
+  **PBI-050** (deterministyczne archiwa release; zależność PBI-049
+  dostarczona). Pozostaje 6 PBI: 050–054 i 055. Nie zaczynaj PBI-050
+  w tej sesji.
 
 - PBI-048 jest wykonane: jawna decyzja dla TPN `unresolved` wiąże pełny
   raport v2 przez SHA-256, `record_number` i `GLOBALID`. Operator może dodać
