@@ -4,17 +4,22 @@ Last updated: 2026-09-29
 
 ## Current handoff — review remediation
 
-- PBI-057 jest zweryfikowane — do dostarczenia, na bazie
-  `57ebc4a59ff3fea8e3d558b1f8f42a95178134a3` potwierdzonej na origin
-  i zielonym CI validate 36618943170. Jawne propozycje `create_object`
-  i `create_cave` są związane z wierszem źródła; fallback bez ID wymaga
-  proweniencji. Pełna bramka: 987 testów, 7/7 readback, 0 błędów,
-  2066 znanych ostrzeżeń, niezmieniony hash `data/`; mutacje selektorów:
-  143/143 killed. Niezależny review: approve, bez P1/P2. Dowody:
-  [log PBI-057](verification/PBI-057.md). Następny krok w tej sesji:
-  scoped commit, push, potwierdzenie zdalnego SHA i CI oraz checkpoint
-  dokumentacji. Dopiero po dostarczeniu gotowe będzie **PBI-058**,
-  następnie ponowienie PBI-054. Nie rozpoczynać ich w tej sesji.
+- PBI-057 jest wykonane. Jawne ID `create_object`/`create_cave` musi
+  odpowiadać wybranemu wierszowi źródła; legalny fallback bez ID wymaga
+  proweniencji. Reprodukcja na bazie: 20 failed / 16 passed. Pełna bramka:
+  987 testów, 7/7 readback, 0 błędów, 2066 dotychczasowych ostrzeżeń,
+  niezmieniony hash `data/`; mutacje selektorów: 143/143 killed,
+  bez awarii i timeoutów. Niezależny review: approve, bez P1/P2.
+  Commit implementacji `a92f87d85dcebb501a29004ab5b4fe99635f8fa0` jest
+  na origin (`git ls-remote`), a CI validate
+  [36622602186](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36622602186)
+  jest zielone dla dokładnie tego SHA. Dowody: [log PBI-057](verification/PBI-057.md).
+  Przy wznowieniu potwierdzić checkpoint dokumentacji na origin i jego CI.
+  Następne gotowe zadanie to **PBI-058** (zależności PBI-045 i PBI-047
+  wykonane), następnie ponowienie PBI-054 z nową pełną kampanią mutacyjną
+  i końcowym niezależnym review. Pozostają **2 PBI**. PBI-054 nadal jest
+  zablokowane do dostarczenia PBI-058 i ponowienia weryfikacji.
+  Nie rozpoczynać kolejnego PBI w tej sesji.
 
 - PBI-056 jest wykonane. Wznowiono je na bazie `c165a09c790db4a8ef52eda4f3ee083f36a4440f`
   potwierdzonej przez fetch HTTPS, GitHub API i zielone CI validate 36468060891.

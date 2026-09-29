@@ -37,21 +37,22 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — otwarte P2 w PBI-057; oczekuje też PBI-058 | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — oczekuje PBI-058 i ponowienia końcowej weryfikacji | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
-| PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | zweryfikowane — do dostarczenia | [log](verification/PBI-057.md) |
+| PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
 | PBI-058 | Dodać regresję dopasowania TPN po GLOBALID | planowane | [log odkrycia](verification/PBI-058.md) |
 
 PBI-054 rozpoczęto na czystym branchu, lecz niezależny review odkrył dwa
-odtworzone błędy P2 w granicy staging/review. PBI-056 dostarczono w commicie
-`10c7a40206e88e26e76a3ca87f2253b96a0a4677`; `git ls-remote` potwierdził SHA,
-a CI validate [36618089482](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36618089482)
-zakończyło się sukcesem dla dokładnie tego SHA. Pozostają **3 PBI**:
-następne gotowe **PBI-057**, potem PBI-058 i ponowienie PBI-054. Końcowej
-weryfikacji nie można zamknąć przy otwartym P1/P2. W tej sesji zakończono
-wyłącznie PBI-056. Następna sesja potwierdza checkpoint dokumentacji
-na origin i jego CI przed rozpoczęciem PBI-057. Szczegóły i dowody:
+odtworzone błędy P2 w granicy staging/review. PBI-056 i PBI-057 są już
+dostarczone. PBI-057: commit `a92f87d85dcebb501a29004ab5b4fe99635f8fa0`,
+SHA potwierdzony przez `git ls-remote`, CI validate
+[36622602186](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36622602186)
+zakończone sukcesem dla dokładnie tego SHA. Pozostają **2 PBI**:
+następne gotowe **PBI-058**, potem ponowienie PBI-054, w tym nowa pełna
+kampania mutacyjna i końcowy niezależny review. W tej sesji zakończono
+wyłącznie PBI-057. Następna sesja potwierdza checkpoint dokumentacji
+na origin i jego CI przed rozpoczęciem PBI-058. Szczegóły i dowody:
 [PBI-054](verification/PBI-054.md), [PBI-056](verification/PBI-056.md),
 [PBI-057](verification/PBI-057.md), [PBI-058](verification/PBI-058.md).
 
