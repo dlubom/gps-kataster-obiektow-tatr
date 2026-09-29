@@ -4,18 +4,26 @@ Last updated: 2026-09-29
 
 ## Current handoff — review remediation
 
-- PBI-058 jest zweryfikowane — do dostarczenia. Dodano cztery przypadki
-  regresji: jednoznaczny GLOBALID wygrywa ze sprzecznym numerem/nazwą
-  i odległością, niejednoznaczny pozostaje unresolved, w obu kolejnościach.
-  Pełna bramka: 991 testów, 7/7 readback, 0 błędów, 2066 znanych ostrzeżeń,
-  niezmienione `data/`; mutacje: 19/19 gałęzi GLOBALID i 17/17 pomocnika
-  killed, szerszy zakres 91 killed / 55 starszych survived z analizą.
-  Niezależny review: approve, bez P1/P2. Najbliższy krok: commit i push
-  tego PBI, potwierdzenie zdalnego SHA oraz jego CI, potem checkpoint
-  dokumentacji. Dowody: [log PBI-058](verification/PBI-058.md).
-  Po dostarczeniu pozostanie jedno gotowe zadanie: **PBI-054** — nowa
-  pełna kampania mutacyjna i końcowy niezależny review. Nie zaczynać go
-  w tej sesji.
+- PBI-058 jest wykonane. Cztery przypadki sprawdzają pierwszeństwo
+  jednoznacznego GLOBALID mimo innego numeru/nazwy/odległości oraz
+  unresolved przy niejednoznacznym GLOBALID, w obu kolejnościach.
+  Reprodukcja luki na bazie: mutant pomijający GLOBALID przeżył,
+  17 mutantów pomocnika miało no tests. Pełna bramka: 991 testów,
+  7/7 readback, 0 błędów, 2066 znanych ostrzeżeń, niezmienione `data/`.
+  Mutacje reguły GLOBALID i pomocnika: **36/36 killed**; szerszy zakres:
+  91 killed / 55 starszych survived z pełną analizą. Niezależny review
+  testów i dokumentacji: approve, bez P1/P2. Commit testów i dowodów
+  `2cf74459463974e4005bc4ccb965e3422eaeac39` jest na origin
+  (`git ls-remote`), CI validate
+  [36631275062](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36631275062)
+  jest zielone dla dokładnie tego SHA. Dowody: [log PBI-058](verification/PBI-058.md).
+  Przy wznowieniu potwierdzić checkpoint dokumentacji na origin i jego CI.
+  Następne gotowe zadanie: **PBI-054**, jedyne pozostałe PBI. Zależności
+  PBI-035–053 i PBI-055–058 są dostarczone. Ponowić pełną kampanię mutacyjną
+  aktualnych modułów, ocenić starsze ocalałe mutanty (w tym 55 z PBI-058),
+  wykonać regresje R01–R13, sprawdzić powtarzalność siedmiu artefaktów
+  i zlecić niezależny review końcowego diffu. Przerwany historyczny przebieg
+  PBI-054 nie zastępuje nowej kampanii. Nie zaczynać PBI-054 w tej sesji.
 
 - PBI-057 jest wykonane. Jawne ID `create_object`/`create_cave` musi
   odpowiadać wybranemu wierszowi źródła; legalny fallback bez ID wymaga
