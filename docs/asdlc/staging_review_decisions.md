@@ -191,7 +191,16 @@ jako `FINAL_DATA_INVALID`. Review nie naprawia błędnego wejścia przy okazji
 innych decyzji; najpierw popraw dane i uruchom walidator.
 
 Decyzje są stosowane na kopii. Struktura kontenerów staging jest sprawdzana przed indeksowaniem
-(`STAGING_REPORT_INVALID`). Kształt wybranych propozycji i pomiarów
+(`STAGING_REPORT_INVALID`). W każdym raporcie PIG/TPN powtórzone `id` w
+`proposed_objects` lub `proposed_caves` blokuje całą partię, również gdy
+propozycje są identyczne. Raport TPN może mieć najwyżej jedną aktualizację
+`matched_measurements` dla danego wiersza źródłowego; dotyczy to także wpisu
+rozpoznanego przez `measurement.source_ref`, gdy nie ma `record_number`.
+Jeżeli więcej niż jeden wiersz TPN ma ten sam `GLOBALID`, fallback przez
+`source_ref` jest niejednoznaczny i również blokuje partię; jawne numery
+wierszy nadal pozwalają zachować odrębne obserwacje z tej samej referencji.
+Duplikaty dają `STAGING_REPORT_INVALID` przed decyzjami i zapisem, również
+w `--dry-run`; kolejność wpisów nie wybiera zwycięzcy. Kształt wybranych propozycji i pomiarów
 jest sprawdzany przed użyciem (`STAGING_PROPOSAL_INVALID`), a pełny wynik
 całej partii przed pierwszym zapisem (`PROPOSED_DATA_INVALID`). Sprawdzane
 są również niezmienione relacje, oryginalne ścieżki oraz nowe ścieżki `.yml`.

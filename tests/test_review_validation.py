@@ -5,7 +5,13 @@ from copy import deepcopy
 import pytest
 import yaml
 from test_cave_membership import _sample, _snapshot, _write
-from test_staging_review import _pig_staging, _tpn_staging
+from test_staging_review import (
+    TPN_GLOBALID,
+    _cave_data,
+    _object_data,
+    _pig_staging,
+    _tpn_staging,
+)
 
 from gps_kataster_obiektow_tatr.staging_review import StagingReports, apply_review_decisions
 from gps_kataster_obiektow_tatr.validator import has_errors, validate_data_dir
@@ -350,6 +356,192 @@ def test_malformed_staging_container_is_reported(tmp_path, field, value, source)
     assert result.applied_decisions == ()
     assert field in result.issues[0].description
     assert _snapshot(tmp_path) == before
+
+
+@pytest.mark.parametrize("field", ["proposed_objects", "proposed_caves"])
+@pytest.mark.parametrize("conflicting", [False, True], ids=["identical", "conflicting"])
+@pytest.mark.parametrize("reverse", [False, True], ids=["original-first", "duplicate-first"])
+@pytest.mark.parametrize("write", [False, True], ids=["dry-run", "write"])
+def test_duplicate_pig_proposal_ids_block_entire_review(
+    tmp_path, field, conflicting, reverse, write
+):
+    report = _pig_staging()
+    duplicate = deepcopy(report[field][0])
+    if conflicting:
+        duplicate["name_local" if field == "proposed_objects" else "name"] = "Different name"
+    report[field] = [duplicate, report[field][0]] if reverse else [report[field][0], duplicate]
+    data_dir = tmp_path / "data"
+    before = _snapshot(tmp_path)
+    result = apply_review_decisions(
+        _decisions("create_cave", "create_object"),
+        staging_reports=StagingReports(pig=report),
+        data_dir=data_dir,
+        write=write,
+        initialize_data_dir=True,
+    )
+    assert [issue.code for issue in result.issues] == ["STAGING_REPORT_INVALID"]
+    assert field in result.issues[0].description
+    assert report[field][0]["id"] in result.issues[0].description
+    assert result.applied_decisions == () and result.written_paths == ()
+    assert _snapshot(tmp_path) == before
+
+
+@pytest.mark.parametrize("source", ["PIG", "TPN"])
+@pytest.mark.parametrize("field", ["proposed_objects", "proposed_caves"])
+def test_duplicate_proposals_in_unused_staging_report_are_rejected(tmp_path, source, field):
+    report = _pig_staging() if source == "PIG" else _tpn_staging()
+    proposal = deepcopy(_pig_staging()[field][0])
+    report[field] = [proposal, deepcopy(proposal)]
+    result = apply_review_decisions(
+        {"decisions": []},
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=tmp_path / "data",
+        initialize_data_dir=True,
+    )
+    assert [issue.code for issue in result.issues] == ["STAGING_REPORT_INVALID"]
+    assert f"{source}.{field}" in result.issues[0].description
+    assert result.applied_decisions == () and result.written_paths == ()
+    assert _snapshot(tmp_path) == {}
+
+
+@pytest.mark.parametrize("fallback", [False, True], ids=["record-number", "source-ref"])
+@pytest.mark.parametrize("conflicting", [False, True], ids=["identical", "conflicting"])
+@pytest.mark.parametrize("reverse", [False, True], ids=["original-first", "duplicate-first"])
+@pytest.mark.parametrize("write", [False, True], ids=["dry-run", "write"])
+def test_duplicate_tpn_updates_for_one_row_block_all_writes(
+    tmp_path, fallback, conflicting, reverse, write
+):
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    _write(object_path, _object_data(cave_id="C-0001"))
+    _write(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    before = _snapshot(data_dir)
+    report = _tpn_staging()
+    duplicate = deepcopy(report["matched_measurements"][0])
+    if fallback:
+        duplicate.pop("record_number")
+    if conflicting:
+        duplicate["measurement"]["elevation_m"] = 999.0
+    updates = report["matched_measurements"]
+    report["matched_measurements"] = [duplicate, updates[0]] if reverse else [updates[0], duplicate]
+    result = apply_review_decisions(
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}]},
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert [issue.code for issue in result.issues] == ["STAGING_REPORT_INVALID"]
+    assert "TPN.matched_measurements" in result.issues[0].description
+    assert "record_number 1" in result.issues[0].description
+    assert result.applied_decisions == () and result.written_paths == ()
+    assert _snapshot(data_dir) == before
+
+
+@pytest.mark.parametrize("source_ref", [None, 123, "PIG:wrong", "TPN:unknown"])
+@pytest.mark.parametrize("write", [False, True], ids=["dry-run", "write"])
+def test_unresolvable_tpn_fallback_reports_error_without_writes(tmp_path, source_ref, write):
+    data_dir = tmp_path / "data"
+    _write(data_dir / "objects/KSW/KSW-0001.yml", _object_data(cave_id="C-0001"))
+    _write(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    before = _snapshot(data_dir)
+    report = _tpn_staging()
+    report["matched_measurements"][0].pop("record_number")
+    report["matched_measurements"][0]["measurement"]["source_ref"] = source_ref
+    result = apply_review_decisions(
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}]},
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert [issue.code for issue in result.issues] == ["STAGING_MEASUREMENT_UPDATE_MISSING"]
+    assert result.applied_decisions == () and result.written_paths == ()
+    assert _snapshot(data_dir) == before
+
+
+@pytest.mark.parametrize("reverse_rows", [False, True])
+@pytest.mark.parametrize("reverse_updates", [False, True])
+def test_distinct_tpn_fallbacks_preserve_row_measurements(tmp_path, reverse_rows, reverse_updates):
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    _write(object_path, _object_data(cave_id="C-0001"))
+    _write(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    report = _tpn_staging()
+    first = report["matched_measurements"][0]
+    first.pop("record_number")
+    second = deepcopy(first)
+    second_ref = "{SECOND-OBSERVATION}"
+    second["measurement"]["source_ref"] = f"TPN:{second_ref}"
+    second["measurement"]["elevation_m"] = 1300.0
+    second["object_external_refs"][0]["external_id"] = second_ref
+    report["matched_measurements"].append(second)
+    second_row = deepcopy(report["rows"][0])
+    second_row.update(record_number=2, globalid=second_ref)
+    report["rows"].append(second_row)
+    if reverse_rows:
+        report["rows"].reverse()
+    if reverse_updates:
+        report["matched_measurements"].reverse()
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {"action": "add_measurement", "source": "TPN", "record_number": 1},
+                {"action": "add_measurement", "source": "TPN", "record_number": 2},
+            ]
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors, result.issues
+    assert len(result.written_paths) == 2
+    measurements = yaml.safe_load(object_path.read_text())["measurements"]
+    assert [(m["id"], m["source_ref"], m["elevation_m"]) for m in measurements[1:]] == [
+        ("m-002", first["measurement"]["source_ref"], first["measurement"]["elevation_m"]),
+        ("m-003", f"TPN:{second_ref}", 1300.0),
+    ]
+
+
+def test_unique_tpn_update_can_use_source_ref_fallback(tmp_path):
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    _write(object_path, _object_data(cave_id="C-0001"))
+    _write(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    report = _tpn_staging()
+    report["matched_measurements"][0].pop("record_number")
+    result = apply_review_decisions(
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}]},
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors, result.issues
+    assert len(result.written_paths) == 2
+    assert yaml.safe_load(object_path.read_text())["measurements"][-1]["source_ref"] == (
+        f"TPN:{TPN_GLOBALID}"
+    )
+
+
+@pytest.mark.parametrize("reverse", [False, True], ids=["rows-in-order", "rows-reversed"])
+def test_ambiguous_tpn_source_ref_fallback_blocks_all_writes(tmp_path, reverse):
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    _write(object_path, _object_data(cave_id="C-0001"))
+    _write(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    before = _snapshot(data_dir)
+    report = _tpn_staging()
+    report["matched_measurements"][0].pop("record_number")
+    second_row = deepcopy(report["rows"][0])
+    second_row["record_number"] = 2
+    report["rows"].append(second_row)
+    if reverse:
+        report["rows"].reverse()
+    result = apply_review_decisions(
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 2}]},
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert [issue.code for issue in result.issues] == ["STAGING_REPORT_INVALID"]
+    assert "ambiguous globalid" in result.issues[0].description
+    assert result.applied_decisions == () and result.written_paths == ()
+    assert _snapshot(data_dir) == before
 
 
 def test_schema_invalid_input_cannot_crash_domain_validation(tmp_path):

@@ -592,7 +592,10 @@ Operator decyduje:
 6. pozostawienie jako nierozstrzygnięty przypadek.
 
 Przed zastosowaniem decyzji review waliduje cały wczytany katalog, zanim
-zaindeksuje rekordy po ID. Decyzje stosuje na kopii i przed pierwszym zapisem
+zaindeksuje rekordy po ID. Odrzuca też powtórzone ID propozycji w raporcie
+staging oraz więcej niż jedną aktualizację pomiaru dla tego samego wiersza
+TPN (także rozpoznanego przez `source_ref`), niezależnie od treści i kolejności
+wpisów. Decyzje stosuje na kopii i przed pierwszym zapisem
 waliduje pełny wynik partii, z relacjami i rzeczywistymi ścieżkami plików.
 Błąd blokuje wszystkie zapisy; `--dry-run` wykonuje identyczne kontrole.
 Spójność powiązań ocenia się po całej partii, więc nowy obiekt i jego

@@ -1645,15 +1645,15 @@ def _build_indexes(staging_reports: StagingReports) -> _StagingIndexes:
     tpn_rows = _rows_by_record(staging_reports.tpn, source="TPN")
     return _StagingIndexes(
         pig_rows_by_record=pig_rows,
-        pig_caves_by_id=_records_by_id(staging_reports.pig, "proposed_caves"),
-        pig_objects_by_id=_records_by_id(staging_reports.pig, "proposed_objects"),
+        pig_caves_by_id=_records_by_id(staging_reports.pig, "proposed_caves", source="PIG"),
+        pig_objects_by_id=_records_by_id(staging_reports.pig, "proposed_objects", source="PIG"),
         tpn_rows_by_record=tpn_rows,
         tpn_measurements_by_record=_tpn_measurements_by_record(
             staging_reports.tpn,
             rows_by_record=tpn_rows,
         ),
-        tpn_caves_by_id=_records_by_id(staging_reports.tpn, "proposed_caves"),
-        tpn_objects_by_id=_records_by_id(staging_reports.tpn, "proposed_objects"),
+        tpn_caves_by_id=_records_by_id(staging_reports.tpn, "proposed_caves", source="TPN"),
+        tpn_objects_by_id=_records_by_id(staging_reports.tpn, "proposed_objects", source="TPN"),
     )
 
 
@@ -1674,7 +1674,9 @@ def _rows_by_record(report: dict[str, Any] | None, *, source: str) -> dict[int, 
     return rows
 
 
-def _records_by_id(report: dict[str, Any] | None, key: str) -> dict[str, dict[str, Any]]:
+def _records_by_id(
+    report: dict[str, Any] | None, key: str, *, source: str
+) -> dict[str, dict[str, Any]]:
     if report is None:
         return {}
     records: dict[str, dict[str, Any]] = {}
@@ -1683,6 +1685,8 @@ def _records_by_id(report: dict[str, Any] | None, key: str) -> dict[str, dict[st
             continue
         record_id = _clean_value(item.get("id"))
         if record_id:
+            if record_id in records:
+                raise ReviewDecisionError(f"{source}.{key}: duplicate id {record_id}.")
             records[record_id] = item
     return records
 
@@ -1697,10 +1701,14 @@ def _tpn_measurements_by_record(
 
     by_record: dict[int, dict[str, Any]] = {}
     globalid_to_record: dict[str, int] = {}
+    ambiguous_globalids: set[str] = set()
     for record_number, row in rows_by_record.items():
         globalid = _clean_value(row.get("globalid"))
         if globalid:
-            globalid_to_record[globalid] = record_number
+            if globalid in globalid_to_record:
+                ambiguous_globalids.add(globalid)
+            else:
+                globalid_to_record[globalid] = record_number
 
     for update in report.get("matched_measurements", []):
         if not isinstance(update, dict):
@@ -1710,8 +1718,18 @@ def _tpn_measurements_by_record(
             measurement = update.get("measurement")
             source_ref = measurement.get("source_ref") if isinstance(measurement, dict) else ""
             if isinstance(source_ref, str) and source_ref.startswith("TPN:"):
-                record_number = globalid_to_record.get(source_ref.removeprefix("TPN:"))
+                globalid = source_ref.removeprefix("TPN:")
+                if globalid in ambiguous_globalids:
+                    raise ReviewDecisionError(
+                        f"TPN.matched_measurements: ambiguous globalid {globalid!r} "
+                        "for source_ref fallback."
+                    )
+                record_number = globalid_to_record.get(globalid)
         if record_number is not None:
+            if record_number in by_record:
+                raise ReviewDecisionError(
+                    f"TPN.matched_measurements: duplicate record_number {record_number}."
+                )
             by_record[record_number] = update
     return by_record
 

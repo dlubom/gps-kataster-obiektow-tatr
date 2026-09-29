@@ -1,8 +1,21 @@
 # AS-DLC project context
 
-Last updated: 2026-09-28
+Last updated: 2026-09-29
 
 ## Current handoff — review remediation
+
+- PBI-056 wznowiono i zweryfikowano na bazie `c165a09c790db4a8ef52eda4f3ee083f36a4440f`
+  potwierdzonej przez fetch HTTPS, GitHub API i zielone CI validate 36468060891.
+  Duplikaty propozycji PIG/TPN, aktualizacji jednego wiersza TPN i niejednoznaczny
+  fallback po `GLOBALID` są odrzucane przed decyzjami/zapisem. Pełna bramka:
+  951 testów, 7/7 readback, 0 błędów, 2066 znanych ostrzeżeń, niezmienione
+  `data/`; mutacje: 152 killed / 16 przeanalizowanych survived, brak awarii
+  i timeoutów. Niezależny review i delta review: approve, bez P1/P2.
+  Status **zweryfikowane — do dostarczenia**: wykonać scoped commit/push,
+  potwierdzić dokładny SHA i CI, następnie checkpoint dokumentacji zgodnie
+  z [logiem PBI-056](verification/PBI-056.md). Po jego dostarczeniu następne
+  gotowe zadanie to **PBI-057**; następnie PBI-058 i ponowienie PBI-054.
+  Nie rozpoczynać kolejnego PBI w tej sesji.
 
 - PBI-054 rozpoczęto z czystego `codex/review-remediation` po potwierdzeniu
   checkpointu PBI-055: bazowy SHA `0d8ce8f42c8ba19da30a5d2fce1ed567b0317064`
