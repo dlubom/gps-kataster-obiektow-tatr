@@ -4,18 +4,22 @@ Last updated: 2026-09-29
 
 ## Current handoff — review remediation
 
-- PBI-056 wznowiono i zweryfikowano na bazie `c165a09c790db4a8ef52eda4f3ee083f36a4440f`
+- PBI-056 jest wykonane. Wznowiono je na bazie `c165a09c790db4a8ef52eda4f3ee083f36a4440f`
   potwierdzonej przez fetch HTTPS, GitHub API i zielone CI validate 36468060891.
   Duplikaty propozycji PIG/TPN, aktualizacji jednego wiersza TPN i niejednoznaczny
   fallback po `GLOBALID` są odrzucane przed decyzjami/zapisem. Pełna bramka:
   951 testów, 7/7 readback, 0 błędów, 2066 znanych ostrzeżeń, niezmienione
   `data/`; mutacje: 152 killed / 16 przeanalizowanych survived, brak awarii
   i timeoutów. Niezależny review i delta review: approve, bez P1/P2.
-  Status **zweryfikowane — do dostarczenia**: wykonać scoped commit/push,
-  potwierdzić dokładny SHA i CI, następnie checkpoint dokumentacji zgodnie
-  z [logiem PBI-056](verification/PBI-056.md). Po jego dostarczeniu następne
-  gotowe zadanie to **PBI-057**; następnie PBI-058 i ponowienie PBI-054.
-  Nie rozpoczynać kolejnego PBI w tej sesji.
+  Commit implementacji `10c7a40206e88e26e76a3ca87f2253b96a0a4677` jest na origin
+  (`git ls-remote`, HTTPS), a CI validate
+  [36618089482](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36618089482)
+  zakończyło się sukcesem dla tego SHA. Dowody i identyfikatory ocalałych
+  mutantów: [log PBI-056](verification/PBI-056.md). Przy wznowieniu potwierdzić
+  checkpoint dokumentacji na origin i jego CI. Następne gotowe zadanie to
+  **PBI-057** (zależności PBI-040 i PBI-056 dostarczone), następnie PBI-058
+  i ponowienie PBI-054. Pozostają 3 PBI; PBI-054 nadal blokuje otwarte P2
+  w PBI-057 i wymaga także PBI-058. Nie rozpoczynać kolejnego PBI w tej sesji.
 
 - PBI-054 rozpoczęto z czystego `codex/review-remediation` po potwierdzeniu
   checkpointu PBI-055: bazowy SHA `0d8ce8f42c8ba19da30a5d2fce1ed567b0317064`

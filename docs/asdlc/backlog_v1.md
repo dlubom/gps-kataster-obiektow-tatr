@@ -37,17 +37,21 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — otwarte P2 w PBI-056/057 | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — otwarte P2 w PBI-057; oczekuje też PBI-058 | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
-| PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | zweryfikowane — do dostarczenia 2026-09-29 | [log](verification/PBI-056.md) |
+| PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | planowane | [log odkrycia](verification/PBI-057.md) |
 | PBI-058 | Dodać regresję dopasowania TPN po GLOBALID | planowane | [log odkrycia](verification/PBI-058.md) |
 
 PBI-054 rozpoczęto na czystym branchu, lecz niezależny review odkrył dwa
-odtworzone błędy P2 w granicy staging/review. Zgodnie z kartą PBI-054 nie
-można zamknąć końcowej weryfikacji przy otwartym P1/P2. Następne gotowe
-zadanie: **PBI-056**; po nim PBI-057, a następnie PBI-058 i ponowienie
-PBI-054. Nie implementowano nowych PBI w tej sesji. Szczegóły i dowody:
+odtworzone błędy P2 w granicy staging/review. PBI-056 dostarczono w commicie
+`10c7a40206e88e26e76a3ca87f2253b96a0a4677`; `git ls-remote` potwierdził SHA,
+a CI validate [36618089482](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36618089482)
+zakończyło się sukcesem dla dokładnie tego SHA. Pozostają **3 PBI**:
+następne gotowe **PBI-057**, potem PBI-058 i ponowienie PBI-054. Końcowej
+weryfikacji nie można zamknąć przy otwartym P1/P2. W tej sesji zakończono
+wyłącznie PBI-056. Następna sesja potwierdza checkpoint dokumentacji
+na origin i jego CI przed rozpoczęciem PBI-057. Szczegóły i dowody:
 [PBI-054](verification/PBI-054.md), [PBI-056](verification/PBI-056.md),
 [PBI-057](verification/PBI-057.md), [PBI-058](verification/PBI-058.md).
 
