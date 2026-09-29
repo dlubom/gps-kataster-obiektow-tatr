@@ -157,6 +157,18 @@ Bez oryginalnego źródła przypadek pozostaje nierozstrzygnięty.
 `TPN`. `record_number` wskazuje numer wiersza z raportu staging. `link_cave`
 dziala na finalnych ID i nie wymaga `source`.
 
+W `create_object` i `create_cave` można jawnie wskazać `object_id` lub
+`cave_id` propozycji. Wskazany wiersz musi istnieć w raporcie tego źródła.
+Jeśli ma już przypisane ID, jawne ID musi być z nim zgodne; nie może
+wybrać propozycji innego wiersza. Jeśli ID wiersza jest puste, jawne
+wskazanie wymaga proweniencji: pomiar obiektu ma zgodne `source` oraz
+`source_ref` z `pig_id`/`globalid` wiersza. Jaskinia PIG ma zgodny
+`catalog_id`, a jaskinia TPN wskazuje swoją propozycję obiektu z pomiarem
+tego wiersza. Sama nazwa lub położenie nie potwierdza tożsamości.
+Niezgodność daje `STAGING_OBJECT_PROPOSAL_MISSING` albo
+`STAGING_CAVE_PROPOSAL_MISSING` z numerem decyzji, źródłem i wierszem;
+blokuje całą partię, także w `--dry-run`.
+
 `link_cave` przy przeniesieniu A→B zapisuje obiekt i obie jaskinie wraz
 z `updated_at` / `updated_by` z decyzji. Zachowuje trwałe ID, pomiary,
 `best_measurement`, referencje i pozostałe pola. Stara jaskinia może zostać

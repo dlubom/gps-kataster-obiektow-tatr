@@ -590,7 +590,7 @@ def _apply_create_cave(
                 code="STAGING_CAVE_PROPOSAL_MISSING",
                 severity=ReviewSeverity.ERROR,
                 decision_index=decision_index,
-                description=f"No cave proposal for {source} row {record_number}.",
+                description=f"No cave proposal matching {source} row {record_number} and its ID.",
             )
         )
         return
@@ -651,7 +651,7 @@ def _apply_create_object(
                 code="STAGING_OBJECT_PROPOSAL_MISSING",
                 severity=ReviewSeverity.ERROR,
                 decision_index=decision_index,
-                description=f"No object proposal for {source} row {record_number}.",
+                description=f"No object proposal matching {source} row {record_number} and its ID.",
             )
         )
         return
@@ -1488,8 +1488,43 @@ def _cave_proposal_for_decision(
 ) -> dict[str, Any] | None:
     rows = indexes.pig_rows_by_record if source == "PIG" else indexes.tpn_rows_by_record
     caves = indexes.pig_caves_by_id if source == "PIG" else indexes.tpn_caves_by_id
-    cave_id = explicit_cave_id or _clean_value(rows.get(record_number, {}).get("cave_id"))
-    return caves.get(cave_id)
+    row = rows.get(record_number)
+    if row is None:
+        return None
+    row_id = _clean_value(row.get("cave_id"))
+    if row_id and explicit_cave_id and row_id != explicit_cave_id:
+        return None
+    proposal = caves.get(explicit_cave_id or row_id)
+    if proposal is None or row_id:
+        return proposal
+    # An explicit ID can fill a missing row ID only with source provenance.
+    if source == "PIG":
+        pig_id = _clean_value(row.get("pig_id"))
+        refs = proposal.get("external_refs")
+        if (
+            pig_id
+            and isinstance(refs, list)
+            and any(
+                isinstance(ref, dict)
+                and ref.get("system") == "PIG"
+                and ref.get("ref_type") == "catalog_id"
+                and _clean_value(ref.get("external_id")) == pig_id
+                for ref in refs
+            )
+        ):
+            return proposal
+    else:
+        object_ids = proposal.get("object_ids")
+        if isinstance(object_ids, list):
+            for object_id in object_ids:
+                obj = indexes.tpn_objects_by_id.get(_clean_value(object_id))
+                if (
+                    obj is not None
+                    and _clean_value(obj.get("cave_id")) == _clean_value(proposal.get("id"))
+                    and _object_proposal_matches_source(obj, row, source)
+                ):
+                    return proposal
+    return None
 
 
 def _object_proposal_for_decision(
@@ -1501,8 +1536,33 @@ def _object_proposal_for_decision(
 ) -> dict[str, Any] | None:
     rows = indexes.pig_rows_by_record if source == "PIG" else indexes.tpn_rows_by_record
     objects = indexes.pig_objects_by_id if source == "PIG" else indexes.tpn_objects_by_id
-    object_id = explicit_object_id or _clean_value(rows.get(record_number, {}).get("object_id"))
-    return objects.get(object_id)
+    row = rows.get(record_number)
+    if row is None:
+        return None
+    row_id = _clean_value(row.get("object_id"))
+    if row_id and explicit_object_id and row_id != explicit_object_id:
+        return None
+    proposal = objects.get(explicit_object_id or row_id)
+    if proposal is None or row_id:
+        return proposal
+    return proposal if _object_proposal_matches_source(proposal, row, source) else None
+
+
+def _object_proposal_matches_source(
+    proposal: dict[str, Any], row: dict[str, Any], source: str
+) -> bool:
+    source_id = _clean_value(row.get("pig_id" if source == "PIG" else "globalid"))
+    measurements = proposal.get("measurements")
+    return (
+        bool(source_id)
+        and isinstance(measurements, list)
+        and any(
+            isinstance(measurement, dict)
+            and measurement.get("source") == source
+            and _clean_value(measurement.get("source_ref")) == f"{source}:{source_id}"
+            for measurement in measurements
+        )
+    )
 
 
 def _staging_row_exists(

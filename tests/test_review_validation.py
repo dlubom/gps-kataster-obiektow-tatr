@@ -5,6 +5,7 @@ from copy import deepcopy
 import pytest
 import yaml
 from test_cave_membership import _sample, _snapshot, _write
+from test_pig_staging import StubResolver, _pig_header, _pig_row
 from test_staging_review import (
     TPN_GLOBALID,
     _cave_data,
@@ -12,8 +13,13 @@ from test_staging_review import (
     _pig_staging,
     _tpn_staging,
 )
+from test_tpn_staging import _tpn_row, _write_tpn_csv
 
+from gps_kataster_obiektow_tatr.pig_staging import _report_to_json_data as pig_report_json
+from gps_kataster_obiektow_tatr.pig_staging import build_pig_staging
 from gps_kataster_obiektow_tatr.staging_review import StagingReports, apply_review_decisions
+from gps_kataster_obiektow_tatr.tpn_staging import _report_to_json_data as tpn_report_json
+from gps_kataster_obiektow_tatr.tpn_staging import build_tpn_staging
 from gps_kataster_obiektow_tatr.validator import has_errors, validate_data_dir
 
 
@@ -762,6 +768,8 @@ def test_explicit_create_selects_requested_proposal(tmp_path, kind):
         selected_id = "KSW-0002"
         expected = tmp_path / "objects/KSW/KSW-0002.yml"
     pig[f"proposed_{kind}s"].append({**deepcopy(original), "id": selected_id})
+    # Explicit selection fills an unassigned row ID; it cannot replace an assigned ID.
+    pig["rows"][0][f"{kind}_id"] = None
     decisions = _decisions(f"create_{kind}")
     decisions["decisions"][0][f"{kind}_id"] = selected_id
     result = apply_review_decisions(
@@ -859,3 +867,166 @@ def test_missing_relative_attachment_is_reported_before_writes(tmp_path, existin
     assert result.has_errors and result.written_paths == ()
     assert "ATTACHMENT_PATH_MISSING" in result.issues[0].description
     assert _snapshot(tmp_path) == before
+
+
+def _two_source_rows(tmp_path, source, data_dir):
+    source_path = tmp_path / f"{source.lower()}.csv"
+    if source == "PIG":
+        rows = [
+            _pig_row(
+                pig_id=str(1691 + number),
+                name=f"Opening {number}",
+                nr_inwent=f"T.F-09.{32 + number}",
+                x_1992="152267,23",
+                y_1992="563744,25",
+                lat="49,23459299",
+                lon="19,87589498",
+                source_year="2010",
+            )
+            for number in (1, 2)
+        ]
+        source_path.write_text("\n".join([_pig_header(), *rows]) + "\n", encoding="utf-8")
+        return pig_report_json(
+            build_pig_staging(
+                source_path,
+                generated_at="2026-09-29T08:00:00Z",
+                data_dir=data_dir,
+                prefix_resolver=StubResolver(),
+            )
+        )
+    _write_tpn_csv(
+        source_path,
+        [
+            _tpn_row(
+                nr_inwent=f"T.F-09.{32 + number}",
+                name=f"Opening {number}",
+                globalid=f"{{SOURCE-{number}}}",
+                x_1992="152267.23",
+                y_1992="563744.25",
+            )
+            for number in (1, 2)
+        ],
+    )
+    return tpn_report_json(
+        build_tpn_staging(
+            source_path,
+            generated_at="2026-09-29T08:00:00Z",
+            data_dir=data_dir,
+            pig_staging_path=None,
+            prefix_resolver=StubResolver(),
+        )
+    )
+
+
+@pytest.mark.parametrize("source", ["PIG", "TPN"])
+@pytest.mark.parametrize("action", ["create_object", "create_cave"])
+@pytest.mark.parametrize("row_id", [True, False])
+@pytest.mark.parametrize("write", [True, False])
+def test_explicit_proposal_from_other_source_row_blocks_batch(
+    tmp_path, source, action, row_id, write
+):
+    data_dir = tmp_path / "new-data"
+    report = _two_source_rows(tmp_path, source, data_dir)
+    field = "object_id" if action == "create_object" else "cave_id"
+    explicit_id = report["rows"][1][field]
+    if not row_id:
+        report["rows"][0][field] = None
+    # This batch was schema-valid on the base, but mislabeled row 2 as row 1.
+    actions = [
+        {"action": "create_cave", "source": source, "record_number": 2},
+        {"action": "create_object", "source": source, "record_number": 2},
+    ]
+    selected = actions[1 if action == "create_object" else 0]
+    selected.update(record_number=1, **{field: explicit_id})
+    original = deepcopy(report)
+    before = _snapshot(tmp_path)
+    result = apply_review_decisions(
+        {"decisions": actions},
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=data_dir,
+        initialize_data_dir=True,
+        write=write,
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    assert all(d.action != action for d in result.applied_decisions)
+    issue = next(i for i in result.issues if i.severity == "error")
+    assert issue.decision_index == (2 if action == "create_object" else 1)
+    assert f"{source} row 1" in issue.description
+    assert _snapshot(tmp_path) == before
+    assert not data_dir.exists()
+    assert report == original
+
+
+@pytest.mark.parametrize("source", ["PIG", "TPN"])
+@pytest.mark.parametrize("action", ["create_object", "create_cave"])
+def test_explicit_proposal_needs_existing_source_row(tmp_path, source, action):
+    data_dir = tmp_path / "new-data"
+    report = _two_source_rows(tmp_path, source, data_dir)
+    field = "object_id" if action == "create_object" else "cave_id"
+    actions = [
+        {"action": "create_cave", "source": source, "record_number": 1},
+        {"action": "create_object", "source": source, "record_number": 1},
+    ]
+    actions[1 if action == "create_object" else 0].update(
+        record_number=999, **{field: report["rows"][0][field]}
+    )
+    before = _snapshot(tmp_path)
+    result = apply_review_decisions(
+        {"decisions": actions},
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=data_dir,
+        initialize_data_dir=True,
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    assert all(d.action != action for d in result.applied_decisions)
+    assert _snapshot(tmp_path) == before
+
+
+@pytest.mark.parametrize("source", ["PIG", "TPN"])
+@pytest.mark.parametrize("row_id", [True, False])
+@pytest.mark.parametrize("reverse", [True, False])
+@pytest.mark.parametrize("write", [True, False])
+def test_explicit_proposals_keep_source_identity(tmp_path, source, row_id, reverse, write):
+    data_dir = tmp_path / "new-data"
+    report = _two_source_rows(tmp_path, source, data_dir)
+    row = report["rows"][1]
+    object_id, cave_id = row["object_id"], row["cave_id"]
+    if not row_id:
+        row.update(object_id=None, cave_id=None)
+    actions = [
+        {"action": "create_cave", "source": source, "record_number": 2, "cave_id": cave_id},
+        {"action": "create_object", "source": source, "record_number": 2, "object_id": object_id},
+    ]
+    if reverse:
+        actions.reverse()
+        for field in ("rows", "proposed_objects", "proposed_caves"):
+            report[field].reverse()
+    original = deepcopy(report)
+    before = _snapshot(tmp_path)
+    result = apply_review_decisions(
+        {"decisions": actions},
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=data_dir,
+        initialize_data_dir=True,
+        write=write,
+    )
+    assert not result.has_errors, result.issues
+    assert len(result.applied_decisions) == 2
+    assert all(d.source == source and d.record_number == 2 for d in result.applied_decisions)
+    assert report == original
+    if write:
+        assert len(result.written_paths) == 2
+        obj = yaml.safe_load((data_dir / f"objects/KSW/{object_id}.yml").read_text())
+        cave = yaml.safe_load((data_dir / f"caves/{cave_id}.yml").read_text())
+        assert obj["cave_id"] == cave_id
+        assert cave["object_ids"] == [object_id]
+        measurement = obj["measurements"][0]
+        assert measurement["source"] == source
+        assert measurement["source_ref"] == ("PIG:1693" if source == "PIG" else "TPN:{SOURCE-2}")
+        assert not has_errors(validate_data_dir(data_dir))
+    else:
+        assert result.written_paths == ()
+        assert _snapshot(tmp_path) == before
+        assert not data_dir.exists()

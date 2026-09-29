@@ -595,7 +595,10 @@ Przed zastosowaniem decyzji review waliduje cały wczytany katalog, zanim
 zaindeksuje rekordy po ID. Odrzuca też powtórzone ID propozycji w raporcie
 staging oraz więcej niż jedną aktualizację pomiaru dla tego samego wiersza
 TPN (także rozpoznanego przez `source_ref`), niezależnie od treści i kolejności
-wpisów. Decyzje stosuje na kopii i przed pierwszym zapisem
+wpisów. Jawne ID w `create_object`/`create_cave` musi odpowiadać ID
+wybranego wiersza tego źródła. Wiersz bez ID może wskazać propozycję jawnie
+po potwierdzeniu jej proweniencji; brak wiersza lub propozycja innego
+wiersza blokuje całą partię. Decyzje stosuje na kopii i przed pierwszym zapisem
 waliduje pełny wynik partii, z relacjami i rzeczywistymi ścieżkami plików.
 Błąd blokuje wszystkie zapisy; `--dry-run` wykonuje identyczne kontrole.
 Spójność powiązań ocenia się po całej partii, więc nowy obiekt i jego

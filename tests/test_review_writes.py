@@ -293,7 +293,8 @@ def test_mixed_new_and_existing_records_roll_back(tmp_path, monkeypatch):
     cave["object_ids"] = ["KSW-9999"]
     obj["id"] = "KSW-9999"
     obj["cave_id"] = "C-9999"
-    # Explicit proposal ids avoid relying on row matching from a different fixture.
+    pig["rows"][0].update(cave_id="C-9999", object_id="KSW-9999")
+    # Explicit selection agrees with the source row after renaming the fixture proposals.
     decisions = _decisions("create_cave", "create_object")
     decisions["decisions"][0]["cave_id"] = "C-9999"
     decisions["decisions"][1]["object_id"] = "KSW-9999"
