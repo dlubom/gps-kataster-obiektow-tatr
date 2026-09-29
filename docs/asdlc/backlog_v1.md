@@ -41,7 +41,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
-| PBI-058 | Dodać regresję dopasowania TPN po GLOBALID | planowane | [log odkrycia](verification/PBI-058.md) |
+| PBI-058 | Dodać regresję dopasowania TPN po GLOBALID | zweryfikowane — do dostarczenia | [log odkrycia](verification/PBI-058.md) |
 
 PBI-054 rozpoczęto na czystym branchu, lecz niezależny review odkrył dwa
 odtworzone błędy P2 w granicy staging/review. PBI-056 i PBI-057 są już

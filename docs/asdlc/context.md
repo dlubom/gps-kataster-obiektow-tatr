@@ -4,6 +4,19 @@ Last updated: 2026-09-29
 
 ## Current handoff — review remediation
 
+- PBI-058 jest zweryfikowane — do dostarczenia. Dodano cztery przypadki
+  regresji: jednoznaczny GLOBALID wygrywa ze sprzecznym numerem/nazwą
+  i odległością, niejednoznaczny pozostaje unresolved, w obu kolejnościach.
+  Pełna bramka: 991 testów, 7/7 readback, 0 błędów, 2066 znanych ostrzeżeń,
+  niezmienione `data/`; mutacje: 19/19 gałęzi GLOBALID i 17/17 pomocnika
+  killed, szerszy zakres 91 killed / 55 starszych survived z analizą.
+  Niezależny review: approve, bez P1/P2. Najbliższy krok: commit i push
+  tego PBI, potwierdzenie zdalnego SHA oraz jego CI, potem checkpoint
+  dokumentacji. Dowody: [log PBI-058](verification/PBI-058.md).
+  Po dostarczeniu pozostanie jedno gotowe zadanie: **PBI-054** — nowa
+  pełna kampania mutacyjna i końcowy niezależny review. Nie zaczynać go
+  w tej sesji.
+
 - PBI-057 jest wykonane. Jawne ID `create_object`/`create_cave` musi
   odpowiadać wybranemu wierszowi źródła; legalny fallback bez ID wymaga
   proweniencji. Reprodukcja na bazie: 20 failed / 16 passed. Pełna bramka:

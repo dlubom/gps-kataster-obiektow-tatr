@@ -454,6 +454,150 @@ def test_matched_objects_keep_separate_measurement_counters(tmp_path: Path) -> N
     assert [item["measurement"]["id"] for item in report.matched_measurements] == ["m-003", "m-002"]
 
 
+def _globalid_matching_report(
+    tmp_path: Path, *, ambiguous: bool, reverse_candidates: bool
+) -> TpnStagingReport:
+    source = tmp_path / "tpn.csv"
+    data_dir = tmp_path / "data"
+    globalid = "{GLOBALID-MATCH}"
+    candidates = [
+        ("Original opening", "T.OLD-01", 152267.23, 563744.25, globalid),
+        (
+            "Corrected opening",
+            "T.NEW-02",
+            153267.23,
+            564744.25,
+            globalid if ambiguous else "{OTHER-GLOBALID}",
+        ),
+    ]
+    if reverse_candidates:
+        candidates.reverse()
+    for number, (name, nr_inwent, x, y, candidate_globalid) in enumerate(candidates, start=1):
+        object_id, cave_id = f"KSW-{number:04d}", f"C-{number:04d}"
+        obj = _object_data(cave_id=cave_id)
+        obj.update(id=object_id, name_local=name)
+        obj["external_refs"] = [
+            {
+                "system": "TPN",
+                "ref_type": "source_globalid",
+                "external_id": candidate_globalid,
+                "scope": "object",
+            }
+        ]
+        point = pl1992_to_wgs84(x_1992=x, y_1992=y)
+        obj["measurements"][0].update(lat=point.lat, lon=point.lon, x_1992=x, y_1992=y)
+        cave = _cave_data(
+            object_ids=[object_id],
+            external_refs=[
+                {"system": "NR_INWENT", "ref_type": "inventory_number", "external_id": nr_inwent}
+            ],
+        )
+        cave.update(id=cave_id, name=name)
+        _write_yaml(data_dir / f"objects/KSW/{object_id}.yml", obj)
+        _write_yaml(data_dir / f"caves/{cave_id}.yml", cave)
+    _write_tpn_csv(
+        source,
+        [
+            _tpn_row(
+                nr_inwent="T.NEW-02",
+                name="Corrected opening",
+                globalid=globalid,
+                x_1992="153267,23",
+                y_1992="564744,25",
+            )
+        ],
+    )
+    before = {p.relative_to(data_dir): p.read_bytes() for p in data_dir.rglob("*.yml")}
+    source_before = source.read_bytes()
+    report = build_tpn_staging(
+        source,
+        generated_at="2026-09-29T10:00:00Z",
+        data_dir=data_dir,
+        pig_staging_path=None,
+        prefix_resolver=StubResolver(),
+    )
+    assert {p.relative_to(data_dir): p.read_bytes() for p in data_dir.rglob("*.yml")} == before
+    assert source.read_bytes() == source_before
+    return report
+
+
+@pytest.mark.parametrize("reverse_candidates", [False, True])
+def test_globalid_match_precedes_inventory_name_and_distance(
+    tmp_path: Path, reverse_candidates: bool
+) -> None:
+    report = _globalid_matching_report(
+        tmp_path, ambiguous=False, reverse_candidates=reverse_candidates
+    )
+    number = 2 if reverse_candidates else 1
+    object_id, cave_id = f"KSW-{number:04d}", f"C-{number:04d}"
+    row = report.rows[0]
+    assert report.record_count == len(report.rows) == len(report.matched_measurements) == 1
+    assert (row.record_number, row.globalid, row.nr_inwent, row.name) == (
+        1,
+        "{GLOBALID-MATCH}",
+        "T.NEW-02",
+        "Corrected opening",
+    )
+    assert (row.status, row.object_id, row.cave_id, row.match_strategy) == (
+        "matched",
+        object_id,
+        cave_id,
+        "globalid",
+    )
+    assert row.distance_m == pytest.approx(2**0.5 * 1000)
+    assert row.payload is None
+    update = report.matched_measurements[0]
+    assert (update["record_number"], update["target_object_id"], update["target_cave_id"]) == (
+        1,
+        object_id,
+        cave_id,
+    )
+    assert update["match"] == {
+        "source": "data_yaml",
+        "strategy": "globalid",
+        "distance_m": row.distance_m,
+    }
+    assert update["measurement"]["id"] == "m-002"
+    assert update["measurement"]["source_ref"] == "TPN:{GLOBALID-MATCH}"
+    assert update["measurement"]["x_1992"] == 153267.23
+    assert update["measurement"]["y_1992"] == 564744.25
+    assert report.proposed_objects == report.proposed_caves == ()
+    assert [issue.code for issue in report.issues] == ["TPN_MATCH_DISTANCE_REVIEW"]
+
+
+@pytest.mark.parametrize("reverse_candidates", [False, True])
+def test_ambiguous_globalid_stays_unresolved_despite_unique_inventory_name_distance(
+    tmp_path: Path, reverse_candidates: bool
+) -> None:
+    # Two distinct objects claim one external identity; other match signals must not choose one.
+    report = _globalid_matching_report(
+        tmp_path, ambiguous=True, reverse_candidates=reverse_candidates
+    )
+    assert report.record_count == len(report.rows) == len(report.issues) == 1
+    row = report.rows[0]
+    assert (row.status, row.object_id, row.cave_id, row.match_strategy, row.distance_m) == (
+        "unresolved",
+        None,
+        None,
+        None,
+        None,
+    )
+    issue = report.issues[0]
+    assert (issue.code, issue.severity, issue.record_number, issue.globalid, issue.nr_inwent) == (
+        "TPN_GLOBALID_AMBIGUOUS",
+        "warning",
+        1,
+        "{GLOBALID-MATCH}",
+        "T.NEW-02",
+    )
+    assert issue.description == "GLOBALID matches more than one candidate."
+    assert row.payload is not None
+    assert row.payload["measurement"]["source_ref"] == "TPN:{GLOBALID-MATCH}"
+    assert row.payload["measurement"]["x_1992"] == 153267.23
+    assert row.payload["measurement"]["y_1992"] == 564744.25
+    assert report.matched_measurements == report.proposed_objects == report.proposed_caves == ()
+
+
 def test_csv_staging_matches_pig_by_nr_and_creates_tpn_measurement_update(
     tmp_path: Path,
 ) -> None:
