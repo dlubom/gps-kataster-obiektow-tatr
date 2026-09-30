@@ -41,11 +41,14 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 051 | Udokumentowane przyczyny 16 istniejących rozbieżności prefixu | R06, dane | 044 |
 | 052 | Egzekwowanie uzasadnienia bez zmiany trwałych ID | R06, pełna reguła | 044, 051 |
 | 053 | Dokumentacja zgodna z wdrożonymi kontraktami | uwagi z raportu | 040, 043, 048, 050 |
-| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–058 |
+| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–061 |
 | 055 | Poprawne wiązanie skończonych dużych int w SQLite REAL | uzupełnienie R05 | 042 |
 | 056 | Odrzucanie zduplikowanych indeksów staging | nowe ustalenie P2 z PBI-054 | 040, 046, 048 |
 | 057 | Wiązanie jawnie wskazanej propozycji z wierszem źródła | nowe ustalenie P2 z PBI-054 | 040, 056 |
 | 058 | Regresja dopasowania TPN po GLOBALID | luka mutacyjna z PBI-054 | 045, 047 |
+| 059 | Ścisłe dodatnie numery wierszy decyzji i raportów | nowe P2 z ponowienia PBI-054 | 040, 042, 057 |
+| 060 | Spójna proweniencja propozycji i ref staging | nowe P2 z ponowienia PBI-054 | 040, 048, 056, 057 |
+| 061 | Bezpieczna reprezentacja liczb w DBF | nowe P2 z ponowienia PBI-054 | 049, 050, 055 |
 
 PBI-035 celowo poprzedza naprawy: każda kolejna sesja ma móc zweryfikować
 wynik jednym poleceniem. PBI-037–039 przygotowują kontrakty używane przez
@@ -414,3 +417,35 @@ Odbiór: oba przypadki przeszły zwykłe testy i wybrany zakres mutmut;
 mutant psujący wybór po GLOBALID jest zabity. Pełna bramka, niezmienione
 `data/`, push i CI dla dokładnego SHA.
 Commit: `test: cover TPN GLOBALID matching (PBI-058)`.
+
+### PBI-059 — Odrzucać niecałkowite i logiczne numery wierszy
+
+Pliki: parser numeru wiersza w `staging_review.py`, testy i format decyzji.
+Native YAML float 1.9 albo bool true nie może zostać zmieniony na row 1.
+Ustalić ścisły kontrakt także dla numerów w samym raporcie przed
+indeksowaniem; zachować legalne liczby całkowite. [Dowody i odbiór](verification/PBI-059.md).
+Błędny typ blokuje całą partię przed zapisem/tworzeniem celu, także dry-run.
+Pełna bramka i mutacje parsera. Commit:
+`fix: reject invalid staging row numbers (PBI-059)`.
+
+### PBI-060 — Walidować proweniencję propozycji i referencji staging
+
+Pliki: `staging_review.py`, testy i kontrakt raportu/decyzji. Zgodność row ID
+i ID propozycji nie zastępuje kontroli source/source_ref i referencji
+PIG/TPN/NR_INWENT. Sprawdzać ich zgodność również dla row z przydzielonym
+ID oraz dla matched update; zachować dodatkowe legalne/historyczne ref.
+[Dowody i odbiór](verification/PBI-060.md). Każdy konflikt lub brak
+wymaganej ref blokuje partię bez zapisów; poprawne fallback/unresolved
+nadal działają. Pełna bramka i mutacje kontroli. Commit:
+`fix: validate staging source provenance (PBI-060)`.
+
+### PBI-061 — Chronić reprezentację liczb w DBF
+
+Pliki: eksporter DBF, testy i opis granic formatu. Skończona liczba
+nie może utracić cyfr części całkowitej w polu F/N. Wykryć przepełnienie
+według width/decimal przed zastąpieniem artefaktów, z czytelnym błędem.
+Zachować pełne wartości źródłowe i brak arbitralnych fizycznych limitów.
+[Dowody i odbiór](verification/PBI-061.md). Testować znaki, wszystkie
+pola, granice i carry po zaokrągleniu, null i legalne wartości PBI-055;
+pełna bramka, readback i mutacje kontroli. Commit:
+`fix: reject unrepresentable DBF numbers (PBI-061)`.

@@ -1,12 +1,12 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-09-29
+Stan na: 2026-09-30
 
 ## Naprawy po przegladzie 2026-09-05
 
 Branch: `codex/review-remediation`. Poniższa tabela jest źródłem aktualnych
 statusów serii. Zakres, zależności i odbiór:
-[karty PBI-034–058](remediation_plan.md). Procedura czystej sesji,
+[karty PBI-034–061](remediation_plan.md). Procedura czystej sesji,
 weryfikacji, commitów i pushów: [runbook](remediation_runbook.md).
 Historyczny [raport R01–R13](reviews/project-review-2026-09-05.md) jest w git.
 
@@ -37,26 +37,34 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane — do ponowienia końcowej weryfikacji po PBI-056–058 | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — nowe P2 w PBI-059–061; końcowa weryfikacja w toku | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
 | PBI-058 | Dodać regresję dopasowania TPN po GLOBALID | wykonane 2026-09-29 | [log](verification/PBI-058.md) |
+| PBI-059 | Odrzucać niecałkowite i logiczne numery wierszy | planowane — gotowe | [log](verification/PBI-059.md) |
+| PBI-060 | Walidować proweniencję propozycji i referencji staging | planowane — gotowe | [log](verification/PBI-060.md) |
+| PBI-061 | Chronić reprezentację liczb w DBF | planowane — gotowe | [log](verification/PBI-061.md) |
 
-PBI-054 rozpoczęto na czystym branchu, lecz niezależny review odkrył dwa
-błędy P2 i lukę testową GLOBALID. **PBI-056–058 są dostarczone**.
-PBI-058: commit `2cf74459463974e4005bc4ccb965e3422eaeac39`,
-SHA potwierdzony przez `git ls-remote`, CI validate
-[36631275062](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36631275062)
-zakończone sukcesem dla dokładnie tego SHA. Pozostaje **jedno PBI**:
-następne gotowe **PBI-054** — ponowienie końcowej weryfikacji, w tym nowa
-pełna kampania mutacyjna, ocena starszych ocalałych mutantów, regresje
-R01–R13, powtarzalność artefaktów i końcowy niezależny review.
-W tej sesji zakończono wyłącznie PBI-058. Następna sesja potwierdza
-checkpoint dokumentacji na origin i jego CI przed wznowieniem PBI-054.
-Szczegóły i dowody: [PBI-054](verification/PBI-054.md),
-[PBI-056](verification/PBI-056.md), [PBI-057](verification/PBI-057.md),
-[PBI-058](verification/PBI-058.md).
+Ponowienie PBI-054 na aktualnym origin `827a2f8` (2026-09-30) potwierdziło
+naprawy PBI-056–058 oraz wcześniejsze regresje, lecz niezależny review
+odkrył **trzy nowe odtworzone P2**: błędny typ numeru wiersza
+([PBI-059](verification/PBI-059.md)), niespójna proweniencja propozycji/ref
+([PBI-060](verification/PBI-060.md)) oraz ciche obcinanie liczb DBF
+([PBI-061](verification/PBI-061.md)). PBI-054 pozostaje **zablokowane**
+do ich rozstrzygnięcia i końcowej ponownej weryfikacji.
+
+Pełna bramka: 991 testów, 7/7 readback, 0 błędów, 2066 znanych ostrzeżeń,
+niezmienione `data/`; 127 regresji R01–R13 i 91 dodatkowych przeszło.
+Dwa pełne buildy z różnym zegarem/mtime/prawami mają identyczne 7 SHA.
+Nowa pełna kampania mutacyjna nadal trwa — jej wynik nie jest jeszcze
+deklarowany jako ukończony. Dowody i skrypty odtworzenia są w
+[logu PBI-054](verification/PBI-054.md).
+
+Następne gotowe zadanie: **PBI-059**, po sprawdzeniu origin i CI tego
+checkpointu. Zależności PBI-040/042/057 są dostarczone. Pozostają
+**4 PBI**: naprawy 059–061 i ponowienie 054. W tej sesji pracowano tylko
+nad PBI-054; nowych napraw nie rozpoczęto.
 
 PBI-055 rozstrzygnięto w commicie
 `25ae54a31066c1d5b9062687c2797721390ac88c`: GitHub API potwierdziło

@@ -1,8 +1,28 @@
 # AS-DLC project context
 
-Last updated: 2026-09-29
+Last updated: 2026-09-30
 
 ## Current handoff — review remediation
+
+- Ponowienie PBI-054 na czystym `827a2f86f215080acda3317d4542ef6ebba8d0ae`
+  po fetch/pull i zielonym CI validate 36632009705 potwierdziło 991 testów,
+  readback 7/7, 0 błędów i 2066 znanych ostrzeżeń. Regresje: 127 R01–R13
+  oraz 91 PBI-056–058; dwa pełne buildy o różnych clock/mtime/mode mają
+  te same 7 SHA. `data/` niezmienione; w całej serii tylko 16 powodów
+  prefixu PBI-051, inne pola są identyczne z bazą przeglądu.
+  Niezależny review odkrył trzy odtworzone P2: niecałkowity/logiczny numer
+  wiersza zostaje row 1 (059), propozycje/ref mogą zapisać proweniencję
+  innego źródła (060), DBF ucina cyfry dużych skończonych liczb (061).
+  Dowody, skrypty i odbiór: [PBI-054](verification/PBI-054.md),
+  [PBI-059](verification/PBI-059.md), [PBI-060](verification/PBI-060.md),
+  [PBI-061](verification/PBI-061.md). PBI-054 pozostaje **zablokowane**;
+  pełna świeża kampania mutacyjna trwa. Nowych napraw nie rozpoczęto.
+  Następne gotowe **PBI-059** (040/042/057 dostarczone), potem 060/061
+  i ponowienie 054. Pozostają 4 PBI. Publikację checkpointu i jego CI
+  potwierdzić przed następną sesją. Bez merge, tagu i release.
+
+  Starsze wpisy poniżej opisują wcześniejsze sesje i nie zastępują tego
+  handoffu ani aktualnej tabeli backlogu.
 
 - PBI-058 jest wykonane. Cztery przypadki sprawdzają pierwszeństwo
   jednoznacznego GLOBALID mimo innego numeru/nazwy/odległości oraz
