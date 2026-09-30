@@ -10,15 +10,24 @@ Last updated: 2026-09-30
   oraz 91 PBI-056–058; dwa pełne buildy o różnych clock/mtime/mode mają
   te same 7 SHA. `data/` niezmienione; w całej serii tylko 16 powodów
   prefixu PBI-051, inne pola są identyczne z bazą przeglądu.
-  Niezależny review odkrył trzy odtworzone P2: niecałkowity/logiczny numer
+  Niezależny review odkrył cztery odtworzone P2: niecałkowity/logiczny numer
   wiersza zostaje row 1 (059), propozycje/ref mogą zapisać proweniencję
-  innego źródła (060), DBF ucina cyfry dużych skończonych liczb (061).
+  innego źródła (060), DBF ucina cyfry dużych skończonych liczb (061),
+  a matching TPN traktuje legalne TPN/other jak GLOBALID (066).
   Dowody, skrypty i odbiór: [PBI-054](verification/PBI-054.md),
   [PBI-059](verification/PBI-059.md), [PBI-060](verification/PBI-060.md),
-  [PBI-061](verification/PBI-061.md). PBI-054 pozostaje **zablokowane**;
+  [PBI-061](verification/PBI-061.md), [PBI-066](verification/PBI-066.md).
+  PBI-054 pozostaje **zablokowane**;
   pełna świeża kampania mutacyjna trwa. Nowych napraw nie rozpoczęto.
-  Następne gotowe **PBI-059** (040/042/057 dostarczone), potem 060/061
-  i ponowienie 054. Pozostają 4 PBI. Publikację checkpointu i jego CI
+  Następne gotowe **PBI-059** (040/042/057 dostarczone). Pozostałe naprawy:
+  060/061/066; zadania testowe: 062–065, a następnie ponowienie 054.
+  Luki P3 obejmują fallback TPN,
+  semantykę SQLite, świeżą inicjalizację resolvera i zachowanie treści źródła;
+  dowody i odbiór są w ich kartach. PBI-062 zależy od 066, PBI-065 od 060.
+  Pozostaje 9 PBI. Pierwszy checkpoint dowodów
+  `d8e50292b9e4610019c77b406e5b89da4765b541` jest na origin (`ls-remote`),
+  CI validate [36677805616](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36677805616)
+  jest zielone dla tego SHA. Publikację końcowego checkpointu i jego CI
   potwierdzić przed następną sesją. Bez merge, tagu i release.
 
   Starsze wpisy poniżej opisują wcześniejsze sesje i nie zastępują tego
