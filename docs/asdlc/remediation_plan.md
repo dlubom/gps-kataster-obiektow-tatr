@@ -41,7 +41,7 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 051 | Udokumentowane przyczyny 16 istniejących rozbieżności prefixu | R06, dane | 044 |
 | 052 | Egzekwowanie uzasadnienia bez zmiany trwałych ID | R06, pełna reguła | 044, 051 |
 | 053 | Dokumentacja zgodna z wdrożonymi kontraktami | uwagi z raportu | 040, 043, 048, 050 |
-| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–066 |
+| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–067 |
 | 055 | Poprawne wiązanie skończonych dużych int w SQLite REAL | uzupełnienie R05 | 042 |
 | 056 | Odrzucanie zduplikowanych indeksów staging | nowe ustalenie P2 z PBI-054 | 040, 046, 048 |
 | 057 | Wiązanie jawnie wskazanej propozycji z wierszem źródła | nowe ustalenie P2 z PBI-054 | 040, 056 |
@@ -54,6 +54,7 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 064 | Świeże inicjalizacje resolvera w mutacjach | luka mutacyjna P3 z PBI-054 | 042, 052 |
 | 065 | Zachowanie treści źródłowej staging → YAML | luka mutacyjna P3 z PBI-054 | 040, 048, 056, 057, 060 |
 | 066 | Tożsamość źródła po systemie i typie ref | nowe P2 z analizy mutacji PBI-054 | 045, 058 |
+| 067 | Regresje walidatora ref, załączników i diagnostyk | luka mutacyjna P3 z PBI-054 | 035, 040, 044, 045 |
 
 PBI-035 celowo poprzedza naprawy: każda kolejna sesja ma móc zweryfikować
 wynik jednym poleceniem. PBI-037–039 przygotowują kontrakty używane przez
@@ -498,3 +499,13 @@ deduplikacji; zachować legalne dodatkowe ref i prawdziwe GLOBALID-first.
 [Dowody i odbiór](verification/PBI-066.md). Regresje z zapisem do właściwego
 obiektu, mutacje filtra, pełna bramka, readback i dostarczenie.
 Commit: `fix: match typed source references (PBI-066)`.
+
+### PBI-067 — Regresje walidatora referencji, załączników i diagnostyk
+
+Sprawdzić in-process dokładne ERROR/WARNING dla duplikatu typed GLOBALID,
+referencji pomiaru załącznika, obu końców relacji, HTTP/HTTPS/netloc
+i odległości między pomiarami. [Dowody i odbiór](verification/PBI-067.md).
+Wskazane mutanty usuwające blokadę/diagnostykę mają być killed;
+oryginalny kod jest poprawny. Bez zmiany reguł, pełna bramka,
+niezmienne dane, review i dostarczenie.
+Commit: `test: cover validator reference and attachment rules (PBI-067)`.

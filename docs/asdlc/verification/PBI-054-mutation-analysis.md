@@ -2,9 +2,13 @@
 
 Kod produktu: `827a2f86f215080acda3317d4542ef6ebba8d0ae` (identyczny
 na checkpointach dowodów). Wszystkie identyfikatory, statusy i dokładne
-diffy non-killed są w `PBI-054-mutations.json`. Bieżący checkpoint
-zawiera częściowy snapshot przerwanej próby z dwoma procesami;
-nie jest wynikiem całej kampanii. Grupy niżej opisują
+diffy non-killed są w `PBI-054-mutations.json`. Wynik końcowy obejmuje
+15 modułów / 8962 unikalne ID: 6952 killed, 1978 survived, 32 no tests.
+1370 pending/timeout drugiej świeżej generacji dokończono na tym samym
+kodzie i mapowaniu: 1022 killed / 348 survived, bez błędów narzędzia.
+Wcześniejszej przerwanej pierwszej generacji nie dodawano do wyniku.
+Surowe 200 timeoutów narzędzia: 11 killed / 189 survived po powtórce.
+32 no tests nadal nie zostały wykonane. Grupy niżej opisują
 wpływ ocalenia; **nie deklarują 100% pokrycia ani ekwiwalencji całej grupy**.
 Survived to brak wykrycia zmiany przez wybrane testy, no tests to brak
 zmapowanego wykonania. Brak awarii narzędzia nie zmienia tej interpretacji.
@@ -33,6 +37,13 @@ zmapowanego wykonania. Brak awarii narzędzia nie zmienia tej interpretacji.
   Osiem prób oryginał→mutant odróżnia wynik 8/8; helper i wyniki odbioru
   są opisane w głównym logu. TPN alternatywne daty/CREATED_DA należą do
   macierzy zachowania dat, nie do ekwiwalentów.
+- [PBI-067](PBI-067.md): finalne 233 survivors walidatora obejmują
+  pominięcie duplikatów typed TPN GLOBALID, ref pomiaru załącznika,
+  jednego końca relacji, kontrolę URL i code/severity ERROR/WARNING.
+  Pięć schema-valid prób w `PBI-054-validator-probes.py` potwierdza
+  utratę 2/1/1/1 ERROR oraz kodu warning. Wskazane klucze/pętle nie
+  są kosmetyką ani ekwiwalentami. PBI-067 ma asercje code/severity,
+  pliku/encji oraz obu końców relacji i kontrolę pozytywną.
 
 Ocena system/type ref ujawniła dodatkowo błąd oryginalnego kodu
 [PBI-066](PBI-066.md); jego trzy próby obejmują builder, dry-run, CLI,
@@ -107,6 +118,14 @@ zachowuje tę samą chwilę używaną w sortowaniu; nie twierdzimy, że zmienion
 obiekt datetime ma identyczne pole tzinfo. Pozostałe dokładne diffy i
 statusy tych modułów są zachowane w rejestrze do następnej oceny.
 
+Ocalenia `validator._validate_cross_references` 136 (severity=None
+dla manual best bez powodu) oraz części `_has_prefix_override_reason`
+mogą usuwać wtórną diagnostykę na wejściu już odrzuconym przez schema.
+Próba manual best/reason=None ma schema error: `bestMeasurement` wymaga
+string minLength=1 przy mode=manual. Nie jest to schema-valid utrata
+całej blokady taka jak pięć prób 067; nie zadeklarowano przez to
+ekwiwalencji dla każdego dowolnego wywołania helpera.
+
 Powtórki `coordinate_consistency_error_m` 3/4 usuwają finite guards x/y:
 nie zmieniają legalnego skończonego wejścia, ale zmieniają kontrakt
 bezpośredniego wywołania helpera. Testy 064 obejmą te dwa przypadki;
@@ -145,3 +164,31 @@ przykładów duplikatów source_profile to rzeczywisty limit zmapowanych
 testów. Te ocalenia nie dowodzą nowego błędu finalnego katalogu; ich ID
 pozostają jawne przed kolejnym PBI-054. Nie wymagamy zabijania każdego
 mutanta tekstu, nie wyciszamy nieekwiwalentnych zmian raportu.
+
+## Bilans wszystkich modułów
+
+| Moduł | Killed | Survived | No tests | Razem |
+|---|---:|---:|---:|---:|
+| `archive_metadata` | 61 | 9 | 0 | 70 |
+| `best_measurement` | 106 | 1 | 0 | 107 |
+| `build_db` | 417 | 140 | 0 | 557 |
+| `coordinates` | 59 | 2 | 0 | 61 |
+| `data_loader` | 141 | 14 | 0 | 155 |
+| `numeric` | 52 | 2 | 0 | 54 |
+| `pig_staging` | 574 | 320 | 10 | 904 |
+| `prefix_resolver` | 217 | 84 | 4 | 305 |
+| `review_writer` | 146 | 45 | 0 | 191 |
+| `source_profile` | 201 | 142 | 15 | 358 |
+| `staging_review` | 2524 | 461 | 0 | 2985 |
+| `tpn_staging` | 1466 | 501 | 0 | 1967 |
+| `validator` | 908 | 233 | 3 | 1144 |
+| `yaml_loader` | 61 | 24 | 0 | 85 |
+| `yaml_paths` | 19 | 0 | 0 | 19 |
+
+Rejestr ma 2010 dokładnych diffów w 177 parach moduł/funkcja. Pełne ID
+i wyniki także killed są w `all_outcomes`; `replays` zachowuje surowy
+status, czas i właściwy limit, a `test_selection` pełne zestawy testów.
+No-tests to 10 `_date_part` (065), 4 `resolve_prefix` (064), 15 formatterów
+source_profile oraz 3 `exit_code_for_issues`. Te ostatnie ograniczenia
+raportowania/CLI pozostają jawne, bez wywodzenia ich pokrycia z testów
+subprocess, które nie aktywują mutanta rodzica.

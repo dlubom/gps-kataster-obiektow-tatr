@@ -143,6 +143,10 @@ def run_case(args, stats, campaign_fingerprint, key, raw_code):
             cached.get("fingerprint") == campaign_fingerprint
             and cached.get("exit_code") in {0, 1}
             and cached.get("selected_tests") == expected_tests
+            and "raw_exit_code" in cached
+            and cached["raw_exit_code"] == raw_code
+            and cached.get("wall_limit_seconds") == limit
+            and cached.get("estimate_seconds") == estimate
         ):
             return cached
     command = [

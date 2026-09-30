@@ -17,23 +17,34 @@ Last updated: 2026-09-30
   Dowody, skrypty i odbiór: [PBI-054](verification/PBI-054.md),
   [PBI-059](verification/PBI-059.md), [PBI-060](verification/PBI-060.md),
   [PBI-061](verification/PBI-061.md), [PBI-066](verification/PBI-066.md).
-  PBI-054 pozostaje **zablokowane**;
-  pełna świeża kampania mutacyjna trwa. Nowych napraw nie rozpoczęto.
+  PBI-054 pozostaje **zablokowane**; próba weryfikacji jest zakończona.
+  Świeża kampania 15 modułów: 8962 ID, 6952 killed / 1978 survived /
+  32 no tests, 0 pending/timeout/tool_error po 1370 kontrolowanych
+  powtórkach na tej samej generacji. Rejestr wszystkich wyników, diffy
+  2010 non-killed i mapowanie testów są wersjonowane w
+  [JSON](verification/PBI-054-mutations.json); wpływy i limity w
+  [analizie](verification/PBI-054-mutation-analysis.md).
+  Nowych napraw nie rozpoczęto.
   Następne gotowe **PBI-059** (040/042/057 dostarczone). Pozostałe naprawy:
-  060/061/066; zadania testowe: 062–065, a następnie ponowienie 054.
+  060/061/066; zadania testowe: 062–065/067, a następnie ponowienie 054.
   Luki P3 obejmują fallback TPN,
-  semantykę SQLite, świeżą inicjalizację resolvera i zachowanie treści źródła;
-  dowody i odbiór są w ich kartach. PBI-062 zależy od 066, PBI-065 od 060.
-  Pozostaje 9 PBI. Pierwszy checkpoint dowodów
+  semantykę SQLite, świeżą inicjalizację/granice resolvera, treść źródła
+  i ref/załączniki/diagnostyki walidatora. Nowe 067 ma pięć odtworzeń,
+  schema 0 i brak błędu oryginalnego kodu; mutacje gubią ERROR lub kod WARNING.
+  Dowody i odbiór są w ich kartach. PBI-062 zależy od 066, PBI-065 od 060.
+  Pozostaje 10 PBI. Pierwszy checkpoint dowodów
   `d8e50292b9e4610019c77b406e5b89da4765b541` jest na origin (`ls-remote`),
   CI validate [36677805616](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36677805616)
   jest zielone dla tego SHA. Drugi checkpoint
   `1516a2e1da994fe2148cb2fea7792d5b276d2762` także jest na origin,
   CI validate [36681081320](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36681081320)
   jest zielone dla dokładnie tego SHA. Fałszywe timeouty mutmut 3.5.0
-  potwierdzono i dokończenie 1370 pending/timeout odbywa się na tej
-  samej generacji, z właściwym limitem każdego mutanta. Metoda i
-  sprawdzony helper są w logu PBI-054; wyniku pełnego jeszcze nie ma.
+  potwierdzono; 1370 pending/timeout dokończono bez błędów, z właściwym
+  limitem każdego mutanta. Metoda i sprawdzony helper są w logu PBI-054.
+  Checkpoint narzędzia `e27e13bd1ce78822ffcf993540fc9399f85612bd` jest na
+  origin (`ls-remote`), CI validate
+  [36686295052](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36686295052)
+  jest zielone dla tego SHA.
   Publikację końcowego checkpointu i jego CI
   potwierdzić przed następną sesją. Bez merge, tagu i release.
 

@@ -6,7 +6,7 @@ Stan na: 2026-09-30
 
 Branch: `codex/review-remediation`. Poniższa tabela jest źródłem aktualnych
 statusów serii. Zakres, zależności i odbiór:
-[karty PBI-034–066](remediation_plan.md). Procedura czystej sesji,
+[karty PBI-034–067](remediation_plan.md). Procedura czystej sesji,
 weryfikacji, commitów i pushów: [runbook](remediation_runbook.md).
 Historyczny [raport R01–R13](reviews/project-review-2026-09-05.md) jest w git.
 
@@ -37,7 +37,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — nowe P2 w PBI-059–061/066; końcowa weryfikacja w toku | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — cztery P2 i pięć P3; próba weryfikacji zakończona | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
@@ -50,6 +50,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | planowane — gotowe | [log](verification/PBI-064.md) |
 | PBI-065 | Zachowanie treści źródłowej staging → YAML | planowane — zależy od PBI-060 | [log](verification/PBI-065.md) |
 | PBI-066 | Dopasowywać tożsamość po systemie i typie ref | planowane — gotowe | [log](verification/PBI-066.md) |
+| PBI-067 | Regresje walidatora ref, załączników i diagnostyk | planowane — gotowe | [log](verification/PBI-067.md) |
 
 Ponowienie PBI-054 na aktualnym origin `827a2f8` (2026-09-30) potwierdziło
 naprawy PBI-056–058 oraz wcześniejsze regresje, lecz niezależny review
@@ -59,20 +60,24 @@ odkrył **cztery nowe odtworzone P2**: błędny typ numeru wiersza
 ([PBI-061](verification/PBI-061.md)) i traktowanie TPN/other jak GLOBALID
 ([PBI-066](verification/PBI-066.md)). PBI-054 pozostaje **zablokowane**
 do ich rozstrzygnięcia i końcowej ponownej weryfikacji. Analiza mutacji
-ujawniła także cztery konkretne luki testowe P3: fallback TPN (062),
+ujawniła także pięć konkretnych luk testowych P3: fallback TPN (062),
 semantyka SQLite (063), świeża inicjalizacja resolvera (064) i zachowanie
-treści źródła (065). Nie stwierdzono na tej podstawie nowych błędów kodu.
+treści źródła (065) oraz kontrola ref/załączników/diagnostyk walidatora (067).
+Nie stwierdzono na tej podstawie nowych błędów kodu.
 
 Pełna bramka: 991 testów, 7/7 readback, 0 błędów, 2066 znanych ostrzeżeń,
 niezmienione `data/`; 127 regresji R01–R13 i 91 dodatkowych przeszło.
 Dwa pełne buildy z różnym zegarem/mtime/prawami mają identyczne 7 SHA.
-Nowa pełna kampania mutacyjna nadal trwa — jej wynik nie jest jeszcze
-deklarowany jako ukończony. Dowody i skrypty odtworzenia są w
+Świeża kampania 15 modułów zakończona: 8962 ID, 6952 killed,
+1978 survived, 32 no tests, 0 pending/timeout/tool_error po kontrolowanych
+powtórkach 1370 przypadków. Surowe timeouty narzędzia i wyniki końcowe
+zachowano osobno. To jawne luki pokrycia, bez deklaracji 100%.
+Dowody, rejestr i skrypty odtworzenia są w
 [logu PBI-054](verification/PBI-054.md).
 
 Następne gotowe zadanie: **PBI-059**, po sprawdzeniu origin i CI tego
 checkpointu. Zależności PBI-040/042/057 są dostarczone. Pozostają
-**9 PBI**: naprawy 059–061/066, regresje 062–065 i ponowienie 054. W tej sesji pracowano tylko
+**10 PBI**: naprawy 059–061/066, regresje 062–065/067 i ponowienie 054. W tej sesji pracowano tylko
 nad PBI-054; nowych napraw nie rozpoczęto.
 
 PBI-055 rozstrzygnięto w commicie
