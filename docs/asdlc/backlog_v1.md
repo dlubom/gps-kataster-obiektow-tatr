@@ -42,7 +42,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
 | PBI-058 | Dodać regresję dopasowania TPN po GLOBALID | wykonane 2026-09-29 | [log](verification/PBI-058.md) |
-| PBI-059 | Odrzucać niecałkowite i logiczne numery wierszy | planowane — gotowe | [log](verification/PBI-059.md) |
+| PBI-059 | Odrzucać niecałkowite i logiczne numery wierszy | zweryfikowane — do dostarczenia | [log](verification/PBI-059.md) |
 | PBI-060 | Walidować proweniencję propozycji i referencji staging | planowane — gotowe | [log](verification/PBI-060.md) |
 | PBI-061 | Chronić reprezentację liczb w DBF | planowane — gotowe | [log](verification/PBI-061.md) |
 | PBI-062 | Regresje fallbacku TPN po nazwie/odległości | planowane — zależy od PBI-066 | [log](verification/PBI-062.md) |

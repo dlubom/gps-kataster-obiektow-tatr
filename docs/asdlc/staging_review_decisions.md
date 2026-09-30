@@ -55,6 +55,28 @@ decisions:
     reason: "Needs field review."
 ```
 
+## Numery wierszy źródłowych
+
+`record_number` liczy wiersze źródła od 1, bez nagłówka. W decyzjach,
+`PIG.rows`, `TPN.rows` i `TPN.matched_measurements` dopuszcza dodatni
+`int` albo tekst dziesiętny z cyfr ASCII, opcjonalnym `+` i białymi znakami
+na początku/końcu (np. `1`, `"001"`, `" +1 "`). Tekst jest normalizowany
+do tego samego numeru; nie tworzy nowej tożsamości wiersza.
+Tekst przekraczający limit konwersji liczb całkowitych interpretera Python
+również daje czytelny błąd i zerowy zapis; limit nie jest wyłączany.
+
+Bool (`true`/`false`), każdy float (także `1.0`), NaN/Inf, zero,
+liczby ujemne, `null`, pusty tekst, ułamki, zapis wykładniczy, podkreślenia
+i cyfry spoza ASCII są błędami. Nie ucina się ani nie zaokrągla wartości.
+Błędna decyzja daje `DECISION_RECORD_INVALID`; błędny lub brakujący numer
+w `rows` daje `STAGING_REPORT_INVALID` przed indeksowaniem. Oba błędy
+blokują całą partię, także dry-run, bez utworzenia celu lub zmiany YAML.
+
+Starsza aktualizacja `TPN.matched_measurements` może **nie zawierać pola**
+`record_number`: wtedy pozostaje fallback po jednoznacznym `source_ref`.
+Podane pole z błędną wartością (również `null`) blokuje raport i nie
+uruchamia fallbacku. `link_cave` wskazuje ID encji i nie używa numeru wiersza.
+
 ## Format raportu TPN
 
 Od PBI-047 `tpn-staging.json` ma `format_version: 2`. Jest to wersja

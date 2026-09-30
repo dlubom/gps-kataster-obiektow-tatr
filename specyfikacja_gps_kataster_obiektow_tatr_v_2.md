@@ -591,6 +591,15 @@ Operator decyduje:
 5. odrzucenie rekordu importu,
 6. pozostawienie jako nierozstrzygnięty przypadek.
 
+Numery źródłowych wierszy decyzji i raportów staging są dodatnimi `int`
+albo tekstem dziesiętnym z cyfr ASCII (opcjonalny `+` i zewnętrzne białe
+znaki). Bool, float, NaN/Inf, zero i ujemne wartości są odrzucane bez
+ucinania lub zaokrąglania. Tekst przekraczający limit konwersji liczb
+całkowitych Pythona również jest błędem. Błędny numer blokuje całą partię przed zapisem;
+brak pola w starszej aktualizacji TPN może użyć jednoznacznego fallbacku
+po `source_ref`, podane błędne pole nie może. Szczegóły i diagnostyki:
+[format decyzji](docs/asdlc/staging_review_decisions.md#numery-wierszy-źródłowych).
+
 Przed zastosowaniem decyzji review waliduje cały wczytany katalog, zanim
 zaindeksuje rekordy po ID. Odrzuca też powtórzone ID propozycji w raporcie
 staging oraz więcej niż jedną aktualizację pomiaru dla tego samego wiersza

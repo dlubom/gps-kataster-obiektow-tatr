@@ -1,6 +1,10 @@
 """Review validates input and the complete proposed catalog before any write."""
 
+import json
+import subprocess
+import sys
 from copy import deepcopy
+from pathlib import Path
 
 import pytest
 import yaml
@@ -12,12 +16,18 @@ from test_staging_review import (
     _object_data,
     _pig_staging,
     _tpn_staging,
+    _unresolved_tpn_staging,
 )
 from test_tpn_staging import _tpn_row, _write_tpn_csv
 
 from gps_kataster_obiektow_tatr.pig_staging import _report_to_json_data as pig_report_json
 from gps_kataster_obiektow_tatr.pig_staging import build_pig_staging
-from gps_kataster_obiektow_tatr.staging_review import StagingReports, apply_review_decisions
+from gps_kataster_obiektow_tatr.staging_review import (
+    StagingReports,
+    _parse_positive_int,
+    apply_review_decisions,
+    tpn_report_sha256,
+)
 from gps_kataster_obiektow_tatr.tpn_staging import _report_to_json_data as tpn_report_json
 from gps_kataster_obiektow_tatr.tpn_staging import build_tpn_staging
 from gps_kataster_obiektow_tatr.validator import has_errors, validate_data_dir
@@ -1030,3 +1040,274 @@ def test_explicit_proposals_keep_source_identity(tmp_path, source, row_id, rever
         assert result.written_paths == ()
         assert _snapshot(tmp_path) == before
         assert not data_dir.exists()
+
+
+_INVALID_ROW_NUMBERS = [
+    pytest.param(1.9, id="fraction"),
+    pytest.param(1.0, id="integral-float"),
+    pytest.param(True, id="true"),
+    pytest.param(False, id="false"),
+    pytest.param(0, id="zero"),
+    pytest.param(-1, id="negative"),
+    pytest.param(float("nan"), id="nan"),
+    pytest.param(float("inf"), id="inf"),
+    pytest.param(float("-inf"), id="negative-inf"),
+    pytest.param(None, id="null"),
+    pytest.param("1.9", id="fraction-string"),
+    pytest.param("", id="empty-string"),
+]
+
+
+@pytest.mark.parametrize("value", [1, 2, 10**30, "1", "002", " +2 ", "\t2\n"])
+def test_positive_row_number_contract(value):
+    assert _parse_positive_int(value) == int(value)
+
+
+@pytest.mark.parametrize(
+    "value", [*_INVALID_ROW_NUMBERS, "1_0", "1e0", "١", "+", "+ 1", "1\nbad", [], {}]
+)
+def test_invalid_row_number_contract(value):
+    assert _parse_positive_int(value) is None
+
+
+def test_excessive_decimal_row_number_is_reported_without_exception():
+    original_limit = sys.get_int_max_str_digits()
+    try:
+        sys.set_int_max_str_digits(640)
+        assert _parse_positive_int("9" * 641) is None
+    finally:
+        sys.set_int_max_str_digits(original_limit)
+
+
+@pytest.mark.parametrize("source", ["PIG", "TPN"])
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize("existing", [False, True])
+@pytest.mark.parametrize("value", _INVALID_ROW_NUMBERS)
+def test_invalid_decision_row_number_blocks_valid_batch(tmp_path, source, write, existing, value):
+    data_dir = tmp_path / "data"
+    if existing:
+        _sample(data_dir)
+    report = _two_source_rows(tmp_path, source, data_dir)
+    decisions = [
+        {"action": action, "source": source, "record_number": number}
+        for number in (2, value)
+        for action in ("create_cave", "create_object")
+    ]
+    before = _snapshot(tmp_path)
+    result = apply_review_decisions(
+        {"decisions": decisions},
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=data_dir,
+        initialize_data_dir=True,
+        write=write,
+    )
+    assert result.has_errors and result.written_paths == ()
+    assert [(i.code, i.severity, i.decision_index) for i in result.issues] == [
+        ("DECISION_RECORD_INVALID", "error", 3),
+        ("DECISION_RECORD_INVALID", "error", 4),
+    ]
+    assert all(d.record_number == 2 for d in result.applied_decisions)
+    assert _snapshot(tmp_path) == before
+    assert data_dir.exists() == existing
+
+
+@pytest.mark.parametrize("location", ["pig-row", "tpn-row", "tpn-update"])
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize("value", _INVALID_ROW_NUMBERS)
+def test_invalid_report_row_number_blocks_review_before_indexing(tmp_path, location, write, value):
+    data_dir = tmp_path / "data"
+    _sample(data_dir)
+    source = "PIG" if location == "pig-row" else "TPN"
+    report = _pig_staging() if source == "PIG" else _tpn_staging()
+    field = "matched_measurements" if location == "tpn-update" else "rows"
+    report[field][0]["record_number"] = value
+    before = _snapshot(data_dir)
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0002"},
+                {"action": "reject", "source": source, "record_number": 1, "reason": "Duplicate"},
+            ]
+        },
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert [(i.code, i.severity, i.decision_index) for i in result.issues] == [
+        ("STAGING_REPORT_INVALID", "error", None)
+    ]
+    assert f"{source}.{field}" in result.issues[0].description
+    assert "record_number must be a positive integer" in result.issues[0].description
+    assert result.applied_decisions == () and result.written_paths == ()
+    assert _snapshot(data_dir) == before
+
+
+@pytest.mark.parametrize("source", ["PIG", "TPN"])
+def test_missing_report_row_number_does_not_create_target(tmp_path, source):
+    data_dir = tmp_path / "data"
+    report = _two_source_rows(tmp_path, source, data_dir)
+    report["rows"][0].pop("record_number")
+    before = _snapshot(tmp_path)
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {"action": action, "source": source, "record_number": 2}
+                for action in ("create_cave", "create_object")
+            ]
+        },
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=data_dir,
+        initialize_data_dir=True,
+    )
+    assert [i.code for i in result.issues] == ["STAGING_REPORT_INVALID"]
+    assert result.applied_decisions == () and result.written_paths == ()
+    assert not data_dir.exists() and _snapshot(tmp_path) == before
+
+
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize("value", [1.9, True])
+def test_invalid_bound_unresolved_row_number_preserves_target(tmp_path, write, value):
+    data_dir = tmp_path / "data"
+    _sample(data_dir)
+    report = _unresolved_tpn_staging()
+    before = _snapshot(data_dir)
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {
+                    "action": "add_measurement",
+                    "source": "TPN",
+                    "record_number": value,
+                    "globalid": TPN_GLOBALID,
+                    "report_sha256": tpn_report_sha256(report),
+                    "target_object_id": "KSW-0001",
+                }
+            ]
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert [i.code for i in result.issues] == ["DECISION_RECORD_INVALID"]
+    assert result.applied_decisions == () and result.written_paths == ()
+    assert _snapshot(data_dir) == before
+
+
+@pytest.mark.parametrize("source", ["PIG", "TPN"])
+@pytest.mark.parametrize("value", [1, "001", " +1 "])
+def test_legal_row_number_representations_keep_source_identity(tmp_path, source, value):
+    data_dir = tmp_path / "data"
+    report = _two_source_rows(tmp_path, source, data_dir)
+    report["rows"][0]["record_number"] = value
+    decisions = {
+        "decisions": [
+            {"action": action, "source": source, "record_number": value}
+            for action in ("create_cave", "create_object")
+        ]
+    }
+    before = _snapshot(tmp_path)
+    dry = apply_review_decisions(
+        decisions,
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=data_dir,
+        initialize_data_dir=True,
+        write=False,
+    )
+    assert not dry.has_errors and dry.written_paths == ()
+    assert _snapshot(tmp_path) == before and not data_dir.exists()
+    result = apply_review_decisions(
+        decisions,
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=data_dir,
+        initialize_data_dir=True,
+    )
+    assert not result.has_errors and len(result.written_paths) == 2
+    assert all(d.record_number == 1 for d in result.applied_decisions)
+    obj = yaml.safe_load(next((data_dir / "objects").rglob("*.yml")).read_text())
+    assert obj["measurements"][0]["source_ref"] == (
+        "PIG:1692" if source == "PIG" else "TPN:{SOURCE-1}"
+    )
+    assert not has_errors(validate_data_dir(data_dir))
+
+
+@pytest.mark.parametrize("value", [1, " +1 "])
+def test_legal_tpn_update_row_number_keeps_measurement(tmp_path, value):
+    data_dir = tmp_path / "data"
+    _sample(data_dir)
+    report = _tpn_staging()
+    report["matched_measurements"][0]["record_number"] = value
+    result = apply_review_decisions(
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": value}]},
+        staging_reports=StagingReports(tpn=report),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors and len(result.written_paths) == 2
+    obj = yaml.safe_load((data_dir / "objects/KSW/KSW-0001.yml").read_text())
+    assert obj["measurements"][-1]["source_ref"] == f"TPN:{TPN_GLOBALID}"
+
+
+@pytest.mark.parametrize(
+    "source,location",
+    [
+        ("PIG", "decision"),
+        ("PIG", "row"),
+        ("TPN", "decision"),
+        ("TPN", "row"),
+        ("TPN", "update"),
+    ],
+)
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize("value", [1, " +1 ", *_INVALID_ROW_NUMBERS])
+def test_cli_review_validation_row_numbers(tmp_path, source, location, write, value):
+    data_dir = tmp_path / "data"
+    if location == "update":
+        _sample(data_dir)
+        report = _tpn_staging()
+        decisions = [{"action": "add_measurement", "source": "TPN", "record_number": 1}]
+    else:
+        report = _two_source_rows(tmp_path, source, data_dir)
+        decisions = [
+            {"action": action, "source": source, "record_number": number}
+            for number in (1, 2)
+            for action in ("create_cave", "create_object")
+        ]
+    if location == "decision":
+        decisions[0]["record_number"] = value
+    else:
+        report["rows" if location == "row" else "matched_measurements"][0]["record_number"] = value
+    staging_path = tmp_path / "staging.json"
+    staging_path.write_text(json.dumps(report))
+    decisions_path = tmp_path / "decisions.yml"
+    _write(decisions_path, {"decisions": decisions})
+    before = _snapshot(data_dir)
+    command = [
+        sys.executable,
+        str(Path(__file__).resolve().parents[1] / "scripts/importers/apply_review.py"),
+        "--decisions",
+        str(decisions_path),
+        f"--{source.lower()}-staging",
+        str(staging_path),
+        f"--no-{'tpn' if source == 'PIG' else 'pig'}-staging",
+        "--init-data-dir",
+        "--data-dir",
+        str(data_dir),
+        "--output-dir",
+        str(tmp_path / "review"),
+    ]
+    if not write:
+        command.append("--dry-run")
+    result = subprocess.run(command, capture_output=True, text=True)
+    valid = (type(value) is int and value == 1) or (isinstance(value, str) and value == " +1 ")
+    assert result.returncode == (0 if valid else 1), result.stderr
+    review = json.loads((tmp_path / "review/staging-review.json").read_text())
+    assert review["has_errors"] == (not valid)
+    if not valid:
+        code = "DECISION_RECORD_INVALID" if location == "decision" else "STAGING_REPORT_INVALID"
+        assert code in result.stderr
+        assert code in {i["code"] for i in review["issues"]}
+    if not valid or not write:
+        assert review["written_paths"] == [] and _snapshot(data_dir) == before
+        assert data_dir.exists() == (location == "update")
+    else:
+        assert len(review["written_paths"]) == (2 if location == "update" else 4)
+        assert not has_errors(validate_data_dir(data_dir))

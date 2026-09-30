@@ -302,6 +302,10 @@ def apply_review_decisions(
             )
             continue
 
+        if action != _LINK_CAVE and _parse_positive_int(decision.get("record_number")) is None:
+            _decision_source_record(decision, decision_index, issues)
+            continue
+
         if (
             action in {_CREATE_CAVE, _CREATE_OBJECT, _ADD_MEASUREMENT}
             and _clean_value(decision.get("source")).upper() == "TPN"
@@ -1725,12 +1729,11 @@ def _rows_by_record(report: dict[str, Any] | None, *, source: str) -> dict[int, 
         if not isinstance(row, dict):
             continue
         record_number = _parse_positive_int(row.get("record_number"))
-        if record_number is not None:
-            if record_number in rows:
-                raise ReviewDecisionError(
-                    f"{source}.rows: duplicate record_number {record_number}."
-                )
-            rows[record_number] = row
+        if record_number is None:
+            raise ReviewDecisionError(f"{source}.rows: record_number must be a positive integer.")
+        if record_number in rows:
+            raise ReviewDecisionError(f"{source}.rows: duplicate record_number {record_number}.")
+        rows[record_number] = row
     return rows
 
 
@@ -1775,6 +1778,10 @@ def _tpn_measurements_by_record(
             continue
         record_number = _parse_positive_int(update.get("record_number"))
         if record_number is None:
+            if "record_number" in update:
+                raise ReviewDecisionError(
+                    "TPN.matched_measurements: record_number must be a positive integer."
+                )
             measurement = update.get("measurement")
             source_ref = measurement.get("source_ref") if isinstance(measurement, dict) else ""
             if isinstance(source_ref, str) and source_ref.startswith("TPN:"):
@@ -1932,9 +1939,15 @@ def _applied_status_counts(decisions: tuple[AppliedDecision, ...]) -> dict[str, 
 
 
 def _parse_positive_int(value: Any) -> int | None:
+    """Accept positive ints or ASCII decimal strings, never bools or floats."""
+
+    if isinstance(value, bool) or not isinstance(value, (int, str)):
+        return None
+    if isinstance(value, str) and re.fullmatch(r"\+?[0-9]+", value.strip()) is None:
+        return None
     try:
         parsed = int(value)
-    except (TypeError, ValueError, OverflowError):
+    except ValueError:
         return None
     return parsed if parsed > 0 else None
 

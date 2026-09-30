@@ -4,6 +4,22 @@ Last updated: 2026-09-30
 
 ## Current handoff — review remediation
 
+- PBI-059 jest zweryfikowane — do dostarczenia na bazie
+  `dfcda4486428b1ad0f22454d1ce590a67543970a`,
+  potwierdzonej przez fetch/pull, `ls-remote` i zielone validate 36689628595.
+  Ścisły numer źródłowego wiersza odrzuca bool/float/NaN/Inf i złe wartości
+  przed decyzją/indeksowaniem; starszy TPN fallback działa tylko przy braku
+  pola. Legalne dodatnie int i tekst ASCII zachowują tożsamość/proweniencję.
+  Pierwsza bramka: 1341 testów, 7/7 readback, 0 błędów, te same liczniki,
+  warningi i hash `data/`. Mutacje wybranych trzech funkcji: 85 killed /
+  9 przeanalizowanych survived z 94; parser 13/13 killed, bez timeoutów
+  lub błędów. Niezależny review: approve, bez P1/P2; uwagę o limicie tekstu
+  uwzględniono. [Dowody PBI-059](verification/PBI-059.md).
+  Bramka po dokumentacji także przeszła: 1341 testów, wszystkie etapy 0.
+  Delta review rejestru: approve, bez nowych P1/P2/P3.
+  Pozostaje dostarczenie SHA/CI i checkpoint dokumentacji.
+  Nie zaczynać innego PBI; po dostarczeniu następne gotowe jest PBI-060.
+
 - Ponowienie PBI-054 na czystym `827a2f86f215080acda3317d4542ef6ebba8d0ae`
   po fetch/pull i zielonym CI validate 36632009705 potwierdziło 991 testów,
   readback 7/7, 0 błędów i 2066 znanych ostrzeżeń. Regresje: 127 R01–R13
