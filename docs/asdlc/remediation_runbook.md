@@ -135,6 +135,18 @@ Timeout/błąd narzędzia to nie wynik pozytywny; zakończenie krytycznej
 weryfikacji pozostaje otwarte. Pełna kampania wszystkich krytycznych
 modułów jest częścią PBI-054, a nie każdej drobnej zmiany.
 
+Uwaga z PBI-054 (2026-09-30): `mutmut 3.5.0` może przy równoległych
+mutacjach jednego modułu użyć estymaty innego mutanta do kontroli PID
+i wygenerować fałszywy SIGXCPU. `mutmut run` uruchomione ponownie
+regeneruje metadata; nie zakładaj automatycznego wznowienia.
+Zachowaj surowe wyniki i mapowanie, sprawdź aktywację oraz kontrolę
+baseline/forced-fail. Pending/timeout można dokończyć osobnym runnerem
+tych samych instrumentowanych funkcji i dokładnie tych samych testów,
+z limitem przypisanym do konkretnego mutanta. Metodę, fingerprint,
+surowe i końcowe statusy zapisz jak w
+[logu PBI-054](verification/PBI-054.md). Nie regeneruj kodu między
+częściami takiego przebiegu i nie zastępuj timeoutów deklaracją killed.
+
 Przed commitem przeczytaj cały diff i sprawdź zakres staged. Po istotnej
 zmianie logiki zleć niezależny review agentowi tylko do odczytu; zapisuj
 wynik lub jawny brak dostępności. Brak review nie jest równoznaczny z

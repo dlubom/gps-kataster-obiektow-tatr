@@ -27,7 +27,14 @@ Last updated: 2026-09-30
   Pozostaje 9 PBI. Pierwszy checkpoint dowodów
   `d8e50292b9e4610019c77b406e5b89da4765b541` jest na origin (`ls-remote`),
   CI validate [36677805616](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36677805616)
-  jest zielone dla tego SHA. Publikację końcowego checkpointu i jego CI
+  jest zielone dla tego SHA. Drugi checkpoint
+  `1516a2e1da994fe2148cb2fea7792d5b276d2762` także jest na origin,
+  CI validate [36681081320](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/36681081320)
+  jest zielone dla dokładnie tego SHA. Fałszywe timeouty mutmut 3.5.0
+  potwierdzono i dokończenie 1370 pending/timeout odbywa się na tej
+  samej generacji, z właściwym limitem każdego mutanta. Metoda i
+  sprawdzony helper są w logu PBI-054; wyniku pełnego jeszcze nie ma.
+  Publikację końcowego checkpointu i jego CI
   potwierdzić przed następną sesją. Bez merge, tagu i release.
 
   Starsze wpisy poniżej opisują wcześniejsze sesje i nie zastępują tego

@@ -83,9 +83,14 @@ się wyłącznie wielkością liter działa tak samo w SQLite.
 **Resolver/geometria.** `_load_*` oraz ctor mają wyżej opisaną lukę 064.
 Alias UTF-8 i domyślne strict=False zip nie zmieniają wyniku. Trójkątne
 ringi/granice i błędne konfiguracje nie są objęte wszystkimi asercjami.
-Pozostałe mutacje resolve/contains trzeba rozpatrzyć według dokładnego
-statusu i diffu w rejestrze; nie wywodzić poprawności całej geometrii z
-samej liczby killed.
+Powtórki `_bounds_contain` 2–6, `_point_is_on_segment` 6/11/12/16 oraz
+30–33/37–40, `_ring_contains` 12/22/25 i `_rings_contain` 9 potwierdzają
+brak asercji ukośnych krawędzi, drugiego warunku współrzędnych, brzegu,
+przecięcia promienia i parzystości. Nie są ekwiwalentami; odbiór 064
+obejmuje małe wielokąty/otwory i te granice. Ocalenia `resolve` 15/16,
+37/38/57/58/70/71 gubią x/y; 36/56/69 gubią diagnostykę — także 064.
+Pozostałe mutacje trzeba rozpatrzyć według dokładnego statusu i diffu
+w rejestrze; nie wywodzić poprawności geometrii z samej liczby killed.
 
 **Walidator, loading, YAML, numery i best.** Ocalenia komunikatów/kolejności
 issue nie muszą zmieniać blokady zapisu, ale zmieniają raport. Defaulty
@@ -101,6 +106,16 @@ nie zmienia znaku. `best_measurement._parse_observed_at` UTC→lokalna strefa
 zachowuje tę samą chwilę używaną w sortowaniu; nie twierdzimy, że zmieniony
 obiekt datetime ma identyczne pole tzinfo. Pozostałe dokładne diffy i
 statusy tych modułów są zachowane w rejestrze do następnej oceny.
+
+Powtórki `coordinate_consistency_error_m` 3/4 usuwają finite guards x/y:
+nie zmieniają legalnego skończonego wejścia, ale zmieniają kontrakt
+bezpośredniego wywołania helpera. Testy 064 obejmą te dwa przypadki;
+wcześniejszy raw preflight całej partii nadal chroni zapis.
+`check_data_directory` 1 zmienia default allow_missing, podczas gdy
+publiczne load_dataset przekazuje własną jawną flagę; 10/22 zmieniają
+tekst błędu. `nonfinite_paths` 1 zmienia początek ścieżki diagnostycznej.
+Te limity nie są nowym odtworzonym błędem publicznego przepływu ani
+zbiorczą deklaracją ekwiwalencji funkcji.
 
 **Archiwa.** `archive_metadata.resolve_archive_timestamp` ma niepełne
 asercje automatycznego czasu i tekstu błędów. Python 3.12 sam rozumie Z
