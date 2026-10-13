@@ -46,6 +46,7 @@ MUTATION_TEST_SELECTION = [
     "tests/test_pig_staging.py",
     "tests/test_tpn_staging.py",
     "tests/test_staging_review.py",
+    "tests/test_staging_source_content.py",
     "tests/test_review_validation.py",
     "tests/test_review_writes.py",
     "tests/test_yaml_policy.py",

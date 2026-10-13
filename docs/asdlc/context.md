@@ -4,7 +4,27 @@ Last updated: 2026-10-13
 
 ## Current handoff — review remediation
 
-- PBI-064 wykonane (2026-10-13), baza
+- PBI-065 **zweryfikowane — do dostarczenia** (2026-10-13), baza
+  `dbf768d86da6873508f9256e9e7fefee63f05daf`, origin zgodne, 0/0;
+  CI checkpointu PBI-064 38384416070 completed/success dla tej bazy.
+  Sześć nowych przypadków publicznego importu/JSON/review/YAML: treść
+  PIG/TPN, notatki, aliasy/sektor/morfometria, rok/datę/fallback +02:00/Z,
+  ref duplicate/distinct/duplicate w istniejącym katalogu i jednej partii.
+  Produkt/config/schema/data/lock bez zmian; dodano wybór testu mutmut.
+  Pełna bramka 1787 passed, osiem etapów 0, readback 7/7, immutability0,
+  data hash/liczniki/2066 znanych ostrzeżeń bez zmian.
+  Baseline 144 killed/109 survived/10 no tests; final 263 ID:
+  249 killed/14 ocenionych survived, wszystkie 32 wskazane ID killed.
+  Raw timeouty 16/7 zachowane; kontrolowane replay bez regeneracji,
+  clean/forced-fail ze zgodnym zbiorem 504/510 testów. Intermediate wykluczone.
+  Niezależny końcowy audit dowodów i testów approve, bez P1/P2/P3.
+  Limity odrzuconych współrzędnych, komunikatów i parsera w
+  [dowodach PBI-065](verification/PBI-065.md). Scoped commit/push i CI
+  wymagają teraz domknięcia. Potem następne **PBI-066**, nie rozpoczęte.
+  Pozostaną 4 PBI: 066/067, 062 (po 066), 054 (pełna kampania/review).
+  Bez merge, tagu ani release.
+
+- Historyczny handoff: PBI-064 wykonane (2026-10-13), baza
   `3f97c6cb006fe1593a34193279b1ba2a9be53137`, fetch/pull/ls-remote 0/0,
   CI checkpointu PBI-063 38376392031 completed/success, cały job sukces.
   136 nowych przypadków: świeże instancje i cache testu, wrapper,

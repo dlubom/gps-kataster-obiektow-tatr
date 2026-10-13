@@ -48,7 +48,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-062 | Regresje fallbacku TPN po nazwie/odległości | planowane — zależy od PBI-066 | [log](verification/PBI-062.md) |
 | PBI-063 | Semantyczny odczyt pól SQLite | wykonane 2026-10-13 | [log](verification/PBI-063.md) |
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | wykonane 2026-10-13 | [log](verification/PBI-064.md) |
-| PBI-065 | Zachowanie treści źródłowej staging → YAML | planowane — gotowe | [log](verification/PBI-065.md) |
+| PBI-065 | Zachowanie treści źródłowej staging → YAML | zweryfikowane — do dostarczenia | [log](verification/PBI-065.md) |
 | PBI-066 | Dopasowywać tożsamość po systemie i typie ref | planowane — gotowe | [log](verification/PBI-066.md) |
 | PBI-067 | Regresje walidatora ref, załączników i diagnostyk | planowane — gotowe | [log](verification/PBI-067.md) |
 
@@ -125,11 +125,15 @@ niezmienne data/liczniki/warningi. Finalna kampania 322 ID:
 32 wskazane ID killed (baseline 28 survived / 4 no tests).
 [Dowody](verification/PBI-064.md). Kolejnego PBI nie rozpoczęto.
 
-Następne najniższe gotowe **PBI-065** (060 wykonane).
-Pozostaje 5 PBI: 065–067, 062 i 054. 062 czeka na 066;
+PBI-065 zweryfikowane — do dostarczenia: sześć nowych przypadków staging→YAML,
+pełna bramka 1787 passed/readback 7/7, niezmienne data, niezależny audit approve.
+Finalna kampania 263 ID: 249 killed / 14 przeanalizowanych survived, zero
+nierozstrzygniętych stanów, wszystkie 32 wskazane ID killed. [Dowody](verification/PBI-065.md).
+Po dostarczeniu PBI-065 następne najniższe gotowe **PBI-066**.
+Pozostają wtedy 4 PBI: 066/067, 062 i 054. 062 czeka na 066;
 054 pozostaje zablokowane, wymaga nowej pełnej kampanii i końcowego review,
-również oceny jawnych limitów ocaleń z 059/060/061/063/064.
-Nie deklarujemy 100% pokrycia. W tej sesji wykonano wyłącznie PBI-064.
+również oceny jawnych limitów ocaleń 059/060/061/063/064/065.
+Nie deklarujemy 100% pokrycia. W tej sesji wykonano wyłącznie PBI-065.
 
 PBI-055 rozstrzygnięto w commicie
 `25ae54a31066c1d5b9062687c2797721390ac88c`: GitHub API potwierdziło
