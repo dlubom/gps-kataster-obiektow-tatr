@@ -37,7 +37,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — jeden P2 i trzy P3; PBI-059/060/061/063/064 dostarczone | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — wymagane PBI-062/066/067 i końcowa weryfikacja | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
@@ -48,7 +48,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-062 | Regresje fallbacku TPN po nazwie/odległości | planowane — zależy od PBI-066 | [log](verification/PBI-062.md) |
 | PBI-063 | Semantyczny odczyt pól SQLite | wykonane 2026-10-13 | [log](verification/PBI-063.md) |
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | wykonane 2026-10-13 | [log](verification/PBI-064.md) |
-| PBI-065 | Zachowanie treści źródłowej staging → YAML | zweryfikowane — do dostarczenia | [log](verification/PBI-065.md) |
+| PBI-065 | Zachowanie treści źródłowej staging → YAML | wykonane 2026-10-13 | [log](verification/PBI-065.md) |
 | PBI-066 | Dopasowywać tożsamość po systemie i typie ref | planowane — gotowe | [log](verification/PBI-066.md) |
 | PBI-067 | Regresje walidatora ref, załączników i diagnostyk | planowane — gotowe | [log](verification/PBI-067.md) |
 
@@ -125,12 +125,16 @@ niezmienne data/liczniki/warningi. Finalna kampania 322 ID:
 32 wskazane ID killed (baseline 28 survived / 4 no tests).
 [Dowody](verification/PBI-064.md). Kolejnego PBI nie rozpoczęto.
 
-PBI-065 zweryfikowane — do dostarczenia: sześć nowych przypadków staging→YAML,
+PBI-065 dostarczono w `6271cd9406c24b4967fe6c518baffa0f8085c273`.
+Push exit0, ls-remote SHA zgodny, CI validate
+[38394212340](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38394212340)
+completed/success dla tego SHA, wszystkie joby/kroki i Complete job sukces.
+Sześć nowych przypadków staging→YAML,
 pełna bramka 1787 passed/readback 7/7, niezmienne data, niezależny audit approve.
 Finalna kampania 263 ID: 249 killed / 14 przeanalizowanych survived, zero
 nierozstrzygniętych stanów, wszystkie 32 wskazane ID killed. [Dowody](verification/PBI-065.md).
-Po dostarczeniu PBI-065 następne najniższe gotowe **PBI-066**.
-Pozostają wtedy 4 PBI: 066/067, 062 i 054. 062 czeka na 066;
+Następne najniższe gotowe **PBI-066**, nie rozpoczęte.
+Pozostają 4 PBI: 066/067, 062 i 054. 062 czeka na 066;
 054 pozostaje zablokowane, wymaga nowej pełnej kampanii i końcowego review,
 również oceny jawnych limitów ocaleń 059/060/061/063/064/065.
 Nie deklarujemy 100% pokrycia. W tej sesji wykonano wyłącznie PBI-065.
