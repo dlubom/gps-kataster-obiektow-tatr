@@ -4,7 +4,23 @@ Last updated: 2026-10-13
 
 ## Current handoff — review remediation
 
-- PBI-061 wykonane (2026-10-13), baza `4f55722b102b2870eb119ea3925446fbd992817d`
+- PBI-063 zweryfikowane — do dostarczenia (2026-10-13), baza
+  `788ab8f5337007ddaca301a88ce29a2c305a3496`, fetch/pull/ls-remote zgodne,
+  CI checkpointu PBI-061 38371435026 completed/success.
+  30 nowych semantycznych przypadków SQL: różne pomiary, manual best
+  odmienny od computed, populated/null/omitted i obie kolejności historii.
+  Produkt/model/dane/config/lock bez zmian. Pełna bramka 1645 passed,
+  osiem etapów exit 0, readback 7/7, immutability 0, 0 błędów i 2066
+  niezmienionych ostrzeżeń. Baseline 20 survived/11 killed → 31 killed;
+  po regresjach 363 ID = 356 killed/7 jawnie przeanalizowanych survived.
+  Review testów approve, bez P1/P2/P3; audit rejestru zgodny.
+  [Dowody PBI-063](verification/PBI-063.md). Pozostają commit/push,
+  exact-SHA CI i checkpoint dokumentacji. Następne gotowe po dostarczeniu
+  PBI-064 (042/052 wykonane), nie rozpoczęte. 062 nadal czeka na 066,
+  054 na pozostałe naprawy/regresje i nową pełną kampanię/review.
+  Bez merge, tagu ani release.
+
+- Historyczny handoff: PBI-061 wykonane (2026-10-13), baza `4f55722b102b2870eb119ea3925446fbd992817d`
   potwierdzona fetch/pull, ls-remote i CI validate 38363983104.
   Pełny zapis liczb F/N DBF ze znakiem i carry musi mieścić width/decimal
   przed pierwszym zapisem eksportu/paczki, w tym SQLite. Polityka odrzuca

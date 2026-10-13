@@ -46,7 +46,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-060 | Walidować proweniencję propozycji i referencji staging | wykonane 2026-10-13 | [log](verification/PBI-060.md) |
 | PBI-061 | Chronić reprezentację liczb w DBF | wykonane 2026-10-13 | [log](verification/PBI-061.md) |
 | PBI-062 | Regresje fallbacku TPN po nazwie/odległości | planowane — zależy od PBI-066 | [log](verification/PBI-062.md) |
-| PBI-063 | Semantyczny odczyt pól SQLite | planowane — gotowe | [log](verification/PBI-063.md) |
+| PBI-063 | Semantyczny odczyt pól SQLite | zweryfikowane — do dostarczenia | [log](verification/PBI-063.md) |
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | planowane — gotowe | [log](verification/PBI-064.md) |
 | PBI-065 | Zachowanie treści źródłowej staging → YAML | planowane — gotowe | [log](verification/PBI-065.md) |
 | PBI-066 | Dopasowywać tożsamość po systemie i typie ref | planowane — gotowe | [log](verification/PBI-066.md) |

@@ -1,3 +1,4 @@
+import json
 import sqlite3
 import subprocess
 import sys
@@ -338,3 +339,403 @@ def _connect(path: Path) -> sqlite3.Connection:
 
 def _metadata(connection: sqlite3.Connection) -> dict[str, str]:
     return {row["key"]: row["value"] for row in connection.execute("SELECT * FROM metadata")}
+
+
+# Distinct, fixed coordinates prevent the wrong history row from satisfying best.
+# The EPSG:2180 values are fixture data, not calculated by the SQLite builder.
+SEMANTIC_BEST = (49.23479299, 19.87579498, 152289.37229830585, 563736.7149809276)
+
+
+@pytest.fixture(
+    params=[
+        (mode, reverse) for mode in ("populated", "null", "omitted") for reverse in (False, True)
+    ]
+)
+def semantic_sqlite(request: pytest.FixtureRequest, tmp_path: Path):
+    mode, reverse = request.param
+    data_dir = tmp_path / "data"
+    object_path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
+    obj = _valid_object()
+    obj["name_local"] = "Otwór Żółty"
+    obj["notes"] = "Notatka obiektu, nie pomiaru."
+    obj["id_assignment"].update(
+        method="manual", prefix_override_reason="Trwały prefix po decyzji terenowej."
+    )
+    first, second = obj["measurements"]
+    first.update(
+        source="wlasne",
+        source_ref="GNSS:sesja-Żółta/17",
+        elevation_m=1234.56,
+        elevation_datum="PL-EVRF2007-NH",
+        elevation_source="gnss",
+        horizontal_accuracy_m=0.25,
+        vertical_accuracy_m=0.0,
+        observed_at="2026-05-15T09:12:13Z",
+        source_date="2026-05-14",
+        method="gnss",
+        device="Odbiornik Żółty",
+        tags=["gnss", "żółty"],
+        verification_status="zweryfikowany",
+        verified_by="recenzent",
+        verified_at="2026-05-16T08:09:10Z",
+        notes="Notatka sesji GNSS.",
+        created_by="pomiarowy",
+    )
+    second.update(
+        lat=SEMANTIC_BEST[0],
+        lon=SEMANTIC_BEST[1],
+        x_1992=SEMANTIC_BEST[2],
+        y_1992=SEMANTIC_BEST[3],
+        source="PIG",
+        observed_date="2026-05-13",
+        tags=[],
+    )
+    measurement_optional = (
+        "elevation_m",
+        "elevation_datum",
+        "elevation_source",
+        "horizontal_accuracy_m",
+        "vertical_accuracy_m",
+        "source_ref",
+        "observed_at",
+        "source_date",
+        "device",
+        "verified_by",
+        "verified_at",
+        "notes",
+    )
+    for field in measurement_optional:
+        second[field] = None
+    obj["best_measurement"].update(
+        mode="manual", reason="Wskazanie starszego pomiaru katalogowego.", updated_by="operator"
+    )
+    obj["external_refs"] = [
+        {
+            "system": "TPN",
+            "ref_type": "source_globalid",
+            "external_id": "{ŻÓŁTY-17}",
+            "url": "https://example.org/tpn/17",
+            "scope": "object",
+            "notes": "Ref punktu.",
+        },
+        {
+            "system": "inne",
+            "ref_type": "other",
+            "external_id": "pole-18",
+            "url": None,
+            "scope": None,
+            "notes": None,
+        },
+    ]
+    obj["attachments"] = [
+        {
+            "id": "a-001",
+            "kind": "raport_gnss",
+            "measurement_id": "m-001",
+            "path": "https://example.org/raport/żółty.pdf",
+            "caption": "Raport Żółty",
+            "date": "2026-05-15",
+            "created_at": "2026-05-17T10:11:12Z",
+            "created_by": "autor",
+        },
+        {
+            "id": "a-002",
+            "kind": "inne",
+            "measurement_id": None,
+            "path": "https://example.org/notatka",
+            "caption": None,
+            "date": None,
+            "created_at": "2026-05-18T11:12:13Z",
+            "created_by": "archiwista",
+        },
+    ]
+    cave = _valid_cave()
+    cave.update(name="Jaskinia Żółta", system_name="System Żółty", notes="Notatka jaskini.")
+    cave["external_refs"].append(
+        {
+            "system": "NR_INWENT",
+            "ref_type": "inventory_number",
+            "external_id": "T.Ż.17",
+            "url": None,
+            "scope": None,
+            "notes": None,
+        }
+    )
+    if mode != "populated":
+        for record, fields in (
+            (obj, ("name_local", "notes")),
+            (cave, ("system_name", "notes")),
+        ):
+            for field in fields:
+                if mode == "null":
+                    record[field] = None
+                else:
+                    record.pop(field)
+    if mode == "omitted":
+        for field in measurement_optional:
+            second.pop(field)
+        for ref in (obj["external_refs"][1], cave["external_refs"][1]):
+            for field in ("url", "scope", "notes"):
+                ref.pop(field)
+        for field in ("measurement_id", "caption", "date"):
+            obj["attachments"][1].pop(field)
+    if reverse:
+        obj["measurements"].reverse()
+    _write_yaml(object_path, obj)
+    _write_yaml(data_dir / "caves" / "C-0001.yml", cave)
+    sqlite_path = tmp_path / "semantic.sqlite"
+    result = build_sqlite_database(
+        data_dir=data_dir, output_path=sqlite_path, generated_at=GENERATED_AT
+    )
+    with _connect(sqlite_path) as connection:
+        yield connection, result, object_path, mode
+
+
+def test_sqlite_best_fields_follow_explicit_measurement(semantic_sqlite) -> None:
+    connection, _, _, mode = semantic_sqlite
+    row = dict(connection.execute("SELECT * FROM objects").fetchone())
+    assert row == {
+        "id": "KSW-0001",
+        "schema_version": 1,
+        "category": "jaskinia_otwor",
+        "name_local": "Otwór Żółty" if mode == "populated" else None,
+        "cave_id": "C-0001",
+        "id_assignment_method": "manual",
+        "assigned_from_measurement_id": "m-001",
+        "assigned_prefix": "KSW",
+        "prefix_override_reason": "Trwały prefix po decyzji terenowej.",
+        "best_measurement_id": "m-002",
+        "computed_best_measurement_id": "m-001",
+        "best_lat": SEMANTIC_BEST[0],
+        "best_lon": SEMANTIC_BEST[1],
+        "best_x_1992": SEMANTIC_BEST[2],
+        "best_y_1992": SEMANTIC_BEST[3],
+        "best_geom_wgs84": "POINT(19.87579498 49.23479299)",
+        "best_geom_1992": "POINT(563736.7149809276 152289.37229830585)",
+        "notes": "Notatka obiektu, nie pomiaru." if mode == "populated" else None,
+        "created_at": "2026-05-15T10:00:00Z",
+        "created_by": "dl",
+        "updated_at": "2026-05-16T10:30:00Z",
+        "updated_by": "dl",
+    }
+    best = dict(connection.execute("SELECT * FROM best_measurements").fetchone())
+    assert best == {
+        "object_id": "KSW-0001",
+        "mode": "manual",
+        "measurement_id": "m-002",
+        "computed_best_measurement_id": "m-001",
+        "reason": "Wskazanie starszego pomiaru katalogowego.",
+        "updated_at": "2026-05-16T10:30:00Z",
+        "updated_by": "operator",
+    }
+
+
+def test_sqlite_preserves_measurement_provenance_and_nulls(semantic_sqlite) -> None:
+    connection, _, _, _ = semantic_sqlite
+    rows = [dict(row) for row in connection.execute("SELECT * FROM measurements ORDER BY id")]
+    assert rows == [
+        {
+            "object_id": "KSW-0001",
+            "id": "m-001",
+            "lat": KSW_LAT,
+            "lon": KSW_LON,
+            "x_1992": 152267.22965516336,
+            "y_1992": 563744.2498546313,
+            "geom_wgs84": "POINT(19.87589498 49.23459299)",
+            "geom_1992": "POINT(563744.2498546313 152267.22965516336)",
+            "elevation_m": 1234.56,
+            "elevation_datum": "PL-EVRF2007-NH",
+            "elevation_source": "gnss",
+            "horizontal_accuracy_m": 0.25,
+            "vertical_accuracy_m": 0.0,
+            "source": "wlasne",
+            "source_ref": "GNSS:sesja-Żółta/17",
+            "observed_at": "2026-05-15T09:12:13Z",
+            "observed_date": "2026-05-15",
+            "source_date": "2026-05-14",
+            "method": "gnss",
+            "device": "Odbiornik Żółty",
+            "tags_json": '["gnss", "żółty"]',
+            "verification_status": "zweryfikowany",
+            "verified_by": "recenzent",
+            "verified_at": "2026-05-16T08:09:10Z",
+            "notes": "Notatka sesji GNSS.",
+            "created_at": "2026-05-15T10:00:00Z",
+            "created_by": "pomiarowy",
+        },
+        {
+            "object_id": "KSW-0001",
+            "id": "m-002",
+            "lat": SEMANTIC_BEST[0],
+            "lon": SEMANTIC_BEST[1],
+            "x_1992": SEMANTIC_BEST[2],
+            "y_1992": SEMANTIC_BEST[3],
+            "geom_wgs84": "POINT(19.87579498 49.23479299)",
+            "geom_1992": "POINT(563736.7149809276 152289.37229830585)",
+            "elevation_m": None,
+            "elevation_datum": None,
+            "elevation_source": None,
+            "horizontal_accuracy_m": None,
+            "vertical_accuracy_m": None,
+            "source": "PIG",
+            "source_ref": None,
+            "observed_at": None,
+            "observed_date": "2026-05-13",
+            "source_date": None,
+            "method": "source_record",
+            "device": None,
+            "tags_json": "[]",
+            "verification_status": "nieweryfikowany",
+            "verified_by": None,
+            "verified_at": None,
+            "notes": None,
+            "created_at": "2026-05-15T10:00:00Z",
+            "created_by": "dl",
+        },
+    ]
+
+
+def test_sqlite_preserves_cave_and_typed_external_references(semantic_sqlite) -> None:
+    connection, _, _, mode = semantic_sqlite
+    cave = dict(connection.execute("SELECT * FROM caves").fetchone())
+    members = json.loads(cave.pop("object_ids_json"))
+    assert members == ["KSW-0001"]
+    assert cave == {
+        "id": "C-0001",
+        "schema_version": 1,
+        "name": "Jaskinia Żółta",
+        "system_name": "System Żółty" if mode == "populated" else None,
+        "notes": "Notatka jaskini." if mode == "populated" else None,
+        "created_at": "2026-05-15T10:00:00Z",
+        "created_by": "dl",
+        "updated_at": "2026-05-16T10:30:00Z",
+        "updated_by": "dl",
+    }
+    assert [
+        tuple(row)
+        for row in connection.execute(
+            "SELECT object_id, system, ref_type, external_id, url, scope, notes "
+            "FROM object_external_refs ORDER BY external_id"
+        )
+    ] == [
+        ("KSW-0001", "inne", "other", "pole-18", None, None, None),
+        (
+            "KSW-0001",
+            "TPN",
+            "source_globalid",
+            "{ŻÓŁTY-17}",
+            "https://example.org/tpn/17",
+            "object",
+            "Ref punktu.",
+        ),
+    ]
+    assert [
+        tuple(row)
+        for row in connection.execute(
+            "SELECT cave_id, system, ref_type, external_id, url, scope, notes "
+            "FROM cave_external_refs ORDER BY external_id"
+        )
+    ] == [
+        (
+            "C-0001",
+            "PIG",
+            "catalog_id",
+            "1094",
+            "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094",
+            "cave",
+            "PIG catalog record identifier.",
+        ),
+        ("C-0001", "NR_INWENT", "inventory_number", "T.Ż.17", None, None, None),
+    ]
+
+
+def test_sqlite_preserves_attachment_fields(semantic_sqlite) -> None:
+    connection, _, _, _ = semantic_sqlite
+    assert [
+        tuple(row)
+        for row in connection.execute(
+            "SELECT object_id, id, kind, measurement_id, path, caption, date, "
+            "created_at, created_by "
+            "FROM attachments ORDER BY id"
+        )
+    ] == [
+        (
+            "KSW-0001",
+            "a-001",
+            "raport_gnss",
+            "m-001",
+            "https://example.org/raport/żółty.pdf",
+            "Raport Żółty",
+            "2026-05-15",
+            "2026-05-17T10:11:12Z",
+            "autor",
+        ),
+        (
+            "KSW-0001",
+            "a-002",
+            "inne",
+            None,
+            "https://example.org/notatka",
+            None,
+            None,
+            "2026-05-18T11:12:13Z",
+            "archiwista",
+        ),
+    ]
+
+
+def test_sqlite_metadata_and_flags_preserve_warning_semantics(semantic_sqlite) -> None:
+    connection, result, object_path, _ = semantic_sqlite
+    assert (
+        _metadata(connection)
+        == result.metadata
+        == {
+            "generated_at": GENERATED_AT,
+            "schema_version": "1",
+            "object_count": "1",
+            "cave_count": "1",
+            "relation_count": "0",
+            "measurement_count": "2",
+            "validation_warning_count": "2",
+            "validation_error_count": "0",
+        }
+    )
+    flags = [
+        tuple(row)
+        for row in connection.execute(
+            "SELECT code, severity, path, description FROM validation_flags ORDER BY rowid"
+        )
+    ]
+    assert flags == [
+        (
+            "MISSING_HORIZONTAL_ACCURACY",
+            "warning",
+            str(object_path),
+            "Object KSW-0001 measurement m-002 has no horizontal_accuracy_m.",
+        ),
+        (
+            "MISSING_SOURCE_REF",
+            "warning",
+            str(object_path),
+            "Object KSW-0001 measurement m-002 has no source_ref.",
+        ),
+    ]
+    assert [
+        (issue.code, str(issue.severity), issue.path, issue.description)
+        for issue in result.validation_issues
+    ] == [
+        (
+            "MISSING_HORIZONTAL_ACCURACY",
+            "warning",
+            object_path,
+            "Object KSW-0001 measurement m-002 has no horizontal_accuracy_m.",
+        ),
+        (
+            "MISSING_SOURCE_REF",
+            "warning",
+            object_path,
+            "Object KSW-0001 measurement m-002 has no source_ref.",
+        ),
+    ]
+    assert connection.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
+    assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
