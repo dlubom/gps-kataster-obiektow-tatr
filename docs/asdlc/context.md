@@ -4,7 +4,30 @@ Last updated: 2026-10-13
 
 ## Current handoff — review remediation
 
-- PBI-063 wykonane (2026-10-13), baza
+- PBI-064 lokalnie zweryfikowane — do dostarczenia (2026-10-13), baza
+  `3f97c6cb006fe1593a34193279b1ba2a9be53137`, fetch/pull/ls-remote 0/0,
+  CI checkpointu PBI-063 38376392031 completed/success, cały job sukces.
+  136 nowych przypadków: świeże instancje i cache testu, wrapper,
+  konfiguracje, skośne odcinki, bbox, wierzchołki, otwory i even-odd,
+  tolerancja, literalny brzeg IEEE i bezpośrednie finite guards x/y.
+  Mapowanie konstruktora 2→36, wrappera 0→4. Produkt/config/data/lock
+  bez zmian. Pełna bramka 1781 passed, osiem etapów exit 0,
+  readback 7/7, immutability 0, 0 błędów i 2066 znanych ostrzeżeń.
+  Baseline 232 killed / 86 survived / 4 no tests; finalny zakres 322 ID
+  ma 309 killed / 13 przeanalizowanych survived. 32 wskazane ID killed.
+  Surowe timeouty zachowane osobno; replay bez regeneracji, z kontrolami
+  i identyczną selekcją. Intermediate kampania nie jest sumowana.
+  Nie ma pending/timeout/tool_error w końcowym zakresie. Jawne limity:
+  introspekcja ścieżek, locale, pierścienie długości 3 oraz default
+  maskowany przez wrapper mutmut; bez globalnej deklaracji ekwiwalencji.
+  Niezależny review testów, helpera i limitów bez otwartych findings.
+  [Dowody PBI-064](verification/PBI-064.md). Commit/push i zdalny SHA/CI
+  są wymagane do domknięcia. Po dostarczeniu następne **PBI-065**,
+  nie rozpoczęte; pozostanie 5 PBI: 065–067, 062 i 054. 062 czeka na 066,
+  054 wymaga nowej pełnej kampanii/review i oceny limitów tej serii.
+  Bez merge, tagu ani release.
+
+- Historyczny handoff: PBI-063 wykonane (2026-10-13), baza
   `788ab8f5337007ddaca301a88ce29a2c305a3496`, fetch/pull/ls-remote zgodne,
   CI checkpointu PBI-061 38371435026 completed/success.
   30 nowych semantycznych przypadków SQL: różne pomiary, manual best

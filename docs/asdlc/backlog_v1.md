@@ -47,7 +47,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-061 | Chronić reprezentację liczb w DBF | wykonane 2026-10-13 | [log](verification/PBI-061.md) |
 | PBI-062 | Regresje fallbacku TPN po nazwie/odległości | planowane — zależy od PBI-066 | [log](verification/PBI-062.md) |
 | PBI-063 | Semantyczny odczyt pól SQLite | wykonane 2026-10-13 | [log](verification/PBI-063.md) |
-| PBI-064 | Świeże inicjalizacje resolvera w mutacjach | planowane — gotowe | [log](verification/PBI-064.md) |
+| PBI-064 | Świeże inicjalizacje resolvera w mutacjach | zweryfikowane — do dostarczenia | [log](verification/PBI-064.md) |
 | PBI-065 | Zachowanie treści źródłowej staging → YAML | planowane — gotowe | [log](verification/PBI-065.md) |
 | PBI-066 | Dopasowywać tożsamość po systemie i typie ref | planowane — gotowe | [log](verification/PBI-066.md) |
 | PBI-067 | Regresje walidatora ref, załączników i diagnostyk | planowane — gotowe | [log](verification/PBI-067.md) |
@@ -112,13 +112,21 @@ mutantów killed (20 survived w baseline). Wybrany zakres 363 ID:
 Niezależne review testów, audit ledger i dowodów bez findings.
 [Dowody](verification/PBI-063.md).
 
-Następne najniższe gotowe zadanie: **PBI-064**, po sprawdzeniu origin i CI
-checkpointu dokumentacji. Zależności PBI-042/052 są dostarczone.
-PBI-062 nadal czeka na PBI-066. Pozostaje **6 PBI**: 064–067, 062 i 054.
-PBI-054 pozostaje zablokowane przez PBI-066 P2 i cztery luki P3; ponowienie
-wymaga nowej pełnej kampanii i końcowego review, również oceny jawnych
-limitów ocalałych z logów 059/060/061/063. Nie deklarujemy pełnego pokrycia.
-W tej sesji wykonano tylko PBI-063; kolejnego zadania nie rozpoczęto.
+PBI-064 lokalnie zweryfikowano na bazie
+`3f97c6cb006fe1593a34193279b1ba2a9be53137`: 136 nowych przypadków,
+świeży konstruktor i wrapper, konfiguracje, geometria i finite guards.
+Pełna bramka: 1781 testów, osiem etapów exit 0, readback 7/7,
+niezmienne data/liczniki/warningi. Finalna kampania 322 ID:
+309 killed / 13 jawnie ocenionych survived, bez innych stanów;
+32 wskazane ID killed (baseline 28 survived / 4 no tests).
+[Dowody](verification/PBI-064.md). Push i exact-SHA CI pozostają
+warunkiem domknięcia; kolejnego PBI nie rozpoczęto.
+
+Po dostarczeniu PBI-064 następne najniższe gotowe **PBI-065** (060 wykonane).
+Pozostanie 5 PBI: 065–067, 062 i 054. 062 czeka na 066;
+054 pozostaje zablokowane, wymaga nowej pełnej kampanii i końcowego review,
+również oceny jawnych limitów ocaleń z 059/060/061/063/064.
+Nie deklarujemy 100% pokrycia. W tej sesji realizujemy wyłącznie PBI-064.
 
 PBI-055 rozstrzygnięto w commicie
 `25ae54a31066c1d5b9062687c2797721390ac88c`: GitHub API potwierdziło
