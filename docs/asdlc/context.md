@@ -1,10 +1,33 @@
 # AS-DLC project context
 
-Last updated: 2026-09-30
+Last updated: 2026-10-13
 
 ## Current handoff — review remediation
 
-- PBI-059 jest wykonane (2026-09-30) na bazie
+- PBI-060 jest zweryfikowane — do dostarczenia (2026-10-13), baza
+  `81a7bb0d042ded43a4335cf225a23c5786d1e1cc`, zgodna z aktualnym origin
+  i zielonym validate 36707381085. Zależności 040/048/056/057 wykonane.
+  Kontrola source/source_ref i dokładnych typed ref działa również przy
+  przydzielonych ID oraz dla matched update; dodatkowe/historyczne ref
+  i brak numeru w źródle są zachowane. Nowa regresja obejmuje także
+  obiekt bez jaskini przy wymaganym NR_INWENT. Produkt po review bez
+  dodatkowych zmian. [Dowody PBI-060](verification/PBI-060.md).
+  Końcowa pełna bramka: 1534 testy, readback 7/7, 0 błędów,
+  niezmienione dane/liczniki/warningi, wszystkie etapy exit 0.
+  Nowa pełna kampania wybranego zakresu: 228 ID, 213 killed / 15 jawnie
+  przeanalizowanych survived, bez pending/timeout/tool_error. Przerwany
+  przebieg nie jest zaliczony ani sumowany. Rejestr ma diffy i mapowanie;
+  starsze luki diagnostyk pozostają do oceny PBI-054, bez 100% claimu.
+  Niezależny review kodu: brak findings, 827 testów i 6 sond;
+  dodatkowa regresja potwierdzona niezależnie (2/2). Review rejestru także
+  bez findings: wszystkie wyniki/hash/diffy/mapowanie zgodne. Pozostał
+  scoped commit/push, dokładny remote SHA/CI i checkpoint
+  dokumentacji. Nie rozpoczynać kolejnego PBI przed dostarczeniem 060.
+  Następne po nim: PBI-061 (049/050/055 wykonane), następnie pozostałe
+  062–067 i końcowe 054; po odbiorze 060 pozostanie 8 PBI.
+  Bez merge do main, tagu ani release.
+
+- Historyczny handoff: PBI-059 jest wykonane (2026-09-30) na bazie
   `dfcda4486428b1ad0f22454d1ce590a67543970a`,
   potwierdzonej przez fetch/pull, `ls-remote` i zielone validate 36689628595.
   Ścisły numer źródłowego wiersza odrzuca bool/float/NaN/Inf i złe wartości

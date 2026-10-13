@@ -72,6 +72,13 @@ def test_review_preserves_original_paths_and_history(tmp_path, action, layout):
                     "target_object_id": "KSW-0001",
                     "target_cave_id": "C-0001",
                     "measurement": update,
+                    "object_external_refs": [
+                        {
+                            "system": "TPN",
+                            "ref_type": "source_globalid",
+                            "external_id": "{PATH-TEST}",
+                        }
+                    ],
                 }
             ],
         }
@@ -170,9 +177,18 @@ def test_new_records_use_yml_in_mixed_catalog(tmp_path):
     before = _snapshot(tmp_path)
     obj = {**deepcopy(records["objects/KSW/KSW-0001.yml"]), "id": "KSW-0003", "cave_id": "C-0004"}
     cave = {**deepcopy(records["caves/C-0001.yml"]), "id": "C-0004", "object_ids": ["KSW-0003"]}
+    obj["measurements"][0].update(source="PIG", source_ref="PIG:new-3")
+    cave["external_refs"] = [{"system": "PIG", "ref_type": "catalog_id", "external_id": "new-3"}]
     reports = StagingReports(
         pig={
-            "rows": [{"record_number": 1, "object_id": "KSW-0003", "cave_id": "C-0004"}],
+            "rows": [
+                {
+                    "record_number": 1,
+                    "pig_id": "new-3",
+                    "object_id": "KSW-0003",
+                    "cave_id": "C-0004",
+                }
+            ],
             "proposed_objects": [obj],
             "proposed_caves": [cave],
         }

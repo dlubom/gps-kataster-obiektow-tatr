@@ -1,6 +1,6 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-09-30
+Stan na: 2026-10-13
 
 ## Naprawy po przegladzie 2026-09-05
 
@@ -43,7 +43,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
 | PBI-058 | Dodać regresję dopasowania TPN po GLOBALID | wykonane 2026-09-29 | [log](verification/PBI-058.md) |
 | PBI-059 | Odrzucać niecałkowite i logiczne numery wierszy | wykonane 2026-09-30 | [log](verification/PBI-059.md) |
-| PBI-060 | Walidować proweniencję propozycji i referencji staging | planowane — gotowe | [log](verification/PBI-060.md) |
+| PBI-060 | Walidować proweniencję propozycji i referencji staging | zweryfikowane — do dostarczenia | [log](verification/PBI-060.md) |
 | PBI-061 | Chronić reprezentację liczb w DBF | planowane — gotowe | [log](verification/PBI-061.md) |
 | PBI-062 | Regresje fallbacku TPN po nazwie/odległości | planowane — zależy od PBI-066 | [log](verification/PBI-062.md) |
 | PBI-063 | Semantyczny odczyt pól SQLite | planowane — gotowe | [log](verification/PBI-063.md) |

@@ -617,6 +617,17 @@ obiektu docelowego po zastosowaniu całej partii. Jawny cel jaskini
 sprzeczny z tym powiązaniem jest błędem. Szczegóły raportów i granice
 obsługi błędów opisuje [format decyzji](docs/asdlc/staging_review_decisions.md).
 
+Zgodne ID wiersza i propozycji nie zastępują kontroli źródła. Pomiary nowej
+propozycji muszą mieć `source` i `source_ref` zgodne z wybranym wierszem.
+Obiekt/aktualizacja TPN wymaga dokładnej referencji `TPN/source_globalid`,
+jaskinia PIG — `PIG/catalog_id`, jeśli źródło podaje ID. Propozycje jaskiń
+i katalogowe ref aktualizacji wymagają `NR_INWENT/inventory_number`, jeśli
+wiersz zawiera numer. Brak lub niezgodność blokuje całą partię, również
+dry-run i starszy fallback. Dodatkowe legalne/historyczne ref pozostają
+zachowane; brak numeru w źródle nie wymaga fikcyjnej referencji. Sprawdzamy
+nowy pomiar aktualizacji, zachowując wcześniejszą historię celu. Szczegóły:
+[proweniencja decyzji](docs/asdlc/staging_review_decisions.md#akcje).
+
 Pełny model merge/split obiektów zostaje poza V1.
 
 Zapis review przygotowuje całą partię i kopie oryginałów przed pierwszym

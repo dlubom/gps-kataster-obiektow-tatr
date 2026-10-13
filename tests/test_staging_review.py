@@ -305,6 +305,9 @@ def test_unresolved_allocation_reserves_explicit_tpn_proposal_id(tmp_path: Path)
         cave_id="C-0001",
         measurement=_measurement("m-001", source="TPN", source_ref="TPN:{SECOND}"),
     )
+    proposal["external_refs"] = [
+        {"system": "TPN", "ref_type": "source_globalid", "external_id": "{SECOND}"}
+    ]
     report["proposed_objects"] = [proposal]
     result = apply_review_decisions(
         {
@@ -918,6 +921,7 @@ def test_two_matched_rows_allocate_distinct_ids_for_one_object(tmp_path: Path) -
     second = deepcopy(tpn["matched_measurements"][0])
     second["record_number"] = 2
     second["measurement"]["source_ref"] = "TPN:{SECOND-OBSERVATION}"
+    second["object_external_refs"][0]["external_id"] = "{SECOND-OBSERVATION}"
     tpn["matched_measurements"].append(second)
     tpn["rows"].append(
         {"record_number": 2, "status": "matched", "globalid": "{SECOND-OBSERVATION}"}
@@ -989,10 +993,12 @@ def test_redirected_rows_use_target_counter_above_999_and_keep_manual_best(tmp_p
     target_path = data_dir / "objects/KSW/KSW-0002.yml"
     _write_yaml(target_path, target)
     tpn = _tpn_staging()
+    tpn["rows"][0]["nr_inwent"] = None
     tpn["matched_measurements"][0]["cave_external_refs"] = []
     second = deepcopy(tpn["matched_measurements"][0])
     second["record_number"] = 2
     second["measurement"]["source_ref"] = "TPN:{SECOND-OBSERVATION}"
+    second["object_external_refs"][0]["external_id"] = "{SECOND-OBSERVATION}"
     tpn["matched_measurements"].append(second)
     tpn["rows"].append(
         {"record_number": 2, "status": "matched", "globalid": "{SECOND-OBSERVATION}"}

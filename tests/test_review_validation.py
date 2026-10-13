@@ -142,7 +142,7 @@ def test_invalid_input_blocks_review_before_decisions(tmp_path, write, case):
 )
 @pytest.mark.parametrize("source", ["PIG", "TPN"])
 def test_valid_pair_checks_final_batch_and_dry_run(tmp_path, actions, source):
-    reports = StagingReports(**{source.lower(): _pig_staging()})
+    reports = StagingReports(**{source.lower(): _two_source_rows(tmp_path, source, tmp_path)})
     decision = _decisions(*actions)
     for entry in decision["decisions"]:
         entry["source"] = source
@@ -629,6 +629,7 @@ def test_measurement_without_catalog_refs_can_target_unassigned_object(tmp_path)
     for path, data in records.items():
         _write(tmp_path / path, data)
     tpn = _tpn_staging()
+    tpn["rows"][0]["nr_inwent"] = None
     tpn["matched_measurements"][0]["cave_external_refs"] = []
     result = apply_review_decisions(
         {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}]},
@@ -1311,3 +1312,367 @@ def test_cli_review_validation_row_numbers(tmp_path, source, location, write, va
     else:
         assert len(review["written_paths"]) == (2 if location == "update" else 4)
         assert not has_errors(validate_data_dir(data_dir))
+
+
+_PROVENANCE_CASES = (
+    [
+        (source, case)
+        for source in ("PIG", "TPN")
+        for case in (
+            "measurement_source",
+            "measurement_ref",
+            "measurement_ref_missing",
+            "inventory_wrong",
+            "inventory_missing",
+        )
+    ]
+    + [
+        ("PIG", case)
+        for case in ("catalog_wrong", "catalog_missing", "catalog_type", "catalog_system")
+    ]
+    + [
+        ("TPN", case)
+        for case in ("globalid_wrong", "globalid_missing", "globalid_type", "globalid_system")
+    ]
+)
+
+
+def _corrupt_provenance(report, source, case):
+    obj = report["proposed_objects"][0]
+    cave = report["proposed_caves"][0]
+    if case.startswith("measurement"):
+        field = "source" if case == "measurement_source" else "source_ref"
+        obj["measurements"][0][field] = (
+            "wlasne"
+            if field == "source"
+            else None
+            if case.endswith("missing")
+            else "PIG:1693"
+            if source == "PIG"
+            else "TPN:{SOURCE-2}"
+        )
+        return "create_object"
+    system, kind = (
+        ("NR_INWENT", "inventory_number")
+        if case.startswith("inventory")
+        else ("PIG", "catalog_id")
+        if source == "PIG"
+        else ("TPN", "source_globalid")
+    )
+    refs = obj["external_refs"] if case.startswith("globalid") else cave["external_refs"]
+    ref = next(r for r in refs if (r["system"], r["ref_type"]) == (system, kind))
+    if case.endswith("missing"):
+        refs.remove(ref)
+    elif case.endswith("type"):
+        ref["ref_type"] = "other"
+    elif case.endswith("system"):
+        ref["system"] = "inne"
+    else:
+        ref["external_id"] = "OTHER-SOURCE"
+    return "create_object" if case.startswith("globalid") else "create_cave"
+
+
+@pytest.mark.parametrize("source,case", _PROVENANCE_CASES)
+@pytest.mark.parametrize("row_id", [False, True])
+@pytest.mark.parametrize("reverse", [False, True])
+@pytest.mark.parametrize("write", [False, True])
+def test_proposal_provenance_blocks_whole_batch(tmp_path, source, case, row_id, reverse, write):
+    data_dir = tmp_path / "new-data"
+    report = _two_source_rows(tmp_path, source, data_dir)
+    action = _corrupt_provenance(report, source, case)
+    row = report["rows"][0]
+    actions = [
+        {
+            "action": a,
+            "source": source,
+            "record_number": n,
+            "object_id": report["rows"][n - 1]["object_id"],
+            "cave_id": report["rows"][n - 1]["cave_id"],
+        }
+        for n in (2, 1)
+        for a in ("create_cave", "create_object")
+    ]
+    if not row_id:
+        row.update(object_id=None, cave_id=None)
+    if reverse:
+        actions.reverse()
+        for field in ("rows", "proposed_objects", "proposed_caves"):
+            report[field].reverse()
+    original = deepcopy(report)
+    before = _snapshot(tmp_path)
+    result = apply_review_decisions(
+        {"decisions": actions},
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=data_dir,
+        initialize_data_dir=True,
+        write=write,
+    )
+    assert result.has_errors, result
+    assert result.written_paths == ()
+    assert any(
+        i.severity == "error" and i.decision_index and f"{source} row 1" in i.description
+        for i in result.issues
+    )
+    assert not any(d.action == action and d.record_number == 1 for d in result.applied_decisions)
+    assert not data_dir.exists()
+    assert _snapshot(tmp_path) == before
+    assert report == original
+
+
+@pytest.mark.parametrize("field", ["object_external_refs", "cave_external_refs"])
+@pytest.mark.parametrize("case", ["wrong", "missing", "system", "type"])
+@pytest.mark.parametrize("fallback", [False, True])
+@pytest.mark.parametrize("write", [False, True])
+def test_matched_provenance_blocks_whole_batch(tmp_path, field, case, fallback, write):
+    _sample(tmp_path)
+    report = _tpn_staging()
+    update = report["matched_measurements"][0]
+    if fallback:
+        update.pop("record_number")
+    if case == "missing":
+        update[field] = []
+    else:
+        key = {"wrong": "external_id", "system": "system", "type": "ref_type"}[case]
+        update[field][0][key] = {"wrong": "OTHER-SOURCE", "system": "inne", "type": "other"}[case]
+    original = deepcopy(report)
+    before = _snapshot(tmp_path)
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {"action": "link_cave", "object_id": "KSW-0002", "cave_id": "C-0002"},
+                {"action": "add_measurement", "source": "TPN", "record_number": 1},
+            ]
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=tmp_path,
+        write=write,
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    assert [(i.code, i.decision_index) for i in result.issues] == [
+        ("STAGING_SOURCE_PROVENANCE_MISMATCH", 2)
+    ]
+    assert "TPN row 1" in result.issues[0].description
+    assert _snapshot(tmp_path) == before
+    assert report == original
+
+
+@pytest.mark.parametrize("source", ["PIG", "TPN"])
+@pytest.mark.parametrize("row_id", [False, True])
+@pytest.mark.parametrize("inventory", [False, True])
+def test_proposal_provenance_preserves_extra_refs_and_optional_inventory(
+    tmp_path, source, row_id, inventory
+):
+    from gps_kataster_obiektow_tatr.build_db import build_sqlite_database
+
+    data_dir = tmp_path / "new-data"
+    report = _two_source_rows(tmp_path, source, data_dir)
+    row = report["rows"][0]
+    object_id, cave_id = row["object_id"], row["cave_id"]
+    extra = {"system": "inne", "ref_type": "other", "external_id": "HISTORY"}
+    obj, cave = report["proposed_objects"][0], report["proposed_caves"][0]
+    obj["external_refs"].append(deepcopy(extra))
+    cave["external_refs"].append(deepcopy(extra))
+    if not inventory:
+        row["nr_inwent"] = None
+        cave["external_refs"] = [r for r in cave["external_refs"] if r["system"] != "NR_INWENT"]
+    if not row_id:
+        row.update(object_id=None, cave_id=None)
+    original = deepcopy(report)
+    decisions = {
+        "decisions": [
+            {"action": "create_cave", "source": source, "record_number": 1, "cave_id": cave_id},
+            {
+                "action": "create_object",
+                "source": source,
+                "record_number": 1,
+                "object_id": object_id,
+            },
+        ]
+    }
+    before = _snapshot(tmp_path)
+    dry = apply_review_decisions(
+        decisions,
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=data_dir,
+        initialize_data_dir=True,
+        write=False,
+    )
+    assert not dry.has_errors, dry.issues
+    assert dry.written_paths == () and _snapshot(tmp_path) == before
+    result = apply_review_decisions(
+        decisions,
+        staging_reports=StagingReports(**{source.lower(): report}),
+        data_dir=data_dir,
+        initialize_data_dir=True,
+    )
+    assert not result.has_errors, result.issues
+    assert len(result.written_paths) == 2
+    saved_obj = yaml.safe_load((data_dir / f"objects/KSW/{object_id}.yml").read_text())
+    saved_cave = yaml.safe_load((data_dir / f"caves/{cave_id}.yml").read_text())
+    assert extra in saved_obj["external_refs"] and extra in saved_cave["external_refs"]
+    assert saved_obj["measurements"][0]["source_ref"] == (
+        "PIG:1692" if source == "PIG" else "TPN:{SOURCE-1}"
+    )
+    assert saved_cave["external_refs"] == cave["external_refs"]
+    assert report == original
+    assert not has_errors(validate_data_dir(data_dir))
+    built = build_sqlite_database(data_dir=data_dir, output_path=tmp_path / "catalog.sqlite")
+    import sqlite3
+
+    with sqlite3.connect(built.sqlite_path) as db:
+        assert db.execute("PRAGMA integrity_check").fetchone() == ("ok",)
+        assert db.execute("PRAGMA foreign_key_check").fetchall() == []
+        assert db.execute("SELECT source_ref FROM measurements").fetchone() == (
+            "PIG:1692" if source == "PIG" else "TPN:{SOURCE-1}",
+        )
+
+
+@pytest.mark.parametrize("inventory", [False, True])
+def test_matched_provenance_preserves_historical_refs(tmp_path, inventory):
+    _sample(tmp_path)
+    report = _tpn_staging()
+    update = report["matched_measurements"][0]
+    historical = deepcopy(update["object_external_refs"][0])
+    historical["external_id"] = "{HISTORICAL}"
+    update["object_external_refs"].append(historical)
+    if not inventory:
+        report["rows"][0]["nr_inwent"] = None
+        update["cave_external_refs"] = []
+    original = deepcopy(report)
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {
+                    "action": "add_measurement",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "globalid": TPN_GLOBALID,
+                }
+            ]
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=tmp_path,
+    )
+    assert not result.has_errors, result.issues
+    obj = yaml.safe_load((tmp_path / "objects/KSW/KSW-0001.yml").read_text())
+    assert all(ref in obj["external_refs"] for ref in update["object_external_refs"])
+    assert obj["measurements"][-1]["source_ref"] == f"TPN:{TPN_GLOBALID}"
+    assert report == original
+    assert not has_errors(validate_data_dir(tmp_path))
+
+
+@pytest.mark.parametrize("source", ["PIG", "TPN"])
+@pytest.mark.parametrize("dry_run", [False, True])
+def test_cli_provenance_mismatch_preserves_new_target(tmp_path, source, dry_run):
+    data_dir = tmp_path / "new-data"
+    report = _two_source_rows(tmp_path, source, data_dir)
+    _corrupt_provenance(report, source, "inventory_wrong")
+    report_path = tmp_path / "staging.json"
+    report_path.write_text(json.dumps(report), encoding="utf-8")
+    decisions = tmp_path / "decisions.yml"
+    _write(
+        decisions,
+        {
+            "decisions": [
+                {"action": "create_cave", "source": source, "record_number": 1},
+                {"action": "create_object", "source": source, "record_number": 1},
+            ]
+        },
+    )
+    report_before, decisions_before = report_path.read_bytes(), decisions.read_bytes()
+    command = [
+        sys.executable,
+        str(Path(__file__).resolve().parents[1] / "scripts/importers/apply_review.py"),
+        "--decisions",
+        str(decisions),
+        f"--{source.lower()}-staging",
+        str(report_path),
+        f"--no-{'tpn' if source == 'PIG' else 'pig'}-staging",
+        "--data-dir",
+        str(data_dir),
+        "--init-data-dir",
+        "--output-dir",
+        str(tmp_path / "review"),
+    ]
+    if dry_run:
+        command.append("--dry-run")
+    result = subprocess.run(command, capture_output=True, text=True, check=False)
+    assert result.returncode == 1, result.stderr
+    saved = json.loads((tmp_path / "review/staging-review.json").read_text())
+    assert saved["has_errors"] and saved["written_paths"] == []
+    assert "STAGING_SOURCE_PROVENANCE_MISMATCH" in {i["code"] for i in saved["issues"]}
+    assert not data_dir.exists()
+    assert report_path.read_bytes() == report_before and decisions.read_bytes() == decisions_before
+
+
+def test_assigned_pig_row_without_catalog_id_preserves_importer_output(tmp_path):
+    data_dir = tmp_path / "new-data"
+    source = tmp_path / "pig.csv"
+    source.write_text(
+        _pig_header()
+        + "\n"
+        + _pig_row(
+            pig_id="",
+            nr_inwent="",
+            name="Opening without catalog identifier",
+            lat="49,23459299",
+            lon="19,87589498",
+            x_1992="152267,23",
+            y_1992="563744,25",
+            source_year="2010",
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    report = pig_report_json(
+        build_pig_staging(
+            source,
+            data_dir=data_dir,
+            prefix_resolver=StubResolver(),
+            generated_at="2026-10-13T06:00:00Z",
+        )
+    )
+    result = apply_review_decisions(
+        _decisions("create_cave", "create_object"),
+        staging_reports=StagingReports(pig=report),
+        data_dir=data_dir,
+        initialize_data_dir=True,
+    )
+    assert not result.has_errors, result.issues
+    assert len(result.written_paths) == 2
+    obj = yaml.safe_load((data_dir / "objects/KSW/KSW-0001.yml").read_text())
+    assert obj["measurements"][0]["source"] == "PIG"
+    assert obj["measurements"][0]["source_ref"] is None
+    assert not has_errors(validate_data_dir(data_dir))
+
+
+@pytest.mark.parametrize("write", [False, True])
+def test_matched_provenance_without_cave_blocks_missing_inventory(tmp_path, write):
+    records = _sample(tmp_path)
+    records["objects/KSW/KSW-0001.yml"]["cave_id"] = None
+    records["caves/C-0001.yml"]["object_ids"] = ["KSW-0002"]
+    for relative, data in records.items():
+        _write(tmp_path / relative, data)
+    report = _tpn_staging()
+    report["matched_measurements"][0]["cave_external_refs"] = []
+    original = deepcopy(report)
+    before = _snapshot(tmp_path)
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {"action": "link_cave", "object_id": "KSW-0002", "cave_id": "C-0002"},
+                {"action": "add_measurement", "source": "TPN", "record_number": 1},
+            ]
+        },
+        staging_reports=StagingReports(tpn=report),
+        data_dir=tmp_path,
+        write=write,
+    )
+    assert result.has_errors and result.written_paths == ()
+    assert [(i.code, i.severity, i.decision_index) for i in result.issues] == [
+        ("STAGING_SOURCE_PROVENANCE_MISMATCH", "error", 2)
+    ]
+    assert "TPN row 1" in result.issues[0].description
+    assert "cave" in result.issues[0].description
+    assert _snapshot(tmp_path) == before and report == original

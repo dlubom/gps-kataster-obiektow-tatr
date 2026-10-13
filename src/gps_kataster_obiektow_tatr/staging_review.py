@@ -273,7 +273,7 @@ def apply_review_decisions(
             issues=tuple(issues),
             written_paths=(),
         )
-    pending_refs: list[tuple[int, str, str, Any]] = []
+    pending_refs: list[tuple[int, str, str, Any, dict[str, Any]]] = []
     dirty_objects: set[str] = set()
     dirty_caves: set[str] = set()
     reserved_objects, reserved_caves = _selected_proposal_ids(decisions, indexes)
@@ -613,6 +613,11 @@ def _apply_create_cave(
 
     if not _check_proposal_schema(proposal, DataKind.CAVE, decision_index, issues):
         return
+    rows = indexes.pig_rows_by_record if source == "PIG" else indexes.tpn_rows_by_record
+    if not _check_staging_provenance(
+        proposal, rows[record_number], source, DataKind.CAVE, decision_index, issues
+    ):
+        return
     caves[cave_id] = _finalize_staging_record(proposal, source=source)
     dirty_caves.add(cave_id)
     applied.append(
@@ -675,6 +680,11 @@ def _apply_create_object(
         return
 
     if not _check_proposal_schema(proposal, DataKind.OBJECT, decision_index, issues):
+        return
+    rows = indexes.pig_rows_by_record if source == "PIG" else indexes.tpn_rows_by_record
+    if not _check_staging_provenance(
+        proposal, rows[record_number], source, DataKind.OBJECT, decision_index, issues
+    ):
         return
     objects[object_id] = _finalize_staging_record(proposal, source=source)
     dirty_objects.add(object_id)
@@ -873,7 +883,7 @@ def _apply_unresolved_create_object(
     caves: dict[str, dict[str, Any]],
     reserved_objects: set[str],
     reserved_caves: set[str],
-    pending_refs: list[tuple[int, str, str, Any]],
+    pending_refs: list[tuple[int, str, str, Any, dict[str, Any]]],
     dirty_objects: set[str],
     dirty_caves: set[str],
     reviewed_at: str,
@@ -1018,7 +1028,7 @@ def _apply_unresolved_create_object(
     dirty_objects.add(object_id)
     dirty_caves.add(cave_id)
     pending_refs.append(
-        (decision_index, object_id, cave_id, deepcopy(payload["cave_external_refs"]))
+        (decision_index, object_id, cave_id, deepcopy(payload["cave_external_refs"]), row)
     )
     applied.append(
         AppliedDecision(
@@ -1090,7 +1100,7 @@ def _apply_add_measurement(
     decision_index: int,
     indexes: _StagingIndexes,
     objects: dict[str, dict[str, Any]],
-    pending_refs: list[tuple[int, str, str, Any]],
+    pending_refs: list[tuple[int, str, str, Any, dict[str, Any]]],
     dirty_objects: set[str],
     reviewed_at: str,
     reviewed_by: str,
@@ -1249,6 +1259,10 @@ def _apply_add_measurement(
     candidate["external_refs"] = update.get("object_external_refs", [])
     if not _check_proposal_schema(candidate, DataKind.OBJECT, decision_index, issues):
         return
+    if not _check_staging_provenance(
+        candidate, row, source, DataKind.OBJECT, decision_index, issues, measurements=[measurement]
+    ):
+        return
     finalized = _finalize_staging_measurement(measurement)
     if previous_from_source:
         finalized["notes"] = (finalized.get("notes") or "") + (
@@ -1263,7 +1277,13 @@ def _apply_add_measurement(
     dirty_objects.add(object_id)
 
     pending_refs.append(
-        (decision_index, object_id, explicit_cave, deepcopy(update.get("cave_external_refs", [])))
+        (
+            decision_index,
+            object_id,
+            explicit_cave,
+            deepcopy(update.get("cave_external_refs", [])),
+            row,
+        )
     )
 
     applied.append(
@@ -1281,7 +1301,7 @@ def _apply_add_measurement(
 
 
 def _apply_cave_references(
-    pending: list[tuple[int, str, str, Any]],
+    pending: list[tuple[int, str, str, Any, dict[str, Any]]],
     *,
     objects: dict[str, dict[str, Any]],
     caves: dict[str, dict[str, Any]],
@@ -1291,7 +1311,7 @@ def _apply_cave_references(
     issues: list[ReviewIssue],
     applied: list[AppliedDecision],
 ) -> None:
-    for index, object_id, explicit_cave, refs in pending:
+    for index, object_id, explicit_cave, refs, row in pending:
         cave_id = _clean_value(objects[object_id].get("cave_id"))
         if explicit_cave and explicit_cave != cave_id:
             issues.append(
@@ -1316,9 +1336,15 @@ def _apply_cave_references(
                     )
                 )
                 continue
+            if not _check_staging_provenance(
+                {"external_refs": refs}, row, "TPN", DataKind.CAVE, index, issues
+            ):
+                continue
         else:
             candidate = {**caves[cave_id], "external_refs": refs}
             if not _check_proposal_schema(candidate, DataKind.CAVE, index, issues):
+                continue
+            if not _check_staging_provenance(candidate, row, "TPN", DataKind.CAVE, index, issues):
                 continue
             _append_unique_dicts(caves[cave_id].setdefault("external_refs", []), refs)
             _touch_record(caves[cave_id], reviewed_at=reviewed_at, reviewed_by=reviewed_by)
@@ -1481,6 +1507,65 @@ def _decision_source_record(
             )
         )
     return source, record_number
+
+
+def _source_reference_present(refs: Any, system: str, ref_type: str, external_id: str) -> bool:
+    """Require the exact typed source identity while allowing additional references."""
+    return isinstance(refs, list) and any(
+        isinstance(ref, dict)
+        and ref.get("system") == system
+        and ref.get("ref_type") == ref_type
+        and ref.get("external_id") == external_id
+        for ref in refs
+    )
+
+
+def _check_staging_provenance(
+    proposal: dict[str, Any],
+    row: dict[str, Any],
+    source: str,
+    kind: DataKind,
+    decision_index: int,
+    issues: list[ReviewIssue],
+    *,
+    measurements: list[dict[str, Any]] | None = None,
+) -> bool:
+    """Validate selected staging content after schema checks and before materialization."""
+    refs = proposal.get("external_refs")
+    source_id = _clean_value(row.get("pig_id" if source == "PIG" else "globalid"))
+    if kind == DataKind.OBJECT:
+        expected_ref = f"{source}:{source_id}" if source_id else None
+        imported = proposal["measurements"] if measurements is None else measurements
+        valid = bool(imported) and all(
+            item.get("source") == source and item.get("source_ref") == expected_ref
+            for item in imported
+        )
+        if source == "TPN":
+            valid = (
+                valid
+                and bool(source_id)
+                and _source_reference_present(refs, "TPN", "source_globalid", source_id)
+            )
+    else:
+        valid = True
+        if source == "PIG" and source_id:
+            valid = _source_reference_present(refs, "PIG", "catalog_id", source_id)
+        nr_inwent = _clean_value(row.get("nr_inwent"))
+        if nr_inwent:
+            valid = valid and _source_reference_present(
+                refs, "NR_INWENT", "inventory_number", nr_inwent
+            )
+    if not valid:
+        issues.append(
+            ReviewIssue(
+                "STAGING_SOURCE_PROVENANCE_MISMATCH",
+                ReviewSeverity.ERROR,
+                decision_index,
+                f"{source} row {row['record_number']}: {kind.value} source/source_ref or required "
+                "typed source reference is missing or differs from the row.",
+            )
+        )
+    return valid
 
 
 def _cave_proposal_for_decision(

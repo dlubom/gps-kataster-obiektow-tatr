@@ -191,6 +191,31 @@ Niezgodność daje `STAGING_OBJECT_PROPOSAL_MISSING` albo
 `STAGING_CAVE_PROPOSAL_MISSING` z numerem decyzji, źródłem i wierszem;
 blokuje całą partię, także w `--dry-run`.
 
+ID wiersza i propozycji nie zastępuje kontroli proweniencji. Także przy
+przydzielonym ID każdy pomiar nowej propozycji musi mieć `source` i
+`source_ref` zgodne z `pig_id` albo `globalid` wybranego wiersza.
+Nowy obiekt TPN oraz `matched_measurements[].object_external_refs` muszą
+zawierać dokładną referencję `TPN/source_globalid` tego GLOBALID.
+Nowa jaskinia PIG musi zawierać `PIG/catalog_id`, jeśli wiersz ma `pig_id`.
+Każda propozycja jaskini oraz `matched_measurements[].cave_external_refs`
+musi zawierać `NR_INWENT/inventory_number`, jeśli wiersz ma `nr_inwent`.
+Tożsamość ref wyznacza trójka `system`, `ref_type`, `external_id`;
+jednakowa wartość z innego systemu lub typu nie spełnia wymagania.
+
+Brak lub niezgodność wymaganej ref albo pomiaru daje
+`STAGING_SOURCE_PROVENANCE_MISMATCH` ze źródłem, wierszem i numerem decyzji.
+Kontrola obowiązuje także dla starszego fallbacku aktualizacji po
+`source_ref`; błąd blokuje całą partię bez zmiany YAML lub utworzenia celu.
+Przy wierszu bez ID brak potwierdzenia selekcji może wcześniej dać
+`STAGING_OBJECT_PROPOSAL_MISSING` albo `STAGING_CAVE_PROPOSAL_MISSING`.
+Schemat niepoprawnej propozycji nadal daje `STAGING_PROPOSAL_INVALID`.
+Dodatkowe legalne/historyczne referencje są zachowywane; kontrola wymaga
+obecności dokładnej ref, nie wyłączności jednej wartości. Jeśli źródło
+nie podaje `nr_inwent`, nie wymaga się fikcyjnego numeru. Importer PIG może
+również tworzyć propozycję bez katalogowego ID: przy przydzielonym ID
+wiersza pomiar zachowuje `source: PIG` i `source_ref: null`.
+Aktualizacja sprawdza nowy pomiar, zachowując wcześniejszą historię celu.
+
 `link_cave` przy przeniesieniu A→B zapisuje obiekt i obie jaskinie wraz
 z `updated_at` / `updated_by` z decyzji. Zachowuje trwałe ID, pomiary,
 `best_measurement`, referencje i pozostałe pola. Stara jaskinia może zostać

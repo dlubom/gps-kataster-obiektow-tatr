@@ -66,7 +66,8 @@ MUTATION_PYTEST_SELECTION_ARGS = [
         "and not test_real_ambiguous_row_flows_through_cli_review_validation_and_build "
         "and not test_cli_rejects_explicit_empty_generated_at_before_writing "
         "and not test_build_release_artifacts_cli_is_local_dry_run "
-        "and not test_export_cli_writes_artifacts"
+        "and not test_export_cli_writes_artifacts "
+        "and not test_cli_provenance_mismatch_preserves_new_target"
     ),
 ]
 
