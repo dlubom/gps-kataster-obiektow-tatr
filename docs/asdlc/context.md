@@ -4,7 +4,7 @@ Last updated: 2026-10-13
 
 ## Current handoff — review remediation
 
-- PBI-063 zweryfikowane — do dostarczenia (2026-10-13), baza
+- PBI-063 wykonane (2026-10-13), baza
   `788ab8f5337007ddaca301a88ce29a2c305a3496`, fetch/pull/ls-remote zgodne,
   CI checkpointu PBI-061 38371435026 completed/success.
   30 nowych semantycznych przypadków SQL: różne pomiary, manual best
@@ -14,10 +14,15 @@ Last updated: 2026-10-13
   niezmienionych ostrzeżeń. Baseline 20 survived/11 killed → 31 killed;
   po regresjach 363 ID = 356 killed/7 jawnie przeanalizowanych survived.
   Review testów approve, bez P1/P2/P3; audit rejestru zgodny.
-  [Dowody PBI-063](verification/PBI-063.md). Pozostają commit/push,
-  exact-SHA CI i checkpoint dokumentacji. Następne gotowe po dostarczeniu
-  PBI-064 (042/052 wykonane), nie rozpoczęte. 062 nadal czeka na 066,
-  054 na pozostałe naprawy/regresje i nową pełną kampanię/review.
+  [Dowody PBI-063](verification/PBI-063.md). Commit
+  `75606e1796cb1db8a30be7a1329dc92f0bfdd76e` jest na origin (ls-remote),
+  CI validate [38375014077](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38375014077)
+  ma completed/success dla tego SHA, wszystkie joby i Complete job sukces.
+  Przy wznowieniu potwierdzić publikację checkpointu dokumentacji i jego CI.
+  Następne najniższe gotowe **PBI-064** (042/052 wykonane), nie rozpoczęte.
+  Pozostaje 6 PBI: 064–067, 062 i 054. 062 nadal czeka na 066,
+  054 jest zablokowane (066 P2, cztery P3), wymaga nowej pełnej kampanii
+  i końcowego review oraz oceny jawnych limitów ocaleń 059/060/061/063.
   Bez merge, tagu ani release.
 
 - Historyczny handoff: PBI-061 wykonane (2026-10-13), baza `4f55722b102b2870eb119ea3925446fbd992817d`

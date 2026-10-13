@@ -37,7 +37,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — jeden P2 i pięć P3; PBI-059/060/061 dostarczone | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — jeden P2 i cztery P3; PBI-059/060/061/063 dostarczone | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
@@ -46,7 +46,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-060 | Walidować proweniencję propozycji i referencji staging | wykonane 2026-10-13 | [log](verification/PBI-060.md) |
 | PBI-061 | Chronić reprezentację liczb w DBF | wykonane 2026-10-13 | [log](verification/PBI-061.md) |
 | PBI-062 | Regresje fallbacku TPN po nazwie/odległości | planowane — zależy od PBI-066 | [log](verification/PBI-062.md) |
-| PBI-063 | Semantyczny odczyt pól SQLite | zweryfikowane — do dostarczenia | [log](verification/PBI-063.md) |
+| PBI-063 | Semantyczny odczyt pól SQLite | wykonane 2026-10-13 | [log](verification/PBI-063.md) |
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | planowane — gotowe | [log](verification/PBI-064.md) |
 | PBI-065 | Zachowanie treści źródłowej staging → YAML | planowane — gotowe | [log](verification/PBI-065.md) |
 | PBI-066 | Dopasowywać tożsamość po systemie i typie ref | planowane — gotowe | [log](verification/PBI-066.md) |
@@ -101,13 +101,24 @@ przeanalizowanych survived z 62, brak innych stanów w wybranym zakresie;
 wcześniejsze generacje nie są sumowane. Niezależny review kodu, testów,
 sond i rejestru bez findings. [Dowody](verification/PBI-061.md).
 
-Następne najniższe gotowe zadanie: **PBI-063**, po sprawdzeniu origin i CI
-checkpointu dokumentacji. Zależności PBI-038/044/052/055 są dostarczone.
-PBI-062 nadal czeka na PBI-066. Pozostaje **7 PBI**: 063–067, 062 i 054.
-PBI-054 pozostaje zablokowane przez PBI-066 i luki P3; ponowienie wymaga
-nowej pełnej kampanii i końcowego review, również oceny jawnych limitów
-ocalałych z logów 059/060/061. Nie deklarujemy pełnego pokrycia.
-W tej sesji wykonano tylko PBI-061; kolejnego zadania nie rozpoczęto.
+PBI-063 dostarczono w `75606e1796cb1db8a30be7a1329dc92f0bfdd76e`:
+zdalny SHA potwierdzony przez ls-remote, CI validate
+[38375014077](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38375014077)
+ma completed/success dla tego SHA, wszystkie joby i Complete job sukces.
+Pełna bramka: 1645 testów, osiem etapów exit 0, readback 7/7,
+niezmienne dane/liczniki/warningi. 30 nowych przypadków SQL; 31 wskazanych
+mutantów killed (20 survived w baseline). Wybrany zakres 363 ID:
+356 killed / 7 ocaleń przeanalizowanych w kontrakcie publicznego builda.
+Niezależne review testów, audit ledger i dowodów bez findings.
+[Dowody](verification/PBI-063.md).
+
+Następne najniższe gotowe zadanie: **PBI-064**, po sprawdzeniu origin i CI
+checkpointu dokumentacji. Zależności PBI-042/052 są dostarczone.
+PBI-062 nadal czeka na PBI-066. Pozostaje **6 PBI**: 064–067, 062 i 054.
+PBI-054 pozostaje zablokowane przez PBI-066 P2 i cztery luki P3; ponowienie
+wymaga nowej pełnej kampanii i końcowego review, również oceny jawnych
+limitów ocalałych z logów 059/060/061/063. Nie deklarujemy pełnego pokrycia.
+W tej sesji wykonano tylko PBI-063; kolejnego zadania nie rozpoczęto.
 
 PBI-055 rozstrzygnięto w commicie
 `25ae54a31066c1d5b9062687c2797721390ac88c`: GitHub API potwierdziło
