@@ -4,22 +4,31 @@ Last updated: 2026-10-13
 
 ## Current handoff — review remediation
 
-- PBI-061 zweryfikowane — do dostarczenia (2026-10-13), baza `4f55722b102b2870eb119ea3925446fbd992817d`
+- PBI-061 wykonane (2026-10-13), baza `4f55722b102b2870eb119ea3925446fbd992817d`
   potwierdzona fetch/pull, ls-remote i CI validate 38363983104.
-  Naprawiono ciche obcinanie liczb DBF: pełny zapis ze znakiem i carry
-  musi mieścić width/decimal przed pierwszym zapisem eksportu/paczki,
-  w tym SQLite. Nie zmieniono danych ani fizycznych reguł domeny.
-  81 nowych przypadków, niezależny review bez findings P1/P2/P3;
-  pierwsza zielona pełna bramka 1610 testów i readback 7/7,
-  realny repeat 7 identycznych SHA. Końcowe świeże mutacje 62 ID:
-  57 killed / 5 przeanalizowanych survived, bez innych stanów;
-  wcześniejsze generacje zachowane osobno. Końcowa bramka po dowodach:
-  1615 passed, osiem etapów exit 0, readback 7/7, immutability 0;
-  data/liczniki/warningi bez zmian. Pozostaje scoped commit/push i exact-SHA CI
-  oraz checkpoint dokumentacji. [Dowody PBI-061](verification/PBI-061.md).
-  Po dostarczeniu następne najniższe gotowe **PBI-063** (038/044/052/055
-  wykonane); 062 nadal zależy od 066. Pozostanie 7 PBI: 063–067, 062 i 054.
-  Nie rozpoczęto następnego PBI. Bez merge, tagu ani release.
+  Pełny zapis liczb F/N DBF ze znakiem i carry musi mieścić width/decimal
+  przed pierwszym zapisem eksportu/paczki, w tym SQLite. Polityka odrzuca
+  także 1e49, które nie mieści pełnej precyzji .00; null i duże int PBI-055
+  są legalne. Nie zmieniono danych ani fizycznych reguł domeny;
+  SQLite-only i duże historyczne nie-best pozostają obsługiwane.
+  81 nowych przypadków; końcowa pełna bramka 1615 passed, osiem etapów
+  exit 0, readback 7/7, immutability 0, 0 błędów i 2066 znanych ostrzeżeń.
+  Data/liczniki/warningi bez zmian. Realny repeat ma 7 identycznych SHA.
+  Świeże mutacje: 62 ID, 57 killed / 5 przeanalizowanych survived, bez
+  innych stanów; wcześniejsze generacje zachowane osobno i niesumowane.
+  Niezależny review kodu oraz audit dowodów bez findings P1/P2/P3;
+  343 testy, 1290 sond PyShp, cztery guard probes RED/GREEN,
+  13 fingerprintów, 113 testów mapowania i 5 diffów zgodne.
+  [Dowody PBI-061](verification/PBI-061.md). Commit
+  `8ccc1f8eb0fcb14b659d05d29b428e567d280581` jest na origin (ls-remote),
+  CI validate [38370453731](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38370453731)
+  ma completed/success dla tego SHA, cały job i Complete job sukces.
+  Przy wznowieniu potwierdzić publikację checkpointu dokumentacji i jego CI.
+  Następne najniższe gotowe **PBI-063** (038/044/052/055 wykonane);
+  062 nadal zależy od 066. Pozostaje 7 PBI: 063–067, 062 i 054.
+  054 pozostaje zablokowane (066 P2, pięć P3); końcowa ocena zachowuje
+  jawne limity mutacji z logów 059/060/061. Nie rozpoczęto następnego PBI.
+  Bez merge, tagu ani release.
 
 - Historyczny handoff: PBI-060 jest wykonane (2026-10-13), baza
   `81a7bb0d042ded43a4335cf225a23c5786d1e1cc`, potwierdzona przed startem

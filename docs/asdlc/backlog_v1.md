@@ -37,14 +37,14 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — dwa P2 i pięć P3; PBI-059/060 dostarczone | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — jeden P2 i pięć P3; PBI-059/060/061 dostarczone | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
 | PBI-058 | Dodać regresję dopasowania TPN po GLOBALID | wykonane 2026-09-29 | [log](verification/PBI-058.md) |
 | PBI-059 | Odrzucać niecałkowite i logiczne numery wierszy | wykonane 2026-09-30 | [log](verification/PBI-059.md) |
 | PBI-060 | Walidować proweniencję propozycji i referencji staging | wykonane 2026-10-13 | [log](verification/PBI-060.md) |
-| PBI-061 | Chronić reprezentację liczb w DBF | zweryfikowane — do dostarczenia | [log](verification/PBI-061.md) |
+| PBI-061 | Chronić reprezentację liczb w DBF | wykonane 2026-10-13 | [log](verification/PBI-061.md) |
 | PBI-062 | Regresje fallbacku TPN po nazwie/odległości | planowane — zależy od PBI-066 | [log](verification/PBI-062.md) |
 | PBI-063 | Semantyczny odczyt pól SQLite | planowane — gotowe | [log](verification/PBI-063.md) |
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | planowane — gotowe | [log](verification/PBI-064.md) |
@@ -91,13 +91,23 @@ Pełna bramka: 1534 testy, readback 7/7, 0 błędów, niezmienione data i warnin
 naprawiane blokady objęte regresjami i niezależnym review bez findings.
 Przerwany przebieg nie jest zaliczany. [Dowody](verification/PBI-060.md).
 
-Następne gotowe zadanie: **PBI-061**, po sprawdzeniu origin i CI checkpointu
-dokumentacji. Zależności PBI-049/050/055 są dostarczone. Pozostaje
-**8 PBI**: naprawy 061/066, regresje 062–065/067 i ponowienie 054.
-Końcowa ocena 054 zachowuje również starsze limity ocalałych opisane w
-[logu PBI-059](verification/PBI-059.md) i [PBI-060](verification/PBI-060.md),
-bez deklaracji pełnego pokrycia.
-W tej sesji wykonano tylko PBI-060; kolejnego zadania nie rozpoczęto.
+PBI-061 dostarczono w `8ccc1f8eb0fcb14b659d05d29b428e567d280581`:
+zdalny SHA potwierdzony przez ls-remote, CI validate
+[38370453731](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38370453731)
+ma completed/success dla dokładnie tego SHA, cały job wraz z Complete job
+zakończony sukcesem. Pełna bramka: 1615 testów, readback 7/7, 0 błędów,
+niezmienione data/liczniki/warningi. Świeże mutacje: 57 killed / 5
+przeanalizowanych survived z 62, brak innych stanów w wybranym zakresie;
+wcześniejsze generacje nie są sumowane. Niezależny review kodu, testów,
+sond i rejestru bez findings. [Dowody](verification/PBI-061.md).
+
+Następne najniższe gotowe zadanie: **PBI-063**, po sprawdzeniu origin i CI
+checkpointu dokumentacji. Zależności PBI-038/044/052/055 są dostarczone.
+PBI-062 nadal czeka na PBI-066. Pozostaje **7 PBI**: 063–067, 062 i 054.
+PBI-054 pozostaje zablokowane przez PBI-066 i luki P3; ponowienie wymaga
+nowej pełnej kampanii i końcowego review, również oceny jawnych limitów
+ocalałych z logów 059/060/061. Nie deklarujemy pełnego pokrycia.
+W tej sesji wykonano tylko PBI-061; kolejnego zadania nie rozpoczęto.
 
 PBI-055 rozstrzygnięto w commicie
 `25ae54a31066c1d5b9062687c2797721390ac88c`: GitHub API potwierdziło
