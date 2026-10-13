@@ -49,7 +49,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-063 | Semantyczny odczyt pól SQLite | wykonane 2026-10-13 | [log](verification/PBI-063.md) |
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | wykonane 2026-10-13 | [log](verification/PBI-064.md) |
 | PBI-065 | Zachowanie treści źródłowej staging → YAML | wykonane 2026-10-13 | [log](verification/PBI-065.md) |
-| PBI-066 | Dopasowywać tożsamość po systemie i typie ref | planowane — gotowe | [log](verification/PBI-066.md) |
+| PBI-066 | Dopasowywać tożsamość po systemie i typie ref | zweryfikowane — do dostarczenia | [log](verification/PBI-066.md) |
 | PBI-067 | Regresje walidatora ref, załączników i diagnostyk | planowane — gotowe | [log](verification/PBI-067.md) |
 
 Ponowienie PBI-054 na aktualnym origin `827a2f8` (2026-09-30) potwierdziło

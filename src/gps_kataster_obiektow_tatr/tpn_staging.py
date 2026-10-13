@@ -959,12 +959,14 @@ def _load_existing_candidates(data_dir: Path) -> tuple[_Candidate, ...]:
                 source="data_yaml",
                 cave_id=cave_id,
                 object_id=object_id,
-                nr_inwent=_first_external_ref_id(cave, system="NR_INWENT"),
+                nr_inwent=_first_external_ref_id(
+                    cave, system="NR_INWENT", ref_type="inventory_number"
+                ),
                 name=_clean_value(data.get("name_local"))
                 or _clean_value(cave.get("name") if cave else ""),
                 x_1992=_parse_decimal(measurement.get("x_1992") if measurement else None),
                 y_1992=_parse_decimal(measurement.get("y_1992") if measurement else None),
-                globalids=tuple(_external_ref_ids(data, system="TPN")),
+                globalids=tuple(_external_ref_ids(data, system="TPN", ref_type="source_globalid")),
                 next_measurement_id=_next_measurement_id(data.get("measurements", [])),
                 pig_ids=_pig_measurement_ids(data),
             )
@@ -1011,7 +1013,9 @@ def _load_pig_staging_candidates(pig_staging_path: Path | None) -> tuple[_Candid
                 or _clean_value(proposed_object.get("name_local")),
                 x_1992=_parse_decimal(measurement.get("x_1992") if measurement else None),
                 y_1992=_parse_decimal(measurement.get("y_1992") if measurement else None),
-                globalids=tuple(_external_ref_ids(proposed_object, system="TPN")),
+                globalids=tuple(
+                    _external_ref_ids(proposed_object, system="TPN", ref_type="source_globalid")
+                ),
                 next_measurement_id=_next_measurement_id(proposed_object.get("measurements", [])),
                 pig_ids=tuple(sorted({*measurement_pig_ids, *([pig_id] if pig_id else [])})),
             )
@@ -1079,7 +1083,8 @@ def _candidate_measurement(data: dict[str, Any]) -> dict[str, Any] | None:
     return None
 
 
-def _external_ref_ids(data: dict[str, Any] | None, *, system: str) -> list[str]:
+def _external_ref_ids(data: dict[str, Any] | None, *, system: str, ref_type: str) -> list[str]:
+    """Read source identities by their exact system/type pair, retaining other references."""
     if not isinstance(data, dict):
         return []
     refs = data.get("external_refs")
@@ -1090,12 +1095,15 @@ def _external_ref_ids(data: dict[str, Any] | None, *, system: str) -> list[str]:
         for ref in refs
         if isinstance(ref, dict)
         and ref.get("system") == system
+        and ref.get("ref_type") == ref_type
         and _clean_value(ref.get("external_id"))
     ]
 
 
-def _first_external_ref_id(data: dict[str, Any] | None, *, system: str) -> str | None:
-    refs = _external_ref_ids(data, system=system)
+def _first_external_ref_id(
+    data: dict[str, Any] | None, *, system: str, ref_type: str
+) -> str | None:
+    refs = _external_ref_ids(data, system=system, ref_type=ref_type)
     return refs[0] if refs else None
 
 

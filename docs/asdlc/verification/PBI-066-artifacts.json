@@ -1,0 +1,614 @@
+{
+  "base_sha": "7a3f8f6e7fe73b2154be5837760cc708d1103219",
+  "reproduction": {
+    "base_sha": "7a3f8f6e7fe73b2154be5837760cc708d1103219",
+    "red_command": "uv run --frozen --no-sync --offline pytest -q tests/test_typed_source_matching.py",
+    "red_exit_code": 1,
+    "red_summary": "14 failed, 13 passed in 1.87s",
+    "red_failures": [
+      "FAILED tests/test_typed_source_matching.py::test_only_typed_globalid_routes_measurement_and_preserves_other_opening[TPN-other-False]",
+      "FAILED tests/test_typed_source_matching.py::test_only_typed_globalid_routes_measurement_and_preserves_other_opening[TPN-other-True]",
+      "FAILED tests/test_typed_source_matching.py::test_only_typed_globalid_routes_measurement_and_preserves_other_opening[TPN-url-False]",
+      "FAILED tests/test_typed_source_matching.py::test_only_typed_globalid_routes_measurement_and_preserves_other_opening[TPN-url-True]",
+      "FAILED tests/test_typed_source_matching.py::test_only_typed_globalid_routes_measurement_and_preserves_other_opening[TPN-source_row-False]",
+      "FAILED tests/test_typed_source_matching.py::test_only_typed_globalid_routes_measurement_and_preserves_other_opening[TPN-source_row-True]",
+      "FAILED tests/test_typed_source_matching.py::test_only_typed_globalid_routes_measurement_and_preserves_other_opening[TPN-inventory_number-False]",
+      "FAILED tests/test_typed_source_matching.py::test_only_typed_globalid_routes_measurement_and_preserves_other_opening[TPN-inventory_number-True]",
+      "FAILED tests/test_typed_source_matching.py::test_only_typed_globalid_routes_measurement_and_preserves_other_opening[TPN-catalog_id-False]",
+      "FAILED tests/test_typed_source_matching.py::test_only_typed_globalid_routes_measurement_and_preserves_other_opening[TPN-catalog_id-True]",
+      "FAILED tests/test_typed_source_matching.py::test_pig_staging_candidate_uses_typed_globalid[other-new]",
+      "FAILED tests/test_typed_source_matching.py::test_pig_staging_candidate_uses_typed_globalid[source_row-new]",
+      "FAILED tests/test_typed_source_matching.py::test_inventory_other_is_not_a_number_and_does_not_hide_typed_number[T.UNRELATED-new-False]",
+      "FAILED tests/test_typed_source_matching.py::test_inventory_other_is_not_a_number_and_does_not_hide_typed_number[T.RIGHT-02-matched-False]"
+    ],
+    "red_log_sha256": "e7a2c50cf9dc2ad4ab8614cd23d1eda705cff6da3616de89496d7d240aca7fca",
+    "area_test_result": {
+      "exit_code": 0,
+      "passed": 73,
+      "seconds": 5.34
+    },
+    "cli_after": [
+      {
+        "ref_type_on_first_object": "other",
+        "input_validation_errors": [],
+        "staging_row": {
+          "record_number": 1,
+          "globalid": "{GLOBALID-MATCH}",
+          "nr_inwent": "T.NEW-02",
+          "name": "Corrected opening",
+          "status": "matched",
+          "cave_id": "C-0002",
+          "object_id": "KSW-0002",
+          "match_strategy": "nr_inwent",
+          "distance_m": 0.0,
+          "payload": null
+        },
+        "staging_update_target": "KSW-0002",
+        "dry_run_has_errors": false,
+        "cli_exit_code": 0,
+        "review_has_errors": false,
+        "written_count": 2,
+        "applied_decisions": [
+          {
+            "decision_index": 1,
+            "action": "add_measurement",
+            "status": "materialized",
+            "source": "TPN",
+            "record_number": 1,
+            "object_id": "KSW-0002",
+            "cave_id": "C-0002",
+            "description": "Added measurement m-002 to object KSW-0002."
+          }
+        ],
+        "object_measurement_counts": {
+          "KSW-0001": 1,
+          "KSW-0002": 2
+        },
+        "object_measurement_source_refs": {
+          "KSW-0001": [
+            "teren:2026-05-15:gps"
+          ],
+          "KSW-0002": [
+            "teren:2026-05-15:gps",
+            "TPN:{GLOBALID-MATCH}"
+          ]
+        },
+        "final_validation_errors": [],
+        "changed_paths": [
+          "caves/C-0002.yml",
+          "objects/KSW/KSW-0002.yml"
+        ]
+      },
+      {
+        "ref_type_on_first_object": "source_globalid",
+        "input_validation_errors": [],
+        "staging_row": {
+          "record_number": 1,
+          "globalid": "{GLOBALID-MATCH}",
+          "nr_inwent": "T.NEW-02",
+          "name": "Corrected opening",
+          "status": "matched",
+          "cave_id": "C-0001",
+          "object_id": "KSW-0001",
+          "match_strategy": "globalid",
+          "distance_m": 1414.213562373095,
+          "payload": null
+        },
+        "staging_update_target": "KSW-0001",
+        "dry_run_has_errors": false,
+        "cli_exit_code": 0,
+        "review_has_errors": false,
+        "written_count": 2,
+        "applied_decisions": [
+          {
+            "decision_index": 1,
+            "action": "add_measurement",
+            "status": "materialized",
+            "source": "TPN",
+            "record_number": 1,
+            "object_id": "KSW-0001",
+            "cave_id": "C-0001",
+            "description": "Added measurement m-002 to object KSW-0001."
+          }
+        ],
+        "object_measurement_counts": {
+          "KSW-0001": 2,
+          "KSW-0002": 1
+        },
+        "object_measurement_source_refs": {
+          "KSW-0001": [
+            "teren:2026-05-15:gps",
+            "TPN:{GLOBALID-MATCH}"
+          ],
+          "KSW-0002": [
+            "teren:2026-05-15:gps"
+          ]
+        },
+        "final_validation_errors": [],
+        "changed_paths": [
+          "caves/C-0001.yml",
+          "objects/KSW/KSW-0001.yml"
+        ]
+      },
+      {
+        "ref_type_on_first_object": null,
+        "input_validation_errors": [],
+        "staging_row": {
+          "record_number": 1,
+          "globalid": "{GLOBALID-MATCH}",
+          "nr_inwent": "T.NEW-02",
+          "name": "Corrected opening",
+          "status": "matched",
+          "cave_id": "C-0002",
+          "object_id": "KSW-0002",
+          "match_strategy": "nr_inwent",
+          "distance_m": 0.0,
+          "payload": null
+        },
+        "staging_update_target": "KSW-0002",
+        "dry_run_has_errors": false,
+        "cli_exit_code": 0,
+        "review_has_errors": false,
+        "written_count": 2,
+        "applied_decisions": [
+          {
+            "decision_index": 1,
+            "action": "add_measurement",
+            "status": "materialized",
+            "source": "TPN",
+            "record_number": 1,
+            "object_id": "KSW-0002",
+            "cave_id": "C-0002",
+            "description": "Added measurement m-002 to object KSW-0002."
+          }
+        ],
+        "object_measurement_counts": {
+          "KSW-0001": 1,
+          "KSW-0002": 2
+        },
+        "object_measurement_source_refs": {
+          "KSW-0001": [
+            "teren:2026-05-15:gps"
+          ],
+          "KSW-0002": [
+            "teren:2026-05-15:gps",
+            "TPN:{GLOBALID-MATCH}"
+          ]
+        },
+        "final_validation_errors": [],
+        "changed_paths": [
+          "caves/C-0002.yml",
+          "objects/KSW/KSW-0002.yml"
+        ]
+      }
+    ]
+  },
+  "gates": [
+    {
+      "phase": "implementation-first",
+      "report_path": "build/verification/run-tsx1148e/report.json",
+      "report": {
+        "data_after_sha256": "78c928d3391c6207a23017a8d489f0e01385b77bd42d976f99c8f36d745bc72f",
+        "data_before_sha256": "78c928d3391c6207a23017a8d489f0e01385b77bd42d976f99c8f36d745bc72f",
+        "exit_code": 0,
+        "generated_at": "2026-10-13T13:57:12Z",
+        "immutability_exit_code": 0,
+        "packages": {
+          "PyYAML": "6.0.3",
+          "Pygments": "2.20.0",
+          "attrs": "26.1.0",
+          "certifi": "2026.4.22",
+          "click": "8.3.3",
+          "coverage": "7.14.0",
+          "gps-kataster-obiektow-tatr": "1.0.2",
+          "iniconfig": "2.3.0",
+          "jsonschema": "4.26.0",
+          "jsonschema-specifications": "2025.9.1",
+          "libcst": "1.8.6",
+          "linkify-it-py": "2.1.0",
+          "markdown-it-py": "4.2.0",
+          "mdit-py-plugins": "0.6.1",
+          "mdurl": "0.1.2",
+          "mutmut": "3.5.0",
+          "packaging": "26.2",
+          "platformdirs": "4.9.6",
+          "pluggy": "1.6.0",
+          "pyproj": "3.7.2",
+          "pyshp": "3.0.3",
+          "pytest": "9.0.3",
+          "referencing": "0.37.0",
+          "rich": "15.0.0",
+          "rpds-py": "0.30.0",
+          "ruff": "0.15.13",
+          "setproctitle": "1.3.7",
+          "textual": "8.2.6",
+          "typing_extensions": "4.15.0",
+          "uc-micro-py": "2.0.0"
+        },
+        "platform": "macOS-27.0.1-arm64-arm-64bit",
+        "python": "3.12.13",
+        "python_executable": "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+        "readback": {
+          "artifact_sha256": {
+            "exports/best-measurements.csv": "86b16a35077d80294e6df1c95f6e820ac7f444807c3607449411df0caca75ee8",
+            "exports/best-measurements.geojson": "a3906a158db6d702587b195599062a0ad899b5c7ff3c5904796783cd7c90b807",
+            "exports/best-measurements.gpx": "38297c6a21f5528fa5b540d20510521e946cdee0b85c98a4ee91be9f173165b7",
+            "exports/best-measurements.shp.zip": "41115236a68fab5d61f0f1b9901b609aa53120789219aabcecc498d9f6cf1b4c",
+            "exports/katalog.sqlite.zip": "73bc2650e8ddcfdc08bf6a9491e26900a458a1eea186bac01d3c88f99750e789",
+            "exports/metadata.json": "d7c64394889065289d194e6f55a785dd8070c1beb571d08ab622e05dd403c4f9",
+            "katalog.sqlite": "21f9874f8d8f57071c6d577410194b76b3c2f30f91fd862c05b9cd2560f6af20"
+          },
+          "counts": {
+            "caves": 1003,
+            "measurements": 1875,
+            "objects": 1009,
+            "relations": 0,
+            "validation_errors": 0,
+            "validation_warnings": 2066
+          },
+          "warnings_by_code": {
+            "MEASUREMENT_DISTANCE_OUTLIER": 72,
+            "MEASUREMENT_OUTSIDE_VALLEYS": 103,
+            "MISSING_HORIZONTAL_ACCURACY": 1875,
+            "OBJECT_PREFIX_MISMATCH": 16
+          }
+        },
+        "report_schema_version": 1,
+        "source_after": {
+          "base_sha": "7a3f8f6e7fe73b2154be5837760cc708d1103219",
+          "git_status": " M docs/asdlc/backlog_v1.md\n M docs/asdlc/verification/PBI-066.md\n M docs/operations.md\n M pyproject.toml\n M specyfikacja_gps_kataster_obiektow_tatr_v_2.md\n M src/gps_kataster_obiektow_tatr/tpn_staging.py\n M tests/test_mutation_tooling.py\n M tests/test_tpn_staging.py\n?? docs/asdlc/verification/PBI-066-mutation-capture.py\n?? docs/asdlc/verification/PBI-066-mutation-replay.py\n?? tests/test_typed_source_matching.py\n",
+          "tree_sha256": "63aaa6c25faa0c116ba2cb611b3ef0822a1e58b637d11f3e232c0a0df6be84e3"
+        },
+        "source_before": {
+          "base_sha": "7a3f8f6e7fe73b2154be5837760cc708d1103219",
+          "git_status": " M docs/asdlc/backlog_v1.md\n M docs/asdlc/verification/PBI-066.md\n M docs/operations.md\n M pyproject.toml\n M specyfikacja_gps_kataster_obiektow_tatr_v_2.md\n M src/gps_kataster_obiektow_tatr/tpn_staging.py\n M tests/test_mutation_tooling.py\n M tests/test_tpn_staging.py\n?? docs/asdlc/verification/PBI-066-mutation-capture.py\n?? docs/asdlc/verification/PBI-066-mutation-replay.py\n?? tests/test_typed_source_matching.py\n",
+          "tree_sha256": "63aaa6c25faa0c116ba2cb611b3ef0822a1e58b637d11f3e232c0a0df6be84e3"
+        },
+        "stages": [
+          {
+            "command": [
+              "uv",
+              "--version"
+            ],
+            "exit_code": 0,
+            "log": "uv-version.log",
+            "name": "uv-version",
+            "seconds": 0.009
+          },
+          {
+            "command": [
+              "git",
+              "--version"
+            ],
+            "exit_code": 0,
+            "log": "git-version.log",
+            "name": "git-version",
+            "seconds": 0.011
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "-m",
+              "ruff",
+              "format",
+              "--check",
+              "src",
+              "tests",
+              "scripts"
+            ],
+            "exit_code": 0,
+            "log": "format.log",
+            "name": "format",
+            "seconds": 0.03
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "-m",
+              "ruff",
+              "check",
+              "src",
+              "tests",
+              "scripts"
+            ],
+            "exit_code": 0,
+            "log": "lint.log",
+            "name": "lint",
+            "seconds": 0.027
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "-m",
+              "pytest"
+            ],
+            "exit_code": 0,
+            "log": "tests.log",
+            "name": "tests",
+            "seconds": 109.772
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "scripts/validate.py"
+            ],
+            "exit_code": 0,
+            "log": "validate.log",
+            "name": "validate",
+            "seconds": 4.187
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "scripts/build_release_artifacts.py",
+              "--sqlite-output",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-tsx1148e/katalog.sqlite",
+              "--output-dir",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-tsx1148e/exports",
+              "--generated-at",
+              "2026-10-13T13:57:12Z"
+            ],
+            "exit_code": 0,
+            "log": "build.log",
+            "name": "build",
+            "seconds": 13.013
+          },
+          {
+            "command": [
+              "internal:readback_artifacts",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/data",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-tsx1148e",
+              "2026-10-13T13:57:12Z"
+            ],
+            "exit_code": 0,
+            "name": "readback"
+          }
+        ]
+      },
+      "tests_summary": "======================= 1814 passed in 109.56s (0:01:49) ======================="
+    },
+    {
+      "phase": "implementation-final",
+      "report_path": "build/verification/run-27qehvqn/report.json",
+      "report": {
+        "data_after_sha256": "78c928d3391c6207a23017a8d489f0e01385b77bd42d976f99c8f36d745bc72f",
+        "data_before_sha256": "78c928d3391c6207a23017a8d489f0e01385b77bd42d976f99c8f36d745bc72f",
+        "exit_code": 0,
+        "generated_at": "2026-10-13T14:13:30Z",
+        "immutability_exit_code": 0,
+        "packages": {
+          "PyYAML": "6.0.3",
+          "Pygments": "2.20.0",
+          "attrs": "26.1.0",
+          "certifi": "2026.4.22",
+          "click": "8.3.3",
+          "coverage": "7.14.0",
+          "gps-kataster-obiektow-tatr": "1.0.2",
+          "iniconfig": "2.3.0",
+          "jsonschema": "4.26.0",
+          "jsonschema-specifications": "2025.9.1",
+          "libcst": "1.8.6",
+          "linkify-it-py": "2.1.0",
+          "markdown-it-py": "4.2.0",
+          "mdit-py-plugins": "0.6.1",
+          "mdurl": "0.1.2",
+          "mutmut": "3.5.0",
+          "packaging": "26.2",
+          "platformdirs": "4.9.6",
+          "pluggy": "1.6.0",
+          "pyproj": "3.7.2",
+          "pyshp": "3.0.3",
+          "pytest": "9.0.3",
+          "referencing": "0.37.0",
+          "rich": "15.0.0",
+          "rpds-py": "0.30.0",
+          "ruff": "0.15.13",
+          "setproctitle": "1.3.7",
+          "textual": "8.2.6",
+          "typing_extensions": "4.15.0",
+          "uc-micro-py": "2.0.0"
+        },
+        "platform": "macOS-27.0.1-arm64-arm-64bit",
+        "python": "3.12.13",
+        "python_executable": "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+        "readback": {
+          "artifact_sha256": {
+            "exports/best-measurements.csv": "86b16a35077d80294e6df1c95f6e820ac7f444807c3607449411df0caca75ee8",
+            "exports/best-measurements.geojson": "ae64b3848c2aeab0e368c7e689044bd38c67445e5d5f5634e1c4c1104011700b",
+            "exports/best-measurements.gpx": "31001e140a68d88953ae482cd339ea2f6449c2490bb187bd2a745fc0c92dcaeb",
+            "exports/best-measurements.shp.zip": "a94565506040b82e7162fc72c2b5947b54962a483219cae2c9240458e0da9588",
+            "exports/katalog.sqlite.zip": "a5fcccc4c20d224f3023037e3870b5a37acd09aa7b7a1a834561e63a5c83f948",
+            "exports/metadata.json": "78ccff7624152e8b94f8a5796726132e5dda3a732df4d40e1775e41b92a5542e",
+            "katalog.sqlite": "ce8f50639bd3ab28ddb0ed7a497b7438023c99f7b72148ffbc824418166af4f6"
+          },
+          "counts": {
+            "caves": 1003,
+            "measurements": 1875,
+            "objects": 1009,
+            "relations": 0,
+            "validation_errors": 0,
+            "validation_warnings": 2066
+          },
+          "warnings_by_code": {
+            "MEASUREMENT_DISTANCE_OUTLIER": 72,
+            "MEASUREMENT_OUTSIDE_VALLEYS": 103,
+            "MISSING_HORIZONTAL_ACCURACY": 1875,
+            "OBJECT_PREFIX_MISMATCH": 16
+          }
+        },
+        "report_schema_version": 1,
+        "source_after": {
+          "base_sha": "7a3f8f6e7fe73b2154be5837760cc708d1103219",
+          "git_status": " M docs/asdlc/backlog_v1.md\n M docs/asdlc/verification/PBI-066.md\n M docs/operations.md\n M pyproject.toml\n M specyfikacja_gps_kataster_obiektow_tatr_v_2.md\n M src/gps_kataster_obiektow_tatr/tpn_staging.py\n M tests/test_mutation_tooling.py\n M tests/test_tpn_staging.py\n?? docs/asdlc/verification/PBI-066-artifacts.json\n?? docs/asdlc/verification/PBI-066-mutation-analysis.md\n?? docs/asdlc/verification/PBI-066-mutation-capture.py\n?? docs/asdlc/verification/PBI-066-mutation-replay.py\n?? docs/asdlc/verification/PBI-066-mutations.json\n?? tests/test_typed_source_matching.py\n",
+          "tree_sha256": "f3f5c4ad87ce205e18e02068db72760c07ecd9d8f5178ba521ffbc3cd1b2956b"
+        },
+        "source_before": {
+          "base_sha": "7a3f8f6e7fe73b2154be5837760cc708d1103219",
+          "git_status": " M docs/asdlc/backlog_v1.md\n M docs/asdlc/verification/PBI-066.md\n M docs/operations.md\n M pyproject.toml\n M specyfikacja_gps_kataster_obiektow_tatr_v_2.md\n M src/gps_kataster_obiektow_tatr/tpn_staging.py\n M tests/test_mutation_tooling.py\n M tests/test_tpn_staging.py\n?? docs/asdlc/verification/PBI-066-artifacts.json\n?? docs/asdlc/verification/PBI-066-mutation-analysis.md\n?? docs/asdlc/verification/PBI-066-mutation-capture.py\n?? docs/asdlc/verification/PBI-066-mutation-replay.py\n?? docs/asdlc/verification/PBI-066-mutations.json\n?? tests/test_typed_source_matching.py\n",
+          "tree_sha256": "f3f5c4ad87ce205e18e02068db72760c07ecd9d8f5178ba521ffbc3cd1b2956b"
+        },
+        "stages": [
+          {
+            "command": [
+              "uv",
+              "--version"
+            ],
+            "exit_code": 0,
+            "log": "uv-version.log",
+            "name": "uv-version",
+            "seconds": 0.009
+          },
+          {
+            "command": [
+              "git",
+              "--version"
+            ],
+            "exit_code": 0,
+            "log": "git-version.log",
+            "name": "git-version",
+            "seconds": 0.01
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "-m",
+              "ruff",
+              "format",
+              "--check",
+              "src",
+              "tests",
+              "scripts"
+            ],
+            "exit_code": 0,
+            "log": "format.log",
+            "name": "format",
+            "seconds": 0.063
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "-m",
+              "ruff",
+              "check",
+              "src",
+              "tests",
+              "scripts"
+            ],
+            "exit_code": 0,
+            "log": "lint.log",
+            "name": "lint",
+            "seconds": 0.025
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "-m",
+              "pytest"
+            ],
+            "exit_code": 0,
+            "log": "tests.log",
+            "name": "tests",
+            "seconds": 106.446
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "scripts/validate.py"
+            ],
+            "exit_code": 0,
+            "log": "validate.log",
+            "name": "validate",
+            "seconds": 4.169
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "scripts/build_release_artifacts.py",
+              "--sqlite-output",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-27qehvqn/katalog.sqlite",
+              "--output-dir",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-27qehvqn/exports",
+              "--generated-at",
+              "2026-10-13T14:13:30Z"
+            ],
+            "exit_code": 0,
+            "log": "build.log",
+            "name": "build",
+            "seconds": 12.271
+          },
+          {
+            "command": [
+              "internal:readback_artifacts",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/data",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-27qehvqn",
+              "2026-10-13T14:13:30Z"
+            ],
+            "exit_code": 0,
+            "name": "readback"
+          }
+        ]
+      },
+      "tests_summary": "======================= 1814 passed in 106.25s (0:01:46) ======================="
+    }
+  ],
+  "independent_review": {
+    "mode": "read-only",
+    "code_findings": [],
+    "area_passed": 73,
+    "review_passed": 838,
+    "base_red": {
+      "failed": 14,
+      "passed": 13
+    },
+    "mixed_reference_probes": [
+      {
+        "cases": 4,
+        "source": {
+          "globalid": "{TYPED-MATCH}",
+          "nr_inwent": "T.RIGHT-02",
+          "name": "Corrected opening",
+          "x_1992": 152267.23,
+          "y_1992": 563744.25
+        },
+        "old_candidate": {
+          "name": "Original opening",
+          "nr_inwent": "T.OLD-01",
+          "x_1992": 153267.23,
+          "y_1992": 564744.25
+        },
+        "setup": "Correct final object holds TPN/source_row and TPN/source_globalid of the same value; old object has other or source_globalid, both object ID orders.",
+        "outcome": "Other => matched correct object/globalid. Two typed => unresolved TPN_GLOBALID_AMBIGUOUS; retained JSON payload. Duplicate final GLOBALID blocks review via FINAL_DATA_INVALID/DUPLICATE_TPN_GLOBALID with zero changes."
+      },
+      {
+        "cases": 2,
+        "setup": "Correct final object holds TPN/other and TPN/source_globalid of the same value; second distant typed candidate exists only in PIG staging (pig_id1692). Both ID orders.",
+        "outcome": "Unresolved TPN_GLOBALID_AMBIGUOUS. Explicit add_measurement with record1/globalid/full report_sha256 to correct final object succeeds in dry-run and write; YAML m-001,m-002, correct source_ref, original refs retained, final validation0."
+      }
+    ],
+    "final_audit": {
+      "assessment": "approve",
+      "findings": [],
+      "checked_mutants": 281,
+      "critical_killed": 63,
+      "assessed_survivors": 46,
+      "input_files": 103,
+      "test_hashes": 35,
+      "code_before_functions": 47,
+      "independent_readbacks": [
+        {
+          "run": "run-tsx1148e",
+          "artifacts": 7,
+          "matching_hashes": true
+        },
+        {
+          "run": "run-27qehvqn",
+          "artifacts": 7,
+          "matching_hashes": true
+        }
+      ],
+      "cli_scenarios_repeated": 3,
+      "instrumentation_fingerprint_matches": true,
+      "controls_match": true
+    }
+  }
+}

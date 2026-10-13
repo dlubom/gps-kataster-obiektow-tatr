@@ -572,6 +572,15 @@ pierwszeństwo przed historyczną propozycją staging. Sprzeczna albo
 niepotwierdzona proweniencja dla tego samego ID zatrzymuje import TPN;
 podobieństwo nazwy i położenia nie scala różnych trwałych ID.
 
+Tożsamość referencji wyznacza dokładna para `system` i `ref_type`:
+TPN/`source_globalid`, NR_INWENT/`inventory_number`, PIG/`catalog_id`.
+Równa wartość `external_id` w legalnym `other`, `url` albo `source_row`
+nie zastępuje tych tożsamości. Matching TPN odczytuje GLOBALID z takiej
+pary w finalnych YAML i stagingu PIG, a numer inwentarzowy z typed ref
+jaskini (w stagingu z pola źródłowego wiersza). Prawdziwy GLOBALID ma
+pierwszeństwo przed numerem/nazwą/odległością; niejednoznaczny pozostaje
+`unresolved`. Dodatkowe referencje i historia pomiarów są zachowywane.
+
 Domyślny próg odległości:
 
 ```text

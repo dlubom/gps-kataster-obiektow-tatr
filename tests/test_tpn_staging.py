@@ -1300,7 +1300,11 @@ def _write_final_pig_candidate(data_dir: Path) -> None:
                 "name": "Szczelina pod Gankowa II",
                 "object_ids": ["KSW-0001"],
                 "external_refs": [
-                    {"system": "NR_INWENT", "external_id": "T.F-09.33"},
+                    {
+                        "system": "NR_INWENT",
+                        "ref_type": "inventory_number",
+                        "external_id": "T.F-09.33",
+                    },
                     {"system": "PIG", "ref_type": "catalog_id", "external_id": "1692"},
                 ],
             }

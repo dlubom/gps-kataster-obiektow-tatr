@@ -359,6 +359,14 @@ zatrzymuje się z błędem do wyjaśnienia; nie wybiera wersji według kolejnoś
 wierszy. Różne ID pozostają odrębnymi kandydatami, nawet przy podobnej
 nazwie i położeniu.
 
+Matching rozpoznaje TPN GLOBALID wyłącznie jako TPN/`source_globalid`,
+a numer jaskini jako NR_INWENT/`inventory_number`. Inne legalne typy
+referencji o tej samej wartości pozostają w YAML, ale nie są tymi
+identyfikatorami. Filtr obowiązuje również dla kandydatów ze stagingu PIG;
+ich numer pochodzi z wiersza źródłowego. Rzeczywisty GLOBALID zachowuje
+pierwszeństwo, a konflikt GLOBALID daje `unresolved`. PIG/`url` i PIG/`other`
+nie zastępują proweniencji pomiaru przy deduplikacji finalnego YAML i stagingu.
+
 Gdy staging TPN zostawia `TPN_NR_INWENT_AMBIGUOUS`, czesto oznacza to kilka
 otworow tej samej jaskini pod jednym numerem inwentarzowym. Wtedy nie tworz
 automatycznie nowej jaskini tylko dlatego, ze jest drugi punkt.

@@ -4,7 +4,23 @@ Last updated: 2026-10-13
 
 ## Current handoff — review remediation
 
-- PBI-065 **wykonane** (2026-10-13), baza
+- PBI-066 **zweryfikowane — do dostarczenia** (2026-10-13), baza
+  `7a3f8f6e7fe73b2154be5837760cc708d1103219`, origin zgodne, 0/0,
+  CI poprzedniego checkpointu 38395799237 completed/success.
+  Ścisła para system/ref_type obowiązuje dla finalnego i staged GLOBALID
+  oraz numeru jaskini; legalne dodatkowe ref i GLOBALID-first zachowane.
+  27 nowych przypadków, RED 14 failed/13 passed, GREEN obszaru 73 passed.
+  Dwie pełne bramki 1814 passed, osiem etapów exit0, readback 7/7,
+  immutability0, data/liczniki/2066 znanych warningów bez zmian.
+  Mutacje czterech funkcji: 281 ID, 235 killed / 46 ocenionych survived;
+  63 krytyczne ID killed, brak nierozstrzygniętych stanów w zakresie.
+  Kontrole clean/forced-fail mają identyczne 249 testów i fingerprint.
+  Niezależny review kodu oraz końcowy audit dowodów approve, bez P1/P2/P3.
+  [Dowody PBI-066](verification/PBI-066.md); commit/push/CI do wykonania.
+  Po dostarczeniu następne najniższe gotowe **PBI-062**, nie rozpoczęte;
+  067 i końcowe 054 również poza tą sesją. Bez merge, tagu i release.
+
+- Historyczny handoff: PBI-065 **wykonane** (2026-10-13), baza
   `dbf768d86da6873508f9256e9e7fefee63f05daf`, origin zgodne, 0/0;
   CI checkpointu PBI-064 38384416070 completed/success dla tej bazy.
   Sześć nowych przypadków publicznego importu/JSON/review/YAML: treść
