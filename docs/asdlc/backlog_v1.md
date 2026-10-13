@@ -37,7 +37,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — wymagane PBI-062/066/067 i końcowa weryfikacja | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — wymagane PBI-062/067 i końcowa weryfikacja | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
@@ -45,11 +45,11 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-059 | Odrzucać niecałkowite i logiczne numery wierszy | wykonane 2026-09-30 | [log](verification/PBI-059.md) |
 | PBI-060 | Walidować proweniencję propozycji i referencji staging | wykonane 2026-10-13 | [log](verification/PBI-060.md) |
 | PBI-061 | Chronić reprezentację liczb w DBF | wykonane 2026-10-13 | [log](verification/PBI-061.md) |
-| PBI-062 | Regresje fallbacku TPN po nazwie/odległości | planowane — zależy od PBI-066 | [log](verification/PBI-062.md) |
+| PBI-062 | Regresje fallbacku TPN po nazwie/odległości | planowane — gotowe | [log](verification/PBI-062.md) |
 | PBI-063 | Semantyczny odczyt pól SQLite | wykonane 2026-10-13 | [log](verification/PBI-063.md) |
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | wykonane 2026-10-13 | [log](verification/PBI-064.md) |
 | PBI-065 | Zachowanie treści źródłowej staging → YAML | wykonane 2026-10-13 | [log](verification/PBI-065.md) |
-| PBI-066 | Dopasowywać tożsamość po systemie i typie ref | zweryfikowane — do dostarczenia | [log](verification/PBI-066.md) |
+| PBI-066 | Dopasowywać tożsamość po systemie i typie ref | wykonane 2026-10-13 | [log](verification/PBI-066.md) |
 | PBI-067 | Regresje walidatora ref, załączników i diagnostyk | planowane — gotowe | [log](verification/PBI-067.md) |
 
 Ponowienie PBI-054 na aktualnym origin `827a2f8` (2026-09-30) potwierdziło
@@ -133,11 +133,22 @@ Sześć nowych przypadków staging→YAML,
 pełna bramka 1787 passed/readback 7/7, niezmienne data, niezależny audit approve.
 Finalna kampania 263 ID: 249 killed / 14 przeanalizowanych survived, zero
 nierozstrzygniętych stanów, wszystkie 32 wskazane ID killed. [Dowody](verification/PBI-065.md).
-Następne najniższe gotowe **PBI-066**, nie rozpoczęte.
-Pozostają 4 PBI: 066/067, 062 i 054. 062 czeka na 066;
-054 pozostaje zablokowane, wymaga nowej pełnej kampanii i końcowego review,
-również oceny jawnych limitów ocaleń 059/060/061/063/064/065.
-Nie deklarujemy 100% pokrycia. W tej sesji wykonano wyłącznie PBI-065.
+Historyczny handoff po 065 wskazywał 066 jako następne; dostarczenie poniżej.
+
+PBI-066 dostarczono w `fa0dda1af8e433b3b33646695c6175c832e3f9d8`.
+Push exit0, ls-remote SHA zgodny, CI validate
+[38412340579](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38412340579)
+completed/success dla dokładnie tego SHA; wszystkie joby/kroki i Complete job sukces.
+Filtr system/ref_type w obu loaderach zachowuje typed GLOBALID-first i legalne
+dodatkowe ref. RED 14 failed/13 passed; GREEN obszaru 73 passed.
+Pełne bramki **1814 passed**, readback 7/7, niezmienne data/warningi;
+281 mutacji = 235 killed / 46 ocenionych survived, 63 krytyczne killed,
+bez nierozstrzygniętych stanów. Niezależne review kodu i audit dowodów approve.
+[Dowody](verification/PBI-066.md). Następne najniższe gotowe **PBI-062**,
+nie rozpoczęte. Pozostają **3 PBI: 062/067/054**. 054 pozostaje zablokowane,
+wymaga nowej pełnej kampanii i końcowego review oraz oceny jawnych limitów
+ocaleń 059/060/061/063/064/065/066. Nie deklarujemy 100% pokrycia.
+W tej sesji wykonano wyłącznie PBI-066, bez merge, tagu i release.
 
 PBI-055 rozstrzygnięto w commicie
 `25ae54a31066c1d5b9062687c2797721390ac88c`: GitHub API potwierdziło

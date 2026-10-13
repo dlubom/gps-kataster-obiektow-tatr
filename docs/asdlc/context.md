@@ -4,7 +4,7 @@ Last updated: 2026-10-13
 
 ## Current handoff — review remediation
 
-- PBI-066 **zweryfikowane — do dostarczenia** (2026-10-13), baza
+- PBI-066 **wykonane** (2026-10-13), baza
   `7a3f8f6e7fe73b2154be5837760cc708d1103219`, origin zgodne, 0/0,
   CI poprzedniego checkpointu 38395799237 completed/success.
   Ścisła para system/ref_type obowiązuje dla finalnego i staged GLOBALID
@@ -16,9 +16,16 @@ Last updated: 2026-10-13
   63 krytyczne ID killed, brak nierozstrzygniętych stanów w zakresie.
   Kontrole clean/forced-fail mają identyczne 249 testów i fingerprint.
   Niezależny review kodu oraz końcowy audit dowodów approve, bez P1/P2/P3.
-  [Dowody PBI-066](verification/PBI-066.md); commit/push/CI do wykonania.
-  Po dostarczeniu następne najniższe gotowe **PBI-062**, nie rozpoczęte;
-  067 i końcowe 054 również poza tą sesją. Bez merge, tagu i release.
+  [Dowody PBI-066](verification/PBI-066.md). Commit
+  `fa0dda1af8e433b3b33646695c6175c832e3f9d8` na origin (ls-remote), CI
+  [38412340579](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38412340579)
+  completed/success dla tego SHA, wszystkie joby/kroki i Complete job sukces.
+  Checkpoint dokumentacji ma pełną bramkę 1814 passed/readback 7/7,
+  immutability0 i niezależny delta review approve; dane bez zmian.
+  Przy wznowieniu potwierdzić jego publikację i własne exact-SHA CI.
+  Następne najniższe gotowe **PBI-062**, nie rozpoczęte. Pozostają 3 PBI:
+  062/067 i 054 (pełna kampania/review oraz ocena jawnych limitów 066).
+  Bez merge, tagu i release.
 
 - Historyczny handoff: PBI-065 **wykonane** (2026-10-13), baza
   `dbf768d86da6873508f9256e9e7fefee63f05daf`, origin zgodne, 0/0;

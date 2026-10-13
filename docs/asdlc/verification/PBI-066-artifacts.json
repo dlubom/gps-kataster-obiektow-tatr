@@ -549,6 +549,189 @@
         ]
       },
       "tests_summary": "======================= 1814 passed in 106.25s (0:01:46) ======================="
+    },
+    {
+      "phase": "documentation-checkpoint",
+      "report_path": "build/verification/run-6buel8yg/report.json",
+      "report": {
+        "data_after_sha256": "78c928d3391c6207a23017a8d489f0e01385b77bd42d976f99c8f36d745bc72f",
+        "data_before_sha256": "78c928d3391c6207a23017a8d489f0e01385b77bd42d976f99c8f36d745bc72f",
+        "exit_code": 0,
+        "generated_at": "2026-10-13T14:29:05Z",
+        "immutability_exit_code": 0,
+        "packages": {
+          "PyYAML": "6.0.3",
+          "Pygments": "2.20.0",
+          "attrs": "26.1.0",
+          "certifi": "2026.4.22",
+          "click": "8.3.3",
+          "coverage": "7.14.0",
+          "gps-kataster-obiektow-tatr": "1.0.2",
+          "iniconfig": "2.3.0",
+          "jsonschema": "4.26.0",
+          "jsonschema-specifications": "2025.9.1",
+          "libcst": "1.8.6",
+          "linkify-it-py": "2.1.0",
+          "markdown-it-py": "4.2.0",
+          "mdit-py-plugins": "0.6.1",
+          "mdurl": "0.1.2",
+          "mutmut": "3.5.0",
+          "packaging": "26.2",
+          "platformdirs": "4.9.6",
+          "pluggy": "1.6.0",
+          "pyproj": "3.7.2",
+          "pyshp": "3.0.3",
+          "pytest": "9.0.3",
+          "referencing": "0.37.0",
+          "rich": "15.0.0",
+          "rpds-py": "0.30.0",
+          "ruff": "0.15.13",
+          "setproctitle": "1.3.7",
+          "textual": "8.2.6",
+          "typing_extensions": "4.15.0",
+          "uc-micro-py": "2.0.0"
+        },
+        "platform": "macOS-27.0.1-arm64-arm-64bit",
+        "python": "3.12.13",
+        "python_executable": "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+        "readback": {
+          "artifact_sha256": {
+            "exports/best-measurements.csv": "86b16a35077d80294e6df1c95f6e820ac7f444807c3607449411df0caca75ee8",
+            "exports/best-measurements.geojson": "a159e9fdc43a4105689d1fd262291e1be82757a977d27aa6171442046bcc1cbf",
+            "exports/best-measurements.gpx": "75e6198465bfae96ed827819bf40a3c37e9d86e7bbeee230f8844d2d10a92c1d",
+            "exports/best-measurements.shp.zip": "2d0fa454d1b9a536f7c4b455528f386cd98eee4aae91bd87508229a6814c19f3",
+            "exports/katalog.sqlite.zip": "0576aceeafc2ebc69ce20b06e9d54906198e9c384675dc444f5eb4cb77881f34",
+            "exports/metadata.json": "fd209ae6e93ea047466de73de6baee674c3c072ecd805282d242ce09af57c39b",
+            "katalog.sqlite": "0c6ccbf574fef13fad76d2054c4c58b75255bf2b48d465287fbae3e1a9cd56ac"
+          },
+          "counts": {
+            "caves": 1003,
+            "measurements": 1875,
+            "objects": 1009,
+            "relations": 0,
+            "validation_errors": 0,
+            "validation_warnings": 2066
+          },
+          "warnings_by_code": {
+            "MEASUREMENT_DISTANCE_OUTLIER": 72,
+            "MEASUREMENT_OUTSIDE_VALLEYS": 103,
+            "MISSING_HORIZONTAL_ACCURACY": 1875,
+            "OBJECT_PREFIX_MISMATCH": 16
+          }
+        },
+        "report_schema_version": 1,
+        "source_after": {
+          "base_sha": "fa0dda1af8e433b3b33646695c6175c832e3f9d8",
+          "git_status": " M docs/asdlc/backlog_v1.md\n M docs/asdlc/context.md\n M docs/asdlc/verification/PBI-066-artifacts.json\n M docs/asdlc/verification/PBI-066.md\n",
+          "tree_sha256": "5b7ee8a393454c3fae806998cebb6dc497a0c590c18e0b682c4b043cb7baed8c"
+        },
+        "source_before": {
+          "base_sha": "fa0dda1af8e433b3b33646695c6175c832e3f9d8",
+          "git_status": " M docs/asdlc/backlog_v1.md\n M docs/asdlc/context.md\n M docs/asdlc/verification/PBI-066-artifacts.json\n M docs/asdlc/verification/PBI-066.md\n",
+          "tree_sha256": "5b7ee8a393454c3fae806998cebb6dc497a0c590c18e0b682c4b043cb7baed8c"
+        },
+        "stages": [
+          {
+            "command": [
+              "uv",
+              "--version"
+            ],
+            "exit_code": 0,
+            "log": "uv-version.log",
+            "name": "uv-version",
+            "seconds": 0.009
+          },
+          {
+            "command": [
+              "git",
+              "--version"
+            ],
+            "exit_code": 0,
+            "log": "git-version.log",
+            "name": "git-version",
+            "seconds": 0.011
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "-m",
+              "ruff",
+              "format",
+              "--check",
+              "src",
+              "tests",
+              "scripts"
+            ],
+            "exit_code": 0,
+            "log": "format.log",
+            "name": "format",
+            "seconds": 0.074
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "-m",
+              "ruff",
+              "check",
+              "src",
+              "tests",
+              "scripts"
+            ],
+            "exit_code": 0,
+            "log": "lint.log",
+            "name": "lint",
+            "seconds": 0.026
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "-m",
+              "pytest"
+            ],
+            "exit_code": 0,
+            "log": "tests.log",
+            "name": "tests",
+            "seconds": 109.732
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "scripts/validate.py"
+            ],
+            "exit_code": 0,
+            "log": "validate.log",
+            "name": "validate",
+            "seconds": 4.279
+          },
+          {
+            "command": [
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+              "scripts/build_release_artifacts.py",
+              "--sqlite-output",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-6buel8yg/katalog.sqlite",
+              "--output-dir",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-6buel8yg/exports",
+              "--generated-at",
+              "2026-10-13T14:29:05Z"
+            ],
+            "exit_code": 0,
+            "log": "build.log",
+            "name": "build",
+            "seconds": 12.176
+          },
+          {
+            "command": [
+              "internal:readback_artifacts",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/data",
+              "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-6buel8yg",
+              "2026-10-13T14:29:05Z"
+            ],
+            "exit_code": 0,
+            "name": "readback"
+          }
+        ]
+      },
+      "tests_summary": "======================= 1814 passed in 109.44s (0:01:49) ======================="
     }
   ],
   "independent_review": {
@@ -610,5 +793,153 @@
       "instrumentation_fingerprint_matches": true,
       "controls_match": true
     }
+  },
+  "code_delivery": {
+    "commit_sha": "fa0dda1af8e433b3b33646695c6175c832e3f9d8",
+    "push_exit_code": 0,
+    "ls_remote_sha": "fa0dda1af8e433b3b33646695c6175c832e3f9d8",
+    "ahead_behind": [
+      0,
+      0
+    ],
+    "ci_run": {
+      "id": 38412340579,
+      "name": "validate",
+      "head_sha": "fa0dda1af8e433b3b33646695c6175c832e3f9d8",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38412340579",
+      "event": "push",
+      "head_branch": "codex/review-remediation"
+    },
+    "ci_jobs": {
+      "total_count": 1,
+      "jobs": [
+        {
+          "id": 115347630689,
+          "run_id": 38412340579,
+          "workflow_name": "validate",
+          "head_branch": "codex/review-remediation",
+          "run_url": "https://api.github.com/repos/dlubom/gps-kataster-obiektow-tatr/actions/runs/38412340579",
+          "run_attempt": 1,
+          "node_id": "CR_kwDOSe9xxc8AAAAa20EqYQ",
+          "head_sha": "fa0dda1af8e433b3b33646695c6175c832e3f9d8",
+          "url": "https://api.github.com/repos/dlubom/gps-kataster-obiektow-tatr/actions/jobs/115347630689",
+          "html_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38412340579/job/115347630689",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-13T14:19:21Z",
+          "started_at": "2026-10-13T14:20:41Z",
+          "completed_at": "2026-10-13T14:27:41Z",
+          "name": "Validate code and data",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-10-13T14:20:42Z",
+              "completed_at": "2026-10-13T14:20:43Z"
+            },
+            {
+              "name": "Checkout",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-10-13T14:20:43Z",
+              "completed_at": "2026-10-13T14:20:45Z"
+            },
+            {
+              "name": "Set up Python",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-10-13T14:20:45Z",
+              "completed_at": "2026-10-13T14:20:46Z"
+            },
+            {
+              "name": "Install uv",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-10-13T14:20:46Z",
+              "completed_at": "2026-10-13T14:20:48Z"
+            },
+            {
+              "name": "Sync dependencies",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-10-13T14:20:48Z",
+              "completed_at": "2026-10-13T14:20:49Z"
+            },
+            {
+              "name": "Verify code, data and generated artifacts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-10-13T14:20:49Z",
+              "completed_at": "2026-10-13T14:27:38Z"
+            },
+            {
+              "name": "Post Install uv",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-10-13T14:27:38Z",
+              "completed_at": "2026-10-13T14:27:38Z"
+            },
+            {
+              "name": "Post Set up Python",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-10-13T14:27:38Z",
+              "completed_at": "2026-10-13T14:27:38Z"
+            },
+            {
+              "name": "Post Checkout",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-10-13T14:27:38Z",
+              "completed_at": "2026-10-13T14:27:39Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-10-13T14:27:39Z",
+              "completed_at": "2026-10-13T14:27:39Z"
+            }
+          ],
+          "check_run_url": "https://api.github.com/repos/dlubom/gps-kataster-obiektow-tatr/check-runs/115347630689",
+          "labels": [
+            "ubuntu-latest"
+          ],
+          "runner_id": 1000002980,
+          "runner_name": "GitHub Actions 1000002980",
+          "runner_group_id": 0,
+          "runner_group_name": "GitHub Actions"
+        }
+      ]
+    }
+  },
+  "excluded_gate_attempts": [
+    {
+      "run": "build/verification/run-jnz2pn5z",
+      "exit_code": 130,
+      "reason": "Started before documentation checkpoint after failed network snapshot; intentionally interrupted during tests. No completed report/readback; excluded."
+    }
+  ],
+  "documentation_review": {
+    "assessment": "approve",
+    "findings": [],
+    "files": 4,
+    "ci_snapshot_matched": true,
+    "ci_jobs": 1,
+    "ci_steps": 10,
+    "interrupted_attempt_excluded": true
   }
 }
