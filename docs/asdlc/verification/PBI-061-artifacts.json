@@ -1,0 +1,57 @@
+{
+  "artifact_hashes_equal": true,
+  "baseline_sha": "4f55722b102b2870eb119ea3925446fbd992817d",
+  "data_sha256": "78c928d3391c6207a23017a8d489f0e01385b77bd42d976f99c8f36d745bc72f",
+  "first_readback": {
+    "artifact_sha256": {
+      "exports/best-measurements.csv": "86b16a35077d80294e6df1c95f6e820ac7f444807c3607449411df0caca75ee8",
+      "exports/best-measurements.geojson": "bd9a41c07e537bfe25dd01ad62e337c0cce01c93e1603f2d1b0b125c93a648b8",
+      "exports/best-measurements.gpx": "edb34555d478b80ea94abf9ba460b06f259caabf8ca78b4250ae954d9b4a44f4",
+      "exports/best-measurements.shp.zip": "07d12b44c5ca89bcfd0aa410fd7288c6d045a6956aa83b40de58f759d50023ed",
+      "exports/katalog.sqlite.zip": "42a89d13733c32e6fc59f8e0d327924e27b2c7d2743546530b9523f51444b12e",
+      "exports/metadata.json": "aa855cf023ff953a7b7c96ea5733f477f41cbfad02e8bb8d76e79aa6efbe75f3",
+      "katalog.sqlite": "c6f34dd68a141370de18b11140ac00fe4dd510c776599a76f302e64799982926"
+    },
+    "counts": {
+      "caves": 1003,
+      "measurements": 1875,
+      "objects": 1009,
+      "relations": 0,
+      "validation_errors": 0,
+      "validation_warnings": 2066
+    },
+    "warnings_by_code": {
+      "MEASUREMENT_DISTANCE_OUTLIER": 72,
+      "MEASUREMENT_OUTSIDE_VALLEYS": 103,
+      "MISSING_HORIZONTAL_ACCURACY": 1875,
+      "OBJECT_PREFIX_MISMATCH": 16
+    }
+  },
+  "first_report": "run-isgxayyv/report.json",
+  "repeat_clock": "2024-03-04 10:11:12 localtime override",
+  "repeat_readback": {
+    "artifact_sha256": {
+      "exports/best-measurements.csv": "86b16a35077d80294e6df1c95f6e820ac7f444807c3607449411df0caca75ee8",
+      "exports/best-measurements.geojson": "bd9a41c07e537bfe25dd01ad62e337c0cce01c93e1603f2d1b0b125c93a648b8",
+      "exports/best-measurements.gpx": "edb34555d478b80ea94abf9ba460b06f259caabf8ca78b4250ae954d9b4a44f4",
+      "exports/best-measurements.shp.zip": "07d12b44c5ca89bcfd0aa410fd7288c6d045a6956aa83b40de58f759d50023ed",
+      "exports/katalog.sqlite.zip": "42a89d13733c32e6fc59f8e0d327924e27b2c7d2743546530b9523f51444b12e",
+      "exports/metadata.json": "aa855cf023ff953a7b7c96ea5733f477f41cbfad02e8bb8d76e79aa6efbe75f3",
+      "katalog.sqlite": "c6f34dd68a141370de18b11140ac00fe4dd510c776599a76f302e64799982926"
+    },
+    "counts": {
+      "caves": 1003,
+      "measurements": 1875,
+      "objects": 1009,
+      "relations": 0,
+      "validation_errors": 0,
+      "validation_warnings": 2066
+    },
+    "warnings_by_code": {
+      "MEASUREMENT_DISTANCE_OUTLIER": 72,
+      "MEASUREMENT_OUTSIDE_VALLEYS": 103,
+      "MISSING_HORIZONTAL_ACCURACY": 1875,
+      "OBJECT_PREFIX_MISMATCH": 16
+    }
+  }
+}

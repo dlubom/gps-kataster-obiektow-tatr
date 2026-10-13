@@ -14,11 +14,14 @@ from gps_kataster_obiektow_tatr.archive_metadata import (
 from gps_kataster_obiektow_tatr.best_measurements_export import (
     DEFAULT_EXPORT_DIR,
     BestMeasurementsExportResult,
+    BestMeasurementsExportValidationError,
     export_best_measurements,
+    validate_best_measurements_dbf,
 )
 from gps_kataster_obiektow_tatr.build_db import (
     DEFAULT_SQLITE_PATH,
     BuildDatabaseResult,
+    BuildDatabaseValidationError,
     build_sqlite_database,
 )
 from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR
@@ -66,6 +69,10 @@ def build_release_artifacts(
     """Build SQLite, export best measurements and zip the SQLite snapshot."""
 
     timestamp = resolve_archive_timestamp(generated_at)
+    try:
+        validate_best_measurements_dbf(data_dir=data_dir)
+    except BestMeasurementsExportValidationError as exc:
+        raise BuildDatabaseValidationError(exc.issues) from exc
     sqlite_result = build_sqlite_database(
         data_dir=data_dir,
         output_path=sqlite_path,

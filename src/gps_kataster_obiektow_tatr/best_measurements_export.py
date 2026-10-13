@@ -26,6 +26,7 @@ from gps_kataster_obiektow_tatr.data_loader import (
     LoadedYamlRecord,
     load_dataset,
 )
+from gps_kataster_obiektow_tatr.dbf_numeric import validate_dbf_number
 from gps_kataster_obiektow_tatr.validator import (
     ValidationIssue,
     format_issue,
@@ -40,6 +41,29 @@ CSV_FILENAME = "best-measurements.csv"
 GPX_FILENAME = "best-measurements.gpx"
 SHAPEFILE_ZIP_FILENAME = "best-measurements.shp.zip"
 METADATA_FILENAME = "metadata.json"
+_SHAPEFILE_FIELDS = (
+    ("object_id", "C", 40, 0),
+    ("name_local", "C", 120, 0),
+    ("category", "C", 32, 0),
+    ("cave_id", "C", 40, 0),
+    ("meas_id", "C", 40, 0),
+    ("lat", "F", 50, 8),
+    ("lon", "F", 50, 8),
+    ("x_1992", "F", 50, 3),
+    ("y_1992", "F", 50, 3),
+    ("elev_m", "F", 50, 2),
+    ("source", "C", 16, 0),
+    ("nr_inwent", "C", 40, 0),
+    ("pig_id", "C", 80, 0),
+    ("pig_url", "C", 254, 0),
+    ("tpn_gid", "C", 80, 0),
+    ("obs_date", "C", 10, 0),
+    ("status", "C", 24, 0),
+    ("obj_notes", "C", 254, 0),
+    ("cave_notes", "C", 254, 0),
+    ("meas_notes", "C", 254, 0),
+)
+
 RELEASE_METADATA_SCHEMA_VERSION = 1
 DATA_SCHEMA_VERSION = 1
 GPX_NS = "http://www.topografix.com/GPX/1/1"
@@ -130,6 +154,7 @@ def export_best_measurements(
         raise BestMeasurementsExportValidationError(validation_issues)
 
     rows = _collect_best_measurement_rows(dataset)
+    _validate_shapefile_rows(rows)
     timestamp = resolve_archive_timestamp(
         generated_at if generated_at is not None else _utc_timestamp()
     )
@@ -294,6 +319,7 @@ def _write_shapefile_zip(
     *,
     timestamp: ArchiveTimestamp | None = None,
 ) -> None:
+    _validate_shapefile_rows(rows)
     timestamp = timestamp or resolve_archive_timestamp(None)
     with tempfile.TemporaryDirectory() as tmp_dir_name:
         tmp_dir = Path(tmp_dir_name)
@@ -306,28 +332,7 @@ def _write_shapefile_zip(
                 writer.record(
                     *_dbf_record_values(
                         writer,
-                        (
-                            row.object_id,
-                            row.name_local,
-                            row.category,
-                            row.cave_id,
-                            row.measurement_id,
-                            row.lat,
-                            row.lon,
-                            row.x_1992,
-                            row.y_1992,
-                            row.elevation_m,
-                            row.source,
-                            row.nr_inwent,
-                            row.pig_id,
-                            row.pig_url,
-                            row.tpn_globalid,
-                            row.observed_date,
-                            row.verification_status,
-                            row.object_notes,
-                            row.cave_notes,
-                            row.measurement_notes,
-                        ),
+                        _shapefile_row_values(row),
                     )
                 )
         finally:
@@ -380,27 +385,55 @@ def _build_release_metadata(
     }
 
 
+def validate_best_measurements_dbf(*, data_dir: Path = DEFAULT_DATA_DIR) -> None:
+    """Preflight the DBF export before a release builder replaces any artifact."""
+
+    dataset = load_dataset(data_dir)
+    issues = validate_dataset(dataset, data_dir=data_dir, repo_root=REPO_ROOT)
+    if has_errors(issues):
+        raise BestMeasurementsExportValidationError(issues)
+    _validate_shapefile_rows(_collect_best_measurement_rows(dataset))
+
+
+def _shapefile_row_values(row: BestMeasurementExportRow) -> tuple[object, ...]:
+    return (
+        row.object_id,
+        row.name_local,
+        row.category,
+        row.cave_id,
+        row.measurement_id,
+        row.lat,
+        row.lon,
+        row.x_1992,
+        row.y_1992,
+        row.elevation_m,
+        row.source,
+        row.nr_inwent,
+        row.pig_id,
+        row.pig_url,
+        row.tpn_globalid,
+        row.observed_date,
+        row.verification_status,
+        row.object_notes,
+        row.cave_notes,
+        row.measurement_notes,
+    )
+
+
+def _validate_shapefile_rows(rows: tuple[BestMeasurementExportRow, ...]) -> None:
+    for row in rows:
+        for (name, field_type, width, decimal), value in zip(
+            _SHAPEFILE_FIELDS, _shapefile_row_values(row), strict=True
+        ):
+            if field_type in ("F", "N"):
+                validate_dbf_number(
+                    value, object_id=row.object_id, field_name=name, width=width, decimal=decimal
+                )
+
+
 def _define_shapefile_fields(writer: shapefile.Writer) -> None:
-    writer.field("object_id", "C", size=40)
-    writer.field("name_local", "C", size=120)
-    writer.field("category", "C", size=32)
-    writer.field("cave_id", "C", size=40)
-    writer.field("meas_id", "C", size=40)
-    writer.field("lat", "F", decimal=8)
-    writer.field("lon", "F", decimal=8)
-    writer.field("x_1992", "F", decimal=3)
-    writer.field("y_1992", "F", decimal=3)
-    writer.field("elev_m", "F", decimal=2)
-    writer.field("source", "C", size=16)
-    writer.field("nr_inwent", "C", size=40)
-    writer.field("pig_id", "C", size=80)
-    writer.field("pig_url", "C", size=254)
-    writer.field("tpn_gid", "C", size=80)
-    writer.field("obs_date", "C", size=10)
-    writer.field("status", "C", size=24)
-    writer.field("obj_notes", "C", size=254)
-    writer.field("cave_notes", "C", size=254)
-    writer.field("meas_notes", "C", size=254)
+    for name, field_type, width, decimal in _SHAPEFILE_FIELDS:
+        writer.field(name, field_type, size=width, decimal=decimal)
 
 
 def _row_properties(row: BestMeasurementExportRow) -> dict[str, Any]:

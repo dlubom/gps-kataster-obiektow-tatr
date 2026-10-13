@@ -15,6 +15,8 @@ MUTATED_PATHS = [
     "src/gps_kataster_obiektow_tatr/best_measurement.py",
     "src/gps_kataster_obiektow_tatr/coordinates.py",
     "src/gps_kataster_obiektow_tatr/numeric.py",
+    "src/gps_kataster_obiektow_tatr/dbf_numeric.py",
+    "src/gps_kataster_obiektow_tatr/best_measurements_export.py",
     "src/gps_kataster_obiektow_tatr/source_profile.py",
     "src/gps_kataster_obiektow_tatr/prefix_resolver.py",
     "src/gps_kataster_obiektow_tatr/validator.py",
@@ -30,6 +32,7 @@ MUTATION_TEST_SELECTION = [
     "tests/test_build_db.py",
     "tests/test_release_artifacts.py",
     "tests/test_best_measurements_export.py",
+    "tests/test_dbf_numeric.py",
     "tests/test_data_loader.py",
     "tests/test_data_directories.py",
     "tests/test_best_measurement.py",
@@ -67,7 +70,8 @@ MUTATION_PYTEST_SELECTION_ARGS = [
         "and not test_cli_rejects_explicit_empty_generated_at_before_writing "
         "and not test_build_release_artifacts_cli_is_local_dry_run "
         "and not test_export_cli_writes_artifacts "
-        "and not test_cli_provenance_mismatch_preserves_new_target"
+        "and not test_cli_provenance_mismatch_preserves_new_target "
+        "and not test_cli_dbf_overflow_preserves_artifacts"
     ),
 ]
 

@@ -4,7 +4,24 @@ Last updated: 2026-10-13
 
 ## Current handoff — review remediation
 
-- PBI-060 jest wykonane (2026-10-13), baza
+- PBI-061 zweryfikowane — do dostarczenia (2026-10-13), baza `4f55722b102b2870eb119ea3925446fbd992817d`
+  potwierdzona fetch/pull, ls-remote i CI validate 38363983104.
+  Naprawiono ciche obcinanie liczb DBF: pełny zapis ze znakiem i carry
+  musi mieścić width/decimal przed pierwszym zapisem eksportu/paczki,
+  w tym SQLite. Nie zmieniono danych ani fizycznych reguł domeny.
+  81 nowych przypadków, niezależny review bez findings P1/P2/P3;
+  pierwsza zielona pełna bramka 1610 testów i readback 7/7,
+  realny repeat 7 identycznych SHA. Końcowe świeże mutacje 62 ID:
+  57 killed / 5 przeanalizowanych survived, bez innych stanów;
+  wcześniejsze generacje zachowane osobno. Końcowa bramka po dowodach:
+  1615 passed, osiem etapów exit 0, readback 7/7, immutability 0;
+  data/liczniki/warningi bez zmian. Pozostaje scoped commit/push i exact-SHA CI
+  oraz checkpoint dokumentacji. [Dowody PBI-061](verification/PBI-061.md).
+  Po dostarczeniu następne najniższe gotowe **PBI-063** (038/044/052/055
+  wykonane); 062 nadal zależy od 066. Pozostanie 7 PBI: 063–067, 062 i 054.
+  Nie rozpoczęto następnego PBI. Bez merge, tagu ani release.
+
+- Historyczny handoff: PBI-060 jest wykonane (2026-10-13), baza
   `81a7bb0d042ded43a4335cf225a23c5786d1e1cc`, potwierdzona przed startem
   z origin i zielonym validate 36707381085. Zależności 040/048/056/057 wykonane.
   Kontrola source/source_ref i dokładnych typed ref działa również przy

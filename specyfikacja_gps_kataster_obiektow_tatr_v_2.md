@@ -1019,6 +1019,14 @@ Repo i eksporty są publiczne. Dane projektu, dokumentacja repozytorium oraz gen
 
 W V1 nie wprowadzamy mechanizmu `sensitivity`, ukrywania lokalizacji ani generalizacji eksportów.
 
+Liczby w polach F/N DBF muszą mieścić pełną reprezentację według
+zadeklarowanej szerokości i precyzji, także znak i przeniesienie po
+zaokrągleniu. Przepełnienie jest czytelnym błędem eksportu przed pierwszym
+zapisem paczki, w tym SQLite. Nie obcinamy cyfr ani nie zastępujemy
+wartości przez null; opcjonalny null pozostaje dozwolony. To granica
+formatu DBF, bez arbitralnych limitów fizycznych w domenie i bez zmiany
+YAML. Szerokości i precyzje opisuje [przegląd artefaktów](docs/release_artifacts.md#best-measurementsshpzip).
+
 ---
 
 ## 14. Frontend

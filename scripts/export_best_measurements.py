@@ -21,6 +21,7 @@ from gps_kataster_obiektow_tatr.best_measurements_export import (  # noqa: E402
     export_best_measurements,
 )
 from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR, YamlDataLoadError  # noqa: E402
+from gps_kataster_obiektow_tatr.dbf_numeric import DbfNumericOverflowError  # noqa: E402
 from gps_kataster_obiektow_tatr.validator import format_issue  # noqa: E402
 
 
@@ -69,7 +70,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         for issue in exc.issues:
             print(format_issue(issue))
         return 1
-    except ArchiveTimestampError as exc:
+    except (ArchiveTimestampError, DbfNumericOverflowError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 

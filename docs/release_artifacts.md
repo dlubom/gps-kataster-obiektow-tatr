@@ -74,6 +74,25 @@ Pola tekstowe DBF maja limity w bajtach UTF-8, a nie w liczbie znakow.
 Tekst przekraczajacy limit jest skracany na granicy pelnego znaku UTF-8.
 Pelna tresc pozostaje w YAML, SQLite, CSV i GeoJSON.
 
+Pola liczbowe DBF mają szerokość 50 znaków: `lat`/`lon` mają 8 miejsc
+po przecinku, `x_1992`/`y_1992` 3, a `elev_m` 2. Pełny zapis F/N po
+konwersji stosowanej przez PyShp i zaokrągleniu do tej precyzji musi się
+zmieścić w polu, razem ze znakiem i kropką. Eksport zgłasza błąd `DBF
+numeric overflow` z ID obiektu, polem, wartością, width i decimal przed
+pierwszym zapisem. Lokalny build paczki sprawdza to także przed
+zastąpieniem SQLite; wcześniejsze artefakty pozostają bez zmian, a nowy
+cel nie powstaje. Nie obcinamy cyfr, nie zamieniamy wartości na null
+ani nie zmniejszamy deklarowanej precyzji. Opcjonalna wysokość null
+pozostaje null w DBF.
+
+To ograniczenie formatu eksportu, bez fizycznych limitów wysokości lub
+zmiany danych YAML. Samodzielny build SQLite nadal przyjmuje skończone
+wartości według reguł REAL. Przykładowo 2**63 mieści się w `elev_m`, ale
+1e49 wymaga 52 znaków z `.00` i jest odrzucane, mimo że jego starszy
+obcięty zapis zachowywał wartość liczbową. CSV/GeoJSON/SQLite zachowują
+swoją dotychczasową precyzję; kontrola dotyczy wybranego best pomiaru
+zawartego w DBF, nie innych historycznych pomiarów.
+
 ## `best-measurements.gpx`
 
 GPX nie ma kolumn. Kazdy waypoint zawiera:
