@@ -4,9 +4,9 @@ Last updated: 2026-10-13
 
 ## Current handoff — review remediation
 
-- PBI-060 jest zweryfikowane — do dostarczenia (2026-10-13), baza
-  `81a7bb0d042ded43a4335cf225a23c5786d1e1cc`, zgodna z aktualnym origin
-  i zielonym validate 36707381085. Zależności 040/048/056/057 wykonane.
+- PBI-060 jest wykonane (2026-10-13), baza
+  `81a7bb0d042ded43a4335cf225a23c5786d1e1cc`, potwierdzona przed startem
+  z origin i zielonym validate 36707381085. Zależności 040/048/056/057 wykonane.
   Kontrola source/source_ref i dokładnych typed ref działa również przy
   przydzielonych ID oraz dla matched update; dodatkowe/historyczne ref
   i brak numeru w źródle są zachowane. Nowa regresja obejmuje także
@@ -20,11 +20,15 @@ Last updated: 2026-10-13
   starsze luki diagnostyk pozostają do oceny PBI-054, bez 100% claimu.
   Niezależny review kodu: brak findings, 827 testów i 6 sond;
   dodatkowa regresja potwierdzona niezależnie (2/2). Review rejestru także
-  bez findings: wszystkie wyniki/hash/diffy/mapowanie zgodne. Pozostał
-  scoped commit/push, dokładny remote SHA/CI i checkpoint
-  dokumentacji. Nie rozpoczynać kolejnego PBI przed dostarczeniem 060.
-  Następne po nim: PBI-061 (049/050/055 wykonane), następnie pozostałe
-  062–067 i końcowe 054; po odbiorze 060 pozostanie 8 PBI.
+  bez findings: wszystkie wyniki/hash/diffy/mapowanie zgodne. Commit
+  `738bab1dba4d61dae0fbde21d1a04304fb0657cb` jest na origin (ls-remote),
+  CI validate
+  [38362511531](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38362511531)
+  ma completed/success dla tego SHA, cały job zakończony sukcesem.
+  Przy wznowieniu potwierdzić publikację checkpointu dokumentacji i jego CI.
+  Następne gotowe: **PBI-061** (049/050/055 wykonane). Pozostaje **8 PBI**:
+  naprawy 061/066, regresje 062–065/067 i końcowe ponowienie 054.
+  065 jest teraz gotowe, 062 nadal zależy od 066. Następnego PBI nie rozpoczęto.
   Bez merge do main, tagu ani release.
 
 - Historyczny handoff: PBI-059 jest wykonane (2026-09-30) na bazie
