@@ -4,7 +4,7 @@ Last updated: 2026-10-13
 
 ## Current handoff — review remediation
 
-- PBI-064 lokalnie zweryfikowane — do dostarczenia (2026-10-13), baza
+- PBI-064 wykonane (2026-10-13), baza
   `3f97c6cb006fe1593a34193279b1ba2a9be53137`, fetch/pull/ls-remote 0/0,
   CI checkpointu PBI-063 38376392031 completed/success, cały job sukces.
   136 nowych przypadków: świeże instancje i cache testu, wrapper,
@@ -21,9 +21,11 @@ Last updated: 2026-10-13
   introspekcja ścieżek, locale, pierścienie długości 3 oraz default
   maskowany przez wrapper mutmut; bez globalnej deklaracji ekwiwalencji.
   Niezależny review testów, helpera i limitów bez otwartych findings.
-  [Dowody PBI-064](verification/PBI-064.md). Commit/push i zdalny SHA/CI
-  są wymagane do domknięcia. Po dostarczeniu następne **PBI-065**,
-  nie rozpoczęte; pozostanie 5 PBI: 065–067, 062 i 054. 062 czeka na 066,
+  [Dowody PBI-064](verification/PBI-064.md). Commit `e01f07f8f2e046ef8650f114f857a2b32a48f063`
+  na origin (ls-remote), CI validate [38383259272](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38383259272)
+  completed/success dla tego SHA, wszystkie joby i Complete job sukces.
+  Przy wznowieniu potwierdzić checkpoint dokumentacji i jego CI.
+  Następne **PBI-065**, nie rozpoczęte; pozostaje 5 PBI: 065–067, 062 i 054. 062 czeka na 066,
   054 wymaga nowej pełnej kampanii/review i oceny limitów tej serii.
   Bez merge, tagu ani release.
 
