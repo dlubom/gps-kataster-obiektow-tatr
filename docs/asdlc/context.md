@@ -4,7 +4,25 @@ Last updated: 2026-10-14
 
 ## Current handoff — review remediation
 
-- PBI-062 **wykonane** (2026-10-14), baza
+- PBI-067 **zweryfikowane — do dostarczenia** (2026-10-14), baza
+  `c460c2cf48dbfbdfe2405553d724346c83a1ba1a`, fetch/pull/ls-remote 0/0,
+  CI poprzedniego checkpointu 38536637825 completed/success.
+  52 nowe publiczne in-process regresje + wzmocniona wcześniejsza
+  diagnostyka manual best: typed GLOBALID, lokalne referencje, relacje,
+  HTTP/HTTPS/netloc, ścieżki i odległości. Produkt/schema/data/lock bez zmian.
+  Pełna bramka 1946 passed, osiem etapów 0, readback 7/7, immutability 0;
+  dane/liczniki/2066 warningów bez zmian. Wybrana kampania pięciu funkcji:
+  baseline 196 killed/162 survived → final 346 killed/12 ocenionych survived
+  w identycznych 358 ID/diffach; 150 nowych killed, brak regresji,
+  14 krytycznych killed (pięć z karty było survived). Clean/forced-fail
+  0/1 na identycznych 70/122 testach; bez nierozstrzygniętych statusów,
+  replay 0. Testy/helpery/delta review i końcowy audit rejestrów approve, bez P1/P2/P3.
+  [Dowody PBI-067](verification/PBI-067.md). Pozostaje scoped commit/push,
+  exact-SHA CI oraz checkpoint dokumentacji z własną bramką/CI.
+  Następny po dostarczeniu będzie PBI-054: końcowa kampania/review serii
+  i ocena jawnych limitów; nie rozpoczęte. Bez merge, tagu i release.
+
+- Historyczny handoff: PBI-062 **wykonane** (2026-10-14), baza
   `ab624eba62b3edc1461d968bfee25c0f1c9ff1ee`, fetch/pull/ls-remote zgodne,
   CI poprzedniego checkpointu 38414172733 completed/success. Dodano
   80 publicznych regresji name_distance, best, granic promienia,

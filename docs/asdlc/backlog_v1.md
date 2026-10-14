@@ -50,7 +50,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | wykonane 2026-10-13 | [log](verification/PBI-064.md) |
 | PBI-065 | Zachowanie treści źródłowej staging → YAML | wykonane 2026-10-13 | [log](verification/PBI-065.md) |
 | PBI-066 | Dopasowywać tożsamość po systemie i typie ref | wykonane 2026-10-13 | [log](verification/PBI-066.md) |
-| PBI-067 | Regresje walidatora ref, załączników i diagnostyk | planowane — gotowe | [log](verification/PBI-067.md) |
+| PBI-067 | Regresje walidatora ref, załączników i diagnostyk | zweryfikowane — do dostarczenia | [log](verification/PBI-067.md) |
 
 PBI-062 dostarczono w `e8dbbacb0f109fcd856d5c46e32b8455a40a9759`:
 zdalny SHA potwierdzony przez ls-remote, CI validate
@@ -62,7 +62,7 @@ mutacje: baseline 186 killed/113 survived → final 275 killed/24 ocenione
 survived w tych samych 299 ID; 89 nowych killed, wszystkie 24 krytyczne
 killed. Niezależny review testów, kampanii, baseline i końcowej bramki
 approve, bez P1/P2/P3. [Dowody](verification/PBI-062.md).
-Następne najniższe gotowe PBI-067, nie rozpoczęte. Pozostają 067 i 054.
+PBI-067 jest zweryfikowane — do dostarczenia; po nim pozostaje końcowe PBI-054.
 
 Ponowienie PBI-054 na aktualnym origin `827a2f8` (2026-09-30) potwierdziło
 naprawy PBI-056–058 oraz wcześniejsze regresje, lecz niezależny review

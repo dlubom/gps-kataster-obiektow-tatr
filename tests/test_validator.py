@@ -298,7 +298,13 @@ def test_reports_error_for_manual_best_without_reason() -> None:
 
         issues = validate_data_dir(data_dir)
 
-    assert _codes(issues) >= {"BEST_MEASUREMENT_MANUAL_REASON_REQUIRED"}
+    reason_issues = [
+        issue for issue in issues if issue.code == "BEST_MEASUREMENT_MANUAL_REASON_REQUIRED"
+    ]
+    assert len(reason_issues) == 1
+    assert reason_issues[0].severity == ValidationSeverity.ERROR
+    assert reason_issues[0].path == data_dir / "objects/KSW/KSW-0001.yml"
+    assert "KSW-0001" in reason_issues[0].description
 
 
 def test_reports_error_for_inconsistent_coordinates() -> None:
