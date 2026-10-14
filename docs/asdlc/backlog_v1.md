@@ -1,6 +1,6 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-10-13
+Stan na: 2026-10-14
 
 ## Naprawy po przegladzie 2026-09-05
 
@@ -45,7 +45,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-059 | Odrzucać niecałkowite i logiczne numery wierszy | wykonane 2026-09-30 | [log](verification/PBI-059.md) |
 | PBI-060 | Walidować proweniencję propozycji i referencji staging | wykonane 2026-10-13 | [log](verification/PBI-060.md) |
 | PBI-061 | Chronić reprezentację liczb w DBF | wykonane 2026-10-13 | [log](verification/PBI-061.md) |
-| PBI-062 | Regresje fallbacku TPN po nazwie/odległości | planowane — gotowe | [log](verification/PBI-062.md) |
+| PBI-062 | Regresje fallbacku TPN po nazwie/odległości | zweryfikowane — do dostarczenia | [log](verification/PBI-062.md) |
 | PBI-063 | Semantyczny odczyt pól SQLite | wykonane 2026-10-13 | [log](verification/PBI-063.md) |
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | wykonane 2026-10-13 | [log](verification/PBI-064.md) |
 | PBI-065 | Zachowanie treści źródłowej staging → YAML | wykonane 2026-10-13 | [log](verification/PBI-065.md) |

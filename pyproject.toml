@@ -65,6 +65,7 @@ tests_dir = [
     "tests/test_cave_membership.py",
     "tests/test_pig_staging.py",
     "tests/test_tpn_staging.py",
+    "tests/test_tpn_name_distance.py",
     "tests/test_staging_review.py",
     "tests/test_staging_source_content.py",
     "tests/test_typed_source_matching.py",
