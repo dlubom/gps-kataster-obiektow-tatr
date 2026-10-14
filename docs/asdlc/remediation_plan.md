@@ -41,7 +41,7 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 051 | Udokumentowane przyczyny 16 istniejących rozbieżności prefixu | R06, dane | 044 |
 | 052 | Egzekwowanie uzasadnienia bez zmiany trwałych ID | R06, pełna reguła | 044, 051 |
 | 053 | Dokumentacja zgodna z wdrożonymi kontraktami | uwagi z raportu | 040, 043, 048, 050 |
-| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–076 |
+| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–077 |
 | 055 | Poprawne wiązanie skończonych dużych int w SQLite REAL | uzupełnienie R05 | 042 |
 | 056 | Odrzucanie zduplikowanych indeksów staging | nowe ustalenie P2 z PBI-054 | 040, 046, 048 |
 | 057 | Wiązanie jawnie wskazanej propozycji z wierszem źródła | nowe ustalenie P2 z PBI-054 | 040, 056 |
@@ -64,6 +64,7 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 074 | Kontrolowany preflight skrajnych dat UTC | nowe P2 z review PBI-054 | 035, 040 |
 | 075 | Pojedyncze wymiary tożsamości referencji review | nowe P3 z review PBI-054 | 060, 065, 066 |
 | 076 | Semantyczny audit i liczniki raportów staging/review | nowe P3 z review PBI-054 | 040, 048, 055, 065 |
+| 077 | Warianty nazw, dat i kontynuacji stagingu PIG/TPN | luka P3 z audytu sharda13 PBI-054 | 045, 048, 062, 065 |
 
 PBI-035 celowo poprzedza naprawy: każda kolejna sesja ma móc zweryfikować
 wynik jednym poleceniem. PBI-037–039 przygotowują kontrakty używane przez
@@ -572,3 +573,7 @@ P3, [karta i odbiór](verification/PBI-075.md). Nie rozpoczęto implementacji.
 ### PBI-076 — Semantyczny audit i liczniki raportów staging/review
 
 P3, [karta i odbiór](verification/PBI-076.md). Nie rozpoczęto implementacji.
+
+### PBI-077 — Semantyczne warianty nazw, dat i kontynuacji stagingu
+
+P3, [karta i odbiór](verification/PBI-077.md). Nie rozpoczęto implementacji.

@@ -6,7 +6,7 @@ Stan na: 2026-10-14
 
 Branch: `codex/review-remediation`. Poniższa tabela jest źródłem aktualnych
 statusów serii. Zakres, zależności i odbiór:
-[karty PBI-034–076](remediation_plan.md). Procedura czystej sesji,
+[karty PBI-034–077](remediation_plan.md). Procedura czystej sesji,
 weryfikacji, commitów i pushów: [runbook](remediation_runbook.md).
 Historyczny [raport R01–R13](reviews/project-review-2026-09-05.md) jest w git.
 
@@ -37,7 +37,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — odtworzone P2: 068/069/074; kampania Linux w toku | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — odtworzone P2: 068/069/074; kampania i niezależny audit zakończone | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
@@ -60,17 +60,25 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-074 | Kontrolowany preflight skrajnych dat UTC | planowane — gotowe | [log](verification/PBI-074.md) |
 | PBI-075 | Pojedyncze wymiary tożsamości referencji review | planowane — gotowe | [log](verification/PBI-075.md) |
 | PBI-076 | Semantyczny audit i liczniki raportów staging/review | planowane — gotowe | [log](verification/PBI-076.md) |
+| PBI-077 | Warianty nazw, dat i kontynuacji stagingu PIG/TPN | planowane — gotowe | [log](verification/PBI-077.md) |
 
-Ponowienie PBI-054 (2026-10-14), baza `336e9bb`: czysta pełna bramka
-1946 passed, regresje R01–R13 127 passed, readback 7/7, immutability 0;
-7 identycznych SHA dwóch buildów z różnym zegarem/mtime/mode. Niezależny
-review i samodzielne ponowienie wykazały dwa nowe P2: kolejność kilku
-legalnych typed NR_INWENT w jednej jaskini zmienia matched → new i pozwala
-utworzyć duplikat (068), a schema-valid nieparsowalny URL załącznika
-przerywa walidację/review przez ValueError (069). [Próba](verification/PBI-054-final-discoveries.py).
-PBI-074 dodatkowo odtwarza schema-valid przepełnienie UTC (8/8 publicznych awarii, +4 poprawne kontrole, bajty bez zmian). Luki P3 070–073/075–076 mają osobne karty i macierze, bez implementacji. PBI-054 nie można zamknąć przy tych blokadach. Nowa pełna kampania 17
-modułów / 10218 ID trwa na tej samej bazie produktu; nie sumujemy wyników
-historycznych. Nowych napraw nie rozpoczęto. Następne gotowe: **PBI-068**.
+Ponowienie PBI-054 (2026-10-14), baza `336e9bb`: pełne bramki 1946 passed,
+regresje R01–R13 127 passed, readback 7/7, immutability 0; 7 identycznych SHA
+z dwóch buildów przy różnym zegarze/mtime/mode. Dane/liczniki/ostrzeżenia
+bez zmian. Niezależny review i samodzielne ponowienie wykazały trzy P2:
+kilka legalnych typed NR_INWENT zmienia matched → new i pozwala utworzyć
+duplikat (068), schema-valid nieparsowalny URL przerywa publiczne API (069),
+skrajne schema-valid daty powodują UTC OverflowError (074: 8/8 awarii,
+4 poprawne kontrole, bajty bez zmian). Siedem rodzin luk P3 070–073/075–077
+ma osobne karty i macierze. Nowych napraw nie rozpoczęto.
+
+Świeża pełna kampania Linux: **10218 ID, 8472 killed / 1721 survived /
+25 no tests**, bez pending/timeout/tool error; wszystkie 243 unikalne
+krytyczne ID killed. 16 shardów i collector/18 jobów CI zakończone sukcesem.
+Wyników historycznych ani przerwanych generacji Mac nie dodano do Linux.
+[Analiza i pełny ledger](verification/PBI-054-final-mutation-analysis.md).
+PBI-054 pozostaje zablokowane przy otwartych P2. Pozostaje 11 PBI:
+068–077 oraz ponowny odbiór054. Następne gotowe: **PBI-068**.
 Bez merge, tagu i release.
 
 PBI-067 dostarczono w `26190486c47922012be0935fa06386c21894141c`:

@@ -5,12 +5,12 @@ Baza i końcowy stan produktu:
 Zakres: diff całej serii względem
 `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`, specyfikacja, R01–R13,
 regresje i limity PBI-055–067. Oddzielny agent tylko do odczytu;
-właściciel PBI niezależnie ponowił oba publiczne przypadki. Kod produktu,
+właściciel PBI niezależnie ponowił wszystkie trzy publiczne przypadki. Kod produktu,
 testy, schema, konfiguracja i dane nie zostały zmienione w tym review.
 
 Werdykt: **nie rekomenduję zamknięcia PBI-054 ani merge przed naprawami
-PBI-068/069 i ponowieniem końcowego odbioru**. Brak nowego P1;
-dwa nowe, odtworzone P2 poniżej. Pozytywna pełna bramka obecnego katalogu
+PBI-068/069/074 i ponowieniem końcowego odbioru**. Brak nowego P1;
+trzy nowe, odtworzone P2 (068/069 poniżej, 074 w końcowym audycie). Pozytywna pełna bramka obecnego katalogu
 nie obejmuje wszystkich błędnych/szerszych legalnych wejść.
 
 ## Findings
@@ -51,8 +51,8 @@ Wyniki w [rejestrze artefaktów](../verification/PBI-054-final-artifacts.json).
 | 067 | Proza/malformed schema branch: limity nieblokujące; schema-valid malformed URL ujawnił osobny P2 069. |
 
 Nie jest to deklaracja ekwiwalencji wszystkich survivors ani 100% pokrycia.
-Pełna nowa kampania stanowi osobny dowód; jej audit i wynik końcowy
-zostaną dopisane po faktycznym ukończeniu.
+Pełna nowa kampania stanowi osobny dowód; ukończony wynik i niezależny
+audit opisuje końcowy blok poniżej.
 
 Niezależne regresje reviewera:
 
@@ -66,7 +66,7 @@ PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q -p no:cacheprovider \
 Exit 0, **1052 passed in 110.96s**. Przenośny helper nowych findings
 ponowiono także po dodaniu mocnych asercji, exit 0.
 
-## Audit helperów dowodowych — w toku
+## Audit helperów dowodowych — wcześniejsze checkpointy
 
 Capture sprawdza dokładny komplet 17 ścieżek z konfiguracji, zestaw
 generated AST ID, raw metadata, mapowanie, czasy i każdy diff. Replay
@@ -122,3 +122,29 @@ Bounded window zatrzymuje dalszą kolejkę po pierwszej awarii. Drobny
 limit: opis partycji zawiera stałe16 przy parametrycznym CLIcount;
 produkcyjny workflow używa zawsze16. Nie zmienia obecnego bilansu.
 Zgoda dotyczy harnessu; P2 068/069 nadal blokują PBI-054.
+
+
+## Końcowy odbiór dowodów
+
+[Pełny finalny audit Linux](PBI-054-linux-final-audit.md) jest zachowany
+bez zmian wobec wyniku reviewera. Potwierdza kompletność10218 ID,10193
+rekordów,16controls,105inputów,243critical killed i wszystkich1746ocen.
+[Trwały JSON per ID](../verification/PBI-054-nonkilled-review.json) ma dokładne
+diffy/currentstatus/granice; źródła skryptów/stdout/manifest/CI są w
+[rejestrze](../verification/PBI-054-final-artifacts.json). Komendy/tmp z
+finalnego auditu są historyczną proweniencją, nie wymogiem kontynuacji.
+Przenośny audit trwałych plików jest w analizie i logu054.
+
+Werdykt końcowy: **approve checkpointu dowodów, PBI-054 blocked** przez
+oryginalne P2-068/069/074. Nie potwierdzono kolejnego P1/P2. Wszystkie
+1746non-killed mają ocenę; 530 exactdiff reuse/299exactboundaryrules,
+bez kopiowania starych statusów. Doprecyzowano istniejące rodzinyP3,
+bez implementacji. Publiczne customschema/resolver forwarding oraz
+secondarydiagnostics pozostają nazwanymi limitami, nie źródłową
+ekwiwalencją. Koniec sesji po dostarczeniu raportu; następne gotowe068.
+
+Finalny delta review: **approve, brak pozostałych uwag**. 18 ścieżek
+wyłącznie docs/asdlc, zero dopasowań do triggera kampanii. Poprawione
+fakty kart072/077 oraz jawny Python3.12.13 w komendach. Exact copies
+JSON/report/source/stdout/manifest i guard obcego interpretera sprawdzone;
+audit danych exit0, obcy interpreter exit2. Trwałe dowody w rejestrze.

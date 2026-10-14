@@ -4,29 +4,32 @@ Last updated: 2026-10-14
 
 ## Current handoff — review remediation
 
-- PBI-054 **zablokowane, kampania Linux w toku** (2026-10-14).
-  Baza produktu `336e9bbfa860b96361678776f641bb925e923d5c`, checkpoint
-  harnessu `97428eb9950b0fc8bc42b137c01d6d20525e4161` na origin;
-  validate 38566649874 completed/success, wszystkie10kroków/Complete job.
+- PBI-054 **zablokowane po zakończonej weryfikacji** (2026-10-14).
+  Produkt pozostaje na `336e9bbfa860b96361678776f641bb925e923d5c`;
+  checkpoint odkryć `bafda8603688429fbf29cba2ff613311ad80ad9c` na origin,
+  validate 38572995674 completed/success, wszystkie 10 kroków/Complete job.
   Trzy odtworzone P2: pominięcie dalszego typed inventory reference (068),
   malformed URL ValueError (069), schema-valid skrajne daty UTC OverflowError
-  (074,8/8 awarii publicznych API,4kontrole, bajty bez zmian).
-  Sześć rodzin luk regresji P3: eksport070/profil071/alokacja072/relacje073/
-  pojedyncze wymiary ref075/audit i liczniki raportów076. Nie rozpoczęto napraw.
-  Pełne bramki1946passed/readback7/7/immutability0, R01–R13:127passed,
-  dwa buildy ze zmienionym clock/mtime/mode:7identycznychSHA. Dane/liczniki/
-  2066warningów bez zmian. Niezależny review serii oraz harnessu;
-  27syntetycznych guard probes PASS. [Review](reviews/PBI-054-final-review-2026-10-14.md),
-  [rodziny](reviews/PBI-054-remaining-family-review.md), [dowody](verification/PBI-054.md).
-  Jedna świeża generacja Linux:10218ID/17modułów/1595mappedtests,
-  10193pending +25pustychmappingów, fingerprint66f62c6c… .
-  CI mutation38566650123 wygenerowało pełny zakres;16boundedshards w toku.
-  Obie generacje Mac/631partialreplay wyłączone, zachowane w zweryfikowanych
-  archiwach. Nie dodawać ich wyników do Linux. Sourceinput105/105 zgodne
-  z97428eb; produkt/testy/data/schema/lock bez zmian. Kończyć kampanię,
-  ledger243critical, survivoranalysis i finalny audit; potem checkpoint/CI.
-  Najniższe następne gotowe po tej sesji: **PBI-068**. Nie zaczynać go
-  w sesji054. Bez merge/tag/release.
+  (074: 8/8 awarii publicznych API, 4 kontrole, bajty bez zmian).
+  Siedem rodzin luk regresji P3: eksport070/profil071/alokacja072/relacje073/
+  pojedyncze wymiary ref075/audit i liczniki076/nazwy, daty i kontynuacja077.
+  Nie rozpoczęto napraw. Następne najniższe gotowe: **PBI-068**.
+  Pełne bramki: 1946 passed, readback 7/7, immutability 0; R01–R13:
+  127 passed; dwa buildy z różnym clock/mtime/mode: 7 identycznych SHA.
+  Dane/liczniki/2066 warningów bez zmian. Niezależne regresje: 1052 passed.
+  Świeża kampania Linux [38566650123](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38566650123)
+  zakończona: 10218 ID/17 modułów, **8472 killed / 1721 survived / 25 no tests**,
+  bez pending/timeout/tool error. Wszystkie 243 unikalne krytyczne ID killed
+  (245 referencji z 058–067); 16 par clean/forced-fail z union 1595 testów.
+  Wszystkie 18 jobów/kroki wymagane i Complete job success. Input105/105 zgodne
+  z97428eb/336e9bb; produkt/testy/data/schema/lock bez zmian. Obie generacje Mac
+  i 631 częściowych replay wyłączone; nie dodawać ich wyników do Linux.
+  [Ledger i analiza](verification/PBI-054-final-mutation-analysis.md),
+  [review](reviews/PBI-054-final-review-2026-10-14.md), [dowody](verification/PBI-054.md).
+  Końcowy niezależny audit 1746 non-killed approve checkpointu dowodów,
+  bez kolejnego P1/P2. Oceny per ID w ledger/analizie; nie uznawać
+  PBI-054 za zamknięte przy otwartych P2. Raport ma własne dostarczenie/CI.
+  Pozostaje 11 PBI (068–077 i ponowny odbiór054). Bez merge/tag/release.
 
 - PBI-067 **wykonane** (2026-10-14), baza
   `c460c2cf48dbfbdfe2405553d724346c83a1ba1a`, origin zgodne, 0/0,
