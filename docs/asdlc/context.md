@@ -4,23 +4,28 @@ Last updated: 2026-10-14
 
 ## Current handoff — review remediation
 
-- PBI-067 **zweryfikowane — do dostarczenia** (2026-10-14), baza
-  `c460c2cf48dbfbdfe2405553d724346c83a1ba1a`, fetch/pull/ls-remote 0/0,
+- PBI-067 **wykonane** (2026-10-14), baza
+  `c460c2cf48dbfbdfe2405553d724346c83a1ba1a`, origin zgodne, 0/0,
   CI poprzedniego checkpointu 38536637825 completed/success.
-  52 nowe publiczne in-process regresje + wzmocniona wcześniejsza
-  diagnostyka manual best: typed GLOBALID, lokalne referencje, relacje,
-  HTTP/HTTPS/netloc, ścieżki i odległości. Produkt/schema/data/lock bez zmian.
+  52 nowe publiczne in-process regresje + wzmocniona wcześniejsza diagnostyka
+  manual best: typed GLOBALID, lokalne referencje, relacje, HTTP/HTTPS/netloc,
+  ścieżki i odległości. Produkt/schema/data/lock bez zmian.
   Pełna bramka 1946 passed, osiem etapów 0, readback 7/7, immutability 0;
   dane/liczniki/2066 warningów bez zmian. Wybrana kampania pięciu funkcji:
   baseline 196 killed/162 survived → final 346 killed/12 ocenionych survived
   w identycznych 358 ID/diffach; 150 nowych killed, brak regresji,
   14 krytycznych killed (pięć z karty było survived). Clean/forced-fail
-  0/1 na identycznych 70/122 testach; bez nierozstrzygniętych statusów,
-  replay 0. Testy/helpery/delta review i końcowy audit rejestrów approve, bez P1/P2/P3.
-  [Dowody PBI-067](verification/PBI-067.md). Pozostaje scoped commit/push,
-  exact-SHA CI oraz checkpoint dokumentacji z własną bramką/CI.
-  Następny po dostarczeniu będzie PBI-054: końcowa kampania/review serii
-  i ocena jawnych limitów; nie rozpoczęte. Bez merge, tagu i release.
+  0/1 na identycznych 70/122 testach; replay 0, bez pending/timeout/tool error.
+  Testy/helpery/delta review i końcowy audit approve, bez P1/P2/P3.
+  [Dowody PBI-067](verification/PBI-067.md). Commit
+  `26190486c47922012be0935fa06386c21894141c` na origin (ls-remote), CI
+  [38542472052](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38542472052)
+  completed/success dla tego SHA, wszystkie joby i 10 kroków/Complete job success.
+  Checkpoint dokumentacji ma osobną pełną bramkę; jego publikację i własne
+  exact-SHA CI potwierdzić z Git na końcu sesji i przy wznowieniu.
+  Pozostaje **wyłącznie PBI-054**, gotowe do ponowienia końcowej kampanii/review
+  i oceny jawnych limitów serii; nie rozpoczęte. PBI-054 nie jest domknięte
+  samym dostarczeniem PBI-067. Bez merge, tagu i release.
 
 - Historyczny handoff: PBI-062 **wykonane** (2026-10-14), baza
   `ab624eba62b3edc1461d968bfee25c0f1c9ff1ee`, fetch/pull/ls-remote zgodne,

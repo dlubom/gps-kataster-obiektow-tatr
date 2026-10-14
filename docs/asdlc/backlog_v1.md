@@ -37,7 +37,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — wymagane PBI-067 i końcowa weryfikacja | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane — gotowe do ponownej końcowej weryfikacji | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
@@ -50,7 +50,21 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | wykonane 2026-10-13 | [log](verification/PBI-064.md) |
 | PBI-065 | Zachowanie treści źródłowej staging → YAML | wykonane 2026-10-13 | [log](verification/PBI-065.md) |
 | PBI-066 | Dopasowywać tożsamość po systemie i typie ref | wykonane 2026-10-13 | [log](verification/PBI-066.md) |
-| PBI-067 | Regresje walidatora ref, załączników i diagnostyk | zweryfikowane — do dostarczenia | [log](verification/PBI-067.md) |
+| PBI-067 | Regresje walidatora ref, załączników i diagnostyk | wykonane 2026-10-14 | [log](verification/PBI-067.md) |
+
+PBI-067 dostarczono w `26190486c47922012be0935fa06386c21894141c`:
+ls-remote potwierdza zdalny SHA, CI validate
+[38542472052](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38542472052)
+completed/success dla tego SHA; wszystkie joby i 10 kroków, w tym Complete job,
+success. 52 nowe regresje + wzmocniona istniejąca diagnostyka, pełna bramka
+1946 passed/readback 7/7/immutability 0, dane/liczniki/warningi bez zmian.
+Baseline 196 killed/162 survived → final 346 killed/12 ocenionych survived
+w tych samych 358 ID/diffach: 150 nowych killed, 14 krytycznych killed,
+bez regresji i nierozstrzygniętych statusów. Kontrole 70/122 testy, actual
+pytest 0/1. Niezależny review i audit approve, bez P1/P2/P3.
+[Dowody](verification/PBI-067.md). Checkpoint dokumentacji wymaga własnej
+pełnej bramki/push/exact-SHA CI. Pozostaje **wyłącznie PBI-054**: końcowa
+kampania/review i ocena jawnych limitów serii. Nie rozpoczęte; bez merge/tagu/release.
 
 PBI-062 dostarczono w `e8dbbacb0f109fcd856d5c46e32b8455a40a9759`:
 zdalny SHA potwierdzony przez ls-remote, CI validate
@@ -62,7 +76,7 @@ mutacje: baseline 186 killed/113 survived → final 275 killed/24 ocenione
 survived w tych samych 299 ID; 89 nowych killed, wszystkie 24 krytyczne
 killed. Niezależny review testów, kampanii, baseline i końcowej bramki
 approve, bez P1/P2/P3. [Dowody](verification/PBI-062.md).
-PBI-067 jest zweryfikowane — do dostarczenia; po nim pozostaje końcowe PBI-054.
+Pozostaje końcowe PBI-054, gotowe do ponowienia; nie rozpoczęte w sesji PBI-067.
 
 Ponowienie PBI-054 na aktualnym origin `827a2f8` (2026-09-30) potwierdziło
 naprawy PBI-056–058 oraz wcześniejsze regresje, lecz niezależny review
