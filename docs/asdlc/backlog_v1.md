@@ -37,7 +37,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — wymagane PBI-062/067 i końcowa weryfikacja | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — wymagane PBI-067 i końcowa weryfikacja | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
@@ -45,12 +45,24 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-059 | Odrzucać niecałkowite i logiczne numery wierszy | wykonane 2026-09-30 | [log](verification/PBI-059.md) |
 | PBI-060 | Walidować proweniencję propozycji i referencji staging | wykonane 2026-10-13 | [log](verification/PBI-060.md) |
 | PBI-061 | Chronić reprezentację liczb w DBF | wykonane 2026-10-13 | [log](verification/PBI-061.md) |
-| PBI-062 | Regresje fallbacku TPN po nazwie/odległości | zweryfikowane — do dostarczenia | [log](verification/PBI-062.md) |
+| PBI-062 | Regresje fallbacku TPN po nazwie/odległości | wykonane 2026-10-14 | [log](verification/PBI-062.md) |
 | PBI-063 | Semantyczny odczyt pól SQLite | wykonane 2026-10-13 | [log](verification/PBI-063.md) |
 | PBI-064 | Świeże inicjalizacje resolvera w mutacjach | wykonane 2026-10-13 | [log](verification/PBI-064.md) |
 | PBI-065 | Zachowanie treści źródłowej staging → YAML | wykonane 2026-10-13 | [log](verification/PBI-065.md) |
 | PBI-066 | Dopasowywać tożsamość po systemie i typie ref | wykonane 2026-10-13 | [log](verification/PBI-066.md) |
 | PBI-067 | Regresje walidatora ref, załączników i diagnostyk | planowane — gotowe | [log](verification/PBI-067.md) |
+
+PBI-062 dostarczono w `e8dbbacb0f109fcd856d5c46e32b8455a40a9759`:
+zdalny SHA potwierdzony przez ls-remote, CI validate
+[38535334307](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38535334307)
+completed/success dla tego SHA; wszystkie joby/kroki i Complete job sukces.
+80 nowych publicznych regresji, pełna bramka 1894 passed, readback 7/7,
+immutability 0, dane/liczniki/2066 znanych warningów bez zmian. Świeże
+mutacje: baseline 186 killed/113 survived → final 275 killed/24 ocenione
+survived w tych samych 299 ID; 89 nowych killed, wszystkie 24 krytyczne
+killed. Niezależny review testów, kampanii, baseline i końcowej bramki
+approve, bez P1/P2/P3. [Dowody](verification/PBI-062.md).
+Następne najniższe gotowe PBI-067, nie rozpoczęte. Pozostają 067 i 054.
 
 Ponowienie PBI-054 na aktualnym origin `827a2f8` (2026-09-30) potwierdziło
 naprawy PBI-056–058 oraz wcześniejsze regresje, lecz niezależny review

@@ -4,7 +4,7 @@ Last updated: 2026-10-14
 
 ## Current handoff — review remediation
 
-- PBI-062 **zweryfikowane — do dostarczenia** (2026-10-14), baza
+- PBI-062 **wykonane** (2026-10-14), baza
   `ab624eba62b3edc1461d968bfee25c0f1c9ff1ee`, fetch/pull/ls-remote zgodne,
   CI poprzedniego checkpointu 38414172733 completed/success. Dodano
   80 publicznych regresji name_distance, best, granic promienia,
@@ -17,9 +17,14 @@ Last updated: 2026-10-14
   ze zgodnym clean/forced-fail; bez timeout/pending/tool error w zakresie.
   Niezależny review testów, kampanii, baseline i końcowy audit
   runnera/staged zakresu approve, bez otwartych P1/P2/P3. [Dowody PBI-062](verification/PBI-062.md).
-  Do wykonania dostarczenie kodu i checkpoint dokumentacji zgodnie
-  z runbookiem; nie rozpoczynać kolejnego PBI. Następne po dostarczeniu
-  **PBI-067**; pozostaną 067 i 054 (końcowa kampania/review i limity).
+  Commit `e8dbbacb0f109fcd856d5c46e32b8455a40a9759` na origin (ls-remote), CI
+  [38535334307](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38535334307)
+  completed/success dla tego SHA, wszystkie joby/kroki i Complete job sukces.
+  Checkpoint dokumentacji ma pełną bramkę 1894 passed/readback 7/7,
+  immutability 0, niezmienne dane; jego publikację i własne exact-SHA CI
+  potwierdzić w Git przy wznowieniu. Następne najniższe
+  gotowe **PBI-067**, nie rozpoczęte. Pozostają 067 i 054
+  (końcowa kampania/review i ocena jawnych limitów serii).
   Bez merge, tagu i release.
 
 - Historyczny handoff: PBI-066 **wykonane** (2026-10-13), baza
