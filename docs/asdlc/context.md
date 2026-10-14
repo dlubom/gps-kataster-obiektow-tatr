@@ -6,8 +6,8 @@ Last updated: 2026-10-14
 
 - PBI-054 **zablokowane po zakończonej weryfikacji** (2026-10-14).
   Produkt pozostaje na `336e9bbfa860b96361678776f641bb925e923d5c`;
-  checkpoint odkryć `bafda8603688429fbf29cba2ff613311ad80ad9c` na origin,
-  validate 38572995674 completed/success, wszystkie 10 kroków/Complete job.
+  raport `27ddc524d7fa1cc774141b50cfccdf2b78c5af8a` na origin,
+  validate 38589035012 completed/success, wszystkie 10 kroków/Complete job.
   Trzy odtworzone P2: pominięcie dalszego typed inventory reference (068),
   malformed URL ValueError (069), schema-valid skrajne daty UTC OverflowError
   (074: 8/8 awarii publicznych API, 4 kontrole, bajty bez zmian).
@@ -28,7 +28,9 @@ Last updated: 2026-10-14
   [review](reviews/PBI-054-final-review-2026-10-14.md), [dowody](verification/PBI-054.md).
   Końcowy niezależny audit 1746 non-killed approve checkpointu dowodów,
   bez kolejnego P1/P2. Oceny per ID w ledger/analizie; nie uznawać
-  PBI-054 za zamknięte przy otwartych P2. Raport ma własne dostarczenie/CI.
+  PBI-054 za zamknięte przy otwartych P2. Raport dostarczony; checkpoint
+  dokumentacji ma pełną bramkę, a jego własny push/SHA/CI potwierdzić
+  z Git na końcu sesji i przy wznowieniu.
   Pozostaje 11 PBI (068–077 i ponowny odbiór054). Bez merge/tag/release.
 
 - PBI-067 **wykonane** (2026-10-14), baza
