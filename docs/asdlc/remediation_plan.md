@@ -41,7 +41,7 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 051 | Udokumentowane przyczyny 16 istniejących rozbieżności prefixu | R06, dane | 044 |
 | 052 | Egzekwowanie uzasadnienia bez zmiany trwałych ID | R06, pełna reguła | 044, 051 |
 | 053 | Dokumentacja zgodna z wdrożonymi kontraktami | uwagi z raportu | 040, 043, 048, 050 |
-| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–071 |
+| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–076 |
 | 055 | Poprawne wiązanie skończonych dużych int w SQLite REAL | uzupełnienie R05 | 042 |
 | 056 | Odrzucanie zduplikowanych indeksów staging | nowe ustalenie P2 z PBI-054 | 040, 046, 048 |
 | 057 | Wiązanie jawnie wskazanej propozycji z wierszem źródła | nowe ustalenie P2 z PBI-054 | 040, 056 |
@@ -59,6 +59,11 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 069 | Diagnostyka nieparsowalnego URL załącznika | nowe P2 z końcowego review PBI-054 | 040, 067 |
 | 070 | Regresje semantyczne eksportów best-measurements | luka mutacyjna P3 z PBI-054 | 049, 050, 061 |
 | 071 | Regresje treści raportu source-profile | luka mutacyjna P3 z PBI-054 | 055 |
+| 072 | Publiczna alokacja ID z niezależnymi maksimami | nowe P3 z review PBI-054 | 045, 047, 053 |
+| 073 | Pełny semantyczny zapis relacji SQLite | nowe P3 z review PBI-054 | 038, 044, 063 |
+| 074 | Kontrolowany preflight skrajnych dat UTC | nowe P2 z review PBI-054 | 035, 040 |
+| 075 | Pojedyncze wymiary tożsamości referencji review | nowe P3 z review PBI-054 | 060, 065, 066 |
+| 076 | Semantyczny audit i liczniki raportów staging/review | nowe P3 z review PBI-054 | 040, 048, 055, 065 |
 
 PBI-035 celowo poprzedza naprawy: każda kolejna sesja ma móc zweryfikować
 wynik jednym poleceniem. PBI-037–039 przygotowują kontrakty używane przez
@@ -546,3 +551,24 @@ Nie rozpoczęto implementacji; osobna jednostka wykonania.
 
 Nowa luka P3 z końcowego review PBI-054. [Karta i odbiór](verification/PBI-071.md).
 Nie rozpoczęto implementacji; osobna jednostka wykonania.
+
+
+### PBI-072 — Publiczna alokacja ID z niezależnymi maksimami
+
+P3, [karta i odbiór](verification/PBI-072.md). Nie rozpoczęto implementacji.
+
+### PBI-073 — Pełny semantyczny zapis relacji SQLite
+
+P3, [karta i odbiór](verification/PBI-073.md). Nie rozpoczęto implementacji.
+
+### PBI-074 — Kontrolowany preflight skrajnych dat UTC
+
+P2, [karta i odbiór](verification/PBI-074.md). Nie rozpoczęto implementacji.
+
+### PBI-075 — Pojedyncze wymiary tożsamości referencji review
+
+P3, [karta i odbiór](verification/PBI-075.md). Nie rozpoczęto implementacji.
+
+### PBI-076 — Semantyczny audit i liczniki raportów staging/review
+
+P3, [karta i odbiór](verification/PBI-076.md). Nie rozpoczęto implementacji.

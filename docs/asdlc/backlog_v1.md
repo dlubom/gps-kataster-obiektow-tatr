@@ -6,7 +6,7 @@ Stan na: 2026-10-14
 
 Branch: `codex/review-remediation`. Poniższa tabela jest źródłem aktualnych
 statusów serii. Zakres, zależności i odbiór:
-[karty PBI-034–071](remediation_plan.md). Procedura czystej sesji,
+[karty PBI-034–076](remediation_plan.md). Procedura czystej sesji,
 weryfikacji, commitów i pushów: [runbook](remediation_runbook.md).
 Historyczny [raport R01–R13](reviews/project-review-2026-09-05.md) jest w git.
 
@@ -37,7 +37,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — nowe odtworzone P2: 068/069; kampania w toku | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — odtworzone P2: 068/069/074; kampania Linux w toku | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
@@ -55,6 +55,11 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-069 | Zwracać diagnostykę dla nieparsowalnego URL załącznika | planowane — gotowe | [log](verification/PBI-069.md) |
 | PBI-070 | Regresje semantyczne eksportów best-measurements | planowane — gotowe | [log](verification/PBI-070.md) |
 | PBI-071 | Regresje treści raportu source-profile | planowane — gotowe | [log](verification/PBI-071.md) |
+| PBI-072 | Publiczna alokacja ID z niezależnymi maksimami | planowane — gotowe | [log](verification/PBI-072.md) |
+| PBI-073 | Pełny semantyczny zapis relacji SQLite | planowane — gotowe | [log](verification/PBI-073.md) |
+| PBI-074 | Kontrolowany preflight skrajnych dat UTC | planowane — gotowe | [log](verification/PBI-074.md) |
+| PBI-075 | Pojedyncze wymiary tożsamości referencji review | planowane — gotowe | [log](verification/PBI-075.md) |
+| PBI-076 | Semantyczny audit i liczniki raportów staging/review | planowane — gotowe | [log](verification/PBI-076.md) |
 
 Ponowienie PBI-054 (2026-10-14), baza `336e9bb`: czysta pełna bramka
 1946 passed, regresje R01–R13 127 passed, readback 7/7, immutability 0;
@@ -63,7 +68,7 @@ review i samodzielne ponowienie wykazały dwa nowe P2: kolejność kilku
 legalnych typed NR_INWENT w jednej jaskini zmienia matched → new i pozwala
 utworzyć duplikat (068), a schema-valid nieparsowalny URL załącznika
 przerywa walidację/review przez ValueError (069). [Próba](verification/PBI-054-final-discoveries.py).
-PBI-054 nie można zamknąć przy tych blokadach. Nowa pełna kampania 17
+PBI-074 dodatkowo odtwarza schema-valid przepełnienie UTC (8/8 publicznych awarii, +4 poprawne kontrole, bajty bez zmian). Luki P3 070–073/075–076 mają osobne karty i macierze, bez implementacji. PBI-054 nie można zamknąć przy tych blokadach. Nowa pełna kampania 17
 modułów / 10218 ID trwa na tej samej bazie produktu; nie sumujemy wyników
 historycznych. Nowych napraw nie rozpoczęto. Następne gotowe: **PBI-068**.
 Bez merge, tagu i release.

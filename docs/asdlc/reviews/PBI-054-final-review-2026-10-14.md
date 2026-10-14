@@ -102,3 +102,23 @@ całkowicie stłumionej przez produkt. Raw 35/marker zawsze odrzuca generację.
 Po wait parent sprząta także temp workerów zakończonych SIGXCPU/SIGKILL;
 nie zmienia oryginalnego timeout_checker ani surowych timeoutów mutmut.
 Dokładne SHA helperów i surowy stdout audytu są w rejestrze artefaktów.
+
+
+## Audit nowej orkiestracji Linux
+
+Kodowy audit pinned API, workflow, capture, replay, join i ledger:
+**approve**, bez blokady uruchomienia. 27 sond syntetycznych PASS, exit0,
+w tym25 odmów błędnego context/SHA/fingerprint, braków/duplikatów,
+selekcji/estymaty/limitu, setup35/exit5, raw33 z niepustym mapowaniem
+i pending z pustym mappingiem. Nie wykonywały mutacji ani produktu.
+[Przenośny audit](../verification/PBI-054-harness-audit.py) ponowiony
+przez właściciela po zmianie wyłącznie ścieżki ROOT/formatowania:27/27.
+Surowe stdout i SHA audytowanego kodu w rejestrze artefaktów.
+
+Pin Ubuntu24.04/x64/Python3.12.13, jawny interpreter uv i kontrola
+całego runtime; SHA tar wobec outputjobu; capture/context/archiveSHA
+każdego sharda; wszystkie16controls, exactstride/uniqueID i limity.
+Bounded window zatrzymuje dalszą kolejkę po pierwszej awarii. Drobny
+limit: opis partycji zawiera stałe16 przy parametrycznym CLIcount;
+produkcyjny workflow używa zawsze16. Nie zmienia obecnego bilansu.
+Zgoda dotyczy harnessu; P2 068/069 nadal blokują PBI-054.

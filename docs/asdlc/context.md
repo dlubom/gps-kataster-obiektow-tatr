@@ -4,27 +4,29 @@ Last updated: 2026-10-14
 
 ## Current handoff — review remediation
 
-- PBI-054 **zablokowane, kampania w toku** (2026-10-14), baza
-  `336e9bbfa860b96361678776f641bb925e923d5c`; fetch/pull/ls-remote zgodne,
-  0/0, CI poprzedniego checkpointu 38544546282 completed/success,
-  wszystkie joby/kroki/Complete job success. Czysta pełna bramka
-  1946 passed, readback 7/7, immutability 0; R01–R13 127 passed;
-  dwa buildy przy różnych zegarach/mtime/mode: 7 identycznych SHA.
-  Dane/pomiary/ID/liczniki/2066 warningów bez zmian. Niezależny review
-  i powtórka właściciela potwierdziły dwa nowe P2: wybór pierwszej z kilku
-  legalnych typed NR_INWENT zmienia tożsamość i pozwala utworzyć duplikat
-  (068), nieparsowalny schema-valid URL załącznika rzuca ValueError
-  zamiast diagnostyki (069). [Review](reviews/PBI-054-final-review-2026-10-14.md),
-  [reprodukcja](verification/PBI-054-final-discoveries.py), [dowody](verification/PBI-054.md).
-  Nowa kampania całych 17 modułów / 10218 ID pozostaje w toku; nie zaliczono
-  jej zakończenia i nie sumowano historycznych wyników. Druga generacja Mac i jej częściowy replay wyłączone po guardzie
-  miejsca; nowa generacja Linux działa przez dedykowany workflow GitHub Actions.
-  Checkpoint `e872786` na origin, CI 38558044377 success dla exact SHA.
-  Zarejestrowano też osobne luki regresji P3 070/071 (eksport/profil),
-  bez implementacji. Najbliższy krok tej sesji: ukończyć kampanię, zapisać limity/pełny rejestr, dostarczyć
-  dowody z exact-SHA CI. Napraw 068/069 nie rozpoczęto; następne gotowe
-  PBI po tej sesji: **068**, potem 069 i ponowne 054 na nowym origin.
-  Bez merge, tagu i release.
+- PBI-054 **zablokowane, kampania Linux w toku** (2026-10-14).
+  Baza produktu `336e9bbfa860b96361678776f641bb925e923d5c`, checkpoint
+  harnessu `97428eb9950b0fc8bc42b137c01d6d20525e4161` na origin;
+  validate 38566649874 completed/success, wszystkie10kroków/Complete job.
+  Trzy odtworzone P2: pominięcie dalszego typed inventory reference (068),
+  malformed URL ValueError (069), schema-valid skrajne daty UTC OverflowError
+  (074,8/8 awarii publicznych API,4kontrole, bajty bez zmian).
+  Sześć rodzin luk regresji P3: eksport070/profil071/alokacja072/relacje073/
+  pojedyncze wymiary ref075/audit i liczniki raportów076. Nie rozpoczęto napraw.
+  Pełne bramki1946passed/readback7/7/immutability0, R01–R13:127passed,
+  dwa buildy ze zmienionym clock/mtime/mode:7identycznychSHA. Dane/liczniki/
+  2066warningów bez zmian. Niezależny review serii oraz harnessu;
+  27syntetycznych guard probes PASS. [Review](reviews/PBI-054-final-review-2026-10-14.md),
+  [rodziny](reviews/PBI-054-remaining-family-review.md), [dowody](verification/PBI-054.md).
+  Jedna świeża generacja Linux:10218ID/17modułów/1595mappedtests,
+  10193pending +25pustychmappingów, fingerprint66f62c6c… .
+  CI mutation38566650123 wygenerowało pełny zakres;16boundedshards w toku.
+  Obie generacje Mac/631partialreplay wyłączone, zachowane w zweryfikowanych
+  archiwach. Nie dodawać ich wyników do Linux. Sourceinput105/105 zgodne
+  z97428eb; produkt/testy/data/schema/lock bez zmian. Kończyć kampanię,
+  ledger243critical, survivoranalysis i finalny audit; potem checkpoint/CI.
+  Najniższe następne gotowe po tej sesji: **PBI-068**. Nie zaczynać go
+  w sesji054. Bez merge/tag/release.
 
 - PBI-067 **wykonane** (2026-10-14), baza
   `c460c2cf48dbfbdfe2405553d724346c83a1ba1a`, origin zgodne, 0/0,
