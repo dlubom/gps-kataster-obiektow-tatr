@@ -4,6 +4,25 @@ Last updated: 2026-10-14
 
 ## Current handoff — review remediation
 
+- PBI-054 **zablokowane, kampania w toku** (2026-10-14), baza
+  `336e9bbfa860b96361678776f641bb925e923d5c`; fetch/pull/ls-remote zgodne,
+  0/0, CI poprzedniego checkpointu 38544546282 completed/success,
+  wszystkie joby/kroki/Complete job success. Czysta pełna bramka
+  1946 passed, readback 7/7, immutability 0; R01–R13 127 passed;
+  dwa buildy przy różnych zegarach/mtime/mode: 7 identycznych SHA.
+  Dane/pomiary/ID/liczniki/2066 warningów bez zmian. Niezależny review
+  i powtórka właściciela potwierdziły dwa nowe P2: wybór pierwszej z kilku
+  legalnych typed NR_INWENT zmienia tożsamość i pozwala utworzyć duplikat
+  (068), nieparsowalny schema-valid URL załącznika rzuca ValueError
+  zamiast diagnostyki (069). [Review](reviews/PBI-054-final-review-2026-10-14.md),
+  [reprodukcja](verification/PBI-054-final-discoveries.py), [dowody](verification/PBI-054.md).
+  Nowa kampania całych 17 modułów / 10218 ID pozostaje w toku; nie zaliczono
+  jej zakończenia i nie sumowano historycznych wyników. Najbliższy krok
+  tej sesji: ukończyć kampanię, zapisać limity/pełny rejestr, dostarczyć
+  dowody z exact-SHA CI. Napraw 068/069 nie rozpoczęto; następne gotowe
+  PBI po tej sesji: **068**, potem 069 i ponowne 054 na nowym origin.
+  Bez merge, tagu i release.
+
 - PBI-067 **wykonane** (2026-10-14), baza
   `c460c2cf48dbfbdfe2405553d724346c83a1ba1a`, origin zgodne, 0/0,
   CI poprzedniego checkpointu 38536637825 completed/success.

@@ -41,7 +41,7 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 051 | Udokumentowane przyczyny 16 istniejących rozbieżności prefixu | R06, dane | 044 |
 | 052 | Egzekwowanie uzasadnienia bez zmiany trwałych ID | R06, pełna reguła | 044, 051 |
 | 053 | Dokumentacja zgodna z wdrożonymi kontraktami | uwagi z raportu | 040, 043, 048, 050 |
-| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–067 |
+| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–069 |
 | 055 | Poprawne wiązanie skończonych dużych int w SQLite REAL | uzupełnienie R05 | 042 |
 | 056 | Odrzucanie zduplikowanych indeksów staging | nowe ustalenie P2 z PBI-054 | 040, 046, 048 |
 | 057 | Wiązanie jawnie wskazanej propozycji z wierszem źródła | nowe ustalenie P2 z PBI-054 | 040, 056 |
@@ -55,6 +55,8 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 065 | Zachowanie treści źródłowej staging → YAML | luka mutacyjna P3 z PBI-054 | 040, 048, 056, 057, 060 |
 | 066 | Tożsamość źródła po systemie i typie ref | nowe P2 z analizy mutacji PBI-054 | 045, 058 |
 | 067 | Regresje walidatora ref, załączników i diagnostyk | luka mutacyjna P3 z PBI-054 | 035, 040, 044, 045 |
+| 068 | Dopasowanie TPN do wszystkich typed numerów jaskini | nowe P2 z końcowego review PBI-054 | 060, 066 |
+| 069 | Diagnostyka nieparsowalnego URL załącznika | nowe P2 z końcowego review PBI-054 | 040, 067 |
 
 PBI-035 celowo poprzedza naprawy: każda kolejna sesja ma móc zweryfikować
 wynik jednym poleceniem. PBI-037–039 przygotowują kontrakty używane przez
@@ -509,3 +511,25 @@ Wskazane mutanty usuwające blokadę/diagnostykę mają być killed;
 oryginalny kod jest poprawny. Bez zmiany reguł, pełna bramka,
 niezmienne dane, review i dostarczenie.
 Commit: `test: cover validator reference and attachment rules (PBI-067)`.
+
+### PBI-068 — Dopasowywać TPN do wszystkich typed numerów jaskini
+
+Pliki: `tpn_staging.py`, testy publicznego staging/review. Finalna jaskinia
+może zawierać kilka legalnych `NR_INWENT/inventory_number`, także dopisanych
+przez zwykły review TPN. Każdy taki numer ma uczestniczyć w dopasowaniu;
+kolejność referencji nie może wybierać tożsamości. Równe numery innych typów
+nie są tożsamością. Zachować GLOBALID-first, deduplikację po trwałym ID,
+ambiguous/unresolved dla kilku różnych obiektów i pełną historię/ref.
+[Reprodukcja i odbiór](verification/PBI-068.md). Nie scalać obecnych danych.
+Commit: `fix: match all typed cave inventory references (PBI-068)`.
+
+### PBI-069 — Zwracać diagnostykę dla nieparsowalnego URL załącznika
+
+Pliki: `validator.py`, regresje publicznej walidacji/review/build/CLI.
+Niepoprawny tekst URL dopuszczony jako string przez schema ma dać
+`ATTACHMENT_URL_INVALID` ERROR, zamiast nieobsłużonego `ValueError`
+z `urlparse`. Przykłady: niezamknięte/nielegalne nawiasy hosta IPv6,
+nielegalny netloc według NFKC. Zachować poprawne HTTP/HTTPS i ścieżki
+lokalne; nie dopuścić błędnych URL do zapisu. [Reprodukcja i odbiór](verification/PBI-069.md).
+Nie rozszerzać zadania o dowolne nowe reguły sieciowe.
+Commit: `fix: report malformed attachment URLs (PBI-069)`.

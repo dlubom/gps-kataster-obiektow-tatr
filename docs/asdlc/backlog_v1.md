@@ -6,7 +6,7 @@ Stan na: 2026-10-14
 
 Branch: `codex/review-remediation`. Poniższa tabela jest źródłem aktualnych
 statusów serii. Zakres, zależności i odbiór:
-[karty PBI-034–067](remediation_plan.md). Procedura czystej sesji,
+[karty PBI-034–069](remediation_plan.md). Procedura czystej sesji,
 weryfikacji, commitów i pushów: [runbook](remediation_runbook.md).
 Historyczny [raport R01–R13](reviews/project-review-2026-09-05.md) jest w git.
 
@@ -37,7 +37,7 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-051 | Dowody i powody 16 rozbieżności prefixu | wykonane 2026-09-28 | [log](verification/PBI-051.md) |
 | PBI-052 | Egzekwowanie powodów rozbieżności | wykonane 2026-09-28 | [log](verification/PBI-052.md) |
 | PBI-053 | Zgodność dokumentacji i kontraktów | wykonane 2026-09-28 | [log](verification/PBI-053.md) |
-| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | planowane — gotowe do ponownej końcowej weryfikacji | [log](verification/PBI-054.md) |
+| PBI-054 | Końcowa weryfikacja R01–R13 i niezależny review | zablokowane — nowe odtworzone P2: 068/069; kampania w toku | [log](verification/PBI-054.md) |
 | PBI-055 | Skończone duże int w polach REAL SQLite | wykonane 2026-09-28 | [log](verification/PBI-055.md) |
 | PBI-056 | Odrzucać zduplikowane wpisy raportu staging przed indeksowaniem | wykonane 2026-09-29 | [log](verification/PBI-056.md) |
 | PBI-057 | Wiązać jawną propozycję z właściwym wierszem źródła | wykonane 2026-09-29 | [log](verification/PBI-057.md) |
@@ -51,6 +51,20 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-065 | Zachowanie treści źródłowej staging → YAML | wykonane 2026-10-13 | [log](verification/PBI-065.md) |
 | PBI-066 | Dopasowywać tożsamość po systemie i typie ref | wykonane 2026-10-13 | [log](verification/PBI-066.md) |
 | PBI-067 | Regresje walidatora ref, załączników i diagnostyk | wykonane 2026-10-14 | [log](verification/PBI-067.md) |
+| PBI-068 | Dopasowywać TPN do wszystkich typed numerów jaskini | planowane — gotowe | [log](verification/PBI-068.md) |
+| PBI-069 | Zwracać diagnostykę dla nieparsowalnego URL załącznika | planowane — gotowe | [log](verification/PBI-069.md) |
+
+Ponowienie PBI-054 (2026-10-14), baza `336e9bb`: czysta pełna bramka
+1946 passed, regresje R01–R13 127 passed, readback 7/7, immutability 0;
+7 identycznych SHA dwóch buildów z różnym zegarem/mtime/mode. Niezależny
+review i samodzielne ponowienie wykazały dwa nowe P2: kolejność kilku
+legalnych typed NR_INWENT w jednej jaskini zmienia matched → new i pozwala
+utworzyć duplikat (068), a schema-valid nieparsowalny URL załącznika
+przerywa walidację/review przez ValueError (069). [Próba](verification/PBI-054-final-discoveries.py).
+PBI-054 nie można zamknąć przy tych blokadach. Nowa pełna kampania 17
+modułów / 10218 ID trwa na tej samej bazie produktu; nie sumujemy wyników
+historycznych. Nowych napraw nie rozpoczęto. Następne gotowe: **PBI-068**.
+Bez merge, tagu i release.
 
 PBI-067 dostarczono w `26190486c47922012be0935fa06386c21894141c`:
 ls-remote potwierdza zdalny SHA, CI validate
@@ -78,7 +92,7 @@ killed. Niezależny review testów, kampanii, baseline i końcowej bramki
 approve, bez P1/P2/P3. [Dowody](verification/PBI-062.md).
 Pozostaje końcowe PBI-054, gotowe do ponowienia; nie rozpoczęte w sesji PBI-067.
 
-Ponowienie PBI-054 na aktualnym origin `827a2f8` (2026-09-30) potwierdziło
+Historyczne ponowienie PBI-054 na origin `827a2f8` (2026-09-30) potwierdziło
 naprawy PBI-056–058 oraz wcześniejsze regresje, lecz niezależny review
 odkrył **cztery nowe odtworzone P2**: błędny typ numeru wiersza
 ([PBI-059](verification/PBI-059.md)), niespójna proweniencja propozycji/ref
