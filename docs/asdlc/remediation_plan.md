@@ -41,7 +41,7 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 051 | Udokumentowane przyczyny 16 istniejących rozbieżności prefixu | R06, dane | 044 |
 | 052 | Egzekwowanie uzasadnienia bez zmiany trwałych ID | R06, pełna reguła | 044, 051 |
 | 053 | Dokumentacja zgodna z wdrożonymi kontraktami | uwagi z raportu | 040, 043, 048, 050 |
-| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–069 |
+| 054 | Końcowa weryfikacja wszystkich R01–R13 i niezależny review | zamknięcie serii | 035–053, 055–071 |
 | 055 | Poprawne wiązanie skończonych dużych int w SQLite REAL | uzupełnienie R05 | 042 |
 | 056 | Odrzucanie zduplikowanych indeksów staging | nowe ustalenie P2 z PBI-054 | 040, 046, 048 |
 | 057 | Wiązanie jawnie wskazanej propozycji z wierszem źródła | nowe ustalenie P2 z PBI-054 | 040, 056 |
@@ -57,6 +57,8 @@ recenzować wynik; właściciel PBI wykonuje zapis, commit i push.
 | 067 | Regresje walidatora ref, załączników i diagnostyk | luka mutacyjna P3 z PBI-054 | 035, 040, 044, 045 |
 | 068 | Dopasowanie TPN do wszystkich typed numerów jaskini | nowe P2 z końcowego review PBI-054 | 060, 066 |
 | 069 | Diagnostyka nieparsowalnego URL załącznika | nowe P2 z końcowego review PBI-054 | 040, 067 |
+| 070 | Regresje semantyczne eksportów best-measurements | luka mutacyjna P3 z PBI-054 | 049, 050, 061 |
+| 071 | Regresje treści raportu source-profile | luka mutacyjna P3 z PBI-054 | 055 |
 
 PBI-035 celowo poprzedza naprawy: każda kolejna sesja ma móc zweryfikować
 wynik jednym poleceniem. PBI-037–039 przygotowują kontrakty używane przez
@@ -533,3 +535,14 @@ nielegalny netloc według NFKC. Zachować poprawne HTTP/HTTPS i ścieżki
 lokalne; nie dopuścić błędnych URL do zapisu. [Reprodukcja i odbiór](verification/PBI-069.md).
 Nie rozszerzać zadania o dowolne nowe reguły sieciowe.
 Commit: `fix: report malformed attachment URLs (PBI-069)`.
+
+
+### PBI-070 — Regresje semantyczne eksportów best-measurements
+
+Nowa luka P3 z końcowego review PBI-054. [Karta i odbiór](verification/PBI-070.md).
+Nie rozpoczęto implementacji; osobna jednostka wykonania.
+
+### PBI-071 — Regresje treści raportu source-profile
+
+Nowa luka P3 z końcowego review PBI-054. [Karta i odbiór](verification/PBI-071.md).
+Nie rozpoczęto implementacji; osobna jednostka wykonania.

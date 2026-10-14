@@ -17,7 +17,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from importlib.metadata import version
 from pathlib import Path
 
@@ -238,6 +238,7 @@ def run_case(args, manifest, expected_fingerprint, key):
         estimate_seconds=estimate,
         wall_limit_seconds=limit,
     )
+    (args.out / (key + ".json")).write_text(json.dumps(record, indent=2) + "\n")
     return record
 
 
@@ -247,9 +248,13 @@ def main():
     parser.add_argument("--workspace", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--max-workers", type=int, default=6)
+    parser.add_argument("--shard-index", type=int, default=0)
+    parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--worker")
     parser.add_argument("--expected-fingerprint")
     args = parser.parse_args()
+    assert args.max_workers > 0
+    assert 0 <= args.shard_index < args.shard_count
     args.manifest, args.workspace, args.out = (
         path.resolve() for path in (args.manifest, args.workspace, args.out)
     )
@@ -268,22 +273,47 @@ def main():
         key: run_case(args, manifest, expected_fingerprint, key)
         for key in ("baseline", "forced-fail")
     }
-    keys = [
+    keys = sorted(
         key
         for key, code in manifest["raw_exit_codes"].items()
         if code is None or mutmut.status_by_exit_code[code] == "timeout"
-    ]
+    )[args.shard_index :: args.shard_count]
     records = []
     with ThreadPoolExecutor(max_workers=args.max_workers) as pool:
-        jobs = [pool.submit(run_case, args, manifest, expected_fingerprint, key) for key in keys]
-        for job in as_completed(jobs):
-            record = job.result()
-            records.append(record)
-            print(json.dumps({k: record[k] for k in ("id", "exit_code", "seconds")}), flush=True)
+        # Keep only a bounded active window: a harness error must not enqueue
+        # the rest of the campaign while executor.__exit__ waits for workers.
+        remaining = iter(keys)
+        jobs = set()
+        for _ in range(args.max_workers):
+            key = next(remaining, None)
+            if key is not None:
+                jobs.add(pool.submit(run_case, args, manifest, expected_fingerprint, key))
+        while jobs:
+            done, jobs = wait(jobs, return_when=FIRST_COMPLETED)
+            completed = [job.result() for job in done]  # fail before submitting any more
+            for record in completed:
+                records.append(record)
+                print(
+                    json.dumps({k: record[k] for k in ("id", "exit_code", "seconds")}), flush=True
+                )
+                key = next(remaining, None)
+                if key is not None:
+                    jobs.add(pool.submit(run_case, args, manifest, expected_fingerprint, key))
     assert fingerprint(args.workspace) == expected_fingerprint
     (args.out / "summary.json").write_text(
         json.dumps(
-            {"fingerprint": expected_fingerprint, "controls": controls, "replays": records},
+            {
+                "fingerprint": expected_fingerprint,
+                "shard_index": args.shard_index,
+                "shard_count": args.shard_count,
+                "frozen_archive_sha256": os.environ.get("PBI054_ARCHIVE_SHA"),
+                "capture_sha256": hashlib.sha256(args.manifest.read_bytes()).hexdigest(),
+                "execution_context": {
+                    key: os.environ.get(key) for key in manifest.get("execution_context", {})
+                },
+                "controls": controls,
+                "replays": records,
+            },
             indent=2,
         )
         + "\n"

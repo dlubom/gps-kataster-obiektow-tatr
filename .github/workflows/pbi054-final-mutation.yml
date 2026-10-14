@@ -1,0 +1,163 @@
+name: pbi054-final-mutation
+
+"on":
+  workflow_dispatch:
+  push:
+    branches: [codex/review-remediation]
+    paths:
+      - .github/workflows/pbi054-final-mutation.yml
+      - docs/asdlc/verification/PBI-054-cloud-*.py
+      - docs/asdlc/verification/PBI-054-final-*.py
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      archive_sha: ${{ steps.freeze.outputs.archive_sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+          architecture: x64
+      - uses: astral-sh/setup-uv@v5
+      - name: Frozen dependencies
+        run: uv sync --frozen --python "$pythonLocation/bin/python"
+      - name: Fresh copied inputs
+        run: |
+          .venv/bin/python - <<'PY'
+          import shutil
+          from pathlib import Path
+          target = Path("build/pbi054-cloud/workspace")
+          target.mkdir(parents=True)
+          for name in ("src", "tests", "scripts", "schema", "config", "data/shapes"):
+              shutil.copytree(name, target / name, ignore=shutil.ignore_patterns("__pycache__"))
+          for name in ("pyproject.toml", "uv.lock"):
+              shutil.copy2(name, target / name)
+          PY
+      - name: Generate and map all configured modules
+        run: |
+          cd build/pbi054-cloud/workspace
+          "$GITHUB_WORKSPACE/.venv/bin/python" "$GITHUB_WORKSPACE/docs/asdlc/verification/PBI-054-cloud-generate.py" --base-sha "$GITHUB_SHA" > ../generate.log 2>&1
+      - name: Freeze archive
+        id: freeze
+        run: |
+          tar --exclude=__pycache__ --exclude=campaign-tmp -czf campaign.tar.gz -C build pbi054-cloud
+          sha256sum campaign.tar.gz > campaign.sha256
+          .venv/bin/python - <<'PY'
+          import hashlib, os
+          from pathlib import Path
+          digest = hashlib.sha256(Path("campaign.tar.gz").read_bytes()).hexdigest()
+          with open(os.environ["GITHUB_OUTPUT"], "a") as stream:
+              stream.write(f"archive_sha={digest}\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pbi054-frozen-generation
+          path: |
+            campaign.tar.gz
+            campaign.sha256
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: pbi054-generation-failure
+          path: build/pbi054-cloud
+          if-no-files-found: warn
+
+  replay:
+    needs: generate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+          architecture: x64
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --frozen --python "$pythonLocation/bin/python"
+      - uses: actions/download-artifact@v4
+        with:
+          name: pbi054-frozen-generation
+      - name: Verify frozen archive
+        env:
+          EXPECTED_SHA: ${{ needs.generate.outputs.archive_sha }}
+        run: |
+          sha256sum --check campaign.sha256
+          .venv/bin/python - <<'PY'
+          import hashlib, os
+          from pathlib import Path
+          assert hashlib.sha256(Path("campaign.tar.gz").read_bytes()).hexdigest() == os.environ["EXPECTED_SHA"]
+          PY
+          mkdir -p build
+          tar -xzf campaign.tar.gz -C build
+      - name: Controls and complete bounded shard
+        env:
+          PBI054_ARCHIVE_SHA: ${{ needs.generate.outputs.archive_sha }}
+        run: |
+          .venv/bin/python docs/asdlc/verification/PBI-054-final-replay.py --manifest build/pbi054-cloud/capture.json --workspace build/pbi054-cloud/workspace --out build/pbi054-cloud/replay --max-workers 2 --shard-count 16 --shard-index ${{ matrix.shard }} > build/pbi054-cloud/replay.log 2>&1
+      - name: Archive raw shard evidence
+        if: always()
+        run: tar -czf shard-${{ matrix.shard }}.tar.gz --exclude='pytest-replay-*' -C build/pbi054-cloud replay replay.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pbi054-shard-${{ matrix.shard }}
+          path: |
+            shard-${{ matrix.shard }}.tar.gz
+            build/pbi054-cloud/replay/summary.json
+          if-no-files-found: error
+          retention-days: 30
+
+  collect:
+    needs: [generate, replay]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.13"
+          architecture: x64
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --frozen --python "$pythonLocation/bin/python"
+      - uses: actions/download-artifact@v4
+        with:
+          name: pbi054-frozen-generation
+      - name: Verify generation
+        env:
+          EXPECTED_SHA: ${{ needs.generate.outputs.archive_sha }}
+        run: |
+          sha256sum --check campaign.sha256
+          .venv/bin/python - <<'PY'
+          import hashlib, os
+          from pathlib import Path
+          assert hashlib.sha256(Path("campaign.tar.gz").read_bytes()).hexdigest() == os.environ["EXPECTED_SHA"]
+          PY
+          mkdir -p build
+          tar -xzf campaign.tar.gz -C build
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pbi054-shard-*
+          path: build/shards
+      - name: Verify exact complete partition and build ledger
+        env:
+          PBI054_ARCHIVE_SHA: ${{ needs.generate.outputs.archive_sha }}
+        run: .venv/bin/python docs/asdlc/verification/PBI-054-cloud-join.py --campaign build/pbi054-cloud --shards build/shards --count 16 --out build/PBI-054-final-mutations.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pbi054-final-ledger
+          path: build/PBI-054-final-mutations.json
+          if-no-files-found: error
+          retention-days: 30

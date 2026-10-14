@@ -6,7 +6,7 @@ Stan na: 2026-10-14
 
 Branch: `codex/review-remediation`. Poniższa tabela jest źródłem aktualnych
 statusów serii. Zakres, zależności i odbiór:
-[karty PBI-034–069](remediation_plan.md). Procedura czystej sesji,
+[karty PBI-034–071](remediation_plan.md). Procedura czystej sesji,
 weryfikacji, commitów i pushów: [runbook](remediation_runbook.md).
 Historyczny [raport R01–R13](reviews/project-review-2026-09-05.md) jest w git.
 
@@ -53,6 +53,8 @@ następna sesja potwierdza Git i CI, nie tylko treść tabeli.
 | PBI-067 | Regresje walidatora ref, załączników i diagnostyk | wykonane 2026-10-14 | [log](verification/PBI-067.md) |
 | PBI-068 | Dopasowywać TPN do wszystkich typed numerów jaskini | planowane — gotowe | [log](verification/PBI-068.md) |
 | PBI-069 | Zwracać diagnostykę dla nieparsowalnego URL załącznika | planowane — gotowe | [log](verification/PBI-069.md) |
+| PBI-070 | Regresje semantyczne eksportów best-measurements | planowane — gotowe | [log](verification/PBI-070.md) |
+| PBI-071 | Regresje treści raportu source-profile | planowane — gotowe | [log](verification/PBI-071.md) |
 
 Ponowienie PBI-054 (2026-10-14), baza `336e9bb`: czysta pełna bramka
 1946 passed, regresje R01–R13 127 passed, readback 7/7, immutability 0;

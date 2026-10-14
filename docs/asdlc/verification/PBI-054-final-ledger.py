@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import math
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -46,10 +47,19 @@ def main():
     assert len(records) == len(replay["replays"])
     assert set(records) == expected_replays
     outcomes = dict(manifest["raw_exit_codes"])
+    for key, code in outcomes.items():
+        if code == 33:
+            assert not helper.selection(manifest, key)
+        elif code is None:
+            assert helper.selection(manifest, key)
     for key, record in records.items():
         assert record["fingerprint"] == fingerprint
         assert record["raw_exit_code"] == outcomes[key]
-        assert record["selected_tests"] == helper.selection(manifest, key)
+        tests = helper.selection(manifest, key)
+        assert record["selected_tests"] == tests
+        estimate = sum(manifest["durations"][test] for test in tests)
+        assert record["estimate_seconds"] == estimate
+        assert record["wall_limit_seconds"] == math.ceil((estimate + 1) * 15)
         assert record["exit_code"] in {0, 1}
         assert record["pytest_exit_code"] == record["exit_code"]
         assert record["forced_exceptions_seen"] == 0
@@ -69,7 +79,19 @@ def main():
         "replay_sha256": hashlib.sha256(args.replay.read_bytes()).hexdigest(),
         "capture_sha256": hashlib.sha256(args.manifest.read_bytes()).hexdigest(),
         "controls": controls,
-        "replays": replay["replays"],
+        "replays": [
+            {
+                **{field: value for field, value in record.items() if field != "selected_tests"},
+                "selected_test_count": len(record["selected_tests"]),
+                "mapped_function": mutmut.mangled_name_from_mutant_name(record["id"]),
+            }
+            for record in replay["replays"]
+        ],
+        "replay_test_selection": (
+            "Each exact selected_tests list was checked against test_mapping and durations. "
+            "Reconstruct it by mapped_function, sorted by (duration, test ID); "
+            "lists are stored once rather than repeated for every mutant."
+        ),
         "all_outcomes": outcomes,
         "final_module_totals": {module: dict(counts) for module, counts in modules.items()},
         "totals": dict(Counter(mutmut.status_by_exit_code[code] for code in outcomes.values())),

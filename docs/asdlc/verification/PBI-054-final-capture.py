@@ -8,6 +8,7 @@ import argparse
 import difflib
 import hashlib
 import json
+import os
 import re
 import sys
 import tomllib
@@ -110,6 +111,10 @@ def main():
     tests = {test for selected in mapping.values() for test in selected}
     result = {
         "baseline_sha": args.base_sha,
+        "execution_context": {
+            key: os.environ.get(key)
+            for key in ("GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "GITHUB_SHA", "GITHUB_WORKFLOW_REF")
+        },
         "runtime": runtime_identity(),
         "scope": config,
         "workspace_fingerprint": before,

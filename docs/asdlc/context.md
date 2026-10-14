@@ -17,8 +17,11 @@ Last updated: 2026-10-14
   zamiast diagnostyki (069). [Review](reviews/PBI-054-final-review-2026-10-14.md),
   [reprodukcja](verification/PBI-054-final-discoveries.py), [dowody](verification/PBI-054.md).
   Nowa kampania całych 17 modułów / 10218 ID pozostaje w toku; nie zaliczono
-  jej zakończenia i nie sumowano historycznych wyników. Najbliższy krok
-  tej sesji: ukończyć kampanię, zapisać limity/pełny rejestr, dostarczyć
+  jej zakończenia i nie sumowano historycznych wyników. Druga generacja Mac i jej częściowy replay wyłączone po guardzie
+  miejsca; nowa generacja Linux działa przez dedykowany workflow GitHub Actions.
+  Checkpoint `e872786` na origin, CI 38558044377 success dla exact SHA.
+  Zarejestrowano też osobne luki regresji P3 070/071 (eksport/profil),
+  bez implementacji. Najbliższy krok tej sesji: ukończyć kampanię, zapisać limity/pełny rejestr, dostarczyć
   dowody z exact-SHA CI. Napraw 068/069 nie rozpoczęto; następne gotowe
   PBI po tej sesji: **068**, potem 069 i ponowne 054 na nowym origin.
   Bez merge, tagu i release.

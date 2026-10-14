@@ -762,5 +762,209 @@
         "name": "readback"
       }
     ]
+  },
+  "excluded_mac_generation_2": {
+    "fingerprint": "02bbbe706f127f3eb074e762503c8ab8d935791e9c0a4af9b524ac70b32d2829",
+    "capture_sha256": "770fe81943830f124bd10b92ab6b536458c970cd36115a40270ade3e459e1b5e",
+    "raw_totals": {
+      "killed": 3506,
+      "survived": 975,
+      "not checked": 5597,
+      "no tests": 25,
+      "timeout": 115
+    },
+    "reason": "Interrupted CLI, then disk guard rejected replay; all partial outcomes excluded from final Linux campaign",
+    "replay_exclusion": {
+      "reason": "Incomplete controlled replay: pre/post free-space guard rejected two large selectors; parent/workers stopped, exit143; all case outputs excluded",
+      "parent_exit_code": 143,
+      "case_json_count": 631,
+      "parent_log_sha256": "08d2d5bb835acf79d9dfdc78dd4c9612d156d6dffa051c50056ec93a6fe9e1e2"
+    }
+  },
+  "checkpoint_delivery": {
+    "sha": "e872786a6e52eaceecdb85d10ab848a0d4d45f52",
+    "ci_run_id": 38558044377,
+    "ci": "completed/success",
+    "all_steps_including_complete_job": "success",
+    "remote_sha_verified": true
+  },
+  "cloud_checkpoint_gate": {
+    "data_after_sha256": "78c928d3391c6207a23017a8d489f0e01385b77bd42d976f99c8f36d745bc72f",
+    "data_before_sha256": "78c928d3391c6207a23017a8d489f0e01385b77bd42d976f99c8f36d745bc72f",
+    "exit_code": 0,
+    "generated_at": "2026-10-14T12:45:00Z",
+    "immutability_exit_code": 0,
+    "packages": {
+      "PyYAML": "6.0.3",
+      "Pygments": "2.20.0",
+      "attrs": "26.1.0",
+      "certifi": "2026.4.22",
+      "click": "8.3.3",
+      "coverage": "7.14.0",
+      "gps-kataster-obiektow-tatr": "1.0.2",
+      "iniconfig": "2.3.0",
+      "jsonschema": "4.26.0",
+      "jsonschema-specifications": "2025.9.1",
+      "libcst": "1.8.6",
+      "linkify-it-py": "2.1.0",
+      "markdown-it-py": "4.2.0",
+      "mdit-py-plugins": "0.6.1",
+      "mdurl": "0.1.2",
+      "mutmut": "3.5.0",
+      "packaging": "26.2",
+      "platformdirs": "4.9.6",
+      "pluggy": "1.6.0",
+      "pyproj": "3.7.2",
+      "pyshp": "3.0.3",
+      "pytest": "9.0.3",
+      "referencing": "0.37.0",
+      "rich": "15.0.0",
+      "rpds-py": "0.30.0",
+      "ruff": "0.15.13",
+      "setproctitle": "1.3.7",
+      "textual": "8.2.6",
+      "typing_extensions": "4.15.0",
+      "uc-micro-py": "2.0.0"
+    },
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_executable": "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+    "readback": {
+      "artifact_sha256": {
+        "exports/best-measurements.csv": "86b16a35077d80294e6df1c95f6e820ac7f444807c3607449411df0caca75ee8",
+        "exports/best-measurements.geojson": "e63c5ac0c59d6973a971a2d29a80041ebeee716de87003d74029ece0807eb086",
+        "exports/best-measurements.gpx": "3958a9c4a1960ed63a17cc78ce3b84c736c0d4a9e34b659ca49334f0982cf287",
+        "exports/best-measurements.shp.zip": "cfa950e2ec273db78db81e23edc7749c26f2a9a691465c78b9f9d4fe3f0a98cd",
+        "exports/katalog.sqlite.zip": "8d74f15b344ccb33cb702d6b6cf89e96523ea0b145d9ea11abed52b231b6d81d",
+        "exports/metadata.json": "3f89074399c5696ed07eae20cc7318f591094412433becd709aaa485b6fd75ee",
+        "katalog.sqlite": "85f2508680ab813f1107a5ca82ac33c5363891e05227a375bcac3c86816df5cb"
+      },
+      "counts": {
+        "caves": 1003,
+        "measurements": 1875,
+        "objects": 1009,
+        "relations": 0,
+        "validation_errors": 0,
+        "validation_warnings": 2066
+      },
+      "warnings_by_code": {
+        "MEASUREMENT_DISTANCE_OUTLIER": 72,
+        "MEASUREMENT_OUTSIDE_VALLEYS": 103,
+        "MISSING_HORIZONTAL_ACCURACY": 1875,
+        "OBJECT_PREFIX_MISMATCH": 16
+      }
+    },
+    "report_schema_version": 1,
+    "source_after": {
+      "base_sha": "e872786a6e52eaceecdb85d10ab848a0d4d45f52",
+      "git_status": " M docs/asdlc/backlog_v1.md\n M docs/asdlc/context.md\n M docs/asdlc/remediation_plan.md\n M docs/asdlc/verification/PBI-054-final-artifacts.json\n M docs/asdlc/verification/PBI-054-final-capture.py\n M docs/asdlc/verification/PBI-054-final-ledger.py\n M docs/asdlc/verification/PBI-054-final-replay.py\n M docs/asdlc/verification/PBI-054.md\n?? .github/workflows/pbi054-final-mutation.yml\n?? docs/asdlc/verification/PBI-054-cloud-generate.py\n?? docs/asdlc/verification/PBI-054-cloud-join.py\n?? docs/asdlc/verification/PBI-054-export-profile-review.json\n?? docs/asdlc/verification/PBI-070.md\n?? docs/asdlc/verification/PBI-071.md\n",
+      "tree_sha256": "8efa73e15fa59a4a8c2948407c851c7acc61fe1aab03f1f8b96e7ae678db66e7"
+    },
+    "source_before": {
+      "base_sha": "e872786a6e52eaceecdb85d10ab848a0d4d45f52",
+      "git_status": " M docs/asdlc/backlog_v1.md\n M docs/asdlc/context.md\n M docs/asdlc/remediation_plan.md\n M docs/asdlc/verification/PBI-054-final-artifacts.json\n M docs/asdlc/verification/PBI-054-final-capture.py\n M docs/asdlc/verification/PBI-054-final-ledger.py\n M docs/asdlc/verification/PBI-054-final-replay.py\n M docs/asdlc/verification/PBI-054.md\n?? .github/workflows/pbi054-final-mutation.yml\n?? docs/asdlc/verification/PBI-054-cloud-generate.py\n?? docs/asdlc/verification/PBI-054-cloud-join.py\n?? docs/asdlc/verification/PBI-054-export-profile-review.json\n?? docs/asdlc/verification/PBI-070.md\n?? docs/asdlc/verification/PBI-071.md\n",
+      "tree_sha256": "8efa73e15fa59a4a8c2948407c851c7acc61fe1aab03f1f8b96e7ae678db66e7"
+    },
+    "stages": [
+      {
+        "command": [
+          "uv",
+          "--version"
+        ],
+        "exit_code": 0,
+        "log": "uv-version.log",
+        "name": "uv-version",
+        "seconds": 0.008
+      },
+      {
+        "command": [
+          "git",
+          "--version"
+        ],
+        "exit_code": 0,
+        "log": "git-version.log",
+        "name": "git-version",
+        "seconds": 0.008
+      },
+      {
+        "command": [
+          "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+          "-m",
+          "ruff",
+          "format",
+          "--check",
+          "src",
+          "tests",
+          "scripts"
+        ],
+        "exit_code": 0,
+        "log": "format.log",
+        "name": "format",
+        "seconds": 0.06
+      },
+      {
+        "command": [
+          "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+          "-m",
+          "ruff",
+          "check",
+          "src",
+          "tests",
+          "scripts"
+        ],
+        "exit_code": 0,
+        "log": "lint.log",
+        "name": "lint",
+        "seconds": 0.025
+      },
+      {
+        "command": [
+          "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+          "-m",
+          "pytest"
+        ],
+        "exit_code": 0,
+        "log": "tests.log",
+        "name": "tests",
+        "seconds": 105.437
+      },
+      {
+        "command": [
+          "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+          "scripts/validate.py"
+        ],
+        "exit_code": 0,
+        "log": "validate.log",
+        "name": "validate",
+        "seconds": 4.05
+      },
+      {
+        "command": [
+          "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/.venv/bin/python3",
+          "scripts/build_release_artifacts.py",
+          "--sqlite-output",
+          "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-w8clrzrp/katalog.sqlite",
+          "--output-dir",
+          "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-w8clrzrp/exports",
+          "--generated-at",
+          "2026-10-14T12:45:00Z"
+        ],
+        "exit_code": 0,
+        "log": "build.log",
+        "name": "build",
+        "seconds": 11.84
+      },
+      {
+        "command": [
+          "internal:readback_artifacts",
+          "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/data",
+          "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/run-w8clrzrp",
+          "2026-10-14T12:45:00Z"
+        ],
+        "exit_code": 0,
+        "name": "readback"
+      }
+    ],
+    "tests_summary": "======================= 1946 passed in 105.27s (0:01:45) ======================="
   }
 }
