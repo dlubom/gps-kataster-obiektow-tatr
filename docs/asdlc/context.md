@@ -119,7 +119,7 @@ Last updated: 2026-10-15
   przeszły. Draft PR #4 zachowany, opis obejmuje PBI-079–085. Ten
   checkpoint dokumentacyjny utrwala dostarczenie; jego własny SHA i CI
   sprawdza się po pushu z Git/PR, bez kolejnego commitu na własny SHA.
-- **PBI-086 / R7 zweryfikowane — do dostarczenia.** Link_cave przenosi
+- **PBI-086 / R7 wykonane.** Link_cave przenosi
   członkostwo i audyt starej/nowej jaskini, walidator sprawdza obie strony.
   [Log PBI-086](verification/PBI-086.md): 781 testów, Ruff, 0 błędów/
   2066 ostrzeżeń, readback 7/7 (w tym członkostwa SQLite/YAML), data/
@@ -127,7 +127,12 @@ Last updated: 2026-10-15
   Ponowiono R1–R8: błędy blokowane/relink poprawny, kontekst TPN zachowany,
   kategorie udokumentowane. Niepewności terenowe z PBI-083 pozostają;
   wiersz TPN 476 nadal pominięty przez brak jednoznacznego GLOBALID.
-  Pozostał commit/push i exact-SHA CI, potem checkpoint z jego CI.
+  Commit `5019ee89ab4a3a1a848cb4e099b8fec172a1d18d`, origin zgodny;
+  [CI 38773366343](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38773366343)
+  completed/success dla tego SHA; job i wszystkie 13 kroków przeszły.
+  Draft PR #4 zachowany, opis obejmuje całą serię PBI-079–086.
+  Ten checkpoint utrwala wynik; jego własny SHA i CI sprawdza się po
+  pushu z Git/PR, bez kolejnego commitu na wpisanie własnego SHA.
   Po PBI-086 brak kolejnej gotowej karty tej serii. Zakończyć; bez merge/tag/release.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych

@@ -28,7 +28,7 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | wykonane |
 | 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | wykonane |
 | 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | wykonane |
-| 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | zweryfikowane — do dostarczenia |
+| 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | wykonane |
 
 ### Wspólny kontrakt wykonania
 
@@ -274,7 +274,7 @@ istniejące publiczne API zachowują sposób raportowania błędów.
 
 ### PBI-086: Przenosić powiązanie obiektu i walidować symetrię
 
-Status: zweryfikowane — do dostarczenia. [Log PBI-086](verification/PBI-086.md).
+Status: wykonane 2026-10-15. [Log PBI-086](verification/PBI-086.md).
 
 Priorytet P2, R7. Spec: §3.1–3.2, §4.1–4.2, §8.3, §11.1.
 Poprzednik: PBI-085. Dyrektywa: `link_cave` usuwa członkostwo w starej
@@ -299,7 +299,7 @@ z zachowaniem istniejącego kontraktu audit; źródła i pomiary bez zmian.
       i mutacje symetrii. Finalne dane katalogu bez zmian.
 - [x] Ponowić scenariusze R1–R8 po wszystkich naprawach; w logu rozdzielić
       naprawione błędy od nierozstrzygniętych faktów terenowych PBI-083.
-- [ ] Dostarczyć `fix: preserve cave membership symmetry (PBI-086)`.
+- [x] Dostarczyć `fix: preserve cave membership symmetry (PBI-086)`.
 
 ## Status realizacji
 
