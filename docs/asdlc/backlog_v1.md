@@ -20,8 +20,8 @@ zachowanie. W tej sesji powstaje tylko PBI-078; napraw nie rozpoczęto.
 
 | Kolejność | PBI | Priorytet / ustalenie | Zakres | Poprzednik | Status |
 |---|---|---|---|---|---|
-| 0 | PBI-078 | plan | Plan, trwały raport, nowy punkt kontynuacji | — | zweryfikowane — do dostarczenia |
-| 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | planowane |
+| 0 | PBI-078 | plan | Plan, trwały raport, nowy punkt kontynuacji | — | wykonane |
+| 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | planowane — gotowe |
 | 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | planowane |
 | 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | planowane |
 | 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | planowane |
@@ -55,7 +55,7 @@ istniejących obserwacji; bez zmiany kodu, testów, konfiguracji CI lub danych.
 - [x] Trzy P1 poprzedzają prace nad danymi i pozostałe P2.
 - [x] Historia porzuconej serii jest odróżniona od aktualnego main;
       kontynuacja nie wymaga jej checkoutu ani plików z `build/`.
-- [ ] Linki, zależności i polecenia odpowiadają świeżej bazie; pełna bramka
+- [x] Linki, zależności i polecenia odpowiadają świeżej bazie; pełna bramka
       dokumentacyjnego checkpointu i dostarczenie są odnotowane w logu.
 
 Commit: `docs: plan main review remediation (PBI-078)`.
