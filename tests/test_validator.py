@@ -18,6 +18,7 @@ from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
 from gps_kataster_obiektow_tatr.validator import (
     ValidationIssue,
     ValidationSeverity,
+    has_errors,
     validate_data_dir,
     validate_dataset,
 )
@@ -137,6 +138,95 @@ def test_reports_error_for_duplicate_object_id(tmp_path: Path) -> None:
 
     assert _codes(issues) >= {"DUPLICATE_OBJECT_ID"}
     assert _severities(issues, "DUPLICATE_OBJECT_ID") == {ValidationSeverity.ERROR}
+
+
+@pytest.mark.parametrize("mode", ["auto", "manual"])
+@pytest.mark.parametrize("variant", ["identical", "notes", "coordinates", "non-best-rejected"])
+def test_duplicate_local_measurement_id_is_an_error(tmp_path, mode, variant):
+    data_dir = tmp_path / "data"
+    obj = _valid_object()
+    obj["best_measurement"].update(mode=mode, reason="Operator selection.")
+    duplicate = deepcopy(obj["measurements"][0])
+    if variant == "notes":
+        duplicate["notes"] = "A separate historical reading."
+    elif variant == "coordinates":
+        point = wgs84_to_1992(lat=KSW_LAT + 0.001, lon=KSW_LON)
+        duplicate.update(lat=KSW_LAT + 0.001, x_1992=point.x_1992, y_1992=point.y_1992)
+    elif variant == "non-best-rejected":
+        duplicate.update(id="m-002", verification_status="odrzucony")
+        obj["measurements"].append(deepcopy(duplicate))
+    obj["measurements"].append(duplicate)
+    obj["attachments"] = [
+        {
+            "id": "a-001",
+            "kind": "zdjecie",
+            "measurement_id": duplicate["id"],
+            "path": "https://example.com/photo.jpg",
+        }
+    ]
+    _write_object(data_dir, obj)
+    path = data_dir / "objects/KSW/KSW-0001.yml"
+    before = path.read_bytes()
+
+    issues = validate_data_dir(data_dir)
+
+    collisions = [i for i in issues if i.code == "DUPLICATE_MEASUREMENT_ID"]
+    assert len(collisions) == 1
+    assert collisions[0].severity == ValidationSeverity.ERROR
+    assert collisions[0].path == path
+    assert "KSW-0001" in collisions[0].description
+    assert duplicate["id"] in collisions[0].description
+    assert path.read_bytes() == before
+
+
+def test_duplicate_local_measurement_ids_are_reported_before_indexing_and_best(
+    tmp_path, monkeypatch
+):
+    data_dir = tmp_path / "data"
+    obj = _valid_object()
+    obj["measurements"] *= 3
+    second = deepcopy(obj["measurements"][0])
+    second["id"] = "m-002"
+    obj["measurements"] += [second, deepcopy(second)]
+    _write_object(data_dir, obj)
+
+    def ambiguous_identity_used(*args, **kwargs):
+        pytest.fail("Ambiguous measurements used before identity validation")
+
+    for function in (
+        "_measurement_ids",
+        "_measurement_by_id",
+        "select_default_best_measurement_id",
+    ):
+        monkeypatch.setattr(
+            f"gps_kataster_obiektow_tatr.validator.{function}", ambiguous_identity_used
+        )
+
+    issues = validate_data_dir(data_dir)
+    descriptions = [i.description for i in issues if i.code == "DUPLICATE_MEASUREMENT_ID"]
+    assert len(descriptions) == 2
+    assert "m-001" in descriptions[0]
+    assert "m-002" in descriptions[1]
+
+
+def test_measurement_identity_is_local_and_preserves_history_order(tmp_path):
+    data_dir = tmp_path / "data"
+    obj = _valid_object()
+    older = _measurement_variant("m-002", source="PIG", observed_date="2026-05-01")
+    obj["measurements"] = [older, obj["measurements"][0]]
+    _write_object(data_dir, obj)
+    other = deepcopy(obj)
+    other["id"] = "KSW-0002"
+    _write_yaml(data_dir / "objects/KSW/KSW-0002.yml", other)
+    cave = _valid_cave()
+    cave["object_ids"].append("KSW-0002")
+    _write_yaml(data_dir / "caves/C-0001.yml", cave)
+
+    assert not has_errors(validate_data_dir(data_dir))
+    assert [r.data["measurements"] for r in load_dataset(data_dir).objects] == [
+        obj["measurements"],
+        other["measurements"],
+    ]
 
 
 def test_reports_error_for_missing_best_measurement() -> None:

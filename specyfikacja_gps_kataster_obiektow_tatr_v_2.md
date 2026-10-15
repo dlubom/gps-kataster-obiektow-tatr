@@ -181,6 +181,15 @@ Jedna `Jaskinia` ma 1..N powiązanych `Obiektów`, jeśli znane są jej otwory. 
 
 Zasady:
 
+- `Pomiar.id` jest unikalny w obrębie jednego obiektu, także dla identycznych
+  rekordów oraz pomiarów odrzuconych lub niewskazanych jako best. To samo
+  lokalne ID (np. `m-001`) w różnych obiektach jest dozwolone. Kolizja daje
+  błąd `DUPLICATE_MEASUREMENT_ID` z plikiem, ID obiektu i pomiaru, przed
+  indeksowaniem pomiarów i rozstrzyganiem referencji best/załącznika.
+  Review, SQLite i eksporty blokują wtedy zapis. Nie wybieramy pierwszego
+  rekordu, nie usuwamy duplikatu ani nie zmieniamy jego ID automatycznie.
+  Poprawna historia zachowuje wartości i kolejność. Bezpośredni selektor
+  best odrzuca powtórzone ID przez `ValueError` przed wyborem pomiaru.
 - `lat` i `lon` są obowiązkowe w danych źródłowych YAML. Jeśli import daje tylko EPSG:2180, importer przelicza do WGS84.
 - `x_1992` i `y_1992` są cache’owane i walidowane.
 - Wszystkie pola liczbowe pomiaru (`lat`, `lon`, `x_1992`, `y_1992`,
@@ -845,6 +854,7 @@ Walidacje typu error:
 - zgodność z JSON Schema,
 - obecność `schema_version: 1`,
 - unikalność `Obiekt.id` globalnie,
+- unikalność `Pomiar.id` w obrębie obiektu (`DUPLICATE_MEASUREMENT_ID`),
 - unikalność pliku względem ID,
 - poprawny format ID,
 - `best_measurement.measurement_id` wskazuje istniejący pomiar,

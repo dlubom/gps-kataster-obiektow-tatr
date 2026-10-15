@@ -73,6 +73,15 @@ Wybrane `object_external_refs` i `cave_external_refs` muszą być listami map;
 błędnego kształtu ani elementów nie pomijamy przed walidacją. Błąd typu
 zagnieżdżonego pola referencji daje diagnostykę schematu zamiast wyjątku API.
 
+Każdy obiekt wymaga unikalnych `measurement.id`, także w historii pomiarów
+odrzuconych. Kolizja w istniejącym katalogu lub propozycji `create_object`
+daje `DUPLICATE_MEASUREMENT_ID` z plikiem, obiektem i ID pomiaru, przed
+indeksowaniem historii i wyborem best. `add_measurement` nadal zgłasza
+`MEASUREMENT_ALREADY_EXISTS`, gdy dodawane ID już istnieje w obiekcie.
+Żadna z tych kolizji nie scala pomiarów ani nie zmienia ich ID; blokuje
+zapis całej partii, także w dry-run. To samo ID w różnych obiektach
+pozostaje legalne, a poprawna historia zachowuje kolejność.
+
 Po wszystkich decyzjach `validate_dataset(...)` ocenia pełny przyszły
 zbiór w pamięci, z niezmienionymi relacjami oraz wszystkimi zmienionymi
 i niezmienionymi rekordami. Dopiero wtedy rozpoczyna się zapis. Błędy tego

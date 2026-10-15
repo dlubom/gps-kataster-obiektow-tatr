@@ -105,8 +105,16 @@ Last updated: 2026-10-15
   Draft PR #4 zachowany, opis obejmuje PBI-079–084. Ten dokumentacyjny
   checkpoint utrwala wynik; jego SHA i CI sprawdza się po pushu z Git/PR,
   bez kolejnego commitu tylko na wpisanie własnego SHA.
-- Następne gotowe: **PBI-085 / R6**, nie rozpoczęto. Zakończyć po pushu
-  i CI końcowego checkpointu PBI-084.
+- **PBI-085 / R6 zweryfikowane — do dostarczenia**. Walidator odrzuca
+  kolizję lokalnego ID pomiaru przed indeksowaniem, referencjami best/
+  załącznika i wyborem best. Review, SQLite i eksporty blokują zapis;
+  bezpośredni selektor best również odrzuca kolizję. Lokalny zakres ID,
+  kolejność i treść poprawnej historii zachowane. Dane bez zmian.
+  [Log PBI-085](verification/PBI-085.md): 755 testów, Ruff, 0 błędów/
+  2066 ostrzeżeń, readback 7/7, data/ 2039/2039 identyczne, 10/10
+  celowanych mutantów zabitych. Niezależny review bez ustaleń.
+  Pozostał commit/push i exact-SHA CI, następnie checkpoint dokumentacji.
+- PBI-086 / R7 pozostaje planowane; ta sesja kończy się po PBI-085.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
   `build/`, `/tmp`, czatu ani pamięci konta.

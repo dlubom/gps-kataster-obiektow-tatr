@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from collections import Counter
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from enum import StrEnum
@@ -138,6 +139,7 @@ def validate_record_schema(
 
     issues = _validate_schema((record,), _load_schema_validators(schema_dir))
     if record.kind == DataKind.OBJECT:
+        issues += _validate_measurement_identity(record)
         issues += _validate_finite_measurements(record)
     return issues
 
@@ -274,6 +276,10 @@ def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue,
                 )
             )
 
+        identity_issues = _validate_measurement_identity(object_record)
+        issues.extend(identity_issues)
+        if identity_issues:
+            continue
         measurement_ids = _measurement_ids(object_record)
         best_measurement = object_record.data.get("best_measurement")
         if isinstance(best_measurement, dict):
@@ -362,12 +368,35 @@ def _validate_object_records(
         issues.extend(_validate_object_attachments(object_record, repo_root=repo_root))
         numeric_issues = _validate_finite_measurements(object_record)
         issues.extend(numeric_issues)
-        if numeric_issues:
+        if numeric_issues or _validate_measurement_identity(object_record):
             continue
         issues.extend(_validate_object_measurements(object_record, resolver=resolver))
         issues.extend(_validate_best_measurement_auto(object_record))
 
     return tuple(issues)
+
+
+def _validate_measurement_identity(
+    object_record: LoadedYamlRecord,
+) -> tuple[ValidationIssue, ...]:
+    counts = Counter(
+        measurement["id"]
+        for measurement in _iter_dicts(object_record.data.get("measurements"))
+        if isinstance(measurement.get("id"), str)
+    )
+    return tuple(
+        ValidationIssue(
+            code="DUPLICATE_MEASUREMENT_ID",
+            severity=ValidationSeverity.ERROR,
+            path=object_record.path,
+            description=(
+                f"Object {_record_id(object_record)} measurement.id {measurement_id} "
+                f"occurs {count} times; measurement IDs must be unique within an object."
+            ),
+        )
+        for measurement_id, count in counts.items()
+        if count > 1
+    )
 
 
 def _validate_finite_measurements(

@@ -14,6 +14,7 @@ def select_default_best_measurement_id(measurements: Iterable[dict[str, Any]]) -
     """Return the measurement id selected by the V1 default ``auto`` algorithm."""
 
     candidates = []
+    seen_ids: set[str] = set()
     for measurement in measurements:
         invalid_fields = non_finite_measurement_fields(measurement)
         if invalid_fields:
@@ -21,7 +22,13 @@ def select_default_best_measurement_id(measurements: Iterable[dict[str, Any]]) -
                 f"Measurement {measurement.get('id')} fields {', '.join(invalid_fields)} "
                 "must be finite before best selection."
             )
-        if isinstance(measurement.get("id"), str):
+        measurement_id = measurement.get("id")
+        if isinstance(measurement_id, str):
+            if measurement_id in seen_ids:
+                raise ValueError(
+                    f"Duplicate measurement.id {measurement_id} before best selection."
+                )
+            seen_ids.add(measurement_id)
             candidates.append(measurement)
     if not candidates:
         return None

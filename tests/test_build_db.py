@@ -21,6 +21,53 @@ KSW_LON = 19.87589498
 GENERATED_AT = "2026-05-16T12:00:00Z"
 
 
+@pytest.mark.parametrize("variant", ["identical", "coordinates"])
+def test_duplicate_local_measurement_id_blocks_sqlite_before_writes(tmp_path, variant):
+    data_dir = tmp_path / "data"
+    _write_sample_data(data_dir)
+    output = tmp_path / "output"
+    path = output / "katalog.sqlite"
+    build_sqlite_database(data_dir=data_dir, output_path=path)
+    before = path.read_bytes()
+    source = data_dir / "objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(source.read_text())
+    duplicate = deepcopy(obj["measurements"][1])
+    if variant == "coordinates":
+        duplicate.update(
+            lat=49.235,
+            x_1992=wgs84_to_1992(lat=49.235, lon=KSW_LON).x_1992,
+            y_1992=wgs84_to_1992(lat=49.235, lon=KSW_LON).y_1992,
+        )
+    obj["measurements"].append(duplicate)
+    _write_yaml(source, obj)
+    source_before = source.read_bytes()
+
+    for target in (path, tmp_path / "new-output/katalog.sqlite"):
+        with pytest.raises(BuildDatabaseValidationError, match="DUPLICATE_MEASUREMENT_ID"):
+            build_sqlite_database(data_dir=data_dir, output_path=target)
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(BUILD_DB_SCRIPT),
+                "--data-dir",
+                str(data_dir),
+                "--output",
+                str(target),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert result.returncode == 1
+        assert "DUPLICATE_MEASUREMENT_ID" in result.stdout + result.stderr
+        assert str(source) in result.stdout + result.stderr
+        assert "Traceback" not in result.stdout + result.stderr
+    assert path.read_bytes() == before
+    assert set(output.iterdir()) == {path}
+    assert not (tmp_path / "new-output").exists()
+    assert source.read_bytes() == source_before
+
+
 def test_build_sqlite_database_writes_logical_tables_and_metadata(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
     sqlite_path = tmp_path / "build" / "katalog.sqlite"

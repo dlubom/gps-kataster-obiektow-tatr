@@ -57,6 +57,66 @@ def _tree_snapshot(data_dir):
     }
 
 
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize("origin", ["existing", "proposal", "added", "earlier-proposal"])
+def test_duplicate_local_measurement_id_blocks_review_without_writes(
+    tmp_path, make_data_dir, monkeypatch, write, origin
+):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_review_data(data_dir)
+    path = data_dir / "objects/KSW/KSW-0001.yml"
+    staging = StagingReports()
+    decisions = [{"action": "link_cave", "object_id": "KSW-0002", "cave_id": "C-0001"}]
+    if origin == "existing":
+        obj = _read_yaml(path)
+        obj["measurements"].append(deepcopy(obj["measurements"][0]))
+        _write_yaml(path, obj)
+    elif origin == "added":
+        tpn = _tpn_staging()
+        tpn["matched_measurements"][0]["measurement"]["id"] = "m-001"
+        staging = StagingReports(tpn=tpn)
+        decisions.append({"action": "add_measurement", "source": "TPN", "record_number": 1})
+    else:
+        pig = _pig_staging()
+        obj = pig["proposed_objects"][0]
+        obj["id"] = "KSW-0003"
+        pig["rows"][0]["object_id"] = "KSW-0003"
+        obj["measurements"].append(deepcopy(obj["measurements"][0]))
+        staging = StagingReports(pig=pig, tpn=_tpn_staging())
+        decisions.append({"action": "create_object", "source": "PIG", "record_number": 1})
+        path = data_dir / "objects/KSW/KSW-0003.yml"
+        if origin == "earlier-proposal":
+            decisions.append(
+                {
+                    "action": "add_measurement",
+                    "source": "TPN",
+                    "record_number": 1,
+                    "target_object_id": "KSW-0003",
+                }
+            )
+    before = _tree_snapshot(data_dir)
+    staging_before = deepcopy(staging)
+
+    def ambiguous_best_used(*args, **kwargs):
+        pytest.fail("Review selected best before checking measurement identity")
+
+    monkeypatch.setattr(
+        "gps_kataster_obiektow_tatr.staging_review._refresh_auto_best_measurement",
+        ambiguous_best_used,
+    )
+    result = apply_review_decisions(
+        {"decisions": decisions}, staging_reports=staging, data_dir=data_dir, write=write
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    rule = "MEASUREMENT_ALREADY_EXISTS" if origin == "added" else "DUPLICATE_MEASUREMENT_ID"
+    assert any(rule in i.code or rule in i.description for i in result.issues)
+    if origin != "added":
+        assert any(str(path) in i.description and "m-001" in i.description for i in result.issues)
+    assert _tree_snapshot(data_dir) == before
+    assert staging == staging_before
+
+
 def test_review_finalization_keeps_tpn_context_and_manual_notes(tmp_path, make_data_dir):
     data_dir = make_data_dir(tmp_path / "data")
     _seed_review_data(data_dir)

@@ -27,7 +27,7 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | wykonane |
 | 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | wykonane |
 | 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | wykonane |
-| 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | planowane — gotowe |
+| 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | zweryfikowane — do dostarczenia |
 | 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | planowane |
 
 ### Wspólny kontrakt wykonania
@@ -250,6 +250,9 @@ legalny. Nie zmieniać semantyki dokładności ani jednostek.
 
 ### PBI-085: Wymagać unikalnych ID pomiarów w obiekcie
 
+Status: zweryfikowane — do dostarczenia 2026-10-15.
+[Log PBI-085](verification/PBI-085.md).
+
 Priorytet P2, R6. Spec: §4.3–4.4, §9, §11–12. Poprzednik: PBI-084.
 Dyrektywa: wykrywać kolizję `measurement.id` zanim pomiary zostaną
 zindeksowane lub użyte do wyboru best, zapisu review i budowy artefaktów.
@@ -260,13 +263,13 @@ Pliki: `validator.py`, `staging_review.py`, `tests/test_validator.py`,
 Interfejs: walidator zwraca diagnostykę z obiektem, lokalnym ID i plikiem;
 istniejące publiczne API zachowują sposób raportowania błędów.
 
-- [ ] Dwa pomiary o tym samym ID, zarówno identyczne, jak i z różnymi
+- [x] Dwa pomiary o tym samym ID, zarówno identyczne, jak i z różnymi
       współrzędnymi, dają błąd walidacji.
-- [ ] Kolizja dotykająca best/załącznika nie wybiera arbitralnie pierwszego
+- [x] Kolizja dotykająca best/załącznika nie wybiera arbitralnie pierwszego
       rekordu. Review, SQLite i eksporty blokują zapis przed użyciem ID.
-- [ ] To samo lokalne `m-001` w dwóch różnych obiektach jest poprawne;
+- [x] To samo lokalne `m-001` w dwóch różnych obiektach jest poprawne;
       pomiary z różnymi ID zachowują kolejność i historię.
-- [ ] Testy obszaru, pełna bramka i mutacje unikalności; dane bez zmian.
+- [x] Testy obszaru, pełna bramka i mutacje unikalności; dane bez zmian.
 - [ ] Dostarczyć `fix: validate local measurement identity (PBI-085)`.
 
 ### PBI-086: Przenosić powiązanie obiektu i walidować symetrię

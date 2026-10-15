@@ -13,6 +13,16 @@ from gps_kataster_obiektow_tatr.best_measurement import (
 )
 
 
+@pytest.mark.parametrize("rejected", [False, True])
+def test_best_selection_rejects_duplicate_local_measurement_id(rejected):
+    first = {"id": "m-001", "source": "TPN", "verification_status": "nieweryfikowany"}
+    duplicate = first | {"notes": "A second reading."}
+    if rejected:
+        duplicate["verification_status"] = "odrzucony"
+    with pytest.raises(ValueError, match="m-001"):
+        select_default_best_measurement_id(iter([first, duplicate]))
+
+
 @pytest.mark.parametrize(
     ("available_candidates", "expected_id"),
     [
