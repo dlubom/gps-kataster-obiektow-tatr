@@ -7,8 +7,12 @@ Last updated: 2026-10-15
 **PBI-078–086 wykonane; seria zakończona w zaplanowanym zakresie.**
 Aktywna gałąź: `codex/main-remediation-2026-10`, baza main
 `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`.
-[PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4) jest otwarty
-(do review). Checkpoint końca serii `044fc0343dc8d92d0c4fb0b635791bd2f945fa55`
+[PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4) dostarcza serię
+oraz przygotowanie wydania **v1.0.3**, zatwierdzonego przez użytkownika
+2026-10-15. [Log wydania](verification/v1.0.3.md) opisuje weryfikację i odbiór
+PR → main → CI dokładnego commitu po merge → annotated tag → release.
+Aktualny stan scalenia i publikacji sprawdzaj w PR, tagu i GitHub Actions.
+Checkpoint końca serii `044fc0343dc8d92d0c4fb0b635791bd2f945fa55`
 ma potwierdzone [CI 38773770498](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38773770498):
 `completed/success`, job `Validate code and data` i wszystkie 13 kroków.
 Bieżący SHA oraz CI po kolejnych zmianach sprawdzaj w Git/PR.
@@ -42,8 +46,9 @@ i [manifest PBI-083](verification/PBI-083-manifest.json); źródła pozostały n
 - Preflight nie zapewnia rollbacku po awarii I/O ani ochrony przed
   równoczesną edycją. Limit bardzo dużych skończonych integerów w SQLite
   opisuje [PBI-084](verification/PBI-084.md).
-- Brak kolejnej gotowej karty tej serii. Nowa praca wymaga polecenia;
-  merge, tag i release wymagają osobnej zgody.
+- Brak kolejnej gotowej karty tej serii. Nowa praca wymaga polecenia.
+  Merge PR #4, sprawdzenie CI po merge i publikacja v1.0.3 zostały
+  zatwierdzone przez użytkownika 2026-10-15.
 - Porzuconych `codex/review-remediation` i PBI-034–077 nie wznawiamy ani
   nie przenosimy. Szczegóły decyzji: [plan](remediation_plan.md).
 - Przy kontynuacji fetch/pull aktywnej gałęzi i [runbook](remediation_runbook.md).

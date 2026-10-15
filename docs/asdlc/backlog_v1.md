@@ -4,6 +4,11 @@ Stan na: 2026-10-15
 
 ## Naprawy main po przegladzie 2026-10-12
 
+Wydanie **v1.0.3**: użytkownik zatwierdził wersję, changelog i dostarczenie
+2026-10-15. Przygotowanie wydania w PR #4 jest małym krokiem po zakończonej
+serii PBI-078–086; nie otwiera kolejnego PBI naprawczego.
+[Weryfikacja i procedura odbioru](verification/v1.0.3.md).
+
 Decyzją użytkownika z 2026-10-15 poprzednie gałęzie naprawcze są porzucone.
 Aktywna seria powstaje na `codex/main-remediation-2026-10` ze świeżego
 `origin/main`, SHA `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`.
