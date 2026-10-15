@@ -1,10 +1,12 @@
 # Plan napraw main — 2026-10-15
 
 **Cel:** usunąć R1–R8 w kolejności trzy P1 → dane → pozostałe P2.
+**Status:** plan wykonany; PR #4 zmergowany, v1.0.3 opublikowane.
+Punkt startowy nowej pracy to aktualny `main`; [odbiór](verification/v1.0.3.md).
 PBI-078 obejmuje tylko planowanie; realizację i statusy PBI-079–086 określa
 [backlog](backlog_v1.md#naprawy-main-po-przegladzie-2026-10-12).
-Wykonawca używa `superpowers:executing-plans`, po jednym gotowym PBI
-na sesję, według [runbooka](remediation_runbook.md).
+Podczas realizacji wykonawca używał `superpowers:executing-plans`, po jednym
+gotowym PBI na sesję, według [runbooka](remediation_runbook.md).
 
 ## Baza i decyzja zakresu
 

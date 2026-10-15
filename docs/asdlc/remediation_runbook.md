@@ -1,6 +1,8 @@
 # Realizacja nowej serii z main
 
-Aktywna gałąź: `codex/main-remediation-2026-10`.
+Seria zakończona: PR #4 zmergowany, v1.0.3 opublikowane;
+[potwierdzenia](verification/v1.0.3.md). Punkt startowy kolejnej sesji: `main`.
+`codex/main-remediation-2026-10` jest gałęzią historyczną.
 [Backlog i karty](backlog_v1.md#naprawy-main-po-przegladzie-2026-10-12),
 [decyzje zakresu](remediation_plan.md), [kontekst](context.md).
 Ten protokół zastępuje procedurę porzuconej serii z 2026-09-05.
@@ -8,13 +10,15 @@ Ten protokół zastępuje procedurę porzuconej serii z 2026-09-05.
 ## Start sesji
 
 1. Sprawdź status, branch i remote. Zachowaj cudze zmiany.
-2. Wykonaj `git fetch origin`, przejdź na aktywną gałąź i na czystym
-   checkoutcie użyj `git pull --ff-only`. Porównaj HEAD z jej origin.
-   Nie przenoś zmian ze starych gałęzi i nie odtwarzaj nowej serii od zera.
+2. Wykonaj `git fetch origin`; na czystym checkoutcie użyj `git switch main`
+   i `git pull --ff-only`. Porównaj HEAD z `origin/main`. Nie wznawiaj
+   zakończonej gałęzi naprawczej ani nie przenoś zmian z porzuconych gałęzi.
 3. Przeczytaj AGENTS, spec, backlog, context, plan, ten runbook i log
    ostatniego PBI. Status potwierdź w Git oraz CI.
-4. Wybierz dokładnie jedno następne gotowe PBI. Zapisz jego bazowy SHA,
-   zakres oraz stan `w toku` w backlogu i logu weryfikacji.
+4. Brak kolejnego gotowego PBI tej serii; nowa praca wymaga polecenia.
+   Nowe zmiany prowadź na gałęzi od aktualnego main i przez PR z review.
+
+Poniższe sekcje zachowują procedurę odbioru zakończonej serii PBI-079–086.
 
 ## Wykonanie i lokalna bramka
 
