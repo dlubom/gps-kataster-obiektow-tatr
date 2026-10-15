@@ -24,7 +24,7 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | wykonane |
 | 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | wykonane |
 | 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | wykonane |
-| 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | planowane — gotowe |
+| 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | zweryfikowane — do dostarczenia |
 | 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | planowane |
 | 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | planowane |
 | 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | planowane |
@@ -150,6 +150,9 @@ Używa `validate_dataset(...)` z aktualnymi regułami, także dla `write=False`.
 
 ### PBI-082: Zachować i odtworzyć kontekst pomiarów TPN
 
+Status: zweryfikowane — do dostarczenia 2026-10-15.
+[Log weryfikacji](verification/PBI-082.md).
+
 Priorytet dane/P2, R4. Spec: §4.3, §7.1, §9, §13. Poprzednik: PBI-081.
 Dyrektywa: przenosić `WER_LOK` i `UWAGI` do opisanego kontekstu pomiaru
 TPN dla nowych i dopasowanych rekordów; uzupełnić istniejące pomiary
@@ -167,19 +170,19 @@ Zachować dotychczasowe notes, dodać etykietowane wartości źródłowe bez
 zmiany ich sensu. Uzupełnienie finalnych danych obejmuje notes i audit
 zmienionego rekordu, bez nowych pomiarów ani zmian współrzędnych/best/statusu.
 
-- [ ] Na bazie ponownie policzyć braki; historyczny wynik to 354 wartości
+- [x] Na bazie ponownie policzyć braki; historyczny wynik to 354 wartości
       `WER_LOK` i 25 `UWAGI`, nie stała do wymuszenia.
-- [ ] Dry-run zapisuje manifest: hash źródła, GLOBALID, obiekt/pomiar,
+- [x] Dry-run zapisuje manifest: hash źródła, GLOBALID, obiekt/pomiar,
       pola przed/po i przyczynę zmiany. Niejednoznaczny/brakujący match
       trafia do raportu i nie powoduje zapisu niepewnego rekordu.
-- [ ] Po zastosowaniu każde objęte manifestem ostrzeżenie istnieje przy
+- [x] Po zastosowaniu każde objęte manifestem ostrzeżenie istnieje przy
       właściwym pomiarze. Powtórzenie operacji nie duplikuje tekstu.
-- [ ] Testy obejmują MTW-0047, CHZ-0021, BYW-0015, BYW-0031, brak uwag,
+- [x] Testy obejmują MTW-0047, CHZ-0021, BYW-0015, BYW-0031, brak uwag,
       kolizję identyfikatora, ręczne notes i powtórne uruchomienie.
-- [ ] Ostrzeżenia wybranego best są czytelne po odczycie CSV, GeoJSON,
+- [x] Ostrzeżenia wybranego best są czytelne po odczycie CSV, GeoJSON,
       GPX i SQLite; DBF zachowuje poprawny UTF-8 oraz jawnie opisany limit
       długości, bez obietnicy przechowania pełnego długiego tekstu.
-- [ ] Pełna bramka, kontrola dozwolonych pól danych, testy obszaru oraz
+- [x] Pełna bramka, kontrola dozwolonych pól danych, testy obszaru oraz
       mutacje dopasowania/ochrony treści. Surowe źródła bez zmian.
 - [ ] Dostarczyć `fix: preserve TPN location context (PBI-082)`.
 

@@ -446,12 +446,23 @@ Plik TPN zawiera rekordy punktowe. W V1 przyjmujemy:
 | `Z` | Wysokość | `Pomiar.elevation_m`, z `elevation_source: source_record`. |
 | `DLUGOSC`, `GLEBOKOSC`, `DENIWELACJ` | Dane morfometryczne | W V1 raczej notatka / przyszłe pola jaskini, nie część obiektu terenowego. |
 | `SYSTEM` | Informacja o systemie | `Jaskinia.system_name`, jeśli jednoznaczne. |
+| `WER_LOK`, `UWAGI` | Kontekst i zastrzeżenia źródłowe lokalizacji | Etykietowane `TPN WER_LOK:` / `TPN UWAGI:` w `Pomiar.notes`, dla nowych i dopasowanych rekordów. |
 
 Zasady:
 
 - TPN `GLOBALID` jest najlepszym kandydatem na zewnętrzną referencję do konkretnego `Obiektu`.
 - Jeśli obiekt ma wcześniejszy pomiar z PIG i później zostanie dopasowany rekord TPN, pomiar TPN powinien przejąć rolę aktualnego pomiaru w trybie `best_measurement.mode: auto`, chyba że istnieje ręczne wskazanie `manual` albo późniejszy własny zweryfikowany pomiar.
 - Import TPN służy do uaktualnienia i skorygowania szkieletu utworzonego wcześniej z PIG.
+- Teksty `WER_LOK` i `UWAGI` zachowują treść źródłową; nie podnoszą statusu
+  `verification_status`. Finalizacja review zachowuje je przy pomiarze.
+  Jednorazowe uzupełnienie z lokalnego CSV wymaga jednoznacznego powiązania
+  `Obiekt.external_refs` (`TPN/source_globalid`) i pomiaru
+  (`source: TPN`, `source_ref: TPN:{GLOBALID}`). Nie dopasowuje po nazwie
+  ani numerze wiersza. Zachowuje dotychczasowe notes, dopisuje brakujące
+  etykietowane wartości, aktualizuje audyt obiektu i jest idempotentne.
+  Nie zmienia punktów, best, kategorii ani statusów. Dry-run zapisuje
+  manifest przed/po z hashem źródła; niepewne dopasowania są raportowane
+  i pomijane. [Procedura](docs/operations.md#odtworzenie-kontekstu-tpn-pbi-082).
 
 ### 7.2 PIG / Jaskinie Polski
 

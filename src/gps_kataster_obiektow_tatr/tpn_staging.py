@@ -19,6 +19,7 @@ from gps_kataster_obiektow_tatr.prefix_resolver import (
     default_prefix_resolver,
 )
 from gps_kataster_obiektow_tatr.source_table import read_source_table
+from gps_kataster_obiektow_tatr.tpn_notes import append_tpn_context
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -659,6 +660,7 @@ def _build_measurement_update(
         "object_external_refs": [_tpn_object_external_ref(globalid)],
         "cave_external_refs": _tpn_cave_external_refs(row),
         "measurement": _build_tpn_measurement(
+            row=row,
             measurement_id=match.candidate.next_measurement_id,
             point=point,
             globalid=globalid,
@@ -720,6 +722,7 @@ def _build_object_proposal(
         "external_refs": [_tpn_object_external_ref(globalid)],
         "measurements": [
             _build_tpn_measurement(
+                row=row,
                 measurement_id="m-001",
                 point=point,
                 globalid=globalid,
@@ -744,6 +747,7 @@ def _build_object_proposal(
 
 def _build_tpn_measurement(
     *,
+    row: dict[str, str],
     measurement_id: str,
     point: TpnPoint,
     globalid: str,
@@ -770,7 +774,9 @@ def _build_tpn_measurement(
         "verification_status": "nieweryfikowany",
         "verified_by": None,
         "verified_at": None,
-        "notes": "TPN source-record measurement imported into staging; not field-verified.",
+        "notes": append_tpn_context(
+            "TPN source-record measurement imported into staging; not field-verified.", row
+        ),
         "created_at": generated_at,
         "created_by": DEFAULT_IMPORT_AUTHOR,
     }

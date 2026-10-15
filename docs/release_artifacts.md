@@ -58,8 +58,10 @@ pol:
 `x_1992`, `y_1992`, `elev_m`, `source`, `nr_inwent`, `pig_id`, `pig_url`,
 `tpn_gid`, `obs_date`, `status`, `obj_notes`, `cave_notes`, `meas_notes`.
 
-Uwagi w DBF sa limitowane do 254 znakow na pole, zgodnie z praktycznym limitem
-pol tekstowych Shapefile.
+Uwagi w DBF są limitowane do **254 bajtów UTF-8** na pole; tekst jest
+ucinany przed niepełnym znakiem. Dotyczy to `obj_notes`, `cave_notes`
+i `meas_notes`. Shapefile nie gwarantuje pełnej treści długich uwag;
+CSV, GeoJSON, GPX i SQLite zachowują pełny tekst. Plik `.cpg` wskazuje UTF-8.
 
 ## `best-measurements.gpx`
 
@@ -112,6 +114,12 @@ pozwala zachowac sens domenowy:
 - `object_notes` opisuje konkretny punkt terenowy,
 - `cave_notes` opisuje pozycje katalogowa / jaskinie,
 - `measurement_notes` opisuje proweniencje albo zastrzezenia wybranego pomiaru.
+
+Kontekst lokalizacji TPN (`TPN WER_LOK:` i `TPN UWAGI:`) jest zapisany przy
+pomiarze. Jeśli jest on wybranym best, trafia do `measurement_notes` w CSV
+i GeoJSON oraz części `measurement notes` opisu GPX. SQLite przechowuje
+notes wszystkich pomiarów. Tekst TPN nie zmienia statusu weryfikacji;
+długi kontekst może być skrócony w `meas_notes` DBF zgodnie z limitem wyżej.
 
 Nie dodajemy na razie notatek z `external_refs` do plaskiego eksportu, bo to
 potrafiloby dublowac `source_ref`, `pig_url`, `tpn_globalid` i szybko robic

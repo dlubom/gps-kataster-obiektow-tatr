@@ -61,7 +61,9 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: TPN source-record measurement imported after operator review; not field-verified.
+  notes: 'TPN source-record measurement imported after operator review; not field-verified.
+
+    TPN WER_LOK: 11-05-2022 TZK'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 best_measurement:
@@ -71,10 +73,10 @@ best_measurement:
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
-notes: 'Imported from PIG source record after operator review. Multi-opening
-  review 2026-05-16 treats this object as the north-west opening; MLZ-0108
-  records the eastern/south-eastern opening from TPN row 672.'
+notes: Imported from PIG source record after operator review. Multi-opening review
+  2026-05-16 treats this object as the north-west opening; MLZ-0108 records the eastern/south-eastern
+  opening from TPN row 672.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T19:30:00Z'
-updated_by: dl
+updated_at: '2026-10-15T13:16:44Z'
+updated_by: maintenance:PBI-082

@@ -574,7 +574,7 @@ def _text_or_empty(value: str | None) -> str:
 def _truncated_text(value: str | None, *, max_length: int) -> str:
     if value is None:
         return ""
-    return value[:max_length]
+    return value.encode("utf-8")[:max_length].decode("utf-8", errors="ignore")
 
 
 def _float_text(value: float) -> str:

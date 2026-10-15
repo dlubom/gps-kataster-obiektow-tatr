@@ -57,6 +57,30 @@ def _tree_snapshot(data_dir):
     }
 
 
+def test_review_finalization_keeps_tpn_context_and_manual_notes(tmp_path, make_data_dir):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_review_data(data_dir)
+    staging = _tpn_staging()
+    notes = (
+        "TPN source-record measurement imported into staging; not field-verified."
+        "\nRęczna uwaga.\nTPN WER_LOK: niepewna\nTPN UWAGI: Trzeba uściślić położenie"
+    )
+    staging["matched_measurements"][0]["measurement"]["notes"] = notes
+    before = deepcopy(staging)
+    result = apply_review_decisions(
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}]},
+        staging_reports=StagingReports(tpn=staging),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors
+    obj = _read_yaml(data_dir / "objects/KSW/KSW-0001.yml")
+    assert obj["measurements"][-1]["notes"] == notes.replace(
+        "imported into staging", "imported after operator review", 1
+    )
+    assert obj["measurements"][-1]["verification_status"] == "nieweryfikowany"
+    assert staging == before
+
+
 @pytest.mark.parametrize("write", [False, True])
 @pytest.mark.parametrize(
     ("damage", "rule"),

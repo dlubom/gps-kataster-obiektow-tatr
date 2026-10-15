@@ -7,6 +7,8 @@ import zipfile
 from html import escape
 from pathlib import Path
 
+import pytest
+
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
     PrefixResolutionArea,
@@ -43,6 +45,54 @@ class StubResolver:
             y_1992=563744.25,
             valley_name="Dolina Koscieliska - Wschod",
         )
+
+
+@pytest.mark.parametrize("matched", [False, True])
+@pytest.mark.parametrize(
+    ("location", "remarks"), [("niepewna", "Trzeba uściślić położenie"), ("", "")]
+)
+def test_measurement_context_survives_new_and_matched_staging(
+    tmp_path, make_data_dir, matched, location, remarks
+):
+    row = _tpn_row(
+        nr_inwent="T.F-09.33",
+        name="Szczelina",
+        globalid="{context}",
+        x_1992="152267,23",
+        y_1992="563744,25",
+    )
+    row[_tpn_header().index("WER_LOK")] = location
+    row[_tpn_header().index("UWAGI")] = remarks
+    source = tmp_path / "tpn.csv"
+    _write_tpn_csv(source, [row])
+    pig = tmp_path / "pig.json"
+    if matched:
+        _write_pig_staging(
+            pig,
+            object_id="KSW-0001",
+            cave_id="C-0001",
+            nr_inwent="T.F-09.33",
+            name="Szczelina",
+            x_1992=152267.23,
+            y_1992=563744.25,
+        )
+    report = build_tpn_staging(
+        source,
+        generated_at="2026-10-15T00:00:00Z",
+        data_dir=make_data_dir(tmp_path / "data"),
+        pig_staging_path=pig if matched else None,
+        prefix_resolver=StubResolver(),
+    )
+    measurement = (
+        report.matched_measurements[0]["measurement"]
+        if matched
+        else report.proposed_objects[0]["measurements"][0]
+    )
+    expected = "TPN source-record measurement imported into staging; not field-verified."
+    if location:
+        expected += "\nTPN WER_LOK: niepewna\nTPN UWAGI: Trzeba uściślić położenie"
+    assert measurement["notes"] == expected
+    assert measurement["verification_status"] == "nieweryfikowany"
 
 
 def test_csv_staging_matches_pig_by_nr_and_creates_tpn_measurement_update(

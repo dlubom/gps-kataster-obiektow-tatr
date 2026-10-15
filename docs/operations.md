@@ -293,6 +293,42 @@ Pomiar odrzucony moze zostac w `measurements`, ale zwykle nie powinien byc
 wskazany jako `best_measurement`. Jezeli wszystkie pomiary sa odrzucone,
 walidator moze wskazac to jako ostrzezenie.
 
+## Odtworzenie kontekstu TPN (PBI-082)
+
+Importer zachowuje `WER_LOK` i `UWAGI` przy pomiarach TPN, zarówno nowych,
+jak i dopasowanych. Etykiety `TPN WER_LOK:` oraz `TPN UWAGI:` opisują tekst
+źródłowy; nie oznaczają projektowej weryfikacji punktu. Review zachowuje
+ten kontekst i ręczne uwagi pomiaru.
+
+Dla istniejących danych jednorazowe narzędzie domyślnie wykonuje dry-run:
+
+```bash
+uv run --frozen python scripts/maintenance/restore_tpn_notes.py \
+  --source data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv \
+  --data-dir data --report build/tpn-notes-dry.json
+```
+
+Raport JSON zawiera hash SHA-256 źródła, GLOBALID, plik, ID obiektu/pomiaru,
+wartości źródłowe i notes/audyt przed oraz po zmianie. `record_number` służy
+tylko jako odnośnik dowodowy. Dopasowanie wymaga jednocześnie jednoznacznej
+referencji `TPN/source_globalid` na obiekcie i `source: TPN` z
+`source_ref: TPN:{GLOBALID}` na pomiarze. Niejednoznaczność w źródle,
+obiektach lub pomiarach jest raportowana i pomijana, bez dopasowania po
+nazwie. Pozostałe jednoznaczne rekordy mogą być uzupełnione.
+
+Po przeglądzie raportu powtórz polecenie z `--apply` i osobnym `--report`.
+Opcjonalne `--generated-at 2026-10-15T13:16:44Z` ustala czas audytu dla
+odtwarzalnego przebiegu. Zapis ogranicza się do notes właściwego pomiaru
+i `updated_at`/`updated_by` obiektu (`maintenance:PBI-082`). Ręczne uwagi
+pozostają; obecne etykietowane wartości nie są dopisywane drugi raz.
+Manifest jest zapisywany przed finalnymi plikami; raport musi znajdować
+się poza katalogiem danych i nie może nadpisać źródła. Nie deklarujemy
+rollbacku przy awarii I/O ani ochrony przed równoczesną edycją.
+
+[Manifest PBI-082](asdlc/verification/PBI-082-manifest.json) wskazuje 469
+plików i wyłącznie dozwolone pola. [Log](asdlc/verification/PBI-082.md)
+wyjaśnia wyniki przed/po i pominięty rekord Smoczej Jamy bez referencji.
+
 ## Dopelnianie brakujacych otworow
 
 Gdy staging TPN zostawia `TPN_NR_INWENT_AMBIGUOUS`, czesto oznacza to kilka

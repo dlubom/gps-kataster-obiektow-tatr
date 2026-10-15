@@ -1,5 +1,6 @@
 import csv
 import json
+import sqlite3
 import subprocess
 import sys
 import zipfile
@@ -15,6 +16,7 @@ from gps_kataster_obiektow_tatr.best_measurements_export import (
     BestMeasurementsExportValidationError,
     export_best_measurements,
 )
+from gps_kataster_obiektow_tatr.build_db import build_sqlite_database
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -22,6 +24,61 @@ EXPORT_SCRIPT = REPO_ROOT / "scripts" / "export_best_measurements.py"
 KSW_LAT = 49.23459299
 KSW_LON = 19.87589498
 GENERATED_AT = "2026-05-16T12:00:00Z"
+
+
+@pytest.mark.parametrize("note", ["a" * 253 + "ą", "TPN UWAGI: " + "źółć" * 90])
+def test_dbf_notes_truncate_at_utf8_boundary(tmp_path, note):
+    data_dir = tmp_path / "data"
+    _write_sample_data(data_dir)
+    path = data_dir / "objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(path.read_text())
+    obj["measurements"][1]["notes"] = note
+    _write_yaml(path, obj)
+    result = export_best_measurements(
+        data_dir=data_dir,
+        output_dir=tmp_path / "exports",
+        generated_at=GENERATED_AT,
+    )
+    assert (
+        json.loads(result.geojson_path.read_text())["features"][0]["properties"][
+            "measurement_notes"
+        ]
+        == note
+    )
+    with zipfile.ZipFile(result.shapefile_zip_path) as archive:
+        archive.extractall(tmp_path / "shp")
+    with shapefile.Reader(str(tmp_path / "shp/best-measurements"), encoding="utf-8") as reader:
+        actual = reader.record(0)["meas_notes"]
+    assert actual == note.encode("utf-8")[:254].decode("utf-8", errors="ignore")
+
+
+def test_tpn_best_context_readable_in_all_full_text_exports(tmp_path):
+    data = tmp_path / "data"
+    _write_sample_data(data)
+    path = data / "objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(path.read_text())
+    note = "Ręczna uwaga.\nTPN WER_LOK: niepewna\nTPN UWAGI: Trzeba uściślić położenie"
+    obj["measurements"][1]["notes"] = note
+    _write_yaml(path, obj)
+    result = export_best_measurements(data_dir=data, output_dir=tmp_path / "exports")
+    with result.csv_path.open(encoding="utf-8", newline="") as stream:
+        assert list(csv.DictReader(stream))[0]["measurement_notes"] == note
+    assert (
+        json.loads(result.geojson_path.read_text())["features"][0]["properties"][
+            "measurement_notes"
+        ]
+        == note
+    )
+    desc = ET.parse(result.gpx_path).findtext(".//{http://www.topografix.com/GPX/1/1}desc")
+    assert note in desc
+    database = build_sqlite_database(data_dir=data, output_path=tmp_path / "katalog.sqlite")
+    with sqlite3.connect(database.sqlite_path) as conn:
+        assert (
+            conn.execute(
+                "SELECT notes FROM measurements WHERE object_id='KSW-0001' AND id='m-002'"
+            ).fetchone()[0]
+            == note
+        )
 
 
 def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
