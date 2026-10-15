@@ -23,8 +23,8 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 0 | PBI-078 | plan | Plan, trwały raport, nowy punkt kontynuacji | — | wykonane |
 | 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | wykonane |
 | 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | wykonane |
-| 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | zweryfikowane — do dostarczenia |
-| 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | planowane |
+| 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | wykonane |
+| 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | planowane — gotowe |
 | 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | planowane |
 | 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | planowane |
 | 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | planowane |
@@ -121,7 +121,7 @@ z plikiem, kluczem i pozycją błędu.
 
 ### PBI-081: Walidować kompletną transakcję review przed zapisem
 
-Status: zweryfikowane — do dostarczenia. [Log weryfikacji](verification/PBI-081.md).
+Status: wykonane 2026-10-15. [Log weryfikacji](verification/PBI-081.md).
 
 Priorytet P1, R3. Spec: §8.1, §8.3, §9.1, §11.1. Poprzednik: PBI-080.
 Dyrektywa: walidować wejściowe finalne dane oraz cały stan po wszystkich
@@ -146,7 +146,7 @@ Używa `validate_dataset(...)` z aktualnymi regułami, także dla `write=False`.
 - [x] Uruchomić testy review/walidatora, pełną bramkę i mutacje warunku
       preflight. Nie deklarować odporności na awarię procesu/I/O, której
       ten zakres nie implementuje. R5–R7 nadal mają osobne karty.
-- [ ] Dostarczyć `fix: validate review state before writes (PBI-081)`.
+- [x] Dostarczyć `fix: validate review state before writes (PBI-081)`.
 
 ### PBI-082: Zachować i odtworzyć kontekst pomiarów TPN
 
