@@ -19,13 +19,16 @@ Read these files before making changes:
 - The user abandoned the previous branch-based repair series on 2026-10-15.
   Its PBI-034–077 statuses do not apply to this checkout. Do not resume,
   merge or cherry-pick `codex/review-remediation` or other old branches.
-- Active branch: `codex/main-remediation-2026-10`, created from freshly
-  fetched `origin/main` at `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`.
-  For continuation, fetch and inspect this branch's origin state; do not
-  restart the new series from main again.
-- Follow the backlog order: three P1 fixes, current-data problems, then
-  remaining P2 fixes. Implement exactly one ready PBI per session unless
-  the user explicitly requests more. PBI-078 is planning only.
+- PBI-078–086 are complete and PR #4 is merged into `main` at
+  `89592969298cf04b547a694edf2755eb56209ae3`. Post-merge CI passed and
+  release v1.0.3 is published; see `docs/asdlc/verification/v1.0.3.md`.
+  The remediation branch is historical; do not resume it.
+- Start each new session from current `main`: inspect status, fetch origin,
+  and on a clean checkout use `git switch main` and `git pull --ff-only`.
+  Compare HEAD with `origin/main`; use the live tip, not the release SHA.
+  New changes go on a branch from main and through PR; main requires review.
+- No ready PBI remains in this series. New work requires a user instruction;
+  implement exactly one ready PBI per session unless explicitly asked for more.
 - Keep evidence in `docs/asdlc/verification/PBI-NNN.md`; a clean checkout
   must be sufficient to continue without chat history or `build/`.
 - Commit and push verified steps; confirm remote SHA and CI for that SHA

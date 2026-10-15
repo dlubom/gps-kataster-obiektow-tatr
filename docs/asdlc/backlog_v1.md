@@ -4,13 +4,14 @@ Stan na: 2026-10-15
 
 ## Naprawy main po przegladzie 2026-10-12
 
-Wydanie **v1.0.3**: użytkownik zatwierdził wersję, changelog i dostarczenie
-2026-10-15. Przygotowanie wydania w PR #4 jest małym krokiem po zakończonej
-serii PBI-078–086; nie otwiera kolejnego PBI naprawczego.
-[Weryfikacja i procedura odbioru](verification/v1.0.3.md).
+Wydanie **v1.0.3 opublikowane 2026-10-15**. PR #4 zmergowany do main
+(`89592969298cf04b547a694edf2755eb56209ae3`); CI po merge i workflow release
+przeszły. [Potwierdzenia odbioru](verification/v1.0.3.md).
+PBI-078–086 zakończone; brak kolejnej gotowej karty tej serii.
+Punkt startowy następnej sesji: aktualny `main` po fetch/pull.
 
 Decyzją użytkownika z 2026-10-15 poprzednie gałęzie naprawcze są porzucone.
-Aktywna seria powstaje na `codex/main-remediation-2026-10` ze świeżego
+Zakończona seria powstała na `codex/main-remediation-2026-10` ze świeżego
 `origin/main`, SHA `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`.
 PBI-034–077 są zarezerwowane dla historii starej serii i nie są tu
 traktowane jako wdrożone. [Decyzja i zakres](remediation_plan.md),

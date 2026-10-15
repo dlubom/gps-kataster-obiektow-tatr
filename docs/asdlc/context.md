@@ -2,20 +2,21 @@
 
 Last updated: 2026-10-15
 
-## Current handoff — nowa seria z main
+## Current handoff — po wydaniu v1.0.3
 
 **PBI-078–086 wykonane; seria zakończona w zaplanowanym zakresie.**
-Aktywna gałąź: `codex/main-remediation-2026-10`, baza main
-`a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`.
-[PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4) dostarcza serię
-oraz przygotowanie wydania **v1.0.3**, zatwierdzonego przez użytkownika
-2026-10-15. [Log wydania](verification/v1.0.3.md) opisuje weryfikację i odbiór
-PR → main → CI dokładnego commitu po merge → annotated tag → release.
-Aktualny stan scalenia i publikacji sprawdzaj w PR, tagu i GitHub Actions.
-Checkpoint końca serii `044fc0343dc8d92d0c4fb0b635791bd2f945fa55`
-ma potwierdzone [CI 38773770498](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38773770498):
-`completed/success`, job `Validate code and data` i wszystkie 13 kroków.
-Bieżący SHA oraz CI po kolejnych zmianach sprawdzaj w Git/PR.
+[PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4) zmergowany
+2026-10-15 do `main`: `89592969298cf04b547a694edf2755eb56209ae3`.
+[CI po merge](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38790548500)
+tego SHA: `completed/success`, job `Validate code and data` i wszystkie 13 kroków.
+[Release v1.0.3](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/tag/v1.0.3)
+opublikowany; annotated tag wskazuje ten sam commit,
+[workflow release](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38791039400)
+zakończony sukcesem. [Log wydania](verification/v1.0.3.md) zawiera potwierdzenia.
+
+**Start następnej sesji: aktualny `main` po fetch/pull, z porównaniem HEAD
+z `origin/main`.** SHA wydania jest checkpointem historycznym.
+`codex/main-remediation-2026-10` jest zakończoną gałęzią; nie wznawiamy jej.
 
 | PBI | Wynik / trwałe dowody |
 |---|---|
@@ -47,11 +48,10 @@ i [manifest PBI-083](verification/PBI-083-manifest.json); źródła pozostały n
   równoczesną edycją. Limit bardzo dużych skończonych integerów w SQLite
   opisuje [PBI-084](verification/PBI-084.md).
 - Brak kolejnej gotowej karty tej serii. Nowa praca wymaga polecenia.
-  Merge PR #4, sprawdzenie CI po merge i publikacja v1.0.3 zostały
-  zatwierdzone przez użytkownika 2026-10-15.
 - Porzuconych `codex/review-remediation` i PBI-034–077 nie wznawiamy ani
   nie przenosimy. Szczegóły decyzji: [plan](remediation_plan.md).
-- Przy kontynuacji fetch/pull aktywnej gałęzi i [runbook](remediation_runbook.md).
+- Przy kontynuacji fetch/pull `main` i [runbook](remediation_runbook.md).
+  Nowe zmiany prowadź na gałęzi od main i przez PR z wymaganym review.
   Na tej bazie nie ma `scripts/verify_project.py`. Kolejność i kryteria:
   [backlog](backlog_v1.md#naprawy-main-po-przegladzie-2026-10-12).
 
