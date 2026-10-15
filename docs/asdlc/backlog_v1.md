@@ -1,6 +1,285 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-07-11
+Stan na: 2026-10-15
+
+## Naprawy main po przegladzie 2026-10-12
+
+Decyzją użytkownika z 2026-10-15 poprzednie gałęzie naprawcze są porzucone.
+Aktywna seria powstaje na `codex/main-remediation-2026-10` ze świeżego
+`origin/main`, SHA `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`.
+PBI-034–077 są zarezerwowane dla historii starej serii i nie są tu
+traktowane jako wdrożone. [Decyzja i zakres](remediation_plan.md),
+[runbook](remediation_runbook.md), [raport R1–R8](reviews/main-review-2026-10-12.md).
+
+Statusy: `planowane`, `planowane — gotowe`, `w toku`,
+`zweryfikowane — do dostarczenia`, `wykonane`, `zablokowane` z powodem.
+Kolejność jest celowa: **trzy P1 → problemy danych → pozostałe P2**.
+Zależności w tabeli określają kolejność realizacji, nie wszystkie są
+zależnościami technicznymi. Każde PBI dostarcza samodzielnie sprawdzalne
+zachowanie. W tej sesji powstaje tylko PBI-078; napraw nie rozpoczęto.
+
+| Kolejność | PBI | Priorytet / ustalenie | Zakres | Poprzednik | Status |
+|---|---|---|---|---|---|
+| 0 | PBI-078 | plan | Plan, trwały raport, nowy punkt kontynuacji | — | zweryfikowane — do dostarczenia |
+| 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | planowane |
+| 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | planowane |
+| 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | planowane |
+| 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | planowane |
+| 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | planowane |
+| 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | planowane |
+| 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | planowane |
+| 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | planowane |
+
+### Wspólny kontrakt wykonania
+
+Odniesienie: [spec v2](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md).
+Każda karta dziedziczy bramkę i dostarczenie z runbooka. Dla napraw kodu:
+test odtwarzający błąd → potwierdzone niepowodzenie → poprawka → testy
+obszaru → pełna bramka → review diffu → commit/push i CI dla tego SHA.
+Nie dodajemy oddzielnych PBI na konfigurację, testy czy dokumentację
+potrzebną do danej naprawy. Nie rozpoczynamy implementacji w PBI-078.
+
+Pliki wspólne każdej realizacji: odpowiednie testy obszaru,
+`docs/asdlc/backlog_v1.md`, `docs/asdlc/context.md`,
+`docs/asdlc/verification/PBI-NNN.md` oraz dokumentacja zmienianego kontraktu.
+Zmiany specyfikacji są jawne i w tym samym PBI; rozszerzenie granic V1
+wymaga odrębnej decyzji. Nie przejmujemy automatycznie zakresu starych PBI.
+
+### PBI-078: Utrwalić nowy plan z aktualnego main
+
+Zakres: ten backlog, plan, runbook, AGENTS, context, przenośne dowody review
+i [log PBI-078](verification/PBI-078.md). Wyłącznie dokumentacja i zapis
+istniejących obserwacji; bez zmiany kodu, testów, konfiguracji CI lub danych.
+
+- [x] Każde R1–R8 ma dokładnie jedną kartę naprawy, zakres i kryteria odbioru.
+- [x] Trzy P1 poprzedzają prace nad danymi i pozostałe P2.
+- [x] Historia porzuconej serii jest odróżniona od aktualnego main;
+      kontynuacja nie wymaga jej checkoutu ani plików z `build/`.
+- [ ] Linki, zależności i polecenia odpowiadają świeżej bazie; pełna bramka
+      dokumentacyjnego checkpointu i dostarczenie są odnotowane w logu.
+
+Commit: `docs: plan main review remediation (PBI-078)`.
+
+### PBI-079: Zatrzymać build przy brakującym katalogu danych
+
+Priorytet P1, R1. Spec: §10, §11.1–11.2, §13. Poprzednik: PBI-078.
+Dyrektywa: odróżnić brak wejścia od istniejącego, świadomie przygotowanego
+pustego zbioru i odrzucać brak przed utworzeniem lub nadpisaniem wyjścia.
+
+Pliki: `src/gps_kataster_obiektow_tatr/data_loader.py`, `validator.py`,
+`build_db.py`, `best_measurements_export.py`, `release_artifacts.py`,
+odpowiednie CLI w `scripts/`, `tests/test_data_loader.py`,
+`tests/test_validator.py`, `tests/test_build_db.py`,
+`tests/test_best_measurements_export.py`, `tests/test_release_artifacts.py`.
+
+Interfejs: `load_dataset(data_dir: Path) -> LoadedDataset` dostaje jawny
+`DataDirectoryError(ValueError)` dla nieistniejącego root, root będącego
+plikiem lub brakującego wymaganego katalogu `objects`, `caves`, `relations`.
+Walidator i CLI przekładają to na czytelną diagnostykę i niezerowy exit.
+Testy/importowe scenariusze inicjalizacji jawnie tworzą pełną strukturę;
+nie osłabiamy domyślnej kontroli. Legalny pusty zbiór z kompletem katalogów
+pozostaje obsługiwany; brak nie może być jego automatycznym odpowiednikiem.
+
+- [ ] Odtworzyć R1 przez publiczne API i CLI: po poprawce brak root, root
+      jako plik i brak każdego z trzech katalogów dają błąd.
+- [ ] Dla każdego błędnego wejścia istniejący zestaw release zachowuje
+      wszystkie bajty, a nieistniejące wyjścia nie powstają.
+- [ ] Poprawny katalog i jawnie przygotowany pusty fixture przechodzą;
+      istniejące importowe testy inicjalizacji działają bez ukrytego fallbacku.
+- [ ] Uruchomić wskazane moduły pytest, pełną bramkę i mutacje kontroli
+      istnienia/rodzaju katalogu; udokumentować kontrakt w operations/spec.
+- [ ] Dostarczyć `fix: reject missing data inputs (PBI-079)` i dowody.
+
+### PBI-080: Odrzucać powtórzone klucze YAML
+
+Priorytet P1, R2. Spec: §9.1, §10, §11.1. Poprzednik: PBI-079.
+Dyrektywa: wykrywać duplikaty przed normalizacją i utratą poprzedniej
+wartości. Obejmować finalne rekordy oraz plik decyzji review.
+
+Pliki: `data_loader.py`, `staging_review.py`, ewentualny wspólny loader
+`src/gps_kataster_obiektow_tatr/yaml_io.py`, `tests/test_data_loader.py`,
+`tests/test_staging_review.py`, `tests/test_validator.py`.
+Interfejsy publiczne `load_dataset(...)` i
+`load_review_decisions(decisions_path: Path) -> dict[str, Any]` zachowują
+kształt wyniku; błędy pozostają `YamlDataLoadError` / `ReviewDecisionError`
+z plikiem, kluczem i pozycją błędu.
+
+- [ ] Drugi `measurements`, także z identyczną wartością, daje błąd;
+      nie może zastąpić pierwszej historii ani przejść do eksportu/zapisu.
+- [ ] Sprawdzić klucze zagnieżdżone, klucze decyzji, aliasy oraz merge keys:
+      wynik nie może zależeć od cichego nadpisania. Zwykły alias bez kolizji
+      pozostaje poprawny; kolizje po rozwinięciu merge keys, także jawne
+      nadpisanie odziedziczonej wartości, są odrzucane i opisane w docs.
+- [ ] Poprawny YAML zachowuje wartości i kolejność list; źródłowe bajty
+      pozostają niezmienione. Walidacja/CLI wskazuje wadliwy plik.
+- [ ] Testy trzech modułów, pełna bramka i celowane mutacje loadera.
+- [ ] Dostarczyć `fix: reject duplicate YAML keys (PBI-080)` i dowody.
+
+### PBI-081: Walidować kompletną transakcję review przed zapisem
+
+Priorytet P1, R3. Spec: §8.1, §8.3, §9.1, §11.1. Poprzednik: PBI-080.
+Dyrektywa: walidować wejściowe finalne dane oraz cały stan po wszystkich
+decyzjach, zanim applier rozpocznie zapis. Zachować obiekty, jaskinie
+i relacje w obrazie zbioru; nie walidować tylko pojedynczego nowego pomiaru.
+
+Pliki: `staging_review.py`, `validator.py`, `scripts/importers/apply_review.py`,
+`tests/test_staging_review.py`, `tests/test_validator.py`,
+`docs/asdlc/staging_review_decisions.md`.
+Interfejs: `apply_review_decisions(decision_data, *, staging_reports,
+data_dir, write=True) -> StagingReviewResult` nadal zwraca raport;
+błąd schematu/domeny daje `has_errors=True`, diagnostykę i `written_paths=()`.
+Używa `validate_dataset(...)` z aktualnymi regułami, także dla `write=False`.
+
+- [ ] R3: `lat=0` przy niezmienionych PL-1992 zostaje odrzucone przed zapisem.
+- [ ] Niepoprawny istniejący zbiór, uszkodzony payload, brakujący cel/cave,
+      utracona referencja relacji i błąd ostatniej decyzji blokują całą partię.
+- [ ] Dla błędu hash i lista plików finalnego katalogu są niezmienione;
+      żaden wcześniejszy poprawny element partii nie jest zapisany.
+- [ ] Dry-run i zapis mają zgodną ocenę walidacji; poprawna wielodecyzyjna
+      partia działa i po zapisie przechodzi walidację pełnego katalogu.
+- [ ] Uruchomić testy review/walidatora, pełną bramkę i mutacje warunku
+      preflight. Nie deklarować odporności na awarię procesu/I/O, której
+      ten zakres nie implementuje. R5–R7 nadal mają osobne karty.
+- [ ] Dostarczyć `fix: validate review state before writes (PBI-081)`.
+
+### PBI-082: Zachować i odtworzyć kontekst pomiarów TPN
+
+Priorytet dane/P2, R4. Spec: §4.3, §7.1, §9, §13. Poprzednik: PBI-081.
+Dyrektywa: przenosić `WER_LOK` i `UWAGI` do opisanego kontekstu pomiaru
+TPN dla nowych i dopasowanych rekordów; uzupełnić istniejące pomiary
+z zachowanego lokalnego CSV, bez ponownego importu punktów.
+
+Pliki: `tpn_staging.py`, `staging_review.py`, nowe jednorazowe narzędzie
+`scripts/maintenance/restore_tpn_notes.py`, `tests/test_tpn_staging.py`,
+`tests/test_staging_review.py`, `tests/test_best_measurements_export.py`,
+nowy `tests/test_restore_tpn_notes.py`, wyłącznie manifestem wskazane
+`data/objects/**/*.yml`, `docs/operations.md`, `docs/release_artifacts.md`.
+Interfejs narzędzia: `--source PATH --data-dir PATH --report PATH [--apply]`;
+domyślnie dry-run. Dopasowanie przez `TPN/source_globalid` oraz
+`measurement.source_ref=TPN:{GLOBALID}`, nigdy samą nazwę lub numer wiersza.
+Zachować dotychczasowe notes, dodać etykietowane wartości źródłowe bez
+zmiany ich sensu. Uzupełnienie finalnych danych obejmuje notes i audit
+zmienionego rekordu, bez nowych pomiarów ani zmian współrzędnych/best/statusu.
+
+- [ ] Na bazie ponownie policzyć braki; historyczny wynik to 354 wartości
+      `WER_LOK` i 25 `UWAGI`, nie stała do wymuszenia.
+- [ ] Dry-run zapisuje manifest: hash źródła, GLOBALID, obiekt/pomiar,
+      pola przed/po i przyczynę zmiany. Niejednoznaczny/brakujący match
+      trafia do raportu i nie powoduje zapisu niepewnego rekordu.
+- [ ] Po zastosowaniu każde objęte manifestem ostrzeżenie istnieje przy
+      właściwym pomiarze. Powtórzenie operacji nie duplikuje tekstu.
+- [ ] Testy obejmują MTW-0047, CHZ-0021, BYW-0015, BYW-0031, brak uwag,
+      kolizję identyfikatora, ręczne notes i powtórne uruchomienie.
+- [ ] Ostrzeżenia wybranego best są czytelne po odczycie CSV, GeoJSON,
+      GPX i SQLite; DBF zachowuje poprawny UTF-8 oraz jawnie opisany limit
+      długości, bez obietnicy przechowania pełnego długiego tekstu.
+- [ ] Pełna bramka, kontrola dozwolonych pól danych, testy obszaru oraz
+      mutacje dopasowania/ochrony treści. Surowe źródła bez zmian.
+- [ ] Dostarczyć `fix: preserve TPN location context (PBI-082)`.
+
+### PBI-083: Skorygować kategorie i ocenić rozbieżności danych
+
+Priorytet dane/P2, R8; dodatkowo jawne ryzyka jakości z tego review.
+Spec: §2–4, §5.4, §8.3, §9. Poprzednik: PBI-082.
+Dyrektywa: skorygować udowodnioną kategorię STR-0024 i utrwalić decyzję
+lub jawną niepewność CHZ-0011. Zbadać zgłoszone rozbieżności lokalizacji
+bez utożsamiania ostrzeżenia z błędnym punktem.
+
+Pliki: `data/objects/STR/STR-0024.yml`, `data/objects/CHZ/CHZ-0011.yml`
+wyłącznie dla uzasadnionej kategorii/notes/auditu, nowy
+`docs/asdlc/reviews/data-decisions-2026-10.md`, `tests/test_tpn_staging.py`
+dla regresji kategorii, ewentualne jawnie wymienione korekty notes.
+Interfejs danych: raport wiąże decyzję z ID, GLOBALID, hashem źródła,
+wartością źródłową i uzasadnieniem; nie tworzy nowych encji ani pomiarów.
+
+- [ ] STR-0024: źródło TPN row 273/GLOBALID
+      `{A5C7088E-A2FE-4898-AE2E-B0A9B420B17D}` ma `GENEZA=sztolnia`;
+      korekta kategorii i audit mają ślad dowodowy i nie zmieniają ID.
+- [ ] CHZ-0011: `GENEZA=jaskinia/sztolnia` wymaga odnotowania obu znaczeń.
+      Kategoria wynika z dowodu/decyzji, nie wyszukiwania słowa. Jeśli brak
+      podstaw do zmiany, zachować kategorię z jawną nierozstrzygniętą
+      pozycją w raporcie, zamiast przedstawiać ją jako poprawioną.
+- [ ] Raport ocenia 72 historyczne ostrzeżenia odległości i 11 grup
+      współdzielących współrzędne best: każde ma ID, dowód i rozstrzygnięcie
+      albo konkretną brakującą informację. Ponownie policzyć aktualny zbiór.
+      PL-0019 (2,49 km) i MLZ-0045 (1,90 km) mają osobne omówienie źródeł.
+- [ ] Nie przesuwać punktów, nie scalać obiektów, nie odrzucać pomiarów
+      i nie podnosić statusów automatycznie. Potrzebna decyzja terenowa
+      pozostaje jawną zaległością, nie blokuje udokumentowanych korekt.
+- [ ] Testy kategorii, pełna walidacja/build/odczyt kategorii w eksportach
+      oraz porównanie danych z manifestem zmian. Surowe źródła bez zmian.
+- [ ] Dostarczyć `fix: reconcile documented catalog data issues (PBI-083)`.
+
+### PBI-084: Odrzucać NaN i Infinity przed użyciem liczb
+
+Priorytet P2, R5. Spec: §4.3, §6, §11–13. Poprzednik: PBI-083.
+Dyrektywa: wymagać skończonych wartości we wszystkich polach liczbowych
+pomiaru przed geometrią, wyborem best i eksportem; diagnozować błędy danych.
+
+Pliki: `validator.py`, `coordinates.py`, `pig_staging.py`, `tpn_staging.py`,
+wywołujące je build/eksport/review, testy odpowiadających modułów.
+Interfejsy: `validate_dataset(...)` zwraca błąd z polem i ID pomiaru;
+staging nie proponuje błędnego punktu, review/build/eksport kończą się
+kontrolowanie przed zapisem. Brak wartości opcjonalnej (`null`) pozostaje
+legalny. Nie zmieniać semantyki dokładności ani jednostek.
+
+- [ ] R5: `.nan` w `x_1992` daje błąd przed eksportem; poprawny istniejący
+      zestaw plików pozostaje niezmieniony.
+- [ ] Parametryzowane testy NaN, +Infinity, -Infinity w lat/lon, cache
+      PL-1992, wysokości i dokładnościach; także liczby z CSV/XLSX/staging.
+- [ ] Poprawne liczby i dozwolone `null` przechodzą. GeoJSON poprawnych
+      danych daje się odczytać parserem odrzucającym NaN/Infinity.
+- [ ] Testy obszaru, pełna bramka i mutacje kontroli skończoności;
+      wszystkie finalne YAML bez zmian.
+- [ ] Dostarczyć `fix: reject non-finite measurement values (PBI-084)`.
+
+### PBI-085: Wymagać unikalnych ID pomiarów w obiekcie
+
+Priorytet P2, R6. Spec: §4.3–4.4, §9, §11–12. Poprzednik: PBI-084.
+Dyrektywa: wykrywać kolizję `measurement.id` zanim pomiary zostaną
+zindeksowane lub użyte do wyboru best, zapisu review i budowy artefaktów.
+
+Pliki: `validator.py`, `staging_review.py`, `tests/test_validator.py`,
+`tests/test_staging_review.py`, `tests/test_build_db.py`,
+`tests/test_best_measurements_export.py`.
+Interfejs: walidator zwraca diagnostykę z obiektem, lokalnym ID i plikiem;
+istniejące publiczne API zachowują sposób raportowania błędów.
+
+- [ ] Dwa pomiary o tym samym ID, zarówno identyczne, jak i z różnymi
+      współrzędnymi, dają błąd walidacji.
+- [ ] Kolizja dotykająca best/załącznika nie wybiera arbitralnie pierwszego
+      rekordu. Review, SQLite i eksporty blokują zapis przed użyciem ID.
+- [ ] To samo lokalne `m-001` w dwóch różnych obiektach jest poprawne;
+      pomiary z różnymi ID zachowują kolejność i historię.
+- [ ] Testy obszaru, pełna bramka i mutacje unikalności; dane bez zmian.
+- [ ] Dostarczyć `fix: validate local measurement identity (PBI-085)`.
+
+### PBI-086: Przenosić powiązanie obiektu i walidować symetrię
+
+Priorytet P2, R7. Spec: §3.1–3.2, §4.1–4.2, §8.3, §11.1.
+Poprzednik: PBI-085. Dyrektywa: `link_cave` usuwa członkostwo w starej
+jaskini i dodaje je w nowej; walidator sprawdza obie strony powiązania.
+
+Pliki: `staging_review.py`, `validator.py`, `tests/test_staging_review.py`,
+`tests/test_validator.py`, `tests/test_build_db.py`,
+`docs/asdlc/staging_review_decisions.md`.
+Interfejs akcji pozostaje `{action: link_cave, object_id, cave_id}`.
+Zmieniają się trzy powiązane rekordy (obiekt, stara i nowa jaskinia)
+z zachowaniem istniejącego kontraktu audit; źródła i pomiary bez zmian.
+
+- [ ] Po przeniesieniu KSW-0001 z C-0002 do drugiej jaskini tylko nowa
+      zawiera go w `object_ids`, a `object.cave_id` wskazuje nową.
+- [ ] Walidator wykrywa brak członkostwa w wskazanej jaskini, wpis w innej
+      jaskini i obiekt wymieniony przez jaskinię bez zgodnego cave_id.
+- [ ] Powtórny link do tej samej jaskini nie duplikuje członkostwa;
+      inni członkowie obu jaskiń i historia pomiarów pozostają bez zmian.
+- [ ] Brak celu i błąd ostatniej decyzji partii zachowują pliki bez zmian;
+      poprawny relink przechodzi preflight PBI-081 i walidację po zapisie.
+- [ ] Testy obszaru, pełna bramka, kontrola zgodności powiązań SQLite/YAML
+      i mutacje symetrii. Finalne dane katalogu bez zmian.
+- [ ] Ponowić scenariusze R1–R8 po wszystkich naprawach; w logu rozdzielić
+      naprawione błędy od nierozstrzygniętych faktów terenowych PBI-083.
+- [ ] Dostarczyć `fix: preserve cave membership symmetry (PBI-086)`.
 
 ## Status realizacji
 

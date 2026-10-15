@@ -1,6 +1,41 @@
 # AS-DLC project context
 
-Last updated: 2026-07-11
+Last updated: 2026-10-15
+
+## Current handoff — nowa seria z main
+
+- Użytkownik 2026-10-15 polecił porzucić poprzednie gałęzie i przygotować
+  nowy plan z aktualnego main: trzy P1, następnie dane, następnie reszta P2.
+- Po `git fetch origin` utworzono `codex/main-remediation-2026-10` z
+  `origin/main` = `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`.
+  Dawna seria `codex/review-remediation` (origin
+  `7ea802ba29d81ba47da080050ce0b3e71b2389d5`) jest porzucona.
+  PBI-034–077 nie są wdrożone na nowej bazie i ich numerów nie używamy ponownie.
+- **PBI-078 zweryfikowane — do dostarczenia: dokumentacja planu.** Napraw nie rozpoczęto.
+  [Backlog](backlog_v1.md#naprawy-main-po-przegladzie-2026-10-12) zawiera
+  kompletne karty PBI-079–086; [plan](remediation_plan.md) opisuje decyzję,
+  [runbook](remediation_runbook.md) sposób pracy, a
+  [log PBI-078](verification/PBI-078.md) weryfikację i dostarczenie.
+- Lokalna bramka planu: 123 testy, Ruff, 0 błędów walidacji,
+  2066 ostrzeżeń, build i odczyt artefaktów poprawne; hash `data/` bez zmian.
+  Pozostało potwierdzić push i exact-SHA CI przed zamknięciem PBI-078.
+- Po dostarczeniu PBI-078 następne będzie **PBI-079 / R1: brakujące wejście
+  danych**. Kontynuacja autoryzuje jedno gotowe PBI, nie całą serię.
+- Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
+  i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
+  `build/`, `/tmp`, czatu ani pamięci konta.
+- Bazowy katalog: 1009 obiektów, 1003 jaskinie, 1875 pomiarów, 0 relacji;
+  0 błędów, 2066 ostrzeżeń. Review nie znalazło aktualnych duplikatów
+  kluczy/ID, NaN ani niesymetrycznych powiązań. R1–R3/R5–R7 odtworzono
+  na kopiach; R4/R8 dotyczą obecnych danych.
+- Historyczne 72 ostrzeżenia odległości (maks. 2,49 km) i 11 grup
+  identycznych pozycji best są niepewnością źródeł, nie dowodem duplikatu
+  lub błędnej lokalizacji. Ich ocena należy do PBI-083.
+- Na nowej bazie nie ma `scripts/verify_project.py`; runbook wskazuje
+  istniejące polecenia. CI działa przez draft PR. Bez merge/tag/release.
+
+Poniższe opisy PBI-001–033 dokumentują historię main; aktualny punkt
+kontynuacji znajduje się wyłącznie w bloku powyżej i bieżącym backlogu.
 
 ## Current mode
 
