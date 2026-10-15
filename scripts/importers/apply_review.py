@@ -22,6 +22,7 @@ from gps_kataster_obiektow_tatr.staging_review import (  # noqa: E402
     DEFAULT_REVIEW_OUTPUT_DIR,
     DEFAULT_TPN_STAGING_PATH,
     ReviewDecisionError,
+    ReviewSeverity,
     apply_review_decisions,
     load_review_decisions,
     load_staging_reports,
@@ -111,6 +112,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"wrote final YAML: {path}")
 
     if result.has_errors:
+        for issue in result.issues:
+            if issue.severity == ReviewSeverity.ERROR:
+                print(f"error [{issue.code}]: {issue.description}", file=sys.stderr)
         print(
             f"staging review failed: {len(result.issues)} issues, final YAML was not written",
             file=sys.stderr,

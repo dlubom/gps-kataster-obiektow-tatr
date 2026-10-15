@@ -53,9 +53,19 @@ dziala na finalnych ID i nie wymaga `source`.
 
 ## Bezpieczenstwo
 
+Plik decyzji jest parsowany bez cichego nadpisywania kluczy. Duplikat
+`decisions`, `action`, `object_id` lub dowolnego innego klucza na każdym
+poziomie daje `ReviewDecisionError` ze ścieżką, kluczem i linią/kolumną
+obu wystąpień; CLI zwraca 1 przed wykonaniem decyzji i zapisem raportu.
+Zwykłe aliasy i merge keys o rozłącznych kluczach działają. Kolizje po
+merge, także jawne nadpisanie odziedziczonej wartości oraz powtórzony `<<`,
+są odrzucane również przy identycznej wartości. Reguła obejmuje także
+istniejące finalne rekordy; ich wadliwy YAML daje `FINAL_DATA_INVALID`
+w raporcie i diagnostykę CLI bez zapisu finalnych danych.
+
 `apply_review.py` najpierw sprawdza caly plik decyzji. Jezeli ktorakolwiek
 decyzja ma blad, finalne YAML nie sa zapisywane. Niezaleznie od wyniku powstaje
-raport:
+raport po poprawnym sparsowaniu pliku decyzji:
 
 - `build/staging/review/staging-review.json`
 - `build/staging/review/staging-review.md`

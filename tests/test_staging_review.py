@@ -135,6 +135,102 @@ def test_load_review_decisions_rejects_invalid_yaml_and_non_mapping(tmp_path: Pa
         load_review_decisions(non_mapping)
 
 
+def test_load_review_decisions_rejects_yaml_key_collisions(tmp_path, yaml_key_collision):
+    content, key, line = yaml_key_collision
+    path = tmp_path / "decisions.yml"
+    path.write_text(content, encoding="utf-8")
+    with pytest.raises(ReviewDecisionError) as error:
+        load_review_decisions(path)
+    message = str(error.value)
+    assert str(path) in message
+    assert "duplicate key" in message
+    assert key in message
+    assert f"line {line}, column" in message
+    assert path.read_bytes() == content.encode("utf-8")
+
+
+def test_review_aliases_and_disjoint_merges_keep_decisions_and_order(tmp_path):
+    path = tmp_path / "decisions.yml"
+    content = """\
+reviewed_by: dl
+decisions:
+  - &decision {action: unresolved, source: TPN, record_number: 2}
+  - *decision
+  - <<: [{action: reject}, {source: PIG}]
+    record_number: 1
+"""
+    path.write_text(content, encoding="utf-8")
+    assert load_review_decisions(path) == {
+        "reviewed_by": "dl",
+        "decisions": [
+            {"action": "unresolved", "source": "TPN", "record_number": 2},
+            {"action": "unresolved", "source": "TPN", "record_number": 2},
+            {"action": "reject", "source": "PIG", "record_number": 1},
+        ],
+    }
+    assert path.read_bytes() == content.encode("utf-8")
+
+
+@pytest.mark.parametrize("bad_input", ["decision", "record"])
+@pytest.mark.parametrize("dry_run", [False, True])
+def test_duplicate_yaml_blocks_review_cli_writes(tmp_path, make_data_dir, bad_input, dry_run):
+    data_dir = make_data_dir(tmp_path / "data")
+    object_path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
+    _write_yaml(object_path, _object_data(cave_id="C-0001"))
+    _write_yaml(data_dir / "caves" / "C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+    decisions = tmp_path / "decisions.yml"
+    content = "decisions: [{action: link_cave, object_id: KSW-0001, cave_id: C-0001}]\n"
+    if bad_input == "decision":
+        content += "decisions: []\n"
+        bad_path, key = decisions, "decisions"
+    else:
+        object_path.write_text(
+            object_path.read_text(encoding="utf-8") + "measurements: []\n", encoding="utf-8"
+        )
+        bad_path, key = object_path, "measurements"
+    decisions.write_text(content, encoding="utf-8")
+    before = {p.relative_to(data_dir): p.read_bytes() for p in data_dir.rglob("*") if p.is_file()}
+    output = tmp_path / "review"
+    output.mkdir()
+    (output / "staging-review.json").write_bytes(b"existing report")
+    command = [
+        sys.executable,
+        str(APPLY_REVIEW_PATH),
+        "--decisions",
+        str(decisions),
+        "--data-dir",
+        str(data_dir),
+        "--no-pig-staging",
+        "--no-tpn-staging",
+        "--output-dir",
+        str(output),
+    ]
+    if dry_run:
+        command.append("--dry-run")
+    result = subprocess.run(command, capture_output=True, text=True, check=False)
+    assert result.returncode == 1
+    message = result.stdout + result.stderr
+    assert str(bad_path) in message
+    assert "duplicate key" in message
+    assert key in message
+    assert "Traceback" not in message
+    assert {
+        p.relative_to(data_dir): p.read_bytes() for p in data_dir.rglob("*") if p.is_file()
+    } == before
+    if bad_input == "decision":
+        assert (output / "staging-review.json").read_bytes() == b"existing report"
+        assert not (output / "staging-review.md").exists()
+
+
+@pytest.mark.parametrize("content", ["? [not, a, scalar]\n: value\n", "!!python/tuple [1, 2]\n"])
+def test_review_loader_keeps_safe_yaml_errors(tmp_path, content):
+    path = tmp_path / "decisions.yml"
+    path.write_text(content, encoding="utf-8")
+    with pytest.raises(ReviewDecisionError, match="invalid YAML") as error:
+        load_review_decisions(path)
+    assert str(path) in str(error.value)
+
+
 def test_load_staging_reports_handles_missing_paths_and_rejects_non_objects(
     tmp_path: Path,
 ) -> None:

@@ -30,9 +30,14 @@ Last updated: 2026-10-15
   [Draft PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4)
   pozostaje draft. Bieżący checkpoint dokumentacyjny zapisuje ten wynik;
   jego własny SHA i CI sprawdza się w Git/PR.
-- Następne gotowe: **PBI-080 / R2: powtórzone klucze YAML**; nie rozpoczęto go.
-  Zakończyć po PBI-079 i CI checkpointu. Kolejna sesja autoryzuje jedno gotowe
-  PBI, nie całą serię.
+- **PBI-080 / R2 zweryfikowane — do dostarczenia**: wspólny bezpieczny parser odrzuca duplikaty
+  kluczy rekordów/decyzji przed normalizacją oraz po merge; zwykłe aliasy
+  i rozłączne merge zachowują wartości i kolejność. Pełna bramka:
+  336 testów, Ruff, 0 błędów i 2066 ostrzeżeń; 9/9 celowanych mutantów
+  zabitych, readback 7 artefaktów i hash 2039 plików `data/` zgodne;
+  niezależny review bez ustaleń.
+  [Log PBI-080](verification/PBI-080.md) wskazuje pozostałe dostarczenie.
+  Zakończyć po PBI-080 i CI końcowego SHA. **PBI-081 nie rozpoczęto**.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
   `build/`, `/tmp`, czatu ani pamięci konta.

@@ -23,6 +23,27 @@ uv run python scripts/validate.py --data-dir /sciezka/do/danych
 Puste katalogi są legalnym zbiorem z zerowymi licznikami. Loader nie tworzy
 ich sam; pominięty katalog `relations` jest błędem również przy braku relacji.
 
+## Jednoznaczne klucze YAML
+
+Rekordy obiektów, jaskiń i relacji oraz pliki decyzji review muszą mieć
+unikalne klucze w każdej mapie, także wewnątrz pomiarów i list decyzji.
+Drugi klucz `measurements` jest błędem również przy identycznej wartości:
+nowy pomiar dopisuj do istniejącej listy. Loader odrzuca duplikat przed
+normalizacją i wskazuje plik, klucz oraz linię/kolumnę obu wystąpień.
+Walidator zgłasza `YAML_INVALID`; CLI kończy się kodem 1.
+
+Zwykłe aliasy (`&wzor` / `*wzor`) i merge keys (`<<`) o rozłącznych kluczach
+są dozwolone. Kolizja po rozwinięciu merge jest błędem: dotyczy to również
+jawnego nadpisania odziedziczonej wartości, powtórzenia tego samego aliasu
+w merge oraz powtórzonego `<<` w tej samej mapie. Przykładowo
+`{<<: {source: TPN}, source: PIG}` jest odrzucane. Zapisz docelową wartość
+jednoznacznie w jednej mapie zamiast korzystać z priorytetów nadpisywania.
+
+Błędny YAML blokuje build/eksport i zapis finalnych danych review.
+Istniejące artefakty i źródłowe bajty są zachowane; poprawny dokument
+zachowuje wartości i kolejność list. Jest to reguła parsera, niezależna
+od późniejszych kontroli schematu i lokalnych ID pomiarów.
+
 ## Dodanie recznego pomiaru
 
 1. Znajdz obiekt w `data/objects/{PREFIX}/{OBJECT_ID}.yml`.

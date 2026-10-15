@@ -672,6 +672,17 @@ nie zmienia istniejących artefaktów. Pusty zbiór jest legalny wyłącznie
 po jawnym przygotowaniu wszystkich trzech katalogów, także przy pierwszym
 imporcie. Loader nie tworzy brakującej struktury automatycznie.
 
+Rekordy YAML i decyzje review wymagają unikalnych kluczy w każdej mapie,
+przed normalizacją oraz po rozwinięciu merge keys (`<<`). Drugi klucz
+`measurements` nie może zastąpić historii, również przy identycznej wartości.
+Aliasy bez kolizji i merge map o rozłącznych kluczach są dozwolone;
+kolizja między mapami merge, jawne nadpisanie odziedziczonej wartości
+oraz powtórzony `<<` są błędem. Loader podaje plik, klucz i obie pozycje
+(linia/kolumna); publiczne błędy to `YamlDataLoadError` dla rekordów
+i `ReviewDecisionError` dla decyzji, a walidator używa `YAML_INVALID`.
+CLI zwraca kod 1, bez zapisu SQLite/eksportów lub finalnych danych review.
+Źródłowe bajty oraz wartości i kolejność list poprawnego YAML są zachowane.
+
 ### 10.2 Przykład obiektu YAML
 
 ```yaml

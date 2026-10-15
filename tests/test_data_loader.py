@@ -91,6 +91,75 @@ def test_yaml_error_includes_source_path(tmp_path: Path, make_data_dir) -> None:
     assert "invalid YAML" in message
 
 
+def test_rejects_yaml_key_collisions_before_normalization(
+    tmp_path: Path, make_data_dir, yaml_key_collision
+) -> None:
+    content, key, line = yaml_key_collision
+    data_dir = make_data_dir(tmp_path / "data")
+    path = data_dir / "objects" / "bad.yml"
+    path.write_text(content, encoding="utf-8")
+    before = path.read_bytes()
+
+    with pytest.raises(YamlDataLoadError) as error:
+        load_dataset(data_dir)
+
+    assert error.value.path == path
+    message = str(error.value)
+    assert str(path) in message
+    assert "duplicate key" in message
+    assert key in message
+    assert f"line {line}, column" in message
+    assert path.read_bytes() == before
+
+
+@pytest.mark.parametrize("directory", ["objects", "caves", "relations"])
+def test_rejects_duplicate_keys_in_every_record_kind(tmp_path, make_data_dir, directory):
+    data_dir = make_data_dir(tmp_path / "data")
+    path = data_dir / directory / "bad.yml"
+    path.write_text("id: first\nid: second\n", encoding="utf-8")
+    with pytest.raises(YamlDataLoadError, match="duplicate key.*id"):
+        load_dataset(data_dir)
+
+
+def test_aliases_and_disjoint_merges_preserve_values_and_list_order(tmp_path, make_data_dir):
+    data_dir = make_data_dir(tmp_path / "data")
+    path = data_dir / "objects" / "good.yml"
+    content = """\
+id: KSW-0001
+measurements:
+  - &measurement
+    <<: [{source: TPN}, {notes: Zażółć}]
+    id: m-002
+    tags: [second, first]
+  - *measurement
+  - <<: {id: m-001}
+    source: PIG
+"""
+    path.write_text(content, encoding="utf-8")
+    record = load_dataset(data_dir).objects[0]
+    assert record.raw_data == {
+        "id": "KSW-0001",
+        "measurements": [
+            {"id": "m-002", "source": "TPN", "notes": "Zażółć", "tags": ["second", "first"]},
+            {"id": "m-002", "source": "TPN", "notes": "Zażółć", "tags": ["second", "first"]},
+            {"id": "m-001", "source": "PIG"},
+        ],
+    }
+    assert record.data["measurements"][2]["tags"] == []
+    assert "tags" not in record.raw_data["measurements"][2]
+    assert path.read_bytes() == content.encode("utf-8")
+
+
+@pytest.mark.parametrize("content", ["? [not, a, scalar]\n: value\n", "!!python/tuple [1, 2]\n"])
+def test_strict_loader_keeps_safe_yaml_errors(tmp_path, make_data_dir, content):
+    data_dir = make_data_dir(tmp_path / "data")
+    path = data_dir / "objects" / "bad.yml"
+    path.write_text(content, encoding="utf-8")
+    with pytest.raises(YamlDataLoadError, match="invalid YAML") as error:
+        load_dataset(data_dir)
+    assert error.value.path == path
+
+
 def _copy_fixture(source: Path, destination: Path) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     copyfile(source, destination)

@@ -22,7 +22,7 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 |---|---|---|---|---|---|
 | 0 | PBI-078 | plan | Plan, trwały raport, nowy punkt kontynuacji | — | wykonane |
 | 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | wykonane |
-| 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | planowane — gotowe |
+| 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | zweryfikowane — do dostarczenia |
 | 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | planowane |
 | 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | planowane |
 | 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | planowane |
@@ -94,6 +94,8 @@ pozostaje obsługiwany; brak nie może być jego automatycznym odpowiednikiem.
 
 ### PBI-080: Odrzucać powtórzone klucze YAML
 
+Status: zweryfikowane — do dostarczenia. [Log weryfikacji](verification/PBI-080.md).
+
 Priorytet P1, R2. Spec: §9.1, §10, §11.1. Poprzednik: PBI-079.
 Dyrektywa: wykrywać duplikaty przed normalizacją i utratą poprzedniej
 wartości. Obejmować finalne rekordy oraz plik decyzji review.
@@ -106,15 +108,15 @@ Interfejsy publiczne `load_dataset(...)` i
 kształt wyniku; błędy pozostają `YamlDataLoadError` / `ReviewDecisionError`
 z plikiem, kluczem i pozycją błędu.
 
-- [ ] Drugi `measurements`, także z identyczną wartością, daje błąd;
+- [x] Drugi `measurements`, także z identyczną wartością, daje błąd;
       nie może zastąpić pierwszej historii ani przejść do eksportu/zapisu.
-- [ ] Sprawdzić klucze zagnieżdżone, klucze decyzji, aliasy oraz merge keys:
+- [x] Sprawdzić klucze zagnieżdżone, klucze decyzji, aliasy oraz merge keys:
       wynik nie może zależeć od cichego nadpisania. Zwykły alias bez kolizji
       pozostaje poprawny; kolizje po rozwinięciu merge keys, także jawne
       nadpisanie odziedziczonej wartości, są odrzucane i opisane w docs.
-- [ ] Poprawny YAML zachowuje wartości i kolejność list; źródłowe bajty
+- [x] Poprawny YAML zachowuje wartości i kolejność list; źródłowe bajty
       pozostają niezmienione. Walidacja/CLI wskazuje wadliwy plik.
-- [ ] Testy trzech modułów, pełna bramka i celowane mutacje loadera.
+- [x] Testy trzech modułów, pełna bramka i celowane mutacje loadera.
 - [ ] Dostarczyć `fix: reject duplicate YAML keys (PBI-080)` i dowody.
 
 ### PBI-081: Walidować kompletną transakcję review przed zapisem

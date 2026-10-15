@@ -4,9 +4,11 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
+import pytest
 import yaml
 
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
+from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
 from gps_kataster_obiektow_tatr.validator import (
     ValidationIssue,
     ValidationSeverity,
@@ -17,6 +19,60 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 VALIDATE_SCRIPT = REPO_ROOT / "scripts" / "validate.py"
 KSW_LAT = 49.23459299
 KSW_LON = 19.87589498
+
+
+@pytest.mark.parametrize("replacement", ["same", "best-only"])
+def test_duplicate_measurements_block_validation_and_release(tmp_path, replacement):
+    data_dir = tmp_path / "data"
+    obj = _valid_object()
+    older = deepcopy(obj["measurements"][0])
+    older.update(id="m-002", observed_date="2026-05-14")
+    obj["measurements"].append(older)
+    _write_object(data_dir, obj)
+    path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
+    output = tmp_path / "output"
+    kwargs = {
+        "data_dir": data_dir,
+        "sqlite_path": output / "katalog.sqlite",
+        "output_dir": output / "exports",
+    }
+    # A valid two-measurement release is the independent positive control.
+    release = build_release_artifacts(**kwargs, generated_at="2026-10-15T00:00:00Z")
+    assert release.export_result.metadata["counts"]["measurements"] == 2
+    before = {p.relative_to(output): p.read_bytes() for p in output.rglob("*") if p.is_file()}
+    assert len(before) == 7
+    history = obj["measurements"] if replacement == "same" else obj["measurements"][:1]
+    content = path.read_text(encoding="utf-8") + yaml.safe_dump({"measurements": history})
+    path.write_text(content, encoding="utf-8")
+
+    issues = validate_data_dir(data_dir)
+    assert len(issues) == 1
+    assert issues[0].code == "YAML_INVALID"
+    assert issues[0].severity == ValidationSeverity.ERROR
+    assert issues[0].path == path
+    assert "measurements" in issues[0].description
+    result = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT), "--data-dir", str(data_dir)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert str(path) in result.stdout + result.stderr
+    assert "duplicate key" in result.stdout + result.stderr
+
+    for target in (output, tmp_path / "new-output"):
+        with pytest.raises(ValueError, match="duplicate key.*measurements"):
+            build_release_artifacts(
+                data_dir=data_dir,
+                sqlite_path=target / "katalog.sqlite",
+                output_dir=target / "exports",
+            )
+    assert {
+        p.relative_to(output): p.read_bytes() for p in output.rglob("*") if p.is_file()
+    } == before
+    assert not (tmp_path / "new-output").exists()
+    assert path.read_bytes() == content.encode("utf-8")
 
 
 def test_reports_error_for_duplicate_object_id(tmp_path: Path) -> None:
