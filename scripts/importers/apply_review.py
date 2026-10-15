@@ -79,7 +79,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Render the review report without writing final YAML.",
+        help="Validate the complete review and render its report without writing final YAML.",
     )
     return parser
 

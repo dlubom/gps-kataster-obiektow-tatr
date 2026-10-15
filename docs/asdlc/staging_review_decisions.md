@@ -63,9 +63,39 @@ są odrzucane również przy identycznej wartości. Reguła obejmuje także
 istniejące finalne rekordy; ich wadliwy YAML daje `FINAL_DATA_INVALID`
 w raporcie i diagnostykę CLI bez zapisu finalnych danych.
 
-`apply_review.py` najpierw sprawdza caly plik decyzji. Jezeli ktorakolwiek
-decyzja ma blad, finalne YAML nie sa zapisywane. Niezaleznie od wyniku powstaje
-raport po poprawnym sparsowaniu pliku decyzji:
+`apply_review.py` waliduje najpierw cały istniejący zbiór: obiekty, jaskinie
+i relacje, z oryginalnymi ścieżkami i surowymi polami YAML. Błędy obecnych
+reguł schematu lub domeny dają `FINAL_DATA_INVALID` przed wykonaniem decyzji.
+Propozycje nowych obiektów/jaskiń przechodzą dodatkowo kontrolę schematu,
+zanim następna decyzja użyje ich pól. `add_measurement` wymaga istniejącego
+celu obiektowego i, jeśli wskazano `target_cave_id`, istniejącej jaskini.
+Wybrane `object_external_refs` i `cave_external_refs` muszą być listami map;
+błędnego kształtu ani elementów nie pomijamy przed walidacją. Błąd typu
+zagnieżdżonego pola referencji daje diagnostykę schematu zamiast wyjątku API.
+
+Po wszystkich decyzjach `validate_dataset(...)` ocenia pełny przyszły
+zbiór w pamięci, z niezmienionymi relacjami oraz wszystkimi zmienionymi
+i niezmienionymi rekordami. Dopiero wtedy rozpoczyna się zapis. Błędy tego
+stanu dają `REVIEW_DATA_INVALID`; opis zachowuje kod reguły walidatora,
+ścieżkę i szczegóły. Błąd dowolnej decyzji, także ostatniej, lub walidacji
+blokuje całą partię: `has_errors=true`, `written_paths=[]`, niezmienione
+bajty i lista finalnych plików. `materialized` w liście decyzji oznacza
+zastosowanie w pamięci; potwierdzeniem zapisu jest wyłącznie `written_paths`.
+
+`--dry-run` wykonuje te same walidacje i zwraca taką samą ocenę błędów,
+bez zapisu finalnych danych. Ostrzeżenia walidatora nie blokują review;
+raport review przenosi błędy preflight, a pełny wykaz ostrzeżeń jest dostępny
+przez `scripts/validate.py`. Istniejące pliki `.yaml` zachowują swoje ścieżki
+przy aktualizacji. Zabezpieczenie dotyczy błędów decyzji i walidacji przed
+zapisem; nie zapewnia rollbacku po awarii procesu, dysku ani operacji I/O.
+Używa aktualnych reguł walidatora; nowe reguły R5–R7 są w PBI-084–086.
+Obraz walidacji zachowuje każdy istniejący plik, także jaskinie o wspólnym ID
+w `.yaml` i `.yml`. Nie wprowadza to nowej reguły unikalności jaskiń; zgodnie
+z dotychczasowym indeksem decyzja aktualizuje ostatnią ścieżkę w porządku
+loadera, a pozostałe rekordy pozostają w pełnym obrazie i na dysku bez zmian.
+
+CLI zwraca 1 i wypisuje diagnostykę dla błędu. Po poprawnym wczytaniu wejść
+powstaje raport również dla nieudanej walidacji:
 
 - `build/staging/review/staging-review.json`
 - `build/staging/review/staging-review.md`

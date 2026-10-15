@@ -9,16 +9,19 @@ import pytest
 import yaml
 
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
+from gps_kataster_obiektow_tatr.data_loader import load_dataset
 from gps_kataster_obiektow_tatr.staging_review import (
     ReviewDecisionError,
     ReviewSeverity,
     StagingReports,
+    _dataset_with_review_changes,
     apply_review_decisions,
     load_review_decisions,
     load_staging_reports,
     render_review_markdown,
     write_review_report_files,
 )
+from gps_kataster_obiektow_tatr.validator import has_errors, validate_data_dir
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 APPLY_REVIEW_PATH = REPO_ROOT / "scripts" / "importers" / "apply_review.py"
@@ -26,6 +29,403 @@ VALIDATE_SCRIPT = REPO_ROOT / "scripts" / "validate.py"
 KSW_LAT = 49.23459299
 KSW_LON = 19.87589498
 TPN_GLOBALID = "{38626571-CAA6-4317-8900-D61A995020E9}"
+
+
+def _seed_review_data(data_dir):
+    _write_yaml(data_dir / "objects/KSW/KSW-0001.yml", _object_data(cave_id="C-0001"))
+    other = _object_data(cave_id="C-0001")
+    other["id"] = "KSW-0002"
+    _write_yaml(data_dir / "objects/KSW/KSW-0002.yml", other)
+    _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001", "KSW-0002"]))
+    _write_yaml(
+        data_dir / "relations/R-0001.yml",
+        {
+            "schema_version": 1,
+            "id": "R-0001",
+            "from_object_id": "KSW-0001",
+            "to_object_id": "KSW-0002",
+            "relation_type": "sasiad",
+        },
+    )
+    assert not has_errors(validate_data_dir(data_dir))
+
+
+def _tree_snapshot(data_dir):
+    return {
+        p.relative_to(data_dir): p.read_bytes() if p.is_file() else None
+        for p in data_dir.rglob("*")
+    }
+
+
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize(
+    ("damage", "rule"),
+    [
+        ("coordinates", "COORDINATE_MISMATCH"),
+        ("object-schema", "SCHEMA_VALIDATION"),
+        ("cave-schema", "SCHEMA_VALIDATION"),
+        ("relation", "RELATION_OBJECT_REFERENCE_MISSING"),
+        ("relation-schema", "SCHEMA_VALIDATION"),
+        ("cave", "CAVE_REFERENCE_MISSING"),
+        ("duplicate", "DUPLICATE_OBJECT_ID"),
+        ("path", "FILE_ID_MISMATCH"),
+    ],
+)
+def test_invalid_existing_dataset_blocks_review_before_decisions(
+    tmp_path, make_data_dir, write, damage, rule
+):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_review_data(data_dir)
+    path = data_dir / "objects/KSW/KSW-0001.yml"
+    obj = _read_yaml(path)
+    if damage == "coordinates":
+        obj["measurements"][0]["lat"] = 0
+    elif damage == "object-schema":
+        obj["measurements"] = None
+    elif damage.startswith("relation"):
+        path = data_dir / "relations/R-0001.yml"
+        obj = _read_yaml(path)
+        obj["to_object_id"] = "KSW-9999" if damage == "relation" else []
+    elif damage == "cave-schema":
+        path = data_dir / "caves/C-0001.yml"
+        obj = _read_yaml(path)
+        obj["object_ids"] = None
+    elif damage == "cave":
+        obj["cave_id"] = "C-9999"
+    elif damage == "duplicate":
+        path = data_dir / "objects/KSW/copy.yml"
+    elif damage == "path":
+        path.rename(data_dir / "objects/KSW/wrong.yml")
+        path = data_dir / "objects/KSW/wrong.yml"
+    _write_yaml(path, obj)
+    before = _tree_snapshot(data_dir)
+    result = apply_review_decisions(
+        {"decisions": [{"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0001"}]},
+        staging_reports=StagingReports(),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    assert result.applied_decisions == ()
+    assert any(
+        rule in issue.description and str(path) in issue.description for issue in result.issues
+    )
+    assert _tree_snapshot(data_dir) == before
+
+
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize(
+    ("damage", "rule"),
+    [
+        ("r3", "COORDINATE_MISMATCH"),
+        ("schema", "SCHEMA_VALIDATION"),
+        ("missing-measurement", "STAGING_MEASUREMENT_INVALID"),
+        ("missing-object", "TARGET_OBJECT_MISSING"),
+        ("missing-cave", "TARGET_CAVE_MISSING"),
+        ("globalid", "DUPLICATE_TPN_GLOBALID"),
+        ("cave-payload", "SCHEMA_VALIDATION"),
+        ("last-decision", "DECISION_ACTION_INVALID"),
+    ],
+)
+def test_invalid_last_update_blocks_entire_review_batch(
+    tmp_path, make_data_dir, write, damage, rule
+):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_review_data(data_dir)
+    staging = _tpn_staging()
+    update = staging["matched_measurements"][0]
+    measurement = update["measurement"]
+    decision_data = {
+        "reviewed_at": "2026-10-15T00:00:00Z",
+        "reviewed_by": "dl",
+        "decisions": [
+            {"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0001"},
+            {"action": "add_measurement", "source": "TPN", "record_number": 1},
+        ],
+    }
+    if damage == "r3":
+        measurement["lat"] = 0
+    elif damage == "schema":
+        measurement["lat"] = "broken"
+    elif damage == "missing-measurement":
+        update["measurement"] = None
+    elif damage == "missing-object":
+        update["target_object_id"] = "KSW-9999"
+    elif damage == "missing-cave":
+        update["target_cave_id"] = "C-9999"
+    elif damage == "globalid":
+        other_path = data_dir / "objects/KSW/KSW-0002.yml"
+        other = _read_yaml(other_path)
+        other["external_refs"] = deepcopy(update["object_external_refs"])
+        _write_yaml(other_path, other)
+    elif damage == "cave-payload":
+        update["cave_external_refs"][0]["scope"] = "invalid"
+    elif damage == "last-decision":
+        decision_data["decisions"].append({"action": "unknown"})
+    before = _tree_snapshot(data_dir)
+    input_before = deepcopy((decision_data, staging))
+    result = apply_review_decisions(
+        decision_data,
+        staging_reports=StagingReports(tpn=staging),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    assert any(rule in (issue.code + issue.description) for issue in result.issues)
+    if damage == "r3":
+        assert any("MEASUREMENT_OUTSIDE_PL_SK" in issue.description for issue in result.issues)
+    assert _tree_snapshot(data_dir) == before
+    assert (decision_data, staging) == input_before
+
+
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize("damage", ["object", "cave", "missing-cave"])
+def test_invalid_new_proposal_blocks_earlier_create(tmp_path, make_data_dir, write, damage):
+    data_dir = make_data_dir(tmp_path / "data")
+    staging = _pig_staging()
+    if damage == "object":
+        staging["proposed_objects"][0]["measurements"] = None
+    elif damage == "cave":
+        staging["proposed_caves"][0]["name"] = None
+    else:
+        staging["proposed_objects"][0]["cave_id"] = "C-9999"
+    before = _tree_snapshot(data_dir)
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {"action": "create_cave", "source": "PIG", "record_number": 1},
+                {"action": "create_object", "source": "PIG", "record_number": 1},
+            ]
+        },
+        staging_reports=StagingReports(pig=staging),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    assert _tree_snapshot(data_dir) == before
+
+
+def test_valid_review_dry_run_matches_write_and_preserves_unmodified_records(
+    tmp_path, make_data_dir
+):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_review_data(data_dir)
+    before = _tree_snapshot(data_dir)
+    staging = StagingReports(tpn=_tpn_staging())
+    decisions = {
+        "reviewed_at": "2026-10-15T00:00:00Z",
+        "decisions": [
+            {"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0001"},
+            {"action": "add_measurement", "source": "TPN", "record_number": 1},
+        ],
+    }
+    dry = apply_review_decisions(decisions, staging_reports=staging, data_dir=data_dir, write=False)
+    assert not dry.has_errors
+    assert dry.written_paths == ()
+    assert _tree_snapshot(data_dir) == before
+    written = apply_review_decisions(decisions, staging_reports=staging, data_dir=data_dir)
+    assert not written.has_errors
+    assert written.issues == dry.issues
+    assert written.applied_decisions == dry.applied_decisions
+    assert len(written.written_paths) == 2
+    assert not has_errors(validate_data_dir(data_dir))
+    after = _tree_snapshot(data_dir)
+    assert after[Path("relations/R-0001.yml")] == before[Path("relations/R-0001.yml")]
+    assert after[Path("objects/KSW/KSW-0002.yml")] == before[Path("objects/KSW/KSW-0002.yml")]
+    obj = _read_yaml(data_dir / "objects/KSW/KSW-0001.yml")
+    assert [m["id"] for m in obj["measurements"]] == ["m-001", "m-002"]
+    assert obj["best_measurement"]["measurement_id"] == "m-002"
+
+
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize("damage", ["measurements", "external_refs", "object_ids"])
+def test_malformed_created_record_used_by_later_decision_returns_report(
+    tmp_path, make_data_dir, write, damage
+):
+    data_dir = make_data_dir(tmp_path / "data")
+    staging = _pig_staging()
+    key = "proposed_caves" if damage == "object_ids" else "proposed_objects"
+    staging[key][0][damage] = None
+    before = _tree_snapshot(data_dir)
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {"action": "create_cave", "source": "PIG", "record_number": 1},
+                {"action": "create_object", "source": "PIG", "record_number": 1},
+                {"action": "add_measurement", "source": "TPN", "record_number": 1},
+                {"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0001"},
+            ]
+        },
+        staging_reports=StagingReports(pig=staging, tpn=_tpn_staging()),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    assert any("SCHEMA_VALIDATION" in issue.description for issue in result.issues)
+    assert _tree_snapshot(data_dir) == before
+
+
+@pytest.mark.parametrize("dry_run", [False, True])
+def test_r3_review_cli_reports_error_without_final_writes(tmp_path, make_data_dir, dry_run):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_review_data(data_dir)
+    staging = _tpn_staging()
+    staging["matched_measurements"][0]["measurement"]["lat"] = 0
+    _write_json(tmp_path / "tpn.json", staging)
+    _write_yaml(
+        tmp_path / "decisions.yml",
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}]},
+    )
+    before = _tree_snapshot(data_dir)
+    command = [
+        sys.executable,
+        str(APPLY_REVIEW_PATH),
+        "--decisions",
+        str(tmp_path / "decisions.yml"),
+        "--data-dir",
+        str(data_dir),
+        "--no-pig-staging",
+        "--tpn-staging",
+        str(tmp_path / "tpn.json"),
+        "--output-dir",
+        str(tmp_path / "review"),
+    ]
+    if dry_run:
+        command.append("--dry-run")
+    result = subprocess.run(command, capture_output=True, text=True, check=False)
+    assert result.returncode == 1
+    assert "COORDINATE_MISMATCH" in result.stderr
+    assert str(data_dir / "objects/KSW/KSW-0001.yml") in result.stderr
+    assert "Traceback" not in result.stderr
+    report = json.loads((tmp_path / "review/staging-review.json").read_text())
+    assert report["has_errors"] is True
+    assert report["written_paths"] == []
+    assert _tree_snapshot(data_dir) == before
+
+
+def test_existing_yaml_paths_are_preserved_by_review(tmp_path, make_data_dir):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_review_data(data_dir)
+    for name in ("objects/KSW/KSW-0001", "caves/C-0001"):
+        (data_dir / f"{name}.yml").rename(data_dir / f"{name}.yaml")
+    result = apply_review_decisions(
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}]},
+        staging_reports=StagingReports(tpn=_tpn_staging()),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors
+    assert {p.suffix for p in result.written_paths} == {".yaml"}
+    assert not (data_dir / "objects/KSW/KSW-0001.yml").exists()
+    assert not (data_dir / "caves/C-0001.yml").exists()
+    assert not has_errors(validate_data_dir(data_dir))
+
+
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize("field", ["object_external_refs", "cave_external_refs"])
+@pytest.mark.parametrize("payload", [{"system": "TPN"}, [None], None])
+def test_malformed_selected_references_are_not_silently_dropped(
+    tmp_path, make_data_dir, write, field, payload
+):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_review_data(data_dir)
+    staging = _tpn_staging()
+    staging["matched_measurements"][0][field] = payload
+    before = _tree_snapshot(data_dir)
+    result = apply_review_decisions(
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}]},
+        staging_reports=StagingReports(tpn=staging),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    assert any(field in issue.description for issue in result.issues)
+    assert _tree_snapshot(data_dir) == before
+
+
+@pytest.mark.parametrize("write", [False, True])
+def test_unhashable_reference_type_in_selected_payload_returns_schema_report(
+    tmp_path, make_data_dir, write
+):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_review_data(data_dir)
+    staging = _tpn_staging()
+    staging["matched_measurements"][0]["object_external_refs"] = [
+        {"system": "PIG", "ref_type": [], "external_id": "test"}
+    ]
+    before = _tree_snapshot(data_dir)
+    result = apply_review_decisions(
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}]},
+        staging_reports=StagingReports(tpn=staging),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    assert any("SCHEMA_VALIDATION" in issue.description for issue in result.issues)
+    assert _tree_snapshot(data_dir) == before
+
+
+@pytest.mark.parametrize("write", [False, True])
+def test_malformed_duplicate_reference_is_validated_before_deduplication(
+    tmp_path, make_data_dir, write
+):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_review_data(data_dir)
+    staging = _tpn_staging()
+    update = staging["matched_measurements"][0]
+    path = data_dir / "objects/KSW/KSW-0001.yml"
+    obj = _read_yaml(path)
+    obj["external_refs"] = deepcopy(update["object_external_refs"])
+    _write_yaml(path, obj)
+    update["object_external_refs"][0]["scope"] = "invalid"
+    before = _tree_snapshot(data_dir)
+    result = apply_review_decisions(
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}]},
+        staging_reports=StagingReports(tpn=staging),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    assert any("SCHEMA_VALIDATION" in issue.description for issue in result.issues)
+    assert _tree_snapshot(data_dir) == before
+
+
+def test_review_snapshot_keeps_all_paths_for_shared_cave_id(tmp_path, make_data_dir):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_review_data(data_dir)
+    extra = _cave_data(object_ids=["KSW-0001"])
+    extra["name"] = "Separate source file"
+    extra_path = data_dir / "caves/C-0001.yaml"
+    _write_yaml(extra_path, extra)
+    assert not has_errors(validate_data_dir(data_dir))
+    dataset = load_dataset(data_dir)
+    objects = {r.data["id"]: deepcopy(r.raw_data) for r in dataset.objects}
+    caves = {r.data["id"]: deepcopy(r.raw_data) for r in dataset.caves}
+    caves["C-0001"]["notes"] = "review update"
+    prospective = _dataset_with_review_changes(
+        dataset, data_dir=data_dir, objects=objects, caves=caves
+    )
+    assert len(prospective.caves) == 2
+    assert {r.path for r in prospective.records()} == {r.path for r in dataset.records()}
+    assert next(r.raw_data for r in prospective.caves if r.path == extra_path) == extra
+    canonical = next(r.raw_data for r in prospective.caves if r.path.suffix == ".yml")
+    assert canonical["notes"] == "review update"
+    before = _tree_snapshot(data_dir)
+    result = apply_review_decisions(
+        {"decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}]},
+        staging_reports=StagingReports(tpn=_tpn_staging()),
+        data_dir=data_dir,
+    )
+    assert not result.has_errors
+    assert extra_path not in result.written_paths
+    assert _tree_snapshot(data_dir)[Path("caves/C-0001.yaml")] == before[Path("caves/C-0001.yaml")]
+    assert not has_errors(validate_data_dir(data_dir))
 
 
 def test_apply_review_directly_materializes_pig_and_tpn_decisions(
@@ -489,6 +889,7 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path, make_data_d
         invalid_measurement_dir / "objects" / "KSW" / "KSW-0001.yml",
         _object_data(cave_id="C-0001"),
     )
+    _write_yaml(invalid_measurement_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
     invalid_tpn = deepcopy(_tpn_staging())
     invalid_tpn["matched_measurements"][0]["measurement"] = None
     invalid_measurement = apply_review_decisions(
@@ -503,12 +904,13 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path, make_data_d
     )
 
     duplicate_dir = make_data_dir(tmp_path / "data-duplicate-measurement")
-    _write_yaml(
-        duplicate_dir / "objects" / "KSW" / "KSW-0001.yml",
-        _object_data(
-            cave_id="C-0001", measurement=_measurement("m-002", source="TPN", source_ref="")
-        ),
+    duplicate_object = _object_data(
+        cave_id="C-0001", measurement=_measurement("m-002", source="TPN", source_ref="")
     )
+    duplicate_object["best_measurement"]["measurement_id"] = "m-002"
+    duplicate_object["id_assignment"]["assigned_from_measurement_id"] = "m-002"
+    _write_yaml(duplicate_dir / "objects/KSW/KSW-0001.yml", duplicate_object)
+    _write_yaml(duplicate_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
     duplicate = apply_review_decisions(
         {
             "reviewed_at": "2026-05-16T10:37:00Z",

@@ -565,6 +565,15 @@ Operator decyduje:
 
 Pełny model merge/split obiektów zostaje poza V1.
 
+Przed zastosowaniem decyzji review walidujemy kompletny istniejący zbiór
+obiektów, jaskiń i relacji. Decyzje pracują na kopii w pamięci; po całej
+partii `validate_dataset(...)` sprawdza pełny przyszły stan według obecnych
+reguł schematu i domeny. Błąd wejścia, payloadu lub dowolnej decyzji blokuje
+wszystkie finalne zapisy (`has_errors=true`, `written_paths=[]`), zachowując
+ścieżkę i kod reguły w diagnostyce. Dry-run wykonuje identyczną ocenę.
+Ostrzeżenia nie blokują zapisu. Gwarancja dotyczy preflight przed zapisem;
+nie obejmuje odporności na awarię procesu ani rollbacku I/O.
+
 ---
 
 ## 9. Historia i najlepszy aktualny stan

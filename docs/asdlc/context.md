@@ -42,9 +42,18 @@ Last updated: 2026-10-15
   `completed/success` dla dokładnie tego SHA, job i wszystkie 13 kroków
   przeszły. [Log PBI-080](verification/PBI-080.md) zawiera pełne dowody.
   Bieżący checkpoint dokumentacyjny utrwala ten wynik; jego własny SHA
-  oraz CI sprawdza się w Git/PR. Zakończyć po PBI-080 i CI końcowego SHA.
-- Następne gotowe: **PBI-081 / R3: walidacja całej transakcji review**.
-  Nie rozpoczęto go; kolejna sesja autoryzuje jedno gotowe PBI.
+  oraz CI sprawdza się w Git/PR. Checkpoint `12a7287a0727cd43398023eba13c7cdf5286e7b0`
+  ma potwierdzone [CI 38732559115](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38732559115)
+  `completed/success` dla tego SHA.
+- **PBI-081 / R3: zweryfikowane — do dostarczenia**. Applier waliduje
+  istniejący i kompletny przyszły zbiór przed zapisem, również w dry-run.
+  Błąd schematu/domeny lub ostatniej decyzji blokuje wszystkie finalne
+  zapisy. Zachowuje relacje, wszystkie ścieżki, surowe dane i historię;
+  wybrane referencje są walidowane przed deduplikacją. Dowody i dokładny
+  pozostały krok: [log PBI-081](verification/PBI-081.md).
+- Po dostarczeniu PBI-081 następne będzie **PBI-082 / R4: kontekst TPN**.
+  Nie rozpoczęto go. Zakończyć obecną sesję po pushu i CI końcowego SHA
+  PBI-081; kolejna sesja autoryzuje jedno gotowe PBI.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
   `build/`, `/tmp`, czatu ani pamięci konta.

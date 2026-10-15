@@ -130,6 +130,14 @@ def validate_dataset(
     return tuple(issues)
 
 
+def validate_record_schema(
+    record: LoadedYamlRecord, *, schema_dir: Path = DEFAULT_SCHEMA_DIR
+) -> tuple[ValidationIssue, ...]:
+    """Check a proposal's shape before review actions consume its nested values."""
+
+    return _validate_schema((record,), _load_schema_validators(schema_dir))
+
+
 def format_issue(issue: ValidationIssue) -> str:
     """Format an issue as deterministic tab-separated report output."""
 
@@ -389,7 +397,7 @@ def _validate_object_domain_warnings(
                 )
             )
 
-        if system == "PIG" and ref_type in {"catalog_id", "url"}:
+        if system == "PIG" and isinstance(ref_type, str) and ref_type in {"catalog_id", "url"}:
             issues.append(
                 ValidationIssue(
                     code="PIG_CATALOG_REFERENCE_ON_OBJECT",

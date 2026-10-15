@@ -23,7 +23,7 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 0 | PBI-078 | plan | Plan, trwały raport, nowy punkt kontynuacji | — | wykonane |
 | 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | wykonane |
 | 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | wykonane |
-| 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | planowane — gotowe |
+| 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | zweryfikowane — do dostarczenia |
 | 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | planowane |
 | 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | planowane |
 | 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | planowane |
@@ -121,6 +121,8 @@ z plikiem, kluczem i pozycją błędu.
 
 ### PBI-081: Walidować kompletną transakcję review przed zapisem
 
+Status: zweryfikowane — do dostarczenia. [Log weryfikacji](verification/PBI-081.md).
+
 Priorytet P1, R3. Spec: §8.1, §8.3, §9.1, §11.1. Poprzednik: PBI-080.
 Dyrektywa: walidować wejściowe finalne dane oraz cały stan po wszystkich
 decyzjach, zanim applier rozpocznie zapis. Zachować obiekty, jaskinie
@@ -134,14 +136,14 @@ data_dir, write=True) -> StagingReviewResult` nadal zwraca raport;
 błąd schematu/domeny daje `has_errors=True`, diagnostykę i `written_paths=()`.
 Używa `validate_dataset(...)` z aktualnymi regułami, także dla `write=False`.
 
-- [ ] R3: `lat=0` przy niezmienionych PL-1992 zostaje odrzucone przed zapisem.
-- [ ] Niepoprawny istniejący zbiór, uszkodzony payload, brakujący cel/cave,
+- [x] R3: `lat=0` przy niezmienionych PL-1992 zostaje odrzucone przed zapisem.
+- [x] Niepoprawny istniejący zbiór, uszkodzony payload, brakujący cel/cave,
       utracona referencja relacji i błąd ostatniej decyzji blokują całą partię.
-- [ ] Dla błędu hash i lista plików finalnego katalogu są niezmienione;
+- [x] Dla błędu hash i lista plików finalnego katalogu są niezmienione;
       żaden wcześniejszy poprawny element partii nie jest zapisany.
-- [ ] Dry-run i zapis mają zgodną ocenę walidacji; poprawna wielodecyzyjna
+- [x] Dry-run i zapis mają zgodną ocenę walidacji; poprawna wielodecyzyjna
       partia działa i po zapisie przechodzi walidację pełnego katalogu.
-- [ ] Uruchomić testy review/walidatora, pełną bramkę i mutacje warunku
+- [x] Uruchomić testy review/walidatora, pełną bramkę i mutacje warunku
       preflight. Nie deklarować odporności na awarię procesu/I/O, której
       ten zakres nie implementuje. R5–R7 nadal mają osobne karty.
 - [ ] Dostarczyć `fix: validate review state before writes (PBI-081)`.

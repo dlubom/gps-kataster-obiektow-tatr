@@ -8,17 +8,69 @@ import pytest
 import yaml
 
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
+from gps_kataster_obiektow_tatr.data_loader import (
+    DataKind,
+    LoadedDataset,
+    LoadedYamlRecord,
+    load_dataset,
+)
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
 from gps_kataster_obiektow_tatr.validator import (
     ValidationIssue,
     ValidationSeverity,
     validate_data_dir,
+    validate_dataset,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VALIDATE_SCRIPT = REPO_ROOT / "scripts" / "validate.py"
 KSW_LAT = 49.23459299
 KSW_LON = 19.87589498
+
+
+def test_unhashable_pig_reference_type_reports_schema_error(tmp_path):
+    data_dir = tmp_path / "data"
+    obj = _valid_object()
+    obj["external_refs"] = [{"system": "PIG", "ref_type": [], "external_id": "test"}]
+    _write_object(data_dir, obj)
+    issues = validate_data_dir(data_dir)
+    assert "SCHEMA_VALIDATION" in _codes(issues)
+    assert _severities(issues, "SCHEMA_VALIDATION") == {ValidationSeverity.ERROR}
+
+
+@pytest.mark.parametrize("target", ["object", "cave", "relation"])
+def test_in_memory_dataset_validates_all_record_kinds_without_writing(tmp_path, target):
+    data_dir = tmp_path / "data"
+    _write_object(data_dir, _valid_object())
+    dataset = load_dataset(data_dir)
+    if target == "object":
+        data = deepcopy(dataset.objects[0].raw_data)
+        data["measurements"][0]["lat"] = 0
+        record = LoadedYamlRecord(DataKind.OBJECT, dataset.objects[0].path, data, data)
+        prospective = LoadedDataset((record,), dataset.caves, ())
+        expected = "COORDINATE_MISMATCH"
+    elif target == "cave":
+        data = deepcopy(dataset.caves[0].raw_data)
+        data["object_ids"].append("KSW-9999")
+        record = LoadedYamlRecord(DataKind.CAVE, dataset.caves[0].path, data, data)
+        prospective = LoadedDataset(dataset.objects, (record,), ())
+        expected = "CAVE_OBJECT_REFERENCE_MISSING"
+    else:
+        data = {
+            "schema_version": 1,
+            "id": "R-0001",
+            "relation_type": "sasiad",
+            "from_object_id": "KSW-0001",
+            "to_object_id": "KSW-9999",
+        }
+        record = LoadedYamlRecord(DataKind.RELATION, data_dir / "relations/R-0001.yml", data, data)
+        prospective = LoadedDataset(dataset.objects, dataset.caves, (record,))
+        expected = "RELATION_OBJECT_REFERENCE_MISSING"
+    before = {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()}
+    issues = validate_dataset(prospective, data_dir=data_dir)
+    assert any(i.code == expected and i.path == record.path for i in issues)
+    assert {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()} == before
+    assert not any(i.severity == ValidationSeverity.ERROR for i in validate_data_dir(data_dir))
 
 
 @pytest.mark.parametrize("replacement", ["same", "best-only"])
