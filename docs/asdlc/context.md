@@ -4,151 +4,59 @@ Last updated: 2026-10-15
 
 ## Current handoff — nowa seria z main
 
-- Użytkownik 2026-10-15 polecił porzucić poprzednie gałęzie i przygotować
-  nowy plan z aktualnego main: trzy P1, następnie dane, następnie reszta P2.
-- Po `git fetch origin` utworzono `codex/main-remediation-2026-10` z
-  `origin/main` = `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`.
-  Dawna seria `codex/review-remediation` (origin
-  `7ea802ba29d81ba47da080050ce0b3e71b2389d5`) jest porzucona.
-  PBI-034–077 nie są wdrożone na nowej bazie i ich numerów nie używamy ponownie.
-- **PBI-078 wykonane: dokumentacja planu.** Plan dostarczono w
-  `d0dde99764acf8083695d78d11d94dd36fe5375f`, checkpoint
-  `fc8b55b58a8bb9b82fbde22ac8117c7c6e447618`. CI checkpointu
-  [38727319092](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38727319092)
-  zakończone sukcesem. [Backlog](backlog_v1.md#naprawy-main-po-przegladzie-2026-10-12),
-  [plan](remediation_plan.md), [runbook](remediation_runbook.md).
-- **PBI-079 wykonane**. Loader odrzuca brak lub plik
-  zamiast root/objects/caves/relations. API/CLI blokują wyjścia z czytelnym
-  błędem; pełny pusty zbiór pozostaje legalny po jawnej inicjalizacji.
-  Dowody i dostarczenie: [log PBI-079](verification/PBI-079.md).
-  Pełna bramka: 285 testów, Ruff, 0 błędów i 2066 dotychczasowych ostrzeżeń;
-  7/7 celowanych mutantów zabitych, niezależny review bez ustaleń.
-  Ponowny odczyt wszystkich artefaktów i hash 2039 plików `data/` zgodne.
-- Commit PBI-079: `ce57697a3c1bc6d6daf0039e6939070f187f80cd`, remote SHA
-  zgodny. [CI 38729365201](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38729365201)
-  `completed/success` dla dokładnie tego SHA; job i wszystkie kroki przeszły.
-  [Draft PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4)
-  pozostaje draft. Checkpoint `54dcf0a35e0fbad9bf17ac14ef9d0973816491b1`
-  ma potwierdzone [CI 38729658923](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38729658923)
-  `completed/success` dla dokładnie tego SHA.
-- **PBI-080 / R2 wykonane**: wspólny bezpieczny parser odrzuca duplikaty
-  kluczy rekordów/decyzji przed normalizacją oraz po merge; zwykłe aliasy
-  i rozłączne merge zachowują wartości i kolejność. Pełna bramka:
-  336 testów, Ruff, 0 błędów i 2066 ostrzeżeń; 9/9 celowanych mutantów
-  zabitych, readback 7 artefaktów i hash 2039 plików `data/` zgodne;
-  niezależny review bez ustaleń.
-  Commit `5d4000075ba02e5be389562360796db7033e7144`, zgodny z origin;
-  [CI 38732298675](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38732298675)
-  `completed/success` dla dokładnie tego SHA, job i wszystkie 13 kroków
-  przeszły. [Log PBI-080](verification/PBI-080.md) zawiera pełne dowody.
-  Bieżący checkpoint dokumentacyjny utrwala ten wynik; jego własny SHA
-  oraz CI sprawdza się w Git/PR. Checkpoint `12a7287a0727cd43398023eba13c7cdf5286e7b0`
-  ma potwierdzone [CI 38732559115](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38732559115)
-  `completed/success` dla tego SHA.
-- **PBI-081 / R3 wykonane**. Applier waliduje
-  istniejący i kompletny przyszły zbiór przed zapisem, również w dry-run.
-  Błąd schematu/domeny lub ostatniej decyzji blokuje wszystkie finalne
-  zapisy. Zachowuje relacje, wszystkie ścieżki, surowe dane i historię;
-  wybrane referencje są walidowane przed deduplikacją. Dowody:
-  [log PBI-081](verification/PBI-081.md). Końcowa bramka: 405 testów,
-  Ruff, 0 błędów/2066 ostrzeżeń, 15/15 mutantów zabitych, readback 7/7;
-  2039 plików danych bez zmian. Trzy ustalenia review naprawiono z RED/GREEN.
-- Commit PBI-081: `84511a9a9386fc1165471683304477cf853ee39e`, remote SHA
-  zgodny. [CI 38738362125](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38738362125)
-  `completed/success` dla tego SHA; jedyny job i wszystkie 13 kroków
-  przeszły. Draft PR #4 zachowany. Ten checkpoint dokumentacyjny utrwala
-  wynik; jego własny SHA oraz CI sprawdza się w Git/PR po pushu.
-- **PBI-082 / R4 wykonane: kontekst TPN**. Nowe i dopasowane propozycje
-  zachowują `WER_LOK`/`UWAGI` przy pomiarze. Jednorazowe narzędzie
-  uzupełniło 469 pomiarów w 469 plikach po dwóch referencjach TPN;
-  [manifest](verification/PBI-082-manifest.json) ogranicza zmiany do notes
-  i audytu. 449 wartości WER_LOK i 81 UWAGI; powtórzenie bez zmian.
-  Surowe źródła, współrzędne/best/statusy/kategorie zachowane. Wiersz 476
-  Smoczej Jamy pominięty, bo brak referencji GLOBALID. DBF zachowuje UTF-8
-  przy limicie 254 bajtów pola. [Log PBI-082](verification/PBI-082.md).
-  Końcowy pytest po poprawce review: 456/456, Ruff, walidacja/release
-  0 błędów/2066 ostrzeżeń, odczyt 7/7 artefaktów, 19/19 mutantów zabitych.
-  Ustalenie review o lokalnych ID naprawione z 14 testami RED/GREEN.
-- Commit PBI-082: `ee64d95baeee9c8619c792c46d4411cf56652cda`, remote SHA
-  zgodny. [CI 38743001717](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38743001717)
-  `completed/success` dla tego SHA; jedyny job i wszystkie 13 kroków
-  przeszły. Draft PR #4 zachowany i opisany zgodnie z zakresem PBI-079–082.
-  Ten checkpoint dokumentacyjny utrwala wynik; jego własny SHA i CI
-  sprawdza się w Git/PR po pushu, bez kolejnej serii wpisów z własnym SHA.
-- **PBI-083 / R8 wykonane**: skorygowano STR-0024 do `sztolnia` z dowodem
-  TPN row 273/GLOBALID. CHZ-0011 zachowuje kategorię z jawną niepewnością
-  mieszanego otworu jaskini/sztolni. [Raport decyzji](reviews/data-decisions-2026-10.md)
-  i JSON zawierają wszystkie 72 pary odległości/72 obiekty oraz 11 grup/23
-  obiekty identycznych best, źródła/hashe i brakujące dowody dla każdego.
-  [Manifest](verification/PBI-083-manifest.json) ogranicza zmiany do 2 plików,
-  kategorii STR, notes i audytu. Pomiary/best/statusy i surowe źródła zachowane.
-  Importer nie upraszcza mieszanej genezy do sztolni po nazwie; pełne GENEZA
-  i wymóg review zachowane w nowej propozycji. Bramka: 462 testy, Ruff,
-  0 błędów/2066 ostrzeżeń, odczyt 7/7, 6/6 celowanych mutantów zabitych.
-  [Log PBI-083](verification/PBI-083.md); niezależny review bez ustaleń.
-- Commit PBI-083: `53622da2186cb31489d9fc73205c7e778aa11c67`, remote SHA
-  zgodny. [CI 38746082854](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38746082854)
-  `completed/success` dla tego SHA; jedyny job i wszystkie 13 kroków
-  przeszły. Draft PR #4 pozostaje draft; opis obejmuje PBI-079–083.
-  Checkpoint dokumentacyjny utrwala wynik; jego własny SHA i CI sprawdza
-  się po pushu z Git/PR, bez kolejnej serii wpisów własnego SHA.
-- **PBI-084 / R5 wykonane**: kontrola skończoności wszystkich pól pomiaru
-  przed geometrią/best i zapisem review/artefaktów, również CSV/XLSX
-  i kandydatów staging JSON/YAML. Dane finalne i źródła bez zmian.
-  [Log PBI-084](verification/PBI-084.md) zawiera zakres, RED/GREEN
-  i poprawkę Important z review (konwersja kandydata do NaN/Infinity).
-  Pełna bramka: 731 testów, Ruff, 0 błędów/2066 ostrzeżeń, readback 7/7,
-  data/ 2039/2039 identyczne, 23/23 celowanych mutantów zabitych.
-  Commit `ed771aa5e82d14ced82625fb2be19a7bcfd899a4`, remote zgodny;
-  [CI 38751717907](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38751717907)
-  `completed/success` dla tego SHA, job i wszystkie 13 kroków przeszły.
-  Draft PR #4 zachowany, opis obejmuje PBI-079–084. Ten dokumentacyjny
-  checkpoint utrwala wynik; jego SHA i CI sprawdza się po pushu z Git/PR,
-  bez kolejnego commitu tylko na wpisanie własnego SHA.
-- **PBI-085 / R6 wykonane**. Walidator odrzuca
-  kolizję lokalnego ID pomiaru przed indeksowaniem, referencjami best/
-  załącznika i wyborem best. Review, SQLite i eksporty blokują zapis;
-  bezpośredni selektor best również odrzuca kolizję. Lokalny zakres ID,
-  kolejność i treść poprawnej historii zachowane. Dane bez zmian.
-  [Log PBI-085](verification/PBI-085.md): 755 testów, Ruff, 0 błędów/
-  2066 ostrzeżeń, readback 7/7, data/ 2039/2039 identyczne, 10/10
-  celowanych mutantów zabitych. Niezależny review bez ustaleń.
-- Commit `241b13425ebe443feb55cc1f855844e077769982`, remote zgodny;
-  [CI 38770731088](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38770731088)
-  `completed/success` dla tego SHA; jedyny job i wszystkie 13 kroków
-  przeszły. Draft PR #4 zachowany, opis obejmuje PBI-079–085. Ten
-  checkpoint dokumentacyjny utrwala dostarczenie; jego własny SHA i CI
-  sprawdza się po pushu z Git/PR, bez kolejnego commitu na własny SHA.
-- **PBI-086 / R7 wykonane.** Link_cave przenosi
-  członkostwo i audyt starej/nowej jaskini, walidator sprawdza obie strony.
-  [Log PBI-086](verification/PBI-086.md): 781 testów, Ruff, 0 błędów/
-  2066 ostrzeżeń, readback 7/7 (w tym członkostwa SQLite/YAML), data/
-  2039/2039 bez zmian, 13/13 mutantów zabitych; niezależny review bez ustaleń.
-  Ponowiono R1–R8: błędy blokowane/relink poprawny, kontekst TPN zachowany,
-  kategorie udokumentowane. Niepewności terenowe z PBI-083 pozostają;
-  wiersz TPN 476 nadal pominięty przez brak jednoznacznego GLOBALID.
-  Commit `5019ee89ab4a3a1a848cb4e099b8fec172a1d18d`, origin zgodny;
-  [CI 38773366343](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38773366343)
-  completed/success dla tego SHA; job i wszystkie 13 kroków przeszły.
-  Draft PR #4 zachowany, opis obejmuje całą serię PBI-079–086.
-  Ten checkpoint utrwala wynik; jego własny SHA i CI sprawdza się po
-  pushu z Git/PR, bez kolejnego commitu na wpisanie własnego SHA.
-  Po PBI-086 brak kolejnej gotowej karty tej serii. Zakończyć; bez merge/tag/release.
-- Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
-  i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
-  `build/`, `/tmp`, czatu ani pamięci konta.
-- Bazowy katalog: 1009 obiektów, 1003 jaskinie, 1875 pomiarów, 0 relacji;
-  0 błędów, 2066 ostrzeżeń. Review nie znalazło aktualnych duplikatów
-  kluczy/ID, NaN ani niesymetrycznych powiązań. R1–R3/R5–R7 odtworzono
-  na kopiach; R4/R8 dotyczą obecnych danych.
-- Historyczne 72 ostrzeżenia odległości (maks. 2,49 km) i 11 grup
-  identycznych pozycji best są niepewnością źródeł, nie dowodem duplikatu
-  lub błędnej lokalizacji. Ich ocena i brakujące dowody są zapisane w raporcie PBI-083.
-- Na nowej bazie nie ma `scripts/verify_project.py`; runbook wskazuje
-  istniejące polecenia. CI działa przez draft PR. Bez merge/tag/release.
+**PBI-078–086 wykonane; seria zakończona w zaplanowanym zakresie.**
+Aktywna gałąź: `codex/main-remediation-2026-10`, baza main
+`a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`.
+[PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4) jest otwarty
+(do review). Checkpoint końca serii `044fc0343dc8d92d0c4fb0b635791bd2f945fa55`
+ma potwierdzone [CI 38773770498](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38773770498):
+`completed/success`, job `Validate code and data` i wszystkie 13 kroków.
+Bieżący SHA oraz CI po kolejnych zmianach sprawdzaj w Git/PR.
 
-Poniższe opisy PBI-001–033 dokumentują historię main; aktualny punkt
-kontynuacji znajduje się wyłącznie w bloku powyżej i bieżącym backlogu.
+| PBI | Wynik / trwałe dowody |
+|---|---|
+| [078](verification/PBI-078.md) | Plan i przenośny raport R1–R8. |
+| [079](verification/PBI-079.md) | Brak lub plik zamiast wymaganego katalogu blokuje zapis. |
+| [080](verification/PBI-080.md) | Duplikaty kluczy YAML odrzucane przed normalizacją i po merge. |
+| [081](verification/PBI-081.md) | Cały istniejący/przyszły zbiór przechodzi preflight, także w dry-run. |
+| [082](verification/PBI-082.md) | Kontekst TPN przy pomiarach; 469 uzupełnień według manifestu. |
+| [083](verification/PBI-083.md) | STR-0024: sztolnia; CHZ-0011 i rozbieżności mają jawne oceny źródłowe. |
+| [084](verification/PBI-084.md) | NaN/Infinity odrzucane przed geometrią, best i zapisem. |
+| [085](verification/PBI-085.md) | Lokalne ID pomiarów unikalne przed indeksowaniem i wyborem best. |
+| [086](verification/PBI-086.md) | Symetria członkostwa i relink; końcowe ponowienie R1–R8. |
+
+Końcowy odbiór serii: **781 testów**, Ruff, **0 błędów / 2066 ostrzeżeń**,
+readback **7/7** artefaktów. Katalog: **1009 obiektów, 1003 jaskinie,
+1875 pomiarów, 0 relacji**. Commity, CI, reprodukcje i mutacje są w logach PBI.
+Zmiany danych ograniczają [manifest PBI-082](verification/PBI-082-manifest.json)
+i [manifest PBI-083](verification/PBI-083-manifest.json); źródła pozostały niezmienne.
+
+## Ograniczenia i kontynuacja
+
+- **72 ostrzeżenia odległości** (maks. 2,49 km) oraz **11 grup / 23 obiekty**
+  o identycznych best nie rozstrzygają lokalizacji ani duplikatów.
+  [Oceny i brakujące dowody](reviews/data-decisions-2026-10.md) obejmują
+  również mieszaną genezę CHZ-0011. Nie zmieniono punktów, best ani statusów.
+- TPN row 476 (Smocza Jama) pozostaje pominięty przy uzupełnianiu notes:
+  brak jednoznacznej referencji GLOBALID; szczegóły w logu PBI-082.
+- Preflight nie zapewnia rollbacku po awarii I/O ani ochrony przed
+  równoczesną edycją. Limit bardzo dużych skończonych integerów w SQLite
+  opisuje [PBI-084](verification/PBI-084.md).
+- Brak kolejnej gotowej karty tej serii. Nowa praca wymaga polecenia;
+  merge, tag i release wymagają osobnej zgody.
+- Porzuconych `codex/review-remediation` i PBI-034–077 nie wznawiamy ani
+  nie przenosimy. Szczegóły decyzji: [plan](remediation_plan.md).
+- Przy kontynuacji fetch/pull aktywnej gałęzi i [runbook](remediation_runbook.md).
+  Na tej bazie nie ma `scripts/verify_project.py`. Kolejność i kryteria:
+  [backlog](backlog_v1.md#naprawy-main-po-przegladzie-2026-10-12).
+
+## Historia main — PBI-001–033
+
+<details>
+<summary>Historyczny kontekst i dowody sprzed bieżącej serii</summary>
+
+Poniższe zapisy dokumentują historię main; aktualny punkt kontynuacji
+znajduje się powyżej. Zachowano je jako dowody wcześniejszych etapów.
 
 ## Current mode
 
@@ -1039,3 +947,5 @@ After PBI-033 on 2026-07-11:
   and artifact contracts stay in `docs/operations.md`,
   `docs/release_artifacts.md` and the project specification instead of being
   duplicated in another developer README.
+
+</details>

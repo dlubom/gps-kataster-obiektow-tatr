@@ -32,18 +32,12 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 
 ### Wspólny kontrakt wykonania
 
-Odniesienie: [spec v2](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md).
-Każda karta dziedziczy bramkę i dostarczenie z runbooka. Dla napraw kodu:
-test odtwarzający błąd → potwierdzone niepowodzenie → poprawka → testy
-obszaru → pełna bramka → review diffu → commit/push i CI dla tego SHA.
-Nie dodajemy oddzielnych PBI na konfigurację, testy czy dokumentację
-potrzebną do danej naprawy. Nie rozpoczynamy implementacji w PBI-078.
-
-Pliki wspólne każdej realizacji: odpowiednie testy obszaru,
-`docs/asdlc/backlog_v1.md`, `docs/asdlc/context.md`,
-`docs/asdlc/verification/PBI-NNN.md` oraz dokumentacja zmienianego kontraktu.
-Zmiany specyfikacji są jawne i w tym samym PBI; rozszerzenie granic V1
-wymaga odrębnej decyzji. Nie przejmujemy automatycznie zakresu starych PBI.
+Każda karta dziedziczy bramkę i dostarczenie z [runbooka](remediation_runbook.md)
+oraz granice danych z [planu](remediation_plan.md). Testy i dokumentacja
+należą do tej samej naprawy. Status zapisujemy tutaj, aktualny punkt
+kontynuacji w `context.md`, a dowody w `verification/PBI-NNN.md`.
+Zmiany kontraktu [spec v2](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md)
+są jawne; rozszerzenie V1 wymaga odrębnej decyzji.
 
 ### PBI-078: Utrwalić nowy plan z aktualnego main
 
