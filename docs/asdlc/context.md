@@ -105,7 +105,7 @@ Last updated: 2026-10-15
   Draft PR #4 zachowany, opis obejmuje PBI-079–084. Ten dokumentacyjny
   checkpoint utrwala wynik; jego SHA i CI sprawdza się po pushu z Git/PR,
   bez kolejnego commitu tylko na wpisanie własnego SHA.
-- **PBI-085 / R6 zweryfikowane — do dostarczenia**. Walidator odrzuca
+- **PBI-085 / R6 wykonane**. Walidator odrzuca
   kolizję lokalnego ID pomiaru przed indeksowaniem, referencjami best/
   załącznika i wyborem best. Review, SQLite i eksporty blokują zapis;
   bezpośredni selektor best również odrzuca kolizję. Lokalny zakres ID,
@@ -113,8 +113,14 @@ Last updated: 2026-10-15
   [Log PBI-085](verification/PBI-085.md): 755 testów, Ruff, 0 błędów/
   2066 ostrzeżeń, readback 7/7, data/ 2039/2039 identyczne, 10/10
   celowanych mutantów zabitych. Niezależny review bez ustaleń.
-  Pozostał commit/push i exact-SHA CI, następnie checkpoint dokumentacji.
-- PBI-086 / R7 pozostaje planowane; ta sesja kończy się po PBI-085.
+- Commit `241b13425ebe443feb55cc1f855844e077769982`, remote zgodny;
+  [CI 38770731088](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38770731088)
+  `completed/success` dla tego SHA; jedyny job i wszystkie 13 kroków
+  przeszły. Draft PR #4 zachowany, opis obejmuje PBI-079–085. Ten
+  checkpoint dokumentacyjny utrwala dostarczenie; jego własny SHA i CI
+  sprawdza się po pushu z Git/PR, bez kolejnego commitu na własny SHA.
+- Następne gotowe: **PBI-086 / R7**, nie rozpoczęto. Zakończyć po pushu
+  i CI końcowego checkpointu PBI-085.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
   `build/`, `/tmp`, czatu ani pamięci konta.

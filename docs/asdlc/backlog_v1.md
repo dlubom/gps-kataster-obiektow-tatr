@@ -27,8 +27,8 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | wykonane |
 | 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | wykonane |
 | 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | wykonane |
-| 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | zweryfikowane — do dostarczenia |
-| 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | planowane |
+| 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | wykonane |
+| 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | planowane — gotowe |
 
 ### Wspólny kontrakt wykonania
 
@@ -250,7 +250,7 @@ legalny. Nie zmieniać semantyki dokładności ani jednostek.
 
 ### PBI-085: Wymagać unikalnych ID pomiarów w obiekcie
 
-Status: zweryfikowane — do dostarczenia 2026-10-15.
+Status: wykonane 2026-10-15.
 [Log PBI-085](verification/PBI-085.md).
 
 Priorytet P2, R6. Spec: §4.3–4.4, §9, §11–12. Poprzednik: PBI-084.
@@ -270,7 +270,7 @@ istniejące publiczne API zachowują sposób raportowania błędów.
 - [x] To samo lokalne `m-001` w dwóch różnych obiektach jest poprawne;
       pomiary z różnymi ID zachowują kolejność i historię.
 - [x] Testy obszaru, pełna bramka i mutacje unikalności; dane bez zmian.
-- [ ] Dostarczyć `fix: validate local measurement identity (PBI-085)`.
+- [x] Dostarczyć `fix: validate local measurement identity (PBI-085)`.
 
 ### PBI-086: Przenosić powiązanie obiektu i walidować symetrię
 
