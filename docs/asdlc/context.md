@@ -58,7 +58,7 @@ Last updated: 2026-10-15
   `completed/success` dla tego SHA; jedyny job i wszystkie 13 kroków
   przeszły. Draft PR #4 zachowany. Ten checkpoint dokumentacyjny utrwala
   wynik; jego własny SHA oraz CI sprawdza się w Git/PR po pushu.
-- **PBI-082 / R4 zweryfikowane — do dostarczenia: kontekst TPN**. Nowe i dopasowane propozycje
+- **PBI-082 / R4 wykonane: kontekst TPN**. Nowe i dopasowane propozycje
   zachowują `WER_LOK`/`UWAGI` przy pomiarze. Jednorazowe narzędzie
   uzupełniło 469 pomiarów w 469 plikach po dwóch referencjach TPN;
   [manifest](verification/PBI-082-manifest.json) ogranicza zmiany do notes
@@ -69,9 +69,14 @@ Last updated: 2026-10-15
   Końcowy pytest po poprawce review: 456/456, Ruff, walidacja/release
   0 błędów/2066 ostrzeżeń, odczyt 7/7 artefaktów, 19/19 mutantów zabitych.
   Ustalenie review o lokalnych ID naprawione z 14 testami RED/GREEN.
-  Wymagane commit/push, remote SHA i CI końcowego SHA.
-- Po dostarczeniu PBI-082 następne będzie **PBI-083 / R8**.
-  Nie rozpoczęto go. Zakończyć obecną sesję po pushu i CI PBI-082.
+- Commit PBI-082: `ee64d95baeee9c8619c792c46d4411cf56652cda`, remote SHA
+  zgodny. [CI 38743001717](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38743001717)
+  `completed/success` dla tego SHA; jedyny job i wszystkie 13 kroków
+  przeszły. Draft PR #4 zachowany i opisany zgodnie z zakresem PBI-079–082.
+  Ten checkpoint dokumentacyjny utrwala wynik; jego własny SHA i CI
+  sprawdza się w Git/PR po pushu, bez kolejnej serii wpisów z własnym SHA.
+- Następne gotowe: **PBI-083 / R8**. Nie rozpoczęto go.
+  Zakończyć obecną sesję po pushu i CI końcowego checkpointu PBI-082.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
   `build/`, `/tmp`, czatu ani pamięci konta.

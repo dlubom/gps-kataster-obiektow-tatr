@@ -24,8 +24,8 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | wykonane |
 | 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | wykonane |
 | 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | wykonane |
-| 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | zweryfikowane — do dostarczenia |
-| 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | planowane |
+| 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | wykonane |
+| 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | planowane — gotowe |
 | 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | planowane |
 | 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | planowane |
 | 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | planowane |
@@ -150,7 +150,7 @@ Używa `validate_dataset(...)` z aktualnymi regułami, także dla `write=False`.
 
 ### PBI-082: Zachować i odtworzyć kontekst pomiarów TPN
 
-Status: zweryfikowane — do dostarczenia 2026-10-15.
+Status: wykonane 2026-10-15.
 [Log weryfikacji](verification/PBI-082.md).
 
 Priorytet dane/P2, R4. Spec: §4.3, §7.1, §9, §13. Poprzednik: PBI-081.
@@ -184,7 +184,7 @@ zmienionego rekordu, bez nowych pomiarów ani zmian współrzędnych/best/status
       długości, bez obietnicy przechowania pełnego długiego tekstu.
 - [x] Pełna bramka, kontrola dozwolonych pól danych, testy obszaru oraz
       mutacje dopasowania/ochrony treści. Surowe źródła bez zmian.
-- [ ] Dostarczyć `fix: preserve TPN location context (PBI-082)`.
+- [x] Dostarczyć `fix: preserve TPN location context (PBI-082)`.
 
 ### PBI-083: Skorygować kategorie i ocenić rozbieżności danych
 
