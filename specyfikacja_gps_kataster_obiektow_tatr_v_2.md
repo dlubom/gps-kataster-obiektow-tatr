@@ -152,6 +152,14 @@ Dopuszczalne wartości:
 
 Jedna `Jaskinia` ma 1..N powiązanych `Obiektów`, jeśli znane są jej otwory. W V1 dopuszczamy utworzenie `Jaskinia` przed pełnym rozpoznaniem wszystkich otworów.
 
+Powiązanie jest symetryczne: obiekt z `cave_id` musi być wymieniony
+w `object_ids` tej jaskini; każdy wpis `object_ids` musi mieć zgodne
+`Obiekt.cave_id`. Obiekt nie może należeć do innej jaskini ani być wymieniony
+bez zgodnego `cave_id`. Błędy `OBJECT_CAVE_MEMBERSHIP_MISSING` (ścieżka
+obiektu) i `CAVE_OBJECT_MEMBERSHIP_MISMATCH` (ścieżka jaskini) wskazują ID
+obu stron i blokują review/SQLite/eksporty. Brak zadeklarowanego powiązania
+oraz pusta jaskinia pozostają legalne.
+
 ### 4.3 `Pomiar`
 
 `Pomiar` oznacza pojedynczy pomiar, import lub ustalenie lokalizacyjne dotyczące konkretnego `Obiektu`.
@@ -181,8 +189,24 @@ Jedna `Jaskinia` ma 1..N powiązanych `Obiektów`, jeśli znane są jej otwory. 
 
 Zasady:
 
+- `Pomiar.id` jest unikalny w obrębie jednego obiektu, także dla identycznych
+  rekordów oraz pomiarów odrzuconych lub niewskazanych jako best. To samo
+  lokalne ID (np. `m-001`) w różnych obiektach jest dozwolone. Kolizja daje
+  błąd `DUPLICATE_MEASUREMENT_ID` z plikiem, ID obiektu i pomiaru, przed
+  indeksowaniem pomiarów i rozstrzyganiem referencji best/załącznika.
+  Review, SQLite i eksporty blokują wtedy zapis. Nie wybieramy pierwszego
+  rekordu, nie usuwamy duplikatu ani nie zmieniamy jego ID automatycznie.
+  Poprawna historia zachowuje wartości i kolejność. Bezpośredni selektor
+  best odrzuca powtórzone ID przez `ValueError` przed wyborem pomiaru.
 - `lat` i `lon` są obowiązkowe w danych źródłowych YAML. Jeśli import daje tylko EPSG:2180, importer przelicza do WGS84.
 - `x_1992` i `y_1992` są cache’owane i walidowane.
+- Wszystkie pola liczbowe pomiaru (`lat`, `lon`, `x_1992`, `y_1992`,
+  `elevation_m`, `horizontal_accuracy_m`, `vertical_accuracy_m`) muszą być
+  skończone. NaN i ±Infinity są błędem `MEASUREMENT_NON_FINITE` z plikiem,
+  ID obiektu/pomiaru i nazwą pola, przed geometrią, wyborem best i zapisem
+  review/SQLite/eksportów. Dotyczy to całej historii, także pomiarów
+  odrzuconych i niewybranych jako best. Opcjonalne `null` pozostaje legalne;
+  reguła nie zmienia jednostek, zakresów ani znaczenia dokładności.
 - `horizontal_accuracy_m` dotyczy dokładności poziomej, a nie wysokości.
 - Dla danych PIG/TPN bez znanej dokładności pole `horizontal_accuracy_m` może być puste.
 - Pomiar odrzucony nie jest usuwany, tylko dostaje `verification_status: odrzucony` oraz notatkę.
@@ -426,6 +450,13 @@ Dla importów:
 - jeśli źródło daje EPSG:2180, importer wylicza WGS84,
 - jeśli źródło daje oba układy, importer sprawdza spójność.
 
+Pomocnicze konwersje odrzucają nieskończone wejścia i wyniki przez
+`ValueError`; walidator/importer przekłada błąd projekcji na diagnostykę.
+Staging CSV/XLSX nie proponuje punktu z NaN/±Infinity, również w wysokości
+lub po przepełnieniu liczby (np. `1e999`). PIG zachowuje propozycję jaskini
+bez obiektu; TPN odrzuca wiersz. Wadliwy istniejący kandydat YAML/JSON
+przerywa staging TPN z błędem przed dopasowaniem i zapisem raportu.
+
 ---
 
 ## 7. Źródła danych i mapowanie
@@ -442,16 +473,35 @@ Plik TPN zawiera rekordy punktowe. W V1 przyjmujemy:
 | `NR_INWENT` | Numer inwentarzowy | `Jaskinia.external_refs`, `system: NR_INWENT`, `ref_type: inventory_number`. |
 | `NAZWA` | Nazwa jaskini / obiektu | `Jaskinia.name` lub `Obiekt.name_local` zależnie od przypadku. |
 | `OTWÓR` | Opis / nazwa otworu | Pomocniczo do `Obiekt.name_local` i `notes`. |
+| `GENEZA` | Charakter naturalny / górniczy | `sztolnia` uzasadnia kategorię `sztolnia`, także bez nazwy. Mieszane `jaskinia/sztolnia` zachowujemy jawnie do review. |
 | `X1992`, `Y1992` | Współrzędne PL-1992 | Importowane do `Pomiar`, po konwersji także WGS84. |
 | `Z` | Wysokość | `Pomiar.elevation_m`, z `elevation_source: source_record`. |
 | `DLUGOSC`, `GLEBOKOSC`, `DENIWELACJ` | Dane morfometryczne | W V1 raczej notatka / przyszłe pola jaskini, nie część obiektu terenowego. |
 | `SYSTEM` | Informacja o systemie | `Jaskinia.system_name`, jeśli jednoznaczne. |
+| `WER_LOK`, `UWAGI` | Kontekst i zastrzeżenia źródłowe lokalizacji | Etykietowane `TPN WER_LOK:` / `TPN UWAGI:` w `Pomiar.notes`, dla nowych i dopasowanych rekordów. |
 
 Zasady:
 
 - TPN `GLOBALID` jest najlepszym kandydatem na zewnętrzną referencję do konkretnego `Obiektu`.
+- Mieszana geneza `jaskinia/sztolnia` (również odwrotna kolejność) nie
+  rozstrzyga kategorii terenowej. Nowa propozycja staging zachowuje
+  `jaskinia_otwor` jako kategorię roboczą, pełne `TPN GENEZA` w notes
+  i jawny wymóg review kategorii, także gdy nazwa zawiera „sztolnia”.
+  Dopasowanie pomiaru nie zmienia kategorii istniejącego obiektu.
+  Zmiana finalnej kategorii wymaga dowodu i audytu, bez zmiany ID;
+  ocena rozbieżności punktów nie oznacza ich weryfikacji terenowej.
 - Jeśli obiekt ma wcześniejszy pomiar z PIG i później zostanie dopasowany rekord TPN, pomiar TPN powinien przejąć rolę aktualnego pomiaru w trybie `best_measurement.mode: auto`, chyba że istnieje ręczne wskazanie `manual` albo późniejszy własny zweryfikowany pomiar.
 - Import TPN służy do uaktualnienia i skorygowania szkieletu utworzonego wcześniej z PIG.
+- Teksty `WER_LOK` i `UWAGI` zachowują treść źródłową; nie podnoszą statusu
+  `verification_status`. Finalizacja review zachowuje je przy pomiarze.
+  Jednorazowe uzupełnienie z lokalnego CSV wymaga jednoznacznego powiązania
+  `Obiekt.external_refs` (`TPN/source_globalid`) i pomiaru
+  (`source: TPN`, `source_ref: TPN:{GLOBALID}`). Nie dopasowuje po nazwie
+  ani numerze wiersza. Zachowuje dotychczasowe notes, dopisuje brakujące
+  etykietowane wartości, aktualizuje audyt obiektu i jest idempotentne.
+  Nie zmienia punktów, best, kategorii ani statusów. Dry-run zapisuje
+  manifest przed/po z hashem źródła; niepewne dopasowania są raportowane
+  i pomijane. [Procedura](docs/operations.md#odtworzenie-kontekstu-tpn-pbi-082).
 
 ### 7.2 PIG / Jaskinie Polski
 
@@ -565,6 +615,23 @@ Operator decyduje:
 
 Pełny model merge/split obiektów zostaje poza V1.
 
+Przed zastosowaniem decyzji review walidujemy kompletny istniejący zbiór
+obiektów, jaskiń i relacji. Decyzje pracują na kopii w pamięci; po całej
+partii `validate_dataset(...)` sprawdza pełny przyszły stan według obecnych
+reguł schematu i domeny. Błąd wejścia, payloadu lub dowolnej decyzji blokuje
+wszystkie finalne zapisy (`has_errors=true`, `written_paths=[]`), zachowując
+ścieżkę i kod reguły w diagnostyce. Dry-run wykonuje identyczną ocenę.
+Ostrzeżenia nie blokują zapisu. Gwarancja dotyczy preflight przed zapisem;
+nie obejmuje odporności na awarię procesu ani rollbacku I/O.
+
+Akcja `{action: link_cave, object_id, cave_id}` przenosi istniejący obiekt:
+usuwa jego ID z listy starej jaskini, ustawia `cave_id` i dopisuje ID do
+nowej listy bez duplikatu. Aktualizuje audyt obiektu oraz obu jaskiń;
+zachowuje innych członków i kolejność, pomiary, best, źródła i audyt
+utworzenia. Powtórzenie do tej samej jaskini aktualizuje obiekt i tę jaskinię
+bez powielenia członkostwa. Brak celu lub błąd ostatniej decyzji blokuje
+zapis całej partii, również w dry-run. Wszystkie zmiany przechodzą preflight.
+
 ---
 
 ## 9. Historia i najlepszy aktualny stan
@@ -661,6 +728,27 @@ Konsekwencje:
 ```
 
 `build/` jest generowane i gitignored.
+
+Wejście `data_dir` musi być istniejącym katalogiem zawierającym katalogi
+`objects`, `caves` i `relations`. Brak dowolnego z nich lub plik zamiast
+katalogu oznacza błąd wejścia (`DataDirectoryError` w API loadera),
+raportowany przez walidator jako `DATA_DIRECTORY_INVALID` i przez CLI
+niezerowym kodem wyjścia ze wskazaniem wadliwej ścieżki. Kontrola odbywa
+się przed utworzeniem lub nadpisaniem SQLite i eksportów; błędne wejście
+nie zmienia istniejących artefaktów. Pusty zbiór jest legalny wyłącznie
+po jawnym przygotowaniu wszystkich trzech katalogów, także przy pierwszym
+imporcie. Loader nie tworzy brakującej struktury automatycznie.
+
+Rekordy YAML i decyzje review wymagają unikalnych kluczy w każdej mapie,
+przed normalizacją oraz po rozwinięciu merge keys (`<<`). Drugi klucz
+`measurements` nie może zastąpić historii, również przy identycznej wartości.
+Aliasy bez kolizji i merge map o rozłącznych kluczach są dozwolone;
+kolizja między mapami merge, jawne nadpisanie odziedziczonej wartości
+oraz powtórzony `<<` są błędem. Loader podaje plik, klucz i obie pozycje
+(linia/kolumna); publiczne błędy to `YamlDataLoadError` dla rekordów
+i `ReviewDecisionError` dla decyzji, a walidator używa `YAML_INVALID`.
+CLI zwraca kod 1, bez zapisu SQLite/eksportów lub finalnych danych review.
+Źródłowe bajty oraz wartości i kolejność list poprawnego YAML są zachowane.
 
 ### 10.2 Przykład obiektu YAML
 
@@ -782,12 +870,14 @@ Walidacje typu error:
 - zgodność z JSON Schema,
 - obecność `schema_version: 1`,
 - unikalność `Obiekt.id` globalnie,
+- unikalność `Pomiar.id` w obrębie obiektu (`DUPLICATE_MEASUREMENT_ID`),
 - unikalność pliku względem ID,
 - poprawny format ID,
 - `best_measurement.measurement_id` wskazuje istniejący pomiar,
 - `best_measurement.mode = manual` ma `reason`,
 - `cave_id` wskazuje istniejącą jaskinię,
 - `Jaskinia.object_ids` wskazują istniejące obiekty,
+- `Obiekt.cave_id` i `Jaskinia.object_ids` są symetryczne (reguły §4.2),
 - relacje wskazują istniejące obiekty,
 - `Attachment.measurement_id` wskazuje pomiar tego samego obiektu,
 - lokalny `Attachment.path` istnieje,

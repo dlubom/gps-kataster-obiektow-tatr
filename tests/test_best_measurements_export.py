@@ -1,5 +1,6 @@
 import csv
 import json
+import sqlite3
 import subprocess
 import sys
 import zipfile
@@ -15,13 +16,128 @@ from gps_kataster_obiektow_tatr.best_measurements_export import (
     BestMeasurementsExportValidationError,
     export_best_measurements,
 )
+from gps_kataster_obiektow_tatr.build_db import BuildDatabaseValidationError, build_sqlite_database
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
+from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPORT_SCRIPT = REPO_ROOT / "scripts" / "export_best_measurements.py"
 KSW_LAT = 49.23459299
 KSW_LON = 19.87589498
 GENERATED_AT = "2026-05-16T12:00:00Z"
+
+
+@pytest.mark.parametrize("mode", ["auto", "manual"])
+def test_duplicate_local_measurement_id_blocks_exports_and_release(tmp_path, mode):
+    data_dir = tmp_path / "data"
+    _write_sample_data(data_dir)
+    output = tmp_path / "output"
+    build_release_artifacts(
+        data_dir=data_dir, sqlite_path=output / "katalog.sqlite", output_dir=output / "exports"
+    )
+    before = {str(p.relative_to(output)): p.read_bytes() for p in output.rglob("*") if p.is_file()}
+    assert len(before) == 7
+    source = data_dir / "objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(source.read_text())
+    duplicate = deepcopy(obj["measurements"][1])
+    duplicate["notes"] = "Second reading with ambiguous identity."
+    obj["measurements"].append(duplicate)
+    obj["best_measurement"].update(mode=mode, reason="Operator selection.")
+    _write_yaml(source, obj)
+    source_before = source.read_bytes()
+
+    for target in (output, tmp_path / "new-output"):
+        with pytest.raises(BestMeasurementsExportValidationError, match="DUPLICATE_MEASUREMENT_ID"):
+            export_best_measurements(data_dir=data_dir, output_dir=target / "exports")
+        with pytest.raises(BuildDatabaseValidationError, match="DUPLICATE_MEASUREMENT_ID"):
+            build_release_artifacts(
+                data_dir=data_dir,
+                sqlite_path=target / "katalog.sqlite",
+                output_dir=target / "exports",
+            )
+        for script, args in [
+            (EXPORT_SCRIPT, ["--output-dir", str(target / "exports")]),
+            (
+                REPO_ROOT / "scripts/build_release_artifacts.py",
+                [
+                    "--sqlite-output",
+                    str(target / "katalog.sqlite"),
+                    "--output-dir",
+                    str(target / "exports"),
+                ],
+            ),
+            (REPO_ROOT / "scripts/validate.py", []),
+        ]:
+            result = subprocess.run(
+                [sys.executable, str(script), "--data-dir", str(data_dir), *args],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            assert result.returncode == 1
+            assert "DUPLICATE_MEASUREMENT_ID" in result.stdout + result.stderr
+            assert str(source) in result.stdout + result.stderr
+            assert "Traceback" not in result.stdout + result.stderr
+    assert {
+        str(p.relative_to(output)): p.read_bytes() for p in output.rglob("*") if p.is_file()
+    } == before
+    assert not (tmp_path / "new-output").exists()
+    assert source.read_bytes() == source_before
+
+
+@pytest.mark.parametrize("note", ["a" * 253 + "ą", "TPN UWAGI: " + "źółć" * 90])
+def test_dbf_notes_truncate_at_utf8_boundary(tmp_path, note):
+    data_dir = tmp_path / "data"
+    _write_sample_data(data_dir)
+    path = data_dir / "objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(path.read_text())
+    obj["measurements"][1]["notes"] = note
+    _write_yaml(path, obj)
+    result = export_best_measurements(
+        data_dir=data_dir,
+        output_dir=tmp_path / "exports",
+        generated_at=GENERATED_AT,
+    )
+    assert (
+        json.loads(result.geojson_path.read_text())["features"][0]["properties"][
+            "measurement_notes"
+        ]
+        == note
+    )
+    with zipfile.ZipFile(result.shapefile_zip_path) as archive:
+        archive.extractall(tmp_path / "shp")
+    with shapefile.Reader(str(tmp_path / "shp/best-measurements"), encoding="utf-8") as reader:
+        actual = reader.record(0)["meas_notes"]
+    assert actual == note.encode("utf-8")[:254].decode("utf-8", errors="ignore")
+
+
+def test_tpn_best_context_readable_in_all_full_text_exports(tmp_path):
+    data = tmp_path / "data"
+    _write_sample_data(data)
+    path = data / "objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(path.read_text())
+    note = "Ręczna uwaga.\nTPN WER_LOK: niepewna\nTPN UWAGI: Trzeba uściślić położenie"
+    obj["measurements"][1]["notes"] = note
+    _write_yaml(path, obj)
+    result = export_best_measurements(data_dir=data, output_dir=tmp_path / "exports")
+    with result.csv_path.open(encoding="utf-8", newline="") as stream:
+        assert list(csv.DictReader(stream))[0]["measurement_notes"] == note
+    assert (
+        json.loads(result.geojson_path.read_text())["features"][0]["properties"][
+            "measurement_notes"
+        ]
+        == note
+    )
+    desc = ET.parse(result.gpx_path).findtext(".//{http://www.topografix.com/GPX/1/1}desc")
+    assert note in desc
+    database = build_sqlite_database(data_dir=data, output_path=tmp_path / "katalog.sqlite")
+    with sqlite3.connect(database.sqlite_path) as conn:
+        assert (
+            conn.execute(
+                "SELECT notes FROM measurements WHERE object_id='KSW-0001' AND id='m-002'"
+            ).fetchone()[0]
+            == note
+        )
 
 
 def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
@@ -115,11 +231,14 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
 
 def test_export_writes_metadata_snapshot(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
+    (data_dir / "relations").mkdir(parents=True)
     output_dir = tmp_path / "build" / "exports"
     object_data = _valid_object()
     object_data.pop("cave_id")
     _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", object_data)
-    _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
+    cave_data = _valid_cave()
+    cave_data["object_ids"] = []
+    _write_yaml(data_dir / "caves" / "C-0001.yml", cave_data)
 
     result = export_best_measurements(
         data_dir=data_dir,
@@ -191,6 +310,8 @@ def test_export_rejects_invalid_yaml(tmp_path: Path) -> None:
 
 
 def _write_sample_data(data_dir: Path) -> None:
+    for name in ("objects", "caves", "relations"):
+        (data_dir / name).mkdir(parents=True, exist_ok=True)
     _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", _valid_object())
     _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
 

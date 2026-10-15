@@ -7,13 +7,29 @@ from datetime import UTC, date, datetime, time
 from math import inf
 from typing import Any
 
+from gps_kataster_obiektow_tatr.measurement_values import non_finite_measurement_fields
+
 
 def select_default_best_measurement_id(measurements: Iterable[dict[str, Any]]) -> str | None:
     """Return the measurement id selected by the V1 default ``auto`` algorithm."""
 
-    candidates = [
-        measurement for measurement in measurements if isinstance(measurement.get("id"), str)
-    ]
+    candidates = []
+    seen_ids: set[str] = set()
+    for measurement in measurements:
+        invalid_fields = non_finite_measurement_fields(measurement)
+        if invalid_fields:
+            raise ValueError(
+                f"Measurement {measurement.get('id')} fields {', '.join(invalid_fields)} "
+                "must be finite before best selection."
+            )
+        measurement_id = measurement.get("id")
+        if isinstance(measurement_id, str):
+            if measurement_id in seen_ids:
+                raise ValueError(
+                    f"Duplicate measurement.id {measurement_id} before best selection."
+                )
+            seen_ids.add(measurement_id)
+            candidates.append(measurement)
     if not candidates:
         return None
 

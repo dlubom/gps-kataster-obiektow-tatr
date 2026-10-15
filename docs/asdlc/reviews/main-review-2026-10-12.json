@@ -1,0 +1,3465 @@
+{
+  "review_date": "2026-10-12",
+  "preserved_at": "2026-10-15",
+  "base_sha": "a3dd1a671d3d93cd6958242fc68ddcf1d37cf846",
+  "origin_main_reconfirmed_at": "2026-10-15",
+  "findings": [
+    {
+      "id": "R1",
+      "priority": "P1",
+      "title": "Brak katalogu danych jest traktowany jako poprawny pusty katalog",
+      "file": "src/gps_kataster_obiektow_tatr/data_loader.py",
+      "line": 100,
+      "evidence": "Walidacja nieistniejacego katalogu: zero bledow. Build z tym wejsciem nadpisal zestaw zawierajacy 1 obiekt i 2 pomiary pustym release bez bledow.",
+      "recommendation": "Odrzucac nieistniejace lub niekompletne wejscie walidacji i buildow przed zapisem wynikow."
+    },
+    {
+      "id": "R2",
+      "priority": "P1",
+      "title": "Powtorzone klucze YAML powoduja cicha utrate historii przy odczycie",
+      "file": "src/gps_kataster_obiektow_tatr/data_loader.py",
+      "line": 130,
+      "evidence": "Drugi klucz measurements zmniejszyl widoczna historie z 2 pomiarow do 1; walidacja nie zglosila bledu. Obecne 2012 plikow YAML nie zawiera takich duplikatow.",
+      "recommendation": "Loader powinien odrzucac powtorzone klucze przed normalizacja i walidacja schematu."
+    },
+    {
+      "id": "R3",
+      "priority": "P1",
+      "title": "Review zapisuje niepoprawny stan danych przed walidacja domenowa",
+      "file": "src/gps_kataster_obiektow_tatr/staging_review.py",
+      "line": 292,
+      "evidence": "add_measurement z lat=0 i oryginalnymi wspolrzednymi PL-1992 zwrocil has_errors=false i zapisal YAML; walidacja po zapisie pokazala COORDINATE_MISMATCH i MEASUREMENT_OUTSIDE_PL_SK.",
+      "recommendation": "Walidowac kompletny stan po decyzjach w pamieci przed pierwszym zapisem."
+    },
+    {
+      "id": "R4",
+      "priority": "P2",
+      "title": "Aktualne YAML i eksporty nie zachowuja uwag TPN o wiarygodnosci lokalizacji",
+      "file": "src/gps_kataster_obiektow_tatr/tpn_staging.py",
+      "line": 661,
+      "evidence": "354 wartosci WER_LOK i 25 wartosci UWAGI nie wystepuje w powiazanych YAML obiektu i jaskini. MTW-0047 traci przyblizona lokalizacja, CHZ-0021 traci Trzeba uscisclic polozenie, BYW-0015 i BYW-0031 traca ostrzezenie o blednym opisie dojscia. Surowy CSV zachowuje te informacje.",
+      "recommendation": "Przenosic kontekst zrodla do pomiarow i uzupelnic istniejace dane po GLOBALID bez zmieniania statusu weryfikacji."
+    },
+    {
+      "id": "R5",
+      "priority": "P2",
+      "title": "NaN przechodzi walidacje wspolrzednych",
+      "file": "src/gps_kataster_obiektow_tatr/validator.py",
+      "line": 493,
+      "evidence": "x_1992: .nan przeszedl walidacje bez bledow; export zapisal token NaN do GeoJSON, a SQLite zatrzymal sie na NOT NULL. W obecnych danych nie znaleziono liczb nieskonczonych ani NaN.",
+      "recommendation": "Odrzucac wszystkie liczby niefinitywne przed porownaniami i eksportem."
+    },
+    {
+      "id": "R6",
+      "priority": "P2",
+      "title": "Brak walidacji unikalnosci lokalnego ID pomiaru",
+      "file": "src/gps_kataster_obiektow_tatr/validator.py",
+      "line": 726,
+      "evidence": "Dopisanie kolejnego pomiaru z istniejacym id przeszlo walidacje bez bledow; SQLite zakonczyl sie UNIQUE constraint failed: measurements.object_id, measurements.id. Obecne dane nie zawieraja takich kolizji.",
+      "recommendation": "Sprawdzac unikalnosc measurement.id w ramach obiektu przed budowaniem indeksow i wyborami best."
+    },
+    {
+      "id": "R7",
+      "priority": "P2",
+      "title": "link_cave pozostawia obiekt w starej jaskini",
+      "file": "src/gps_kataster_obiektow_tatr/staging_review.py",
+      "line": 681,
+      "evidence": "Po przeniesieniu KSW-0001 z C-0002 do C-9999 obie jaskinie zachowaly go w object_ids, object.cave_id wskazuje tylko C-9999; walidacja nadal ma zero bledow. Obecny katalog nie ma niesymetrycznych powiazan.",
+      "recommendation": "Aktualizowac obie strony relacji i walidowac ich symetrie."
+    },
+    {
+      "id": "R8",
+      "priority": "P2",
+      "title": "STR-0024 ma kategorie sprzeczna z zachowanym zrodlem TPN",
+      "file": "data/objects/STR/STR-0024.yml",
+      "line": 3,
+      "evidence": "YAML ma jaskinia_otwor; TPN record_number=273, GLOBALID={A5C7088E-A2FE-4898-AE2E-B0A9B420B17D}, ma GENEZA=sztolnia i uwage o zasypaniu oraz belkowaniu. CHZ-0011 ma dodatkowo zrodlo mieszane jaskinia/sztolnia wymagajace rozstrzygniecia.",
+      "recommendation": "Skorygowac STR-0024 na podstawie zrodla, a CHZ-0011 rozstrzygnac jawnie z zachowaniem informacji o mieszanym charakterze."
+    }
+  ],
+  "baseline": {
+    "counts": {
+      "objects": 1009,
+      "caves": 1003,
+      "relations": 0,
+      "measurements": 1875
+    },
+    "validation": {
+      "warning:MISSING_HORIZONTAL_ACCURACY": 1875,
+      "warning:MEASUREMENT_DISTANCE_OUTLIER": 72,
+      "warning:OBJECT_PREFIX_MISMATCH": 16,
+      "warning:MEASUREMENT_OUTSIDE_VALLEYS": 103
+    },
+    "best_sources": {
+      "TPN": 996,
+      "inne": 9,
+      "wlasne": 2,
+      "PIG": 2
+    },
+    "best_status": {
+      "nieweryfikowany": 1007,
+      "zweryfikowany": 2
+    },
+    "membership_mismatch": [],
+    "duplicate_measurement_ids": [],
+    "nonfinite": [],
+    "identical_best_points": [
+      [
+        [
+          49.2369305,
+          19.8723
+        ],
+        [
+          [
+            "KSW-0040",
+            "Szczelina na Zakręcie II",
+            "C-0141"
+          ],
+          [
+            "KSW-0132",
+            "Szczelina na Zakręcie I",
+            "C-0429"
+          ]
+        ]
+      ],
+      [
+        [
+          49.2306111,
+          19.89815
+        ],
+        [
+          [
+            "KSW-0062",
+            "Szczelina przy Tomanowym Okapie",
+            "C-0211"
+          ],
+          [
+            "KSW-0197",
+            "Tomanowy Okap",
+            "C-0688"
+          ]
+        ]
+      ],
+      [
+        [
+          49.2311111,
+          19.8947222
+        ],
+        [
+          [
+            "KSW-0063",
+            "Dziura nad Zawaliskiem",
+            "C-0216"
+          ],
+          [
+            "KSW-0103",
+            "Dziura pod Zawaliskiem",
+            "C-0335"
+          ]
+        ]
+      ],
+      [
+        [
+          49.2298306,
+          19.9010305
+        ],
+        [
+          [
+            "KSW-0142",
+            "Niski Schron nad Tomanową",
+            "C-0463"
+          ],
+          [
+            "KSW-0159",
+            "Niżni Okap nad Tomanową",
+            "C-0529"
+          ],
+          [
+            "KSW-0195",
+            "Wyżni Okap nad Tomanową",
+            "C-0683"
+          ]
+        ]
+      ],
+      [
+        [
+          49.2364306,
+          19.8652806
+        ],
+        [
+          [
+            "KSW-0181",
+            "Jaskinia w Zbójnickiej Turni",
+            "C-0632"
+          ],
+          [
+            "KSW-0215",
+            "Zbójnicka Piwnica",
+            "C-0765"
+          ]
+        ]
+      ],
+      [
+        [
+          49.2415706,
+          19.8539281
+        ],
+        [
+          [
+            "KSZ-0013",
+            "Jaskinia nad Prożkiem w Żlebie Na Spady",
+            "C-0132"
+          ],
+          [
+            "KSZ-0022",
+            "Nyża nad Prożkiem w Żlebie Na Spady",
+            "C-0202"
+          ]
+        ]
+      ],
+      [
+        [
+          49.2417674,
+          19.8556402
+        ],
+        [
+          [
+            "KSZ-0061",
+            "Schronisko nad Bramką",
+            "C-0519"
+          ],
+          [
+            "KSZ-0086",
+            "Schronisko nad Bramą",
+            "C-0730"
+          ]
+        ]
+      ],
+      [
+        [
+          49.241151,
+          19.8569591
+        ],
+        [
+          [
+            "KSZ-0080",
+            "Płaska Komórka w Żeleźniaku",
+            "C-0700"
+          ],
+          [
+            "KSZ-0104",
+            "Żeleźniakowa Brama",
+            "C-0838"
+          ]
+        ]
+      ],
+      [
+        [
+          49.2497223,
+          19.8513333
+        ],
+        [
+          [
+            "LEJ-0003",
+            "Dziura nad Zabijakiem I",
+            "C-0114"
+          ],
+          [
+            "LEJ-0013",
+            "Dziura nad Zabijakiem II",
+            "C-0359"
+          ]
+        ]
+      ],
+      [
+        [
+          49.2405556,
+          19.8994445
+        ],
+        [
+          [
+            "MTZ-0026",
+            "Jaskinia Niespodzianka",
+            "C-0326"
+          ],
+          [
+            "MTZ-0035",
+            "Jaskinia Zapylna",
+            "C-0493"
+          ]
+        ]
+      ],
+      [
+        [
+          49.2113889,
+          20.0902778
+        ],
+        [
+          [
+            "PL-0002",
+            "Wielka Żabia Szpara",
+            "C-0007"
+          ],
+          [
+            "PL-0027",
+            "Jaskinia Żabia Lodowa",
+            "C-0482"
+          ]
+        ]
+      ]
+    ]
+  },
+  "historical_reproductions": {
+    "baseline_errors": [],
+    "missing_input_validation_errors": [],
+    "missing_input_release_counts": {
+      "objects": 0,
+      "caves": 0,
+      "relations": 0,
+      "measurements": 0,
+      "validation_warnings": 0,
+      "validation_errors": 0
+    },
+    "duplicate_yaml": {
+      "original_measurements": 2,
+      "loaded_measurements": 1,
+      "errors": []
+    },
+    "duplicate_measurement_id": {
+      "errors": [],
+      "build_error": "IntegrityError: UNIQUE constraint failed: measurements.object_id, measurements.id"
+    },
+    "nan": {
+      "errors": [],
+      "geojson_contains_NaN": true,
+      "build_error": "IntegrityError: NOT NULL constraint failed: measurements.x_1992"
+    },
+    "invalid_review_payload": {
+      "reported_errors": false,
+      "validation_errors_after": [
+        {
+          "code": "COORDINATE_MISMATCH",
+          "description": "Object KSW-0001 measurement m-999 WGS84 and PL-1992 differ by 5452371.35 m."
+        },
+        {
+          "code": "MEASUREMENT_OUTSIDE_PL_SK",
+          "description": "Object KSW-0001 measurement m-999 is outside Poland and Slovakia fallback boundaries."
+        }
+      ],
+      "written_file_count": 2
+    },
+    "relink": {
+      "reported_errors": false,
+      "object_cave": "C-9999",
+      "caves_containing_object": [
+        "C-0002",
+        "C-9999"
+      ],
+      "validation_errors_after": []
+    },
+    "missing_input_overwrites_release": {
+      "before": {
+        "objects": 1,
+        "caves": 1,
+        "relations": 0,
+        "measurements": 2,
+        "validation_warnings": 2,
+        "validation_errors": 0
+      },
+      "after": {
+        "objects": 0,
+        "caves": 0,
+        "relations": 0,
+        "measurements": 0,
+        "validation_warnings": 0,
+        "validation_errors": 0
+      }
+    }
+  },
+  "historical_artifact_checks": {
+    "yaml_files": 2012,
+    "duplicate_yaml_keys": [],
+    "export_counts": {
+      "geojson": 1009,
+      "csv": 1009,
+      "gpx": 1009,
+      "sqlite_best": 1009,
+      "shapefile": 1009
+    },
+    "sqlite_integrity": [
+      "ok"
+    ],
+    "sqlite_foreign_key_check": [],
+    "csv_geojson_max_coordinate_difference": 4.998668146072305e-11,
+    "csv_shapefile_max_metre_difference": 0.0,
+    "zipped_sqlite_matches": true
+  },
+  "source_context": {
+    "missing_source_notes_counts": {
+      "WER_LOK": 354,
+      "UWAGI": 25
+    },
+    "missing_source_notes": [
+      {
+        "record_number": 2,
+        "object_id": "STR-0002",
+        "name": "Nyża pod Brzózką",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF NMT",
+        "yaml": "data/objects/STR/STR-0002.yml"
+      },
+      {
+        "record_number": 4,
+        "object_id": "MLZ-0058",
+        "name": "Nyża w Baranich Schodkach I",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0058.yml"
+      },
+      {
+        "record_number": 8,
+        "object_id": "BYZ-0003",
+        "name": "Myślenicka Dziura",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYZ/BYZ-0003.yml"
+      },
+      {
+        "record_number": 9,
+        "object_id": "MTZ-0027",
+        "name": "Jaskinia Mała w Mułowej",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF",
+        "yaml": "data/objects/MTZ/MTZ-0027.yml"
+      },
+      {
+        "record_number": 10,
+        "object_id": "MLZ-0035",
+        "name": "Schron Partyzantów",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0035.yml"
+      },
+      {
+        "record_number": 12,
+        "object_id": "MTW-0006",
+        "name": "Szczelina w Niedźwiedziu",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MTW/MTW-0006.yml"
+      },
+      {
+        "record_number": 17,
+        "object_id": "MLZ-0069",
+        "name": "Dziura pod Świstową Studnią",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0069.yml"
+      },
+      {
+        "record_number": 20,
+        "object_id": "MLZ-0033",
+        "name": "Nisza przy Zagonie",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0033.yml"
+      },
+      {
+        "record_number": 22,
+        "object_id": "BRA-0001",
+        "name": "Schronisko w Dolinie za Bramką",
+        "column": "WER_LOK",
+        "value": "22-01-2020 FF ortofotomapa",
+        "yaml": "data/objects/BRA/BRA-0001.yml"
+      },
+      {
+        "record_number": 24,
+        "object_id": "MTZ-0015",
+        "name": "Ptasia Studnia",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF ortofoto",
+        "yaml": "data/objects/MTZ/MTZ-0015.yml"
+      },
+      {
+        "record_number": 24,
+        "object_id": "MTZ-0015",
+        "name": "Ptasia Studnia",
+        "column": "UWAGI",
+        "value": "dł za Nowakiem (Jaskinie nr 3 2022 r. - domierzono 81 m)",
+        "yaml": "data/objects/MTZ/MTZ-0015.yml"
+      },
+      {
+        "record_number": 25,
+        "object_id": "MLZ-0026",
+        "name": "Jaskinia Trójkątna",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0026.yml"
+      },
+      {
+        "record_number": 29,
+        "object_id": "MTW-0027",
+        "name": "Korytarz nad Piargiem",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/MTW/MTW-0027.yml"
+      },
+      {
+        "record_number": 29,
+        "object_id": "MTW-0027",
+        "name": "Korytarz nad Piargiem",
+        "column": "UWAGI",
+        "value": "wg opisu z inwentarza",
+        "yaml": "data/objects/MTW/MTW-0027.yml"
+      },
+      {
+        "record_number": 41,
+        "object_id": "MLZ-0082",
+        "name": "Szczelina nad Strzelistą",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0082.yml"
+      },
+      {
+        "record_number": 42,
+        "object_id": "BYZ-0019",
+        "name": "Kalacki Korytarzyk",
+        "column": "WER_LOK",
+        "value": "16-09-2024 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0019.yml"
+      },
+      {
+        "record_number": 43,
+        "object_id": "MLZ-0024",
+        "name": "Królicza Jama",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0024.yml"
+      },
+      {
+        "record_number": 44,
+        "object_id": "KSW-0232",
+        "name": "Wyzior",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/KSW/KSW-0232.yml"
+      },
+      {
+        "record_number": 45,
+        "object_id": "MLZ-0081",
+        "name": "Jaskinia Wilcza",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0081.yml"
+      },
+      {
+        "record_number": 47,
+        "object_id": "MLZ-0039",
+        "name": "Jędrusiowa Dziura",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0039.yml"
+      },
+      {
+        "record_number": 53,
+        "object_id": "MLW-0016",
+        "name": "Nyża w Siodłowej Turni",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0016.yml"
+      },
+      {
+        "record_number": 56,
+        "object_id": "MTZ-0056",
+        "name": "Schron w Progu Mułowym",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/MTZ/MTZ-0056.yml"
+      },
+      {
+        "record_number": 57,
+        "object_id": "BYZ-0026",
+        "name": "Grota u podnóża Myślenickich Turni",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYZ/BYZ-0026.yml"
+      },
+      {
+        "record_number": 58,
+        "object_id": "KSZ-0017",
+        "name": "Jaskinia Wodna pod Raptawicką Turnią",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/KSZ/KSZ-0017.yml"
+      },
+      {
+        "record_number": 59,
+        "object_id": "CHZ-0017",
+        "name": "Szczelina Chochołowska",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0017.yml"
+      },
+      {
+        "record_number": 66,
+        "object_id": "MTZ-0038",
+        "name": "Jaskinia Niedźwiedzia Średnia",
+        "column": "WER_LOK",
+        "value": "FF 02052025 NMT",
+        "yaml": "data/objects/MTZ/MTZ-0038.yml"
+      },
+      {
+        "record_number": 74,
+        "object_id": "MTW-0042",
+        "name": "Szczelina w Ratuszu Miętusim",
+        "column": "WER_LOK",
+        "value": "11-12-2020",
+        "yaml": "data/objects/MTW/MTW-0042.yml"
+      },
+      {
+        "record_number": 75,
+        "object_id": "KSW-0135",
+        "name": "Jaskinia Zakosista",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/KSW/KSW-0135.yml"
+      },
+      {
+        "record_number": 79,
+        "object_id": "BIA-0002",
+        "name": "Capkowa Szczelina",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF NMT",
+        "yaml": "data/objects/BIA/BIA-0002.yml"
+      },
+      {
+        "record_number": 82,
+        "object_id": "KSZ-0026",
+        "name": "Dziura nad Mylną",
+        "column": "WER_LOK",
+        "value": "FF 18.05.2021 ortofoto",
+        "yaml": "data/objects/KSZ/KSZ-0026.yml"
+      },
+      {
+        "record_number": 83,
+        "object_id": "KSW-0240",
+        "name": "Jaskinia Czarna",
+        "column": "WER_LOK",
+        "value": "16-09-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0240.yml"
+      },
+      {
+        "record_number": 90,
+        "object_id": "MLW-0008",
+        "name": "Nyża przy Starym Szlaku",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0008.yml"
+      },
+      {
+        "record_number": 95,
+        "object_id": "BRA-0005",
+        "name": "Schronisko w Małym Żlebku",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/BRA/BRA-0005.yml"
+      },
+      {
+        "record_number": 99,
+        "object_id": "MLZ-0072",
+        "name": "Jaskinia nad Korytem",
+        "column": "WER_LOK",
+        "value": "11-05-2022 TZK",
+        "yaml": "data/objects/MLZ/MLZ-0072.yml"
+      },
+      {
+        "record_number": 110,
+        "object_id": "MLW-0022",
+        "name": "Dziura nad Jaskinią Śpiących Rycerzy III",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0022.yml"
+      },
+      {
+        "record_number": 117,
+        "object_id": "KSW-0108",
+        "name": "Szczelina pod Lodową",
+        "column": "WER_LOK",
+        "value": "FF 7-12-2020",
+        "yaml": "data/objects/KSW/KSW-0108.yml"
+      },
+      {
+        "record_number": 120,
+        "object_id": "BYW-0021",
+        "name": "Dziura pod Jaskinią Magurską",
+        "column": "WER_LOK",
+        "value": "07-01-2025 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0021.yml"
+      },
+      {
+        "record_number": 121,
+        "object_id": "MTZ-0025",
+        "name": "Jaskinia Niedźwiedzia Niżnia",
+        "column": "UWAGI",
+        "value": "błędna lokalizacja otworu, zweryfikowano dane w terenie i poprawiono umiejscowienie punktu",
+        "yaml": "data/objects/MTZ/MTZ-0025.yml"
+      },
+      {
+        "record_number": 125,
+        "object_id": "DZI-0001",
+        "name": "Schron nad Dziurą Wyżnią",
+        "column": "WER_LOK",
+        "value": "2020-01-22 FF ortofoto",
+        "yaml": "data/objects/DZI/DZI-0001.yml"
+      },
+      {
+        "record_number": 126,
+        "object_id": "PL-0010",
+        "name": "Głowoniowa Nyża",
+        "column": "WER_LOK",
+        "value": "2020-01-11 TZK GPS",
+        "yaml": "data/objects/PL/PL-0010.yml"
+      },
+      {
+        "record_number": 135,
+        "object_id": "STN-0004",
+        "name": "Dziura w Czerwonym Groniku",
+        "column": "WER_LOK",
+        "value": "11-06-2021 FF NMT",
+        "yaml": "data/objects/STN/STN-0004.yml"
+      },
+      {
+        "record_number": 137,
+        "object_id": "CHZ-0022",
+        "name": "Schron nad Szczeliną w Wielkich Koryciskach",
+        "column": "WER_LOK",
+        "value": "24-02-2020 FF",
+        "yaml": "data/objects/CHZ/CHZ-0022.yml"
+      },
+      {
+        "record_number": 138,
+        "object_id": "MTZ-0023",
+        "name": "Jaskinia Miętusia",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF NMT",
+        "yaml": "data/objects/MTZ/MTZ-0023.yml"
+      },
+      {
+        "record_number": 149,
+        "object_id": "MLW-0018",
+        "name": "Jaskinia Pomarańczarnia",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0018.yml"
+      },
+      {
+        "record_number": 150,
+        "object_id": "MTZ-0061",
+        "name": "Szczelina w Progu Mułowym",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/MTZ/MTZ-0061.yml"
+      },
+      {
+        "record_number": 155,
+        "object_id": "KSW-0186",
+        "name": "Dziura w Ciemniaku",
+        "column": "WER_LOK",
+        "value": "06-10-2025 MB ortofotomapa dron",
+        "yaml": "data/objects/KSW/KSW-0186.yml"
+      },
+      {
+        "record_number": 161,
+        "object_id": "CHW-0021",
+        "name": "Szczelina nad Jaskinią w Dudzińcu",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0021.yml"
+      },
+      {
+        "record_number": 168,
+        "object_id": "BYW-0013",
+        "name": "Jaskinia Zwolińskiego",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/BYW/BYW-0013.yml"
+      },
+      {
+        "record_number": 175,
+        "object_id": "MLZ-0083",
+        "name": "Szuflada Dolna",
+        "column": "WER_LOK",
+        "value": "FF 7-12-2020",
+        "yaml": "data/objects/MLZ/MLZ-0083.yml"
+      },
+      {
+        "record_number": 176,
+        "object_id": "MLZ-0049",
+        "name": "Jaskinia Omszała",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0049.yml"
+      },
+      {
+        "record_number": 179,
+        "object_id": "OLC-0003",
+        "name": "Nyża nad Olczyską I",
+        "column": "WER_LOK",
+        "value": "19-09-2024 FF NMT",
+        "yaml": "data/objects/OLC/OLC-0003.yml"
+      },
+      {
+        "record_number": 183,
+        "object_id": "PL-0035",
+        "name": "Jaskinia Wołoszyńska Niżnia",
+        "column": "WER_LOK",
+        "value": "28-05-2021 FF NMT",
+        "yaml": "data/objects/PL/PL-0035.yml"
+      },
+      {
+        "record_number": 185,
+        "object_id": "STR-0003",
+        "name": "Dziura w Czarnej Turni II",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/STR/STR-0003.yml"
+      },
+      {
+        "record_number": 186,
+        "object_id": "KSZ-0075",
+        "name": "Dziura nad Jaskinią Raptawicką I",
+        "column": "WER_LOK",
+        "value": "FF ortofoto 18.05.2021",
+        "yaml": "data/objects/KSZ/KSZ-0075.yml"
+      },
+      {
+        "record_number": 191,
+        "object_id": "BYW-0009",
+        "name": "Nisza w Zawraciku Kasprowym",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYW/BYW-0009.yml"
+      },
+      {
+        "record_number": 193,
+        "object_id": "MTW-0008",
+        "name": "Jaskinia Wyżnia Litworowa",
+        "column": "WER_LOK",
+        "value": "24-09-2024 FF NMT",
+        "yaml": "data/objects/MTW/MTW-0008.yml"
+      },
+      {
+        "record_number": 196,
+        "object_id": "STR-0012",
+        "name": "Dziura nad Doliną Strążyską",
+        "column": "WER_LOK",
+        "value": "22-05-2022 FF nmt",
+        "yaml": "data/objects/STR/STR-0012.yml"
+      },
+      {
+        "record_number": 202,
+        "object_id": "MTZ-0031",
+        "name": "Studnia za Murem",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/MTZ/MTZ-0031.yml"
+      },
+      {
+        "record_number": 203,
+        "object_id": "KSW-0015",
+        "name": "Jaskinia Zakopiańska",
+        "column": "WER_LOK",
+        "value": "16-09-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0015.yml"
+      },
+      {
+        "record_number": 205,
+        "object_id": "MLZ-0010",
+        "name": "Szczelina nad Zagonem",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0010.yml"
+      },
+      {
+        "record_number": 208,
+        "object_id": "MTW-0040",
+        "name": "Szczelina Przysłopczańska",
+        "column": "WER_LOK",
+        "value": "25-05-2022 FF Ortofotomapa",
+        "yaml": "data/objects/MTW/MTW-0040.yml"
+      },
+      {
+        "record_number": 214,
+        "object_id": "BYZ-0010",
+        "name": "Dziura w Szczerbie II",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/BYZ/BYZ-0010.yml"
+      },
+      {
+        "record_number": 216,
+        "object_id": "BYZ-0008",
+        "name": "Jaskinia Dudnica",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/BYZ/BYZ-0008.yml"
+      },
+      {
+        "record_number": 220,
+        "object_id": "BYZ-0022",
+        "name": "Dziura w Szczerbie I",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/BYZ/BYZ-0022.yml"
+      },
+      {
+        "record_number": 222,
+        "object_id": "MLZ-0052",
+        "name": "Siwarowa Dziura",
+        "column": "WER_LOK",
+        "value": "12-02-2020",
+        "yaml": "data/objects/MLZ/MLZ-0052.yml"
+      },
+      {
+        "record_number": 223,
+        "object_id": "MTZ-0052",
+        "name": "Jaskinia Lodowa Mułowa",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF",
+        "yaml": "data/objects/MTZ/MTZ-0052.yml"
+      },
+      {
+        "record_number": 225,
+        "object_id": "KSZ-0064",
+        "name": "Jaskinia Mylna",
+        "column": "WER_LOK",
+        "value": "2023-08-23 MB ortofoto",
+        "yaml": "data/objects/KSZ/KSZ-0064.yml"
+      },
+      {
+        "record_number": 226,
+        "object_id": "CHZ-0019",
+        "name": "Grotka przy Huciskach",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0019.yml"
+      },
+      {
+        "record_number": 231,
+        "object_id": "MTZ-0017",
+        "name": "Piwnica Miętusia",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/MTZ/MTZ-0017.yml"
+      },
+      {
+        "record_number": 237,
+        "object_id": "CHZ-0012",
+        "name": "Zbójecka Dziura",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0012.yml"
+      },
+      {
+        "record_number": 239,
+        "object_id": "MLZ-0030",
+        "name": "Dziura pod Siodełkiem",
+        "column": "WER_LOK",
+        "value": "FF 1-12-2020",
+        "yaml": "data/objects/MLZ/MLZ-0030.yml"
+      },
+      {
+        "record_number": 241,
+        "object_id": "KSZ-0078",
+        "name": "Dziura nad Jaskinią Raptawicką II",
+        "column": "WER_LOK",
+        "value": "FF ortofoto 18.05.2021",
+        "yaml": "data/objects/KSZ/KSZ-0078.yml"
+      },
+      {
+        "record_number": 242,
+        "object_id": "DZI-0002",
+        "name": "Lisia Jama",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF NMT",
+        "yaml": "data/objects/DZI/DZI-0002.yml"
+      },
+      {
+        "record_number": 244,
+        "object_id": "MLZ-0034",
+        "name": "Dziura w Wantach",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0034.yml"
+      },
+      {
+        "record_number": 246,
+        "object_id": "BYZ-0033",
+        "name": "Jaskinia w Piekle",
+        "column": "WER_LOK",
+        "value": "11-12-2020 FF",
+        "yaml": "data/objects/BYZ/BYZ-0033.yml"
+      },
+      {
+        "record_number": 249,
+        "object_id": "BYZ-0012",
+        "name": "Myślenicka Szczelina",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYZ/BYZ-0012.yml"
+      },
+      {
+        "record_number": 252,
+        "object_id": "MLZ-0059",
+        "name": "Jaskinia Śnieżna Studnia",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0059.yml"
+      },
+      {
+        "record_number": 252,
+        "object_id": "MLZ-0059",
+        "name": "Jaskinia Śnieżna Studnia",
+        "column": "UWAGI",
+        "value": "dł wg sprawozdania ST za 2020, 2022",
+        "yaml": "data/objects/MLZ/MLZ-0059.yml"
+      },
+      {
+        "record_number": 254,
+        "object_id": "KSW-0189",
+        "name": "Jaskinia Wysoka",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/KSW/KSW-0189.yml"
+      },
+      {
+        "record_number": 254,
+        "object_id": "KSW-0189",
+        "name": "Jaskinia Wysoka",
+        "column": "UWAGI",
+        "value": "dł za Nowakiem",
+        "yaml": "data/objects/KSW/KSW-0189.yml"
+      },
+      {
+        "record_number": 259,
+        "object_id": "CHZ-0010",
+        "name": "Szczelina w Wielkich Koryciskach",
+        "column": "WER_LOK",
+        "value": "24-02-2020 FF",
+        "yaml": "data/objects/CHZ/CHZ-0010.yml"
+      },
+      {
+        "record_number": 260,
+        "object_id": "MLZ-0075",
+        "name": "Komórka przy Średnim Leju",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0075.yml"
+      },
+      {
+        "record_number": 261,
+        "object_id": "KSW-0187",
+        "name": "Jaskinia Lodowa Krakowska",
+        "column": "WER_LOK",
+        "value": "FF 7-12-2020",
+        "yaml": "data/objects/KSW/KSW-0187.yml"
+      },
+      {
+        "record_number": 263,
+        "object_id": "PL-0040",
+        "name": "Szczelina za Paśnikiem",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/PL/PL-0040.yml"
+      },
+      {
+        "record_number": 264,
+        "object_id": "BYW-0024",
+        "name": "Dziura z Gawrą",
+        "column": "WER_LOK",
+        "value": "2020-01-11 TZK GPS2",
+        "yaml": "data/objects/BYW/BYW-0024.yml"
+      },
+      {
+        "record_number": 266,
+        "object_id": "MLZ-0018",
+        "name": "Wilczy Schron",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0018.yml"
+      },
+      {
+        "record_number": 269,
+        "object_id": "MTZ-0021",
+        "name": "Jaskinia przy Progu Mułowym",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/MTZ/MTZ-0021.yml"
+      },
+      {
+        "record_number": 275,
+        "object_id": "CHW-0009",
+        "name": "Schronisko przy Jaskini w Dudzińcu",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0009.yml"
+      },
+      {
+        "record_number": 276,
+        "object_id": "BYZ-0015",
+        "name": "Jaskinia Bystrej",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/BYZ/BYZ-0015.yml"
+      },
+      {
+        "record_number": 280,
+        "object_id": "MTZ-0011",
+        "name": "Studnia w Kazalnicy",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/MTZ/MTZ-0011.yml"
+      },
+      {
+        "record_number": 281,
+        "object_id": "MLW-0019",
+        "name": "Szczelina w Mnichowych Turniach II",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0019.yml"
+      },
+      {
+        "record_number": 282,
+        "object_id": "MLZ-0065",
+        "name": "Jaskinia pod Śnieżną Studnią",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0065.yml"
+      },
+      {
+        "record_number": 284,
+        "object_id": "MTW-0030",
+        "name": "Komin w Ratuszu",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/MTW/MTW-0030.yml"
+      },
+      {
+        "record_number": 285,
+        "object_id": "MTZ-0018",
+        "name": "Jaskinia Marmurowa",
+        "column": "WER_LOK",
+        "value": "ortofoto FF 12-05-2020",
+        "yaml": "data/objects/MTZ/MTZ-0018.yml"
+      },
+      {
+        "record_number": 290,
+        "object_id": "KSW-0257",
+        "name": "Jaskinia Zimna",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/KSW/KSW-0257.yml"
+      },
+      {
+        "record_number": 291,
+        "object_id": "KSW-0201",
+        "name": "Jaskinia Czarna",
+        "column": "UWAGI",
+        "value": "dł za Nowakiem",
+        "yaml": "data/objects/KSW/KSW-0201.yml"
+      },
+      {
+        "record_number": 292,
+        "object_id": "BYW-0035",
+        "name": "Nyża pod Jaskinią Magurską IV",
+        "column": "WER_LOK",
+        "value": "07-01-2025 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0035.yml"
+      },
+      {
+        "record_number": 292,
+        "object_id": "BYW-0035",
+        "name": "Nyża pod Jaskinią Magurską IV",
+        "column": "UWAGI",
+        "value": "do dalszej weryfikacji",
+        "yaml": "data/objects/BYW/BYW-0035.yml"
+      },
+      {
+        "record_number": 295,
+        "object_id": "MTW-0009",
+        "name": "Dziura za Smrekiem w Zawiesistej",
+        "column": "WER_LOK",
+        "value": "24-09-2024 FF NMT",
+        "yaml": "data/objects/MTW/MTW-0009.yml"
+      },
+      {
+        "record_number": 296,
+        "object_id": "CHW-0001",
+        "name": "Schronisko przy Ścianach",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0001.yml"
+      },
+      {
+        "record_number": 297,
+        "object_id": "MTW-0010",
+        "name": "Jaskinia Wielka Litworowa",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF ortofoto",
+        "yaml": "data/objects/MTW/MTW-0010.yml"
+      },
+      {
+        "record_number": 297,
+        "object_id": "MTW-0010",
+        "name": "Jaskinia Wielka Litworowa",
+        "column": "UWAGI",
+        "value": "dł. jako suma 5 jaskin składowych wg PIG",
+        "yaml": "data/objects/MTW/MTW-0010.yml"
+      },
+      {
+        "record_number": 302,
+        "object_id": "MTW-0038",
+        "name": "Dziura nad Szlakiem",
+        "column": "WER_LOK",
+        "value": "26-02-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0038.yml"
+      },
+      {
+        "record_number": 303,
+        "object_id": "BYZ-0035",
+        "name": "Szczelina w Suchym Żlebie",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0035.yml"
+      },
+      {
+        "record_number": 305,
+        "object_id": "KSW-0090",
+        "name": "Jaskinia Zimna",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/KSW/KSW-0090.yml"
+      },
+      {
+        "record_number": 305,
+        "object_id": "KSW-0090",
+        "name": "Jaskinia Zimna",
+        "column": "UWAGI",
+        "value": "Jaskinie 100",
+        "yaml": "data/objects/KSW/KSW-0090.yml"
+      },
+      {
+        "record_number": 308,
+        "object_id": "MTW-0013",
+        "name": "Jaskinia Kozia",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF ortofoto",
+        "yaml": "data/objects/MTW/MTW-0013.yml"
+      },
+      {
+        "record_number": 312,
+        "object_id": "KSW-0121",
+        "name": "Szczelina nad Ponorem",
+        "column": "WER_LOK",
+        "value": "19-07-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0121.yml"
+      },
+      {
+        "record_number": 320,
+        "object_id": "MTW-0001",
+        "name": "Jaskinia w Kobylarzowym Żlebie",
+        "column": "WER_LOK",
+        "value": "26-02-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0001.yml"
+      },
+      {
+        "record_number": 325,
+        "object_id": "MTW-0025",
+        "name": "Nisza w Kobylarzowej Turni",
+        "column": "WER_LOK",
+        "value": "26-02-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0025.yml"
+      },
+      {
+        "record_number": 327,
+        "object_id": "MLZ-0017",
+        "name": "Zaspałkowa Szpara",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0017.yml"
+      },
+      {
+        "record_number": 332,
+        "object_id": "STR-0004",
+        "name": "Kozia Grota",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/STR/STR-0004.yml"
+      },
+      {
+        "record_number": 337,
+        "object_id": "BYW-0017",
+        "name": "Dziura pod Kamieniem",
+        "column": "WER_LOK",
+        "value": "23-08-2021 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0017.yml"
+      },
+      {
+        "record_number": 339,
+        "object_id": "CHW-0015",
+        "name": "Schron w Opalonem II",
+        "column": "WER_LOK",
+        "value": "28-12-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0015.yml"
+      },
+      {
+        "record_number": 341,
+        "object_id": "KSW-0065",
+        "name": "Smocza Jama",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/KSW/KSW-0065.yml"
+      },
+      {
+        "record_number": 342,
+        "object_id": "STR-0013",
+        "name": "Dziura w Czarnej Turni III",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/STR/STR-0013.yml"
+      },
+      {
+        "record_number": 346,
+        "object_id": "SUW-0003",
+        "name": "Gawra nad Suchą Wodą",
+        "column": "WER_LOK",
+        "value": "2020-01-11 TZK GPS",
+        "yaml": "data/objects/SUW/SUW-0003.yml"
+      },
+      {
+        "record_number": 348,
+        "object_id": "MTW-0003",
+        "name": "Jaskinia w Trawie",
+        "column": "WER_LOK",
+        "value": "24-09-2024 FF NMT",
+        "yaml": "data/objects/MTW/MTW-0003.yml"
+      },
+      {
+        "record_number": 350,
+        "object_id": "MLZ-0004",
+        "name": "Jaskinia w Wielkiej Turni",
+        "column": "WER_LOK",
+        "value": "12-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0004.yml"
+      },
+      {
+        "record_number": 354,
+        "object_id": "CHZ-0005",
+        "name": "Skośna Szpara",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHZ/CHZ-0005.yml"
+      },
+      {
+        "record_number": 357,
+        "object_id": "KSW-0045",
+        "name": "Schron z Kijem",
+        "column": "WER_LOK",
+        "value": "FF 16-12-2020",
+        "yaml": "data/objects/KSW/KSW-0045.yml"
+      },
+      {
+        "record_number": 360,
+        "object_id": "BYZ-0009",
+        "name": "Szczelina w Myślenickich Turniach Górna",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYZ/BYZ-0009.yml"
+      },
+      {
+        "record_number": 367,
+        "object_id": "BYW-0022",
+        "name": "Schron z Prowokatorem",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0022.yml"
+      },
+      {
+        "record_number": 371,
+        "object_id": "PL-0018",
+        "name": "Grota Filipczańska Wyżnia",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/PL/PL-0018.yml"
+      },
+      {
+        "record_number": 372,
+        "object_id": "BIA-0001",
+        "name": "Koleba nad Doliną Białego",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/BIA/BIA-0001.yml"
+      },
+      {
+        "record_number": 373,
+        "object_id": "BYZ-0040",
+        "name": "Nyża pod Myślenicką Szczeliną",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYZ/BYZ-0040.yml"
+      },
+      {
+        "record_number": 374,
+        "object_id": "STN-0003",
+        "name": "Dziura Stanikowa Niżnia",
+        "column": "WER_LOK",
+        "value": "11-06-2021 FF NMT",
+        "yaml": "data/objects/STN/STN-0003.yml"
+      },
+      {
+        "record_number": 376,
+        "object_id": "KSW-0082",
+        "name": "Dziura pod Smoczą Jamą",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/KSW/KSW-0082.yml"
+      },
+      {
+        "record_number": 384,
+        "object_id": "MTW-0053",
+        "name": "Jaskinia nad Lodową Litworową",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0053.yml"
+      },
+      {
+        "record_number": 385,
+        "object_id": "STR-0007",
+        "name": "Nisza w Jatkach",
+        "column": "WER_LOK",
+        "value": "22-01-2020 FF ortofotomapa",
+        "yaml": "data/objects/STR/STR-0007.yml"
+      },
+      {
+        "record_number": 387,
+        "object_id": "BYW-0010",
+        "name": "Gawra nad Jaworzynką",
+        "column": "WER_LOK",
+        "value": "2020-01-11 TZK GPS",
+        "yaml": "data/objects/BYW/BYW-0010.yml"
+      },
+      {
+        "record_number": 388,
+        "object_id": "BYZ-0027",
+        "name": "Kalacka Szczelina",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0027.yml"
+      },
+      {
+        "record_number": 393,
+        "object_id": "MLZ-0077",
+        "name": "Meander w Małołąckim Siodle",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0077.yml"
+      },
+      {
+        "record_number": 396,
+        "object_id": "MLZ-0051",
+        "name": "Tunel pod Siwarową Dziurą",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0051.yml"
+      },
+      {
+        "record_number": 398,
+        "object_id": "KSW-0169",
+        "name": "Okna Zbójnickie Niżnie",
+        "column": "WER_LOK",
+        "value": "FF 1-6-2024 NMT",
+        "yaml": "data/objects/KSW/KSW-0169.yml"
+      },
+      {
+        "record_number": 404,
+        "object_id": "MTZ-0001",
+        "name": "Schron z Balkonem",
+        "column": "WER_LOK",
+        "value": "16-09-2021 FF, NMT",
+        "yaml": "data/objects/MTZ/MTZ-0001.yml"
+      },
+      {
+        "record_number": 405,
+        "object_id": "MLZ-0014",
+        "name": "Jaskinia pod Strzelistą",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0014.yml"
+      },
+      {
+        "record_number": 408,
+        "object_id": "KSW-0027",
+        "name": "Przelot",
+        "column": "WER_LOK",
+        "value": "1-6-2024 FF",
+        "yaml": "data/objects/KSW/KSW-0027.yml"
+      },
+      {
+        "record_number": 409,
+        "object_id": "KSW-0234",
+        "name": "Jaskinia Hakowa",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/KSW/KSW-0234.yml"
+      },
+      {
+        "record_number": 410,
+        "object_id": "BYZ-0005",
+        "name": "Kalacki Tunelik",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0005.yml"
+      },
+      {
+        "record_number": 412,
+        "object_id": "BYZ-0001",
+        "name": "Szczelina w Myślenickich Turniach Dolna",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYZ/BYZ-0001.yml"
+      },
+      {
+        "record_number": 413,
+        "object_id": "MLZ-0032",
+        "name": "Zawalony Schron",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0032.yml"
+      },
+      {
+        "record_number": 416,
+        "object_id": "CHW-0003",
+        "name": "Dudowy Schron",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0003.yml"
+      },
+      {
+        "record_number": 418,
+        "object_id": "BYW-0008",
+        "name": "Jaskinia w Czubie Jaworzyńskiej",
+        "column": "WER_LOK",
+        "value": "11-06-2021 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0008.yml"
+      },
+      {
+        "record_number": 419,
+        "object_id": "KSW-0227",
+        "name": "Rura przy Oknie",
+        "column": "WER_LOK",
+        "value": "27-08-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0227.yml"
+      },
+      {
+        "record_number": 422,
+        "object_id": "KSW-0008",
+        "name": "Schron przy Naciekowej",
+        "column": "WER_LOK",
+        "value": "1-6-2024 FF",
+        "yaml": "data/objects/KSW/KSW-0008.yml"
+      },
+      {
+        "record_number": 427,
+        "object_id": "BYW-0028",
+        "name": "Jaskinia Korytarzowa",
+        "column": "WER_LOK",
+        "value": "23-08-2021 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0028.yml"
+      },
+      {
+        "record_number": 430,
+        "object_id": "OLC-0004",
+        "name": "Jaskinia Jaszczurowska Wyżnia",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF NMT",
+        "yaml": "data/objects/OLC/OLC-0004.yml"
+      },
+      {
+        "record_number": 431,
+        "object_id": "BYW-0029",
+        "name": "Gawra pod Granią",
+        "column": "WER_LOK",
+        "value": "2020-01-11 TZK GPS",
+        "yaml": "data/objects/BYW/BYW-0029.yml"
+      },
+      {
+        "record_number": 432,
+        "object_id": "MLZ-0015",
+        "name": "Dziura w Czerwonym Grzbiecie",
+        "column": "WER_LOK",
+        "value": "FF 7-12-2020",
+        "yaml": "data/objects/MLZ/MLZ-0015.yml"
+      },
+      {
+        "record_number": 433,
+        "object_id": "MTW-0019",
+        "name": "Jaskinia za Ratuszem Zimna",
+        "column": "WER_LOK",
+        "value": "02.12.2021 FF Ortofoto 2019",
+        "yaml": "data/objects/MTW/MTW-0019.yml"
+      },
+      {
+        "record_number": 437,
+        "object_id": "KSZ-0047",
+        "name": "Jaskinia Raptawicka",
+        "column": "WER_LOK",
+        "value": "2020-01-11 TZK ortofoto",
+        "yaml": "data/objects/KSZ/KSZ-0047.yml"
+      },
+      {
+        "record_number": 440,
+        "object_id": "KSZ-0107",
+        "name": "Jaskinia pod Jaworem",
+        "column": "WER_LOK",
+        "value": "FF ortofoto 18.05.2021",
+        "yaml": "data/objects/KSZ/KSZ-0107.yml"
+      },
+      {
+        "record_number": 444,
+        "object_id": "STN-0002",
+        "name": "Dziura Stanikowa Wyżnia",
+        "column": "WER_LOK",
+        "value": "11-06-2021 FF NMT",
+        "yaml": "data/objects/STN/STN-0002.yml"
+      },
+      {
+        "record_number": 445,
+        "object_id": "MTW-0047",
+        "name": "Studnia na Szlaku",
+        "column": "WER_LOK",
+        "value": "FF 7-12-2020",
+        "yaml": "data/objects/MTW/MTW-0047.yml"
+      },
+      {
+        "record_number": 445,
+        "object_id": "MTW-0047",
+        "name": "Studnia na Szlaku",
+        "column": "UWAGI",
+        "value": "przybliżona lokalizacja",
+        "yaml": "data/objects/MTW/MTW-0047.yml"
+      },
+      {
+        "record_number": 446,
+        "object_id": "CHZ-0016",
+        "name": "Siwiański Schron",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0016.yml"
+      },
+      {
+        "record_number": 451,
+        "object_id": "MLZ-0021",
+        "name": "Łamana Dziura",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0021.yml"
+      },
+      {
+        "record_number": 452,
+        "object_id": "STN-0001",
+        "name": "Szczelina w Czerwonym Groniku",
+        "column": "WER_LOK",
+        "value": "11-06-2021 FF NMT",
+        "yaml": "data/objects/STN/STN-0001.yml"
+      },
+      {
+        "record_number": 454,
+        "object_id": "MTW-0022",
+        "name": "Jaskinia przy Ryglu",
+        "column": "WER_LOK",
+        "value": "24-09-2024 FF NMT",
+        "yaml": "data/objects/MTW/MTW-0022.yml"
+      },
+      {
+        "record_number": 467,
+        "object_id": "MTW-0012",
+        "name": "Kobylarzowa Szczelina",
+        "column": "WER_LOK",
+        "value": "FF 7-12-2020",
+        "yaml": "data/objects/MTW/MTW-0012.yml"
+      },
+      {
+        "record_number": 472,
+        "object_id": "MLZ-0054",
+        "name": "Jaskinia Strzelista",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0054.yml"
+      },
+      {
+        "record_number": 473,
+        "object_id": "BYZ-0021",
+        "name": "Szczelina w Giewoncie II",
+        "column": "WER_LOK",
+        "value": "28-05-2021 FF ortofoto",
+        "yaml": "data/objects/BYZ/BYZ-0021.yml"
+      },
+      {
+        "record_number": 475,
+        "object_id": "STR-0005",
+        "name": "Okno w Jatkach I",
+        "column": "WER_LOK",
+        "value": "22-01-2020 FF ortofotomapa",
+        "yaml": "data/objects/STR/STR-0005.yml"
+      },
+      {
+        "record_number": 477,
+        "object_id": "MLZ-0007",
+        "name": "Jaskinia przy Przechodzie",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0007.yml"
+      },
+      {
+        "record_number": 480,
+        "object_id": "MLZ-0067",
+        "name": "Jaskinia nad Zagonem",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0067.yml"
+      },
+      {
+        "record_number": 482,
+        "object_id": "CHZ-0025",
+        "name": "Jaskinia Rybia",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0025.yml"
+      },
+      {
+        "record_number": 483,
+        "object_id": "CHZ-0007",
+        "name": "Siwiańska Dziura",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0007.yml"
+      },
+      {
+        "record_number": 484,
+        "object_id": "CHZ-0013",
+        "name": "Wilcza Nora",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0013.yml"
+      },
+      {
+        "record_number": 489,
+        "object_id": "MLZ-0048",
+        "name": "Schron pod Jędrusiową Dziurą",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0048.yml"
+      },
+      {
+        "record_number": 490,
+        "object_id": "MLZ-0055",
+        "name": "Zagonna Studnia",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0055.yml"
+      },
+      {
+        "record_number": 491,
+        "object_id": "MLZ-0064",
+        "name": "Jaskinia Ciasna w Groniu",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0064.yml"
+      },
+      {
+        "record_number": 492,
+        "object_id": "KSW-0214",
+        "name": "Jaskinia Wodna pod Pisaną",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/KSW/KSW-0214.yml"
+      },
+      {
+        "record_number": 493,
+        "object_id": "PL-0009",
+        "name": "Schron przy Grocie w Jaworzyńskim Żlebie",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/PL/PL-0009.yml"
+      },
+      {
+        "record_number": 495,
+        "object_id": "BYW-0006",
+        "name": "Jaskinia pod Limbą",
+        "column": "WER_LOK",
+        "value": "FF 02052025 NMT",
+        "yaml": "data/objects/BYW/BYW-0006.yml"
+      },
+      {
+        "record_number": 498,
+        "object_id": "CHW-0037",
+        "name": "Schronisko Dudowe",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0037.yml"
+      },
+      {
+        "record_number": 502,
+        "object_id": "MLZ-0043",
+        "name": "Szczelina nad Dziurą w Wantach I",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0043.yml"
+      },
+      {
+        "record_number": 503,
+        "object_id": "KSW-0052",
+        "name": "Jaskinia z Mostami",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/KSW/KSW-0052.yml"
+      },
+      {
+        "record_number": 505,
+        "object_id": "BYZ-0011",
+        "name": "Korytarzyk nad Kalacką",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0011.yml"
+      },
+      {
+        "record_number": 509,
+        "object_id": "MTW-0016",
+        "name": "Dziura w Grzędzie II",
+        "column": "WER_LOK",
+        "value": "16-12-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0016.yml"
+      },
+      {
+        "record_number": 513,
+        "object_id": "PL-0029",
+        "name": "Grota Filipczańska nad Mostkiem",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF",
+        "yaml": "data/objects/PL/PL-0029.yml"
+      },
+      {
+        "record_number": 514,
+        "object_id": "CHW-0023",
+        "name": "Dziura nad Potokiem",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHW/CHW-0023.yml"
+      },
+      {
+        "record_number": 518,
+        "object_id": "KSW-0016",
+        "name": "Jaskinia pod Oknem",
+        "column": "WER_LOK",
+        "value": "27-08-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0016.yml"
+      },
+      {
+        "record_number": 519,
+        "object_id": "KSZ-0057",
+        "name": "Dziura pod Raptawicą",
+        "column": "WER_LOK",
+        "value": "16-12-2020 FF",
+        "yaml": "data/objects/KSZ/KSZ-0057.yml"
+      },
+      {
+        "record_number": 524,
+        "object_id": "MTW-0048",
+        "name": "Jaskinia Barłogowa",
+        "column": "WER_LOK",
+        "value": "2022-05-25 FF",
+        "yaml": "data/objects/MTW/MTW-0048.yml"
+      },
+      {
+        "record_number": 527,
+        "object_id": "CHW-0022",
+        "name": "Schronisko w Kalwarii",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHW/CHW-0022.yml"
+      },
+      {
+        "record_number": 530,
+        "object_id": "CHZ-0011",
+        "name": "Wojtkowa Szpara / sztolnia nr 7",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0011.yml"
+      },
+      {
+        "record_number": 530,
+        "object_id": "CHZ-0011",
+        "name": "Wojtkowa Szpara / sztolnia nr 7",
+        "column": "UWAGI",
+        "value": "Sztolnia nr 7 wg Jach Jaskinie nr 3 (28) 2002",
+        "yaml": "data/objects/CHZ/CHZ-0011.yml"
+      },
+      {
+        "record_number": 533,
+        "object_id": "CHW-0002",
+        "name": "Schron w Opalonem I",
+        "column": "WER_LOK",
+        "value": "28-12-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0002.yml"
+      },
+      {
+        "record_number": 534,
+        "object_id": "KSW-0104",
+        "name": "Paszcza Rekina",
+        "column": "WER_LOK",
+        "value": "27-08-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0104.yml"
+      },
+      {
+        "record_number": 535,
+        "object_id": "MLZ-0001",
+        "name": "Studnia przy Przechodzie",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0001.yml"
+      },
+      {
+        "record_number": 536,
+        "object_id": "BYW-0034",
+        "name": "Schronisko Jasne w Czubie Jaworzyńskiej",
+        "column": "WER_LOK",
+        "value": "11-06-2021 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0034.yml"
+      },
+      {
+        "record_number": 540,
+        "object_id": "MLW-0006",
+        "name": "Dziura nad Jaskinią Śpiących Rycerzy I",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0006.yml"
+      },
+      {
+        "record_number": 544,
+        "object_id": "STR-0016",
+        "name": "Dziura w Czarnej Turni I",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/STR/STR-0016.yml"
+      },
+      {
+        "record_number": 545,
+        "object_id": "MTW-0054",
+        "name": "Jaskinia pod Wantą",
+        "column": "WER_LOK",
+        "value": "2020-01-11 TZK ortofoto",
+        "yaml": "data/objects/MTW/MTW-0054.yml"
+      },
+      {
+        "record_number": 546,
+        "object_id": "BYZ-0006",
+        "name": "Ruda Nyża",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/BYZ/BYZ-0006.yml"
+      },
+      {
+        "record_number": 549,
+        "object_id": "KSW-0174",
+        "name": "Jaskinia Naciekowa",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0174.yml"
+      },
+      {
+        "record_number": 550,
+        "object_id": "BYW-0014",
+        "name": "Kasprowe Schronisko",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYW/BYW-0014.yml"
+      },
+      {
+        "record_number": 553,
+        "object_id": "MTZ-0029",
+        "name": "Szczelina Miętusia",
+        "column": "WER_LOK",
+        "value": "22-01-2021",
+        "yaml": "data/objects/MTZ/MTZ-0029.yml"
+      },
+      {
+        "record_number": 561,
+        "object_id": "MTZ-0044",
+        "name": "Komin w Kazalnicy Miętusiej",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/MTZ/MTZ-0044.yml"
+      },
+      {
+        "record_number": 564,
+        "object_id": "KSW-0151",
+        "name": "Kościół",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/KSW/KSW-0151.yml"
+      },
+      {
+        "record_number": 570,
+        "object_id": "MLW-0001",
+        "name": "Nyża nad Siodłem",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0001.yml"
+      },
+      {
+        "record_number": 574,
+        "object_id": "CHZ-0002",
+        "name": "Siwiańska Nyża",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0002.yml"
+      },
+      {
+        "record_number": 575,
+        "object_id": "KSZ-0062",
+        "name": "Sokole Okno",
+        "column": "WER_LOK",
+        "value": "FF ortofoto 18.05.2021",
+        "yaml": "data/objects/KSZ/KSZ-0062.yml"
+      },
+      {
+        "record_number": 580,
+        "object_id": "BYW-0002",
+        "name": "Jaskinia Partyzancka I",
+        "column": "WER_LOK",
+        "value": "FF 02052025 NMT",
+        "yaml": "data/objects/BYW/BYW-0002.yml"
+      },
+      {
+        "record_number": 583,
+        "object_id": "BYZ-0013",
+        "name": "Kalacka Nyża I",
+        "column": "WER_LOK",
+        "value": "21-10-2025 FF",
+        "yaml": "data/objects/BYZ/BYZ-0013.yml"
+      },
+      {
+        "record_number": 585,
+        "object_id": "BYW-0015",
+        "name": "Szczelina w Zawraciku Kasprowym III",
+        "column": "WER_LOK",
+        "value": "02.12.2021 FF Ortofoto 2019",
+        "yaml": "data/objects/BYW/BYW-0015.yml"
+      },
+      {
+        "record_number": 585,
+        "object_id": "BYW-0015",
+        "name": "Szczelina w Zawraciku Kasprowym III",
+        "column": "UWAGI",
+        "value": "Opis dojścia w inwentarzu jest błędny",
+        "yaml": "data/objects/BYW/BYW-0015.yml"
+      },
+      {
+        "record_number": 587,
+        "object_id": "STR-0020",
+        "name": "Dziura w Czarnej Turni IV",
+        "column": "WER_LOK",
+        "value": "22-01-2020 FF ortofotomapa",
+        "yaml": "data/objects/STR/STR-0020.yml"
+      },
+      {
+        "record_number": 588,
+        "object_id": "MTW-0011",
+        "name": "Dziurka w Trawce",
+        "column": "WER_LOK",
+        "value": "02.12.2021 FF Ortofoto 2019",
+        "yaml": "data/objects/MTW/MTW-0011.yml"
+      },
+      {
+        "record_number": 591,
+        "object_id": "BYW-0020",
+        "name": "Jaworzyńska Nyża pod Iglicą",
+        "column": "WER_LOK",
+        "value": "07-01-2025 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0020.yml"
+      },
+      {
+        "record_number": 593,
+        "object_id": "PL-0017",
+        "name": "Okienko w Jaworzyńskim Żlebie",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/PL/PL-0017.yml"
+      },
+      {
+        "record_number": 594,
+        "object_id": "BYW-0001",
+        "name": "Nyża pod Jaskinią Magurską III",
+        "column": "WER_LOK",
+        "value": "07-01-2025 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0001.yml"
+      },
+      {
+        "record_number": 596,
+        "object_id": "BYW-0007",
+        "name": "Jaskinia Magurska",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/BYW/BYW-0007.yml"
+      },
+      {
+        "record_number": 597,
+        "object_id": "MLZ-0011",
+        "name": "Szczelina nad Dziurą w Wantach II",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF GPS",
+        "yaml": "data/objects/MLZ/MLZ-0011.yml"
+      },
+      {
+        "record_number": 600,
+        "object_id": "KSW-0224",
+        "name": "Tatowa Szczelina",
+        "column": "WER_LOK",
+        "value": "23-08-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0224.yml"
+      },
+      {
+        "record_number": 602,
+        "object_id": "MTW-0045",
+        "name": "Szczelina nad Wielką Litworową",
+        "column": "WER_LOK",
+        "value": "16-12-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0045.yml"
+      },
+      {
+        "record_number": 604,
+        "object_id": "KSZ-0092",
+        "name": "Jaskinia Mysia",
+        "column": "WER_LOK",
+        "value": "16-12-2020 FF",
+        "yaml": "data/objects/KSZ/KSZ-0092.yml"
+      },
+      {
+        "record_number": 605,
+        "object_id": "MLZ-0044",
+        "name": "Jaskinia Mała Zaruskiego",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0044.yml"
+      },
+      {
+        "record_number": 607,
+        "object_id": "PL-0001",
+        "name": "Jaskinia Filipczańska Niżnia",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/PL/PL-0001.yml"
+      },
+      {
+        "record_number": 614,
+        "object_id": "BYZ-0004",
+        "name": "Korytarzyk przy Kalackiej",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0004.yml"
+      },
+      {
+        "record_number": 615,
+        "object_id": "STR-0021",
+        "name": "Okno w Jatkach II",
+        "column": "WER_LOK",
+        "value": "22-01-2020 FF ortofotomapa",
+        "yaml": "data/objects/STR/STR-0021.yml"
+      },
+      {
+        "record_number": 617,
+        "object_id": "BYW-0025",
+        "name": "Jaskinia Partyzancka II",
+        "column": "WER_LOK",
+        "value": "07-01-2025 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0025.yml"
+      },
+      {
+        "record_number": 617,
+        "object_id": "BYW-0025",
+        "name": "Jaskinia Partyzancka II",
+        "column": "UWAGI",
+        "value": "do dokładniejszej weryfikacji",
+        "yaml": "data/objects/BYW/BYW-0025.yml"
+      },
+      {
+        "record_number": 618,
+        "object_id": "BYZ-0028",
+        "name": "Szczelina pod Frapującą Nyżą",
+        "column": "WER_LOK",
+        "value": "16-09-2024 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0028.yml"
+      },
+      {
+        "record_number": 622,
+        "object_id": "MTW-0064",
+        "name": "Jaskinia za Ratuszem Śnieżna",
+        "column": "WER_LOK",
+        "value": "19-10-2025 FF NMT",
+        "yaml": "data/objects/MTW/MTW-0064.yml"
+      },
+      {
+        "record_number": 623,
+        "object_id": "KSZ-0070",
+        "name": "Szczelina nad Mylną",
+        "column": "WER_LOK",
+        "value": "FF ortofoto 18.05.2021",
+        "yaml": "data/objects/KSZ/KSZ-0070.yml"
+      },
+      {
+        "record_number": 624,
+        "object_id": "KSZ-0006",
+        "name": "Okno Zbójnickie Wyżnie",
+        "column": "WER_LOK",
+        "value": "1-6-2024 NMT",
+        "yaml": "data/objects/KSZ/KSZ-0006.yml"
+      },
+      {
+        "record_number": 626,
+        "object_id": "MTZ-0043",
+        "name": "Świstowa  Szczelina",
+        "column": "WER_LOK",
+        "value": "11-06-2021 FF NMT",
+        "yaml": "data/objects/MTZ/MTZ-0043.yml"
+      },
+      {
+        "record_number": 629,
+        "object_id": "KSW-0124",
+        "name": "Schron w Piecu",
+        "column": "WER_LOK",
+        "value": "7-5-2024 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0124.yml"
+      },
+      {
+        "record_number": 636,
+        "object_id": "MLZ-0079",
+        "name": "Średni Lej",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0079.yml"
+      },
+      {
+        "record_number": 637,
+        "object_id": "MTW-0051",
+        "name": "Nyża przy Schodkach",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/MTW/MTW-0051.yml"
+      },
+      {
+        "record_number": 639,
+        "object_id": "KSZ-0024",
+        "name": "Meanderek nad Mylną",
+        "column": "WER_LOK",
+        "value": "FF ortofoto 18.05.2021",
+        "yaml": "data/objects/KSZ/KSZ-0024.yml"
+      },
+      {
+        "record_number": 640,
+        "object_id": "MTZ-0016",
+        "name": "Jaskinia Miętusia Wyżnia",
+        "column": "WER_LOK",
+        "value": "11-06-2021 FF ortofoto",
+        "yaml": "data/objects/MTZ/MTZ-0016.yml"
+      },
+      {
+        "record_number": 643,
+        "object_id": "MLZ-0066",
+        "name": "Szczelina pod Zagonną Turnią",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0066.yml"
+      },
+      {
+        "record_number": 645,
+        "object_id": "MTZ-0057",
+        "name": "Śnieżny Awen",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/MTZ/MTZ-0057.yml"
+      },
+      {
+        "record_number": 647,
+        "object_id": "MTW-0004",
+        "name": "Jaskinia nad Dachem",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0004.yml"
+      },
+      {
+        "record_number": 648,
+        "object_id": "MLZ-0036",
+        "name": "Nyża w Baranich Schodkach II",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0036.yml"
+      },
+      {
+        "record_number": 652,
+        "object_id": "CHZ-0015",
+        "name": "Siwiańskie Okno",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0015.yml"
+      },
+      {
+        "record_number": 655,
+        "object_id": "BYW-0004",
+        "name": "Jaskinia Kasprowa Średnia",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/BYW/BYW-0004.yml"
+      },
+      {
+        "record_number": 656,
+        "object_id": "MTZ-0046",
+        "name": "Schron przy Studni",
+        "column": "WER_LOK",
+        "value": "28-12-2020 FF",
+        "yaml": "data/objects/MTZ/MTZ-0046.yml"
+      },
+      {
+        "record_number": 663,
+        "object_id": "BYW-0027",
+        "name": "Szczelina nad Jaskinią Magurską",
+        "column": "WER_LOK",
+        "value": "07-01-2025 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0027.yml"
+      },
+      {
+        "record_number": 665,
+        "object_id": "BYW-0031",
+        "name": "Szczelina w Zawraciku Kasprowym IV",
+        "column": "WER_LOK",
+        "value": "02.12.2021 FF Ortofoto 2019",
+        "yaml": "data/objects/BYW/BYW-0031.yml"
+      },
+      {
+        "record_number": 665,
+        "object_id": "BYW-0031",
+        "name": "Szczelina w Zawraciku Kasprowym IV",
+        "column": "UWAGI",
+        "value": "Opis dojścia w inwentarzu jest błędny",
+        "yaml": "data/objects/BYW/BYW-0031.yml"
+      },
+      {
+        "record_number": 666,
+        "object_id": "CHZ-0008",
+        "name": "Schron w Wielkich Koryciskach II",
+        "column": "WER_LOK",
+        "value": "26-02-2020 FF",
+        "yaml": "data/objects/CHZ/CHZ-0008.yml"
+      },
+      {
+        "record_number": 667,
+        "object_id": "KSW-0235",
+        "name": "Jaskinia pod Okapem",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/KSW/KSW-0235.yml"
+      },
+      {
+        "record_number": 672,
+        "object_id": "MLZ-0108",
+        "name": "Jaskinia nad Korytem",
+        "column": "WER_LOK",
+        "value": "11-05-2022 TZK",
+        "yaml": "data/objects/MLZ/MLZ-0108.yml"
+      },
+      {
+        "record_number": 673,
+        "object_id": "BYZ-0032",
+        "name": "Szczelina w Kopie",
+        "column": "WER_LOK",
+        "value": "11-12-2020",
+        "yaml": "data/objects/BYZ/BYZ-0032.yml"
+      },
+      {
+        "record_number": 674,
+        "object_id": "MLW-0017",
+        "name": "Mała Mnichowa Studzienka",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0017.yml"
+      },
+      {
+        "record_number": 678,
+        "object_id": "BYW-0003",
+        "name": "Nyża pod Zawracikiem",
+        "column": "WER_LOK",
+        "value": "FF 02052025 NMT",
+        "yaml": "data/objects/BYW/BYW-0003.yml"
+      },
+      {
+        "record_number": 683,
+        "object_id": "CHW-0032",
+        "name": "Schron w Wyżniej Bramie Chochołowskiej",
+        "column": "WER_LOK",
+        "value": "24-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0032.yml"
+      },
+      {
+        "record_number": 686,
+        "object_id": "BYZ-0038",
+        "name": "Myślenicki Korytarzyk",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYZ/BYZ-0038.yml"
+      },
+      {
+        "record_number": 694,
+        "object_id": "BYW-0032",
+        "name": "Szczelina w Zawraciku Kasprowym I",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYW/BYW-0032.yml"
+      },
+      {
+        "record_number": 695,
+        "object_id": "STR-0015",
+        "name": "Nyża Giewontowa",
+        "column": "WER_LOK",
+        "value": "22-05-2022 FF nmt",
+        "yaml": "data/objects/STR/STR-0015.yml"
+      },
+      {
+        "record_number": 696,
+        "object_id": "BYZ-0023",
+        "name": "Schron z Nietoperzami",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYZ/BYZ-0023.yml"
+      },
+      {
+        "record_number": 698,
+        "object_id": "MLZ-0016",
+        "name": "Schron Partyzantów II",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0016.yml"
+      },
+      {
+        "record_number": 699,
+        "object_id": "MTZ-0022",
+        "name": "Jaskinia Lodowa Miętusia",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/MTZ/MTZ-0022.yml"
+      },
+      {
+        "record_number": 700,
+        "object_id": "KSW-0081",
+        "name": "Jaskinia Mroźna",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/KSW/KSW-0081.yml"
+      },
+      {
+        "record_number": 702,
+        "object_id": "KSW-0173",
+        "name": "Jaskinia Lodowa w Ciemniaku",
+        "column": "WER_LOK",
+        "value": "FF 7-12-2020",
+        "yaml": "data/objects/KSW/KSW-0173.yml"
+      },
+      {
+        "record_number": 705,
+        "object_id": "MLW-0013",
+        "name": "Chuda Mnichowa Studnia",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0013.yml"
+      },
+      {
+        "record_number": 706,
+        "object_id": "STR-0010",
+        "name": "Jaskinia w Jatkach",
+        "column": "WER_LOK",
+        "value": "22-01-2020 FF ortofotomapa",
+        "yaml": "data/objects/STR/STR-0010.yml"
+      },
+      {
+        "record_number": 709,
+        "object_id": "KSZ-0090",
+        "name": "Jaskinia Obłazkowa",
+        "column": "WER_LOK",
+        "value": "2020-01-11 TZK ortofoto",
+        "yaml": "data/objects/KSZ/KSZ-0090.yml"
+      },
+      {
+        "record_number": 714,
+        "object_id": "MLW-0010",
+        "name": "Dziura nad Jaskinią Śpiących Rycerzy II",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0010.yml"
+      },
+      {
+        "record_number": 718,
+        "object_id": "KSW-0017",
+        "name": "Szczelina przy Mostku",
+        "column": "WER_LOK",
+        "value": "19-07-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0017.yml"
+      },
+      {
+        "record_number": 725,
+        "object_id": "KSW-0123",
+        "name": "Jaskinia za Siedmiu Progami",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/KSW/KSW-0123.yml"
+      },
+      {
+        "record_number": 728,
+        "object_id": "BYW-0005",
+        "name": "Szczelina w Zawraciku Kasprowym II",
+        "column": "WER_LOK",
+        "value": "21-01-2023 FF ortofotomapa 2019",
+        "yaml": "data/objects/BYW/BYW-0005.yml"
+      },
+      {
+        "record_number": 731,
+        "object_id": "BYW-0026",
+        "name": "Dziura pod Nosalem",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0026.yml"
+      },
+      {
+        "record_number": 731,
+        "object_id": "BYW-0026",
+        "name": "Dziura pod Nosalem",
+        "column": "UWAGI",
+        "value": "poożenie wg opisu dojścia z inwentarza",
+        "yaml": "data/objects/BYW/BYW-0026.yml"
+      },
+      {
+        "record_number": 734,
+        "object_id": "BYW-0023",
+        "name": "Jaskinia Kasprowa Wyżnia",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/BYW/BYW-0023.yml"
+      },
+      {
+        "record_number": 735,
+        "object_id": "BYZ-0014",
+        "name": "Szczelina w Giewoncie I",
+        "column": "WER_LOK",
+        "value": "28-05-2021 FF ortofoto",
+        "yaml": "data/objects/BYZ/BYZ-0014.yml"
+      },
+      {
+        "record_number": 739,
+        "object_id": "MLZ-0068",
+        "name": "Jaskinia Śnieżna",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0068.yml"
+      },
+      {
+        "record_number": 745,
+        "object_id": "MTW-0049",
+        "name": "Jaskinia za Płytą",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/MTW/MTW-0049.yml"
+      },
+      {
+        "record_number": 746,
+        "object_id": "BYW-0036",
+        "name": "Schron nad Przełączką",
+        "column": "WER_LOK",
+        "value": "07-01-2025 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0036.yml"
+      },
+      {
+        "record_number": 747,
+        "object_id": "PL-0038",
+        "name": "Jaskinia Wołoszyńska Wyżnia",
+        "column": "WER_LOK",
+        "value": "28-05-2021 FF NMT",
+        "yaml": "data/objects/PL/PL-0038.yml"
+      },
+      {
+        "record_number": 750,
+        "object_id": "STR-0009",
+        "name": "Kominek Giewontowy",
+        "column": "WER_LOK",
+        "value": "22-05-2022 FF nmt",
+        "yaml": "data/objects/STR/STR-0009.yml"
+      },
+      {
+        "record_number": 752,
+        "object_id": "MLZ-0002",
+        "name": "Jaskinia przy Jędrusiowej Dziurze",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0002.yml"
+      },
+      {
+        "record_number": 756,
+        "object_id": "MTZ-0008",
+        "name": "Schrony nad Okapami",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/MTZ/MTZ-0008.yml"
+      },
+      {
+        "record_number": 759,
+        "object_id": "KSZ-0113",
+        "name": "Jaskinia Mylna",
+        "column": "WER_LOK",
+        "value": "2023-08-23 MB NMT",
+        "yaml": "data/objects/KSZ/KSZ-0113.yml"
+      },
+      {
+        "record_number": 760,
+        "object_id": "KSZ-0001",
+        "name": "Dziura pod Mylną",
+        "column": "WER_LOK",
+        "value": "FF 18.05.2021 ortofoto",
+        "yaml": "data/objects/KSZ/KSZ-0001.yml"
+      },
+      {
+        "record_number": 762,
+        "object_id": "MLZ-0060",
+        "name": "Nyża pod Wielką Turnią",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0060.yml"
+      },
+      {
+        "record_number": 763,
+        "object_id": "KSW-0161",
+        "name": "Szczelina nad Lodową",
+        "column": "WER_LOK",
+        "value": "7-12-2020 FF",
+        "yaml": "data/objects/KSW/KSW-0161.yml"
+      },
+      {
+        "record_number": 766,
+        "object_id": "MTW-0023",
+        "name": "Jaskinia Lodowa Litworowa",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0023.yml"
+      },
+      {
+        "record_number": 769,
+        "object_id": "BYZ-0018",
+        "name": "Studnia w Giewoncie",
+        "column": "WER_LOK",
+        "value": "28-05-2021 FF ortofoto",
+        "yaml": "data/objects/BYZ/BYZ-0018.yml"
+      },
+      {
+        "record_number": 774,
+        "object_id": "MLZ-0053",
+        "name": "Kominek obok Ciasnej w Groniu",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0053.yml"
+      },
+      {
+        "record_number": 776,
+        "object_id": "BYW-0016",
+        "name": "Gawra między Gawrami",
+        "column": "WER_LOK",
+        "value": "2020-01-11 TZK GPS",
+        "yaml": "data/objects/BYW/BYW-0016.yml"
+      },
+      {
+        "record_number": 778,
+        "object_id": "MLZ-0045",
+        "name": "Komora w Jatkach",
+        "column": "WER_LOK",
+        "value": "22-01-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0045.yml"
+      },
+      {
+        "record_number": 780,
+        "object_id": "MLZ-0047",
+        "name": "Szczelina nad Wyżniem",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0047.yml"
+      },
+      {
+        "record_number": 781,
+        "object_id": "BYZ-0039",
+        "name": "Kozi Korytarz",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0039.yml"
+      },
+      {
+        "record_number": 782,
+        "object_id": "BYZ-0025",
+        "name": "Frapująca Nyża",
+        "column": "WER_LOK",
+        "value": "16-09-2024 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0025.yml"
+      },
+      {
+        "record_number": 783,
+        "object_id": "BYZ-0020",
+        "name": "Jaskinia w Cycku",
+        "column": "WER_LOK",
+        "value": "12-04-2023 TZK po kontroli",
+        "yaml": "data/objects/BYZ/BYZ-0020.yml"
+      },
+      {
+        "record_number": 787,
+        "object_id": "MLZ-0028",
+        "name": "Komora Gwiaździsta",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0028.yml"
+      },
+      {
+        "record_number": 788,
+        "object_id": "MTW-0061",
+        "name": "Znana Studnia",
+        "column": "WER_LOK",
+        "value": "26-02-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0061.yml"
+      },
+      {
+        "record_number": 790,
+        "object_id": "CHW-0010",
+        "name": "Schronisko Dudowe Górne",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0010.yml"
+      },
+      {
+        "record_number": 794,
+        "object_id": "CHW-0041",
+        "name": "Schron w Skale Kmietowicza I",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHW/CHW-0041.yml"
+      },
+      {
+        "record_number": 797,
+        "object_id": "KSW-0002",
+        "name": "Jaskinia Psia",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/KSW/KSW-0002.yml"
+      },
+      {
+        "record_number": 797,
+        "object_id": "KSW-0002",
+        "name": "Jaskinia Psia",
+        "column": "UWAGI",
+        "value": "u Nowaka dł 917",
+        "yaml": "data/objects/KSW/KSW-0002.yml"
+      },
+      {
+        "record_number": 806,
+        "object_id": "MTW-0015",
+        "name": "Jaskinia Harda",
+        "column": "WER_LOK",
+        "value": "02.12.2021 FF Ortofoto",
+        "yaml": "data/objects/MTW/MTW-0015.yml"
+      },
+      {
+        "record_number": 809,
+        "object_id": "BYZ-0007",
+        "name": "Kalacka Nyża II",
+        "column": "WER_LOK",
+        "value": "21-10-2025 FF",
+        "yaml": "data/objects/BYZ/BYZ-0007.yml"
+      },
+      {
+        "record_number": 813,
+        "object_id": "MLZ-0071",
+        "name": "Szczelina w Iglicy",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0071.yml"
+      },
+      {
+        "record_number": 813,
+        "object_id": "MLZ-0071",
+        "name": "Szczelina w Iglicy",
+        "column": "UWAGI",
+        "value": "Na podstawie opisu z inwentarza",
+        "yaml": "data/objects/MLZ/MLZ-0071.yml"
+      },
+      {
+        "record_number": 817,
+        "object_id": "CHZ-0014",
+        "name": "Kamienne Mleko",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0014.yml"
+      },
+      {
+        "record_number": 820,
+        "object_id": "OLC-0002",
+        "name": "Jaskinia Jaszczurowska Wodna",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF NMT",
+        "yaml": "data/objects/OLC/OLC-0002.yml"
+      },
+      {
+        "record_number": 822,
+        "object_id": "MLW-0028",
+        "name": "Jaskinia Świstacza",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0028.yml"
+      },
+      {
+        "record_number": 829,
+        "object_id": "MTW-0026",
+        "name": "Dziura w Litworowej",
+        "column": "WER_LOK",
+        "value": "24-09-2024 FF NMT",
+        "yaml": "data/objects/MTW/MTW-0026.yml"
+      },
+      {
+        "record_number": 830,
+        "object_id": "CHZ-0024",
+        "name": "Schron pod Siwiańskim Oknem",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0024.yml"
+      },
+      {
+        "record_number": 834,
+        "object_id": "BYZ-0030",
+        "name": "Jaskinia Goryczkowa",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/BYZ/BYZ-0030.yml"
+      },
+      {
+        "record_number": 836,
+        "object_id": "CHW-0006",
+        "name": "Dudowa Studnia",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0006.yml"
+      },
+      {
+        "record_number": 839,
+        "object_id": "CHZ-0021",
+        "name": "Piwnica",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0021.yml"
+      },
+      {
+        "record_number": 839,
+        "object_id": "CHZ-0021",
+        "name": "Piwnica",
+        "column": "UWAGI",
+        "value": "Wg opisu z inwentarza. Trzeba uściślić położenie",
+        "yaml": "data/objects/CHZ/CHZ-0021.yml"
+      },
+      {
+        "record_number": 841,
+        "object_id": "MTW-0050",
+        "name": "Dziura w Grzędzie I",
+        "column": "WER_LOK",
+        "value": "16-12-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0050.yml"
+      },
+      {
+        "record_number": 842,
+        "object_id": "MTW-0002",
+        "name": "Dziura w Progu Litworowym",
+        "column": "WER_LOK",
+        "value": "28-12-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0002.yml"
+      },
+      {
+        "record_number": 843,
+        "object_id": "MLZ-0031",
+        "name": "Jaskinia nad Kotlinami",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0031.yml"
+      },
+      {
+        "record_number": 845,
+        "object_id": "BYZ-0037",
+        "name": "Szczelina pod Głazem",
+        "column": "WER_LOK",
+        "value": "28-05-2021 FF ortofoto",
+        "yaml": "data/objects/BYZ/BYZ-0037.yml"
+      },
+      {
+        "record_number": 848,
+        "object_id": "CHZ-0023",
+        "name": "Schron w Wielkich Koryciskach",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0023.yml"
+      },
+      {
+        "record_number": 849,
+        "object_id": "STR-0018",
+        "name": "Kominek w Jatkach",
+        "column": "WER_LOK",
+        "value": "22-01-2020 FF ortofotomapa",
+        "yaml": "data/objects/STR/STR-0018.yml"
+      },
+      {
+        "record_number": 851,
+        "object_id": "MLZ-0025",
+        "name": "Jaskinia Małołącka",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0025.yml"
+      },
+      {
+        "record_number": 852,
+        "object_id": "MTW-0036",
+        "name": "Niebieska Studnia",
+        "column": "WER_LOK",
+        "value": "2020-01-11 TZK ortofoto",
+        "yaml": "data/objects/MTW/MTW-0036.yml"
+      },
+      {
+        "record_number": 854,
+        "object_id": "KSW-0006",
+        "name": "Krakowskie Okno",
+        "column": "WER_LOK",
+        "value": "27-08-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0006.yml"
+      },
+      {
+        "record_number": 856,
+        "object_id": "KSW-0025",
+        "name": "Studzienka w Ciemniaku",
+        "column": "WER_LOK",
+        "value": "16-09-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0025.yml"
+      },
+      {
+        "record_number": 858,
+        "object_id": "KSW-0033",
+        "name": "Drugi Krakowski Okap",
+        "column": "WER_LOK",
+        "value": "27-08-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0033.yml"
+      },
+      {
+        "record_number": 859,
+        "object_id": "MLZ-0078",
+        "name": "Szpara w Zagonnej Turni",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0078.yml"
+      },
+      {
+        "record_number": 859,
+        "object_id": "MLZ-0078",
+        "name": "Szpara w Zagonnej Turni",
+        "column": "UWAGI",
+        "value": "Lokalizacja przybliżona. Na podstawie opisu z inwentarza.",
+        "yaml": "data/objects/MLZ/MLZ-0078.yml"
+      },
+      {
+        "record_number": 862,
+        "object_id": "BYW-0012",
+        "name": "Nyża pod Jaskinią Magurską I",
+        "column": "WER_LOK",
+        "value": "07-01-2025 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0012.yml"
+      },
+      {
+        "record_number": 870,
+        "object_id": "MLZ-0063",
+        "name": "Awen z Korkiem Śnieżnym",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0063.yml"
+      },
+      {
+        "record_number": 870,
+        "object_id": "MLZ-0063",
+        "name": "Awen z Korkiem Śnieżnym",
+        "column": "UWAGI",
+        "value": "wymaga weryfikacji w terenie",
+        "yaml": "data/objects/MLZ/MLZ-0063.yml"
+      },
+      {
+        "record_number": 872,
+        "object_id": "MLZ-0057",
+        "name": "Jaskinia Zośka",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0057.yml"
+      },
+      {
+        "record_number": 872,
+        "object_id": "MLZ-0057",
+        "name": "Jaskinia Zośka",
+        "column": "UWAGI",
+        "value": "dane morf. wg listy J.Nowaka",
+        "yaml": "data/objects/MLZ/MLZ-0057.yml"
+      },
+      {
+        "record_number": 879,
+        "object_id": "PL-0015",
+        "name": "Nyża nad Jaworzyńskim Żlebem",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/PL/PL-0015.yml"
+      },
+      {
+        "record_number": 881,
+        "object_id": "MLW-0020",
+        "name": "Koprowa Studnia",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLW/MLW-0020.yml"
+      },
+      {
+        "record_number": 883,
+        "object_id": "BYZ-0024",
+        "name": "Jaskinia Kondracka",
+        "column": "WER_LOK",
+        "value": "7-12-2020",
+        "yaml": "data/objects/BYZ/BYZ-0024.yml"
+      },
+      {
+        "record_number": 885,
+        "object_id": "CHW-0018",
+        "name": "Schronisko w Międzyścianach II",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0018.yml"
+      },
+      {
+        "record_number": 889,
+        "object_id": "PL-0019",
+        "name": "Schron w Skale Kmietowicza II",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/PL/PL-0019.yml"
+      },
+      {
+        "record_number": 891,
+        "object_id": "BYZ-0031",
+        "name": "Jaskinia Kalacka",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/BYZ/BYZ-0031.yml"
+      },
+      {
+        "record_number": 895,
+        "object_id": "CHW-0031",
+        "name": "Schronisko w Międzyścianach III",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0031.yml"
+      },
+      {
+        "record_number": 905,
+        "object_id": "BYW-0030",
+        "name": "Nyża pod Jaskinią Magurską II",
+        "column": "WER_LOK",
+        "value": "07-01-2025 FF NMT",
+        "yaml": "data/objects/BYW/BYW-0030.yml"
+      },
+      {
+        "record_number": 906,
+        "object_id": "DZI-0005",
+        "name": "Dziura Wyżnia",
+        "column": "WER_LOK",
+        "value": "2020-01-22 TZK ortofoto",
+        "yaml": "data/objects/DZI/DZI-0005.yml"
+      },
+      {
+        "record_number": 908,
+        "object_id": "DZI-0004",
+        "name": "Dziura",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF NMT",
+        "yaml": "data/objects/DZI/DZI-0004.yml"
+      },
+      {
+        "record_number": 909,
+        "object_id": "BYZ-0036",
+        "name": "Mokra Koleba",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0036.yml"
+      },
+      {
+        "record_number": 913,
+        "object_id": "STR-0014",
+        "name": "Tunel w Jatkach",
+        "column": "WER_LOK",
+        "value": "22-01-2020 FF ortofotomapa",
+        "yaml": "data/objects/STR/STR-0014.yml"
+      },
+      {
+        "record_number": 914,
+        "object_id": "KSW-0156",
+        "name": "Jaskinia Wodna przy Pisanej",
+        "column": "WER_LOK",
+        "value": "19-07-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0156.yml"
+      },
+      {
+        "record_number": 915,
+        "object_id": "OLC-0001",
+        "name": "Nyża nad Olczyską II",
+        "column": "WER_LOK",
+        "value": "19-09-2024 FF NMT",
+        "yaml": "data/objects/OLC/OLC-0001.yml"
+      },
+      {
+        "record_number": 919,
+        "object_id": "CHZ-0004",
+        "name": "Szczelina w Małych Koryciskach",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0004.yml"
+      },
+      {
+        "record_number": 920,
+        "object_id": "BYZ-0002",
+        "name": "Dziura przy Piargu",
+        "column": "WER_LOK",
+        "value": "11-12-2020 FF",
+        "yaml": "data/objects/BYZ/BYZ-0002.yml"
+      },
+      {
+        "record_number": 921,
+        "object_id": "CHZ-0003",
+        "name": "Nyża w Wielkich Koryciskach",
+        "column": "WER_LOK",
+        "value": "24-02-2020 FF",
+        "yaml": "data/objects/CHZ/CHZ-0003.yml"
+      },
+      {
+        "record_number": 922,
+        "object_id": "MLZ-0038",
+        "name": "Tunel Małołącki",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0038.yml"
+      },
+      {
+        "record_number": 929,
+        "object_id": "MLZ-0027",
+        "name": "Dziura pod Żródłem Ratusz",
+        "column": "WER_LOK",
+        "value": "7-12-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0027.yml"
+      },
+      {
+        "record_number": 930,
+        "object_id": "MLZ-0009",
+        "name": "Jaskinia Siwy Kocioł",
+        "column": "UWAGI",
+        "value": "dł wg sprawozdania ST za 2020, 2022",
+        "yaml": "data/objects/MLZ/MLZ-0009.yml"
+      },
+      {
+        "record_number": 931,
+        "object_id": "MLZ-0042",
+        "name": "Szczelina w Pośredniej Turni",
+        "column": "WER_LOK",
+        "value": "7-12-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0042.yml"
+      },
+      {
+        "record_number": 932,
+        "object_id": "BYZ-0016",
+        "name": "Jaskinia Zawaliskowa w Długim Giewoncie",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/BYZ/BYZ-0016.yml"
+      },
+      {
+        "record_number": 933,
+        "object_id": "CHW-0038",
+        "name": "Szczelina w Osmętnicy",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0038.yml"
+      },
+      {
+        "record_number": 935,
+        "object_id": "STR-0019",
+        "name": "Nyża przy Jatkach",
+        "column": "WER_LOK",
+        "value": "22-01-2020 FF ortofoto",
+        "yaml": "data/objects/STR/STR-0019.yml"
+      },
+      {
+        "record_number": 936,
+        "object_id": "CHZ-0020",
+        "name": "Schron przy Szczelinie",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0020.yml"
+      },
+      {
+        "record_number": 937,
+        "object_id": "CHW-0030",
+        "name": "Schronisko w Międzyścianach \"nad II\"",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0030.yml"
+      },
+      {
+        "record_number": 938,
+        "object_id": "MLZ-0074",
+        "name": "Korytarz nad Zagonem",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0074.yml"
+      },
+      {
+        "record_number": 942,
+        "object_id": "MTW-0018",
+        "name": "Jaskinia Barania",
+        "column": "WER_LOK",
+        "value": "FF 1-06-2024 NMT",
+        "yaml": "data/objects/MTW/MTW-0018.yml"
+      },
+      {
+        "record_number": 943,
+        "object_id": "BYW-0011",
+        "name": "Szczelina nad Partyzancką",
+        "column": "WER_LOK",
+        "value": "FF 02052025 NMT",
+        "yaml": "data/objects/BYW/BYW-0011.yml"
+      },
+      {
+        "record_number": 945,
+        "object_id": "BYZ-0029",
+        "name": "Płaska Nyża",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0029.yml"
+      },
+      {
+        "record_number": 947,
+        "object_id": "CHW-0036",
+        "name": "Schronisko w Międzyścianach I",
+        "column": "WER_LOK",
+        "value": "18-02-2020 FF",
+        "yaml": "data/objects/CHW/CHW-0036.yml"
+      },
+      {
+        "record_number": 949,
+        "object_id": "MLZ-0084",
+        "name": "Jaskinia pod Żebrem",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0084.yml"
+      },
+      {
+        "record_number": 951,
+        "object_id": "KSW-0153",
+        "name": "Jaskinia Pośrednia",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/KSW/KSW-0153.yml"
+      },
+      {
+        "record_number": 959,
+        "object_id": "MTZ-0006",
+        "name": "Jaskinia Lodowa w Twardych Spadach",
+        "column": "WER_LOK",
+        "value": "23-08-2021 FF NMT",
+        "yaml": "data/objects/MTZ/MTZ-0006.yml"
+      },
+      {
+        "record_number": 963,
+        "object_id": "MLZ-0013",
+        "name": "Szuflada Górna",
+        "column": "WER_LOK",
+        "value": "FF 7-12-2020",
+        "yaml": "data/objects/MLZ/MLZ-0013.yml"
+      },
+      {
+        "record_number": 964,
+        "object_id": "KSW-0118",
+        "name": "Kamienista Szczelina",
+        "column": "WER_LOK",
+        "value": "23-08-2021 FF NMT",
+        "yaml": "data/objects/KSW/KSW-0118.yml"
+      },
+      {
+        "record_number": 964,
+        "object_id": "KSW-0118",
+        "name": "Kamienista Szczelina",
+        "column": "UWAGI",
+        "value": "lokalizacja wg opisu z inwentarza",
+        "yaml": "data/objects/KSW/KSW-0118.yml"
+      },
+      {
+        "record_number": 966,
+        "object_id": "MTW-0041",
+        "name": "Jaskinia nad Piargiem",
+        "column": "WER_LOK",
+        "value": "22-01-2021 FF",
+        "yaml": "data/objects/MTW/MTW-0041.yml"
+      },
+      {
+        "record_number": 967,
+        "object_id": "MTW-0032",
+        "name": "Jaskinia pod Dachem",
+        "column": "WER_LOK",
+        "value": "11-03-2020 FF",
+        "yaml": "data/objects/MTW/MTW-0032.yml"
+      },
+      {
+        "record_number": 969,
+        "object_id": "MLZ-0008",
+        "name": "Jaskinia nad Wyżniem",
+        "column": "WER_LOK",
+        "value": "11-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/MLZ/MLZ-0008.yml"
+      },
+      {
+        "record_number": 978,
+        "object_id": "BYW-0018",
+        "name": "Jaskinia Kasprowa Niżnia",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/BYW/BYW-0018.yml"
+      },
+      {
+        "record_number": 978,
+        "object_id": "BYW-0018",
+        "name": "Jaskinia Kasprowa Niżnia",
+        "column": "UWAGI",
+        "value": "dł za Nowakiem",
+        "yaml": "data/objects/BYW/BYW-0018.yml"
+      },
+      {
+        "record_number": 982,
+        "object_id": "KSW-0256",
+        "name": "Jaskinia Mroźna",
+        "column": "WER_LOK",
+        "value": "NMT FF 12-05-2020",
+        "yaml": "data/objects/KSW/KSW-0256.yml"
+      },
+      {
+        "record_number": 983,
+        "object_id": "CHZ-0018",
+        "name": "Jaskinia Mała",
+        "column": "WER_LOK",
+        "value": "13-02-2020 FF ortofotomapa",
+        "yaml": "data/objects/CHZ/CHZ-0018.yml"
+      },
+      {
+        "record_number": 983,
+        "object_id": "CHZ-0018",
+        "name": "Jaskinia Mała",
+        "column": "UWAGI",
+        "value": "Wg opisu z inwentarza. Trzeba uściślić położenie",
+        "yaml": "data/objects/CHZ/CHZ-0018.yml"
+      },
+      {
+        "record_number": 985,
+        "object_id": "BYZ-0034",
+        "name": "Nyża z Mostem",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0034.yml"
+      },
+      {
+        "record_number": 990,
+        "object_id": "MLZ-0073",
+        "name": "Gawra przy Zagonie",
+        "column": "WER_LOK",
+        "value": "12-02-2020",
+        "yaml": "data/objects/MLZ/MLZ-0073.yml"
+      },
+      {
+        "record_number": 991,
+        "object_id": "MLZ-0070",
+        "name": "Jaskinia pod Progiem",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0070.yml"
+      },
+      {
+        "record_number": 993,
+        "object_id": "MLZ-0019",
+        "name": "Jaskinia Błotna",
+        "column": "WER_LOK",
+        "value": "22-02-2020 FF",
+        "yaml": "data/objects/MLZ/MLZ-0019.yml"
+      },
+      {
+        "record_number": 996,
+        "object_id": "BYW-0019",
+        "name": "Jaskinia pod Szczytem",
+        "column": "WER_LOK",
+        "value": "29-05-2020 FF ortofotomapa",
+        "yaml": "data/objects/BYW/BYW-0019.yml"
+      },
+      {
+        "record_number": 997,
+        "object_id": "BYZ-0041",
+        "name": "Dziura za Głazami",
+        "column": "WER_LOK",
+        "value": "08-06-2021 FF NMT",
+        "yaml": "data/objects/BYZ/BYZ-0041.yml"
+      },
+      {
+        "record_number": 1000,
+        "object_id": "MTW-0028",
+        "name": "Szczelina za Ratuszem",
+        "column": "WER_LOK",
+        "value": "02.12.2021 FF Ortofoto 2019",
+        "yaml": "data/objects/MTW/MTW-0028.yml"
+      }
+    ],
+    "category_mismatches": [
+      {
+        "record_number": 273,
+        "object_id": "STR-0024",
+        "name": "",
+        "source_category": "sztolnia",
+        "actual_category": "jaskinia_otwor"
+      },
+      {
+        "record_number": 530,
+        "object_id": "CHZ-0011",
+        "name": "Wojtkowa Szpara / sztolnia nr 7",
+        "source_category": "jaskinia/sztolnia",
+        "actual_category": "jaskinia_otwor"
+      }
+    ]
+  },
+  "source_sha256": {
+    "data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv": "554beb579e04c79c4fa926910e38ae551ea684e895b9b63f8ddddca73522f581",
+    "data/sources/pig/pig_otwory_jaskin_.xlsx.-.Export.csv": "54ac148504ba852d29359984fad87dac2afc9be2dd80c4b347fb447d9cc9b477",
+    "data/objects/STR/STR-0024.yml": "c9bf64ae65213e1e16fedf34130ae3322b2454eedd4bf10887de25241c42e13a",
+    "data/objects/CHZ/CHZ-0011.yml": "ba4cf05fdfc6049482201b9b255eea00df7ef74ce0dcef5d1805edd99f4aed43"
+  },
+  "limitations": [
+    "Nie weryfikowano lokalizacji w terenie ani aktualnosci danych chmurowych PIG/TPN.",
+    "Nie wykonano pelnej kampanii mutacyjnej.",
+    "Problemy R1-R3 i R5-R7 odtworzono na odizolowanych fixture w build/, nie na danych zrodlowych."
+  ],
+  "reproduction_instructions": "See main-review-2026-10-12.md and PBI-079 through PBI-086 in ../backlog_v1.md. Historical results are evidence, not a substitute for fresh regression tests."
+}

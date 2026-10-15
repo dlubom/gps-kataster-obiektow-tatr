@@ -4,19 +4,179 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
+import pytest
 import yaml
 
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
+from gps_kataster_obiektow_tatr.data_loader import (
+    DataKind,
+    LoadedDataset,
+    LoadedYamlRecord,
+    load_dataset,
+)
+from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
 from gps_kataster_obiektow_tatr.validator import (
     ValidationIssue,
     ValidationSeverity,
+    has_errors,
     validate_data_dir,
+    validate_dataset,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VALIDATE_SCRIPT = REPO_ROOT / "scripts" / "validate.py"
 KSW_LAT = 49.23459299
 KSW_LON = 19.87589498
+
+
+@pytest.mark.parametrize("damage", ["missing-member", "wrong-cave", "no-cave-id", "two-caves"])
+def test_cave_membership_symmetry_is_required(tmp_path, damage):
+    data_dir = tmp_path / "data"
+    _write_object(data_dir, _valid_object())
+    assert not has_errors(validate_data_dir(data_dir))
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    cave_path = data_dir / "caves/C-0001.yml"
+    if damage == "missing-member":
+        cave = _valid_cave()
+        cave["object_ids"] = []
+        _write_yaml(cave_path, cave)
+        code, path = "OBJECT_CAVE_MEMBERSHIP_MISSING", object_path
+    elif damage == "no-cave-id":
+        obj = _valid_object()
+        obj.pop("cave_id")
+        _write_yaml(object_path, obj)
+        code, path = "CAVE_OBJECT_MEMBERSHIP_MISMATCH", cave_path
+    else:
+        cave = _valid_cave()
+        cave["id"] = "C-0002"
+        _write_yaml(data_dir / "caves/C-0002.yml", cave)
+        if damage == "wrong-cave":
+            cave["id"] = "C-0001"
+            cave["object_ids"] = []
+            _write_yaml(cave_path, cave)
+        code, path = "CAVE_OBJECT_MEMBERSHIP_MISMATCH", data_dir / "caves/C-0002.yml"
+    before = {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()}
+    issues = validate_data_dir(data_dir)
+    matches = [i for i in issues if i.code == code]
+    assert len(matches) == 1
+    assert matches[0].severity == ValidationSeverity.ERROR
+    assert matches[0].path == path
+    assert "KSW-0001" in matches[0].description
+    assert ("C-0002" if damage in {"wrong-cave", "two-caves"} else "C-0001") in matches[
+        0
+    ].description
+    if damage == "wrong-cave":
+        assert "OBJECT_CAVE_MEMBERSHIP_MISSING" in _codes(issues)
+    result = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT), "--data-dir", str(data_dir)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert code in result.stdout + result.stderr
+    assert str(path) in result.stdout + result.stderr
+    assert "Traceback" not in result.stdout + result.stderr
+    assert {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()} == before
+
+
+def test_unhashable_pig_reference_type_reports_schema_error(tmp_path):
+    data_dir = tmp_path / "data"
+    obj = _valid_object()
+    obj["external_refs"] = [{"system": "PIG", "ref_type": [], "external_id": "test"}]
+    _write_object(data_dir, obj)
+    issues = validate_data_dir(data_dir)
+    assert "SCHEMA_VALIDATION" in _codes(issues)
+    assert _severities(issues, "SCHEMA_VALIDATION") == {ValidationSeverity.ERROR}
+
+
+@pytest.mark.parametrize("target", ["object", "cave", "relation"])
+def test_in_memory_dataset_validates_all_record_kinds_without_writing(tmp_path, target):
+    data_dir = tmp_path / "data"
+    _write_object(data_dir, _valid_object())
+    dataset = load_dataset(data_dir)
+    if target == "object":
+        data = deepcopy(dataset.objects[0].raw_data)
+        data["measurements"][0]["lat"] = 0
+        record = LoadedYamlRecord(DataKind.OBJECT, dataset.objects[0].path, data, data)
+        prospective = LoadedDataset((record,), dataset.caves, ())
+        expected = "COORDINATE_MISMATCH"
+    elif target == "cave":
+        data = deepcopy(dataset.caves[0].raw_data)
+        data["object_ids"].append("KSW-9999")
+        record = LoadedYamlRecord(DataKind.CAVE, dataset.caves[0].path, data, data)
+        prospective = LoadedDataset(dataset.objects, (record,), ())
+        expected = "CAVE_OBJECT_REFERENCE_MISSING"
+    else:
+        data = {
+            "schema_version": 1,
+            "id": "R-0001",
+            "relation_type": "sasiad",
+            "from_object_id": "KSW-0001",
+            "to_object_id": "KSW-9999",
+        }
+        record = LoadedYamlRecord(DataKind.RELATION, data_dir / "relations/R-0001.yml", data, data)
+        prospective = LoadedDataset(dataset.objects, dataset.caves, (record,))
+        expected = "RELATION_OBJECT_REFERENCE_MISSING"
+    before = {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()}
+    issues = validate_dataset(prospective, data_dir=data_dir)
+    assert any(i.code == expected and i.path == record.path for i in issues)
+    assert {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()} == before
+    assert not any(i.severity == ValidationSeverity.ERROR for i in validate_data_dir(data_dir))
+
+
+@pytest.mark.parametrize("replacement", ["same", "best-only"])
+def test_duplicate_measurements_block_validation_and_release(tmp_path, replacement):
+    data_dir = tmp_path / "data"
+    obj = _valid_object()
+    older = deepcopy(obj["measurements"][0])
+    older.update(id="m-002", observed_date="2026-05-14")
+    obj["measurements"].append(older)
+    _write_object(data_dir, obj)
+    path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
+    output = tmp_path / "output"
+    kwargs = {
+        "data_dir": data_dir,
+        "sqlite_path": output / "katalog.sqlite",
+        "output_dir": output / "exports",
+    }
+    # A valid two-measurement release is the independent positive control.
+    release = build_release_artifacts(**kwargs, generated_at="2026-10-15T00:00:00Z")
+    assert release.export_result.metadata["counts"]["measurements"] == 2
+    before = {p.relative_to(output): p.read_bytes() for p in output.rglob("*") if p.is_file()}
+    assert len(before) == 7
+    history = obj["measurements"] if replacement == "same" else obj["measurements"][:1]
+    content = path.read_text(encoding="utf-8") + yaml.safe_dump({"measurements": history})
+    path.write_text(content, encoding="utf-8")
+
+    issues = validate_data_dir(data_dir)
+    assert len(issues) == 1
+    assert issues[0].code == "YAML_INVALID"
+    assert issues[0].severity == ValidationSeverity.ERROR
+    assert issues[0].path == path
+    assert "measurements" in issues[0].description
+    result = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT), "--data-dir", str(data_dir)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert str(path) in result.stdout + result.stderr
+    assert "duplicate key" in result.stdout + result.stderr
+
+    for target in (output, tmp_path / "new-output"):
+        with pytest.raises(ValueError, match="duplicate key.*measurements"):
+            build_release_artifacts(
+                data_dir=data_dir,
+                sqlite_path=target / "katalog.sqlite",
+                output_dir=target / "exports",
+            )
+    assert {
+        p.relative_to(output): p.read_bytes() for p in output.rglob("*") if p.is_file()
+    } == before
+    assert not (tmp_path / "new-output").exists()
+    assert path.read_bytes() == content.encode("utf-8")
 
 
 def test_reports_error_for_duplicate_object_id(tmp_path: Path) -> None:
@@ -29,6 +189,95 @@ def test_reports_error_for_duplicate_object_id(tmp_path: Path) -> None:
 
     assert _codes(issues) >= {"DUPLICATE_OBJECT_ID"}
     assert _severities(issues, "DUPLICATE_OBJECT_ID") == {ValidationSeverity.ERROR}
+
+
+@pytest.mark.parametrize("mode", ["auto", "manual"])
+@pytest.mark.parametrize("variant", ["identical", "notes", "coordinates", "non-best-rejected"])
+def test_duplicate_local_measurement_id_is_an_error(tmp_path, mode, variant):
+    data_dir = tmp_path / "data"
+    obj = _valid_object()
+    obj["best_measurement"].update(mode=mode, reason="Operator selection.")
+    duplicate = deepcopy(obj["measurements"][0])
+    if variant == "notes":
+        duplicate["notes"] = "A separate historical reading."
+    elif variant == "coordinates":
+        point = wgs84_to_1992(lat=KSW_LAT + 0.001, lon=KSW_LON)
+        duplicate.update(lat=KSW_LAT + 0.001, x_1992=point.x_1992, y_1992=point.y_1992)
+    elif variant == "non-best-rejected":
+        duplicate.update(id="m-002", verification_status="odrzucony")
+        obj["measurements"].append(deepcopy(duplicate))
+    obj["measurements"].append(duplicate)
+    obj["attachments"] = [
+        {
+            "id": "a-001",
+            "kind": "zdjecie",
+            "measurement_id": duplicate["id"],
+            "path": "https://example.com/photo.jpg",
+        }
+    ]
+    _write_object(data_dir, obj)
+    path = data_dir / "objects/KSW/KSW-0001.yml"
+    before = path.read_bytes()
+
+    issues = validate_data_dir(data_dir)
+
+    collisions = [i for i in issues if i.code == "DUPLICATE_MEASUREMENT_ID"]
+    assert len(collisions) == 1
+    assert collisions[0].severity == ValidationSeverity.ERROR
+    assert collisions[0].path == path
+    assert "KSW-0001" in collisions[0].description
+    assert duplicate["id"] in collisions[0].description
+    assert path.read_bytes() == before
+
+
+def test_duplicate_local_measurement_ids_are_reported_before_indexing_and_best(
+    tmp_path, monkeypatch
+):
+    data_dir = tmp_path / "data"
+    obj = _valid_object()
+    obj["measurements"] *= 3
+    second = deepcopy(obj["measurements"][0])
+    second["id"] = "m-002"
+    obj["measurements"] += [second, deepcopy(second)]
+    _write_object(data_dir, obj)
+
+    def ambiguous_identity_used(*args, **kwargs):
+        pytest.fail("Ambiguous measurements used before identity validation")
+
+    for function in (
+        "_measurement_ids",
+        "_measurement_by_id",
+        "select_default_best_measurement_id",
+    ):
+        monkeypatch.setattr(
+            f"gps_kataster_obiektow_tatr.validator.{function}", ambiguous_identity_used
+        )
+
+    issues = validate_data_dir(data_dir)
+    descriptions = [i.description for i in issues if i.code == "DUPLICATE_MEASUREMENT_ID"]
+    assert len(descriptions) == 2
+    assert "m-001" in descriptions[0]
+    assert "m-002" in descriptions[1]
+
+
+def test_measurement_identity_is_local_and_preserves_history_order(tmp_path):
+    data_dir = tmp_path / "data"
+    obj = _valid_object()
+    older = _measurement_variant("m-002", source="PIG", observed_date="2026-05-01")
+    obj["measurements"] = [older, obj["measurements"][0]]
+    _write_object(data_dir, obj)
+    other = deepcopy(obj)
+    other["id"] = "KSW-0002"
+    _write_yaml(data_dir / "objects/KSW/KSW-0002.yml", other)
+    cave = _valid_cave()
+    cave["object_ids"].append("KSW-0002")
+    _write_yaml(data_dir / "caves/C-0001.yml", cave)
+
+    assert not has_errors(validate_data_dir(data_dir))
+    assert [r.data["measurements"] for r in load_dataset(data_dir).objects] == [
+        obj["measurements"],
+        other["measurements"],
+    ]
 
 
 def test_reports_error_for_missing_best_measurement() -> None:
@@ -308,6 +557,8 @@ def _valid_cave(object_id: str = "KSW-0001") -> dict[str, Any]:
 
 
 def _write_object(data_dir: Path, object_data: dict[str, Any]) -> None:
+    for name in ("objects", "caves", "relations"):
+        (data_dir / name).mkdir(parents=True, exist_ok=True)
     data = deepcopy(object_data)
     object_id = data["id"]
     prefix = object_id.split("-", maxsplit=1)[0]

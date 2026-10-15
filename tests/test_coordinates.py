@@ -56,3 +56,25 @@ def test_coordinate_consistency_detects_swapped_pl1992_axes() -> None:
 
     assert swapped_axis_error_m > DEFAULT_CONSISTENCY_TOLERANCE_M
     assert swapped_axis_error_m > 100_000
+
+
+@pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf")])
+@pytest.mark.parametrize("field", ["lat", "lon", "x_1992", "y_1992"])
+def test_coordinate_helpers_reject_non_finite_inputs(field, value):
+    fields = dict(lat=49.23459299, lon=19.87589498, x_1992=152267.23, y_1992=563744.25)
+    fields[field] = value
+    with pytest.raises(ValueError, match=field):
+        coordinate_consistency_error_m(**fields)
+    with pytest.raises(ValueError, match=field):
+        coordinates_are_consistent(**fields)
+    if field in {"lat", "lon"}:
+        with pytest.raises(ValueError, match=field):
+            wgs84_to_1992(lat=fields["lat"], lon=fields["lon"])
+    else:
+        with pytest.raises(ValueError, match=field):
+            pl1992_to_wgs84(x_1992=fields["x_1992"], y_1992=fields["y_1992"])
+
+
+def test_coordinate_helpers_reject_non_finite_projection_result():
+    with pytest.raises(ValueError, match="finite"):
+        wgs84_to_1992(lat=100, lon=20)

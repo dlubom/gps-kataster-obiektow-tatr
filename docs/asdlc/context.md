@@ -1,6 +1,67 @@
 # AS-DLC project context
 
-Last updated: 2026-07-11
+Last updated: 2026-10-15
+
+## Current handoff — nowa seria z main
+
+**PBI-078–086 wykonane; seria zakończona w zaplanowanym zakresie.**
+Aktywna gałąź: `codex/main-remediation-2026-10`, baza main
+`a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`.
+[PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4) dostarcza serię
+oraz przygotowanie wydania **v1.0.3**, zatwierdzonego przez użytkownika
+2026-10-15. [Log wydania](verification/v1.0.3.md) opisuje weryfikację i odbiór
+PR → main → CI dokładnego commitu po merge → annotated tag → release.
+Aktualny stan scalenia i publikacji sprawdzaj w PR, tagu i GitHub Actions.
+Checkpoint końca serii `044fc0343dc8d92d0c4fb0b635791bd2f945fa55`
+ma potwierdzone [CI 38773770498](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38773770498):
+`completed/success`, job `Validate code and data` i wszystkie 13 kroków.
+Bieżący SHA oraz CI po kolejnych zmianach sprawdzaj w Git/PR.
+
+| PBI | Wynik / trwałe dowody |
+|---|---|
+| [078](verification/PBI-078.md) | Plan i przenośny raport R1–R8. |
+| [079](verification/PBI-079.md) | Brak lub plik zamiast wymaganego katalogu blokuje zapis. |
+| [080](verification/PBI-080.md) | Duplikaty kluczy YAML odrzucane przed normalizacją i po merge. |
+| [081](verification/PBI-081.md) | Cały istniejący/przyszły zbiór przechodzi preflight, także w dry-run. |
+| [082](verification/PBI-082.md) | Kontekst TPN przy pomiarach; 469 uzupełnień według manifestu. |
+| [083](verification/PBI-083.md) | STR-0024: sztolnia; CHZ-0011 i rozbieżności mają jawne oceny źródłowe. |
+| [084](verification/PBI-084.md) | NaN/Infinity odrzucane przed geometrią, best i zapisem. |
+| [085](verification/PBI-085.md) | Lokalne ID pomiarów unikalne przed indeksowaniem i wyborem best. |
+| [086](verification/PBI-086.md) | Symetria członkostwa i relink; końcowe ponowienie R1–R8. |
+
+Końcowy odbiór serii: **781 testów**, Ruff, **0 błędów / 2066 ostrzeżeń**,
+readback **7/7** artefaktów. Katalog: **1009 obiektów, 1003 jaskinie,
+1875 pomiarów, 0 relacji**. Commity, CI, reprodukcje i mutacje są w logach PBI.
+Zmiany danych ograniczają [manifest PBI-082](verification/PBI-082-manifest.json)
+i [manifest PBI-083](verification/PBI-083-manifest.json); źródła pozostały niezmienne.
+
+## Ograniczenia i kontynuacja
+
+- **72 ostrzeżenia odległości** (maks. 2,49 km) oraz **11 grup / 23 obiekty**
+  o identycznych best nie rozstrzygają lokalizacji ani duplikatów.
+  [Oceny i brakujące dowody](reviews/data-decisions-2026-10.md) obejmują
+  również mieszaną genezę CHZ-0011. Nie zmieniono punktów, best ani statusów.
+- TPN row 476 (Smocza Jama) pozostaje pominięty przy uzupełnianiu notes:
+  brak jednoznacznej referencji GLOBALID; szczegóły w logu PBI-082.
+- Preflight nie zapewnia rollbacku po awarii I/O ani ochrony przed
+  równoczesną edycją. Limit bardzo dużych skończonych integerów w SQLite
+  opisuje [PBI-084](verification/PBI-084.md).
+- Brak kolejnej gotowej karty tej serii. Nowa praca wymaga polecenia.
+  Merge PR #4, sprawdzenie CI po merge i publikacja v1.0.3 zostały
+  zatwierdzone przez użytkownika 2026-10-15.
+- Porzuconych `codex/review-remediation` i PBI-034–077 nie wznawiamy ani
+  nie przenosimy. Szczegóły decyzji: [plan](remediation_plan.md).
+- Przy kontynuacji fetch/pull aktywnej gałęzi i [runbook](remediation_runbook.md).
+  Na tej bazie nie ma `scripts/verify_project.py`. Kolejność i kryteria:
+  [backlog](backlog_v1.md#naprawy-main-po-przegladzie-2026-10-12).
+
+## Historia main — PBI-001–033
+
+<details>
+<summary>Historyczny kontekst i dowody sprzed bieżącej serii</summary>
+
+Poniższe zapisy dokumentują historię main; aktualny punkt kontynuacji
+znajduje się powyżej. Zachowano je jako dowody wcześniejszych etapów.
 
 ## Current mode
 
@@ -891,3 +952,5 @@ After PBI-033 on 2026-07-11:
   and artifact contracts stay in `docs/operations.md`,
   `docs/release_artifacts.md` and the project specification instead of being
   duplicated in another developer README.
+
+</details>

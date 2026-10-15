@@ -1,0 +1,66 @@
+{
+  "base_sha": "d86b89fa886bb0bec9f569bc6a5331384bddf0bc",
+  "source_path": "data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv",
+  "source_sha256": "554beb579e04c79c4fa926910e38ae551ea684e895b9b63f8ddddca73522f581",
+  "changes": [
+    {
+      "path": "data/objects/STR/STR-0024.yml",
+      "object_id": "STR-0024",
+      "source_record_number": 273,
+      "globalid": "{A5C7088E-A2FE-4898-AE2E-B0A9B420B17D}",
+      "source_values": {
+        "NAZWA": "",
+        "GENEZA": "sztolnia",
+        "WER_LOK": "15-5-2024 TZK",
+        "UWAGI": "zasypana, ale widoczne belkowanie stropu"
+      },
+      "file_sha256_before": "f2671b8b1fe0cf6d0c3a62c57f06b113295eed4b93b27fe45e0725b7c36f37fe",
+      "allowed_fields": [
+        "category",
+        "notes",
+        "updated_at",
+        "updated_by"
+      ],
+      "before": {
+        "category": "jaskinia_otwor",
+        "notes": "Imported from TPN source record after operator review. Source TPN row 273 has empty NR_INWENT and NAZWA; maintainer review 2026-05-16 assigned the working name BEZ_NAZWY_001.",
+        "updated_at": "2026-10-15T13:16:44Z",
+        "updated_by": "maintenance:PBI-082"
+      },
+      "after": {
+        "category": "sztolnia",
+        "notes": "Imported from TPN source record after operator review. Source TPN row 273 has empty NR_INWENT and NAZWA; maintainer review 2026-05-16 assigned the working name BEZ_NAZWY_001.\nPBI-083: TPN GENEZA=sztolnia, row 273, GLOBALID {A5C7088E-A2FE-4898-AE2E-B0A9B420B17D}; UWAGI: zasypana, ale widoczne belkowanie stropu. Category corrected from source evidence; location and measurement status remain unverified.",
+        "updated_at": "2026-10-15T13:40:44Z",
+        "updated_by": "maintenance:PBI-083"
+      }
+    },
+    {
+      "path": "data/objects/CHZ/CHZ-0011.yml",
+      "object_id": "CHZ-0011",
+      "source_record_number": 530,
+      "globalid": "{24948383-1D8D-4677-B260-CF6AB8FB68FA}",
+      "source_values": {
+        "NAZWA": "Wojtkowa Szpara / sztolnia nr 7",
+        "GENEZA": "jaskinia/sztolnia",
+        "WER_LOK": "13-02-2020 FF ortofotomapa",
+        "UWAGI": "Sztolnia nr 7 wg Jach Jaskinie nr 3 (28) 2002"
+      },
+      "file_sha256_before": "eb8e2863d246b33de60855b2480832518df64206135c5b839bd0d1c86963b4da",
+      "allowed_fields": [
+        "notes",
+        "updated_at",
+        "updated_by"
+      ],
+      "before": {
+        "notes": "Imported from PIG source record after operator review.",
+        "updated_at": "2026-10-15T13:16:44Z",
+        "updated_by": "maintenance:PBI-082"
+      },
+      "after": {
+        "notes": "Imported from PIG source record after operator review.\nPBI-083: TPN GENEZA=jaskinia/sztolnia, row 530, GLOBALID {24948383-1D8D-4677-B260-CF6AB8FB68FA}. PIG:1042 describes a natural cave beginning 6-8 m inside mine working no. 7. Category jaskinia_otwor retained pending identification of the mapped entrance; mixed genesis unresolved. See docs/asdlc/reviews/data-decisions-2026-10.md.",
+        "updated_at": "2026-10-15T13:40:44Z",
+        "updated_by": "maintenance:PBI-083"
+      }
+    }
+  ]
+}

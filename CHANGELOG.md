@@ -6,6 +6,28 @@ udokumentowane w tym pliku.
 Format jest oparty o [Keep a Changelog](https://keepachangelog.com/), a
 wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
+## [v1.0.3] - 2026-10-15
+
+### Naprawiono
+
+- Zablokowano budowanie SQLite i eksportów przy brakujących katalogach
+  danych oraz odrzucono powtórzone klucze YAML.
+- Dodano walidację całego stanu katalogu po decyzjach review przed
+  rozpoczęciem zapisu, również w trybie dry-run.
+- Odrzucono NaN, Infinity i powtórzone ID pomiarów w obrębie obiektu.
+- Poprawiono przenoszenie obiektu między jaskiniami i kontrolę
+  zgodności powiązań po obu stronach.
+- Zachowano kontekst WER_LOK i UWAGI przy importowanych pomiarach TPN;
+  uzupełniono go w 469 istniejących pomiarach.
+- Skorygowano kategorię STR-0024 na sztolnię na podstawie źródła TPN.
+
+### Zmieniono
+
+- Udokumentowano niepewność CHZ-0011, rozbieżności lokalizacji
+  i przypadki obiektów o identycznych współrzędnych.
+- Rozbudowano dokumentację dla użytkowników w językach polskim,
+  angielskim i słowackim.
+
 ## [v1.0.2] - 2026-05-21
 
 ### Zmieniono

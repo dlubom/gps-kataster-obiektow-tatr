@@ -1,6 +1,6 @@
 schema_version: 1
 id: STR-0024
-category: jaskinia_otwor
+category: sztolnia
 name_local: BEZ_NAZWY_001
 cave_id: C-0903
 id_assignment:
@@ -36,7 +36,11 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: TPN source-record measurement imported after operator review; not field-verified.
+  notes: 'TPN source-record measurement imported after operator review; not field-verified.
+
+    TPN WER_LOK: 15-5-2024 TZK
+
+    TPN UWAGI: zasypana, ale widoczne belkowanie stropu'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 best_measurement:
@@ -46,10 +50,14 @@ best_measurement:
   updated_at: '2026-05-16T10:22:52Z'
   updated_by: importer:tpn
 attachments: []
-notes: 'Imported from TPN source record after operator review. Source TPN row
-  273 has empty NR_INWENT and NAZWA; maintainer review 2026-05-16 assigned the
-  working name BEZ_NAZWY_001.'
+notes: 'Imported from TPN source record after operator review. Source TPN row 273
+  has empty NR_INWENT and NAZWA; maintainer review 2026-05-16 assigned the working
+  name BEZ_NAZWY_001.
+
+  PBI-083: TPN GENEZA=sztolnia, row 273, GLOBALID {A5C7088E-A2FE-4898-AE2E-B0A9B420B17D};
+  UWAGI: zasypana, ale widoczne belkowanie stropu. Category corrected from source
+  evidence; location and measurement status remain unverified.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T19:30:00Z'
-updated_by: dl
+updated_at: '2026-10-15T13:40:44Z'
+updated_by: maintenance:PBI-083

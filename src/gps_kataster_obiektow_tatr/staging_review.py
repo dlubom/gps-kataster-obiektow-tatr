@@ -15,9 +15,20 @@ import yaml
 from gps_kataster_obiektow_tatr.best_measurement import select_default_best_measurement_id
 from gps_kataster_obiektow_tatr.data_loader import (
     DEFAULT_DATA_DIR,
+    DataKind,
+    LoadedDataset,
+    LoadedYamlRecord,
     YamlDataLoadError,
     load_dataset,
 )
+from gps_kataster_obiektow_tatr.validator import (
+    ValidationIssue,
+    ValidationSeverity,
+    format_issue,
+    validate_dataset,
+    validate_record_schema,
+)
+from gps_kataster_obiektow_tatr.yaml_io import load_unique_yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -129,7 +140,7 @@ def load_review_decisions(decisions_path: Path) -> dict[str, Any]:
     """Load a YAML operator decision file."""
 
     try:
-        data = yaml.safe_load(decisions_path.read_text(encoding="utf-8"))
+        data = load_unique_yaml(decisions_path)
     except yaml.YAMLError as exc:
         raise ReviewDecisionError(f"{decisions_path}: invalid YAML: {exc}") from exc
 
@@ -185,7 +196,7 @@ def apply_review_decisions(
         )
 
     try:
-        objects, caves = _load_existing_final_data(data_dir)
+        dataset = load_dataset(data_dir)
     except YamlDataLoadError as exc:
         issues.append(
             ReviewIssue(
@@ -204,6 +215,19 @@ def apply_review_decisions(
             written_paths=(),
         )
 
+    issues.extend(_dataset_review_errors(dataset, data_dir=data_dir, code="FINAL_DATA_INVALID"))
+    if issues:
+        return StagingReviewResult(
+            reviewed_at=reviewed_at,
+            reviewed_by=reviewed_by,
+            data_dir=data_dir,
+            applied_decisions=(),
+            issues=tuple(issues),
+            written_paths=(),
+        )
+
+    objects = {record.data["id"]: deepcopy(record.raw_data) for record in dataset.objects}
+    caves = {record.data["id"]: deepcopy(record.raw_data) for record in dataset.caves}
     indexes = _build_indexes(staging_reports)
     dirty_objects: set[str] = set()
     dirty_caves: set[str] = set()
@@ -237,6 +261,7 @@ def apply_review_decisions(
                 decision=decision,
                 decision_index=decision_index,
                 indexes=indexes,
+                data_dir=data_dir,
                 caves=caves,
                 dirty_caves=dirty_caves,
                 issues=issues,
@@ -247,6 +272,7 @@ def apply_review_decisions(
                 decision=decision,
                 decision_index=decision_index,
                 indexes=indexes,
+                data_dir=data_dir,
                 objects=objects,
                 dirty_objects=dirty_objects,
                 issues=issues,
@@ -257,6 +283,7 @@ def apply_review_decisions(
                 decision=decision,
                 decision_index=decision_index,
                 indexes=indexes,
+                data_dir=data_dir,
                 objects=objects,
                 caves=caves,
                 dirty_objects=dirty_objects,
@@ -289,13 +316,17 @@ def apply_review_decisions(
                 applied=applied,
             )
 
+    prospective = _dataset_with_review_changes(
+        dataset, data_dir=data_dir, objects=objects, caves=caves
+    )
+    issues.extend(
+        _dataset_review_errors(prospective, data_dir=data_dir, code="REVIEW_DATA_INVALID")
+    )
     has_errors = any(issue.severity == ReviewSeverity.ERROR for issue in issues)
     written_paths: tuple[Path, ...] = ()
     if write and not has_errors:
         written_paths = _write_dirty_records(
-            data_dir=data_dir,
-            objects=objects,
-            caves=caves,
+            dataset=prospective,
             dirty_objects=dirty_objects,
             dirty_caves=dirty_caves,
         )
@@ -398,6 +429,7 @@ def _apply_create_cave(
     decision: dict[str, Any],
     decision_index: int,
     indexes: _StagingIndexes,
+    data_dir: Path,
     caves: dict[str, dict[str, Any]],
     dirty_caves: set[str],
     issues: list[ReviewIssue],
@@ -436,7 +468,14 @@ def _apply_create_cave(
         )
         return
 
-    caves[cave_id] = _finalize_staging_record(proposal, source=source)
+    finalized = _finalize_staging_record(proposal, source=source)
+    schema_issues = validate_record_schema(_review_record(finalized, DataKind.CAVE, data_dir))
+    if schema_issues:
+        issues.extend(
+            _review_errors(schema_issues, code="REVIEW_DATA_INVALID", decision_index=decision_index)
+        )
+        return
+    caves[cave_id] = finalized
     dirty_caves.add(cave_id)
     applied.append(
         AppliedDecision(
@@ -457,6 +496,7 @@ def _apply_create_object(
     decision: dict[str, Any],
     decision_index: int,
     indexes: _StagingIndexes,
+    data_dir: Path,
     objects: dict[str, dict[str, Any]],
     dirty_objects: set[str],
     issues: list[ReviewIssue],
@@ -497,7 +537,14 @@ def _apply_create_object(
         )
         return
 
-    objects[object_id] = _finalize_staging_record(proposal, source=source)
+    finalized = _finalize_staging_record(proposal, source=source)
+    schema_issues = validate_record_schema(_review_record(finalized, DataKind.OBJECT, data_dir))
+    if schema_issues:
+        issues.extend(
+            _review_errors(schema_issues, code="REVIEW_DATA_INVALID", decision_index=decision_index)
+        )
+        return
+    objects[object_id] = finalized
     dirty_objects.add(object_id)
     applied.append(
         AppliedDecision(
@@ -518,6 +565,7 @@ def _apply_add_measurement(
     decision: dict[str, Any],
     decision_index: int,
     indexes: _StagingIndexes,
+    data_dir: Path,
     objects: dict[str, dict[str, Any]],
     caves: dict[str, dict[str, Any]],
     dirty_objects: set[str],
@@ -570,6 +618,17 @@ def _apply_add_measurement(
         )
         return
 
+    if cave_id and cave_id not in caves:
+        issues.append(
+            ReviewIssue(
+                code="TARGET_CAVE_MISSING",
+                severity=ReviewSeverity.ERROR,
+                decision_index=decision_index,
+                description=f"Target cave {cave_id} does not exist.",
+            )
+        )
+        return
+
     object_data = objects[object_id]
     measurement = deepcopy(update.get("measurement"))
     if not isinstance(measurement, dict):
@@ -582,6 +641,23 @@ def _apply_add_measurement(
             )
         )
         return
+
+    for field in ("object_external_refs", "cave_external_refs"):
+        kind = DataKind.CAVE if field == "cave_external_refs" and cave_id else DataKind.OBJECT
+        target = caves[cave_id] if kind == DataKind.CAVE else object_data
+        reference_data = target | {"external_refs": update.get(field, [])}
+        schema_issues = validate_record_schema(_review_record(reference_data, kind, data_dir))
+        if schema_issues:
+            issues.extend(
+                ReviewIssue(
+                    code="STAGING_REFERENCES_INVALID",
+                    severity=ReviewSeverity.ERROR,
+                    decision_index=decision_index,
+                    description=f"TPN update row {record_number} {field}: {format_issue(issue)}",
+                )
+                for issue in schema_issues
+            )
+            return
 
     measurement_id = _clean_value(measurement.get("id"))
     existing_measurement_ids = {
@@ -600,7 +676,19 @@ def _apply_add_measurement(
         )
         return
 
-    object_data.setdefault("measurements", []).append(_finalize_staging_measurement(measurement))
+    finalized_measurement = _finalize_staging_measurement(measurement)
+    prospective = object_data | {
+        "measurements": [*object_data.get("measurements", []), finalized_measurement]
+    }
+    payload_issues = validate_record_schema(_review_record(prospective, DataKind.OBJECT, data_dir))
+    if payload_issues:
+        issues.extend(
+            _review_errors(
+                payload_issues, code="REVIEW_DATA_INVALID", decision_index=decision_index
+            )
+        )
+        return
+    object_data.setdefault("measurements", []).append(finalized_measurement)
     _append_unique_dicts(
         object_data.setdefault("external_refs", []), update.get("object_external_refs")
     )
@@ -678,6 +766,12 @@ def _apply_link_cave(
 
     object_data = objects[object_id]
     cave_data = caves[cave_id]
+    old_cave_id = object_data.get("cave_id")
+    if old_cave_id in caves and old_cave_id != cave_id:
+        old_cave = caves[old_cave_id]
+        old_cave["object_ids"] = [oid for oid in old_cave["object_ids"] if oid != object_id]
+        _touch_record(old_cave, reviewed_at=reviewed_at, reviewed_by=reviewed_by)
+        dirty_caves.add(old_cave_id)
     object_data["cave_id"] = cave_id
     object_ids = cave_data.setdefault("object_ids", [])
     if object_id not in object_ids:
@@ -813,39 +907,84 @@ def _staging_row_exists(
     return record_number in rows
 
 
-def _load_existing_final_data(
-    data_dir: Path,
-) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
-    dataset = load_dataset(data_dir)
-    objects = {
-        _clean_value(record.data.get("id")): deepcopy(record.raw_data) for record in dataset.objects
-    }
-    caves = {
-        _clean_value(record.data.get("id")): deepcopy(record.raw_data) for record in dataset.caves
-    }
-    return objects, caves
+def _dataset_review_errors(
+    dataset: LoadedDataset, *, data_dir: Path, code: str
+) -> tuple[ReviewIssue, ...]:
+    return _review_errors(validate_dataset(dataset, data_dir=data_dir), code=code)
 
 
-def _write_dirty_records(
+def _review_errors(
+    validation_issues: tuple[ValidationIssue, ...], *, code: str, decision_index: int | None = None
+) -> tuple[ReviewIssue, ...]:
+    return tuple(
+        ReviewIssue(
+            code=code,
+            severity=ReviewSeverity.ERROR,
+            decision_index=decision_index,
+            description=format_issue(issue),
+        )
+        for issue in validation_issues
+        if issue.severity == ValidationSeverity.ERROR
+    )
+
+
+def _review_record(data: dict[str, Any], kind: DataKind, data_dir: Path) -> LoadedYamlRecord:
+    record_id = _clean_value(data.get("id"))
+    if kind == DataKind.OBJECT:
+        prefix = record_id.split("-", maxsplit=1)[0]
+        path = data_dir / "objects" / prefix / f"{record_id}.yml"
+    else:
+        path = data_dir / "caves" / f"{record_id}.yml"
+    return LoadedYamlRecord(kind=kind, path=path, data=data, raw_data=data)
+
+
+def _dataset_with_review_changes(
+    dataset: LoadedDataset,
     *,
     data_dir: Path,
     objects: dict[str, dict[str, Any]],
     caves: dict[str, dict[str, Any]],
+) -> LoadedDataset:
+    def records_with_changes(
+        records: tuple[LoadedYamlRecord, ...], changes: dict[str, dict[str, Any]], kind: DataKind
+    ) -> tuple[LoadedYamlRecord, ...]:
+        paths = {record.data["id"]: record.path for record in records}
+        result = []
+        for record in records:
+            record_id = record.data["id"]
+            if record.path == paths[record_id]:
+                data = changes[record_id]
+                result.append(
+                    LoadedYamlRecord(kind=kind, path=record.path, data=data, raw_data=data)
+                )
+            else:
+                result.append(record)
+        for record_id, data in changes.items():
+            if record_id not in paths:
+                result.append(_review_record(data, kind, data_dir))
+        return tuple(sorted(result, key=lambda record: record.path))
+
+    return LoadedDataset(
+        objects=records_with_changes(dataset.objects, objects, DataKind.OBJECT),
+        caves=records_with_changes(dataset.caves, caves, DataKind.CAVE),
+        relations=dataset.relations,
+    )
+
+
+def _write_dirty_records(
+    *,
+    dataset: LoadedDataset,
     dirty_objects: set[str],
     dirty_caves: set[str],
 ) -> tuple[Path, ...]:
     paths: list[Path] = []
 
-    for cave_id in sorted(dirty_caves):
-        path = data_dir / "caves" / f"{cave_id}.yml"
-        _write_yaml(path, caves[cave_id])
-        paths.append(path)
-
-    for object_id in sorted(dirty_objects):
-        prefix = object_id.split("-", maxsplit=1)[0]
-        path = data_dir / "objects" / prefix / f"{object_id}.yml"
-        _write_yaml(path, objects[object_id])
-        paths.append(path)
+    for records, dirty_ids in ((dataset.caves, dirty_caves), (dataset.objects, dirty_objects)):
+        records_by_id = {record.data["id"]: record for record in records}
+        for record_id in sorted(dirty_ids):
+            record = records_by_id[record_id]
+            _write_yaml(record.path, record.raw_data)
+            paths.append(record.path)
 
     return tuple(paths)
 

@@ -13,12 +13,16 @@ SRC_DIR = REPO_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR  # noqa: E402
+from gps_kataster_obiektow_tatr.data_loader import (  # noqa: E402
+    DEFAULT_DATA_DIR,
+    DataDirectoryError,
+)
 from gps_kataster_obiektow_tatr.staging_review import (  # noqa: E402
     DEFAULT_PIG_STAGING_PATH,
     DEFAULT_REVIEW_OUTPUT_DIR,
     DEFAULT_TPN_STAGING_PATH,
     ReviewDecisionError,
+    ReviewSeverity,
     apply_review_decisions,
     load_review_decisions,
     load_staging_reports,
@@ -75,7 +79,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Render the review report without writing final YAML.",
+        help="Validate the complete review and render its report without writing final YAML.",
     )
     return parser
 
@@ -96,7 +100,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             data_dir=args.data_dir,
             write=not args.dry_run,
         )
-    except ReviewDecisionError as exc:
+    except (ReviewDecisionError, DataDirectoryError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
@@ -108,6 +112,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"wrote final YAML: {path}")
 
     if result.has_errors:
+        for issue in result.issues:
+            if issue.severity == ReviewSeverity.ERROR:
+                print(f"error [{issue.code}]: {issue.description}", file=sys.stderr)
         print(
             f"staging review failed: {len(result.issues)} issues, final YAML was not written",
             file=sys.stderr,

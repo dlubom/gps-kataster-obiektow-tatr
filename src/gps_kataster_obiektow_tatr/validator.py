@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from collections import Counter
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from enum import StrEnum
@@ -25,12 +26,14 @@ from gps_kataster_obiektow_tatr.coordinates import (
 )
 from gps_kataster_obiektow_tatr.data_loader import (
     DEFAULT_DATA_DIR,
+    DataDirectoryError,
     DataKind,
     LoadedDataset,
     LoadedYamlRecord,
     YamlDataLoadError,
     load_dataset,
 )
+from gps_kataster_obiektow_tatr.measurement_values import non_finite_measurement_fields
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
     PrefixResolutionStatus,
@@ -77,6 +80,15 @@ def validate_data_dir(
 
     try:
         dataset = load_dataset(data_dir)
+    except DataDirectoryError as exc:
+        return (
+            ValidationIssue(
+                code="DATA_DIRECTORY_INVALID",
+                severity=ValidationSeverity.ERROR,
+                path=exc.path,
+                description=str(exc),
+            ),
+        )
     except YamlDataLoadError as exc:
         return (
             ValidationIssue(
@@ -118,6 +130,18 @@ def validate_dataset(
     issues.extend(_validate_duplicate_tpn_globalids(dataset.objects))
 
     return tuple(issues)
+
+
+def validate_record_schema(
+    record: LoadedYamlRecord, *, schema_dir: Path = DEFAULT_SCHEMA_DIR
+) -> tuple[ValidationIssue, ...]:
+    """Check a proposal's shape before review actions consume its nested values."""
+
+    issues = _validate_schema((record,), _load_schema_validators(schema_dir))
+    if record.kind == DataKind.OBJECT:
+        issues += _validate_measurement_identity(record)
+        issues += _validate_finite_measurements(record)
+    return issues
 
 
 def format_issue(issue: ValidationIssue) -> str:
@@ -236,8 +260,10 @@ def _validate_duplicate_object_ids(
 
 def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue, ...]:
     issues: list[ValidationIssue] = []
-    object_ids = set(_records_by_id(dataset.objects))
-    cave_ids = set(_records_by_id(dataset.caves))
+    objects_by_id = _records_by_id(dataset.objects)
+    caves_by_id = _records_by_id(dataset.caves)
+    object_ids = set(objects_by_id)
+    cave_ids = set(caves_by_id)
 
     for object_record in dataset.objects:
         object_id = _record_id(object_record)
@@ -252,6 +278,25 @@ def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue,
                 )
             )
 
+        if isinstance(cave_id, str):
+            for cave_record in caves_by_id.get(cave_id, ()):
+                if object_id not in _iter_strings(cave_record.data.get("object_ids")):
+                    issues.append(
+                        ValidationIssue(
+                            code="OBJECT_CAVE_MEMBERSHIP_MISSING",
+                            severity=ValidationSeverity.ERROR,
+                            path=object_record.path,
+                            description=(
+                                f"Object {object_id} references cave {cave_id}, "
+                                "but is absent from its object_ids."
+                            ),
+                        )
+                    )
+
+        identity_issues = _validate_measurement_identity(object_record)
+        issues.extend(identity_issues)
+        if identity_issues:
+            continue
         measurement_ids = _measurement_ids(object_record)
         best_measurement = object_record.data.get("best_measurement")
         if isinstance(best_measurement, dict):
@@ -306,6 +351,19 @@ def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue,
                         description=f"Cave {cave_id} references missing object_id {object_id}.",
                     )
                 )
+            for object_record in objects_by_id.get(object_id, ()):
+                if object_record.data.get("cave_id") != cave_id:
+                    issues.append(
+                        ValidationIssue(
+                            code="CAVE_OBJECT_MEMBERSHIP_MISMATCH",
+                            severity=ValidationSeverity.ERROR,
+                            path=cave_record.path,
+                            description=(
+                                f"Cave {cave_id} lists object {object_id}, but its "
+                                f"cave_id is {object_record.data.get('cave_id')!r}."
+                            ),
+                        )
+                    )
 
     for relation_record in dataset.relations:
         relation_id = _record_id(relation_record)
@@ -338,10 +396,55 @@ def _validate_object_records(
     for object_record in object_records:
         issues.extend(_validate_object_domain_warnings(object_record))
         issues.extend(_validate_object_attachments(object_record, repo_root=repo_root))
+        numeric_issues = _validate_finite_measurements(object_record)
+        issues.extend(numeric_issues)
+        if numeric_issues or _validate_measurement_identity(object_record):
+            continue
         issues.extend(_validate_object_measurements(object_record, resolver=resolver))
         issues.extend(_validate_best_measurement_auto(object_record))
 
     return tuple(issues)
+
+
+def _validate_measurement_identity(
+    object_record: LoadedYamlRecord,
+) -> tuple[ValidationIssue, ...]:
+    counts = Counter(
+        measurement["id"]
+        for measurement in _iter_dicts(object_record.data.get("measurements"))
+        if isinstance(measurement.get("id"), str)
+    )
+    return tuple(
+        ValidationIssue(
+            code="DUPLICATE_MEASUREMENT_ID",
+            severity=ValidationSeverity.ERROR,
+            path=object_record.path,
+            description=(
+                f"Object {_record_id(object_record)} measurement.id {measurement_id} "
+                f"occurs {count} times; measurement IDs must be unique within an object."
+            ),
+        )
+        for measurement_id, count in counts.items()
+        if count > 1
+    )
+
+
+def _validate_finite_measurements(
+    object_record: LoadedYamlRecord,
+) -> tuple[ValidationIssue, ...]:
+    return tuple(
+        ValidationIssue(
+            code="MEASUREMENT_NON_FINITE",
+            severity=ValidationSeverity.ERROR,
+            path=object_record.path,
+            description=(
+                f"Object {_record_id(object_record)} measurement {_measurement_id(measurement)} "
+                f"field {field} must be finite."
+            ),
+        )
+        for measurement in _iter_dicts(object_record.data.get("measurements"))
+        for field in non_finite_measurement_fields(measurement)
+    )
 
 
 def _validate_object_domain_warnings(
@@ -379,7 +482,7 @@ def _validate_object_domain_warnings(
                 )
             )
 
-        if system == "PIG" and ref_type in {"catalog_id", "url"}:
+        if system == "PIG" and isinstance(ref_type, str) and ref_type in {"catalog_id", "url"}:
             issues.append(
                 ValidationIssue(
                     code="PIG_CATALOG_REFERENCE_ON_OBJECT",
@@ -484,12 +587,23 @@ def _validate_object_measurements(
             continue
 
         lat, lon, x_1992, y_1992 = coordinate_values
-        coordinate_error = coordinate_consistency_error_m(
-            lat=lat,
-            lon=lon,
-            x_1992=x_1992,
-            y_1992=y_1992,
-        )
+        try:
+            coordinate_error = coordinate_consistency_error_m(
+                lat=lat,
+                lon=lon,
+                x_1992=x_1992,
+                y_1992=y_1992,
+            )
+        except ValueError as exc:
+            issues.append(
+                ValidationIssue(
+                    code="COORDINATE_TRANSFORM_INVALID",
+                    severity=ValidationSeverity.ERROR,
+                    path=object_record.path,
+                    description=f"Object {object_id} measurement {measurement_id}: {exc}",
+                )
+            )
+            continue
         if coordinate_error > DEFAULT_CONSISTENCY_TOLERANCE_M:
             issues.append(
                 ValidationIssue(
@@ -564,6 +678,11 @@ def _validate_prefix_matches_best_measurement(
         return ()
 
     lat, lon, _x_1992, _y_1992 = coordinate_values
+    # A finite input can still be outside the projection's domain.
+    try:
+        wgs84_to_1992(lat=lat, lon=lon)
+    except ValueError:
+        return ()
     resolution = resolver.resolve(lat=lat, lon=lon)
     if resolution.prefix is None or resolution.prefix == object_prefix:
         return ()

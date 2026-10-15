@@ -74,12 +74,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     generated_at = args.generated_at or _utc_timestamp()
     pig_staging_path = None if args.no_pig_staging else args.pig_staging
 
-    report = build_tpn_staging(
-        args.tpn_source,
-        generated_at=generated_at,
-        data_dir=args.data_dir,
-        pig_staging_path=pig_staging_path,
-    )
+    try:
+        report = build_tpn_staging(
+            args.tpn_source,
+            generated_at=generated_at,
+            data_dir=args.data_dir,
+            pig_staging_path=pig_staging_path,
+        )
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
     json_path, markdown_path = write_staging_files(report, output_dir=args.output_dir)
     counts = _status_counts(report)
 

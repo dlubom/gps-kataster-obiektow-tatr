@@ -36,8 +36,10 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'TPN source-record measurement imported after multi-opening review;
-    not field-verified. TPN row 672 has OTWÓR=SE for Jaskinia nad Korytem.'
+  notes: 'TPN source-record measurement imported after multi-opening review; not field-verified.
+    TPN row 672 has OTWÓR=SE for Jaskinia nad Korytem.
+
+    TPN WER_LOK: 11-05-2022 TZK'
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
 best_measurement:
@@ -47,10 +49,10 @@ best_measurement:
   updated_at: '2026-05-16T19:30:00Z'
   updated_by: dl
 attachments: []
-notes: 'Created during multi-opening review. PIG dump says Jaskinia nad Korytem
-  has another entrance: "2 - ku E, 1618,7 m n.p.m."; TPN row 672 provides this
-  object-level point.'
+notes: 'Created during multi-opening review. PIG dump says Jaskinia nad Korytem has
+  another entrance: "2 - ku E, 1618,7 m n.p.m."; TPN row 672 provides this object-level
+  point.'
 created_at: '2026-05-16T19:30:00Z'
 created_by: dl
-updated_at: '2026-05-16T19:30:00Z'
-updated_by: dl
+updated_at: '2026-10-15T13:16:44Z'
+updated_by: maintenance:PBI-082

@@ -11,6 +11,26 @@ Read these files before making changes:
    specification and domain model.
 2. `docs/asdlc/backlog_v1.md` - V1 backlog, PBI order, scope and verification.
 3. `docs/asdlc/context.md` - compact current state and operating agreements.
+4. `docs/asdlc/remediation_plan.md` and `docs/asdlc/remediation_runbook.md` -
+   active repair scope and delivery procedure.
+
+## Main remediation from 2026-10-15
+
+- The user abandoned the previous branch-based repair series on 2026-10-15.
+  Its PBI-034–077 statuses do not apply to this checkout. Do not resume,
+  merge or cherry-pick `codex/review-remediation` or other old branches.
+- Active branch: `codex/main-remediation-2026-10`, created from freshly
+  fetched `origin/main` at `a3dd1a671d3d93cd6958242fc68ddcf1d37cf846`.
+  For continuation, fetch and inspect this branch's origin state; do not
+  restart the new series from main again.
+- Follow the backlog order: three P1 fixes, current-data problems, then
+  remaining P2 fixes. Implement exactly one ready PBI per session unless
+  the user explicitly requests more. PBI-078 is planning only.
+- Keep evidence in `docs/asdlc/verification/PBI-NNN.md`; a clean checkout
+  must be sufficient to continue without chat history or `build/`.
+- Commit and push verified steps; confirm remote SHA and CI for that SHA
+  as described in the runbook. Do not merge, tag or publish a release
+  without a separate user instruction.
 
 ## Operating mode
 

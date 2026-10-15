@@ -3,6 +3,47 @@
 Ten dokument opisuje codzienna prace na danych YAML w V1. Zrodlem prawdy sa
 pliki w `data/`; katalog `build/` zawiera tylko artefakty wygenerowane lokalnie.
 
+## Struktura wejścia danych
+
+Walidacja, build SQLite, eksporty, importer TPN i review wymagają istniejącego
+root danych oraz katalogów `objects`, `caves` i `relations`. Brak ścieżki lub
+plik zamiast katalogu daje błąd z jej nazwą i kod wyjścia 1. Walidator używa
+kodu `DATA_DIRECTORY_INVALID`; API loadera zgłasza `DataDirectoryError`.
+Przy takim błędzie istniejące artefakty pozostają bajtowo niezmienione,
+a nowe wyjścia nie powstają.
+
+Przed pierwszym importem lub dla świadomie pustego zbioru przygotuj strukturę
+jawnie (dla osobnego katalogu roboczego):
+
+```bash
+mkdir -p /sciezka/do/danych/{objects,caves,relations}
+uv run python scripts/validate.py --data-dir /sciezka/do/danych
+```
+
+Puste katalogi są legalnym zbiorem z zerowymi licznikami. Loader nie tworzy
+ich sam; pominięty katalog `relations` jest błędem również przy braku relacji.
+
+## Jednoznaczne klucze YAML
+
+Rekordy obiektów, jaskiń i relacji oraz pliki decyzji review muszą mieć
+unikalne klucze w każdej mapie, także wewnątrz pomiarów i list decyzji.
+Drugi klucz `measurements` jest błędem również przy identycznej wartości:
+nowy pomiar dopisuj do istniejącej listy. Loader odrzuca duplikat przed
+normalizacją i wskazuje plik, klucz oraz linię/kolumnę obu wystąpień.
+Walidator zgłasza `YAML_INVALID`; CLI kończy się kodem 1.
+
+Zwykłe aliasy (`&wzor` / `*wzor`) i merge keys (`<<`) o rozłącznych kluczach
+są dozwolone. Kolizja po rozwinięciu merge jest błędem: dotyczy to również
+jawnego nadpisania odziedziczonej wartości, powtórzenia tego samego aliasu
+w merge oraz powtórzonego `<<` w tej samej mapie. Przykładowo
+`{<<: {source: TPN}, source: PIG}` jest odrzucane. Zapisz docelową wartość
+jednoznacznie w jednej mapie zamiast korzystać z priorytetów nadpisywania.
+
+Błędny YAML blokuje build/eksport i zapis finalnych danych review.
+Istniejące artefakty i źródłowe bajty są zachowane; poprawny dokument
+zachowuje wartości i kolejność list. Jest to reguła parsera, niezależna
+od późniejszych kontroli schematu i lokalnych ID pomiarów.
+
 ## Dodanie recznego pomiaru
 
 1. Znajdz obiekt w `data/objects/{PREFIX}/{OBJECT_ID}.yml`.
@@ -252,6 +293,42 @@ Pomiar odrzucony moze zostac w `measurements`, ale zwykle nie powinien byc
 wskazany jako `best_measurement`. Jezeli wszystkie pomiary sa odrzucone,
 walidator moze wskazac to jako ostrzezenie.
 
+## Odtworzenie kontekstu TPN (PBI-082)
+
+Importer zachowuje `WER_LOK` i `UWAGI` przy pomiarach TPN, zarówno nowych,
+jak i dopasowanych. Etykiety `TPN WER_LOK:` oraz `TPN UWAGI:` opisują tekst
+źródłowy; nie oznaczają projektowej weryfikacji punktu. Review zachowuje
+ten kontekst i ręczne uwagi pomiaru.
+
+Dla istniejących danych jednorazowe narzędzie domyślnie wykonuje dry-run:
+
+```bash
+uv run --frozen python scripts/maintenance/restore_tpn_notes.py \
+  --source data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv \
+  --data-dir data --report build/tpn-notes-dry.json
+```
+
+Raport JSON zawiera hash SHA-256 źródła, GLOBALID, plik, ID obiektu/pomiaru,
+wartości źródłowe i notes/audyt przed oraz po zmianie. `record_number` służy
+tylko jako odnośnik dowodowy. Dopasowanie wymaga jednocześnie jednoznacznej
+referencji `TPN/source_globalid` na obiekcie i `source: TPN` z
+`source_ref: TPN:{GLOBALID}` na pomiarze. Niejednoznaczność w źródle,
+obiektach lub pomiarach jest raportowana i pomijana, bez dopasowania po
+nazwie. Pozostałe jednoznaczne rekordy mogą być uzupełnione.
+
+Po przeglądzie raportu powtórz polecenie z `--apply` i osobnym `--report`.
+Opcjonalne `--generated-at 2026-10-15T13:16:44Z` ustala czas audytu dla
+odtwarzalnego przebiegu. Zapis ogranicza się do notes właściwego pomiaru
+i `updated_at`/`updated_by` obiektu (`maintenance:PBI-082`). Ręczne uwagi
+pozostają; obecne etykietowane wartości nie są dopisywane drugi raz.
+Manifest jest zapisywany przed finalnymi plikami; raport musi znajdować
+się poza katalogiem danych i nie może nadpisać źródła. Nie deklarujemy
+rollbacku przy awarii I/O ani ochrony przed równoczesną edycją.
+
+[Manifest PBI-082](asdlc/verification/PBI-082-manifest.json) wskazuje 469
+plików i wyłącznie dozwolone pola. [Log](asdlc/verification/PBI-082.md)
+wyjaśnia wyniki przed/po i pominięty rekord Smoczej Jamy bez referencji.
+
 ## Dopelnianie brakujacych otworow
 
 Gdy staging TPN zostawia `TPN_NR_INWENT_AMBIGUOUS`, czesto oznacza to kilka
@@ -295,3 +372,22 @@ git commit -m "docs: add operational workflow"
 
 Dobierz `git add` do faktycznego zakresu zmiany. Nie dodawaj `build/`, chyba ze
 backlog jawnie zmieni zasade traktowania artefaktow generowanych.
+
+## Skończone liczby pomiarów (PBI-084)
+
+NaN i ±Infinity są niedozwolone w lat/lon, cache PL-1992, wysokości
+oraz obu dokładnościach, także w historycznym lub odrzuconym pomiarze.
+Walidator zwraca `MEASUREMENT_NON_FINITE` z plikiem, obiektem, pomiarem
+oraz polem. Kontrola poprzedza geometrię i wybór best. Review (dry-run
+oraz zapis), SQLite i eksporty blokują całą operację przed zapisem;
+istniejące wyjścia zachowują bajty. Opcjonalne `null`, zera i skończone
+wartości zachowują dotychczasową semantykę.
+
+Importery CSV/XLSX wykrywają także przepełnienie zapisu liczby, np.
+`1e999`. `PIG_MEASUREMENT_NON_FINITE` pomija obiekt, zachowując jaskinię;
+`TPN_MEASUREMENT_NON_FINITE` odrzuca cały wiersz. Diagnostyka podaje
+źródłowe pole i numer rekordu/identyfikator. Wadliwy kandydat z istniejącego
+YAML lub PIG staging JSON przerywa staging TPN przed dopasowaniem;
+CLI kończy się kodem 1 bez raportów. Nie poprawiać tego przez zamianę
+niepoprawnej wysokości na brak wartości. Błąd projekcji dla skończonego
+wejścia również jest raportowany, bez propagacji nieskończonego wyniku.

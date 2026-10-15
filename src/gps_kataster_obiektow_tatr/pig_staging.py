@@ -6,6 +6,7 @@ import json
 import re
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from math import isfinite
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -290,12 +291,24 @@ def _try_build_object_proposal(
     resolver: PrefixResolverLike,
     issues: list[PigStagingIssue],
 ) -> str | None:
-    coordinate_error = coordinate_consistency_error_m(
-        lat=point.lat,
-        lon=point.lon,
-        x_1992=point.x_1992,
-        y_1992=point.y_1992,
-    )
+    try:
+        coordinate_error = coordinate_consistency_error_m(
+            lat=point.lat,
+            lon=point.lon,
+            x_1992=point.x_1992,
+            y_1992=point.y_1992,
+        )
+    except ValueError as exc:
+        issues.append(
+            PigStagingIssue(
+                code="PIG_POINT_COORDINATES_INVALID",
+                severity="warning",
+                record_number=record_number,
+                pig_id=pig_id or None,
+                description=f"{exc} Object proposal skipped.",
+            )
+        )
+        return None
     if coordinate_error > DEFAULT_CONSISTENCY_TOLERANCE_M:
         issues.append(
             PigStagingIssue(
@@ -439,6 +452,32 @@ def _parse_pig_point(
     lon = _parse_decimal(row.get("L"))
     x_1992 = _parse_decimal(row.get("X 1992"))
     y_1992 = _parse_decimal(row.get("Y 1992"))
+    elevation_m = _parse_decimal(row.get("H (wg PIG)"))
+
+    invalid_fields = [
+        field
+        for field, value in (
+            ("B", lat),
+            ("L", lon),
+            ("X 1992", x_1992),
+            ("Y 1992", y_1992),
+            ("H (wg PIG)", elevation_m),
+        )
+        if value is not None and not isfinite(value)
+    ]
+    if invalid_fields:
+        issues.append(
+            PigStagingIssue(
+                code="PIG_MEASUREMENT_NON_FINITE",
+                severity="warning",
+                record_number=record_number,
+                pig_id=pig_id or None,
+                description=(
+                    f"Fields {', '.join(invalid_fields)} must be finite; object proposal skipped."
+                ),
+            )
+        )
+        return None
 
     if lat is None or lon is None or x_1992 is None or y_1992 is None:
         issues.append(
@@ -470,7 +509,7 @@ def _parse_pig_point(
         lon=lon,
         x_1992=x_1992,
         y_1992=y_1992,
-        elevation_m=_parse_decimal(row.get("H (wg PIG)")),
+        elevation_m=elevation_m,
         observed_date=source_date,
         source_date=source_date,
     )
