@@ -13,7 +13,10 @@ SRC_DIR = REPO_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR  # noqa: E402
+from gps_kataster_obiektow_tatr.data_loader import (  # noqa: E402
+    DEFAULT_DATA_DIR,
+    DataDirectoryError,
+)
 from gps_kataster_obiektow_tatr.staging_review import (  # noqa: E402
     DEFAULT_PIG_STAGING_PATH,
     DEFAULT_REVIEW_OUTPUT_DIR,
@@ -96,7 +99,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             data_dir=args.data_dir,
             write=not args.dry_run,
         )
-    except ReviewDecisionError as exc:
+    except (ReviewDecisionError, DataDirectoryError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 

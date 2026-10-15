@@ -115,6 +115,7 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
 
 def test_export_writes_metadata_snapshot(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
+    (data_dir / "relations").mkdir(parents=True)
     output_dir = tmp_path / "build" / "exports"
     object_data = _valid_object()
     object_data.pop("cave_id")
@@ -191,6 +192,8 @@ def test_export_rejects_invalid_yaml(tmp_path: Path) -> None:
 
 
 def _write_sample_data(data_dir: Path) -> None:
+    for name in ("objects", "caves", "relations"):
+        (data_dir / name).mkdir(parents=True, exist_ok=True)
     _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", _valid_object())
     _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
 

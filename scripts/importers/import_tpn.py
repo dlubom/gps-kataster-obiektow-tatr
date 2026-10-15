@@ -14,7 +14,10 @@ SRC_DIR = REPO_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR  # noqa: E402
+from gps_kataster_obiektow_tatr.data_loader import (  # noqa: E402
+    DEFAULT_DATA_DIR,
+    DataDirectoryError,
+)
 from gps_kataster_obiektow_tatr.tpn_staging import (  # noqa: E402
     DEFAULT_PIG_STAGING_PATH,
     DEFAULT_TPN_SOURCE,
@@ -74,12 +77,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     generated_at = args.generated_at or _utc_timestamp()
     pig_staging_path = None if args.no_pig_staging else args.pig_staging
 
-    report = build_tpn_staging(
-        args.tpn_source,
-        generated_at=generated_at,
-        data_dir=args.data_dir,
-        pig_staging_path=pig_staging_path,
-    )
+    try:
+        report = build_tpn_staging(
+            args.tpn_source,
+            generated_at=generated_at,
+            data_dir=args.data_dir,
+            pig_staging_path=pig_staging_path,
+        )
+    except DataDirectoryError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
     json_path, markdown_path = write_staging_files(report, output_dir=args.output_dir)
     counts = _status_counts(report)
 

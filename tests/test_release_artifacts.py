@@ -95,6 +95,8 @@ def test_build_release_artifacts_cli_is_local_dry_run(tmp_path: Path) -> None:
 
 
 def _write_sample_data(data_dir: Path) -> None:
+    for name in ("objects", "caves", "relations"):
+        (data_dir / name).mkdir(parents=True, exist_ok=True)
     _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", _valid_object())
     _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
 

@@ -662,6 +662,16 @@ Konsekwencje:
 
 `build/` jest generowane i gitignored.
 
+Wejście `data_dir` musi być istniejącym katalogiem zawierającym katalogi
+`objects`, `caves` i `relations`. Brak dowolnego z nich lub plik zamiast
+katalogu oznacza błąd wejścia (`DataDirectoryError` w API loadera),
+raportowany przez walidator jako `DATA_DIRECTORY_INVALID` i przez CLI
+niezerowym kodem wyjścia ze wskazaniem wadliwej ścieżki. Kontrola odbywa
+się przed utworzeniem lub nadpisaniem SQLite i eksportów; błędne wejście
+nie zmienia istniejących artefaktów. Pusty zbiór jest legalny wyłącznie
+po jawnym przygotowaniu wszystkich trzech katalogów, także przy pierwszym
+imporcie. Loader nie tworzy brakującej struktury automatycznie.
+
 ### 10.2 Przykład obiektu YAML
 
 ```yaml

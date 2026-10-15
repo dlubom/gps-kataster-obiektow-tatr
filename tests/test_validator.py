@@ -308,6 +308,8 @@ def _valid_cave(object_id: str = "KSW-0001") -> dict[str, Any]:
 
 
 def _write_object(data_dir: Path, object_data: dict[str, Any]) -> None:
+    for name in ("objects", "caves", "relations"):
+        (data_dir / name).mkdir(parents=True, exist_ok=True)
     data = deepcopy(object_data)
     object_id = data["id"]
     prefix = object_id.split("-", maxsplit=1)[0]

@@ -28,8 +28,10 @@ KSW_LON = 19.87589498
 TPN_GLOBALID = "{38626571-CAA6-4317-8900-D61A995020E9}"
 
 
-def test_apply_review_directly_materializes_pig_and_tpn_decisions(tmp_path: Path) -> None:
-    data_dir = tmp_path / "data"
+def test_apply_review_directly_materializes_pig_and_tpn_decisions(
+    tmp_path: Path, make_data_dir
+) -> None:
+    data_dir = make_data_dir(tmp_path / "data")
 
     result = apply_review_decisions(
         {
@@ -92,7 +94,9 @@ def test_apply_review_directly_materializes_pig_and_tpn_decisions(tmp_path: Path
     ]
 
 
-def test_write_review_report_files_serializes_decisions_issues_and_paths(tmp_path: Path) -> None:
+def test_write_review_report_files_serializes_decisions_issues_and_paths(
+    tmp_path: Path, make_data_dir
+) -> None:
     result = apply_review_decisions(
         {
             "reviewed_at": "2026-05-16T10:15:00Z",
@@ -102,7 +106,7 @@ def test_write_review_report_files_serializes_decisions_issues_and_paths(tmp_pat
             ],
         },
         staging_reports=StagingReports(tpn=_tpn_review_only_staging()),
-        data_dir=tmp_path / "data",
+        data_dir=make_data_dir(tmp_path / "data"),
         write=False,
     )
 
@@ -146,11 +150,12 @@ def test_load_staging_reports_handles_missing_paths_and_rejects_non_objects(
 
 def test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py(
     tmp_path: Path,
+    make_data_dir,
 ) -> None:
     pig_staging_path = tmp_path / "pig-staging.json"
     tpn_staging_path = tmp_path / "tpn-staging.json"
     decisions_path = tmp_path / "decisions.yml"
-    data_dir = tmp_path / "data"
+    data_dir = make_data_dir(tmp_path / "data")
     review_dir = tmp_path / "build" / "review"
     _write_json(pig_staging_path, _pig_staging())
     _write_json(tpn_staging_path, _tpn_staging())
@@ -223,8 +228,8 @@ def test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py(
     assert report["decision_count"] == 3
 
 
-def test_link_reject_and_unresolved_decisions_are_reported(tmp_path: Path) -> None:
-    data_dir = tmp_path / "data"
+def test_link_reject_and_unresolved_decisions_are_reported(tmp_path: Path, make_data_dir) -> None:
+    data_dir = make_data_dir(tmp_path / "data")
     _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", _object_data(cave_id=None))
     _write_yaml(data_dir / "caves" / "C-0001.yml", _cave_data(object_ids=[]))
 
@@ -269,8 +274,8 @@ def test_link_reject_and_unresolved_decisions_are_reported(tmp_path: Path) -> No
     assert "Needs field review." in markdown
 
 
-def test_invalid_decision_blocks_all_final_yaml_writes(tmp_path: Path) -> None:
-    data_dir = tmp_path / "data"
+def test_invalid_decision_blocks_all_final_yaml_writes(tmp_path: Path, make_data_dir) -> None:
+    data_dir = make_data_dir(tmp_path / "data")
     result = apply_review_decisions(
         {
             "reviewed_at": "2026-05-16T10:30:00Z",
@@ -291,11 +296,12 @@ def test_invalid_decision_blocks_all_final_yaml_writes(tmp_path: Path) -> None:
 
 def test_invalid_decision_shapes_and_non_materialized_warnings_are_reported(
     tmp_path: Path,
+    make_data_dir,
 ) -> None:
     invalid_list = apply_review_decisions(
         {"reviewed_at": "2026-05-16T10:30:00Z", "reviewed_by": "dl", "decisions": "bad"},
         staging_reports=StagingReports(),
-        data_dir=tmp_path / "data-invalid-list",
+        data_dir=make_data_dir(tmp_path / "data-invalid-list"),
     )
     mixed = apply_review_decisions(
         {
@@ -309,7 +315,7 @@ def test_invalid_decision_shapes_and_non_materialized_warnings_are_reported(
             ],
         },
         staging_reports=StagingReports(tpn=_tpn_review_only_staging()),
-        data_dir=tmp_path / "data-mixed",
+        data_dir=make_data_dir(tmp_path / "data-mixed"),
         write=False,
     )
 
@@ -325,8 +331,10 @@ def test_invalid_decision_shapes_and_non_materialized_warnings_are_reported(
     assert mixed.applied_decisions[0].description == "No reason provided."
 
 
-def test_duplicate_create_decisions_report_existing_final_records(tmp_path: Path) -> None:
-    data_dir = tmp_path / "data"
+def test_duplicate_create_decisions_report_existing_final_records(
+    tmp_path: Path, make_data_dir
+) -> None:
+    data_dir = make_data_dir(tmp_path / "data")
     _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", _object_data(cave_id="C-0001"))
     _write_yaml(data_dir / "caves" / "C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
 
@@ -348,7 +356,7 @@ def test_duplicate_create_decisions_report_existing_final_records(tmp_path: Path
     assert result.applied_decisions == ()
 
 
-def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
+def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path, make_data_dir) -> None:
     unsupported_source = apply_review_decisions(
         {
             "reviewed_at": "2026-05-16T10:33:00Z",
@@ -356,7 +364,7 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
             "decisions": [{"action": "add_measurement", "source": "PIG", "record_number": 1}],
         },
         staging_reports=StagingReports(pig=_pig_staging()),
-        data_dir=tmp_path / "data-unsupported",
+        data_dir=make_data_dir(tmp_path / "data-unsupported"),
         write=False,
     )
     missing_update = apply_review_decisions(
@@ -366,7 +374,7 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
             "decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 2}],
         },
         staging_reports=StagingReports(tpn=_tpn_review_only_staging()),
-        data_dir=tmp_path / "data-missing-update",
+        data_dir=make_data_dir(tmp_path / "data-missing-update"),
         write=False,
     )
     target_missing = apply_review_decisions(
@@ -376,11 +384,11 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
             "decisions": [{"action": "add_measurement", "source": "TPN", "record_number": 1}],
         },
         staging_reports=StagingReports(tpn=_tpn_staging()),
-        data_dir=tmp_path / "data-target-missing",
+        data_dir=make_data_dir(tmp_path / "data-target-missing"),
         write=False,
     )
 
-    invalid_measurement_dir = tmp_path / "data-invalid-measurement"
+    invalid_measurement_dir = make_data_dir(tmp_path / "data-invalid-measurement")
     _write_yaml(
         invalid_measurement_dir / "objects" / "KSW" / "KSW-0001.yml",
         _object_data(cave_id="C-0001"),
@@ -398,7 +406,7 @@ def test_add_measurement_reports_blocking_edge_cases(tmp_path: Path) -> None:
         write=False,
     )
 
-    duplicate_dir = tmp_path / "data-duplicate-measurement"
+    duplicate_dir = make_data_dir(tmp_path / "data-duplicate-measurement")
     _write_yaml(
         duplicate_dir / "objects" / "KSW" / "KSW-0001.yml",
         _object_data(

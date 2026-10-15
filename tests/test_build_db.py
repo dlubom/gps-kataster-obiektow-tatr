@@ -118,6 +118,7 @@ def test_build_sqlite_database_rejects_invalid_yaml(tmp_path: Path) -> None:
     sqlite_path = tmp_path / "build" / "katalog.sqlite"
     object_data = _valid_object()
     object_data["best_measurement"]["measurement_id"] = "m-999"
+    (data_dir / "relations").mkdir(parents=True)
     _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", object_data)
     _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
 
@@ -133,6 +134,8 @@ def test_build_sqlite_database_rejects_invalid_yaml(tmp_path: Path) -> None:
 
 
 def _write_sample_data(data_dir: Path) -> None:
+    for name in ("objects", "caves", "relations"):
+        (data_dir / name).mkdir(parents=True, exist_ok=True)
     _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", _valid_object())
     _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
 

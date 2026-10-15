@@ -39,8 +39,10 @@ def test_load_dataset_reads_fixture_records_and_keeps_paths(tmp_path: Path) -> N
     assert dataset.relations[0].data["id"] == "R-0001"
 
 
-def test_missing_lists_are_normalized_in_memory_without_rewriting_yaml(tmp_path: Path) -> None:
-    data_dir = tmp_path / "data"
+def test_missing_lists_are_normalized_in_memory_without_rewriting_yaml(
+    tmp_path: Path, make_data_dir
+) -> None:
+    data_dir = make_data_dir(tmp_path / "data")
     object_path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
     cave_path = data_dir / "caves" / "C-0001.yml"
     object_yaml = """\
@@ -76,8 +78,8 @@ name: Jaskinia testowa
     assert cave_path.read_text(encoding="utf-8") == cave_yaml
 
 
-def test_yaml_error_includes_source_path(tmp_path: Path) -> None:
-    data_dir = tmp_path / "data"
+def test_yaml_error_includes_source_path(tmp_path: Path, make_data_dir) -> None:
+    data_dir = make_data_dir(tmp_path / "data")
     bad_path = data_dir / "objects" / "KSW" / "bad.yml"
     _write_yaml(bad_path, "id: [unterminated\n")
 

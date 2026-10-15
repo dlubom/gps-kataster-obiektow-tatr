@@ -25,6 +25,7 @@ from gps_kataster_obiektow_tatr.coordinates import (
 )
 from gps_kataster_obiektow_tatr.data_loader import (
     DEFAULT_DATA_DIR,
+    DataDirectoryError,
     DataKind,
     LoadedDataset,
     LoadedYamlRecord,
@@ -77,6 +78,15 @@ def validate_data_dir(
 
     try:
         dataset = load_dataset(data_dir)
+    except DataDirectoryError as exc:
+        return (
+            ValidationIssue(
+                code="DATA_DIRECTORY_INVALID",
+                severity=ValidationSeverity.ERROR,
+                path=exc.path,
+                description=str(exc),
+            ),
+        )
     except YamlDataLoadError as exc:
         return (
             ValidationIssue(

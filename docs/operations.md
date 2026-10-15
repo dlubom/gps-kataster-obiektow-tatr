@@ -3,6 +3,26 @@
 Ten dokument opisuje codzienna prace na danych YAML w V1. Zrodlem prawdy sa
 pliki w `data/`; katalog `build/` zawiera tylko artefakty wygenerowane lokalnie.
 
+## Struktura wejścia danych
+
+Walidacja, build SQLite, eksporty, importer TPN i review wymagają istniejącego
+root danych oraz katalogów `objects`, `caves` i `relations`. Brak ścieżki lub
+plik zamiast katalogu daje błąd z jej nazwą i kod wyjścia 1. Walidator używa
+kodu `DATA_DIRECTORY_INVALID`; API loadera zgłasza `DataDirectoryError`.
+Przy takim błędzie istniejące artefakty pozostają bajtowo niezmienione,
+a nowe wyjścia nie powstają.
+
+Przed pierwszym importem lub dla świadomie pustego zbioru przygotuj strukturę
+jawnie (dla osobnego katalogu roboczego):
+
+```bash
+mkdir -p /sciezka/do/danych/{objects,caves,relations}
+uv run python scripts/validate.py --data-dir /sciezka/do/danych
+```
+
+Puste katalogi są legalnym zbiorem z zerowymi licznikami. Loader nie tworzy
+ich sam; pominięty katalog `relations` jest błędem również przy braku relacji.
+
 ## Dodanie recznego pomiaru
 
 1. Znajdz obiekt w `data/objects/{PREFIX}/{OBJECT_ID}.yml`.

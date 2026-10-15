@@ -11,19 +11,23 @@ Last updated: 2026-10-15
   Dawna seria `codex/review-remediation` (origin
   `7ea802ba29d81ba47da080050ce0b3e71b2389d5`) jest porzucona.
   PBI-034–077 nie są wdrożone na nowej bazie i ich numerów nie używamy ponownie.
-- **PBI-078 wykonane: dokumentacja planu.** Napraw nie rozpoczęto.
-  [Backlog](backlog_v1.md#naprawy-main-po-przegladzie-2026-10-12) zawiera
-  kompletne karty PBI-079–086; [plan](remediation_plan.md) opisuje decyzję,
-  [runbook](remediation_runbook.md) sposób pracy, a
-  [log PBI-078](verification/PBI-078.md) weryfikację i dostarczenie.
-- Lokalna bramka planu: 123 testy, Ruff, 0 błędów walidacji,
-  2066 ostrzeżeń, build i odczyt artefaktów poprawne; hash `data/` bez zmian.
-  Plan dostarczono w `d0dde99764acf8083695d78d11d94dd36fe5375f`,
-  [draft PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4).
-  [CI 38726834129](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38726834129)
-  zakończone sukcesem dla dokładnie tego SHA; wszystkie kroki joba
-  `Validate code and data` przeszły. Bieżący checkpoint utrwala ten wynik.
-- Następne gotowe jest **PBI-079 / R1: brakujące wejście danych**.
+- **PBI-078 wykonane: dokumentacja planu.** Plan dostarczono w
+  `d0dde99764acf8083695d78d11d94dd36fe5375f`, checkpoint
+  `fc8b55b58a8bb9b82fbde22ac8117c7c6e447618`. CI checkpointu
+  [38727319092](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38727319092)
+  zakończone sukcesem. [Backlog](backlog_v1.md#naprawy-main-po-przegladzie-2026-10-12),
+  [plan](remediation_plan.md), [runbook](remediation_runbook.md).
+- **PBI-079 zweryfikowane — do dostarczenia**. Loader odrzuca brak lub plik
+  zamiast root/objects/caves/relations. API/CLI blokują wyjścia z czytelnym
+  błędem; pełny pusty zbiór pozostaje legalny po jawnej inicjalizacji.
+  Dowody i dokładny pozostały krok: [log PBI-079](verification/PBI-079.md).
+  Pełna bramka: 285 testów, Ruff, 0 błędów i 2066 dotychczasowych ostrzeżeń;
+  7/7 celowanych mutantów zabitych, niezależny review bez ustaleń.
+  Ponowny odczyt wszystkich artefaktów i hash 2039 plików `data/` zgodne.
+- Pozostaje commit/push oraz exact-SHA CI `validate` przez istniejący
+  [draft PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4),
+  a potem checkpoint statusu. Po dostarczeniu następne gotowe będzie
+  **PBI-080 / R2: powtórzone klucze YAML**; nie rozpoczęto go.
   Kontynuacja autoryzuje jedno gotowe PBI, nie całą serię.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych

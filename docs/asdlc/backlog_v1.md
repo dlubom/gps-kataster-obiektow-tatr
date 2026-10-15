@@ -16,12 +16,12 @@ Statusy: `planowane`, `planowane — gotowe`, `w toku`,
 Kolejność jest celowa: **trzy P1 → problemy danych → pozostałe P2**.
 Zależności w tabeli określają kolejność realizacji, nie wszystkie są
 zależnościami technicznymi. Każde PBI dostarcza samodzielnie sprawdzalne
-zachowanie. W tej sesji powstaje tylko PBI-078; napraw nie rozpoczęto.
+zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są poniżej.
 
 | Kolejność | PBI | Priorytet / ustalenie | Zakres | Poprzednik | Status |
 |---|---|---|---|---|---|
 | 0 | PBI-078 | plan | Plan, trwały raport, nowy punkt kontynuacji | — | wykonane |
-| 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | planowane — gotowe |
+| 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | zweryfikowane — do dostarczenia |
 | 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | planowane |
 | 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | planowane |
 | 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | planowane |
@@ -62,6 +62,8 @@ Commit: `docs: plan main review remediation (PBI-078)`.
 
 ### PBI-079: Zatrzymać build przy brakującym katalogu danych
 
+Status: zweryfikowane — do dostarczenia. [Log weryfikacji](verification/PBI-079.md).
+
 Priorytet P1, R1. Spec: §10, §11.1–11.2, §13. Poprzednik: PBI-078.
 Dyrektywa: odróżnić brak wejścia od istniejącego, świadomie przygotowanego
 pustego zbioru i odrzucać brak przed utworzeniem lub nadpisaniem wyjścia.
@@ -80,13 +82,13 @@ Testy/importowe scenariusze inicjalizacji jawnie tworzą pełną strukturę;
 nie osłabiamy domyślnej kontroli. Legalny pusty zbiór z kompletem katalogów
 pozostaje obsługiwany; brak nie może być jego automatycznym odpowiednikiem.
 
-- [ ] Odtworzyć R1 przez publiczne API i CLI: po poprawce brak root, root
+- [x] Odtworzyć R1 przez publiczne API i CLI: po poprawce brak root, root
       jako plik i brak każdego z trzech katalogów dają błąd.
-- [ ] Dla każdego błędnego wejścia istniejący zestaw release zachowuje
+- [x] Dla każdego błędnego wejścia istniejący zestaw release zachowuje
       wszystkie bajty, a nieistniejące wyjścia nie powstają.
-- [ ] Poprawny katalog i jawnie przygotowany pusty fixture przechodzą;
+- [x] Poprawny katalog i jawnie przygotowany pusty fixture przechodzą;
       istniejące importowe testy inicjalizacji działają bez ukrytego fallbacku.
-- [ ] Uruchomić wskazane moduły pytest, pełną bramkę i mutacje kontroli
+- [x] Uruchomić wskazane moduły pytest, pełną bramkę i mutacje kontroli
       istnienia/rodzaju katalogu; udokumentować kontrakt w operations/spec.
 - [ ] Dostarczyć `fix: reject missing data inputs (PBI-079)` i dowody.
 

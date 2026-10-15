@@ -59,8 +59,25 @@ class YamlDataLoadError(ValueError):
         super().__init__(f"{path}: {message}")
 
 
+class DataDirectoryError(ValueError):
+    """Raised when a required source dataset directory is missing or is a file."""
+
+    def __init__(self, path: Path) -> None:
+        self.path = path
+        super().__init__(f"{path}: required data directory is missing or is not a directory")
+
+
 def load_dataset(data_dir: Path = DEFAULT_DATA_DIR) -> LoadedDataset:
     """Load objects, caves and relations from a repository ``data/`` directory."""
+
+    for path in (
+        data_dir,
+        data_dir / OBJECTS_DIR_NAME,
+        data_dir / CAVES_DIR_NAME,
+        data_dir / RELATIONS_DIR_NAME,
+    ):
+        if not path.is_dir():
+            raise DataDirectoryError(path)
 
     return LoadedDataset(
         objects=load_records(
