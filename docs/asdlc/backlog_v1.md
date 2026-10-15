@@ -25,8 +25,8 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | wykonane |
 | 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | wykonane |
 | 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | wykonane |
-| 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | zweryfikowane — do dostarczenia |
-| 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | planowane |
+| 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | wykonane |
+| 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | planowane — gotowe |
 | 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | planowane |
 | 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | planowane |
 
@@ -217,7 +217,11 @@ wartością źródłową i uzasadnieniem; nie tworzy nowych encji ani pomiarów.
       pozostaje jawną zaległością, nie blokuje udokumentowanych korekt.
 - [x] Testy kategorii, pełna walidacja/build/odczyt kategorii w eksportach
       oraz porównanie danych z manifestem zmian. Surowe źródła bez zmian.
-- [ ] Dostarczyć `fix: reconcile documented catalog data issues (PBI-083)`.
+- [x] Dostarczyć `fix: reconcile documented catalog data issues (PBI-083)`.
+
+Dowody i dostarczenie: [log PBI-083](verification/PBI-083.md),
+[manifest](verification/PBI-083-manifest.json),
+[decyzje danych](reviews/data-decisions-2026-10.md) i pełne dowody JSON.
 
 ### PBI-084: Odrzucać NaN i Infinity przed użyciem liczb
 

@@ -75,7 +75,7 @@ Last updated: 2026-10-15
   przeszły. Draft PR #4 zachowany i opisany zgodnie z zakresem PBI-079–082.
   Ten checkpoint dokumentacyjny utrwala wynik; jego własny SHA i CI
   sprawdza się w Git/PR po pushu, bez kolejnej serii wpisów z własnym SHA.
-- **PBI-083 / R8 zweryfikowane — do dostarczenia**: skorygowano STR-0024 do `sztolnia` z dowodem
+- **PBI-083 / R8 wykonane**: skorygowano STR-0024 do `sztolnia` z dowodem
   TPN row 273/GLOBALID. CHZ-0011 zachowuje kategorię z jawną niepewnością
   mieszanego otworu jaskini/sztolni. [Raport decyzji](reviews/data-decisions-2026-10.md)
   i JSON zawierają wszystkie 72 pary odległości/72 obiekty oraz 11 grup/23
@@ -85,8 +85,15 @@ Last updated: 2026-10-15
   Importer nie upraszcza mieszanej genezy do sztolni po nazwie; pełne GENEZA
   i wymóg review zachowane w nowej propozycji. Bramka: 462 testy, Ruff,
   0 błędów/2066 ostrzeżeń, odczyt 7/7, 6/6 celowanych mutantów zabitych.
-  [Log PBI-083](verification/PBI-083.md); niezależny review bez ustaleń; pozostałe push i CI końcowego SHA.
-  Zakończyć po tym PBI; PBI-084 nie rozpoczęto.
+  [Log PBI-083](verification/PBI-083.md); niezależny review bez ustaleń.
+- Commit PBI-083: `53622da2186cb31489d9fc73205c7e778aa11c67`, remote SHA
+  zgodny. [CI 38746082854](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38746082854)
+  `completed/success` dla tego SHA; jedyny job i wszystkie 13 kroków
+  przeszły. Draft PR #4 pozostaje draft; opis obejmuje PBI-079–083.
+  Checkpoint dokumentacyjny utrwala wynik; jego własny SHA i CI sprawdza
+  się po pushu z Git/PR, bez kolejnej serii wpisów własnego SHA.
+- Następne gotowe: **PBI-084 / R5**, nie rozpoczęto. Zakończyć bieżącą
+  sesję po pushu i CI końcowego checkpointu PBI-083.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
   `build/`, `/tmp`, czatu ani pamięci konta.
