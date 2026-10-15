@@ -1176,3 +1176,72 @@ def _read_yaml(path: Path) -> dict[str, Any]:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     assert isinstance(data, dict)
     return data
+
+
+@pytest.mark.parametrize(
+    "field",
+    [
+        "lat",
+        "lon",
+        "x_1992",
+        "y_1992",
+        "elevation_m",
+        "horizontal_accuracy_m",
+        "vertical_accuracy_m",
+    ],
+)
+@pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf")])
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize("source", ["PIG", "TPN"])
+def test_non_finite_staging_blocks_review_before_best_and_writes(
+    tmp_path,
+    make_data_dir,
+    monkeypatch,
+    field,
+    value,
+    write,
+    source,
+):
+    data_dir = make_data_dir(tmp_path / "data")
+    pig = _pig_staging()
+    tpn = _tpn_staging()
+    if source == "PIG":
+        pig["proposed_objects"][0]["measurements"][0][field] = value
+        decisions = [
+            {"action": "create_cave", "source": "PIG", "record_number": 1},
+            {"action": "create_object", "source": "PIG", "record_number": 1},
+        ]
+    else:
+        _write_yaml(data_dir / "objects/KSW/KSW-0001.yml", _object_data(cave_id="C-0001"))
+        _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0001"]))
+        tpn["matched_measurements"][0]["measurement"][field] = value
+        decisions = [{"action": "add_measurement", "source": "TPN", "record_number": 1}]
+
+    def check_selection(measurements):
+        # Observe the consumption boundary while retaining the real selector.
+        items = list(measurements)
+        from math import isfinite
+
+        from gps_kataster_obiektow_tatr.best_measurement import select_default_best_measurement_id
+
+        assert all(isfinite(m[field]) for m in items if m.get(field) is not None)
+        return select_default_best_measurement_id(items)
+
+    monkeypatch.setattr(
+        "gps_kataster_obiektow_tatr.staging_review.select_default_best_measurement_id",
+        check_selection,
+    )
+    before = {p.relative_to(data_dir): p.read_bytes() for p in data_dir.rglob("*") if p.is_file()}
+    result = apply_review_decisions(
+        {"reviewed_at": "2026-10-15T00:00:00Z", "reviewed_by": "test", "decisions": decisions},
+        staging_reports=StagingReports(pig=pig, tpn=tpn),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert result.has_errors and result.written_paths == ()
+    assert any(
+        "MEASUREMENT_NON_FINITE" in i.description and field in i.description for i in result.issues
+    )
+    assert {
+        p.relative_to(data_dir): p.read_bytes() for p in data_dir.rglob("*") if p.is_file()
+    } == before

@@ -92,8 +92,15 @@ Last updated: 2026-10-15
   przeszły. Draft PR #4 pozostaje draft; opis obejmuje PBI-079–083.
   Checkpoint dokumentacyjny utrwala wynik; jego własny SHA i CI sprawdza
   się po pushu z Git/PR, bez kolejnej serii wpisów własnego SHA.
-- Następne gotowe: **PBI-084 / R5**, nie rozpoczęto. Zakończyć bieżącą
-  sesję po pushu i CI końcowego checkpointu PBI-083.
+- **PBI-084 / R5 zweryfikowane — do dostarczenia**: kontrola skończoności wszystkich pól pomiaru
+  przed geometrią/best i zapisem review/artefaktów, również CSV/XLSX
+  i kandydatów staging JSON/YAML. Dane finalne i źródła bez zmian.
+  [Log PBI-084](verification/PBI-084.md) zawiera zakres, RED/GREEN
+  i poprawkę Important z review (konwersja kandydata do NaN/Infinity).
+  Pełna bramka: 731 testów, Ruff, 0 błędów/2066 ostrzeżeń, readback 7/7,
+  data/ 2039/2039 identyczne, 23/23 celowanych mutantów zabitych.
+  Zakończyć sesję po dostarczeniu i CI końcowego SHA tego PBI.
+- Następne po PBI-084: **PBI-085 / R6**, nie rozpoczęto.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
   `build/`, `/tmp`, czatu ani pamięci konta.

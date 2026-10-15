@@ -1,3 +1,4 @@
+import csv
 import importlib.util
 import json
 import subprocess
@@ -5,6 +6,8 @@ import sys
 import zipfile
 from html import escape
 from pathlib import Path
+
+import pytest
 
 from gps_kataster_obiektow_tatr.pig_staging import (
     build_pig_staging,
@@ -369,3 +372,68 @@ def _column_name(index: int) -> str:
         index, remainder = divmod(index - 1, 26)
         name = chr(ord("A") + remainder) + name
     return name
+
+
+@pytest.mark.parametrize("value", ["NaN", "+Infinity", "-Infinity", "1e999"])
+@pytest.mark.parametrize("field", ["B", "L", "X 1992", "Y 1992", "H (wg PIG)"])
+@pytest.mark.parametrize("extension", ["csv", "xlsx"])
+def test_pig_non_finite_source_fields_skip_point(tmp_path, field, value, extension):
+    headers = _pig_header().split(",")
+    row = next(
+        csv.reader(
+            [
+                _pig_row(
+                    pig_id="1692",
+                    name="Test",
+                    nr_inwent="T.F-09.33",
+                    x_1992="152267.23",
+                    y_1992="563744.25",
+                    lat="49.23459299",
+                    lon="19.87589498",
+                    source_year="2010",
+                )
+            ]
+        )
+    )
+    row[headers.index(field)] = value
+    source = tmp_path / f"pig.{extension}"
+    if extension == "xlsx":
+        _write_xlsx(source, [headers, row])
+    else:
+        with source.open("w", newline="", encoding="utf-8") as stream:
+            csv.writer(stream).writerows([headers, row])
+    report = build_pig_staging(
+        source,
+        generated_at="2026-10-15T00:00:00Z",
+        data_dir=tmp_path / "data",
+        prefix_resolver=StubResolver(),
+    )
+    assert report.proposed_objects == ()
+    assert report.proposed_caves[0]["object_ids"] == []
+    assert any(
+        i.code == "PIG_MEASUREMENT_NON_FINITE" and field in i.description for i in report.issues
+    )
+
+
+def test_pig_rejects_non_finite_projection_result(tmp_path):
+    source = tmp_path / "pig.csv"
+    _write_text(
+        source,
+        _pig_header()
+        + "\n"
+        + _pig_row(
+            pig_id="1692",
+            name="Test",
+            nr_inwent="T.F-09.33",
+            x_1992="152267.23",
+            y_1992="563744.25",
+            lat="100",
+            lon="19.87589498",
+            source_year="2010",
+        ),
+    )
+    report = build_pig_staging(
+        source, generated_at="2026-10-15T00:00:00Z", data_dir=tmp_path / "data"
+    )
+    assert report.proposed_objects == ()
+    assert any(i.code == "PIG_POINT_COORDINATES_INVALID" for i in report.issues)

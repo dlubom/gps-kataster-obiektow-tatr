@@ -7,12 +7,16 @@ import re
 import unicodedata
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from math import hypot
+from math import hypot, isfinite
 from pathlib import Path
 from typing import Any, Protocol
 
 from gps_kataster_obiektow_tatr.coordinates import pl1992_to_wgs84
 from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR, load_dataset
+from gps_kataster_obiektow_tatr.measurement_values import (
+    MEASUREMENT_NUMERIC_FIELDS,
+    non_finite_measurement_fields,
+)
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
     PrefixResolutionStatus,
@@ -434,6 +438,25 @@ def _parse_tpn_point(
 ) -> TpnPoint | None:
     x_1992 = _parse_decimal(row.get("X1992"))
     y_1992 = _parse_decimal(row.get("Y1992"))
+    elevation_m = _parse_decimal(row.get("Z"))
+
+    invalid_fields = [
+        field
+        for field, value in (("X1992", x_1992), ("Y1992", y_1992), ("Z", elevation_m))
+        if value is not None and not isfinite(value)
+    ]
+    if invalid_fields:
+        issues.append(
+            TpnStagingIssue(
+                code="TPN_MEASUREMENT_NON_FINITE",
+                severity="warning",
+                record_number=record_number,
+                globalid=globalid or None,
+                nr_inwent=nr_inwent or None,
+                description=f"Fields {', '.join(invalid_fields)} must be finite; row rejected.",
+            )
+        )
+        return None
 
     if x_1992 is None or y_1992 is None:
         issues.append(
@@ -449,13 +472,26 @@ def _parse_tpn_point(
         return None
 
     source_date = _parse_source_date(row) or _date_part(generated_at)
-    wgs84 = pl1992_to_wgs84(x_1992=x_1992, y_1992=y_1992)
+    try:
+        wgs84 = pl1992_to_wgs84(x_1992=x_1992, y_1992=y_1992)
+    except ValueError as exc:
+        issues.append(
+            TpnStagingIssue(
+                code="TPN_POINT_COORDINATES_INVALID",
+                severity="warning",
+                record_number=record_number,
+                globalid=globalid or None,
+                nr_inwent=nr_inwent or None,
+                description=f"{exc} Row rejected.",
+            )
+        )
+        return None
     return TpnPoint(
         lat=wgs84.lat,
         lon=wgs84.lon,
         x_1992=x_1992,
         y_1992=y_1992,
-        elevation_m=_parse_decimal(row.get("Z")),
+        elevation_m=elevation_m,
         observed_date=source_date,
         source_date=source_date,
     )
@@ -929,6 +965,21 @@ def _candidate_measurement(data: dict[str, Any]) -> dict[str, Any] | None:
     measurements = data.get("measurements")
     if not isinstance(measurements, list):
         return None
+
+    for measurement in measurements:
+        if not isinstance(measurement, dict):
+            continue
+        # Matching accepts source-style decimal text as well as JSON numbers.
+        # Check after parsing too: strings and large integers can become NaN/inf.
+        parsed_numbers = {
+            field: _parse_decimal(measurement.get(field)) for field in MEASUREMENT_NUMERIC_FIELDS
+        }
+        invalid_fields = non_finite_measurement_fields(parsed_numbers)
+        if invalid_fields:
+            raise ValueError(
+                f"TPN candidate object {data.get('id')} measurement {measurement.get('id')} "
+                f"fields {', '.join(invalid_fields)} must be finite."
+            )
 
     best_measurement = data.get("best_measurement")
     best_measurement_id = (

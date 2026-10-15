@@ -8,6 +8,7 @@ from html import escape
 from pathlib import Path
 
 import pytest
+import yaml
 
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
@@ -630,3 +631,139 @@ def test_source_category_keeps_mixed_genesis_open_for_review(
         assert "requires category review" in obj["notes"]
     assert obj["measurements"][0]["verification_status"] == "nieweryfikowany"
     assert list((tmp_path / "data" / "objects").rglob("*.yml")) == []
+
+
+@pytest.mark.parametrize("value", ["NaN", "+Infinity", "-Infinity", "1e999"])
+@pytest.mark.parametrize("field", ["X1992", "Y1992", "Z"])
+@pytest.mark.parametrize("extension", ["csv", "xlsx"])
+def test_tpn_non_finite_source_fields_reject_row(tmp_path, make_data_dir, field, value, extension):
+    row = _tpn_row(
+        nr_inwent="T.F-09.33",
+        name="Test",
+        globalid="{finite}",
+        x_1992="152267.23",
+        y_1992="563744.25",
+    )
+    row[_tpn_header().index(field)] = value
+    source = tmp_path / f"tpn.{extension}"
+    if extension == "xlsx":
+        _write_xlsx(source, [_tpn_header(), row])
+    else:
+        _write_tpn_csv(source, [row])
+    report = build_tpn_staging(
+        source,
+        generated_at="2026-10-15T00:00:00Z",
+        data_dir=make_data_dir(tmp_path / "data"),
+        pig_staging_path=None,
+        prefix_resolver=StubResolver(),
+    )
+    assert report.proposed_objects == () and report.matched_measurements == ()
+    assert report.rows[0].status == "rejected"
+    assert any(
+        i.code == "TPN_MEASUREMENT_NON_FINITE" and field in i.description for i in report.issues
+    )
+
+
+def test_tpn_rejects_non_finite_projection_result(tmp_path, make_data_dir):
+    source = tmp_path / "tpn.csv"
+    _write_tpn_csv(
+        source,
+        [
+            _tpn_row(
+                nr_inwent="T.F-09.33",
+                name="Test",
+                globalid="{test}",
+                x_1992="1e308",
+                y_1992="1e308",
+            )
+        ],
+    )
+    report = build_tpn_staging(
+        source,
+        generated_at="2026-10-15T00:00:00Z",
+        data_dir=make_data_dir(tmp_path / "data"),
+        pig_staging_path=None,
+    )
+    assert report.proposed_objects == () and report.matched_measurements == ()
+    assert report.rows[0].status == "rejected"
+    assert any(i.code == "TPN_POINT_COORDINATES_INVALID" for i in report.issues)
+
+
+@pytest.mark.parametrize("field", ["x_1992", "y_1992", "elevation_m", "horizontal_accuracy_m"])
+@pytest.mark.parametrize(
+    "value",
+    [float("nan"), float("inf"), float("-inf"), "NaN", "1e999", 10**400],
+    ids=["nan", "inf", "neg-inf", "text-nan", "text-overflow", "integer-overflow"],
+)
+@pytest.mark.parametrize("candidate_source", ["json", "yaml"])
+def test_tpn_rejects_non_finite_pig_staging_candidate(
+    tmp_path,
+    make_data_dir,
+    field,
+    value,
+    candidate_source,
+):
+    source = tmp_path / "tpn.csv"
+    _write_tpn_csv(
+        source,
+        [
+            _tpn_row(
+                nr_inwent="T.F-09.33",
+                name="Test",
+                globalid="{test}",
+                x_1992="152267.23",
+                y_1992="563744.25",
+            )
+        ],
+    )
+    pig = tmp_path / "pig-staging.json"
+    _write_pig_staging(
+        pig,
+        object_id="KSW-0001",
+        cave_id="C-0001",
+        nr_inwent="T.F-09.33",
+        name="Test",
+        x_1992=152267.23,
+        y_1992=563744.25,
+    )
+    data = json.loads(pig.read_text())
+    data["proposed_objects"][0]["measurements"][0][field] = value
+    pig.write_text(json.dumps(data), encoding="utf-8")
+    data_dir = make_data_dir(tmp_path / "data")
+    if candidate_source == "yaml":
+        path = data_dir / "objects/KSW/KSW-0001.yml"
+        path.parent.mkdir(parents=True)
+        path.write_text(yaml.safe_dump(data["proposed_objects"][0]), encoding="utf-8")
+    with pytest.raises(ValueError, match=f"KSW-0001.*{field}.*finite"):
+        build_tpn_staging(
+            source,
+            generated_at="2026-10-15T00:00:00Z",
+            data_dir=data_dir,
+            pig_staging_path=pig if candidate_source == "json" else None,
+        )
+    for output in (tmp_path / "existing-output", tmp_path / "missing-output"):
+        if output.name == "existing-output":
+            output.mkdir()
+            (output / "tpn-staging.json").write_bytes(b"existing JSON report")
+            (output / "tpn-staging.md").write_bytes(b"existing Markdown report")
+        before = {p.name: p.read_bytes() for p in output.glob("*")}
+        candidate_args = (
+            ["--pig-staging", str(pig)] if candidate_source == "json" else ["--no-pig-staging"]
+        )
+        assert (
+            import_tpn_script.main(
+                [
+                    "--tpn-source",
+                    str(source),
+                    "--data-dir",
+                    str(data_dir),
+                    "--output-dir",
+                    str(output),
+                    *candidate_args,
+                ]
+            )
+            == 1
+        )
+        assert {p.name: p.read_bytes() for p in output.glob("*")} == before
+        if not before:
+            assert not output.exists()

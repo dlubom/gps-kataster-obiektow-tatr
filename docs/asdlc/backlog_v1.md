@@ -26,7 +26,7 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | wykonane |
 | 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | wykonane |
 | 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | wykonane |
-| 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | planowane — gotowe |
+| 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | zweryfikowane — do dostarczenia |
 | 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | planowane |
 | 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | planowane |
 
@@ -225,6 +225,8 @@ Dowody i dostarczenie: [log PBI-083](verification/PBI-083.md),
 
 ### PBI-084: Odrzucać NaN i Infinity przed użyciem liczb
 
+Status: zweryfikowane — do dostarczenia. [Log PBI-084](verification/PBI-084.md).
+
 Priorytet P2, R5. Spec: §4.3, §6, §11–13. Poprzednik: PBI-083.
 Dyrektywa: wymagać skończonych wartości we wszystkich polach liczbowych
 pomiaru przed geometrią, wyborem best i eksportem; diagnozować błędy danych.
@@ -236,13 +238,13 @@ staging nie proponuje błędnego punktu, review/build/eksport kończą się
 kontrolowanie przed zapisem. Brak wartości opcjonalnej (`null`) pozostaje
 legalny. Nie zmieniać semantyki dokładności ani jednostek.
 
-- [ ] R5: `.nan` w `x_1992` daje błąd przed eksportem; poprawny istniejący
+- [x] R5: `.nan` w `x_1992` daje błąd przed eksportem; poprawny istniejący
       zestaw plików pozostaje niezmieniony.
-- [ ] Parametryzowane testy NaN, +Infinity, -Infinity w lat/lon, cache
+- [x] Parametryzowane testy NaN, +Infinity, -Infinity w lat/lon, cache
       PL-1992, wysokości i dokładnościach; także liczby z CSV/XLSX/staging.
-- [ ] Poprawne liczby i dozwolone `null` przechodzą. GeoJSON poprawnych
+- [x] Poprawne liczby i dozwolone `null` przechodzą. GeoJSON poprawnych
       danych daje się odczytać parserem odrzucającym NaN/Infinity.
-- [ ] Testy obszaru, pełna bramka i mutacje kontroli skończoności;
+- [x] Testy obszaru, pełna bramka i mutacje kontroli skończoności;
       wszystkie finalne YAML bez zmian.
 - [ ] Dostarczyć `fix: reject non-finite measurement values (PBI-084)`.
 

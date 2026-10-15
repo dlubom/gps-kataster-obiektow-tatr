@@ -1,7 +1,7 @@
 """Coordinate conversion helpers for WGS84 and PL-1992."""
 
 from dataclasses import dataclass
-from math import hypot
+from math import hypot, isfinite
 
 from pyproj import Transformer
 
@@ -32,16 +32,20 @@ class PL1992Coordinate:
 def wgs84_to_1992(lat: float, lon: float) -> PL1992Coordinate:
     """Convert WGS84 latitude/longitude to project PL-1992 fields."""
 
+    _require_finite(lat=lat, lon=lon)
     # PyProj returns GIS easting/northing; YAML stores Polish X/Y as northing/easting.
     easting, northing = _WGS84_TO_PL_1992.transform(lon, lat)
+    _require_finite(x_1992=northing, y_1992=easting)
     return PL1992Coordinate(x_1992=northing, y_1992=easting)
 
 
 def pl1992_to_wgs84(x_1992: float, y_1992: float) -> WGS84Coordinate:
     """Convert project PL-1992 fields to WGS84 latitude/longitude."""
 
+    _require_finite(x_1992=x_1992, y_1992=y_1992)
     # Inverse transform expects GIS easting/northing, so project Y/X become inputs.
     lon, lat = _PL_1992_TO_WGS84.transform(y_1992, x_1992)
+    _require_finite(lat=lat, lon=lon)
     return WGS84Coordinate(lat=lat, lon=lon)
 
 
@@ -54,8 +58,15 @@ def coordinate_consistency_error_m(
 ) -> float:
     """Return planar PL-1992 error between WGS84 and cached PL-1992 fields."""
 
+    _require_finite(lat=lat, lon=lon, x_1992=x_1992, y_1992=y_1992)
     expected = wgs84_to_1992(lat=lat, lon=lon)
     return hypot(expected.x_1992 - x_1992, expected.y_1992 - y_1992)
+
+
+def _require_finite(**values: float) -> None:
+    for field, value in values.items():
+        if not isfinite(value):
+            raise ValueError(f"Coordinate field {field} must be finite.")
 
 
 def coordinates_are_consistent(

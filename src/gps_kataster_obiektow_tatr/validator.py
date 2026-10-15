@@ -32,6 +32,7 @@ from gps_kataster_obiektow_tatr.data_loader import (
     YamlDataLoadError,
     load_dataset,
 )
+from gps_kataster_obiektow_tatr.measurement_values import non_finite_measurement_fields
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
     PrefixResolutionStatus,
@@ -135,7 +136,10 @@ def validate_record_schema(
 ) -> tuple[ValidationIssue, ...]:
     """Check a proposal's shape before review actions consume its nested values."""
 
-    return _validate_schema((record,), _load_schema_validators(schema_dir))
+    issues = _validate_schema((record,), _load_schema_validators(schema_dir))
+    if record.kind == DataKind.OBJECT:
+        issues += _validate_finite_measurements(record)
+    return issues
 
 
 def format_issue(issue: ValidationIssue) -> str:
@@ -356,10 +360,32 @@ def _validate_object_records(
     for object_record in object_records:
         issues.extend(_validate_object_domain_warnings(object_record))
         issues.extend(_validate_object_attachments(object_record, repo_root=repo_root))
+        numeric_issues = _validate_finite_measurements(object_record)
+        issues.extend(numeric_issues)
+        if numeric_issues:
+            continue
         issues.extend(_validate_object_measurements(object_record, resolver=resolver))
         issues.extend(_validate_best_measurement_auto(object_record))
 
     return tuple(issues)
+
+
+def _validate_finite_measurements(
+    object_record: LoadedYamlRecord,
+) -> tuple[ValidationIssue, ...]:
+    return tuple(
+        ValidationIssue(
+            code="MEASUREMENT_NON_FINITE",
+            severity=ValidationSeverity.ERROR,
+            path=object_record.path,
+            description=(
+                f"Object {_record_id(object_record)} measurement {_measurement_id(measurement)} "
+                f"field {field} must be finite."
+            ),
+        )
+        for measurement in _iter_dicts(object_record.data.get("measurements"))
+        for field in non_finite_measurement_fields(measurement)
+    )
 
 
 def _validate_object_domain_warnings(
@@ -502,12 +528,23 @@ def _validate_object_measurements(
             continue
 
         lat, lon, x_1992, y_1992 = coordinate_values
-        coordinate_error = coordinate_consistency_error_m(
-            lat=lat,
-            lon=lon,
-            x_1992=x_1992,
-            y_1992=y_1992,
-        )
+        try:
+            coordinate_error = coordinate_consistency_error_m(
+                lat=lat,
+                lon=lon,
+                x_1992=x_1992,
+                y_1992=y_1992,
+            )
+        except ValueError as exc:
+            issues.append(
+                ValidationIssue(
+                    code="COORDINATE_TRANSFORM_INVALID",
+                    severity=ValidationSeverity.ERROR,
+                    path=object_record.path,
+                    description=f"Object {object_id} measurement {measurement_id}: {exc}",
+                )
+            )
+            continue
         if coordinate_error > DEFAULT_CONSISTENCY_TOLERANCE_M:
             issues.append(
                 ValidationIssue(
@@ -582,6 +619,11 @@ def _validate_prefix_matches_best_measurement(
         return ()
 
     lat, lon, _x_1992, _y_1992 = coordinate_values
+    # A finite input can still be outside the projection's domain.
+    try:
+        wgs84_to_1992(lat=lat, lon=lon)
+    except ValueError:
+        return ()
     resolution = resolver.resolve(lat=lat, lon=lon)
     if resolution.prefix is None or resolution.prefix == object_prefix:
         return ()

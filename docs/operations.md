@@ -372,3 +372,22 @@ git commit -m "docs: add operational workflow"
 
 Dobierz `git add` do faktycznego zakresu zmiany. Nie dodawaj `build/`, chyba ze
 backlog jawnie zmieni zasade traktowania artefaktow generowanych.
+
+## Skończone liczby pomiarów (PBI-084)
+
+NaN i ±Infinity są niedozwolone w lat/lon, cache PL-1992, wysokości
+oraz obu dokładnościach, także w historycznym lub odrzuconym pomiarze.
+Walidator zwraca `MEASUREMENT_NON_FINITE` z plikiem, obiektem, pomiarem
+oraz polem. Kontrola poprzedza geometrię i wybór best. Review (dry-run
+oraz zapis), SQLite i eksporty blokują całą operację przed zapisem;
+istniejące wyjścia zachowują bajty. Opcjonalne `null`, zera i skończone
+wartości zachowują dotychczasową semantykę.
+
+Importery CSV/XLSX wykrywają także przepełnienie zapisu liczby, np.
+`1e999`. `PIG_MEASUREMENT_NON_FINITE` pomija obiekt, zachowując jaskinię;
+`TPN_MEASUREMENT_NON_FINITE` odrzuca cały wiersz. Diagnostyka podaje
+źródłowe pole i numer rekordu/identyfikator. Wadliwy kandydat z istniejącego
+YAML lub PIG staging JSON przerywa staging TPN przed dopasowaniem;
+CLI kończy się kodem 1 bez raportów. Nie poprawiać tego przez zamianę
+niepoprawnej wysokości na brak wartości. Błąd projekcji dla skończonego
+wejścia również jest raportowany, bez propagacji nieskończonego wyniku.

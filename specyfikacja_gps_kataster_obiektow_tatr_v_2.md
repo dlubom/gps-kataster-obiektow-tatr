@@ -183,6 +183,13 @@ Zasady:
 
 - `lat` i `lon` są obowiązkowe w danych źródłowych YAML. Jeśli import daje tylko EPSG:2180, importer przelicza do WGS84.
 - `x_1992` i `y_1992` są cache’owane i walidowane.
+- Wszystkie pola liczbowe pomiaru (`lat`, `lon`, `x_1992`, `y_1992`,
+  `elevation_m`, `horizontal_accuracy_m`, `vertical_accuracy_m`) muszą być
+  skończone. NaN i ±Infinity są błędem `MEASUREMENT_NON_FINITE` z plikiem,
+  ID obiektu/pomiaru i nazwą pola, przed geometrią, wyborem best i zapisem
+  review/SQLite/eksportów. Dotyczy to całej historii, także pomiarów
+  odrzuconych i niewybranych jako best. Opcjonalne `null` pozostaje legalne;
+  reguła nie zmienia jednostek, zakresów ani znaczenia dokładności.
 - `horizontal_accuracy_m` dotyczy dokładności poziomej, a nie wysokości.
 - Dla danych PIG/TPN bez znanej dokładności pole `horizontal_accuracy_m` może być puste.
 - Pomiar odrzucony nie jest usuwany, tylko dostaje `verification_status: odrzucony` oraz notatkę.
@@ -425,6 +432,13 @@ Dla importów:
 - jeśli źródło daje WGS84, importer wylicza EPSG:2180,
 - jeśli źródło daje EPSG:2180, importer wylicza WGS84,
 - jeśli źródło daje oba układy, importer sprawdza spójność.
+
+Pomocnicze konwersje odrzucają nieskończone wejścia i wyniki przez
+`ValueError`; walidator/importer przekłada błąd projekcji na diagnostykę.
+Staging CSV/XLSX nie proponuje punktu z NaN/±Infinity, również w wysokości
+lub po przepełnieniu liczby (np. `1e999`). PIG zachowuje propozycję jaskini
+bez obiektu; TPN odrzuca wiersz. Wadliwy istniejący kandydat YAML/JSON
+przerywa staging TPN z błędem przed dopasowaniem i zapisem raportu.
 
 ---
 

@@ -676,7 +676,19 @@ def _apply_add_measurement(
         )
         return
 
-    object_data.setdefault("measurements", []).append(_finalize_staging_measurement(measurement))
+    finalized_measurement = _finalize_staging_measurement(measurement)
+    prospective = object_data | {
+        "measurements": [*object_data.get("measurements", []), finalized_measurement]
+    }
+    payload_issues = validate_record_schema(_review_record(prospective, DataKind.OBJECT, data_dir))
+    if payload_issues:
+        issues.extend(
+            _review_errors(
+                payload_issues, code="REVIEW_DATA_INVALID", decision_index=decision_index
+            )
+        )
+        return
+    object_data.setdefault("measurements", []).append(finalized_measurement)
     _append_unique_dicts(
         object_data.setdefault("external_refs", []), update.get("object_external_refs")
     )
