@@ -17,18 +17,22 @@ Last updated: 2026-10-15
   [38727319092](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38727319092)
   zakończone sukcesem. [Backlog](backlog_v1.md#naprawy-main-po-przegladzie-2026-10-12),
   [plan](remediation_plan.md), [runbook](remediation_runbook.md).
-- **PBI-079 zweryfikowane — do dostarczenia**. Loader odrzuca brak lub plik
+- **PBI-079 wykonane**. Loader odrzuca brak lub plik
   zamiast root/objects/caves/relations. API/CLI blokują wyjścia z czytelnym
   błędem; pełny pusty zbiór pozostaje legalny po jawnej inicjalizacji.
-  Dowody i dokładny pozostały krok: [log PBI-079](verification/PBI-079.md).
+  Dowody i dostarczenie: [log PBI-079](verification/PBI-079.md).
   Pełna bramka: 285 testów, Ruff, 0 błędów i 2066 dotychczasowych ostrzeżeń;
   7/7 celowanych mutantów zabitych, niezależny review bez ustaleń.
   Ponowny odczyt wszystkich artefaktów i hash 2039 plików `data/` zgodne.
-- Pozostaje commit/push oraz exact-SHA CI `validate` przez istniejący
-  [draft PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4),
-  a potem checkpoint statusu. Po dostarczeniu następne gotowe będzie
-  **PBI-080 / R2: powtórzone klucze YAML**; nie rozpoczęto go.
-  Kontynuacja autoryzuje jedno gotowe PBI, nie całą serię.
+- Commit PBI-079: `ce57697a3c1bc6d6daf0039e6939070f187f80cd`, remote SHA
+  zgodny. [CI 38729365201](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38729365201)
+  `completed/success` dla dokładnie tego SHA; job i wszystkie kroki przeszły.
+  [Draft PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4)
+  pozostaje draft. Bieżący checkpoint dokumentacyjny zapisuje ten wynik;
+  jego własny SHA i CI sprawdza się w Git/PR.
+- Następne gotowe: **PBI-080 / R2: powtórzone klucze YAML**; nie rozpoczęto go.
+  Zakończyć po PBI-079 i CI checkpointu. Kolejna sesja autoryzuje jedno gotowe
+  PBI, nie całą serię.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
   `build/`, `/tmp`, czatu ani pamięci konta.

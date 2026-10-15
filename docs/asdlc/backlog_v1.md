@@ -21,8 +21,8 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | Kolejność | PBI | Priorytet / ustalenie | Zakres | Poprzednik | Status |
 |---|---|---|---|---|---|
 | 0 | PBI-078 | plan | Plan, trwały raport, nowy punkt kontynuacji | — | wykonane |
-| 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | zweryfikowane — do dostarczenia |
-| 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | planowane |
+| 1 | PBI-079 | P1 / R1 | Odrzucać brakujące wejście przed zapisem eksportów | 078 | wykonane |
+| 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | planowane — gotowe |
 | 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | planowane |
 | 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | planowane |
 | 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | planowane |
@@ -62,7 +62,7 @@ Commit: `docs: plan main review remediation (PBI-078)`.
 
 ### PBI-079: Zatrzymać build przy brakującym katalogu danych
 
-Status: zweryfikowane — do dostarczenia. [Log weryfikacji](verification/PBI-079.md).
+Status: wykonane 2026-10-15. [Log weryfikacji](verification/PBI-079.md).
 
 Priorytet P1, R1. Spec: §10, §11.1–11.2, §13. Poprzednik: PBI-078.
 Dyrektywa: odróżnić brak wejścia od istniejącego, świadomie przygotowanego
@@ -90,7 +90,7 @@ pozostaje obsługiwany; brak nie może być jego automatycznym odpowiednikiem.
       istniejące importowe testy inicjalizacji działają bez ukrytego fallbacku.
 - [x] Uruchomić wskazane moduły pytest, pełną bramkę i mutacje kontroli
       istnienia/rodzaju katalogu; udokumentować kontrakt w operations/spec.
-- [ ] Dostarczyć `fix: reject missing data inputs (PBI-079)` i dowody.
+- [x] Dostarczyć `fix: reject missing data inputs (PBI-079)` i dowody.
 
 ### PBI-080: Odrzucać powtórzone klucze YAML
 
