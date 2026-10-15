@@ -25,7 +25,7 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 2 | PBI-080 | P1 / R2 | Odrzucać duplikaty kluczy YAML | 079 | wykonane |
 | 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | wykonane |
 | 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | wykonane |
-| 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | planowane — gotowe |
+| 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | zweryfikowane — do dostarczenia |
 | 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | planowane |
 | 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | planowane |
 | 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | planowane |
@@ -201,21 +201,21 @@ dla regresji kategorii, ewentualne jawnie wymienione korekty notes.
 Interfejs danych: raport wiąże decyzję z ID, GLOBALID, hashem źródła,
 wartością źródłową i uzasadnieniem; nie tworzy nowych encji ani pomiarów.
 
-- [ ] STR-0024: źródło TPN row 273/GLOBALID
+- [x] STR-0024: źródło TPN row 273/GLOBALID
       `{A5C7088E-A2FE-4898-AE2E-B0A9B420B17D}` ma `GENEZA=sztolnia`;
       korekta kategorii i audit mają ślad dowodowy i nie zmieniają ID.
-- [ ] CHZ-0011: `GENEZA=jaskinia/sztolnia` wymaga odnotowania obu znaczeń.
+- [x] CHZ-0011: `GENEZA=jaskinia/sztolnia` wymaga odnotowania obu znaczeń.
       Kategoria wynika z dowodu/decyzji, nie wyszukiwania słowa. Jeśli brak
       podstaw do zmiany, zachować kategorię z jawną nierozstrzygniętą
       pozycją w raporcie, zamiast przedstawiać ją jako poprawioną.
-- [ ] Raport ocenia 72 historyczne ostrzeżenia odległości i 11 grup
+- [x] Raport ocenia 72 historyczne ostrzeżenia odległości i 11 grup
       współdzielących współrzędne best: każde ma ID, dowód i rozstrzygnięcie
       albo konkretną brakującą informację. Ponownie policzyć aktualny zbiór.
       PL-0019 (2,49 km) i MLZ-0045 (1,90 km) mają osobne omówienie źródeł.
-- [ ] Nie przesuwać punktów, nie scalać obiektów, nie odrzucać pomiarów
+- [x] Nie przesuwać punktów, nie scalać obiektów, nie odrzucać pomiarów
       i nie podnosić statusów automatycznie. Potrzebna decyzja terenowa
       pozostaje jawną zaległością, nie blokuje udokumentowanych korekt.
-- [ ] Testy kategorii, pełna walidacja/build/odczyt kategorii w eksportach
+- [x] Testy kategorii, pełna walidacja/build/odczyt kategorii w eksportach
       oraz porównanie danych z manifestem zmian. Surowe źródła bez zmian.
 - [ ] Dostarczyć `fix: reconcile documented catalog data issues (PBI-083)`.
 

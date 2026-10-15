@@ -828,10 +828,21 @@ def _tpn_object_notes(row: dict[str, str]) -> str:
     note = "Staging proposal from TPN; requires operator review before final YAML."
     if otwor:
         note += f"\nTPN opening: {otwor}"
+    if _has_mixed_tpn_genesis(row):
+        note += (
+            f"\nTPN GENEZA: {_clean_value(row.get('GENEZA'))}"
+            "\nMixed natural cave and mine working; requires category review."
+        )
     return note
 
 
+def _has_mixed_tpn_genesis(row: dict[str, str]) -> bool:
+    return set(_normalize_name(row.get("GENEZA", "")).split()) == {"jaskinia", "sztolnia"}
+
+
 def _infer_tpn_object_category(*, row: dict[str, str], name: str) -> str:
+    if _has_mixed_tpn_genesis(row):
+        return "jaskinia_otwor"
     source_category = _normalize_name(row.get("GENEZA", ""))
     normalized_name = _normalize_name(name)
     combined = f"{source_category} {normalized_name}"

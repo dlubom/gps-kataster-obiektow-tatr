@@ -586,3 +586,47 @@ def _column_name(index: int) -> str:
         index, remainder = divmod(index - 1, 26)
         name = chr(ord("A") + remainder) + name
     return name
+
+
+@pytest.mark.parametrize(
+    ("geneza", "name", "expected"),
+    [
+        ("sztolnia", "BEZ_NAZWY_001", "sztolnia"),
+        (" Sztolnia ", "Bez nazwy", "sztolnia"),
+        ("jaskinia", "Zwykła jaskinia", "jaskinia_otwor"),
+        ("jaskinia/sztolnia", "Wojtkowa Szpara / sztolnia nr 7", "jaskinia_otwor"),
+        (" SZTOLNIA / JASKINIA ", "Sztolnia nr 7", "jaskinia_otwor"),
+        ("jaskinia / sztolnia", "Wojtkowa Szpara", "jaskinia_otwor"),
+    ],
+)
+def test_source_category_keeps_mixed_genesis_open_for_review(
+    tmp_path, make_data_dir, geneza, name, expected
+):
+    source = tmp_path / "tpn.csv"
+    _write_tpn_csv(
+        source,
+        [
+            _tpn_row(
+                nr_inwent="",
+                name=name,
+                globalid="{category}",
+                x_1992="154647,14",
+                y_1992="568139,23",
+                geneza=geneza,
+            )
+        ],
+    )
+    report = build_tpn_staging(
+        source,
+        generated_at="2026-10-15T00:00:00Z",
+        data_dir=make_data_dir(tmp_path / "data"),
+        pig_staging_path=None,
+        prefix_resolver=StubResolver(prefix="STR"),
+    )
+    obj = report.proposed_objects[0]
+    assert obj["category"] == expected
+    if "/" in geneza:
+        assert f"TPN GENEZA: {geneza.strip()}" in obj["notes"]
+        assert "requires category review" in obj["notes"]
+    assert obj["measurements"][0]["verification_status"] == "nieweryfikowany"
+    assert list((tmp_path / "data" / "objects").rglob("*.yml")) == []

@@ -75,8 +75,18 @@ Last updated: 2026-10-15
   przeszły. Draft PR #4 zachowany i opisany zgodnie z zakresem PBI-079–082.
   Ten checkpoint dokumentacyjny utrwala wynik; jego własny SHA i CI
   sprawdza się w Git/PR po pushu, bez kolejnej serii wpisów z własnym SHA.
-- Następne gotowe: **PBI-083 / R8**. Nie rozpoczęto go.
-  Zakończyć obecną sesję po pushu i CI końcowego checkpointu PBI-082.
+- **PBI-083 / R8 zweryfikowane — do dostarczenia**: skorygowano STR-0024 do `sztolnia` z dowodem
+  TPN row 273/GLOBALID. CHZ-0011 zachowuje kategorię z jawną niepewnością
+  mieszanego otworu jaskini/sztolni. [Raport decyzji](reviews/data-decisions-2026-10.md)
+  i JSON zawierają wszystkie 72 pary odległości/72 obiekty oraz 11 grup/23
+  obiekty identycznych best, źródła/hashe i brakujące dowody dla każdego.
+  [Manifest](verification/PBI-083-manifest.json) ogranicza zmiany do 2 plików,
+  kategorii STR, notes i audytu. Pomiary/best/statusy i surowe źródła zachowane.
+  Importer nie upraszcza mieszanej genezy do sztolni po nazwie; pełne GENEZA
+  i wymóg review zachowane w nowej propozycji. Bramka: 462 testy, Ruff,
+  0 błędów/2066 ostrzeżeń, odczyt 7/7, 6/6 celowanych mutantów zabitych.
+  [Log PBI-083](verification/PBI-083.md); niezależny review bez ustaleń; pozostałe push i CI końcowego SHA.
+  Zakończyć po tym PBI; PBI-084 nie rozpoczęto.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
   `build/`, `/tmp`, czatu ani pamięci konta.
@@ -86,7 +96,7 @@ Last updated: 2026-10-15
   na kopiach; R4/R8 dotyczą obecnych danych.
 - Historyczne 72 ostrzeżenia odległości (maks. 2,49 km) i 11 grup
   identycznych pozycji best są niepewnością źródeł, nie dowodem duplikatu
-  lub błędnej lokalizacji. Ich ocena należy do PBI-083.
+  lub błędnej lokalizacji. Ich ocena i brakujące dowody są zapisane w raporcie PBI-083.
 - Na nowej bazie nie ma `scripts/verify_project.py`; runbook wskazuje
   istniejące polecenia. CI działa przez draft PR. Bez merge/tag/release.
 

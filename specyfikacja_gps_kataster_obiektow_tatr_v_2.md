@@ -442,6 +442,7 @@ Plik TPN zawiera rekordy punktowe. W V1 przyjmujemy:
 | `NR_INWENT` | Numer inwentarzowy | `Jaskinia.external_refs`, `system: NR_INWENT`, `ref_type: inventory_number`. |
 | `NAZWA` | Nazwa jaskini / obiektu | `Jaskinia.name` lub `Obiekt.name_local` zależnie od przypadku. |
 | `OTWÓR` | Opis / nazwa otworu | Pomocniczo do `Obiekt.name_local` i `notes`. |
+| `GENEZA` | Charakter naturalny / górniczy | `sztolnia` uzasadnia kategorię `sztolnia`, także bez nazwy. Mieszane `jaskinia/sztolnia` zachowujemy jawnie do review. |
 | `X1992`, `Y1992` | Współrzędne PL-1992 | Importowane do `Pomiar`, po konwersji także WGS84. |
 | `Z` | Wysokość | `Pomiar.elevation_m`, z `elevation_source: source_record`. |
 | `DLUGOSC`, `GLEBOKOSC`, `DENIWELACJ` | Dane morfometryczne | W V1 raczej notatka / przyszłe pola jaskini, nie część obiektu terenowego. |
@@ -451,6 +452,13 @@ Plik TPN zawiera rekordy punktowe. W V1 przyjmujemy:
 Zasady:
 
 - TPN `GLOBALID` jest najlepszym kandydatem na zewnętrzną referencję do konkretnego `Obiektu`.
+- Mieszana geneza `jaskinia/sztolnia` (również odwrotna kolejność) nie
+  rozstrzyga kategorii terenowej. Nowa propozycja staging zachowuje
+  `jaskinia_otwor` jako kategorię roboczą, pełne `TPN GENEZA` w notes
+  i jawny wymóg review kategorii, także gdy nazwa zawiera „sztolnia”.
+  Dopasowanie pomiaru nie zmienia kategorii istniejącego obiektu.
+  Zmiana finalnej kategorii wymaga dowodu i audytu, bez zmiany ID;
+  ocena rozbieżności punktów nie oznacza ich weryfikacji terenowej.
 - Jeśli obiekt ma wcześniejszy pomiar z PIG i później zostanie dopasowany rekord TPN, pomiar TPN powinien przejąć rolę aktualnego pomiaru w trybie `best_measurement.mode: auto`, chyba że istnieje ręczne wskazanie `manual` albo późniejszy własny zweryfikowany pomiar.
 - Import TPN służy do uaktualnienia i skorygowania szkieletu utworzonego wcześniej z PIG.
 - Teksty `WER_LOK` i `UWAGI` zachowują treść źródłową; nie podnoszą statusu
