@@ -152,6 +152,14 @@ Dopuszczalne wartości:
 
 Jedna `Jaskinia` ma 1..N powiązanych `Obiektów`, jeśli znane są jej otwory. W V1 dopuszczamy utworzenie `Jaskinia` przed pełnym rozpoznaniem wszystkich otworów.
 
+Powiązanie jest symetryczne: obiekt z `cave_id` musi być wymieniony
+w `object_ids` tej jaskini; każdy wpis `object_ids` musi mieć zgodne
+`Obiekt.cave_id`. Obiekt nie może należeć do innej jaskini ani być wymieniony
+bez zgodnego `cave_id`. Błędy `OBJECT_CAVE_MEMBERSHIP_MISSING` (ścieżka
+obiektu) i `CAVE_OBJECT_MEMBERSHIP_MISMATCH` (ścieżka jaskini) wskazują ID
+obu stron i blokują review/SQLite/eksporty. Brak zadeklarowanego powiązania
+oraz pusta jaskinia pozostają legalne.
+
 ### 4.3 `Pomiar`
 
 `Pomiar` oznacza pojedynczy pomiar, import lub ustalenie lokalizacyjne dotyczące konkretnego `Obiektu`.
@@ -616,6 +624,14 @@ wszystkie finalne zapisy (`has_errors=true`, `written_paths=[]`), zachowując
 Ostrzeżenia nie blokują zapisu. Gwarancja dotyczy preflight przed zapisem;
 nie obejmuje odporności na awarię procesu ani rollbacku I/O.
 
+Akcja `{action: link_cave, object_id, cave_id}` przenosi istniejący obiekt:
+usuwa jego ID z listy starej jaskini, ustawia `cave_id` i dopisuje ID do
+nowej listy bez duplikatu. Aktualizuje audyt obiektu oraz obu jaskiń;
+zachowuje innych członków i kolejność, pomiary, best, źródła i audyt
+utworzenia. Powtórzenie do tej samej jaskini aktualizuje obiekt i tę jaskinię
+bez powielenia członkostwa. Brak celu lub błąd ostatniej decyzji blokuje
+zapis całej partii, również w dry-run. Wszystkie zmiany przechodzą preflight.
+
 ---
 
 ## 9. Historia i najlepszy aktualny stan
@@ -861,6 +877,7 @@ Walidacje typu error:
 - `best_measurement.mode = manual` ma `reason`,
 - `cave_id` wskazuje istniejącą jaskinię,
 - `Jaskinia.object_ids` wskazują istniejące obiekty,
+- `Obiekt.cave_id` i `Jaskinia.object_ids` są symetryczne (reguły §4.2),
 - relacje wskazują istniejące obiekty,
 - `Attachment.measurement_id` wskazuje pomiar tego samego obiektu,
 - lokalny `Attachment.path` istnieje,

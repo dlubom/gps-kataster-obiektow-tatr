@@ -28,7 +28,7 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | wykonane |
 | 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | wykonane |
 | 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | wykonane |
-| 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | planowane — gotowe |
+| 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | zweryfikowane — do dostarczenia |
 
 ### Wspólny kontrakt wykonania
 
@@ -274,6 +274,8 @@ istniejące publiczne API zachowują sposób raportowania błędów.
 
 ### PBI-086: Przenosić powiązanie obiektu i walidować symetrię
 
+Status: zweryfikowane — do dostarczenia. [Log PBI-086](verification/PBI-086.md).
+
 Priorytet P2, R7. Spec: §3.1–3.2, §4.1–4.2, §8.3, §11.1.
 Poprzednik: PBI-085. Dyrektywa: `link_cave` usuwa członkostwo w starej
 jaskini i dodaje je w nowej; walidator sprawdza obie strony powiązania.
@@ -285,17 +287,17 @@ Interfejs akcji pozostaje `{action: link_cave, object_id, cave_id}`.
 Zmieniają się trzy powiązane rekordy (obiekt, stara i nowa jaskinia)
 z zachowaniem istniejącego kontraktu audit; źródła i pomiary bez zmian.
 
-- [ ] Po przeniesieniu KSW-0001 z C-0002 do drugiej jaskini tylko nowa
+- [x] Po przeniesieniu KSW-0001 z C-0002 do drugiej jaskini tylko nowa
       zawiera go w `object_ids`, a `object.cave_id` wskazuje nową.
-- [ ] Walidator wykrywa brak członkostwa w wskazanej jaskini, wpis w innej
+- [x] Walidator wykrywa brak członkostwa w wskazanej jaskini, wpis w innej
       jaskini i obiekt wymieniony przez jaskinię bez zgodnego cave_id.
-- [ ] Powtórny link do tej samej jaskini nie duplikuje członkostwa;
+- [x] Powtórny link do tej samej jaskini nie duplikuje członkostwa;
       inni członkowie obu jaskiń i historia pomiarów pozostają bez zmian.
-- [ ] Brak celu i błąd ostatniej decyzji partii zachowują pliki bez zmian;
+- [x] Brak celu i błąd ostatniej decyzji partii zachowują pliki bez zmian;
       poprawny relink przechodzi preflight PBI-081 i walidację po zapisie.
-- [ ] Testy obszaru, pełna bramka, kontrola zgodności powiązań SQLite/YAML
+- [x] Testy obszaru, pełna bramka, kontrola zgodności powiązań SQLite/YAML
       i mutacje symetrii. Finalne dane katalogu bez zmian.
-- [ ] Ponowić scenariusze R1–R8 po wszystkich naprawach; w logu rozdzielić
+- [x] Ponowić scenariusze R1–R8 po wszystkich naprawach; w logu rozdzielić
       naprawione błędy od nierozstrzygniętych faktów terenowych PBI-083.
 - [ ] Dostarczyć `fix: preserve cave membership symmetry (PBI-086)`.
 

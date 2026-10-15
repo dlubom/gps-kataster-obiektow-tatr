@@ -119,8 +119,16 @@ Last updated: 2026-10-15
   przeszły. Draft PR #4 zachowany, opis obejmuje PBI-079–085. Ten
   checkpoint dokumentacyjny utrwala dostarczenie; jego własny SHA i CI
   sprawdza się po pushu z Git/PR, bez kolejnego commitu na własny SHA.
-- Następne gotowe: **PBI-086 / R7**, nie rozpoczęto. Zakończyć po pushu
-  i CI końcowego checkpointu PBI-085.
+- **PBI-086 / R7 zweryfikowane — do dostarczenia.** Link_cave przenosi
+  członkostwo i audyt starej/nowej jaskini, walidator sprawdza obie strony.
+  [Log PBI-086](verification/PBI-086.md): 781 testów, Ruff, 0 błędów/
+  2066 ostrzeżeń, readback 7/7 (w tym członkostwa SQLite/YAML), data/
+  2039/2039 bez zmian, 13/13 mutantów zabitych; niezależny review bez ustaleń.
+  Ponowiono R1–R8: błędy blokowane/relink poprawny, kontekst TPN zachowany,
+  kategorie udokumentowane. Niepewności terenowe z PBI-083 pozostają;
+  wiersz TPN 476 nadal pominięty przez brak jednoznacznego GLOBALID.
+  Pozostał commit/push i exact-SHA CI, potem checkpoint z jego CI.
+  Po PBI-086 brak kolejnej gotowej karty tej serii. Zakończyć; bez merge/tag/release.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
   `build/`, `/tmp`, czatu ani pamięci konta.

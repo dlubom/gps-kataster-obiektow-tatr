@@ -57,6 +57,146 @@ def _tree_snapshot(data_dir):
     }
 
 
+def _seed_relink_data(data_dir):
+    _seed_review_data(data_dir)
+    for object_id in ("KSW-0001", "KSW-0002"):
+        path = data_dir / f"objects/KSW/{object_id}.yml"
+        obj = _read_yaml(path)
+        obj["cave_id"] = "C-0002"
+        _write_yaml(path, obj)
+    old = _cave_data(object_ids=["KSW-0002", "KSW-0001"])
+    old["id"] = "C-0002"
+    _write_yaml(data_dir / "caves/C-0002.yaml", old)
+    other = _object_data(cave_id="C-0001")
+    other["id"] = "KSW-0003"
+    _write_yaml(data_dir / "objects/KSW/KSW-0003.yml", other)
+    _write_yaml(data_dir / "caves/C-0001.yml", _cave_data(object_ids=["KSW-0003"]))
+    assert not has_errors(validate_data_dir(data_dir))
+
+
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize("sequence", ["move", "repeat", "round-trip"])
+def test_link_cave_preserves_membership_symmetry(tmp_path, make_data_dir, write, sequence):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_relink_data(data_dir)
+    before = _tree_snapshot(data_dir)
+    targets = ["C-0001"]
+    if sequence == "repeat":
+        targets.append("C-0001")
+    elif sequence == "round-trip":
+        targets.extend(["C-0002", "C-0001"])
+    decisions = [{"action": "link_cave", "object_id": "KSW-0001", "cave_id": c} for c in targets]
+    result = apply_review_decisions(
+        {"reviewed_by": "reviewer", "reviewed_at": "2026-10-15T00:00:00Z", "decisions": decisions},
+        staging_reports=StagingReports(),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert not result.has_errors, result.issues
+    if not write:
+        assert result.written_paths == ()
+        assert _tree_snapshot(data_dir) == before
+        return
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    old_path = data_dir / "caves/C-0002.yaml"
+    new_path = data_dir / "caves/C-0001.yml"
+    assert set(result.written_paths) == {object_path, old_path, new_path}
+    assert _read_yaml(object_path)["cave_id"] == "C-0001"
+    assert _read_yaml(old_path)["object_ids"] == ["KSW-0002"]
+    assert _read_yaml(new_path)["object_ids"] == ["KSW-0003", "KSW-0001"]
+    # Every other field, including history, raw refs and creation audit, is preserved.
+    for path, field, value in (
+        (object_path, "cave_id", "C-0001"),
+        (old_path, "object_ids", ["KSW-0002"]),
+        (new_path, "object_ids", ["KSW-0003", "KSW-0001"]),
+    ):
+        expected = yaml.safe_load(before[path.relative_to(data_dir)])
+        expected.update(
+            {field: value, "updated_by": "reviewer", "updated_at": "2026-10-15T00:00:00Z"}
+        )
+        assert _read_yaml(path) == expected
+    after = _tree_snapshot(data_dir)
+    changed = {p for p in before if before[p] != after[p]}
+    assert set(after) == set(before)
+    assert changed == {p.relative_to(data_dir) for p in (object_path, old_path, new_path)}
+    assert not has_errors(validate_data_dir(data_dir))
+    # A separate retry also cannot duplicate membership or touch the old cave.
+    retry = apply_review_decisions(
+        {"decisions": decisions[:1]},
+        staging_reports=StagingReports(),
+        data_dir=data_dir,
+    )
+    assert not retry.has_errors
+    assert old_path not in retry.written_paths
+    assert old_path.read_bytes() == after[old_path.relative_to(data_dir)]
+    assert _read_yaml(new_path)["object_ids"] == ["KSW-0003", "KSW-0001"]
+
+
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize("old_cave_id", [None, "C-9998"])
+def test_link_cave_can_finalize_earlier_object_proposal(
+    tmp_path, make_data_dir, write, old_cave_id
+):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_relink_data(data_dir)
+    pig = _pig_staging()
+    pig["proposed_objects"][0].update(id="KSW-0004", cave_id=old_cave_id)
+    pig["rows"][0]["object_id"] = "KSW-0004"
+    before = _tree_snapshot(data_dir)
+    result = apply_review_decisions(
+        {
+            "decisions": [
+                {"action": "create_object", "source": "PIG", "record_number": 1},
+                {"action": "link_cave", "object_id": "KSW-0004", "cave_id": "C-0001"},
+            ]
+        },
+        staging_reports=StagingReports(pig=pig),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert not result.has_errors, result.issues
+    if write:
+        assert _read_yaml(data_dir / "objects/KSW/KSW-0004.yml")["cave_id"] == "C-0001"
+        assert _read_yaml(data_dir / "caves/C-0001.yml")["object_ids"] == ["KSW-0003", "KSW-0004"]
+        assert not has_errors(validate_data_dir(data_dir))
+    else:
+        assert result.written_paths == ()
+        assert _tree_snapshot(data_dir) == before
+
+
+@pytest.mark.parametrize("write", [False, True])
+@pytest.mark.parametrize(
+    "failure", ["missing-cave", "missing-object", "last-decision", "asymmetric-input"]
+)
+def test_link_cave_error_blocks_entire_batch(tmp_path, make_data_dir, write, failure):
+    data_dir = make_data_dir(tmp_path / "data")
+    _seed_relink_data(data_dir)
+    decisions = [{"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0001"}]
+    if failure == "missing-cave":
+        decisions[0]["cave_id"] = "C-9999"
+    elif failure == "missing-object":
+        decisions[0]["object_id"] = "KSW-9999"
+    elif failure == "last-decision":
+        decisions.append({"action": "link_cave", "object_id": "KSW-0002", "cave_id": "C-9999"})
+    else:
+        path = data_dir / "caves/C-0002.yaml"
+        cave = _read_yaml(path)
+        cave["object_ids"].remove("KSW-0001")
+        _write_yaml(path, cave)
+    before = _tree_snapshot(data_dir)
+    result = apply_review_decisions(
+        {"decisions": decisions},
+        staging_reports=StagingReports(),
+        data_dir=data_dir,
+        write=write,
+    )
+    assert result.has_errors
+    assert result.written_paths == ()
+    assert _tree_snapshot(data_dir) == before
+    if failure == "asymmetric-input":
+        assert any("OBJECT_CAVE_MEMBERSHIP_MISSING" in i.description for i in result.issues)
+
+
 @pytest.mark.parametrize("write", [False, True])
 @pytest.mark.parametrize("origin", ["existing", "proposal", "added", "earlier-proposal"])
 def test_duplicate_local_measurement_id_blocks_review_without_writes(
@@ -483,7 +623,7 @@ def test_malformed_duplicate_reference_is_validated_before_deduplication(
 def test_review_snapshot_keeps_all_paths_for_shared_cave_id(tmp_path, make_data_dir):
     data_dir = make_data_dir(tmp_path / "data")
     _seed_review_data(data_dir)
-    extra = _cave_data(object_ids=["KSW-0001"])
+    extra = _cave_data(object_ids=["KSW-0001", "KSW-0002"])
     extra["name"] = "Separate source file"
     extra_path = data_dir / "caves/C-0001.yaml"
     _write_yaml(extra_path, extra)

@@ -43,13 +43,30 @@ decisions:
 | `create_cave` | Nowa `Jaskinia` ze staging PIG/TPN. | Tworzy `data/caves/{CAVE-ID}.yml`. |
 | `create_object` | Nowy `Obiekt` ze staging PIG/TPN. | Tworzy `data/objects/{PREFIX}/{OBJECT-ID}.yml`. |
 | `add_measurement` | Nowy `Pomiar` dla istniejacego albo wczesniej utworzonego `Obiektu`. | Dopisuje pomiar i referencje TPN, a dla `best_measurement.mode: auto` przelicza wskazanie. |
-| `link_cave` | Powiazanie obiektu z jaskinia. | Ustawia `Obiekt.cave_id` i dopisuje obiekt do `Jaskinia.object_ids`. |
+| `link_cave` | Powiazanie lub przeniesienie obiektu do jaskini. | Usuwa obiekt ze starej `Jaskinia.object_ids`, ustawia `Obiekt.cave_id` i dopisuje obiekt do nowej jaskini bez duplikatu. |
 | `reject` | Rekord importu odrzucony. | Nie zapisuje finalnego YAML, ale trafia do raportu review. |
 | `unresolved` | Rekord zostaje nierozstrzygniety. | Nie zapisuje finalnego YAML, ale trafia do raportu review. |
 
 `source` jest wymagane dla akcji opartych o staging i przyjmuje `PIG` albo
 `TPN`. `record_number` wskazuje numer wiersza z raportu staging. `link_cave`
 dziala na finalnych ID i nie wymaga `source`.
+
+`link_cave` aktualizuje audyt `updated_at`/`updated_by` obiektu oraz starej
+i nowej jaskini według `reviewed_at`/`reviewed_by`. Powtórzenie do tej samej
+jaskini zachowuje pojedyncze członkostwo i aktualizuje audyt obiektu oraz
+tej jaskini; nie dotyka poprzednio opuszczonej jaskini. Zachowuje pozostałych
+członków i ich kolejność, historię pomiarów, best, referencje i audyt utworzenia.
+Brak obiektu lub docelowej jaskini blokuje całą partię, także dry-run.
+Wszystkie trzy zmienione rekordy są zapisywane dopiero po pełnym preflight.
+
+Walidator wymaga symetrii: `OBJECT_CAVE_MEMBERSHIP_MISSING` oznacza obiekt
+z `cave_id`, którego brakuje w `object_ids` tej jaskini;
+`CAVE_OBJECT_MEMBERSHIP_MISMATCH` oznacza wpis jaskini wskazujący obiekt
+z innym, pustym lub nieobecnym `cave_id`. Są to błędy ze ścieżką rekordu
+i ID obu stron; blokują review, SQLite i eksporty przed zapisem.
+Niepowiązany obiekt i jaskinia z pustą listą są legalne, jeśli żadna strona
+nie deklaruje powiązania. Istniejącego niespójnego katalogu nie naprawiamy
+niejawnie przez `link_cave`: preflight wejścia odrzuca go przed decyzjami.
 
 ## Bezpieczenstwo
 
@@ -97,7 +114,7 @@ raport review przenosi błędy preflight, a pełny wykaz ostrzeżeń jest dostę
 przez `scripts/validate.py`. Istniejące pliki `.yaml` zachowują swoje ścieżki
 przy aktualizacji. Zabezpieczenie dotyczy błędów decyzji i walidacji przed
 zapisem; nie zapewnia rollbacku po awarii procesu, dysku ani operacji I/O.
-Używa aktualnych reguł walidatora; nowe reguły R5–R7 są w PBI-084–086.
+Używa aktualnych reguł walidatora, w tym R5–R7 z PBI-084–086.
 Obraz walidacji zachowuje każdy istniejący plik, także jaskinie o wspólnym ID
 w `.yaml` i `.yml`. Nie wprowadza to nowej reguły unikalności jaskiń; zgodnie
 z dotychczasowym indeksem decyzja aktualizuje ostatnią ścieżkę w porządku

@@ -766,6 +766,12 @@ def _apply_link_cave(
 
     object_data = objects[object_id]
     cave_data = caves[cave_id]
+    old_cave_id = object_data.get("cave_id")
+    if old_cave_id in caves and old_cave_id != cave_id:
+        old_cave = caves[old_cave_id]
+        old_cave["object_ids"] = [oid for oid in old_cave["object_ids"] if oid != object_id]
+        _touch_record(old_cave, reviewed_at=reviewed_at, reviewed_by=reviewed_by)
+        dirty_caves.add(old_cave_id)
     object_data["cave_id"] = cave_id
     object_ids = cave_data.setdefault("object_ids", [])
     if object_id not in object_ids:

@@ -29,6 +29,57 @@ KSW_LAT = 49.23459299
 KSW_LON = 19.87589498
 
 
+@pytest.mark.parametrize("damage", ["missing-member", "wrong-cave", "no-cave-id", "two-caves"])
+def test_cave_membership_symmetry_is_required(tmp_path, damage):
+    data_dir = tmp_path / "data"
+    _write_object(data_dir, _valid_object())
+    assert not has_errors(validate_data_dir(data_dir))
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    cave_path = data_dir / "caves/C-0001.yml"
+    if damage == "missing-member":
+        cave = _valid_cave()
+        cave["object_ids"] = []
+        _write_yaml(cave_path, cave)
+        code, path = "OBJECT_CAVE_MEMBERSHIP_MISSING", object_path
+    elif damage == "no-cave-id":
+        obj = _valid_object()
+        obj.pop("cave_id")
+        _write_yaml(object_path, obj)
+        code, path = "CAVE_OBJECT_MEMBERSHIP_MISMATCH", cave_path
+    else:
+        cave = _valid_cave()
+        cave["id"] = "C-0002"
+        _write_yaml(data_dir / "caves/C-0002.yml", cave)
+        if damage == "wrong-cave":
+            cave["id"] = "C-0001"
+            cave["object_ids"] = []
+            _write_yaml(cave_path, cave)
+        code, path = "CAVE_OBJECT_MEMBERSHIP_MISMATCH", data_dir / "caves/C-0002.yml"
+    before = {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()}
+    issues = validate_data_dir(data_dir)
+    matches = [i for i in issues if i.code == code]
+    assert len(matches) == 1
+    assert matches[0].severity == ValidationSeverity.ERROR
+    assert matches[0].path == path
+    assert "KSW-0001" in matches[0].description
+    assert ("C-0002" if damage in {"wrong-cave", "two-caves"} else "C-0001") in matches[
+        0
+    ].description
+    if damage == "wrong-cave":
+        assert "OBJECT_CAVE_MEMBERSHIP_MISSING" in _codes(issues)
+    result = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT), "--data-dir", str(data_dir)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 1
+    assert code in result.stdout + result.stderr
+    assert str(path) in result.stdout + result.stderr
+    assert "Traceback" not in result.stdout + result.stderr
+    assert {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()} == before
+
+
 def test_unhashable_pig_reference_type_reports_schema_error(tmp_path):
     data_dir = tmp_path / "data"
     obj = _valid_object()

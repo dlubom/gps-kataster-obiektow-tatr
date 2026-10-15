@@ -260,8 +260,10 @@ def _validate_duplicate_object_ids(
 
 def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue, ...]:
     issues: list[ValidationIssue] = []
-    object_ids = set(_records_by_id(dataset.objects))
-    cave_ids = set(_records_by_id(dataset.caves))
+    objects_by_id = _records_by_id(dataset.objects)
+    caves_by_id = _records_by_id(dataset.caves)
+    object_ids = set(objects_by_id)
+    cave_ids = set(caves_by_id)
 
     for object_record in dataset.objects:
         object_id = _record_id(object_record)
@@ -275,6 +277,21 @@ def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue,
                     description=f"Object {object_id} references missing cave_id {cave_id}.",
                 )
             )
+
+        if isinstance(cave_id, str):
+            for cave_record in caves_by_id.get(cave_id, ()):
+                if object_id not in _iter_strings(cave_record.data.get("object_ids")):
+                    issues.append(
+                        ValidationIssue(
+                            code="OBJECT_CAVE_MEMBERSHIP_MISSING",
+                            severity=ValidationSeverity.ERROR,
+                            path=object_record.path,
+                            description=(
+                                f"Object {object_id} references cave {cave_id}, "
+                                "but is absent from its object_ids."
+                            ),
+                        )
+                    )
 
         identity_issues = _validate_measurement_identity(object_record)
         issues.extend(identity_issues)
@@ -334,6 +351,19 @@ def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue,
                         description=f"Cave {cave_id} references missing object_id {object_id}.",
                     )
                 )
+            for object_record in objects_by_id.get(object_id, ()):
+                if object_record.data.get("cave_id") != cave_id:
+                    issues.append(
+                        ValidationIssue(
+                            code="CAVE_OBJECT_MEMBERSHIP_MISMATCH",
+                            severity=ValidationSeverity.ERROR,
+                            path=cave_record.path,
+                            description=(
+                                f"Cave {cave_id} lists object {object_id}, but its "
+                                f"cave_id is {object_record.data.get('cave_id')!r}."
+                            ),
+                        )
+                    )
 
     for relation_record in dataset.relations:
         relation_id = _record_id(relation_record)
