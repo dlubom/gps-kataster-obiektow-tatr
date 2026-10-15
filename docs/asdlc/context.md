@@ -28,16 +28,23 @@ Last updated: 2026-10-15
   zgodny. [CI 38729365201](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38729365201)
   `completed/success` dla dokładnie tego SHA; job i wszystkie kroki przeszły.
   [Draft PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4)
-  pozostaje draft. Bieżący checkpoint dokumentacyjny zapisuje ten wynik;
-  jego własny SHA i CI sprawdza się w Git/PR.
-- **PBI-080 / R2 zweryfikowane — do dostarczenia**: wspólny bezpieczny parser odrzuca duplikaty
+  pozostaje draft. Checkpoint `54dcf0a35e0fbad9bf17ac14ef9d0973816491b1`
+  ma potwierdzone [CI 38729658923](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38729658923)
+  `completed/success` dla dokładnie tego SHA.
+- **PBI-080 / R2 wykonane**: wspólny bezpieczny parser odrzuca duplikaty
   kluczy rekordów/decyzji przed normalizacją oraz po merge; zwykłe aliasy
   i rozłączne merge zachowują wartości i kolejność. Pełna bramka:
   336 testów, Ruff, 0 błędów i 2066 ostrzeżeń; 9/9 celowanych mutantów
   zabitych, readback 7 artefaktów i hash 2039 plików `data/` zgodne;
   niezależny review bez ustaleń.
-  [Log PBI-080](verification/PBI-080.md) wskazuje pozostałe dostarczenie.
-  Zakończyć po PBI-080 i CI końcowego SHA. **PBI-081 nie rozpoczęto**.
+  Commit `5d4000075ba02e5be389562360796db7033e7144`, zgodny z origin;
+  [CI 38732298675](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38732298675)
+  `completed/success` dla dokładnie tego SHA, job i wszystkie 13 kroków
+  przeszły. [Log PBI-080](verification/PBI-080.md) zawiera pełne dowody.
+  Bieżący checkpoint dokumentacyjny utrwala ten wynik; jego własny SHA
+  oraz CI sprawdza się w Git/PR. Zakończyć po PBI-080 i CI końcowego SHA.
+- Następne gotowe: **PBI-081 / R3: walidacja całej transakcji review**.
+  Nie rozpoczęto go; kolejna sesja autoryzuje jedno gotowe PBI.
 - Osiem ustaleń main zachowano w [raporcie](reviews/main-review-2026-10-12.md)
   i przenośnym JSON; żadna instrukcja kontynuacji nie wymaga lokalnych
   `build/`, `/tmp`, czatu ani pamięci konta.
