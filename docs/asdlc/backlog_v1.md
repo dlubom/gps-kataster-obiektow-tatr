@@ -26,8 +26,8 @@ zachowanie. PBI-078 obejmował wyłącznie plan; bieżące statusy napraw są po
 | 3 | PBI-081 | P1 / R3 | Walidować cały wynik review przed zapisem | 080 | wykonane |
 | 4 | PBI-082 | dane, P2 / R4 | Zachować i uzupełnić kontekst źródłowy TPN | 081 | wykonane |
 | 5 | PBI-083 | dane, P2 / R8 | Kategorie i udokumentowana ocena rozbieżności katalogu | 082 | wykonane |
-| 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | zweryfikowane — do dostarczenia |
-| 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | planowane |
+| 6 | PBI-084 | P2 / R5 | Odrzucać liczby NaN/Infinity | 083 | wykonane |
+| 7 | PBI-085 | P2 / R6 | Wymagać unikalnych ID pomiarów w obiekcie | 084 | planowane — gotowe |
 | 8 | PBI-086 | P2 / R7 | Zachować symetrię powiązań przy link_cave | 085 | planowane |
 
 ### Wspólny kontrakt wykonania
@@ -225,7 +225,7 @@ Dowody i dostarczenie: [log PBI-083](verification/PBI-083.md),
 
 ### PBI-084: Odrzucać NaN i Infinity przed użyciem liczb
 
-Status: zweryfikowane — do dostarczenia. [Log PBI-084](verification/PBI-084.md).
+Status: wykonane 2026-10-15. [Log PBI-084](verification/PBI-084.md).
 
 Priorytet P2, R5. Spec: §4.3, §6, §11–13. Poprzednik: PBI-083.
 Dyrektywa: wymagać skończonych wartości we wszystkich polach liczbowych
@@ -246,7 +246,7 @@ legalny. Nie zmieniać semantyki dokładności ani jednostek.
       danych daje się odczytać parserem odrzucającym NaN/Infinity.
 - [x] Testy obszaru, pełna bramka i mutacje kontroli skończoności;
       wszystkie finalne YAML bez zmian.
-- [ ] Dostarczyć `fix: reject non-finite measurement values (PBI-084)`.
+- [x] Dostarczyć `fix: reject non-finite measurement values (PBI-084)`.
 
 ### PBI-085: Wymagać unikalnych ID pomiarów w obiekcie
 
