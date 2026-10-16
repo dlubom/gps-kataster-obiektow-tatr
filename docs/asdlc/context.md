@@ -1,8 +1,20 @@
 # AS-DLC project context
 
-Last updated: 2026-10-15
+Last updated: 2026-10-16
 
-## Current handoff — po wydaniu v1.0.3
+## Bieżąca praca — poprawki lokalizacji
+
+Gałąź `codex/data-location-corrections` od aktualnego `main`
+`d7f0ea6895795e66e3651e50da158342a056b95c`; użytkownik zlecił wspólny
+draft PR do kolejnych indywidualnie uzgadnianych poprawek danych.
+[PBI-087](verification/PBI-087.md) zapisuje decyzję dla PL-0019:
+błędny punkt PIG `m-001` odrzucony po porównaniu z położeniem Skały
+Kmietowicza i opisem PIG; TPN `m-002` pozostaje best i `nieweryfikowany`.
+Kontrola mapowa nie określa dokładności ani dokładnego miejsca otworu.
+Kontynuuj tę gałąź/PR przy kolejnej zleconej poprawce; brak automatycznej
+zgody na kolejne obiekty, merge lub release. Odbiór i dostarczenie w logu PBI.
+
+## Zakończona seria — po wydaniu v1.0.3
 
 **PBI-078–086 wykonane; seria zakończona w zaplanowanym zakresie.**
 [PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4) zmergowany
@@ -42,6 +54,9 @@ i [manifest PBI-083](verification/PBI-083-manifest.json); źródła pozostały n
   o identycznych best nie rozstrzygają lokalizacji ani duplikatów.
   [Oceny i brakujące dowody](reviews/data-decisions-2026-10.md) obejmują
   również mieszaną genezę CHZ-0011. Nie zmieniono punktów, best ani statusów.
+  To stan zakończonej serii: późniejszą decyzję o odrzuceniu PIG dla PL-0019
+  opisuje [PBI-087](verification/PBI-087.md). Historyczne ostrzeżenie odległości
+  pozostaje, ponieważ walidator porównuje także odrzucone pomiary.
 - TPN row 476 (Smocza Jama) pozostaje pominięty przy uzupełnianiu notes:
   brak jednoznacznej referencji GLOBALID; szczegóły w logu PBI-082.
 - Preflight nie zapewnia rollbacku po awarii I/O ani ochrony przed
