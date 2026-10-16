@@ -1,8 +1,14 @@
 # AS-DLC project context
 
-Last updated: 2026-10-15
+Last updated: 2026-10-16
 
-## Current handoff — po wydaniu v1.0.3
+## v1.0.4 — poprawki danych
+
+[PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6): PL-0019, MLZ-0045, CHZ-0011 i BYZ-0020; decyzje, źródła i niepewności są w YAML.
+[PBI-087](verification/PBI-087.md) wykonane. Publikacja przez tag `v1.0.4` po CI zmergowanego `main`; paczka i workflow na [stronie wydania](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/tag/v1.0.4).
+Nowa praca zaczyna się od aktualnego `main` i wymaga osobnego polecenia.
+
+## Zakończona seria — po wydaniu v1.0.3
 
 **PBI-078–086 wykonane; seria zakończona w zaplanowanym zakresie.**
 [PR #4](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/4) zmergowany
@@ -42,6 +48,7 @@ i [manifest PBI-083](verification/PBI-083-manifest.json); źródła pozostały n
   o identycznych best nie rozstrzygają lokalizacji ani duplikatów.
   [Oceny i brakujące dowody](reviews/data-decisions-2026-10.md) obejmują
   również mieszaną genezę CHZ-0011. Nie zmieniono punktów, best ani statusów.
+  Późniejsze decyzje zawierają YAML zmienione w [PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6).
 - TPN row 476 (Smocza Jama) pozostaje pominięty przy uzupełnianiu notes:
   brak jednoznacznej referencji GLOBALID; szczegóły w logu PBI-082.
 - Preflight nie zapewnia rollbacku po awarii I/O ani ochrony przed
