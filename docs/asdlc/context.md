@@ -4,19 +4,9 @@ Last updated: 2026-10-16
 
 ## Bieżąca praca — poprawki lokalizacji
 
-Gałąź `codex/data-location-corrections` od aktualnego `main`
-`d7f0ea6895795e66e3651e50da158342a056b95c`;
-[draft PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6)
-służy do kolejnych indywidualnie uzgadnianych poprawek danych.
-[PBI-087](verification/PBI-087.md) zapisuje decyzję dla PL-0019:
-błędny punkt PIG `m-001` odrzucony po porównaniu z położeniem Skały
-Kmietowicza i opisem PIG; TPN `m-002` pozostaje best i `nieweryfikowany`.
-Kontrola mapowa nie określa dokładności ani dokładnego miejsca otworu.
-PBI-087 dostarczone: commit `1bd8bbc74f02e34713f0d2ac2d5f1583efe77c01`,
-[CI](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38881160023)
-`completed/success`. Stan lokalny i wszystkie formaty sprawdzone w logu PBI.
-Kontynuuj tę gałąź/PR przy kolejnej zleconej poprawce; brak automatycznej
-zgody na kolejne obiekty, merge lub release. Odbiór i dostarczenie w logu PBI.
+[Draft PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6), gałąź `codex/data-location-corrections`: poprawki PL-0019, MLZ-0045, CHZ-0011 i BYZ-0020.
+Decyzje, źródła i niepewności zapisano w YAML; [PBI-087](verification/PBI-087.md) jest wykonane.
+Dalsze poprawki, merge i release wymagają osobnego polecenia.
 
 ## Zakończona seria — po wydaniu v1.0.3
 
@@ -58,9 +48,7 @@ i [manifest PBI-083](verification/PBI-083-manifest.json); źródła pozostały n
   o identycznych best nie rozstrzygają lokalizacji ani duplikatów.
   [Oceny i brakujące dowody](reviews/data-decisions-2026-10.md) obejmują
   również mieszaną genezę CHZ-0011. Nie zmieniono punktów, best ani statusów.
-  To stan zakończonej serii: późniejszą decyzję o odrzuceniu PIG dla PL-0019
-  opisuje [PBI-087](verification/PBI-087.md). Historyczne ostrzeżenie odległości
-  pozostaje, ponieważ walidator porównuje także odrzucone pomiary.
+  Późniejsze decyzje zawierają YAML zmienione w [PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6).
 - TPN row 476 (Smocza Jama) pozostaje pominięty przy uzupełnianiu notes:
   brak jednoznacznej referencji GLOBALID; szczegóły w logu PBI-082.
 - Preflight nie zapewnia rollbacku po awarii I/O ani ochrony przed

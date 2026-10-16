@@ -4,24 +4,7 @@ Stan na: 2026-10-16
 
 ## Przegląd lokalizacji — poprawki danych
 
-Zmiany zatwierdzane pojedynczo przez użytkownika, na gałęzi
-`codex/data-location-corrections`, we wspólnym draft PR do `main`.
-Nie obejmuje to zbiorczego zatwierdzania punktów ani wydania.
-
-### PBI-087: Odrzucić błędną lokalizację PIG Schronu w Skale Kmietowicza II
-
-Status: wykonane 2026-10-16; dostarczone w [draft PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6).
-[Dowody i odbiór](verification/PBI-087.md).
-
-Spec: §4.3–4.4, §5.4, §9. Polecenie użytkownika: zapisać uzgodnioną
-decyzję mapową w YAML, commit i draft PR do kolejnych poprawek.
-
-- Oznaczyć `PL-0019/m-001` jako `odrzucony`, z autorem, datą i uzasadnieniem.
-- Zachować surowe źródła, oba pomiary, ID i współrzędne; `m-002` pozostaje
-  best w trybie auto, ze statusem `nieweryfikowany` i nieznaną dokładnością.
-- Zapisać źródła mapowe, granice ustalenia oraz trwały punkt kontynuacji.
-- Sprawdzić walidację, testy, eksporty i zakres zmiany; commit/push,
-  draft PR i CI dla dostarczonego SHA. Kolejne obiekty po osobnej decyzji.
+- [PBI-087](verification/PBI-087.md): PL-0019, odrzucenie błędnego punktu PIG — wykonane 2026-10-16 w [draft PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6); uzasadnienie w YAML.
 
 ## Naprawy main po przegladzie 2026-10-12
 
