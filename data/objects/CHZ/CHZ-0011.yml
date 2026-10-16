@@ -1,6 +1,6 @@
 schema_version: 1
 id: CHZ-0011
-category: jaskinia_otwor
+category: sztolnia
 name_local: Wojtkowa Szpara
 cave_id: C-0361
 id_assignment:
@@ -33,11 +33,14 @@ measurements:
   device: null
   tags:
   - pig
-  verification_status: nieweryfikowany
-  verified_by: null
-  verified_at: null
+  verification_status: odrzucony
+  verified_by: dl
+  verified_at: '2026-10-16T10:04:18Z'
   notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1042'
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1042
+
+    Przegląd mapowy 2026-10-16: punkt odrzucony; leży przy dnie doliny w rejonie
+    Skały Kmietowicza, około 735 m od TPN, sprzecznie z opisem sztolni na Huciańskim Klinie.'
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
@@ -71,17 +74,19 @@ measurements:
 best_measurement:
   mode: auto
   measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T14:00:00Z'
+  reason: 'TPN odpowiada położeniu sztolni na Huciańskim Klinie, około 23 m od
+    oznaczenia Wojtkowej Szpary w OSM (https://www.openstreetmap.org/node/8809914844).
+    Źródło TPN określa lokalizację jako przybliżoną; dokładność pozostaje nieznana.'
+  updated_at: '2026-10-16T10:04:18Z'
   updated_by: dl
 attachments: []
 notes: 'Imported from PIG source record after operator review.
 
-  PBI-083: TPN GENEZA=jaskinia/sztolnia, row 530, GLOBALID {24948383-1D8D-4677-B260-CF6AB8FB68FA}.
-  PIG:1042 describes a natural cave beginning 6-8 m inside mine working no. 7. Category
-  jaskinia_otwor retained pending identification of the mapped entrance; mixed genesis
-  unresolved. See docs/asdlc/reviews/data-decisions-2026-10.md.'
+  Przegląd 2026-10-16: obiekt terenowy opisuje wylot sztolni nr 7 prowadzącej
+  do naturalnej jaskini Wojtkowa Szpara (C-0361). Według PIG:1042 i Jach (2002)
+  wejścia do naturalnej próżni znajdują się 6-8 m wewnątrz sztolni. Kategoria
+  sztolnia dotyczy wylotu na powierzchni; TPN zachowuje GENEZA=jaskinia/sztolnia.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-15T13:40:44Z'
-updated_by: maintenance:PBI-083
+updated_at: '2026-10-16T10:04:18Z'
+updated_by: dl
