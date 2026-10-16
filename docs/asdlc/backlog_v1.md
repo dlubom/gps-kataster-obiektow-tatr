@@ -2,6 +2,35 @@
 
 Stan na: 2026-10-16
 
+## README i statystyki wydań
+
+- [PBI-093](verification/PBI-093.md): PR #7 w jednym commicie i przygotowanie
+  v1.1.0 — wykonane 2026-10-16 na polecenie użytkownika. Wersje i changelog,
+  pełna bramka, odczyt paczki i review; końcowy SHA/CI w opisie PR.
+  Merge, tag i publikację użytkownik zatwierdził 2026-10-16; końcowy stan
+  i potwierdzenia odbioru są w opisie PR #7 oraz na stronie wydania v1.1.0.
+- [PBI-092](verification/PBI-092.md): historyczne daty w Excelu — wykonane 2026-10-16.
+  Poprawka review PR #7: daty sprzed 1900 jako tekst ISO, od 1900-01-01 jako daty.
+  Regresja Best/Full, 800 testów, walidacja, odczyt artefaktów i CI przeszły.
+- [PBI-091](verification/PBI-091.md): nazwy obiektów w etykietach GPX — wykonane 2026-10-16.
+  Kontynuacja PR #7. `name` używa
+  `name_local`, przy braku nazwy ID; opis zachowuje ID obiektu.
+  Odbiór: regresja, znaki PL/XML, brak nazwy, pełny eksport i odczyt,
+  niezmienność danych oraz CI dokładnego SHA: potwierdzone, 791 testów.
+  Bez merge/release.
+- [PBI-090](verification/PBI-090.md): krótszy opis GPX i formatowany Excel Best/Full — wykonane 2026-10-16.
+  Polecenie użytkownika 2026-10-16, kontynuacja PR #7. Po doprecyzowaniu Full
+  obejmuje historię pomiarów; Best zawiera wybrane punkty. Potwierdzono zgodność
+  z paczką, typy i brak utraty tekstów, filtry/wygląd, 786 testów i CI. Bez merge/release.
+- [PBI-089](verification/PBI-089.md): README dla grotołazów PL/EN/SK i statystyki nowych wydań — wykonane 2026-10-16,
+  kontynuacja PR #7 na polecenie użytkownika 2026-10-16. Zakres: bezpośredni GPX,
+  instrukcja telefonu, jakość danych, kontakt i raport z paczki wydania.
+  Odbiór: spójność trzech języków, działające linki, testy liczników i CLI,
+  pełna bramka, odczyt wygenerowanej paczki i CI dokładnego SHA. Bez merge/release.
+- [PBI-088](verification/PBI-088.md): mapa OSM całego zbioru z kolorami
+  18 regionów oraz zbliżenie Kościeliskiej w README PL/EN/SK —
+  wykonane 2026-10-16 w [draft PR #7](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/7).
+
 ## Przegląd lokalizacji — poprawki danych
 
 - [PBI-087](verification/PBI-087.md): PL-0019, odrzucenie błędnego punktu PIG — wykonane 2026-10-16 w [PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6); uzasadnienie w YAML.

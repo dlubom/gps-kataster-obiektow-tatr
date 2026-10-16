@@ -6,6 +6,31 @@ udokumentowane w tym pliku.
 Format jest oparty o [Keep a Changelog](https://keepachangelog.com/), a
 wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+## [v1.1.0] - 2026-10-16
+
+### Dodano
+
+- README PL/EN/SK: pobieranie GPX i Excela,
+  objaśnienia jakości danych, mapy oraz kontakt e-mail i zgłoszenia z podpowiedziami.
+- Automatyczne statystyki PL/EN/SK w opisie każdego nowego wydania oraz
+  `statistics.md` i `statistics.json` w paczce, z wersją i commitem danych.
+- Formatowany Excel `katalog.xlsx`: wybrane punkty w arkuszu Best oraz
+  pełne dane z historią pomiarów w Full, filtry i zamrożone nagłówki.
+
+### Zmieniono
+
+- Etykiety GPX pokazują nazwy konkretnych otworów i innych obiektów;
+  przy braku nazwy używają ID. Opis punktu zachowuje trwałe ID obiektu.
+
+### Naprawiono
+
+- Eksport Excel zachowuje daty sprzed 1900 jako tekst ISO, a daty od
+  1900-01-01 jako daty, bez przesunięcia dnia.
+
+Dane źródłowe, współrzędne i wybór najlepszych pomiarów pozostają bez zmian.
+
 ## [v1.0.4] - 2026-10-16
 
 ### Naprawiono

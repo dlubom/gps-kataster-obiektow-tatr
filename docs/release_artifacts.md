@@ -26,6 +26,51 @@ sekcji `CHANGELOG.md` o tym samym numerze wersji.
 | `build/exports/best-measurements.shp.zip` | Warstwa punktowa do QGIS/desktop GIS. | ZIP Shapefile, geometria EPSG:2180. |
 | `build/exports/best-measurements.gpx` | Lekki eksport terenowy/nawigacyjny. | GPX waypointy WGS84. |
 | `build/exports/metadata.json` | Metadane paczki i liczniki walidacji. | JSON bez geometrii. |
+| `build/exports/statistics.md` | Tabele PL/EN/SK dodawane do opisu wydania. | Markdown, rozwijane sekcje językowe. |
+| `build/exports/statistics.json` | Te same statystyki do dalszego przetwarzania. | JSON, `statistics_schema_version: 1`. |
+| `build/exports/katalog.xlsx` | Czytelny Excel: wybrane punkty oraz pełne dane z historią. | XLSX, arkusze Best i Full. |
+
+## `katalog.xlsx`
+
+Generowany przy każdym buildzie wydania, bez osobnego ręcznego kroku.
+**Best** ma jeden wiersz na obiekt: podstawowe pola wybranego punktu z CSV,
+w tym współrzędne WGS84, wysokość, źródło, weryfikację i dokładność.
+**Full** ma jeden wiersz na zachowany pomiar z SQLite, także starszy lub
+odrzucony, z pełnymi danymi pomiaru i towarzyszącymi danymi obiektu.
+Kolumna „Wybrany do eksportu” porównuje ID pomiaru w obrębie tego samego
+obiektu. Powtarzające się ID obiektu w Full są historią, nie duplikatami.
+
+Full zachowuje uwagi, dane wyboru, nadania ID i autorstwa; listy referencji,
+załączników i relacji są tekstem JSON w osobnych kolumnach. Metadane jaskini
+obejmują ID, nazwę, system, uwagi i referencje. SQLite pozostaje pełnym
+relacyjnym snapshotem. Załączniki są opisane, nie osadzone w Excelu.
+
+Oba arkusze mają polskie nagłówki, filtry, pasy wierszy i zamrożone pierwsze
+dwie kolumny oraz nagłówki. Liczby i daty dzienne od 1900-01-01 są typowane;
+wcześniejsze daty są tekstem ISO `YYYY-MM-DD`, aby zachować je bez zmian.
+Znaczniki czasu zachowują oryginalny tekst ISO 8601. Puste komórki nie są zerami.
+Nazwy i uwagi są tekstem, nigdy formułami. Długie uwagi/listy można odczytać w pasku formuły
+lub po poszerzeniu kolumny. Przekroczenie limitu tekstu komórki Excel powoduje
+błąd zamiast cichego obcięcia; zapis XLSX jest atomowy. Właściwości pliku
+zawierają wersję wydania, commit i czas generowania. XLSX pojawi się w wydaniach
+po v1.0.4, nie zmienia starszych paczek.
+
+## Statystyki wydania
+
+Powstają przy każdym `build_release_artifacts.py`, z wygenerowanego CSV
+(wybrane punkty) oraz SQLite (pozycje katalogowe i cała historia).
+Oddzielają obiekty od jaskiń i pomiarów; zawierają rodzaje obiektów, źródła,
+statusy weryfikacji i liczbę punktów ze znaną/nieznaną dokładnością poziomą.
+Historia obejmuje również odrzucone pomiary. Brak dokładności nie jest zerem;
+status weryfikacji nie oznacza zawsze sprawdzenia w terenie.
+
+Workflow wydania przekazuje `--release-version "$GITHUB_REF_NAME"`
+i `--source-commit "$GITHUB_SHA"`; raport zachowuje też `generated_at`
+eksportu. Lokalnie pominięte wartości są `null`, a raport ma oznaczenie
+podglądu lokalnego. W JSON: `counts`, `selected_points`, `measurement_history`;
+liczniki źródeł/kategorii/statusów zawierają tylko występujące wartości.
+Tabele Markdown pokazują także zera. Nie ma ręcznych liczników w README.
+Statystyki są dodatkiem dla wydań po v1.0.4; nie aktualizują starszych wydań.
 
 ## `best-measurements.csv`
 
@@ -69,10 +114,14 @@ GPX nie ma kolumn. Kazdy waypoint zawiera:
 
 - atrybuty `lat` i `lon` w WGS84,
 - opcjonalne `ele` oraz `time`,
-- `name` ustawione na `object_id`,
+- `name` ustawione na `name_local` obiektu (nazwę konkretnego otworu);
+  przy braku, `null`, pustej nazwie lub samych białych znakach używane jest `object_id`,
 - `type` ustawione na `category`,
-- `desc` z nazwa/ID, `measurement_id`, zrodlem, data obserwacji oraz notatkami
-  obiektu, jaskini i pomiaru, jesli istnieja.
+- `desc` z nazwą, jawnym `object <object_id>`, `measurement_id`, źródłem,
+  datą obserwacji oraz notatkami obiektu, jaskini i pomiaru, jeśli istnieją.
+
+Nazwy w etykietach GPX pojawią się w wydaniach po v1.0.4. Powtarzające się
+nazwy są dozwolone; trwałe ID w opisie pozwala wskazać konkretny punkt w CSV/Excelu.
 
 ## `metadata.json`
 

@@ -90,7 +90,7 @@ def test_invalid_input_preserves_outputs(
         assert release.export_result.feature_count == 1
         assert release.export_result.metadata["counts"]["measurements"] == 2
     before = _snapshot(output_root)
-    assert len(before) == (7 if existing else 0)
+    assert len(before) == (10 if existing else 0)
     if interface == "api":
         if operation == "validate":
             assert any(issue.severity == "error" for issue in validate_data_dir(data_dir))
@@ -176,7 +176,7 @@ def test_explicit_empty_dataset_is_valid(tmp_path, make_data_dir, interface):
             data_dir=data_dir, sqlite_path=sqlite_path, output_dir=output_dir
         )
         assert result.export_result.feature_count == 0
-        assert len(result.artifact_paths) == 7
+        assert len(result.artifact_paths) == 10
     else:
         for operation in ("validate", "sqlite", "export", "release"):
             result = subprocess.run(
@@ -187,7 +187,7 @@ def test_explicit_empty_dataset_is_valid(tmp_path, make_data_dir, interface):
             )
             assert result.returncode == 0, result.stdout + result.stderr
     assert sqlite_path.is_file()
-    assert len(tuple(output_dir.iterdir())) == 6
+    assert len(tuple(output_dir.iterdir())) == 9
 
 
 def _snapshot(root):

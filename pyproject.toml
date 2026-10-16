@@ -1,18 +1,20 @@
 [project]
 name = "gps-kataster-obiektow-tatr"
-version = "1.0.4"
+version = "1.1.0"
 description = "Git-native catalog of GPS/GNSS measurements for Tatra karst and cave objects."
 requires-python = ">=3.12"
 dependencies = [
     "pyproj>=3.7.0",
     "pyshp>=2.3.1",
     "pyyaml>=6.0.2",
+    "xlsxwriter>=3.2,<4",
 ]
 
 [dependency-groups]
 dev = [
     "jsonschema>=4.23.0",
     "mutmut>=3.5,<4",
+    "openpyxl>=3.1,<4",
     "pytest>=8.3.0",
     "ruff>=0.8.0",
 ]

@@ -2,6 +2,84 @@
 
 Last updated: 2026-10-16
 
+## v1.1.0 — PR #7
+
+[PBI-093](verification/PBI-093.md): na polecenie użytkownika historia
+PR #7 została scalona do jednego commitu na aktualnym `main`
+(`14dc536999ade7aee3e41407d7125e2fafc92a0e`), z zachowaniem jego instrukcji.
+Wersja pakietu/lock/testu i changelog są przygotowane na `v1.1.0`.
+800 testów, Ruff, walidacja (0 błędów / 2066 znanych ostrzeżeń),
+odczyt 10 artefaktów i niezależny review bez P1/P2; dane bez zmian.
+Końcowy SHA i CI są w [opisie PR #7](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/7).
+Historyczne SHA i status draft w zapisach PBI-088–092 opisują wcześniejsze dostawy.
+Użytkownik 2026-10-16 zatwierdził merge i wydanie oraz chwilowy wyjątek
+od wymagania review. Wyjątek dotyczy wyłącznie jego konta i operacji przez PR;
+po merge trzeba natychmiast przywrócić regułę i potwierdzić jej konfigurację.
+Końcowy stan merge/CI i przywrócenia ochrony jest w opisie PR, a publikacji
+oraz plików na [stronie v1.1.0](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/tag/v1.1.0).
+Kolejna praca zaczyna się od aktualnego main po fetch/pull; brak gotowego PBI.
+
+## Historyczne daty w Excelu — PBI-092
+
+Poprawka review PR #7 zachowuje daty sprzed 1900 jako tekst ISO, a od
+1900-01-01 jako daty. Lokalnie: 800 testów, walidacja i odczyt 10 artefaktów
+przeszły; bieżące dane i zawartość eksportów pozostały identyczne.
+Commit `d366d114d79b6e7ce883ead8b1f4483b80031ceb` wypchnięty; CI tego SHA przeszło.
+[Dowody](verification/PBI-092.md). PR pozostaje draftem; bez merge/release.
+Brak kolejnego gotowego PBI.
+
+## Nazwy w etykietach GPX — PBI-091
+
+Kontynuacja PR #7:
+`wpt/name` pokazuje `name_local` konkretnego otworu/obiektu, przy braku nazwy ID.
+Opis zawsze zawiera `object <ID>` do odszukania punktu w CSV/Excelu.
+Lokalnie: 791 testów, Ruff, walidacja bez błędów (2066 znanych ostrzeżeń),
+odczyt wszystkich 10 artefaktów i 4/4 celowane mutacje przeszły.
+Wszystkie 1009 punktów mają nazwy; pozostałe artefakty i 2040 plików wejściowych
+zachowały zawartość. [Log](verification/PBI-091.md).
+Wykonane: commit `e8439fc95334ad5aac1fd5ede4f340b60fad5de6`, push i
+[CI validate](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/38912860553)
+tego SHA: sukces, jedyny job i wszystkie 13 kroków. PR nadal draft do review;
+brak kolejnego gotowego PBI.
+Zmiana etykiet trafi do wydań po v1.0.4. Bez merge, tagu i release.
+
+## Excel Best/Full i krótsze README — PBI-090
+
+Na polecenie użytkownika w PR #7 usunięto instrukcję telefonu
+z README PL/EN/SK, pozostawiając krótką informację o GPX do GPS.
+Nowy `katalog.xlsx` powstaje w buildzie wydania: Best to wybrane punkty,
+Full to pełne dane z historią pomiarów (ostateczne doprecyzowanie użytkownika).
+Bez zmian danych, merge, tagu lub release. Potwierdzono 786 testów, odczyt
+10 artefaktów i wygląd XLSX; Best 1009, Full 1875 wierszy. Implementacja
+`2e5242815edaa2f1d8262aefefb5ce476b1f7c6d` wypchnięta, CI validate zakończone
+sukcesem; [log PBI-090](verification/PBI-090.md) zawiera dowody i ograniczenia.
+PR pozostaje draftem do review. Brak kolejnego gotowego PBI.
+
+## README i statystyki wydań — PBI-089
+
+Na polecenie użytkownika przygotowano w PR #7 README PL/EN/SK dla odbiorcy
+nietechnicznego oraz statystyki wyliczane z gotowego CSV i pakowanej SQLite.
+Kontakt: preferowany e-mail zapisany słownie (ogranicza tylko proste crawlery),
+alternatywnie publiczne zgłoszenie GitHub z podpowiedziami. Statystyki w trzech
+językach trafią do opisu przyszłego wydania oraz plików MD/JSON; v1.0.4 ich nie ma.
+Zakres nie zmienia danych ani wyboru pomiarów. Dostarczono do istniejącego
+PR commit `dd64f1b111014a6b90e9f5368d9b96991c0feb2b`; CI tego SHA przeszło.
+Bez merge, tagu i publikacji wydania. PR pozostaje draftem do review.
+Lokalnie: 783 testy, Ruff, walidacja (0 błędów / 2066 znanych ostrzeżeń),
+odczyt 9 artefaktów, 4 celowane mutacje i podgląd trzech języków przeszły.
+[Dowody i CI](verification/PBI-089.md). PBI-089 wykonane;
+brak kolejnej gotowej karty, dalsza praca wymaga polecenia.
+
+## Mapy w README
+
+[PBI-088](verification/PBI-088.md): statyczna mapa całego zbioru według
+18 regionów dolin oraz zbliżenie Kościeliskiej, README PL/EN/SK.
+Wykonane w [draft PR #7](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/7);
+781 testów lokalnie i CI commitu map przeszły. PR pozostaje do review/merge.
+Kolory wynikają z położenia best w polygonach, niezależnie od trwałego ID.
+Ilustracje są datowanym podglądem; szczegóły w [opisie źródeł](../images/README.md).
+Brak kolejnej gotowej karty; dalsze zmiany wymagają osobnego polecenia.
+
 ## v1.0.4 — poprawki danych
 
 [PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6): PL-0019, MLZ-0045, CHZ-0011 i BYZ-0020; decyzje, źródła i niepewności są w YAML.

@@ -17,6 +17,8 @@ from gps_kataster_obiektow_tatr.build_db import (
     build_sqlite_database,
 )
 from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR
+from gps_kataster_obiektow_tatr.excel_export import write_excel_export
+from gps_kataster_obiektow_tatr.release_statistics import write_release_statistics
 from gps_kataster_obiektow_tatr.validator import ValidationIssue
 
 SQLITE_ZIP_FILENAME = "katalog.sqlite.zip"
@@ -29,6 +31,8 @@ class ReleaseArtifactsResult:
     sqlite_result: BuildDatabaseResult
     export_result: BestMeasurementsExportResult
     sqlite_zip_path: Path
+    statistics_paths: tuple[Path, Path]
+    excel_path: Path
 
     @property
     def artifact_paths(self) -> tuple[Path, ...]:
@@ -42,6 +46,8 @@ class ReleaseArtifactsResult:
             self.export_result.shapefile_zip_path,
             self.sqlite_zip_path,
             self.export_result.metadata_path,
+            *self.statistics_paths,
+            self.excel_path,
         )
 
     @property
@@ -57,6 +63,8 @@ def build_release_artifacts(
     sqlite_path: Path = DEFAULT_SQLITE_PATH,
     output_dir: Path = DEFAULT_EXPORT_DIR,
     generated_at: str | None = None,
+    release_version: str | None = None,
+    source_commit: str | None = None,
 ) -> ReleaseArtifactsResult:
     """Build SQLite, export best measurements and zip the SQLite snapshot."""
 
@@ -72,11 +80,29 @@ def build_release_artifacts(
     )
     sqlite_zip_path = output_dir / SQLITE_ZIP_FILENAME
     _write_sqlite_zip(sqlite_result.sqlite_path, sqlite_zip_path)
+    statistics_paths = write_release_statistics(
+        csv_path=export_result.csv_path,
+        sqlite_path=sqlite_result.sqlite_path,
+        output_dir=output_dir,
+        generated_at=export_result.metadata["generated_at"],
+        release_version=release_version,
+        source_commit=source_commit,
+    )
+    excel_path = write_excel_export(
+        csv_path=export_result.csv_path,
+        sqlite_path=sqlite_result.sqlite_path,
+        output_path=output_dir / "katalog.xlsx",
+        generated_at=export_result.metadata["generated_at"],
+        release_version=release_version,
+        source_commit=source_commit,
+    )
 
     return ReleaseArtifactsResult(
         sqlite_result=sqlite_result,
         export_result=export_result,
         sqlite_zip_path=sqlite_zip_path,
+        statistics_paths=statistics_paths,
+        excel_path=excel_path,
     )
 
 

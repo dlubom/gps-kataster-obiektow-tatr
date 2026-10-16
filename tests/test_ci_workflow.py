@@ -62,7 +62,10 @@ def test_release_workflow_publishes_expected_files_from_changelog() -> None:
     run_commands = [step["run"].strip() for step in steps if "run" in step]
     assert "uv sync" in run_commands
     assert "uv run python scripts/validate.py" in run_commands
-    assert "uv run python scripts/build_release_artifacts.py" in run_commands
+    assert (
+        "uv run python scripts/build_release_artifacts.py "
+        '--release-version "$GITHUB_REF_NAME" --source-commit "$GITHUB_SHA"'
+    ) in run_commands
 
     notes_step = next(
         step for step in steps if step["name"] == "Extract release notes from CHANGELOG.md"
@@ -79,3 +82,4 @@ def test_release_workflow_publishes_expected_files_from_changelog() -> None:
     assert "build/exports/best-measurements.geojson" in release_step["run"]
     assert "build/exports/katalog.sqlite.zip" in release_step["run"]
     assert "build/exports/metadata.json" in release_step["run"]
+    assert "build/exports/katalog.xlsx" in release_step["run"]
