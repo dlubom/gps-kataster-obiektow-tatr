@@ -29,8 +29,10 @@ Read these files before making changes:
   New changes go on a branch from main and through PR; main requires review.
 - No ready PBI remains in this series. New work requires a user instruction;
   implement exactly one ready PBI per session unless explicitly asked for more.
-- Keep evidence in `docs/asdlc/verification/PBI-NNN.md`; a clean checkout
-  must be sufficient to continue without chat history or `build/`.
+- For simple data corrections (no code/schema changes), explanations in YAML,
+  the PR description and CI suffice; no separate or expanded Markdown report is required.
+  Otherwise, keep evidence in `docs/asdlc/verification/PBI-NNN.md` so a clean
+  checkout is sufficient to continue without chat history or `build/`.
 - Commit and push verified steps; confirm remote SHA and CI for that SHA
   as described in the runbook. Do not merge, tag or publish a release
   without a separate user instruction.

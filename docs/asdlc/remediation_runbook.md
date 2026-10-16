@@ -18,6 +18,11 @@ Ten protokół zastępuje procedurę porzuconej serii z 2026-09-05.
 4. Brak kolejnego gotowego PBI tej serii; nowa praca wymaga polecenia.
    Nowe zmiany prowadź na gałęzi od aktualnego main i przez PR z review.
 
+Przy prostych poprawkach danych (bez zmian kodu i schematu) wystarczą
+uzasadnienia w YAML, opis PR i CI dla dostarczonego SHA. Nie wymagamy
+osobnych ani rozbudowanych raportów MD; poniższe wymagania logów PBI
+nie dotyczą takich poprawek.
+
 Poniższe sekcje zachowują procedurę odbioru zakończonej serii PBI-079–086.
 
 ## Wykonanie i lokalna bramka
