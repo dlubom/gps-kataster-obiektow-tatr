@@ -4,7 +4,7 @@ Stan na: 2026-10-16
 
 ## Przegląd lokalizacji — poprawki danych
 
-- [PBI-087](verification/PBI-087.md): PL-0019, odrzucenie błędnego punktu PIG — wykonane 2026-10-16 w [draft PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6); uzasadnienie w YAML.
+- [PBI-087](verification/PBI-087.md): PL-0019, odrzucenie błędnego punktu PIG — wykonane 2026-10-16 w [PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6); uzasadnienie w YAML.
 
 ## Naprawy main po przegladzie 2026-10-12
 

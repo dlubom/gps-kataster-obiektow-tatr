@@ -2,11 +2,11 @@
 
 Last updated: 2026-10-16
 
-## Bieżąca praca — poprawki lokalizacji
+## v1.0.4 — poprawki danych
 
-[Draft PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6), gałąź `codex/data-location-corrections`: poprawki PL-0019, MLZ-0045, CHZ-0011 i BYZ-0020.
-Decyzje, źródła i niepewności zapisano w YAML; [PBI-087](verification/PBI-087.md) jest wykonane.
-Dalsze poprawki, merge i release wymagają osobnego polecenia.
+[PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6): PL-0019, MLZ-0045, CHZ-0011 i BYZ-0020; decyzje, źródła i niepewności są w YAML.
+[PBI-087](verification/PBI-087.md) wykonane. Publikacja przez tag `v1.0.4` po CI zmergowanego `main`; paczka i workflow na [stronie wydania](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/tag/v1.0.4).
+Nowa praca zaczyna się od aktualnego `main` i wymaga osobnego polecenia.
 
 ## Zakończona seria — po wydaniu v1.0.3
 

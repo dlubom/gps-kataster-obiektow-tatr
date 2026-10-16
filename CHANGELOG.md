@@ -6,6 +6,19 @@ udokumentowane w tym pliku.
 Format jest oparty o [Keep a Changelog](https://keepachangelog.com/), a
 wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
+## [v1.0.4] - 2026-10-16
+
+### Naprawiono
+
+- Odrzucono błędne historyczne punkty PIG: Schron w Skale Kmietowicza II
+  (PL-0019), Komora w Jatkach (MLZ-0045), Wojtkowa Szpara (CHZ-0011)
+  i Jaskinia w Cycku (BYZ-0020), zachowując pomiary i uzasadnienia w YAML.
+- Skorygowano kategorię CHZ-0011 na `sztolnia`, odpowiadającą wylotowi
+  sztolni nr 7 prowadzącej do Wojtkowej Szpary.
+
+Współrzędne best pozostają bez zmian; dokładność i położenie otworów
+wymagają dalszego rozpoznania.
+
 ## [v1.0.3] - 2026-10-15
 
 ### Naprawiono
