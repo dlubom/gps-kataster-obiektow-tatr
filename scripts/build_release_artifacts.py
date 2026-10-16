@@ -59,6 +59,8 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Override generated timestamp, mainly for deterministic tests.",
     )
+    parser.add_argument("--release-version", help="Release tag; omitted for a local preview.")
+    parser.add_argument("--source-commit", help="Exact source commit recorded in statistics.")
     return parser
 
 
@@ -74,6 +76,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             sqlite_path=args.sqlite_output,
             output_dir=args.output_dir,
             generated_at=generated_at,
+            release_version=args.release_version,
+            source_commit=args.source_commit,
         )
     except DataDirectoryError as exc:
         print(f"error: {exc}", file=sys.stderr)

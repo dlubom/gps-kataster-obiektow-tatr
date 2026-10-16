@@ -986,9 +986,26 @@ Każdy release zawiera:
 | `best-measurements.geojson` | GeoJSON | WGS84, z PL-1992 w `properties`. |
 | `best-measurements.gpx` | GPX | WGS84, do GPS receiverów. |
 | `best-measurements.csv` | CSV | Oba układy współrzędnych. |
+| `katalog.xlsx` | Excel | Best: podstawowe pola wybranych punktów z CSV; Full: wszystkie pomiary z danymi obiektu z SQLite, także starsze/odrzucone, z oznaczeniem wyboru. Filtry, typowane liczby i daty, polskie nagłówki. |
 | `best-measurements.shp.zip` | ESRI Shapefile | EPSG:2180, QGIS / TPN. |
 | `katalog.sqlite.zip` | SQLite + SpatiaLite | Pełny snapshot. |
 | `metadata.json` | JSON | Liczby obiektów, pomiarów, jaskiń, data buildu, wersja schematu. |
+| `statistics.md`, `statistics.json` | Markdown, JSON | Automatyczne statystyki tej samej paczki: obiekty, pozycje katalogowe, historia pomiarów, rodzaje, źródła, weryfikacja i dostępność dokładności. Wersja wydania, commit źródeł i czas generowania. |
+
+Excel zachowuje daty dzienne od `1900-01-01` jako daty, a wcześniejsze
+jako tekst ISO `YYYY-MM-DD`, bez zmiany wartości źródłowej.
+
+Statystyki liczą punkty z wygenerowanego CSV, a pozycje katalogowe i całą
+historię z pakowanej bazy SQLite. Nie wybierają pomiarów ponownie.
+Markdown zawiera tabele PL/EN/SK i jest dodawany do opisu wydania.
+Brak deklarowanej dokładności oznacza wartość nieznaną, nie zero.
+Lokalny build bez wersji/commitu jest oznaczany jako podgląd lokalny.
+
+Etykieta punktu GPX (`wpt/name`) używa `Obiekt.name_local`, zachowując nazwę
+konkretnego otworu. Brak, `null`, pusta nazwa lub same białe znaki oznaczają
+użycie `Obiekt.id`.
+Opis (`wpt/desc`) zawsze zawiera jawne `object <ID>`, ID wybranego pomiaru,
+źródło, datę i dostępne uwagi. Nazwy nie zastępują trwałych identyfikatorów.
 
 Repo i eksporty są publiczne. Dane projektu, dokumentacja repozytorium oraz generowane eksporty są licencjonowane jako **Creative Commons Attribution 4.0 International (CC BY 4.0)**. Atrybucję źródeł zachowujemy przez referencje zapisane w YAML i eksportach.
 

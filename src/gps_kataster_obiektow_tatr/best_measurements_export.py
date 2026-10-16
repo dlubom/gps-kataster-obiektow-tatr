@@ -272,7 +272,9 @@ def _write_gpx(
             ET.SubElement(waypoint, _gpx_tag("ele")).text = _float_text(row.elevation_m)
         if row.observed_at is not None:
             ET.SubElement(waypoint, _gpx_tag("time")).text = row.observed_at
-        ET.SubElement(waypoint, _gpx_tag("name")).text = row.object_id
+        ET.SubElement(waypoint, _gpx_tag("name")).text = (
+            row.name_local if row.name_local and row.name_local.strip() else row.object_id
+        )
         ET.SubElement(waypoint, _gpx_tag("desc")).text = _gpx_description(row)
         ET.SubElement(waypoint, _gpx_tag("type")).text = row.category
 
@@ -584,6 +586,7 @@ def _float_text(value: float) -> str:
 def _gpx_description(row: BestMeasurementExportRow) -> str:
     parts = [
         row.name_local or row.object_id,
+        f"object {row.object_id}",
         f"measurement {row.measurement_id}",
         f"source {row.source}",
         f"observed {row.observed_date}",

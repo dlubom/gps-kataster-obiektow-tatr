@@ -36,7 +36,7 @@ def test_duplicate_local_measurement_id_blocks_exports_and_release(tmp_path, mod
         data_dir=data_dir, sqlite_path=output / "katalog.sqlite", output_dir=output / "exports"
     )
     before = {str(p.relative_to(output)): p.read_bytes() for p in output.rglob("*") if p.is_file()}
-    assert len(before) == 7
+    assert len(before) == 10
     source = data_dir / "objects/KSW/KSW-0001.yml"
     obj = yaml.safe_load(source.read_text())
     duplicate = deepcopy(obj["measurements"][1])
@@ -198,7 +198,10 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
     assert len(waypoints) == 1
     assert waypoints[0].attrib["lat"] == str(KSW_LAT)
     assert waypoints[0].attrib["lon"] == str(KSW_LON)
-    assert waypoints[0].findtext("{http://www.topografix.com/GPX/1/1}name") == "KSW-0001"
+    assert (
+        waypoints[0].findtext("{http://www.topografix.com/GPX/1/1}name")
+        == "Test Cave - main entrance"
+    )
     assert "TPN measurement note." in (
         waypoints[0].findtext("{http://www.topografix.com/GPX/1/1}desc") or ""
     )
@@ -227,6 +230,40 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
     assert record["obj_notes"] == "Object terrain note."
     assert record["cave_notes"] == "Cave catalog note."
     assert record["meas_notes"] == "TPN measurement note."
+
+
+@pytest.mark.parametrize(
+    ("name_local", "expected_label"),
+    [
+        ("Jaskinia Żółta — otwór <górny> & wschodni", "Jaskinia Żółta — otwór <górny> & wschodni"),
+        (None, "KSW-0001"),
+        ("", "KSW-0001"),
+        (" \t\n ", "KSW-0001"),
+        ("missing", "KSW-0001"),
+    ],
+)
+def test_gpx_labels_use_local_names_and_preserve_object_ids(
+    tmp_path: Path, name_local: str | None, expected_label: str
+) -> None:
+    data_dir = tmp_path / "data"
+    _write_sample_data(data_dir)
+    object_data = _valid_object()
+    if name_local == "missing":
+        object_data.pop("name_local")
+    else:
+        object_data["name_local"] = name_local
+    _write_yaml(data_dir / "objects/KSW/KSW-0001.yml", object_data)
+
+    result = export_best_measurements(data_dir=data_dir, output_dir=tmp_path / "exports")
+
+    ns = "{http://www.topografix.com/GPX/1/1}"
+    waypoint = ET.parse(result.gpx_path).find(ns + "wpt")
+    assert waypoint is not None
+    assert waypoint.findtext(ns + "name") == expected_label
+    description = waypoint.findtext(ns + "desc") or ""
+    assert "object KSW-0001" in description
+    assert "measurement m-002" in description
+    assert "TPN measurement note." in description
 
 
 def test_export_writes_metadata_snapshot(tmp_path: Path) -> None:
