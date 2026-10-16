@@ -10,7 +10,7 @@ Nie obejmuje to zbiorczego zatwierdzania punktów ani wydania.
 
 ### PBI-087: Odrzucić błędną lokalizację PIG Schronu w Skale Kmietowicza II
 
-Status: zweryfikowane — do dostarczenia 2026-10-16.
+Status: wykonane 2026-10-16; dostarczone w [draft PR #6](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/6).
 [Dowody i odbiór](verification/PBI-087.md).
 
 Spec: §4.3–4.4, §5.4, §9. Polecenie użytkownika: zapisać uzgodnioną
