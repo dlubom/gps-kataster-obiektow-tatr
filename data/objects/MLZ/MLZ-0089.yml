@@ -14,6 +14,11 @@ external_refs:
   external_id: '{86E6E8C9-8495-4E9B-8E89-BC4BC2ADEC06}'
   scope: object
   notes: TPN GLOBALID belongs to the object/source feature.
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{72C1A44A-0423-4C26-A336-2B5CB36B3FDA}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
   lat: 49.247052488018426
@@ -43,15 +48,43 @@ measurements:
     TPN UWAGI: Dane morfometr. orentacyjne'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-002
+  lat: 49.247043446114134
+  lon: 19.91922353951205
+  x_1992: 153688.32
+  y_1992: 566880.68
+  elevation_m: 1506.34965
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{72C1A44A-0423-4C26-A336-2B5CB36B3FDA}
+  observed_date: '2023-09-23'
+  source_date: '2023-09-23'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'TPN source-record measurement imported after operator review; not field-verified.
+
+    TPN WER_LOK: FF 23-09-2023 NMT'
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
 best_measurement:
   mode: auto
   measurement_id: m-001
-  reason: null
-  updated_at: '2026-05-16T10:22:52Z'
-  updated_by: importer:tpn
+  reason: Przy remisie dat i nieznanej dokładności zachowano m-001 z MLZ-0089; brak podstaw do oceny przewagi dokładności.
+  updated_at: '2026-10-17T19:51:35Z'
+  updated_by: dl
 attachments: []
-notes: Imported from TPN source record after operator review.
+notes: >-
+  Scalono MLZ-0107/C-0998 do MLZ-0089/C-0875: F.F., Jaskinie 116–117/2024,
+  s. 49–50, plan jednego otworu. Dawne MLZ-0107/m-001 zachowano jako m-002.
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-10-17T19:51:35Z'
+updated_by: dl
