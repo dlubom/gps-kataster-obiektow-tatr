@@ -2,15 +2,18 @@
 
 Stan: 2026-10-19. Ten plik wraz z planem i backlogiem w
 [PR #12](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/12)
-wystarcza do kontynuacji planowania bez historii czatu i lokalnego build.
+wystarcza do kontynuacji prac bez historii czatu i lokalnego build.
+Kierunek planu przyjęto w PBI-095; status bieżącej karty jest w backlogu
+i [logu PBI-095](verification/PBI-095.md).
 
 ## Repozytorium i wejście w pracę
 
 - Repozytorium: `dlubom/gps-kataster-obiektow-tatr`.
 - Lokalnie: `/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr`.
 - PR planistyczny: **#12**, baza `main`, gałąź `codex/tpn-sync-planning`.
-- Sprawdź status i fetch origin, zachowaj cudze zmiany. Na czystym checkoutcie
-  odśwież main według AGENTS. Następnie sprawdź aktualny stan PR #12.
+- Sprawdź status i fetch origin, zachowaj cudze zmiany. Sprawdź aktualny
+  stan PR #12 przed wyborem gałęzi; kontynuacja otwartego PR ma
+  pierwszeństwo przed domyślnym startem z main.
 - Jeśli PR jest nadal otwarty, dokumenty są na jego gałęzi, niekoniecznie
   na main. Do kontynuacji tego PR użyj `gh pr checkout 12`; nie twórz
   duplikatu PR ani nie merguj go tylko po to, by przeczytać dokumenty.
@@ -27,7 +30,9 @@ Kolejność czytania:
 2. [Plan TPN](tpn_sync_plan.md) — wymagania, wyniki rozpoznania, decyzje
    projektowe oraz ryzyka w obecnym kodzie.
 3. [PBI-095–103](tpn_sync_backlog.md) — zakres, zależności i kryteria odbioru.
-4. [Weryfikacja planowania](verification/tpn-sync-planning.md).
+4. [Kontrakt PBI-095](tpn_sync_contract.md) i [formaty](tpn_sync_examples.md).
+5. [Historyczna weryfikacja planowania](verification/tpn-sync-planning.md)
+   oraz [odbiór PBI-095](verification/PBI-095.md).
 
 ## Publiczne API i dokładne zapytanie
 
@@ -109,18 +114,19 @@ z PBI-096/101; obecny PR nie jest przyjętą bazą synchronizacji.
 
 ## Granica następnego kroku
 
-Plan i dziewięć kart są propozycją; sam prompt odczytujący kontekst nie
-oznacza akceptacji projektu ani rozpoczęcia implementacji. Pierwsza karta
-do wykonania po poleceniu użytkownika i uzgodnieniu kierunku to **PBI-095**:
-kontrakt, spec, AGENTS i przykłady. Bez importu, zmian pomiarów i schedule.
+Kierunek planu przyjęto na polecenie użytkownika, a PBI-095 doprecyzowuje
+kontrakt/spec/AGENTS. Bieżący status i odbiór są w backlogu oraz logu PBI-095;
+przed kontynuacją sprawdź zdalny SHA i CI. PBI-096 dotyczy wyłącznie
+pozyskania/odczytu snapshotu, bez importera katalogu, zmian pomiarów i schedule.
+Wymaga osobnego polecenia; ta sesja kończy się na PBI-095.
 
-Ustalone wymagania: jeden PR i osobne decyzje po rekordzie, miesięczne
-sprawdzanie po wdrożeniu, wyłącznie ludzki merge, kontrola duplikatów,
-zachowanie historii i ochrona geodezji. Ryzyko do uwzględnienia: GNSS
-z `source: inne` i best `auto` (KSZ-0112) nie jest obecnie chroniony samym
-priorytetem własnych zweryfikowanych. Nowy GUID nie dowodzi nowego Obiektu.
-Aktualna spec wyłącza synchronizację; PBI-095 ma wprowadzić wąski wyjątek.
+Ustalenia: jeden PR i decyzje po rekordzie, zaległości przed miesięcznym
+sprawdzaniem, wyłącznie ludzki merge, kontrola duplikatów, historia i ochrona
+GNSS/geodezji niezależnie od source/status/dokładności. Dopisanie pomiaru
+nie daje zgody na zmianę best. Data modyfikacji TPN z komentarzem opisuje
+stan źródła, gdy data terenowa jest nieznana; jej brak odracza pomiar.
+Spec §8.4 wprowadza wąski wyjątek TPN, bez rozszerzania integracji PIG/Geoportal.
 
 Po każdym wykonanym PBI: spójna dokumentacja, adekwatna weryfikacja,
 commit/push, zdalny SHA i CI tego SHA. Jedna karta na sesję, bez samodzielnego
-przechodzenia do kolejnej; merge/tag/release tylko po osobnym poleceniu.
+przechodzenia do kolejnej. Merge TPN wykonuje człowiek; brak tagu/release.

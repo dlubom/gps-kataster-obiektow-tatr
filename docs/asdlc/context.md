@@ -2,33 +2,43 @@
 
 Last updated: 2026-10-19
 
-## Integracja TPN — projekt i kolejność prac
+## Integracja TPN — PBI-095
 
-Użytkownik zamówił plan i PBI integracji publicznego API TPN. Potwierdził
-**jeden PR, osobne decyzje dla rekordów**; cykl miesięczny, review człowieka,
-bez auto-merge, z wykrywaniem duplikatów i ochroną geodezji.
-[Plan](tpn_sync_plan.md), [PBI-095–103](tpn_sync_backlog.md): wszystkie
-planowane, żadna karta gotowa do implementacji. Najpierw uzgodnienie
-projektu i rozszerzenie obecnych granic spec/AGENTS w PBI-095.
+Użytkownik przyjął kierunek [planu](tpn_sync_plan.md) i zlecił wyłącznie
+PBI-095. Stan: **zweryfikowane — do dostarczenia**. [Kontrakt](tpn_sync_contract.md),
+[przykłady formatów](tpn_sync_examples.md) oraz spec §8.4 określają
+przyszły proces; kod, schematy, katalog i workflow pozostają bez zmian.
+[Backlog PBI-095–103](tpn_sync_backlog.md), [dowody PBI-095](verification/PBI-095.md).
 
-Baza analizy: aktualny main `b98fd3febb400c7ee520046682c1bb16238429ee`.
-Pełniejsza publiczna warstwa `Topografia___wektor_MIL1/MapServer/6`
-udostępnia 1035 rekordów z GLOBALID, WER_LOK, UWAGI i geometrią.
-Względem starego CSV: 30 nowych GUID, brak zniknięć, 30 przesunięć ponad
-1 m; nowe GUID nie są automatycznie nowymi Obiektami. API ma 12 grup
-powtarzających się nazw. Lokalny JSON i porównanie są w ignorowanym
-`build/exports/tpn-api/2026-10-19/`; metoda i hashe są utrwalone w planie.
+Ustalenia: jeden PR na paczkę i osobne decyzje rekordów, zaległości przed
+cyklem miesięcznym, wyłącznie ludzki merge. Typed TPN/source_globalid,
+trzystronne porównanie, trwałe rewizje, preimage, defer/reject, kontrola
+kandydatów duplikatu i pełna historia. Nowy GUID nie dowodzi nowego obiektu.
+Dopisanie pomiaru wymaga odrębnego keep/select_new; manual i GNSS/geodezja
+są chronione niezależnie od source/status/accuracy null (także KSZ-0112).
 
-Kluczowe propozycje: trzystronne porównanie TPN/YAML, trwałe rewizje i
-decyzje defer/reject, dopisywanie historii lokalizacji bez nadpisania,
-osobny wybór best, automatyczne propozycje wyłącznie jednoznacznie nowych
-obiektów. Ochrona musi obejmować GNSS z `source: inne` i `mode: auto`
-(np. KSZ-0112), nie tylko własne zweryfikowane. Implementacji idempotencji
-z porzuconych gałęzi nie traktujemy jako obecnej na main.
-Ta dostawa nie zmienia katalogu, kodu, bieżącej spec ani harmonogramów.
-[Weryfikacja kroku planistycznego](verification/tpn-sync-planning.md).
-[Samowystarczalny punkt startowy i zapytania API](tpn_sync_handoff.md):
-lokalnego JSON nie dodajemy do PR; nowy kontekst może pobrać bieżący stan.
+Decyzja użytkownika z PBI-095: bez daty terenowej użyć LAST_EDITED_DATE
+jako daty stanu źródła z jawnym komentarzem w notes. observed_at pozostaje
+null; brak modyfikacji odracza pomiar, bez daty pobrania/CREATED_DATE.
+Nie aktualizujemy przy okazji historycznych dat. Próg 0,1 m dotyczy tylko
+bootstrapu konwersji CSV/API; minimum 100 m to sygnał duplikatu do review.
+
+Aktualny PR #12 zweryfikowano jako otwarty draft; kontynuujemy gałąź
+`codex/tpn-sync-planning`, początkowy HEAD
+`02f5449d647540dda6b787cb1c97143c542ca6dc`, main
+`b98fd3febb400c7ee520046682c1bb16238429ee`. Dokładny dostarczony SHA/CI
+odczytuje się z PR i logu odbioru, nie z historycznego punktu startowego.
+[Instrukcja przejęcia](tpn_sync_handoff.md) podaje API i sposób pobrania.
+Historyczny JSON pozostaje poza Git i nie jest potrzebny do PBI-095.
+Historyczne liczniki w planie nie są stałymi nowego odczytu.
+
+W PBI-095 sprawdzono publiczny schemat i jedną próbkę: 22 deklaracje
+z SHAPE, 21 atrybutów query i osobna geometria. Nie jest to pełny snapshot.
+TATER pozostaje nieinterpretowanym polem źródłowym z widocznymi zmianami.
+Następna karta po osobnym poleceniu: **PBI-096**, snapshot bez zmian katalogu.
+PBI-096–103 pozostają planowane; nie rozpoczęto implementacji ani schedule.
+Obecny applier CSV/XLSX nie zapewnia nowego protokołu; nie używać go do
+paczki synchronizacji przed wdrożeniem ochron i decyzji PBI-099/100.
 
 ## v1.1.1 — przygotowanie wydania
 

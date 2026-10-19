@@ -6,6 +6,10 @@ Gałąź: `codex/tpn-sync-planning`.
 
 ## Zakres
 
+Zapis historyczny kroku poprzedzającego PBI-095. Późniejsze przyjęcie
+kierunku i doprecyzowanie kontraktu opisuje [odbiór PBI-095](PBI-095.md);
+poniższe statusy i ograniczenia dotyczą wyłącznie ówczesnego planowania.
+
 [Projekt](../tpn_sync_plan.md), [PBI-095–103](../tpn_sync_backlog.md),
 indeks backlogu i context. Osobny krok planistyczny zamówiony przez
 użytkownika; nie jest wykonaniem PBI-095. Wszystkie nowe karty są planowane.

@@ -1,11 +1,13 @@
-# Integracja TPN: proponowane PBI
+# Integracja TPN: PBI i stan realizacji
 
 Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
 [Indeks całego backlogu](backlog_v1.md).
 
-Status wszystkich kart: **planowane**. Użytkownik zamówił plan i PBI;
-utworzenie tych kart nie jest rozpoczęciem importu ani wdrożenia harmonogramu.
-Najpierw uzgadniamy projekt, potem wykonujemy po jednej gotowej karcie.
+Użytkownik przyjął kierunek planu i zlecił wyłącznie **PBI-095**.
+[Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
+częścią specyfikacji przyszłej integracji. PBI-095: **zweryfikowane — do dostarczenia**; PBI-096–103:
+**planowane**, bez implementacji importera i bez harmonogramu.
+Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
 | PBI | Sprawdzalny wynik | Zależności |
@@ -40,7 +42,9 @@ Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gał�
 
 ## PBI-095: Uzgodnić kontrakt integracji i rozszerzyć specyfikację
 
-Status: planowane. Zależność: akceptacja [projektu](tpn_sync_plan.md).
+Status: zweryfikowane — do dostarczenia. Kierunek [projektu](tpn_sync_plan.md) przyjęty przez
+użytkownika 2026-10-19; zlecono wyłącznie tę kartę.
+Dowody: [PBI-095](verification/PBI-095.md).
 
 **Cel:** następne karty nie muszą zgadywać, co jest zmianą źródła, decyzją
 operatora i dozwolonym skutkiem w katalogu.
@@ -51,23 +55,26 @@ wyłączenia V1 zachowane. Bez kodu, migracji danych i włączania workflow.
 
 **Kryteria odbioru:**
 
-- [ ] Spec odróżnia wymagania zaakceptowane przez użytkownika od propozycji;
+- [x] Spec odróżnia wymagania zaakceptowane przez użytkownika od propozycji;
       ustala jeden PR z decyzjami po rekordzie i wyłącznie ludzki merge.
-- [ ] Kontrakt definiuje typed GLOBALID, wiele GUID jednego obiektu, stan
+- [x] Kontrakt definiuje typed GLOBALID, wiele GUID jednego obiektu, stan
       źródła, hashe, preimage, bootstrap CSV/API/YAML, defer/reject i brak
       automatycznego usuwania danych po zniknięciu rekordu.
-- [ ] Jawna tabela mapuje pola API na dane źródłowe, dozwolone aktualizacje
+- [x] Jawna tabela mapuje pola API na dane źródłowe, dozwolone aktualizacje
       metadanych i składniki odcisku lokalizacji. Określa null/zero, tolerancję
       numeryczną, datę źródła/obserwacji/pobrania oraz zachowanie wysokości.
-- [ ] Spec ustala ochronę manual/GNSS/geodezji, semantykę keep/select_new,
+- [x] Spec ustala ochronę manual/GNSS/geodezji, semantykę keep/select_new,
       bramkę nowych obiektów i reguły pamiętania rozstrzygnięć duplikatów.
-- [ ] Schematy manifestu źródła, zmian i decyzji są opisane na przykładach
+- [x] Schematy manifestu źródła, zmian i decyzji są opisane na przykładach
       obejmujących nowy obiekt, istniejący obiekt, konflikt i defer.
-- [ ] Projekt, spec i AGENTS nie zawierają sprzecznych granic tej integracji.
+- [x] Projekt, spec i AGENTS nie zawierają sprzecznych granic tej integracji.
 
-**Refinement:** ostateczną listę pól, reprezentację brakującej daty i progi
-porównania uzgadniamy tutaj na rzeczywistych fixture'ach. Bieżące `date`
-nie może dostać daty pobrania udającej pomiar terenowy.
+**Refinement PBI-095:** tabela 21 atrybutów i geometrii sprawdzona na
+publicznym schemacie oraz jednej odpowiedzi query. Uzgodniono z użytkownikiem
+LAST_EDITED_DATE jako datę stanu źródła z komentarzem przy nieznanej dacie
+terenowej; bez tej daty pomiar odraczamy. Tolerancja bootstrapu ≤0,1 m
+dotyczy wyłącznie konwersji XY; promień kandydatów minimum 100 m nie
+rozstrzyga tożsamości. Wykonywalne fixture'y/schematy należą do dalszych PBI.
 
 ## PBI-096: Pobierać kompletny i odtwarzalny snapshot publicznego API
 
@@ -76,8 +83,8 @@ Status: planowane. Zależność: 095.
 **Cel:** dostarczyć wiarygodne wejście do porównań bez modyfikacji katalogu.
 
 **Zakres:** adapter publicznej warstwy Topografia /6, CLI pobierania,
-walidacja schematu i manifestu, fixture'y. Kontekst: plan §2–4, dotychczasowy
-CSV i moduł `tpn_staging.py`. Nie zapisuje Obiektów/Jaskiń ani PR.
+walidacja schematu i manifestu, fixture'y. Kontekst: plan §2–4, [kontrakt](tpn_sync_contract.md) §2–4,
+[manifest](tpn_sync_examples.md), dotychczasowy CSV i moduł `tpn_staging.py`. Nie zapisuje Obiektów/Jaskiń ani PR.
 
 **Kryteria odbioru:**
 
@@ -233,8 +240,8 @@ PR. Bez harmonogramu i bez wymogu zakończenia wszystkich sporów.
 - [ ] PR przedstawia liczniki i rzeczywiste diffy nowych obiektów,
       metadanych, dodanych pomiarów, best i odroczeń; ponowienie jest no-op.
 
-**Granica:** karta dostarcza PR do człowieka. Merge wymaga osobnego
-polecenia użytkownika; bez niego nie traktujemy snapshotu jako przyjętej
+**Granica:** karta dostarcza PR do człowieka. Merge wykonuje wyłącznie
+człowiek po odrębnej decyzji; bez niego nie traktujemy snapshotu jako przyjętej
 bazy produkcyjnego cyklu. Nie blokuje to testów narzędzi na fixture'ach.
 
 ## PBI-102: Przygotowywać pojedynczy PR przez ręczne uruchomienie workflow
@@ -293,6 +300,7 @@ obsługa zaległego PR, diagnostyka i krótki runbook. Bez automatycznego merge.
 
 ## Kontynuacja
 
-Najbliższy krok po uzgodnieniu projektu: oznaczyć wyłącznie PBI-095 jako
-gotowe. Następne karty można doprecyzować podczas poprzedzającej je pracy,
-bez automatycznego rozszerzania zakresu pojedynczej sesji.
+Bieżąca sesja kończy się po dostarczeniu PBI-095. Następna karta to
+PBI-096, wyłącznie pozyskanie i walidacja snapshotu bez zmian katalogu;
+wymaga nowego polecenia. Pozostałe karty pozostają planowane. Otwarty
+PR #12 kontynuujemy na jego gałęzi; po ludzkim merge zaczynamy od main.

@@ -5,6 +5,10 @@
 > **Odbiorcy**: zespół techniczny, speleolodzy, TPN, osoby weryfikujące dane terenowe.
 >
 > Propozycja stosu technologicznego jest rekomendacją. Specyfikacja jest pisana pod podejście **git-native**: źródłem prawdy są pliki YAML w repozytorium, a bazy i eksporty są artefaktami generowanymi.
+>
+> **Rozszerzenie TPN, PBI-095 (2026-10-19):** zaakceptowany kierunek i
+> kontrakt §8.4. Implementacja PBI-096–103 pozostaje przyszłą pracą;
+> opis wymagań nie oznacza działającego importera ani harmonogramu.
 
 ---
 
@@ -210,6 +214,14 @@ Zasady:
 - `horizontal_accuracy_m` dotyczy dokładności poziomej, a nie wysokości.
 - Dla danych PIG/TPN bez znanej dokładności pole `horizontal_accuracy_m` może być puste.
 - Pomiar odrzucony nie jest usuwany, tylko dostaje `verification_status: odrzucony` oraz notatkę.
+- W przyszłej ścieżce TPN (§8.4), przy nieznanej dacie terenowej,
+  `observed_at` pozostaje null, a `observed_date` i `source_date` zawierają
+  dzień UTC modyfikacji rekordu (`LAST_EDITED_DATE`). Notes jawnie mówi:
+  „Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.”
+  Pełny czas źródła i odrębny czas pobrania zachowuje rejestr źródła.
+  Brak daty modyfikacji odracza utworzenie pomiaru; nie używamy daty
+  pobrania ani utworzenia rekordu jako zastępstwa. To data stanu źródła,
+  nie dowód nowego pomiaru. Nie zmieniamy przy tym historycznych dat.
 
 ### 4.4 `BestMeasurement`
 
@@ -258,6 +270,13 @@ wlasne zweryfikowane > TPN > wlasne nieweryfikowane > PIG > geoportal/publikacja
 
 Ręczne wskazanie `mode: manual` zawsze ma pierwszeństwo przed algorytmem.
 
+Przyszła synchronizacja TPN (§8.4) nakłada dodatkową ochronę na tę regułę:
+manual oraz GNSS/geodezja i własne zweryfikowane w historii blokują zmianę
+best przez TPN. `append_measurement` wymaga osobnego `keep/select_new`;
+przy keep jawna zmiana auto → manual może utrwalić dotychczasowe ID.
+Samo dopisanie pomiaru nie oznacza zgody na zmianę eksportowanego punktu.
+To wymaganie dla PBI-099/100, nie zmiana działania obecnego selektora auto.
+
 ### 4.5 `ExternalReference`
 
 `ExternalReference` jest typem osadzanym w `Obiekt` i `Jaskinia`.
@@ -297,6 +316,9 @@ Typowe użycie:
 | `notes` | string, opt | |
 
 Szczegółowa semantyka relacji, rozstrzyganie duplikatów i merge/split obiektów zostają poza zakresem V1.
+
+Wyjątek §8.4 obejmuje wykrywanie i pamiętanie ludzkich rozstrzygnięć
+kandydatów TPN. Nadal nie wprowadza automatycznego merge/split ani lifecycle.
 
 ### 4.7 `Attachment`
 
@@ -423,6 +445,10 @@ Zasada V1:
 - konflikt ID jest wykrywany przez walidator jako błąd,
 - nie wprowadzamy osobnego pliku liczników ani bota nadającego ID.
 
+W rozszerzeniu TPN (§8.4) narzędzie może rezerwować proponowane ID zbiorczo
+w gałęzi PR, po sprawdzeniu całej paczki. Obowiązują trwałość istniejących
+ID, kontrola kolizji i ludzki merge; brak osobnego autorytetu liczników.
+
 Jeżeli zespół się powiększy, temat wraca w kolejnej wersji.
 
 ---
@@ -491,6 +517,8 @@ Zasady:
   Zmiana finalnej kategorii wymaga dowodu i audytu, bez zmiany ID;
   ocena rozbieżności punktów nie oznacza ich weryfikacji terenowej.
 - Jeśli obiekt ma wcześniejszy pomiar z PIG i później zostanie dopasowany rekord TPN, pomiar TPN powinien przejąć rolę aktualnego pomiaru w trybie `best_measurement.mode: auto`, chyba że istnieje ręczne wskazanie `manual` albo późniejszy własny zweryfikowany pomiar.
+  To reguła importu początkowego. W przyszłych paczkach TPN pierwszeństwo
+  ma kontrakt §8.4: osobna decyzja best oraz ochrona GNSS/geodezji.
 - Import TPN służy do uaktualnienia i skorygowania szkieletu utworzonego wcześniej z PIG.
 - Teksty `WER_LOK` i `UWAGI` zachowują treść źródłową; nie podnoszą statusu
   `verification_status`. Finalizacja review zachowuje je przy pomiarze.
@@ -529,6 +557,7 @@ Zasady:
 - Import PIG jest wykonywany jako pierwszy, ponieważ daje bazowy katalog jaskiń i numerów inwentarzowych.
 - Współrzędne PIG mogą tymczasowo utworzyć pierwszy `Pomiar`, ale taki pomiar dostaje niski priorytet źródłowy.
 - Jeśli później pojawi się dopasowany rekord TPN dla tego samego obiektu, pomiar TPN powinien zastąpić PIG jako `best_measurement` w trybie `auto`.
+  Dla synchronizacji TPN wymaga to osobnej decyzji według §8.4.
 - Pomiar PIG pozostaje w historii i nie jest kasowany.
 
 ### 7.3 Geoportal
@@ -631,6 +660,49 @@ zachowuje innych członków i kolejność, pomiary, best, źródła i audyt
 utworzenia. Powtórzenie do tej samej jaskini aktualizuje obiekt i tę jaskinię
 bez powielenia członkostwa. Brak celu lub błąd ostatniej decyzji blokuje
 zapis całej partii, również w dry-run. Wszystkie zmiany przechodzą preflight.
+
+---
+
+### 8.4 Kontrolowana integracja publicznego API TPN
+
+Przyjęty kierunek rozszerza V1 wyłącznie o TPN: rozpatrzenie zaległości,
+następnie ręczne i dopiero po odbiorze miesięczne sprawdzanie API przez
+GitHub Actions. **Jeden PR na paczkę, osobne decyzje rekordów, wyłącznie
+ludzki merge.** Przyjęcie kierunku nie uruchamia kolejnych PBI.
+
+Normatywne części specyfikacji tego rozszerzenia:
+
+- [Kontrakt TPN](docs/asdlc/tpn_sync_contract.md): pełna tabela pól API,
+  normalizacja/null/zero, daty i wysokość, tożsamość i hashe, bootstrap,
+  preimage, stan źródła, akcje, ochrona i kryteria nowego obiektu.
+- [Formaty i scenariusze](docs/asdlc/tpn_sync_examples.md): manifest,
+  changes/decisions/source-state, przykłady nowego i istniejącego obiektu,
+  konfliktu, defer/reject i oczekiwane wyniki.
+
+Typed `TPN/source_globalid` jest kluczem rekordu źródła. Wiele GUID może
+opisywać jeden obiekt; nowy GUID, zgodna nazwa lub bliskość nie rozstrzygają
+tożsamości. Kandydaci obejmują wszystkie pomiary i całą nową paczkę.
+Promień kontroli 100 m (powiększany o znane dokładności) jest sygnałem do
+review, nie zgodą na merge. Fuzzy matching wymaga walidacji w PBI-098
+przed dopuszczeniem automatycznych propozycji nowych obiektów.
+
+Porównanie jest trzystronne: poprzedni stan TPN, nowy TPN, bieżący YAML;
+pierwszy cykl używa CSV/API/YAML. Zachowujemy stare pomiary, lokalne
+poprawki i historię scaleń. Oddzielamy hash bajtów snapshotu, rewizję
+istotnych pól i odcisk lokalizacji. Zmiana uwagi/daty edycji nie tworzy
+pomiaru. Decyzje wiążą cel i preimage, cały katalog, stan źródła i politykę.
+Nieaktualny lub sprzeczny zestaw decyzji nie zapisuje części katalogu.
+
+`defer` przechodzi do trwałej kolejki także po merge części paczki;
+`reject` dotyczy rewizji, nie permanentnego odrzucenia GUID. Nowa rewizja
+lub zmieniona podstawa decyzji wraca do review. Źródło znikające z pełnego
+odczytu daje flagę, bez automatycznego usuwania danych. Pobranie/PR nie
+przesuwa przyjętej bazy; robi to dopiero ludzki merge. No-op nie tworzy PR.
+
+Stan źródła i dowody są osobne od YAML domenowego. Wersjonowane snapshoty,
+manifesty i decyzje pozwalają odtworzyć zatwierdzoną paczkę z czystego
+checkoutu. Obecny applier CSV/XLSX nie obsługuje tych formatów i ochron;
+implementację oraz odporność na awarie zapisu dostarczą kolejne karty.
 
 ---
 
@@ -1023,7 +1095,7 @@ W V1 nie budujemy:
 - MapLibre,
 - PWA do przeglądu offline,
 - edycji przez UI,
-- integracji z GitHub API.
+- ogólnej integracji z GitHub API (wyjątek: przygotowanie paczek TPN §8.4).
 
 Podstawowym sposobem pracy jest repozytorium, pliki YAML, walidacja CI oraz generowane eksporty. Do przeglądania danych wystarczają QGIS, CSV, GeoJSON, GPX i SQLite.
 
@@ -1043,7 +1115,7 @@ Nie przewidujemy w tym zakresie:
 
 - PWA do zbierania pomiarów,
 - generowania YAML w terenie,
-- commitowania przez GitHub API,
+- commitowania danych terenowych przez GitHub API (proces TPN §8.4 jest osobny),
 - automatycznej integracji z telefonem,
 - pluginu QGIS do edycji danych.
 
@@ -1260,7 +1332,8 @@ Zakres:
 
 ### Import początkowy — ad hoc
 
-Import TPN i PIG nie jest osobnym etapem produktu ani stałym mechanizmem.
+Poniżej opisano historyczny import początkowy TPN/PIG. Kontrolowana
+integracja TPN ma osobny kontrakt §8.4 i kolejność PBI-095–103.
 
 Zakładamy jednorazowe działania ad hoc w tej kolejności:
 
@@ -1270,9 +1343,14 @@ Zakładamy jednorazowe działania ad hoc w tej kolejności:
 4. Zapis wyniku jako normalne pliki `data/objects/` i `data/caves/`.
 5. Późniejsze zmiany prowadzone ręcznie przez YAML i PR.
 
-Nie planujemy stałego importera Geoportal ani cyklicznych importów masowych w aktualnym zakresie.
+Nie planujemy stałego importera Geoportal ani cyklicznych importów PIG.
+Wąski wyjątek TPN obejmuje snapshoty, review i PR; miesięczny harmonogram
+jest dopiero końcem PBI-095–103, po rozpatrzeniu zaległości i odbiorze
+ręcznej ścieżki. W PBI-095 doprecyzowano tylko dokumentację kontraktu.
 
 Pomiary z PIG pozostają w historii, ale po dopasowaniu TPN nie powinny być domyślnie wskazywane jako `best_measurement`, chyba że operator ustawi ręczne `mode: manual` z powodem.
+W paczkach §8.4 świadome keep zachowuje obecny best również wtedy, gdy
+nowy pomiar TPN uzyskałby wyższy priorytet ogólnego algorytmu.
 
 ---
 
@@ -1295,10 +1373,15 @@ Poza aktualnym zakresem:
 - frontend MapLibre,
 - PWA do przeglądu offline,
 - PWA do zbierania danych terenowych,
-- integracja z GitHub API,
+- ogólna integracja z GitHub API poza przygotowaniem paczek TPN §8.4,
 - plugin QGIS,
-- stałe importy masowe,
-- cykliczna synchronizacja z TPN, PIG lub Geoportalem.
+- stałe importy masowe poza kontrolowanym procesem TPN §8.4,
+- cykliczna synchronizacja z PIG lub Geoportalem.
+
+W TPN pozostaje do implementacji kontrakt §8.4. Szczegóły fuzzy matching
+muszą przejść fixture'y w PBI-098, uprawnienia workflow próbę w PBI-102,
+a dzień/godzina cyklu są konfiguracją PBI-103. Nie są zgodą na rozpoczęcie
+tych kart przy dokumentacyjnym PBI-095.
 
 ---
 

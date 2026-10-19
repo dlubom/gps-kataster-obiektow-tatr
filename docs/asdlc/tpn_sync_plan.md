@@ -1,14 +1,16 @@
-# Integracja TPN: plan do uzgodnienia
+# Integracja TPN: przyjęty kierunek i kolejność prac
 
 Data: 2026-10-19. Baza analizy: `main` / `origin/main`
 `b98fd3febb400c7ee520046682c1bb16238429ee`, po fetch i pull.
 
-Status: **propozycja projektu i kolejności prac**. Ten dokument nie uruchamia
-importu ani harmonogramu. Karty wykonawcze: [backlog TPN](tpn_sync_backlog.md).
+Status: **kierunek przyjęty przez użytkownika w PBI-095**. Normatywne
+doprecyzowanie: [kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md).
+Ten dokument nie uruchamia importu ani harmonogramu. Karty wykonawcze: [backlog TPN](tpn_sync_backlog.md).
 [Start z czystego kontekstu i zapytania API](tpn_sync_handoff.md) zawiera
 instrukcję pobrania bieżącego JSON; lokalna kopia nie jest częścią PR.
-Obecna [specyfikacja](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md)
-wyłącza cykliczną synchronizację (§20–21); jej rozszerzenie jest pierwszym PBI.
+[Specyfikacja](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md) §8.4
+i §20–21 dopuszcza wąski proces TPN; PBI-095 ustala kontrakt, a kolejne
+karty dopiero wdrożą jego wymagania.
 Nowy zakres dotyczy tylko TPN. YAML pozostaje źródłem prawdy katalogu.
 
 ## 1. Cel i ustalenia użytkownika
@@ -23,8 +25,11 @@ Nowy zakres dotyczy tylko TPN. YAML pozostaje źródłem prawdy katalogu.
 - Wykrywać potencjalne duplikaty po nazwie i chronić dokładne pomiary
   geodezyjne przed zastąpieniem przez import TPN.
 
-Pozostałe szczegóły poniżej są rekomendacją do uzgodnienia, a nie wcześniej
-zaakceptowanymi decyzjami użytkownika.
+W PBI-095 użytkownik dodatkowo uzgodnił datę modyfikacji źródła z komentarzem,
+gdy nie znamy daty terenowej; brak daty modyfikacji odracza dopisanie pomiaru.
+Szczegóły hashów, formatów i mapowania są decyzjami wykonawczymi kontraktu.
+Termin miesięcznego workflow i dobór fuzzy matching pozostają odpowiednio
+do konfiguracji PBI-103 i weryfikacji PBI-098, bez uruchamiania tych kart.
 
 ## 2. Co wiemy z obecnych danych i kodu
 
@@ -106,7 +111,7 @@ a hash utrwala dokładnie treść, którą ostatecznie rozpatrywano.
 
 ## 4. Stan źródła, historia i powtarzalność
 
-Proponowane trwałe lokalizacje:
+Trwałe lokalizacje ustalone w PBI-095 (jeszcze nieutworzone):
 
 - `data/sources/tpn/snapshots/`: niezmienne odpowiedzi API użyte w decyzjach,
   manifesty zapytań, schemat i SHA-256; CSV/XLSX pozostają nienaruszone.
@@ -157,7 +162,9 @@ nie dowodem nowego pomiaru terenowego. Nie nadpisujemy współrzędnych starego
 pomiaru. Osobna decyzja może oznaczyć go jako odrzucony, zachowując wartości.
 `LAST_EDITED_DATE` to data edycji źródła, nie automatycznie data pomiaru.
 Adapter musi zachować rozróżnienie czasu obserwacji, stanu źródła i pobrania,
-zgodnie z §4.3 specyfikacji. Brak daty terenowej nie jest uzupełniany fikcją.
+zgodnie z §4.3 specyfikacji i §3.1 kontraktu: przy nieznanej dacie terenowej
+używamy LAST_EDITED_DATE jako daty stanu źródła, z komentarzem. Brak tej
+daty odracza pomiar; nie zastępujemy jej datą pobrania lub CREATED_DATE.
 
 `update_metadata` ma listę dozwolonych pól i wartości przed/po. Ręczne nazwy,
 notatki i przypisania jaskiń nie są zastępowane całą kopią rekordu TPN.
@@ -185,7 +192,7 @@ Automatyczne utworzenie YAML w PR dopuszczamy dopiero, gdy:
 - nie ma konfliktu z nazwami obiektów, jaskiń i nazwami źródłowymi,
   numerem inwentarzowym, systemem ani innymi nowymi rekordami paczki;
 - nie ma pobliskiego kandydata w istniejących pomiarach, także niewybranych
-  jako best; proponowany konserwatywny promień kontroli to 100 m;
+  jako best; promień kontroli to co najmniej 100 m, powiększany o znane dokładności;
 - można jednoznacznie utworzyć samodzielny obiekt/jaskinię. Powiązanie
   z istniejącą jaskinią lub systemem wymaga decyzji człowieka.
 
@@ -237,7 +244,8 @@ Weryfikacja samego źródła `wlasne` nie wystarcza; regresja obejmuje KSZ-0112.
 Paczka ma `changes.json`, czytelny raport i `decisions.yml`. Decyzje
 istniejących obiektów zaczynają jako `pending`; bot nie podpisuje ich
 za człowieka. Nowe obiekty spełniające §6 są oznaczone jako propozycje
-automatyczne z dowodami przejścia reguł. Człowiek widzi je w diffie YAML.
+automatyczne z dowodami przejścia reguł. Człowiek widzi je w diffie YAML i jawnie rozstrzyga każdą propozycję
+(approve/reject/defer); samo wygenerowanie YAML nie jest akceptacją.
 
 Operator edytuje plik decyzji w gałęzi PR i uruchamia jawny etap zastosowania
 decyzji (lokalne CLI lub `workflow_dispatch` dla uprawnionego maintenera).
@@ -288,11 +296,11 @@ publicznego repo. Nie obiecujemy gwarantowanego dostarczenia w danej minucie.
 
 ## 10. Kolejność i odbiór
 
-1. Uzgodnić ten plan i rozszerzyć spec/AGENTS o wąską integrację TPN.
+1. PBI-095: przyjęty kierunek; kontrakt, spec/AGENTS i przykłady decyzji.
 2. Zbudować i sprawdzić pobieranie snapshotów, bez zmian katalogu.
 3. Zbudować porównanie źródła z bazą/YAML oraz wykrywanie duplikatów.
 4. Wprowadzić ochronę best oraz trwałe decyzje i idempotentne zastosowanie.
-5. Przeprowadzić pierwsze uzgodnienie 30 nowych GUID i zmian istniejących,
+5. Przeprowadzić pierwsze uzgodnienie bieżących nowych GUID i zmian istniejących,
    z możliwością defer. Nie wymuszać liczby nowych Obiektów równej 30.
 6. Sprawdzić cały proces ręcznie przez PR, włącznie z ponowieniem, zmianą
    main w trakcie review i merge przez człowieka.
@@ -306,7 +314,8 @@ decyzje; błąd ostatniej decyzji bez częściowego zapisu; otwarty PR przez dwa
 miesiące; końcowe CI dokładnego SHA oraz odczyt eksportów.
 
 Każda karta ma własny zakres i kryteria, a wykonanie przebiega po jednej
-gotowej karcie. Na tym etapie nie ma karty gotowej do implementacji.
+gotowej karcie. Status i następny krok określa backlog; samo przyjęcie
+kontraktu nie upoważnia do wykonania następnej karty.
 
 ## Źródła decyzji projektowych
 

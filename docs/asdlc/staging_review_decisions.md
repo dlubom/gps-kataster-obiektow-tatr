@@ -1,5 +1,13 @@
 # Operator review staging - format decyzji
 
+**Zakres tego opisu:** obecny importer CSV/XLSX i CLI PBI-015.
+Przyjęty przyszły protokół synchronizacji TPN ma osobny
+[kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md).
+PBI-095 dokumentuje wymagania, lecz nie wdraża nowego formatu. Poniższe
+`add_measurement` przelicza auto i nie zastępuje wymaganej ochrony
+GNSS/geodezji oraz osobnego `keep/select_new`. Nie używać obecnego CLI
+do zastosowania paczki synchronizacji TPN przed ukończeniem PBI-099/100.
+
 PBI-015 wprowadza jawny plik decyzji operatora. Importery PIG/TPN nadal tworza
 tylko staging w `build/staging/*`; finalne YAML pod `data/` powstaje dopiero po
 uruchomieniu:

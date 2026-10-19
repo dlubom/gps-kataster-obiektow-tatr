@@ -2,16 +2,18 @@
 
 Stan na: 2026-10-19
 
-## Integracja publicznego API TPN — planowanie
+## Integracja publicznego API TPN — kontrakt
 
 [Plan integracji](tpn_sync_plan.md) i [karty PBI-095–103](tpn_sync_backlog.md)
-przygotowane na polecenie użytkownika. Wszystkie karty mają status
-**planowane**, żadna nie jest jeszcze gotowa do implementacji.
+przyjęte jako kierunek przez użytkownika. Wyłącznie [PBI-095](verification/PBI-095.md)
+jest **zweryfikowane — do dostarczenia**: spec/AGENTS, [kontrakt](tpn_sync_contract.md),
+[formaty i przykłady](tpn_sync_examples.md). PBI-096–103 pozostają planowane.
 Kolejność: kontrakt → snapshot → różnice → duplikaty → ochrona GNSS/best →
 decyzje → pierwsza paczka danych → ręczny workflow PR → harmonogram.
 Ustalono jeden PR z osobnymi decyzjami dla rekordów i wyłącznie ludzki merge.
-Aktualna spec wyłącza cykliczną synchronizację; PBI-095 jawnie rozszerzy
-zakres po uzgodnieniu projektu. Ta dostawa obejmuje tylko plan i backlog.
+Spec §8.4 dopuszcza wąski proces TPN. Ta dostawa obejmuje tylko kontrakt
+i dokumentację, bez implementacji, danych i workflow. Następny krok po
+odrębnym poleceniu: PBI-096; bieżąca sesja go nie rozpoczyna.
 
 ## Wydanie v1.1.1
 
@@ -483,7 +485,9 @@ Przed implementacja V1 obowiazuja te stale decyzje:
 - TPN `GLOBALID` trafia zasadniczo do `Obiekt.external_refs`.
 - PIG `ID`, PIG `Link` i `NR_INWENT` trafiaja zasadniczo do `Jaskinia.external_refs`.
 - YAML w `data/` jest zrodlem prawdy; SQLite, GeoJSON, GPX, CSV i Shapefile sa artefaktami.
-- Frontend, PWA, stale importy, Geoportal i GitHub API sa poza V1.
+- Frontend, PWA, stale importy PIG/Geoportal i ogolna integracja GitHub API
+  sa poza V1. Wyjatek stanowi kontrolowany proces TPN ze spec §8.4;
+  wdrozenie kolejnych kart wymaga osobnych polecen.
 
 ## Milestone 0: porzadek repo
 
