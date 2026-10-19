@@ -1,6 +1,14 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-10-16
+Stan na: 2026-10-19
+
+## Wydanie v1.1.1
+
+- [PBI-094](verification/PBI-094.md): przygotowanie v1.1.1 — wykonane
+  2026-10-19 na polecenie użytkownika. Zaakceptowany changelog obejmuje dane
+  scalone w PR #9; 800 testów, walidacja i odczyt 10 artefaktów przeszły.
+  Publikacja zatwierdzona; końcowe CI i odbiór plików są wskazane w PR wydania
+  i na stronie v1.1.1.
 
 ## README i statystyki wydań
 

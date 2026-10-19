@@ -1,6 +1,22 @@
 # AS-DLC project context
 
-Last updated: 2026-10-16
+Last updated: 2026-10-19
+
+## v1.1.1 — przygotowanie wydania
+
+[PBI-094](verification/PBI-094.md): użytkownik zatwierdził wpis changelogu,
+merge, tag i publikację v1.1.1 oraz sprawdzenie CI i plików wydania.
+Baza: aktualny `main` po PR #9, `c44f24425b87e3ce161bc1f1a21c0a958e99a449`;
+[CI po merge](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/39243172221)
+przeszło, ochrona main została przywrócona.
+W katalogu jest 1007 obiektów, 1001 jaskiń i 1876 pomiarów.
+Przygotowanie wydania zmienia wersję i dokumentację; dane pozostają bez zmian.
+Odbiór wymaga CI końcowego main, annotated tagu i odczytu plików ze
+[strony v1.1.1](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/tag/v1.1.1).
+Przygotowanie zweryfikowane: 800 testów, Ruff, walidacja bez błędów
+(2067 ostrzeżeń), odczyt 10 artefaktów; 2037 plików danych/config bez zmian.
+Końcowy SHA, wyniki CI i odbiór publikacji są wskazane w PR wydania oraz na
+stronie v1.1.1. Brak kolejnego gotowego PBI.
 
 ## v1.1.0 — PR #7
 
