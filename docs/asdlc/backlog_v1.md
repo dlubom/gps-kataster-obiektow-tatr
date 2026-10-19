@@ -2,6 +2,17 @@
 
 Stan na: 2026-10-19
 
+## Integracja publicznego API TPN — planowanie
+
+[Plan integracji](tpn_sync_plan.md) i [karty PBI-095–103](tpn_sync_backlog.md)
+przygotowane na polecenie użytkownika. Wszystkie karty mają status
+**planowane**, żadna nie jest jeszcze gotowa do implementacji.
+Kolejność: kontrakt → snapshot → różnice → duplikaty → ochrona GNSS/best →
+decyzje → pierwsza paczka danych → ręczny workflow PR → harmonogram.
+Ustalono jeden PR z osobnymi decyzjami dla rekordów i wyłącznie ludzki merge.
+Aktualna spec wyłącza cykliczną synchronizację; PBI-095 jawnie rozszerzy
+zakres po uzgodnieniu projektu. Ta dostawa obejmuje tylko plan i backlog.
+
 ## Wydanie v1.1.1
 
 - [PBI-094](verification/PBI-094.md): przygotowanie v1.1.1 — wykonane

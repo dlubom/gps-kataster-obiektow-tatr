@@ -2,6 +2,32 @@
 
 Last updated: 2026-10-19
 
+## Integracja TPN — projekt i kolejność prac
+
+Użytkownik zamówił plan i PBI integracji publicznego API TPN. Potwierdził
+**jeden PR, osobne decyzje dla rekordów**; cykl miesięczny, review człowieka,
+bez auto-merge, z wykrywaniem duplikatów i ochroną geodezji.
+[Plan](tpn_sync_plan.md), [PBI-095–103](tpn_sync_backlog.md): wszystkie
+planowane, żadna karta gotowa do implementacji. Najpierw uzgodnienie
+projektu i rozszerzenie obecnych granic spec/AGENTS w PBI-095.
+
+Baza analizy: aktualny main `b98fd3febb400c7ee520046682c1bb16238429ee`.
+Pełniejsza publiczna warstwa `Topografia___wektor_MIL1/MapServer/6`
+udostępnia 1035 rekordów z GLOBALID, WER_LOK, UWAGI i geometrią.
+Względem starego CSV: 30 nowych GUID, brak zniknięć, 30 przesunięć ponad
+1 m; nowe GUID nie są automatycznie nowymi Obiektami. API ma 12 grup
+powtarzających się nazw. Lokalny JSON i porównanie są w ignorowanym
+`build/exports/tpn-api/2026-10-19/`; metoda i hashe są utrwalone w planie.
+
+Kluczowe propozycje: trzystronne porównanie TPN/YAML, trwałe rewizje i
+decyzje defer/reject, dopisywanie historii lokalizacji bez nadpisania,
+osobny wybór best, automatyczne propozycje wyłącznie jednoznacznie nowych
+obiektów. Ochrona musi obejmować GNSS z `source: inne` i `mode: auto`
+(np. KSZ-0112), nie tylko własne zweryfikowane. Implementacji idempotencji
+z porzuconych gałęzi nie traktujemy jako obecnej na main.
+Ta dostawa nie zmienia katalogu, kodu, bieżącej spec ani harmonogramów.
+[Weryfikacja kroku planistycznego](verification/tpn-sync-planning.md).
+
 ## v1.1.1 — przygotowanie wydania
 
 [PBI-094](verification/PBI-094.md): użytkownik zatwierdził wpis changelogu,
