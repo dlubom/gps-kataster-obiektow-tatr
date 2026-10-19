@@ -10,6 +10,7 @@ from functools import lru_cache
 
 from .tpn_api import globalid, require
 from .tpn_normalization import decimal, digest, distance, text
+from .tpn_precision import reported_distance
 
 CHECKS = {
     "new_unique_guid",
@@ -139,7 +140,7 @@ def pair_evidence(left: dict, right: dict, policy: CandidatePolicy) -> list[dict
                 evidence.append(
                     {
                         "code": "nearby_position",
-                        "distance_m": separation,
+                        "distance_m": reported_distance(separation),
                         "radius_m": radius,
                         "left_position": a,
                         "right_position": b,

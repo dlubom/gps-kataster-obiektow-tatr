@@ -202,6 +202,50 @@ def test_bootstrap_keeps_multiple_merged_guids_notes_best_and_history(repo):
     assert before == {str(p): p.read_bytes() for p in repo.rglob("*") if p.is_file()}
 
 
+def test_informational_bootstrap_keeps_csv_proof_without_inventing_approvals(repo):
+    from copy import deepcopy
+
+    from gps_kataster_obiektow_tatr.tpn_snapshot import sha256
+
+    save_object(repo, object_data((GUID, GUID2)))
+    old = [feature(), feature(GUID2, oid=2)]
+    csv_source(repo, old)
+    current = deepcopy(old)
+    current[1]["geometry"]["y"] += 5e-8  # CSV/API conversion agreement, about 5 mm.
+    snap = snapshot(repo, "accepted-bootstrap", current)
+    first = compare(repo, snap)
+    second = next(r for r in first["records"] if r["globalid"] == GUID2)
+    assert not second["actionable"] and not second["requires_review"]
+    state = state_for(first, "approve")
+    row = first["records"][0]
+    state["resolutions"][0]["applied_locations"] = [
+        {
+            "location_hash": row["location_hash"],
+            "measurement_id": "m-001",
+            "source_snapshot_hash": first["snapshot_hash"],
+            "csv_evidence": {
+                "kind": "csv_bootstrap",
+                "path": CSV_PATH.as_posix(),
+                "raw_sha256": sha256((repo / CSV_PATH).read_bytes()),
+            },
+        }
+    ]
+    unchanged = compare(repo, snap, state)
+    assert not unchanged["requires_pr"]
+    second = next(r for r in unchanged["records"] if r["globalid"] == GUID2)
+    assert second["history"]["current_matches"][0]["basis"] == "accepted_csv_bootstrap"
+    assert len(state["resolutions"]) == 1  # No fabricated decision for GUID2.
+    moved = deepcopy(current)
+    moved[1]["geometry"]["y"] += 1e-8  # Later API/API movement must remain exact.
+    report = compare(repo, snapshot(repo, "later-small-move", moved), state)
+    second = next(r for r in report["records"] if r["globalid"] == GUID2)
+    assert second["measurement_needed"] and second["actionable"]
+    assert "location_changed" in second["classification"]
+    unproven = deepcopy(state)
+    unproven["resolutions"][0]["applied_locations"] = []
+    assert compare(repo, snap, unproven)["requires_pr"]
+
+
 @pytest.mark.parametrize("wrong_ref", ["other", "source_row", "inventory_number", "url"])
 def test_identity_does_not_fall_back_to_name_xy_or_untyped_reference(repo, wrong_ref):
     obj = object_data()

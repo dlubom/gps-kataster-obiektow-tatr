@@ -1,0 +1,1177 @@
+{
+  "format": "tpn-explicit-user-authorization-record",
+  "format_version": 1,
+  "recorded_at": "2026-10-19T18:54:41.078420Z",
+  "recorded_by": "agent:codex",
+  "authorization_origin": "direct_user_message",
+  "user_message_verbatim": "ok juz widze, przyjmij wszystkie jako nowsze lepsze, moze byc auto, dodaj tez te 5 nowych, cos jeszcze ?",
+  "batch_id": "pbi-101-20261019",
+  "base_head": "b4720e8808b705c1edd744291d0a08bd04d3d7ae",
+  "snapshot_hash": "481e83a1a113a0596947d40e30d7a186de0f0f51154957c5f48713c4ae3324d8",
+  "scope": "B001–B031 append + select_new auto; C001–C005 new object + new cave + first best auto",
+  "entries": [
+    {
+      "proposal_id": "B001",
+      "change_id": "0257a120-426e-4b7d-b47f-1d9f853c6c85:797229725c7ef9c2f73f16b9364a7c0f0711ec95ec5cf93dff4ce2fa6e834696",
+      "object_id": "MTW-0031",
+      "path": "data/objects/MTW/MTW-0031.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0031, nowy pomiar m-003; różnica względem poprzedniego TPN 26.59 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0031, nowy pomiar m-003; różnica względem poprzedniego TPN 26.59 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "99bb5d583641ff52e108d20c43819dc09e65cc26e5488238096d5ca9dddf0033"
+    },
+    {
+      "proposal_id": "B002",
+      "change_id": "062430d3-83c1-49ed-8004-044b1dd8fb80:52a69fba15eeef32abc37d8930a879667a0e95bce55281c2ab86969723697a62",
+      "object_id": "MTZ-0031",
+      "path": "data/objects/MTZ/MTZ-0031.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTZ-0031, nowy pomiar m-003; różnica względem poprzedniego TPN 1.68 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T14:00:00Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTZ-0031, nowy pomiar m-003; różnica względem poprzedniego TPN 1.68 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "8c0216acc65f2a983bfd0c058859bd97025698f94c6dcca271e9b4036e26d85b"
+    },
+    {
+      "proposal_id": "B003",
+      "change_id": "0c34f113-d6d5-4e57-9db1-b240ed3533b5:17f9f84f15e9ee2a39ab447d88bf2ae6a85d42741ca338ba6f2a1eb0a3c7810e",
+      "object_id": "MTW-0043",
+      "path": "data/objects/MTW/MTW-0043.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0043, nowy pomiar m-003; różnica względem poprzedniego TPN 15.80 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0043, nowy pomiar m-003; różnica względem poprzedniego TPN 15.80 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "3478c67dc2cd708d4206b9a83493c687a68b7e3cc63457d3f70bb87cc392b0df"
+    },
+    {
+      "proposal_id": "B004",
+      "change_id": "1f9eaae2-f97d-4205-bf67-7a43e6ddb5e7:3d525e9749a661b5bb5d1ae8b924495ba490952d62c9f1ae75b36bf712bd9903",
+      "object_id": "MTW-0024",
+      "path": "data/objects/MTW/MTW-0024.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0024, nowy pomiar m-003; różnica względem poprzedniego TPN 19.59 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0024, nowy pomiar m-003; różnica względem poprzedniego TPN 19.59 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "4acc2bd507150c73c2de852975d7687be345f999e9abeba82d1b5040a89d43e5"
+    },
+    {
+      "proposal_id": "B005",
+      "change_id": "23287a45-d91f-46d7-a9b2-2c6ebfda9764:6ceb8e92ec4cc1750fe735928ce73f363a3419581853c9b4ad31a14bb34286ab",
+      "object_id": "MTZ-0027",
+      "path": "data/objects/MTZ/MTZ-0027.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTZ-0027, nowy pomiar m-003; różnica względem poprzedniego TPN 2.01 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T14:00:00Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTZ-0027, nowy pomiar m-003; różnica względem poprzedniego TPN 2.01 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "2e3824e4e0146c31c69b38e65a33061a0529cfaac1d7b7990f1a84e56d182c01"
+    },
+    {
+      "proposal_id": "B006",
+      "change_id": "34b1e400-eed4-4773-8416-8d48d04038b4:660ec148c1d93f22c9f07aeb9d9e93b84c9d6f0a7555d2071d6a89a43b3222ad",
+      "object_id": "MLZ-0079",
+      "path": "data/objects/MLZ/MLZ-0079.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MLZ-0079, nowy pomiar m-003; różnica względem poprzedniego TPN 4.70 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MLZ-0079, nowy pomiar m-003; różnica względem poprzedniego TPN 4.70 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "8f6e71cfa3daca1d3265452d33bbd0a469782a494c6cd923587e3f319c3456e3"
+    },
+    {
+      "proposal_id": "B007",
+      "change_id": "4509213c-4194-4179-90e8-cffa30639191:7425befd9fec8864005e6614e8ca22d881f788be7be9a34f19405faedf9360e0",
+      "object_id": "MTW-0021",
+      "path": "data/objects/MTW/MTW-0021.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0021, nowy pomiar m-003; różnica względem poprzedniego TPN 65.45 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0021, nowy pomiar m-003; różnica względem poprzedniego TPN 65.45 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "debed15fa7864b54be616717081beb43426a5f72445cb14662a7e914ac53208b"
+    },
+    {
+      "proposal_id": "B008",
+      "change_id": "4c30384d-7d8d-48d8-8d57-aea8cc59687c:c775cce963990e4475e63d8a5dc3659fa8d39a25bcdf2c0b3d8aa1da05d1d18b",
+      "object_id": "KSW-0241",
+      "path": "data/objects/KSW/KSW-0241.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-002",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt KSW-0241, nowy pomiar m-002; różnica względem poprzedniego TPN 15.70 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-001",
+          "reason": null,
+          "updated_at": "2026-05-16T10:22:52Z",
+          "updated_by": "importer:tpn"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt KSW-0241, nowy pomiar m-002; różnica względem poprzedniego TPN 15.70 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-002",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "f4dcb433b56d868d771d970d86936b2406201cbb44f4234cdd4c622db437f74b"
+    },
+    {
+      "proposal_id": "B009",
+      "change_id": "518fe961-d9da-4997-804e-cfc2e389a5ab:d28168a04ea4d8b076cb92bece0145734428fc47e51fbf6fda8e282ebebd33fe",
+      "object_id": "MTW-0020",
+      "path": "data/objects/MTW/MTW-0020.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0020, nowy pomiar m-003; różnica względem poprzedniego TPN 0.60 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0020, nowy pomiar m-003; różnica względem poprzedniego TPN 0.60 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "508c0ad6fcaea1789734cd7c48cd14eb3a7af0cbde8719c654092dcc719089af"
+    },
+    {
+      "proposal_id": "B010",
+      "change_id": "527aee0b-533c-4cb4-bc8b-443de48eb624:0e86b9070af2403a342fdb6a80c2ca892530af42ad9203aa4f5d713007eca06a",
+      "object_id": "PL-0022",
+      "path": "data/objects/PL/PL-0022.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt PL-0022, nowy pomiar m-003; różnica względem poprzedniego TPN 53.06 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T13:00:00Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt PL-0022, nowy pomiar m-003; różnica względem poprzedniego TPN 53.06 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "18e5b811530e5ddc7144f545d9fb37d1c87467658f504e1aa1e90be702c7360b"
+    },
+    {
+      "proposal_id": "B011",
+      "change_id": "61f5cfc1-a9eb-4193-a3b3-e4fd8dd9c60d:41e19cc0f90b51e064a63b18240b0d4590641eb9d1063513c649b1f34013d107",
+      "object_id": "MTW-0046",
+      "path": "data/objects/MTW/MTW-0046.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0046, nowy pomiar m-003; różnica względem poprzedniego TPN 59.69 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0046, nowy pomiar m-003; różnica względem poprzedniego TPN 59.69 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "021a48caddaf2daa6bd6a8212d1f09ee51899a5c0f083db170b0dcfd1a5a7a5c"
+    },
+    {
+      "proposal_id": "B012",
+      "change_id": "65d4a109-b1aa-4741-b694-b1a65ef93752:d2dcbddf171ece91a95ac68cbf47f5024c0b501fe8ca0bcdb13033e50fb6cc26",
+      "object_id": "MTZ-0001",
+      "path": "data/objects/MTZ/MTZ-0001.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTZ-0001, nowy pomiar m-003; różnica względem poprzedniego TPN 3.05 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T14:00:00Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTZ-0001, nowy pomiar m-003; różnica względem poprzedniego TPN 3.05 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "f89f09d1e98bdd1347accda22fb083af1c9294d4e38d17cf72952e1f66c223ef"
+    },
+    {
+      "proposal_id": "B013",
+      "change_id": "7006936a-289f-4f87-8614-3c6253d13228:33de506eff0f54aab5a8bb738f341ffc275b5d9c762026920e1378e463b2dade",
+      "object_id": "MLZ-0012",
+      "path": "data/objects/MLZ/MLZ-0012.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MLZ-0012, nowy pomiar m-003; różnica względem poprzedniego TPN 5.74 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MLZ-0012, nowy pomiar m-003; różnica względem poprzedniego TPN 5.74 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "48fa0241890e16a3d3d2142ee4cb8d1de00ed77ffaacb1819515f8bdb5a8cbc1"
+    },
+    {
+      "proposal_id": "B014",
+      "change_id": "7033eb52-9352-4f35-9adf-89490fbb5f1f:4d7843860ad5405c55645d9c51cc6783caee8d876716869f2bcbf5c62e0e22c4",
+      "object_id": "MTW-0059",
+      "path": "data/objects/MTW/MTW-0059.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0059, nowy pomiar m-003; różnica względem poprzedniego TPN 31.52 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0059, nowy pomiar m-003; różnica względem poprzedniego TPN 31.52 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "57eb76ec5afae2ac7d1b22c6d1f2ec68c69776b3c2bccc57ca27e2c3c9a4362e"
+    },
+    {
+      "proposal_id": "B015",
+      "change_id": "71dd8dce-2bc1-42f7-a5e9-174902ca7aed:8640a7f554d1d0cd7650505530d87bf12b81eb85ec5f7b0bc4bf9c6f09140ce1",
+      "object_id": "KSW-0147",
+      "path": "data/objects/KSW/KSW-0147.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt KSW-0147, nowy pomiar m-003; różnica względem poprzedniego TPN 74.82 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt KSW-0147, nowy pomiar m-003; różnica względem poprzedniego TPN 74.82 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "45f8232f73aecb2ea017ce1f2bc9a3657c0eb71a772be9073dc44586482dbb6a"
+    },
+    {
+      "proposal_id": "B016",
+      "change_id": "766d6d08-d9fd-492c-95de-6cc01a2efd24:18eaf6801b17633b4b4ea05262f40c297599af018619795bacf4579a3eea8809",
+      "object_id": "MTW-0033",
+      "path": "data/objects/MTW/MTW-0033.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0033, nowy pomiar m-003; różnica względem poprzedniego TPN 149.17 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0033, nowy pomiar m-003; różnica względem poprzedniego TPN 149.17 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "8fe534b51717ea3c38a248617efcafdd26b93ae7afd0f807aa5192228b669de4"
+    },
+    {
+      "proposal_id": "B017",
+      "change_id": "83869a78-6375-4f82-bc45-cbed0f9b7236:59d3b3312d7ddb4ea49a5fcc66c237d49ef9bbd0346eae9750c75a642bc461c9",
+      "object_id": "MTW-0035",
+      "path": "data/objects/MTW/MTW-0035.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0035, nowy pomiar m-003; różnica względem poprzedniego TPN 22.74 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0035, nowy pomiar m-003; różnica względem poprzedniego TPN 22.74 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "89b941afd978c76e2aff272b08beb13d36c86356851fa740063379423115569c"
+    },
+    {
+      "proposal_id": "B018",
+      "change_id": "9ba8f361-d7aa-413f-bc86-ac235940f603:6a14de86be2d7feb1b912202546fc2f88891196a4b32b5885aa46dd2a91be446",
+      "object_id": "MTW-0039",
+      "path": "data/objects/MTW/MTW-0039.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0039, nowy pomiar m-003; różnica względem poprzedniego TPN 74.27 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0039, nowy pomiar m-003; różnica względem poprzedniego TPN 74.27 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "ed82eb2f19b3dce6eb230d0473ad72554978f27a6e1d926da2b2957a879583a0"
+    },
+    {
+      "proposal_id": "B019",
+      "change_id": "b2a16ea5-23c8-4e73-bbe7-b4ce1cdf5440:6142c1d9210149d8a443958df42e169bc6535f64df59f282266b592213436996",
+      "object_id": "MTW-0052",
+      "path": "data/objects/MTW/MTW-0052.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0052, nowy pomiar m-003; różnica względem poprzedniego TPN 15.31 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0052, nowy pomiar m-003; różnica względem poprzedniego TPN 15.31 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "79049c70768dd3abf810b52f7f941aa0b89da404d0ae68975b659ff8f8ae12f0"
+    },
+    {
+      "proposal_id": "B020",
+      "change_id": "b605e5ea-f1a5-43a2-803c-030b412b7415:4f6c10b4f9d019c1e909da758dbe31e1dcd0b9c13a022f6a2cf015b45380999b",
+      "object_id": "MLW-0020",
+      "path": "data/objects/MLW/MLW-0020.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MLW-0020, nowy pomiar m-003; różnica względem poprzedniego TPN 1.21 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MLW-0020, nowy pomiar m-003; różnica względem poprzedniego TPN 1.21 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "288dee8db81fc5092b35dbd0a6dc0e46f6e167016e0ac7106837ccf42dfcba0b"
+    },
+    {
+      "proposal_id": "B021",
+      "change_id": "c4a17714-5976-4b41-a6a6-9eacae7e9421:b1d84e68c2e0bee43393ff092fd6941b777558d11c17d789a22e9ee230740274",
+      "object_id": "MTW-0065",
+      "path": "data/objects/MTW/MTW-0065.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0065, nowy pomiar m-003; różnica względem poprzedniego TPN 14.54 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0065, nowy pomiar m-003; różnica względem poprzedniego TPN 14.54 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "3aa205c50119d5683865b365c3ea7d2cfed48fa0deafb245dccd1e5e9387eb3e"
+    },
+    {
+      "proposal_id": "B022",
+      "change_id": "c5bcc87d-2f7e-42b5-8433-f72c556b8618:18c64f5ccbd098e674be7c8d7c54bdd54c75260615c61ac7f18460ceba7c9162",
+      "object_id": "MTZ-0018",
+      "path": "data/objects/MTZ/MTZ-0018.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTZ-0018, nowy pomiar m-003; różnica względem poprzedniego TPN 1.67 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T14:00:00Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTZ-0018, nowy pomiar m-003; różnica względem poprzedniego TPN 1.67 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "135a2b8277e7c62649fd6ace34b361f202cfc0c3ee2dda2389ade5aa5eb5525f"
+    },
+    {
+      "proposal_id": "B023",
+      "change_id": "ca9ef295-4fb4-43d5-9d7e-005dac6ff8b4:7301437eb1f6a50080da782f7ddfd3f34f24333b3aa663da1ce5a5448e85c2ba",
+      "object_id": "MLW-0014",
+      "path": "data/objects/MLW/MLW-0014.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MLW-0014, nowy pomiar m-003; różnica względem poprzedniego TPN 2.21 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MLW-0014, nowy pomiar m-003; różnica względem poprzedniego TPN 2.21 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "97f1a335d6ec27e8a6fa9efa1daf52876b7dcf878737fad5358d9964fa09c4b4"
+    },
+    {
+      "proposal_id": "B024",
+      "change_id": "cde95846-f436-4079-8594-4268e6048a6d:a48c9eb59eaec034afef8ae325d213c5649ac1f65df387aae31f15e9e35a133a",
+      "object_id": "MTW-0063",
+      "path": "data/objects/MTW/MTW-0063.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0063, nowy pomiar m-003; różnica względem poprzedniego TPN 17.67 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0063, nowy pomiar m-003; różnica względem poprzedniego TPN 17.67 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "24f7adda21f3d3ecfb9fb6fda6a209c35c475843a88276cdd57e912ca72a79b2"
+    },
+    {
+      "proposal_id": "B025",
+      "change_id": "d532520a-cc0f-4f01-9089-01c883cc553b:2b21c2931a2f7576806aedb54b6de181fd65fc109658d53362738e6e58a5f49a",
+      "object_id": "MTW-0017",
+      "path": "data/objects/MTW/MTW-0017.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0017, nowy pomiar m-003; różnica względem poprzedniego TPN 14.38 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0017, nowy pomiar m-003; różnica względem poprzedniego TPN 14.38 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "427ec157243fe034c55102c766d590cf6aecab4d992b4d53649062e1ce2808cc"
+    },
+    {
+      "proposal_id": "B026",
+      "change_id": "dca8221f-d3c2-4eb2-98ea-77957bb07a1a:7ab7aedd7b9cb7ea5782adbc723fbb3f52ce7b2ae33729200e0f4048a79fbd66",
+      "object_id": "MTW-0060",
+      "path": "data/objects/MTW/MTW-0060.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0060, nowy pomiar m-003; różnica względem poprzedniego TPN 29.74 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0060, nowy pomiar m-003; różnica względem poprzedniego TPN 29.74 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "2db075d7b84fd81f550fd3960d231559a5d98b8631a1c625200238d7b485cbe3"
+    },
+    {
+      "proposal_id": "B027",
+      "change_id": "de04bc2c-8e52-43a7-8881-0677c9a98590:46a91bb5220100c07a632a1a892f95070bd76990a1b76f08eefc93e85c703d17",
+      "object_id": "MLW-0028",
+      "path": "data/objects/MLW/MLW-0028.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MLW-0028, nowy pomiar m-003; różnica względem poprzedniego TPN 1.39 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MLW-0028, nowy pomiar m-003; różnica względem poprzedniego TPN 1.39 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "f9ca5956f29ea2075cd354c5a786281d576649ecc714ad76705cc6c0a8d3806e"
+    },
+    {
+      "proposal_id": "B028",
+      "change_id": "e0642496-f87c-4eee-a7a0-a60365191209:b08c96f057b7583409161f745f5e661c8561f4d330753ac0dc5f6040c4fe4667",
+      "object_id": "MTW-0057",
+      "path": "data/objects/MTW/MTW-0057.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0057, nowy pomiar m-003; różnica względem poprzedniego TPN 46.81 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0057, nowy pomiar m-003; różnica względem poprzedniego TPN 46.81 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "d8244b77917cc634095e566a584922892f1570f3e74c9104722ad3e8a5368857"
+    },
+    {
+      "proposal_id": "B029",
+      "change_id": "e6ba5010-45f5-4769-9026-229423ddf3cb:9ee52a0b3dddd95a389f2da08166a2addb17cb420cb7b22c21ef6659e552a0ce",
+      "object_id": "STR-0028",
+      "path": "data/objects/STR/STR-0028.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-002",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt STR-0028, nowy pomiar m-002; różnica względem poprzedniego TPN 10.57 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-001",
+          "reason": null,
+          "updated_at": "2026-05-16T10:22:52Z",
+          "updated_by": "importer:tpn"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt STR-0028, nowy pomiar m-002; różnica względem poprzedniego TPN 10.57 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-002",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "bf2e7c6705a1cc9f66eaecad40b4836802ca3b8125eaf0aca6bf1e46c274b7fb"
+    },
+    {
+      "proposal_id": "B030",
+      "change_id": "f3ae1e5e-ba6a-4c62-86fe-a4f42892808c:81b8b53700e122624330e9a4714d858d5dca686412def381ef7cc7f497539166",
+      "object_id": "MTW-0005",
+      "path": "data/objects/MTW/MTW-0005.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0005, nowy pomiar m-003; różnica względem poprzedniego TPN 39.08 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0005, nowy pomiar m-003; różnica względem poprzedniego TPN 39.08 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "c0423ae4810b9bd90fe653617ed86a5303f9eb946283adf8624c350967eb132c"
+    },
+    {
+      "proposal_id": "B031",
+      "change_id": "f64fab23-53f9-45fa-a1c2-748d15a67568:2410c06804369c428ce01c4e252a3e0643d2876bb65aecbb3fad0645da07fc7c",
+      "object_id": "MTW-0062",
+      "path": "data/objects/MTW/MTW-0062.yml",
+      "user_decision": "accept_append_and_select_new",
+      "measurement_id": "m-003",
+      "best_mode": "auto",
+      "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0062, nowy pomiar m-003; różnica względem poprzedniego TPN 46.90 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.",
+      "guard_against_original_catalog": {
+        "before": {
+          "mode": "auto",
+          "measurement_id": "m-002",
+          "reason": null,
+          "updated_at": "2026-05-16T10:41:53Z",
+          "updated_by": "dl"
+        },
+        "after": {
+          "mode": "auto",
+          "measurement_id": "m-003",
+          "reason": "Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto. Obiekt MTW-0062, nowy pomiar m-003; różnica względem poprzedniego TPN 46.90 m. Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare pomiary i wysokości zachowane w historii; nowy best nie ma wysokości."
+        },
+        "default_after": "m-003",
+        "mode_change": null,
+        "protection": {
+          "protected": false,
+          "requires_review": false,
+          "evidence": [],
+          "review_evidence": []
+        },
+        "can_apply": true,
+        "blockers": []
+      },
+      "result_sha256": "dfed63669ee1ce0d200bd327f048e0c0166c9423e86d1c5f44a67a1fb507cc01"
+    },
+    {
+      "proposal_id": "C001",
+      "change_id": "4d57492d-d68a-471e-b00e-770a594a2c7b:f6cf40c6ee81bd84bec7f8c4b1e0eb5ff19c1a5bfaff7bd16389de30ee0f1337",
+      "object_id": "MTZ-0067",
+      "name": "Jaskinia w Kozim Grzbiecie",
+      "path": "data/objects/MTZ/MTZ-0067.yml",
+      "cave_id": "C-1005",
+      "cave_path": "data/caves/C-1005.yml",
+      "user_decision": "accept_new_object_and_new_cave",
+      "measurement_id": "m-001",
+      "best_mode": "auto",
+      "result_sha256": "6a09c9e0cc768b335597942d40f03c04e4985486cf7547d1549783136c5eca80",
+      "cave_sha256": "d1528ed1a52790526db1a3c786429d2f6bad264f97c9e10395f2e32615ae7bb8"
+    },
+    {
+      "proposal_id": "C002",
+      "change_id": "551df3ad-f3e1-4920-bd23-d741ac938ba8:98097d7078619264ff5a264b978c3fc097731271dc2dfd45ef49d9753331e7ee",
+      "object_id": "STR-0030",
+      "name": "Gawra w Sarniej Skale",
+      "path": "data/objects/STR/STR-0030.yml",
+      "cave_id": "C-1006",
+      "cave_path": "data/caves/C-1006.yml",
+      "user_decision": "accept_new_object_and_new_cave",
+      "measurement_id": "m-001",
+      "best_mode": "auto",
+      "result_sha256": "cf517b149f2c05e7573ff7445041bf35f7423bb807f2da767739cd94ac214e6e",
+      "cave_sha256": "8c88fb2b79bbce3fa96ac81b7b51219d50c3fb0cc3e3a4bd3c813154e52369a0"
+    },
+    {
+      "proposal_id": "C003",
+      "change_id": "6ebd9c00-d272-4909-85ec-00ae2bb6632d:6064efb0ca1761b8a62171e586f39c2ac7496173b0793400a52b8b92821e69a4",
+      "object_id": "BIA-0009",
+      "name": "Okno przy Źródle",
+      "path": "data/objects/BIA/BIA-0009.yml",
+      "cave_id": "C-1007",
+      "cave_path": "data/caves/C-1007.yml",
+      "user_decision": "accept_new_object_and_new_cave",
+      "measurement_id": "m-001",
+      "best_mode": "auto",
+      "result_sha256": "654e55d320dbaefbd5132b306338ef4ec922ef33993cff37531c9959493519ca",
+      "cave_sha256": "2cda91e5362272eb25889f801fd5c990a9650df28ff8c65b69ac9988c4be267b"
+    },
+    {
+      "proposal_id": "C004",
+      "change_id": "c9dc792d-fdd9-4ad9-b024-26b8c795cdaf:7e95dddc0427505ccb17e4324874690d9a04a23a5e8fa6e415dc9eb2a3c1381c",
+      "object_id": "DZI-0011",
+      "name": "Gawra w Grześkówkach",
+      "path": "data/objects/DZI/DZI-0011.yml",
+      "cave_id": "C-1008",
+      "cave_path": "data/caves/C-1008.yml",
+      "user_decision": "accept_new_object_and_new_cave",
+      "measurement_id": "m-001",
+      "best_mode": "auto",
+      "result_sha256": "959d17c994ca65c3facd86a44717653e7ad94771146a4112bdca8f190369b74e",
+      "cave_sha256": "1794153943972c8bc260643f0236b8e7ad12ed9bb3753dd5eb7635fe2e3bc787"
+    },
+    {
+      "proposal_id": "C005",
+      "change_id": "f27fa875-821f-45f6-8f02-c5a9ffc579e4:45b941debabd15a3fc6c0b3fbf98e0d90141221e0a049a3d82dd7a6a473cbb09",
+      "object_id": "MTZ-0068",
+      "name": "Jaskinia Lodowa Ponorowa",
+      "path": "data/objects/MTZ/MTZ-0068.yml",
+      "cave_id": "C-1009",
+      "cave_path": "data/caves/C-1009.yml",
+      "user_decision": "accept_new_object_and_new_cave",
+      "measurement_id": "m-001",
+      "best_mode": "auto",
+      "result_sha256": "2e5af7b8cf71aa0ce0bbe65ff49dfb49c91da233d1cab3a1790c652a754d283c",
+      "cave_sha256": "af8675ec6fa4199375fff6cadac6b96916081d3ae163b49af89e42ea01af13d4"
+    }
+  ],
+  "unresolved": {
+    "A001–A578": 578,
+    "D001–D026": 26
+  },
+  "commit_authorized": false,
+  "protocol_status": "authorization recorded; existing immutable batch still has earlier keep actions and pending decisions; execution plan must be refreshed without overwriting it before CLI apply",
+  "protected_manifest_PBI_099": "pending and unchanged",
+  "not_a_cli_decisions_file": true
+}

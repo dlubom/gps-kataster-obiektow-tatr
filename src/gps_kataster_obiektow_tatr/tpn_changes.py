@@ -21,6 +21,8 @@ from .tpn_normalization import (
     same_location,
     text,
 )
+from .tpn_precision import POLICY as DERIVED_PRECISION
+from .tpn_precision import reported_distance
 from .tpn_snapshot import POLICY, SNAPSHOTS, sha256, validate_id, validate_time
 from .tpn_source_state import validate_state
 
@@ -105,6 +107,16 @@ class Sources:
     def __init__(self, root: Path, policy_hash: str):
         self.root, self.policy_hash = root, policy_hash
         self.cache = {}
+        self.csv_cache = {}
+
+    def proven_csv(self, checksum: str) -> dict:
+        require(
+            sha256((self.root / CSV_PATH).read_bytes()) == checksum,
+            "bootstrap CSV evidence changed",
+        )
+        if checksum not in self.csv_cache:
+            self.csv_cache[checksum] = read_csv(self.root / CSV_PATH)
+        return self.csv_cache[checksum]
 
     def by_hash(self, checksum: str) -> dict:
         if checksum not in self.cache:
@@ -177,6 +189,7 @@ def history_for(
                     if (
                         known["object_id"] == obj["id"]
                         and known["globalid"] == mguid
+                        and known.get("measurement_id", m["id"]) == m["id"]
                         and source["location_hash"] == known["location_hash"]
                         and (
                             distance(known["location"], m) <= 0.1
@@ -194,7 +207,7 @@ def history_for(
                     {
                         "measurement_id": m["id"],
                         "source_globalid": mguid,
-                        "distance_m": distance(source["location"], m),
+                        "distance_m": reported_distance(distance(source["location"], m)),
                         "basis": basis,
                     }
                 )
@@ -283,6 +296,7 @@ def compare(
     deferred_sources = {}
     absent_events = {}
     latest_absence = {}
+    bootstrap_csv = None
     if state is None:
         previous = read_csv(root / CSV_PATH)
         baseline = {
@@ -333,12 +347,8 @@ def compare(
                     "applied location/evidence mismatch",
                 )
                 if location["csv_evidence"] is not None:
-                    require(
-                        sha256((root / CSV_PATH).read_bytes())
-                        == location["csv_evidence"]["raw_sha256"],
-                        "bootstrap CSV evidence changed",
-                    )
-                    old = read_csv(root / CSV_PATH).get(resolution["globalid"])
+                    bootstrap_csv = sources.proven_csv(location["csv_evidence"]["raw_sha256"])
+                    old = bootstrap_csv.get(resolution["globalid"])
                     require(
                         old is not None and same_location(old, source),
                         "bootstrap location mismatch",
@@ -369,6 +379,7 @@ def compare(
             if evidence is not None:
                 deferred_sources[entry["globalid"]] = evidence
     rows = []
+    resolved_guids = {r["globalid"] for r in resolutions}
     for guid in sorted(set(previous) | set(current) | set(deferred_sources) | set(latest_absence)):
         fallback = latest_absence[guid][1] if guid in latest_absence else deferred_sources.get(guid)
         after = current.get(guid)
@@ -376,7 +387,34 @@ def compare(
         ids = catalog.guids.get(guid, [])
         target, preimage, context = catalog.context(ids[0] if len(ids) == 1 else None)
         obj = context["object"] if context else None
-        history = history_for(obj, before, after, guid, applied)
+        row_applied = applied
+        # Informational first-cycle agreements have no human decision. Retain
+        # their historical CSV conversion proof using the accepted snapshot and
+        # the immutable CSV already authenticated by accepted resolutions.
+        # Bind only this exact API baseline hash; later API movement stays exact.
+        if bootstrap_csv is not None and guid not in resolved_guids and before and obj:
+            converted = bootstrap_csv.get(guid)
+            if before["kind"] == "api" and converted and same_location(converted, before):
+                matches = [
+                    m
+                    for m in obj["measurements"]
+                    if measurement_guid(m) == guid
+                    and distance(converted["location"], m) <= 0.1
+                    and distance(before["location"], m) <= 0.1
+                ]
+                if len(matches) == 1:
+                    row_applied = [
+                        *applied,
+                        {
+                            "object_id": obj["id"],
+                            "globalid": guid,
+                            "measurement_id": matches[0]["id"],
+                            "location_hash": before["location_hash"],
+                            "location": converted["location"],
+                            "basis": "accepted_csv_bootstrap",
+                        },
+                    ]
+        history = history_for(obj, before, after, guid, row_applied)
         differences = local_differences(context, before, after, history)
         conflicts = []
         if len(ids) > 1:
@@ -479,7 +517,7 @@ def compare(
                 "proposed_actions": [],
                 "best_before": obj.get("best_measurement") if obj else None,
                 "best_after": obj.get("best_measurement") if obj else None,
-                "distance_m": distance(before["location"], after["location"])
+                "distance_m": reported_distance(distance(before["location"], after["location"]))
                 if before and after
                 else None,
                 "local_differences": differences,
@@ -515,6 +553,7 @@ def compare(
     report = {
         "format": "tpn-changes",
         "format_version": 1,
+        "derived_precision": dict(DERIVED_PRECISION),
         "batch_id": batch_id,
         "snapshot_hash": manifest["snapshot_hash"],
         "policy_version": VERSION,

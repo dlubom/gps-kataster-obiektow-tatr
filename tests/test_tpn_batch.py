@@ -130,6 +130,50 @@ def test_evidence_mismatch_identifies_exact_field_without_relaxing_comparison(ba
     assert hashes(root) == before
 
 
+def test_report_reproduction_survives_projection_and_geodesic_platform_noise(
+    batch_repo, monkeypatch
+):
+    from dataclasses import replace
+
+    from gps_kataster_obiektow_tatr import tpn_candidates, tpn_normalization
+    from gps_kataster_obiektow_tatr.tpn_batch import verify_changes
+
+    root, _ = batch_repo
+    changes, _ = prepare(batch_repo)
+    original_projection = tpn_normalization.pl1992_to_wgs84
+    original_distance = tpn_normalization.distance
+
+    def noisy_projection(*args):
+        point = original_projection(*args)
+        return replace(point, lat=point.lat + 7e-15, lon=point.lon - 3e-15)
+
+    monkeypatch.setattr(tpn_normalization, "pl1992_to_wgs84", noisy_projection)
+    monkeypatch.setattr(tpn_changes, "distance", lambda *a: original_distance(*a) + 5e-9)
+    monkeypatch.setattr(tpn_candidates, "distance", lambda *a: original_distance(*a) + 5e-9)
+    verify_changes(root, root, changes)
+
+
+def test_new_measurement_cache_is_stable_but_api_coordinates_are_retained(batch_repo, monkeypatch):
+    from dataclasses import replace
+
+    from gps_kataster_obiektow_tatr import tpn_batch_actions
+
+    changes, decisions = prepare(batch_repo)
+    row, decision = changes["records"][0], decisions["decisions"][0]
+    first = tpn_batch_actions.measurement(row, "m-002", decision)
+    original = tpn_batch_actions.wgs84_to_1992
+
+    def noisy_projection(*args):
+        point = original(*args)
+        return replace(point, x_1992=point.x_1992 + 1e-8, y_1992=point.y_1992 - 1e-8)
+
+    monkeypatch.setattr(tpn_batch_actions, "wgs84_to_1992", noisy_projection)
+    assert tpn_batch_actions.measurement(row, "m-002", decision) == first
+    assert first["lat"] == float(row["source_after"]["location"]["lat"])
+    assert first["lon"] == float(row["source_after"]["location"]["lon"])
+    assert first["elevation_m"] is None
+
+
 def test_append_preserves_history_height_and_best_and_replay(batch_repo):
     from gps_kataster_obiektow_tatr.tpn_batch import apply_batch, check_batch, plan_batch
 

@@ -71,6 +71,16 @@ def test_distance_boundary_and_accuracy(monkeypatch):
     assert not pair_evidence(a, b, CandidatePolicy())
 
 
+def test_distance_display_precision_does_not_expand_candidate_radius(monkeypatch):
+    import gps_kataster_obiektow_tatr.tpn_candidates as candidates
+
+    a, b = side(name="X"), side("source:b", "Y", lon=20.2)
+    monkeypatch.setattr(candidates, "distance", lambda *args: 99.99999)
+    assert pair_evidence(a, b, CandidatePolicy())[0]["distance_m"] == 100
+    monkeypatch.setattr(candidates, "distance", lambda *args: 100.00001)
+    assert not pair_evidence(a, b, CandidatePolicy())
+
+
 def test_each_independent_signal_has_evidence():
     a, b = side(), side("source:b", lon=20.2)
     for field, code in [("inventories", "shared_inventory"), ("systems", "shared_system")]:

@@ -228,15 +228,16 @@ Kontekst: plan §4–8 i obecny format `staging_review_decisions.md`.
 
 ## PBI-101: Przeprowadzić pierwsze uzgodnienie danych TPN
 
-Status: **w toku — oczekuje na decyzje użytkownika**. Zależność: 100.
-[Dowody](verification/PBI-101.md), [konkretne propozycje](verification/PBI-101-review/review.md).
-Nowy snapshot zweryfikowano i utrwalono przed przygotowaniem paczki.
-Po pokazaniu propozycji użytkownik polecił pozostawić wszystko pending:
-640/640 wpisów, autor/czas null. Brak produkcyjnego apply i stanu źródła.
-Hosted CI 9a70337 zatrzymuje się jednak wcześniej niż pending:
-[changes evidence/schema mismatch](verification/PBI-101-ci-handoff.md).
-To dodatkowa nieodebrana rozbieżność odtworzenia Linux/Mac, bez naprawy
-lub obejścia w zakresie tej karty. Testy zastosowania tylko w izolacji.
+Status: **w toku — wszystkie decyzje rozliczone, końcowe zastosowanie/CI**.
+614 approve / 26 defer / 0 pending. Użytkownik przyjął A578, B31 select_new
+auto i C5; D26 jawnie odroczył do niezależnego badania oraz zlecił commit/push
+PR #12 i końcowy odbiór. [Decyzje](verification/PBI-101-review/review.md).
+Snapshot i źródła zachowane. Pierwszy plan keep jest w superseded-v1;
+nowa rewizja tej samej paczki ma zaakceptowane działania.
+[Przyczyna Linux/Mac i naprawa](tpn_sync_derived_precision.md) potwierdzone
+diagnostycznym CI; 1081 testów i izolowane zastosowanie/eksporty PASS.
+Pozostaje produkcyjne zastosowanie i pełny success CI końcowego SHA.
+[Dowody](verification/PBI-101.md), [kontynuacja](verification/PBI-101-next-task.md).
 
 **Cel:** uporządkować zaległości i pozostawić wiarygodną bazę kolejnego cyklu.
 
@@ -249,7 +250,7 @@ PR. Bez harmonogramu i bez wymogu zakończenia wszystkich sporów.
 - [x] Ponowny odczyt określa rzeczywisty bieżący zakres. Znane 30 nowych
       GUID, 31 GUID bez mapowania i różnice z 2026-10-19 są punktem kontroli,
       a nie wymuszoną liczbą nowych Obiektów lub nowych pomiarów.
-- [ ] Każdy przypadek ma rozstrzygnięcie albo uzasadnione defer/reject;
+- [x] Każdy przypadek ma rozstrzygnięcie albo uzasadnione defer/reject;
       duplikaty i nowe otwory znanych Jaskiń są ocenione indywidualnie.
 - [ ] Snapshot, manifest i decyzje trafiają do Git z danymi. Czysty
       checkout wystarcza do odtworzenia rozpatrzonych zmian.

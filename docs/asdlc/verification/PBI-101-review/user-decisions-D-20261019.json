@@ -1,0 +1,224 @@
+{
+  "format": "tpn-explicit-user-authorization-record",
+  "format_version": 1,
+  "recorded_at": "2026-10-19T19:28:15.884755Z",
+  "recorded_by": "agent:codex",
+  "authorization_origin": "direct_user_message",
+  "user_message_verbatim": "Odrocz D001–D026 do niezależnego badania. Dokończ PBI-101 z zaakceptowaną częścią, zrób commit i push do PR #12, sprawdź CI końcowego SHA i eksporty. Bez merge i bez PBI-102.",
+  "scope": "D001–D026 defer; finish PBI-101, commit/push PR12, exact-SHA CI and export readback",
+  "entries": [
+    {
+      "proposal_id": "D001",
+      "change_id": "00a63f59-3d03-4703-a18e-27a0a75a7da1:267536eb2e2f292ec181cc6b7f18ce5e46f8921d6f3f8a0a2a3fd855b80e0b3c",
+      "globalid": "00a63f59-3d03-4703-a18e-27a0a75a7da1",
+      "name": "Szczelina przy Zbójeckiej Dziurze",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D001 do niezależnego badania. Zbójecka Dziura CHZ-0012: 8.5 m. Inna nazwa „Szczelina przy…”, długość TPN 15,5 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D002",
+      "change_id": "041adf4d-119c-4a51-93b9-982b2127d2a4:d68904fc2927f6e55655097e430115da4bb459203bc1d65ee692423c543a7891",
+      "globalid": "041adf4d-119c-4a51-93b9-982b2127d2a4",
+      "name": "Okno w Ciemniaku",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D002 do niezależnego badania. To samo miano co D008/D010; punkty w odległości 1.72–3.35 m. Długość 4,5 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D003",
+      "change_id": "0bfc7731-a83a-40e6-b773-766798366add:0c0261924a0f921891f1cacae7e9bbb61fedcf6b0408b8eee15ac477efbcdcb1",
+      "globalid": "0bfc7731-a83a-40e6-b773-766798366add",
+      "name": "Korytarz w Ciemniaku",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D003 do niezależnego badania. Korytarz pod Ciemniakiem D014: 0.10 m. Ten wpis nie ma długości ani WER_LOK. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D004",
+      "change_id": "1792c71c-54b5-46ce-8e24-454f4a31e73f:59598f523bb151478b0da84bc47ff3c3fd5f294a526a700fca23599a88af9aff",
+      "globalid": "1792c71c-54b5-46ce-8e24-454f4a31e73f",
+      "name": "Nyża pod Szarą Turnią III",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D004 do niezależnego badania. Nyża III; od Nyży II D020 28.4 m. W TPN występują osobno numery I–IV. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D005",
+      "change_id": "2549106f-2ea9-477a-a5d3-77e6b920c8e5:bc178859ce6b645aa23444b1289021490b207a67d05154be86567bf7f1967be5",
+      "globalid": "2549106f-2ea9-477a-a5d3-77e6b920c8e5",
+      "name": "Schron nad Komorą w Kończystej Turni",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D005 do niezależnego badania. Komora D021: 29.1 m; Nyża w Kończystej MTW-0005: 45.3 m. Długość 3 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D006",
+      "change_id": "273b92b8-201b-443e-ad19-73de844b9f5b:7b80547a2199238dc2b383d4e530f21fe6fa3b87709e92d09b9f90ec0684581e",
+      "globalid": "273b92b8-201b-443e-ad19-73de844b9f5b",
+      "name": "Smocza Jama",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D006 do niezależnego badania. TPN jawnie oznacza OTWÓR=N. Mamy Smoczą Jamę C-0219 i punkt S KSW-0065, około 20.4 m dalej. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D007",
+      "change_id": "28bd775c-1b67-4aea-9ffb-49c32eef6bed:52767533c8616e62a11fafb131b4ac61e520e48367600a9339ca4e133fc3ff63",
+      "globalid": "28bd775c-1b67-4aea-9ffb-49c32eef6bed",
+      "name": "Schron pod Gawrą w Bobrowcu",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D007 do niezależnego badania. Gawra w Bobrowcu D016: 49.4 m. Schron ma długość 3 m, Gawra 22 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D008",
+      "change_id": "2cb1b34b-9aa8-440b-96e7-729bd2cdf7b6:1f98fb62e5670d57371309d1ff86eb16b751a92b7663d93601df7b2002742de2",
+      "globalid": "2cb1b34b-9aa8-440b-96e7-729bd2cdf7b6",
+      "name": "Okno w Ciemniaku",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D008 do niezależnego badania. Okno w Ciemniaku; D002 3.35 m i D010 1.76 m. Brak długości i WER_LOK. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D009",
+      "change_id": "37ef7fe5-6e87-47d4-97c8-cb0ebd9ddeee:1983bf1f06f31313e26424dc612cbab07fd0e628ebee86cccaa712a44a1d02e7",
+      "globalid": "37ef7fe5-6e87-47d4-97c8-cb0ebd9ddeee",
+      "name": "Dziura nad Zahradziskami",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D009 do niezależnego badania. Komora w Kończystej Turni D021: 0.17 m. Długości TPN: 5 m tutaj, 7 m w D021. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D010",
+      "change_id": "4bbef00c-a6c1-4706-9590-9dbc61b70ddd:702fbea0035612937a3db5ce2c81e9b63b75d7f92d8fa66c4c1dde7e90c8e89c",
+      "globalid": "4bbef00c-a6c1-4706-9590-9dbc61b70ddd",
+      "name": "Okno w Ciemniaku",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D010 do niezależnego badania. Okno w Ciemniaku; D002 1.72 m i D008 1.76 m. Długość 4,5 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D011",
+      "change_id": "55ed69a3-9228-452b-87ce-8133710292b1:7c4915d207fd4ddae2329699ccc37b0e110a0c64510acb6127a757d2e13a7aa3",
+      "globalid": "55ed69a3-9228-452b-87ce-8133710292b1",
+      "name": "Nyża pod Szarą Turnią I",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D011 do niezależnego badania. Nyża I; od Nyży IV D013 26.2 m; długość 3,8 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D012",
+      "change_id": "643487f7-79ea-45a5-9427-dcde64334e71:c2566bd0ea5535c7fbfa170fb936d84ba969accb715a0652537dfb3017620bba",
+      "globalid": "643487f7-79ea-45a5-9427-dcde64334e71",
+      "name": "Nyża pod Zachodem Pilotów II",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D012 do niezależnego badania. Ta sama nazwa „Nyża pod Zachodem Pilotów II” co D024, ale 106.7 m dalej. Długości 3 m i 5 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D013",
+      "change_id": "70fc9cd8-57de-4c66-a50f-674b3c6f5d55:dd3a2d3afa44efa7b6e40b41d4dc143ec9319b016589d8c0e24c8e5e512cb948",
+      "globalid": "70fc9cd8-57de-4c66-a50f-674b3c6f5d55",
+      "name": "Nyża pod Szarą Turnią IV",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D013 do niezależnego badania. Nyża IV; od Nyży I D011 26.2 m; długość 3 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D014",
+      "change_id": "8e246480-f366-4d0f-ba7e-a601e865fd03:01216c884dc22035e965378ca344f245e413aac414d8cf0812e238e15d89cc43",
+      "globalid": "8e246480-f366-4d0f-ba7e-a601e865fd03",
+      "name": "Korytarz pod Ciemniakiem",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D014 do niezależnego badania. Korytarz w Ciemniaku D003: 0.10 m. Tutaj długość 8 m i WER_LOK „FF 16062026”. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D015",
+      "change_id": "9beb2e85-ecb8-432a-90d4-623df217c6da:5cbf572c663a2c9afcfe9fbe7461a23a2527552ea9085eaac58fdca0be0f0d0a",
+      "globalid": "9beb2e85-ecb8-432a-90d4-623df217c6da",
+      "name": "Nyża za Jałowcem",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D015 do niezależnego badania. Schronisko Wschodnie w Kończystej MTW-0062: 11.2 m. Inna nazwa, długość 3 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D016",
+      "change_id": "a32f96eb-2092-4974-9256-b1d26b3f35a3:52b298ee38523e41f50a88e8783149671448fedd226bd7f95a3e17548e593b84",
+      "globalid": "a32f96eb-2092-4974-9256-b1d26b3f35a3",
+      "name": "Gawra w Bobrowcu",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D016 do niezależnego badania. Schron pod Gawrą D007: 49.4 m. Gawra ma 22 m, Schron 3 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D017",
+      "change_id": "a61dc23d-4158-4eee-8bf0-885e41f79740:8140aaa217623ec2e2f4e559d00e02debdd8b6dd4f11de09dee6cd5ba577ed6f",
+      "globalid": "a61dc23d-4158-4eee-8bf0-885e41f79740",
+      "name": "Schron nad Wielką Równią",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D017 do niezależnego badania. Gawra nad Wielką Równią STR-0025: 16.7 m; blisko też Jaskinia STR-0029. Schron ma 6 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D018",
+      "change_id": "a876a547-7912-4033-bb3f-8ed2f589c5f0:6141712b74e44bcce4b78290ee01ad0a40d3b7e3761f7b0fa1d8cd3973b93a18",
+      "globalid": "a876a547-7912-4033-bb3f-8ed2f589c5f0",
+      "name": "Jaskinia Cynamonowa",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D018 do niezależnego badania. Jaskinia Kokonowa CHZ-0009: 17.4 m. Inna nazwa; Cynamonowa ma w TPN 47 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D019",
+      "change_id": "adbf9ca1-deff-402f-a223-04ba9c1d0d35:73457ca247fbab308bcf676430638fefb6f21c1be92c38178a68341c4bfbe9ce",
+      "globalid": "adbf9ca1-deff-402f-a223-04ba9c1d0d35",
+      "name": "Nyża pod Zachodem Pilotów III",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D019 do niezależnego badania. Nyża III, od punktu II D024 tylko 3.25 m; drugi punkt II D012 ma inne położenie. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D020",
+      "change_id": "b51c01e8-271e-4aef-802d-c87025a09845:f114364a59ad37cd44ed3d8486328caa3d21cd4993139c233ce2dc00eb092acb",
+      "globalid": "b51c01e8-271e-4aef-802d-c87025a09845",
+      "name": "Nyża pod Szarą Turnią II",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D020 do niezależnego badania. Nyża II; od Nyży III D004 28.4 m; długość 4 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D021",
+      "change_id": "c24021bb-73c2-4bc2-83f1-aabefc26492e:07f0b342b06f752496b7656f9536b23a64da9efe289b8d67c3eb2640207fea67",
+      "globalid": "c24021bb-73c2-4bc2-83f1-aabefc26492e",
+      "name": "Komora w Kończystej Turni",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D021 do niezależnego badania. Dziura nad Zahradziskami D009: 0.17 m. Długości TPN 7 m i 5 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D022",
+      "change_id": "ce72fc5c-f14b-4c6e-bd3e-b411934a8c30:cd99b786dd5a8352ea183981d3854b9627912fd7077278c6dcb1e274a6ff7af4",
+      "globalid": "ce72fc5c-f14b-4c6e-bd3e-b411934a8c30",
+      "name": "Tunel w Skrajnej Giewonckiej Baszcie",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D022 do niezależnego badania. Tunel już ma otwór S MLW-0050 (2.2 m) i N MLW-0044 (8.3 m). Nowy wpis nie określa otworu. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D023",
+      "change_id": "d96cd642-e9d3-4eb8-b9dc-d7df3f449705:987668cf9a5776893249eb4151030ab0b92a31bcff676f711296bdd05c887546",
+      "globalid": "d96cd642-e9d3-4eb8-b9dc-d7df3f449705",
+      "name": "Rura w Olejarni",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D023 do niezależnego badania. Zbójecka Dziura CHZ-0012: 32.8 m; Szczelina D001: 28.6 m. Długość 6,5 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D024",
+      "change_id": "dec416bc-64f2-49e0-abf9-cb2c5a040004:a4e6104b19377df1e03f38b8ed311f19cd4ddbd230bb17801fc7e17fda448bdd",
+      "globalid": "dec416bc-64f2-49e0-abf9-cb2c5a040004",
+      "name": "Nyża pod Zachodem Pilotów II",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D024 do niezależnego badania. Nyża II, długość 5 m; D012 też nazywa się II, ale jest 106.7 m dalej. Nyża III D019 leży 3.25 m stąd. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D025",
+      "change_id": "ef966744-eb95-48b3-b2ba-7a031f8df91a:38267f647f1d889bfccde7780705a838bb149d68edc6614946c631bacd460778",
+      "globalid": "ef966744-eb95-48b3-b2ba-7a031f8df91a",
+      "name": "Okno pod Sikawką",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D025 do niezależnego badania. Jaskinia przy Sikawce: 88,3 m. Inna nazwa, Okno ma długość 3,5 m. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    },
+    {
+      "proposal_id": "D026",
+      "change_id": "fdd25a5f-1d27-4bab-9bf7-ebb1c062746c:dedaed4d550d837dd184cd6b9402bb9a1d04804ebcb07e44d50cbb7d8d9801f7",
+      "globalid": "fdd25a5f-1d27-4bab-9bf7-ebb1c062746c",
+      "name": "Nyża we Wysrankach",
+      "decision": "defer",
+      "reason": "Jawna decyzja użytkownika: odroczyć D026 do niezależnego badania. Gawra we Wysrankach KSW-0241: 9.9 m. Nyża ma 4 m, inną nazwę i odrębny GLOBALID. Brak niezależnego rozstrzygnięcia tożsamości/odrębności otworu; zachować pełną rewizję źródła i dowody w trwałej kolejce. Bez tworzenia obiektu, przypisania GLOBALID ani scalania."
+    }
+  ],
+  "commit_push_authorized": true,
+  "merge_authorized": false,
+  "PBI_102_authorized": false,
+  "snapshot_hash": "481e83a1a113a0596947d40e30d7a186de0f0f51154957c5f48713c4ae3324d8",
+  "batch_id": "pbi-101-20261019"
+}

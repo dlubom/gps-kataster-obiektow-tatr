@@ -130,3 +130,27 @@ wytworzyć stan z decyzji i zachować wcześniejsze dowody w source_reviews.
 łącznie z końcowym LF. PBI-100 dostarcza schemat/validator
 wykonywalnych decyzji i kontrolę zgodności całej paczki; sam raport PBI-097
 nie jest zgodą na użycie starego apply_review.py.
+
+## PBI-101: zgodność informacyjna po pierwszym bootstrapie
+
+Pierwsza paczka może zawierać rekordy informacyjne bez decyzji, gdy
+historyczne CSV i API różnią się wyłącznie w tolerancji konwersji. Po
+przyjęciu snapshotu nadal trzeba rozpoznawać te same dawne pomiary;
+samo przejście z baseline CSV na baseline API nie jest zmianą lokalizacji.
+
+Porównywarka zachowuje tę zgodność wyłącznie przy dowodzie: przyjęty
+snapshot, historyczny CSV uwierzytelniony hashem z istniejących przyjętych
+resolutions, typed GLOBALID i jednoznaczny zgodny pomiar tego GUID.
+Dotyczy to tylko GUID bez własnego rozstrzygnięcia; jawne approve/reject/
+defer nie są zastępowane. Hash CSV jest ponownie sprawdzany przy każdym
+użyciu dowodu. Wynik parsowania można współdzielić po zgodnym hashu.
+
+Dowód rozpoznania wiąże dokładny location_hash **przyjętego baseline API**.
+Późniejsze API/API przesunięcie, również poniżej 0,1 m, ma inny hash i
+nadal wymaga review; tolerancja CSV nie jest przenoszona na nowe pozycje.
+Brak dowodu CSV pozostaje konfliktem. Nie tworzy się pomiarów, bindings,
+resolutions ani fikcyjnych decyzji dla informacyjnych rekordów.
+
+Regresja sprawdza niezmieniony kolejny cykl i późniejszą małą zmianę API,
+bez dopisywania decyzji. Pełna próba paczki PBI-101 obejmuje zachowanie
+26 aktywnych odroczeń przy niezmienionym API i brak identycznego nowego PR.

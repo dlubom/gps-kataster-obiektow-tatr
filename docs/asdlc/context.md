@@ -2,52 +2,40 @@
 
 Last updated: 2026-10-19
 
-## Integracja TPN — PBI-101, oczekuje na decyzje
+## Integracja TPN — PBI-101, końcowe zastosowanie i odbiór
 
-Status: **w toku**, osobne zlecenie 2026-10-19. [Dowody](verification/PBI-101.md),
-[propozycje po rekordzie](verification/PBI-101-review/review.md),
-[prompt kontynuacji](verification/PBI-101-next-task.md).
-Przejęto czysty otwarty draft PR #12 na codex/tpn-sync-planning,
-HEAD/origin/PR 70c66782e276007a1ac0a34af03c18e68696ebcc;
-main b98fd3febb400c7ee520046682c1bb16238429ee.
-Końcowy odbiór PBI-100/run 39284447552 potwierdzony: completed/success,
-1/1 job, 14/14 kroków, pełne logi i archiwum, 1077 testów PASS.
-Opis PR uzupełniono; nie powtarzano implementacji PBI-096–100.
+Status: **w toku — wszystkie decyzje użytkownika rozliczone**. Jedna paczka
+`pbi-101-20261019`: **614 approve / 26 defer / 0 pending**. A578 zachowuje
+katalog i best (573 auto, 5 manual); B31 dopisuje pomiary i osobno wybiera
+nowe best auto; C5 tworzy 5 Obiektów/Jaskiń; D26 odroczone do niezależnego
+badania, bez zmian katalogu. [Decyzje i zgody](verification/PBI-101-review/review.md).
+Zapis/wykonawca agent:codex, bez podpisu imieniem użytkownika. Użytkownik
+jawnie zlecił commit/push do PR #12, dokładne końcowe CI i eksporty.
 
-NOWY snapshot pbi-101-live-20261019: 1035 rekordów, kompletne count/ID,
-strony 500/500/35, hash 481e83a1a113a0596947d40e30d7a186de0f0f51154957c5f48713c4ae3324d8.
-Zweryfikowany i commit/push przed danymi w 60afeca2d17bbc4b5aa690abc83da1d25d89a506.
-Paczka data/source_reviews/tpn/pbi-101-20261019 ma tę bazę i czyta stan
-przyjęty wyłącznie z main b98fd3f (bootstrap CSV; brak przyjętego rejestru).
-640 przypadków do decyzji, 395 pozostałych informacyjnych. Propozycje:
-A001–A578 przyjęcie źródła bez zmiany katalogu; B001–B031 nowy pomiar
-historii i osobne keep/jawne auto→manual niechronionych best; C001–C005
-nowe Obiekty/Jaskinie; D001–D026 indywidualne defer, 273 strony kandydatów.
+Snapshot 1035 rekordów jest niezmienny, utrwalony przed danymi w 60afeca;
+przyjęty stan wyłącznie origin/main b98fd3f. Pierwszy niezaaplikowany plan
+keep zachowano bajtowo w superseded-v1; nowa rewizja tej samej paczki
+wiąże zaakceptowany select_new. Żadna surowa geometria API, źródło ani
+preimage nie zmieniły się. [Równoważność review](verification/PBI-101-review/review-equivalence.json).
 
-**Użytkownik po pokazaniu propozycji polecił: „Na razie pozostaw wszystko
-pending”.** Wszystkie 640 decyzji pending, autor/czas null. Nie ma
-produkcyjnego apply, approve/reject/defer, application ani nowego stanu
-źródła. Bramka CI aktywnej paczki ma blokować gotowość pending; zielone
-testy kodu nie kończą PBI-101. Wynik CI końcowego SHA utrwala opis PR.
-Manifest 099 odtworzony bajtowo i nadal pending, 9/9 preimages zgodne;
-3 chronione migracje bez zgody. 2047 śledzonych dawnych data/config,
-wszystkie 1876 pomiarów i 1007 best produkcji bez zmiany. Testy apply
-wyłącznie na nowym izolowanym klonie, autor simulation:codex, bez
-podszywania się pod użytkownika. Wyniki i warunkowy diff w dowodach.
+CI 39311292320 na diagnostycznym 6d94f9c potwierdziło różnice końcowych
+cyfr projekcji CSV i odległości Linux/Mac. Naprawa deklaruje precyzję
+**wyłącznie pochodnych**, zachowując ścisłe hashe/API, progi i historię:
+[zasady](tpn_sync_derived_precision.md). 1081 testów PASS; izolowany
+stable dry-run/apply zgodny, replay noop=true, eksporty 10/10 PASS;
+1876 dawnych pomiarów i wszystkie 9 chronionych plików zachowane.
+Manifest PBI-099 nadal pending, bez migracji auto→manual. Niezmieniony
+kolejny odczyt zachowuje 26 active defer i requires_pr=false; naprawiono
+rozpoznanie historycznej zgodności 395 informacyjnych wpisów na podstawie
+uwierzytelnionego CSV, bez tworzenia decyzji i bez tolerancji dla późniejszego
+ruchu API. 138 testów zmienionych modułów PASS.
 
-Hosted CI review 9a70337/run 39289000670: failure wcześniej niż pending,
-changes evidence/schema mismatch; regenerate report. 1077 testów, Ruff
-oraz YAML success; 11 kroków success / 1 failure / 2 skipped. Lokalny
-czysty klon odtwarza report i dochodzi do pending; przyczyna rozbieżności
-Linux/Mac nieustalona. [Dokładny handoff CI](verification/PBI-101-ci-handoff.md).
-Nie maskować tego jako oczekiwanej blokady pending, nie osłabiać strażnika
-ani nie nadpisywać immutable inputs. Kod/CI pozostały bez zmian.
-
-Dalsza praca: **wyjaśnienie rozbieżności CI i kontynuacja PBI-101 po jawnych decyzjach dla konkretnych
-propozycji**, bez ponownego pobierania/zmiany wejść aktywnej paczki bez
-uzgodnienia. Po zmianie podstawy wymagane nowe review. PBI-102–103
-pozostają planowane, bez merge/tagu/release/harmonogramu.
-Poniższe sekcje PBI-095–100 są historią wcześniejszych etapów.
+Do ukończenia pozostaje produkcyjny CLI apply, końcowa bramka i dostarczenie
+z exact-SHA CI/readback. [Dowody](verification/PBI-101.md),
+[handoff CI](verification/PBI-101-ci-handoff.md),
+[kontynuacja](verification/PBI-101-next-task.md). PBI-102–103 planowane;
+bez merge, tagu, release i harmonogramu. Nie pytać ponownie o przyjęte
+zakresy ani o zgodę na commit/push; utrwalone jawne decyzje są aktualne.
 
 ## Integracja TPN — PBI-100
 

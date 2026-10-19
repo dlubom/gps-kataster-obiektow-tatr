@@ -1,0 +1,5370 @@
+--- /dev/null
++++ b/data/caves/C-1005.yml
+@@ -0,0 +1,12 @@
++created_at: '2026-10-19T18:54:41.078420Z'
++created_by: agent:codex
++external_refs: []
++id: C-1005
++name: Jaskinia w Kozim Grzbiecie
++notes: null
++object_ids:
++- MTZ-0067
++schema_version: 1
++system_name: null
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- /dev/null
++++ b/data/caves/C-1006.yml
+@@ -0,0 +1,12 @@
++created_at: '2026-10-19T18:54:41.078420Z'
++created_by: agent:codex
++external_refs: []
++id: C-1006
++name: Gawra w Sarniej Skale
++notes: null
++object_ids:
++- STR-0030
++schema_version: 1
++system_name: null
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- /dev/null
++++ b/data/caves/C-1007.yml
+@@ -0,0 +1,12 @@
++created_at: '2026-10-19T18:54:41.078420Z'
++created_by: agent:codex
++external_refs: []
++id: C-1007
++name: Okno przy Źródle
++notes: null
++object_ids:
++- BIA-0009
++schema_version: 1
++system_name: null
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- /dev/null
++++ b/data/caves/C-1008.yml
+@@ -0,0 +1,12 @@
++created_at: '2026-10-19T18:54:41.078420Z'
++created_by: agent:codex
++external_refs: []
++id: C-1008
++name: Gawra w Grześkówkach
++notes: null
++object_ids:
++- DZI-0011
++schema_version: 1
++system_name: null
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- /dev/null
++++ b/data/caves/C-1009.yml
+@@ -0,0 +1,12 @@
++created_at: '2026-10-19T18:54:41.078420Z'
++created_by: agent:codex
++external_refs: []
++id: C-1009
++name: Jaskinia Lodowa Ponorowa
++notes: null
++object_ids:
++- MTZ-0068
++schema_version: 1
++system_name: null
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- /dev/null
++++ b/data/objects/BIA/BIA-0009.yml
+@@ -0,0 +1,58 @@
++attachments: []
++best_measurement:
++  measurement_id: m-001
++  mode: auto
++  reason: null
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-1007
++created_at: '2026-10-19T18:54:41.078420Z'
++created_by: agent:codex
++external_refs:
++- external_id: 6ebd9c00-d272-4909-85ec-00ae2bb6632d
++  ref_type: source_globalid
++  scope: object
++  system: TPN
++id: BIA-0009
++id_assignment:
++  assigned_from_measurement_id: m-001
++  assigned_prefix: BIA
++  method: auto
++  prefix_override_reason: null
++measurements:
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
++  lat: 49.25953732835311
++  lon: 19.953589664455603
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-09T16:38:11Z
++
++    TPN revision: 6064efb0ca1761b8a62171e586f39c2ac7496173b0793400a52b8b92821e69a4
++
++    TPN WER_LOK: FF 09052026'
++  observed_at: null
++  observed_date: '2026-05-09'
++  source: TPN
++  source_date: '2026-05-09'
++  source_ref: TPN:6ebd9c00-d272-4909-85ec-00ae2bb6632d
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155107.781
++  y_1992: 569363.541
++name_local: Okno przy Źródle
++notes: null
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- /dev/null
++++ b/data/objects/DZI/DZI-0011.yml
+@@ -0,0 +1,58 @@
++attachments: []
++best_measurement:
++  measurement_id: m-001
++  mode: auto
++  reason: null
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-1008
++created_at: '2026-10-19T18:54:41.078420Z'
++created_by: agent:codex
++external_refs:
++- external_id: c9dc792d-fdd9-4ad9-b024-26b8c795cdaf
++  ref_type: source_globalid
++  scope: object
++  system: TPN
++id: DZI-0011
++id_assignment:
++  assigned_from_measurement_id: m-001
++  assigned_prefix: DZI
++  method: auto
++  prefix_override_reason: null
++measurements:
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
++  lat: 49.268889145683346
++  lon: 19.936981261083442
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-10-04T11:03:25Z
++
++    TPN revision: 7e95dddc0427505ccb17e4324874690d9a04a23a5e8fa6e415dc9eb2a3c1381c
++
++    TPN WER_LOK: 04102026'
++  observed_at: null
++  observed_date: '2026-10-04'
++  source: TPN
++  source_date: '2026-10-04'
++  source_ref: TPN:c9dc792d-fdd9-4ad9-b024-26b8c795cdaf
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 156131.99
++  y_1992: 568142.592
++name_local: Gawra w Grześkówkach
++notes: null
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/KSW/KSW-0147.yml
++++ b/data/objects/KSW/KSW-0147.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt KSW-0147, nowy pomiar m-003; różnica względem poprzedniego TPN 74.82 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0476
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{71DD8DCE-2BC1-42F7-A5E9-174902CA7AED}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Jaskinia przy Sikawce
+-cave_id: C-0476
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{71DD8DCE-2BC1-42F7-A5E9-174902CA7AED}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1305.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 153774.49
+-  y_1992: 564098.26
+-  elevation_m: 1305.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1173'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1173'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 153774.49
++  y_1992: 564098.26
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1310.098688
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 153774.49
+-  y_1992: 564098.26
+-  elevation_m: 1310.098688
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,26 @@
++  vertical_accuracy_m: null
++  x_1992: 153774.49
++  y_1992: 564098.26
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.24787225375916
++  lon: 19.88195744765718
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-06-02T18:15:52Z
++
++    TPN revision: 8640a7f554d1d0cd7650505530d87bf12b81eb85ec5f7b0bc4bf9c6f09140ce1'
++  observed_at: null
++  observed_date: '2026-06-02'
++  source: TPN
++  source_date: '2026-06-02'
++  source_ref: TPN:71dd8dce-2bc1-42f7-a5e9-174902ca7aed
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +103,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 153748.142
++  y_1992: 564168.239
++name_local: Jaskinia przy Sikawce
+@@ -75,4 +109,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/KSW/KSW-0241.yml
++++ b/data/objects/KSW/KSW-0241.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-002
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt KSW-0241, nowy pomiar m-002; różnica względem poprzedniego TPN 15.70 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0879
++created_at: '2026-05-16T10:22:52Z'
++created_by: importer:tpn
++external_refs:
++- external_id: '{4C30384D-7D8D-48D8-8D57-AEA8CC59687C}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Gawra we Wysrankach
+-cave_id: C-0879
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{4C30384D-7D8D-48D8-8D57-AEA8CC59687C}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1199.427985
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,11 +39,0 @@
+-  x_1992: 153952.67
+-  y_1992: 563801.33
+-  elevation_m: 1199.427985
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
+-  source: TPN
+-  source_ref: TPN:{4C30384D-7D8D-48D8-8D57-AEA8CC59687C}
+-  observed_date: '2024-03-22'
+-  source_date: '2024-03-22'
+@@ -33,6 +40,0 @@
+-  device: null
+-  tags:
+-  - tpn
+-  verification_status: nieweryfikowany
+-  verified_by: null
+-  verified_at: null
+@@ -44,9 +46,45 @@
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-001
+-  reason: null
+-  updated_at: '2026-05-16T10:22:52Z'
+-  updated_by: importer:tpn
+-attachments: []
++  observed_date: '2024-03-22'
++  source: TPN
++  source_date: '2024-03-22'
++  source_ref: TPN:{4C30384D-7D8D-48D8-8D57-AEA8CC59687C}
++  tags:
++  - tpn
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 153952.67
++  y_1992: 563801.33
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
++  lat: 49.24968194423332
++  lon: 19.87713595606838
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-06-02T14:15:32Z
++
++    TPN revision: c775cce963990e4475e63d8a5dc3659fa8d39a25bcdf2c0b3d8aa1da05d1d18b
++
++    TPN WER_LOK: 21-03-2024 TZK
++
++    TPN UWAGI: Dane morfometr. orientacyjnie'
++  observed_at: null
++  observed_date: '2026-06-02'
++  source: TPN
++  source_date: '2026-06-02'
++  source_ref: TPN:4c30384d-7d8d-48d8-8d57-aea8cc59687c
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 153945.182
++  y_1992: 563815.115
++name_local: Gawra we Wysrankach
+@@ -54,4 +92,3 @@
+-created_at: '2026-05-16T10:22:52Z'
+-created_by: importer:tpn
+-updated_at: '2026-10-15T13:16:44Z'
+-updated_by: maintenance:PBI-082
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MLW/MLW-0014.yml
++++ b/data/objects/MLW/MLW-0014.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MLW-0014, nowy pomiar m-003; różnica względem poprzedniego TPN 2.21 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0416
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{CA9EF295-4FB4-43D5-9D7E-005DAC6FF8B4}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Zaspałkowa Szczelina
+-cave_id: C-0416
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{CA9EF295-4FB4-43D5-9D7E-005DAC6FF8B4}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1743.3
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 152759.66
+-  y_1992: 567509.69
+-  elevation_m: 1743.3
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1577'
++  observed_date: '2013-12-31'
+@@ -28,0 +45 @@
++  source_date: '2013-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2013-12-31'
+-  source_date: '2013-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1577'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 152759.66
++  y_1992: 567509.69
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1742.045049
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 152759.66
+-  y_1992: 567509.69
+-  elevation_m: 1742.045049
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,26 @@
++  vertical_accuracy_m: null
++  x_1992: 152759.66
++  y_1992: 567509.69
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.238599709660214
++  lon: 19.927715368320143
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-02-11T12:20:27Z
++
++    TPN revision: 7301437eb1f6a50080da782f7ddfd3f34f24333b3aa663da1ce5a5448e85c2ba'
++  observed_at: null
++  observed_date: '2026-02-11'
++  source: TPN
++  source_date: '2026-02-11'
++  source_ref: TPN:ca9ef295-4fb4-43d5-9d7e-005dac6ff8b4
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +103,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 152757.474
++  y_1992: 567510.029
++name_local: Zaspałkowa Szczelina
+@@ -75,4 +109,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MLW/MLW-0020.yml
++++ b/data/objects/MLW/MLW-0020.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MLW-0020, nowy pomiar m-003; różnica względem poprzedniego TPN 1.21 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0508
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{B605E5EA-F1A5-43A2-803C-030B412B7415}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Koprowa Studnia
+-cave_id: C-0508
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{B605E5EA-F1A5-43A2-803C-030B412B7415}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1808.01
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 152846.32
+-  y_1992: 567702.5
+-  elevation_m: 1808.01
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1590'
++  observed_date: '2014-12-31'
+@@ -28,0 +45 @@
++  source_date: '2014-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2014-12-31'
+-  source_date: '2014-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1590'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 152846.32
++  y_1992: 567702.5
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1808.930858
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,5 @@
+-  x_1992: 152842.82
+-  y_1992: 567693.31
+-  elevation_m: 1808.930858
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++
++    TPN WER_LOK: 11-02-2020 FF ortofotomapa'
++  observed_date: '2024-07-30'
+@@ -53,0 +71 @@
++  source_date: '2024-07-30'
+@@ -55,4 +72,0 @@
+-  observed_date: '2024-07-30'
+-  source_date: '2024-07-30'
+-  method: source_record
+-  device: null
+@@ -61,0 +76 @@
++  verified_at: null
+@@ -63,2 +78,19 @@
+-  verified_at: null
+-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++  vertical_accuracy_m: null
++  x_1992: 152842.82
++  y_1992: 567693.31
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.23935809141422
++  lon: 19.930249838155245
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-02-11T12:20:43Z
++
++    TPN revision: 4f6c10b4f9d019c1e909da758dbe31e1dcd0b9c13a022f6a2cf015b45380999b
+@@ -67,9 +99,13 @@
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  observed_at: null
++  observed_date: '2026-02-11'
++  source: TPN
++  source_date: '2026-02-11'
++  source_ref: TPN:b605e5ea-f1a5-43a2-803c-030b412b7415
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 152844.022
++  y_1992: 567693.424
++name_local: Koprowa Studnia
+@@ -77,4 +113,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-10-15T13:16:44Z'
+-updated_by: maintenance:PBI-082
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MLW/MLW-0028.yml
++++ b/data/objects/MLW/MLW-0028.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MLW-0028, nowy pomiar m-003; różnica względem poprzedniego TPN 1.39 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0657
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{DE04BC2C-8E52-43A7-8881-0677C9A98590}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Jaskinia Świstacza
+-cave_id: C-0657
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{DE04BC2C-8E52-43A7-8881-0677C9A98590}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1808.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 152846.37
+-  y_1992: 567706.35
+-  elevation_m: 1808.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/4826'
++  observed_date: '2014-12-31'
+@@ -28,0 +45 @@
++  source_date: '2014-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2014-12-31'
+-  source_date: '2014-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/4826'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 152846.37
++  y_1992: 567706.35
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1814.340872
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,5 @@
+-  x_1992: 152839.53
+-  y_1992: 567723.91
+-  elevation_m: 1814.340872
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++
++    TPN WER_LOK: 11-02-2020 FF ortofotomapa'
++  observed_date: '2022-05-25'
+@@ -53,0 +71 @@
++  source_date: '2022-05-25'
+@@ -55,4 +72,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +76 @@
++  verified_at: null
+@@ -63,2 +78,19 @@
+-  verified_at: null
+-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++  vertical_accuracy_m: null
++  x_1992: 152839.53
++  y_1992: 567723.91
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.23930995267978
++  lon: 19.930685823312448
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-02-11T12:20:39Z
++
++    TPN revision: 46a91bb5220100c07a632a1a892f95070bd76990a1b76f08eefc93e85c703d17
+@@ -67,9 +99,13 @@
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  observed_at: null
++  observed_date: '2026-02-11'
++  source: TPN
++  source_date: '2026-02-11'
++  source_ref: TPN:de04bc2c-8e52-43a7-8881-0677c9a98590
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 152839.062
++  y_1992: 567725.216
++name_local: Jaskinia Świstacza
+@@ -77,4 +113,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-10-15T13:16:44Z'
+-updated_by: maintenance:PBI-082
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MLZ/MLZ-0012.yml
++++ b/data/objects/MLZ/MLZ-0012.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MLZ-0012, nowy pomiar m-003; różnica względem poprzedniego TPN 5.74 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0111
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{7006936A-289F-4F87-8614-3C6253D13228}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Bliźniacza Studnia
+-cave_id: C-0111
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{7006936A-289F-4F87-8614-3C6253D13228}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1795.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 152898.51
+-  y_1992: 567325.64
+-  elevation_m: 1795.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1592'
++  observed_date: '2013-12-31'
+@@ -28,0 +45 @@
++  source_date: '2013-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2013-12-31'
+-  source_date: '2013-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1592'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 152898.51
++  y_1992: 567325.64
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1790.540605
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 152898.51
+-  y_1992: 567325.64
+-  elevation_m: 1790.540605
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,26 @@
++  vertical_accuracy_m: null
++  x_1992: 152898.51
++  y_1992: 567325.64
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.23987014050215
++  lon: 19.92527898654571
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-02-11T12:24:50Z
++
++    TPN revision: 33de506eff0f54aab5a8bb738f341ffc275b5d9c762026920e1378e463b2dade'
++  observed_at: null
++  observed_date: '2026-02-11'
++  source: TPN
++  source_date: '2026-02-11'
++  source_ref: TPN:7006936a-289f-4f87-8614-3c6253d13228
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +103,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 152896.491
++  y_1992: 567331.008
++name_local: Bliźniacza Studnia
+@@ -75,4 +109,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MLZ/MLZ-0079.yml
++++ b/data/objects/MLZ/MLZ-0079.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MLZ-0079, nowy pomiar m-003; różnica względem poprzedniego TPN 4.70 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0794
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{34B1E400-EED4-4773-8416-8D48D04038B4}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Średni Lej
+-cave_id: C-0794
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{34B1E400-EED4-4773-8416-8D48D04038B4}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1879.9
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 152886.08
+-  y_1992: 566990.0
+-  elevation_m: 1879.9
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1563'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1563'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 152886.08
++  y_1992: 566990.0
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1870.207198
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,5 @@
+-  x_1992: 152886.08
+-  y_1992: 566990.0
+-  elevation_m: 1870.207198
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++
++    TPN WER_LOK: 11-02-2020 FF ortofotomapa'
++  observed_date: '2022-05-25'
+@@ -53,0 +71 @@
++  source_date: '2022-05-25'
+@@ -55,4 +72,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +76 @@
++  verified_at: null
+@@ -63,2 +78,19 @@
+-  verified_at: null
+-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++  vertical_accuracy_m: null
++  x_1992: 152886.08
++  y_1992: 566990.0
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.239847644511535
++  lon: 19.92063056805087
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-02-11T12:19:56Z
++
++    TPN revision: 660ec148c1d93f22c9f07aeb9d9e93b84c9d6f0a7555d2071d6a89a43b3222ad
+@@ -67,9 +99,13 @@
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  observed_at: null
++  observed_date: '2026-02-11'
++  source: TPN
++  source_date: '2026-02-11'
++  source_ref: TPN:34b1e400-eed4-4773-8416-8d48d04038b4
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 152889.863
++  y_1992: 566992.785
++name_local: Średni Lej
+@@ -77,4 +113,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-10-15T13:16:44Z'
+-updated_by: maintenance:PBI-082
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0005.yml
++++ b/data/objects/MTW/MTW-0005.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0005, nowy pomiar m-003; różnica względem poprzedniego TPN 39.08 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0091
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{F3AE1E5E-BA6A-4C62-86FE-A4F42892808C}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Nyża w Kończystej
+-cave_id: C-0091
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{F3AE1E5E-BA6A-4C62-86FE-A4F42892808C}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1174.5
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155505.9
+-  y_1992: 563930.48
+-  elevation_m: 1174.5
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/976'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/976'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155505.9
++  y_1992: 563930.48
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1175.672529
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155505.9
+-  y_1992: 563930.48
+-  elevation_m: 1175.672529
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155505.9
++  y_1992: 563930.48
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.26369744590149
++  lon: 19.878434328324417
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T08:54:15Z
++
++    TPN revision: 81b8b53700e122624330e9a4714d858d5dca686412def381ef7cc7f497539166
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:f3ae1e5e-ba6a-4c62-86fe-a4f42892808c
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155503.89
++  y_1992: 563891.481
++name_local: Nyża w Kończystej
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0017.yml
++++ b/data/objects/MTW/MTW-0017.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0017, nowy pomiar m-003; różnica względem poprzedniego TPN 14.38 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0165
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{D532520A-CC0F-4F01-9089-01C883CC553B}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Schronik w Kończystej Turni
+-cave_id: C-0165
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{D532520A-CC0F-4F01-9089-01C883CC553B}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1135.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155493.53
+-  y_1992: 563840.84
+-  elevation_m: 1135.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/982'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/982'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155493.53
++  y_1992: 563840.84
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1130.228315
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155493.53
+-  y_1992: 563840.84
+-  elevation_m: 1130.228315
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155493.53
++  y_1992: 563840.84
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.26373292586074
++  lon: 19.877677490491408
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T08:28:40Z
++
++    TPN revision: 2b21c2931a2f7576806aedb54b6de181fd65fc109658d53362738e6e58a5f49a
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:d532520a-cc0f-4f01-9089-01c883cc553b
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155507.194
++  y_1992: 563836.389
++name_local: Schronik w Kończystej Turni
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0020.yml
++++ b/data/objects/MTW/MTW-0020.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0020, nowy pomiar m-003; różnica względem poprzedniego TPN 0.60 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0201
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{518FE961-D9DA-4997-804E-CFC2E389A5AB}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Szara Studnia
+-cave_id: C-0201
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{518FE961-D9DA-4997-804E-CFC2E389A5AB}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1750.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 153359.18
+-  y_1992: 566386.1
+-  elevation_m: 1750.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1591'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1591'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 153359.18
++  y_1992: 566386.1
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1751.160829
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 153359.18
+-  y_1992: 566386.1
+-  elevation_m: 1751.160829
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,26 @@
++  vertical_accuracy_m: null
++  x_1992: 153359.18
++  y_1992: 566386.1
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.24414031693521
++  lon: 19.912367100700102
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-02-11T12:23:13Z
++
++    TPN revision: d28168a04ea4d8b076cb92bece0145734428fc47e51fbf6fda8e282ebebd33fe'
++  observed_at: null
++  observed_date: '2026-02-11'
++  source: TPN
++  source_date: '2026-02-11'
++  source_ref: TPN:518fe961-d9da-4997-804e-cfc2e389a5ab
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +103,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 153359.641
++  y_1992: 566385.719
++name_local: Szara Studnia
+@@ -75,4 +109,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0021.yml
++++ b/data/objects/MTW/MTW-0021.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0021, nowy pomiar m-003; różnica względem poprzedniego TPN 65.45 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0241
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{4509213C-4194-4179-90E8-CFFA30639191}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Koleba za Kończystą
+-cave_id: C-0241
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{4509213C-4194-4179-90E8-CFFA30639191}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1184.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155574.5
+-  y_1992: 563832.19
+-  elevation_m: 1184.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/975'
++  observed_date: '2013-12-31'
+@@ -28,0 +45 @@
++  source_date: '2013-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2013-12-31'
+-  source_date: '2013-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/975'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155574.5
++  y_1992: 563832.19
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1188.145484
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155574.5
+-  y_1992: 563832.19
+-  elevation_m: 1188.145484
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155574.5
++  y_1992: 563832.19
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.264608453745275
++  lon: 19.878429806915516
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T08:22:31Z
++
++    TPN revision: 7425befd9fec8864005e6614e8ca22d881f788be7be9a34f19405faedf9360e0
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:4509213c-4194-4179-90e8-cffa30639191
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155605.132
++  y_1992: 563889.976
++name_local: Koleba za Kończystą
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0024.yml
++++ b/data/objects/MTW/MTW-0024.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0024, nowy pomiar m-003; różnica względem poprzedniego TPN 19.59 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0280
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{1F9EAAE2-F97D-4205-BF67-7A43E6DDB5E7}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Ciasna Norka
+-cave_id: C-0280
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{1F9EAAE2-F97D-4205-BF67-7A43E6DDB5E7}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1103.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155430.85
+-  y_1992: 563927.46
+-  elevation_m: 1103.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/987'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/987'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155430.85
++  y_1992: 563927.46
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1100.600243
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155430.85
+-  y_1992: 563927.46
+-  elevation_m: 1100.600243
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155430.85
++  y_1992: 563927.46
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.263149449546525
++  lon: 19.878710729456344
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T08:32:32Z
++
++    TPN revision: 3d525e9749a661b5bb5d1ae8b924495ba490952d62c9f1ae75b36bf712bd9903
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:1f9eaae2-f97d-4205-bf67-7a43e6ddb5e7
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155443.222
++  y_1992: 563912.293
++name_local: Ciasna Norka
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0031.yml
++++ b/data/objects/MTW/MTW-0031.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0031, nowy pomiar m-003; różnica względem poprzedniego TPN 26.59 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0395
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{0257A120-426E-4B7D-B47F-1D9F853C6C85}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Dziura w Kończystej Niżnia
+-cave_id: C-0395
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{0257A120-426E-4B7D-B47F-1D9F853C6C85}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1191.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155549.93
+-  y_1992: 563894.33
+-  elevation_m: 1191.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/962'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/962'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155549.93
++  y_1992: 563894.33
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1208.253058
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155549.93
+-  y_1992: 563894.33
+-  elevation_m: 1208.253058
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155549.93
++  y_1992: 563894.33
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.264073726826076
++  lon: 19.878120085354027
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T08:18:54Z
++
++    TPN revision: 797229725c7ef9c2f73f16b9364a7c0f0711ec95ec5cf93dff4ce2fa6e834696
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:0257a120-426e-4b7d-b47f-1d9f853c6c85
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155545.443
++  y_1992: 563868.14
++name_local: Dziura w Kończystej Niżnia
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0033.yml
++++ b/data/objects/MTW/MTW-0033.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0033, nowy pomiar m-003; różnica względem poprzedniego TPN 149.17 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0409
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{766D6D08-D9FD-492C-95DE-6CC01A2EFD24}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Szczelina na Drodze Steckiego
+-cave_id: C-0409
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{766D6D08-D9FD-492C-95DE-6CC01A2EFD24}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1480.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 153126.39
+-  y_1992: 565992.65
+-  elevation_m: 1480.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1517'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1517'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 153126.39
++  y_1992: 565992.65
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1642.779896
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 153126.39
+-  y_1992: 565992.65
+-  elevation_m: 1642.779896
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 153126.39
++  y_1992: 565992.65
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.24121577065699
++  lon: 19.90536621884487
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-09T16:11:15Z
++
++    TPN revision: 18eaf6801b17633b4b4ea05262f40c297599af018619795bacf4579a3eea8809
++
++    TPN WER_LOK: FF 09052026'
++  observed_at: null
++  observed_date: '2026-05-09'
++  source: TPN
++  source_date: '2026-05-09'
++  source_ref: TPN:766d6d08-d9fd-492c-95de-6cc01a2efd24
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 153028.502
++  y_1992: 565880.217
++name_local: Szczelina na Drodze Steckiego
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0035.yml
++++ b/data/objects/MTW/MTW-0035.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0035, nowy pomiar m-003; różnica względem poprzedniego TPN 22.74 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0420
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{83869A78-6375-4F82-BC45-CBED0F9B7236}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Dziura w Żlebku
+-cave_id: C-0420
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{83869A78-6375-4F82-BC45-CBED0F9B7236}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1090.5
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155412.89
+-  y_1992: 564112.72
+-  elevation_m: 1090.5
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/979'
++  observed_date: '2013-12-31'
+@@ -28,0 +45 @@
++  source_date: '2013-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2013-12-31'
+-  source_date: '2013-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/979'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155412.89
++  y_1992: 564112.72
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1100.191431
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155412.89
+-  y_1992: 564112.72
+-  elevation_m: 1100.191431
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155412.89
++  y_1992: 564112.72
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.262707573633136
++  lon: 19.881245493231482
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-21T14:58:54Z
++
++    TPN revision: 59d3b3312d7ddb4ea49a5fcc66c237d49ef9bbd0346eae9750c75a642bc461c9
++
++    TPN WER_LOK: FF 21052026'
++  observed_at: null
++  observed_date: '2026-05-21'
++  source: TPN
++  source_date: '2026-05-21'
++  source_ref: TPN:83869a78-6375-4f82-bc45-cbed0f9b7236
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155396.26
++  y_1992: 564097.227
++name_local: Dziura w Żlebku
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0039.yml
++++ b/data/objects/MTW/MTW-0039.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0039, nowy pomiar m-003; różnica względem poprzedniego TPN 74.27 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0536
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{9BA8F361-D7AA-413F-BC86-AC235940F603}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Nyża pod Progiem w Kończystej
+-cave_id: C-0536
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{9BA8F361-D7AA-413F-BC86-AC235940F603}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1125.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155508.28
+-  y_1992: 564020.38
+-  elevation_m: 1125.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/989'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/989'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155508.28
++  y_1992: 564020.38
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1196.543358
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155508.28
+-  y_1992: 564020.38
+-  elevation_m: 1196.543358
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155508.28
++  y_1992: 564020.38
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.26330019605871
++  lon: 19.87941770037199
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-21T14:55:54Z
++
++    TPN revision: 6a14de86be2d7feb1b912202546fc2f88891196a4b32b5885aa46dd2a91be446
++
++    TPN WER_LOK: FF 21052026'
++  observed_at: null
++  observed_date: '2026-05-21'
++  source: TPN
++  source_date: '2026-05-21'
++  source_ref: TPN:9ba8f361-d7aa-413f-bc86-ac235940f603
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155460.573
++  y_1992: 563963.518
++name_local: Nyża pod Progiem w Kończystej
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0043.yml
++++ b/data/objects/MTW/MTW-0043.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0043, nowy pomiar m-003; różnica względem poprzedniego TPN 15.80 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0566
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{0C34F113-D6D5-4E57-9DB1-B240ED3533B5}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Schron pod Kończystą
+-cave_id: C-0566
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{0C34F113-D6D5-4E57-9DB1-B240ED3533B5}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1114.5
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155465.02
+-  y_1992: 563896.57
+-  elevation_m: 1114.5
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/977'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/977'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155465.02
++  y_1992: 563896.57
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1130.652996
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155465.02
+-  y_1992: 563896.57
+-  elevation_m: 1130.652996
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155465.02
++  y_1992: 563896.57
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.26341546673104
++  lon: 19.878307635700317
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T08:31:15Z
++
++    TPN revision: 17f9f84f15e9ee2a39ab447d88bf2ae6a85d42741ca338ba6f2a1eb0a3c7810e
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:0c34f113-d6d5-4e57-9db1-b240ed3533b5
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155472.446
++  y_1992: 563882.631
++name_local: Schron pod Kończystą
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0046.yml
++++ b/data/objects/MTW/MTW-0046.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0046, nowy pomiar m-003; różnica względem poprzedniego TPN 59.69 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0580
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{61F5CFC1-A9EB-4193-A3B3-E4FD8DD9C60D}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Bliźniaczy Komin
+-cave_id: C-0580
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{61F5CFC1-A9EB-4193-A3B3-E4FD8DD9C60D}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1450.7
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 153134.79
+-  y_1992: 565932.49
+-  elevation_m: 1450.7
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1528'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1528'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 153134.79
++  y_1992: 565932.49
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1547.394374
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 153134.79
+-  y_1992: 565932.49
+-  elevation_m: 1547.394374
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 153134.79
++  y_1992: 565932.49
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.242521869375864
++  lon: 19.905487761479854
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-09T16:24:49Z
++
++    TPN revision: 41e19cc0f90b51e064a63b18240b0d4590641eb9d1063513c649b1f34013d107
++
++    TPN WER_LOK: FF 09052026'
++  observed_at: null
++  observed_date: '2026-05-09'
++  source: TPN
++  source_date: '2026-05-09'
++  source_ref: TPN:61f5cfc1-a9eb-4193-a3b3-e4fd8dd9c60d
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 153173.76
++  y_1992: 565887.324
++name_local: Bliźniaczy Komin
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0052.yml
++++ b/data/objects/MTW/MTW-0052.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0052, nowy pomiar m-003; różnica względem poprzedniego TPN 15.31 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0672
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{B2A16EA5-23C8-4E73-BBE7-B4CE1CDF5440}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Okap w Kończystej Turni
+-cave_id: C-0672
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{B2A16EA5-23C8-4E73-BBE7-B4CE1CDF5440}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1153.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155496.18
+-  y_1992: 563940.73
+-  elevation_m: 1153.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/978'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/978'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155496.18
++  y_1992: 563940.73
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1171.219354
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155496.18
+-  y_1992: 563940.73
+-  elevation_m: 1171.219354
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155496.18
++  y_1992: 563940.73
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.263577417975604
++  lon: 19.878911640356993
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T08:33:09Z
++
++    TPN revision: 6142c1d9210149d8a443958df42e169bc6535f64df59f282266b592213436996
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:b2a16ea5-23c8-4e73-bbe7-b4ce1cdf5440
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155490.955
++  y_1992: 563926.353
++name_local: Okap w Kończystej Turni
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0057.yml
++++ b/data/objects/MTW/MTW-0057.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0057, nowy pomiar m-003; różnica względem poprzedniego TPN 46.81 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0744
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{E0642496-F87C-4EEE-A7A0-A60365191209}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Dziura pod Ratuszem
+-cave_id: C-0744
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{E0642496-F87C-4EEE-A7A0-A60365191209}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1444.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 153139.39
+-  y_1992: 565917.34
+-  elevation_m: 1444.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1527'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1527'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 153139.39
++  y_1992: 565917.34
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1535.649271
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 153139.39
+-  y_1992: 565917.34
+-  elevation_m: 1535.649271
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 153139.39
++  y_1992: 565917.34
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.24253336771759
++  lon: 19.905484187953224
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-09T16:24:59Z
++
++    TPN revision: b08c96f057b7583409161f745f5e661c8561f4d330753ac0dc5f6040c4fe4667
++
++    TPN WER_LOK: FF 09052026'
++  observed_at: null
++  observed_date: '2026-05-09'
++  source: TPN
++  source_date: '2026-05-09'
++  source_ref: TPN:e0642496-f87c-4eee-a7a0-a60365191209
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 153175.035
++  y_1992: 565887.048
++name_local: Dziura pod Ratuszem
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0059.yml
++++ b/data/objects/MTW/MTW-0059.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0059, nowy pomiar m-003; różnica względem poprzedniego TPN 31.52 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0753
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{7033EB52-9352-4F35-9ADF-89490FBB5F1F}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Dziura w Kończystej Turni
+-cave_id: C-0753
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{7033EB52-9352-4F35-9ADF-89490FBB5F1F}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1195.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155535.07
+-  y_1992: 563899.71
+-  elevation_m: 1195.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/960'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/960'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155535.07
++  y_1992: 563899.71
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1196.999356
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155535.07
+-  y_1992: 563899.71
+-  elevation_m: 1196.999356
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155535.07
++  y_1992: 563899.71
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.26420814848368
++  lon: 19.878301642090463
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T08:17:07Z
++
++    TPN revision: 4d7843860ad5405c55645d9c51cc6783caee8d876716869f2bcbf5c62e0e22c4
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:7033eb52-9352-4f35-9adf-89490fbb5f1f
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155560.535
++  y_1992: 563881.171
++name_local: Dziura w Kończystej Turni
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0060.yml
++++ b/data/objects/MTW/MTW-0060.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0060, nowy pomiar m-003; różnica względem poprzedniego TPN 29.74 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0778
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{DCA8221F-D3C2-4EB2-98EA-77957BB07A1A}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Dziura Niżnia w Kończystej Turni
+-cave_id: C-0778
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{DCA8221F-D3C2-4EB2-98EA-77957BB07A1A}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1153.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155494.46
+-  y_1992: 563875.81
+-  elevation_m: 1153.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/971'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/971'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155494.46
++  y_1992: 563875.81
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1146.972783
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155494.46
+-  y_1992: 563875.81
+-  elevation_m: 1146.972783
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155494.46
++  y_1992: 563875.81
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.26384966106653
++  lon: 19.87802359643874
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T08:27:40Z
++
++    TPN revision: 7ab7aedd7b9cb7ea5782adbc723fbb3f52ce7b2ae33729200e0f4048a79fbd66
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:dca8221f-d3c2-4eb2-98ea-77957bb07a1a
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155520.46
++  y_1992: 563861.411
++name_local: Dziura Niżnia w Kończystej Turni
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0062.yml
++++ b/data/objects/MTW/MTW-0062.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0062, nowy pomiar m-003; różnica względem poprzedniego TPN 46.90 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0803
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{F64FAB23-53F9-45FA-A1C2-748D15A67568}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Schronisko Wschodnie w Kończystej
+-cave_id: C-0803
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{F64FAB23-53F9-45FA-A1C2-748D15A67568}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1185.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155468.06
+-  y_1992: 564011.44
+-  elevation_m: 1185.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/990'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/990'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155468.06
++  y_1992: 564011.44
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1149.593306
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155468.06
+-  y_1992: 564011.44
+-  elevation_m: 1149.593306
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155468.06
++  y_1992: 564011.44
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.26364386529371
++  lon: 19.87959767840208
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-21T15:01:41Z
++
++    TPN revision: 2410c06804369c428ce01c4e252a3e0643d2876bb65aecbb3fad0645da07fc7c
++
++    TPN WER_LOK: FF 21052026'
++  observed_at: null
++  observed_date: '2026-05-21'
++  source: TPN
++  source_date: '2026-05-21'
++  source_ref: TPN:f64fab23-53f9-45fa-a1c2-748d15a67568
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155498.919
++  y_1992: 563976.164
++name_local: Schronisko Wschodnie w Kończystej
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0063.yml
++++ b/data/objects/MTW/MTW-0063.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0063, nowy pomiar m-003; różnica względem poprzedniego TPN 17.67 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0824
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{CDE95846-F436-4079-8594-4268E6048A6D}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Jaskinia Niska
+-cave_id: C-0824
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{CDE95846-F436-4079-8594-4268E6048A6D}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1165.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155548.47
+-  y_1992: 563839.38
+-  elevation_m: 1165.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/988'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/988'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155548.47
++  y_1992: 563839.38
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1183.945286
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155548.47
+-  y_1992: 563839.38
+-  elevation_m: 1183.945286
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155548.47
++  y_1992: 563839.38
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.26426237097673
++  lon: 19.87770642143427
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T08:19:21Z
++
++    TPN revision: a48c9eb59eaec034afef8ae325d213c5649ac1f65df387aae31f15e9e35a133a
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:cde95846-f436-4079-8594-4268e6048a6d
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155566.059
++  y_1992: 563837.81
++name_local: Jaskinia Niska
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTW/MTW-0065.yml
++++ b/data/objects/MTW/MTW-0065.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTW-0065, nowy pomiar m-003; różnica względem poprzedniego TPN 14.54 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0847
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{C4A17714-5976-4B41-A6A6-9EACAE7E9421}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Mała Dziura w Kończystej Turni
+-cave_id: C-0847
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{C4A17714-5976-4B41-A6A6-9EACAE7E9421}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1202.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 155554.52
+-  y_1992: 563879.21
+-  elevation_m: 1202.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/972'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/972'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 155554.52
++  y_1992: 563879.21
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1204.025547
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 155554.52
+-  y_1992: 563879.21
+-  elevation_m: 1204.025547
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,28 @@
++  vertical_accuracy_m: null
++  x_1992: 155554.52
++  y_1992: 563879.21
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.26426450542717
++  lon: 19.87816642861684
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T08:15:18Z
++
++    TPN revision: b1d84e68c2e0bee43393ff092fd6941b777558d11c17d789a22e9ee230740274
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:c4a17714-5976-4b41-a6a6-9eacae7e9421
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +105,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T10:41:53Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155566.684
++  y_1992: 563871.264
++name_local: Mała Dziura w Kończystej Turni
+@@ -75,4 +111,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T10:41:53Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTZ/MTZ-0001.yml
++++ b/data/objects/MTZ/MTZ-0001.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTZ-0001, nowy pomiar m-003; różnica względem poprzedniego TPN 3.05 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0016
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{65D4A109-B1AA-4741-B694-B1A65EF93752}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Schron z Balkonem
+-cave_id: C-0016
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{65D4A109-B1AA-4741-B694-B1A65EF93752}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1781.6
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 152710.47
+-  y_1992: 565573.82
+-  elevation_m: 1781.6
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1498'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1498'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 152710.47
++  y_1992: 565573.82
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1781.690401
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,5 @@
+-  x_1992: 152663.1
+-  y_1992: 565653.97
+-  elevation_m: 1781.690401
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++
++    TPN WER_LOK: 16-09-2021 FF, NMT'
++  observed_date: '2022-05-25'
+@@ -53,0 +71 @@
++  source_date: '2022-05-25'
+@@ -55,4 +72,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +76 @@
++  verified_at: null
+@@ -63,2 +78,19 @@
+-  verified_at: null
+-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++  vertical_accuracy_m: null
++  x_1992: 152663.1
++  y_1992: 565653.97
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.237925581626655
++  lon: 19.90220458612156
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-02-11T12:25:36Z
++
++    TPN revision: d2dcbddf171ece91a95ac68cbf47f5024c0b501fe8ca0bcdb13033e50fb6cc26
+@@ -67,9 +99,13 @@
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T14:00:00Z'
+-  updated_by: dl
+-attachments: []
++  observed_at: null
++  observed_date: '2026-02-11'
++  source: TPN
++  source_date: '2026-02-11'
++  source_ref: TPN:65d4a109-b1aa-4741-b694-b1a65ef93752
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 152660.099
++  y_1992: 565654.521
++name_local: Schron z Balkonem
+@@ -77,4 +113,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-10-15T13:16:44Z'
+-updated_by: maintenance:PBI-082
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTZ/MTZ-0018.yml
++++ b/data/objects/MTZ/MTZ-0018.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTZ-0018, nowy pomiar m-003; różnica względem poprzedniego TPN 1.67 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0184
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{C5BCC87D-2F7E-42B5-8433-F72C556B8618}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Jaskinia Marmurowa
+-cave_id: C-0184
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{C5BCC87D-2F7E-42B5-8433-F72C556B8618}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1770.6
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 152854.0
+-  y_1992: 565427.07
+-  elevation_m: 1770.6
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1472'
++  observed_date: '2013-12-31'
+@@ -28,0 +45 @@
++  source_date: '2013-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2013-12-31'
+-  source_date: '2013-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1472'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 152854.0
++  y_1992: 565427.07
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1767.702373
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,5 @@
+-  x_1992: 152819.64
+-  y_1992: 565550.44
+-  elevation_m: 1767.702373
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++
++    TPN WER_LOK: ortofoto FF 12-05-2020'
++  observed_date: '2024-07-30'
+@@ -53,0 +71 @@
++  source_date: '2024-07-30'
+@@ -55,4 +72,0 @@
+-  observed_date: '2024-07-30'
+-  source_date: '2024-07-30'
+-  method: source_record
+-  device: null
+@@ -61,0 +76 @@
++  verified_at: null
+@@ -63,2 +78,19 @@
+-  verified_at: null
+-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++  vertical_accuracy_m: null
++  x_1992: 152819.64
++  y_1992: 565550.44
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.23937312351105
++  lon: 19.900823468627657
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-02-11T12:17:26Z
++
++    TPN revision: 18c64f5ccbd098e674be7c8d7c54bdd54c75260615c61ac7f18460ceba7c9162
+@@ -67,9 +99,13 @@
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T14:00:00Z'
+-  updated_by: dl
+-attachments: []
++  observed_at: null
++  observed_date: '2026-02-11'
++  source: TPN
++  source_date: '2026-02-11'
++  source_ref: TPN:c5bcc87d-2f7e-42b5-8433-f72c556b8618
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 152819.773
++  y_1992: 565552.101
++name_local: Jaskinia Marmurowa
+@@ -77,4 +113,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-10-15T13:16:44Z'
+-updated_by: maintenance:PBI-082
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTZ/MTZ-0027.yml
++++ b/data/objects/MTZ/MTZ-0027.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTZ-0027, nowy pomiar m-003; różnica względem poprzedniego TPN 2.01 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0341
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{23287A45-D91F-46D7-A9B2-2C6EBFDA9764}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Jaskinia Mała w Mułowej
+-cave_id: C-0341
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{23287A45-D91F-46D7-A9B2-2C6EBFDA9764}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1757.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 152677.97
+-  y_1992: 565578.77
+-  elevation_m: 1757.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1495'
++  observed_date: '2013-12-31'
+@@ -28,0 +45 @@
++  source_date: '2013-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2013-12-31'
+-  source_date: '2013-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1495'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 152677.97
++  y_1992: 565578.77
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1753.068244
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,5 @@
+-  x_1992: 152697.08
+-  y_1992: 565655.63
+-  elevation_m: 1753.068244
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++
++    TPN WER_LOK: 11-03-2020 FF'
++  observed_date: '2022-05-25'
+@@ -53,0 +71 @@
++  source_date: '2022-05-25'
+@@ -55,4 +72,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +76 @@
++  verified_at: null
+@@ -63,2 +78,19 @@
+-  verified_at: null
+-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++  vertical_accuracy_m: null
++  x_1992: 152697.08
++  y_1992: 565655.63
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.2382402987435
++  lon: 19.902221547034937
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-02-11T12:25:30Z
++
++    TPN revision: 6ceb8e92ec4cc1750fe735928ce73f363a3419581853c9b4ad31a14bb34286ab
+@@ -67,9 +99,13 @@
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T14:00:00Z'
+-  updated_by: dl
+-attachments: []
++  observed_at: null
++  observed_date: '2026-02-11'
++  source: TPN
++  source_date: '2026-02-11'
++  source_ref: TPN:23287a45-d91f-46d7-a9b2-2c6ebfda9764
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 152695.09
++  y_1992: 565655.338
++name_local: Jaskinia Mała w Mułowej
+@@ -77,4 +113,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-10-15T13:16:44Z'
+-updated_by: maintenance:PBI-082
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/MTZ/MTZ-0031.yml
++++ b/data/objects/MTZ/MTZ-0031.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt MTZ-0031, nowy pomiar m-003; różnica względem poprzedniego TPN 1.68 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0407
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{062430D3-83C1-49ED-8004-044B1DD8FB80}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Studnia za Murem
+-cave_id: C-0407
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{062430D3-83C1-49ED-8004-044B1DD8FB80}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1555.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 152934.56
+-  y_1992: 565542.9
+-  elevation_m: 1555.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1482'
++  observed_date: '2013-12-31'
+@@ -28,0 +45 @@
++  source_date: '2013-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2013-12-31'
+-  source_date: '2013-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1482'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 152934.56
++  y_1992: 565542.9
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1570.373317
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,5 @@
+-  x_1992: 152902.07
+-  y_1992: 565588.75
+-  elevation_m: 1570.373317
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++
++    TPN WER_LOK: 29-05-2020 FF ortofotomapa'
++  observed_date: '2024-07-30'
+@@ -53,0 +71 @@
++  source_date: '2024-07-30'
+@@ -55,4 +72,0 @@
+-  observed_date: '2024-07-30'
+-  source_date: '2024-07-30'
+-  method: source_record
+-  device: null
+@@ -61,0 +76 @@
++  verified_at: null
+@@ -63,2 +78,19 @@
+-  verified_at: null
+-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++  vertical_accuracy_m: null
++  x_1992: 152902.07
++  y_1992: 565588.75
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.240124697203726
++  lon: 19.901338718659066
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-02-11T12:17:49Z
++
++    TPN revision: 52a69fba15eeef32abc37d8930a879667a0e95bce55281c2ab86969723697a62
+@@ -67,9 +99,13 @@
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T14:00:00Z'
+-  updated_by: dl
+-attachments: []
++  observed_at: null
++  observed_date: '2026-02-11'
++  source: TPN
++  source_date: '2026-02-11'
++  source_ref: TPN:062430d3-83c1-49ed-8004-044b1dd8fb80
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 152903.746
++  y_1992: 565588.599
++name_local: Studnia za Murem
+@@ -77,4 +113,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-10-15T13:16:44Z'
+-updated_by: maintenance:PBI-082
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- /dev/null
++++ b/data/objects/MTZ/MTZ-0067.yml
+@@ -0,0 +1,58 @@
++attachments: []
++best_measurement:
++  measurement_id: m-001
++  mode: auto
++  reason: null
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-1005
++created_at: '2026-10-19T18:54:41.078420Z'
++created_by: agent:codex
++external_refs:
++- external_id: 4d57492d-d68a-471e-b00e-770a594a2c7b
++  ref_type: source_globalid
++  scope: object
++  system: TPN
++id: MTZ-0067
++id_assignment:
++  assigned_from_measurement_id: m-001
++  assigned_prefix: MTZ
++  method: auto
++  prefix_override_reason: null
++measurements:
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
++  lat: 49.234858453380134
++  lon: 19.907862585693493
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-06-16T11:41:04Z
++
++    TPN revision: f6cf40c6ee81bd84bec7f8c4b1e0eb5ff19c1a5bfaff7bd16389de30ee0f1337
++
++    TPN WER_LOK: FF16062026'
++  observed_at: null
++  observed_date: '2026-06-16'
++  source: TPN
++  source_date: '2026-06-16'
++  source_ref: TPN:4d57492d-d68a-471e-b00e-770a594a2c7b
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 152324.162
++  y_1992: 566070.347
++name_local: Jaskinia w Kozim Grzbiecie
++notes: null
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- /dev/null
++++ b/data/objects/MTZ/MTZ-0068.yml
+@@ -0,0 +1,58 @@
++attachments: []
++best_measurement:
++  measurement_id: m-001
++  mode: auto
++  reason: null
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-1009
++created_at: '2026-10-19T18:54:41.078420Z'
++created_by: agent:codex
++external_refs:
++- external_id: f27fa875-821f-45f6-8f02-c5a9ffc579e4
++  ref_type: source_globalid
++  scope: object
++  system: TPN
++id: MTZ-0068
++id_assignment:
++  assigned_from_measurement_id: m-001
++  assigned_prefix: MTZ
++  method: auto
++  prefix_override_reason: null
++measurements:
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
++  lat: 49.234277473653904
++  lon: 19.9063092182706
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-06-16T11:38:50Z
++
++    TPN revision: 45b941debabd15a3fc6c0b3fbf98e0d90141221e0a049a3d82dd7a6a473cbb09
++
++    TPN WER_LOK: FF16062026'
++  observed_at: null
++  observed_date: '2026-06-16'
++  source: TPN
++  source_date: '2026-06-16'
++  source_ref: TPN:f27fa875-821f-45f6-8f02-c5a9ffc579e4
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 152258.24
++  y_1992: 565958.074
++name_local: Jaskinia Lodowa Ponorowa
++notes: null
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/PL/PL-0022.yml
++++ b/data/objects/PL/PL-0022.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-003
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt PL-0022, nowy pomiar m-003; różnica względem poprzedniego TPN 53.06 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0382
++created_at: '2026-05-16T10:22:49Z'
++created_by: importer:pig
++external_refs:
++- external_id: '{527AEE0B-533C-4CB4-BC8B-443DE48EB624}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Szpara pod Rysami
+-cave_id: C-0382
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{527AEE0B-533C-4CB4-BC8B-443DE48EB624}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:49Z'
++  created_by: importer:pig
++  device: null
++  elevation_datum: unknown
++  elevation_m: 2047.0
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,4 @@
+-  x_1992: 146571.18
+-  y_1992: 578751.45
+-  elevation_m: 2047.0
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'PIG source-record measurement imported after operator review; not field-verified.
++    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1748'
++  observed_date: '2010-12-31'
+@@ -28,0 +45 @@
++  source_date: '2010-12-31'
+@@ -30,4 +46,0 @@
+-  observed_date: '2010-12-31'
+-  source_date: '2010-12-31'
+-  method: source_record
+-  device: null
+@@ -36,0 +50 @@
++  verified_at: null
+@@ -38,6 +52,11 @@
+-  verified_at: null
+-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1748'
+-  created_at: '2026-05-16T10:22:49Z'
+-  created_by: importer:pig
+-- id: m-002
++  vertical_accuracy_m: null
++  x_1992: 146571.18
++  y_1992: 578751.45
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 2046.032745
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
+@@ -46,7 +65,3 @@
+-  x_1992: 146571.18
+-  y_1992: 578751.45
+-  elevation_m: 2046.032745
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: TPN source-record measurement imported after operator review; not field-verified.
++  observed_date: '2022-05-25'
+@@ -53,0 +69 @@
++  source_date: '2022-05-25'
+@@ -55,4 +70,0 @@
+-  observed_date: '2022-05-25'
+-  source_date: '2022-05-25'
+-  method: source_record
+-  device: null
+@@ -61,0 +74 @@
++  verified_at: null
+@@ -62,0 +76,26 @@
++  vertical_accuracy_m: null
++  x_1992: 146571.18
++  y_1992: 578751.45
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-003
++  lat: 49.18200944871954
++  lon: 20.08133060093272
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-06-02T18:21:31Z
++
++    TPN revision: 0e86b9070af2403a342fdb6a80c2ca892530af42ad9203aa4f5d713007eca06a'
++  observed_at: null
++  observed_date: '2026-06-02'
++  source: TPN
++  source_date: '2026-06-02'
++  source_ref: TPN:527aee0b-533c-4cb4-bc8b-443de48eb624
++  tags: []
++  verification_status: nieweryfikowany
+@@ -64,10 +103,5 @@
+-  notes: TPN source-record measurement imported after operator review; not field-verified.
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-002
+-  reason: null
+-  updated_at: '2026-05-16T13:00:00Z'
+-  updated_by: dl
+-attachments: []
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 146616.883
++  y_1992: 578778.333
++name_local: Szpara pod Rysami
+@@ -75,4 +109,3 @@
+-created_at: '2026-05-16T10:22:49Z'
+-created_by: importer:pig
+-updated_at: '2026-05-16T13:00:00Z'
+-updated_by: dl
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- a/data/objects/STR/STR-0028.yml
++++ b/data/objects/STR/STR-0028.yml
+@@ -1 +1,22 @@
+-schema_version: 1
++attachments: []
++best_measurement:
++  measurement_id: m-002
++  mode: auto
++  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
++    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
++    Obiekt STR-0028, nowy pomiar m-002; różnica względem poprzedniego TPN 10.57 m.
++    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
++    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
++    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-0984
++created_at: '2026-05-16T10:22:52Z'
++created_by: importer:tpn
++external_refs:
++- external_id: '{E6BA5010-45F5-4769-9026-229423DDF3CB}'
++  notes: TPN GLOBALID belongs to the object/source feature.
++  ref_type: source_globalid
++  scope: object
++  system: TPN
+@@ -3,3 +23,0 @@
+-category: jaskinia_otwor
+-name_local: Nyża pod Zachodem Pilotów
+-cave_id: C-0984
+@@ -7 +24,0 @@
+-  method: auto
+@@ -9,0 +27 @@
++  method: auto
+@@ -11,6 +28,0 @@
+-external_refs:
+-- system: TPN
+-  ref_type: source_globalid
+-  external_id: '{E6BA5010-45F5-4769-9026-229423DDF3CB}'
+-  scope: object
+-  notes: TPN GLOBALID belongs to the object/source feature.
+@@ -18 +30,8 @@
+-- id: m-001
++- created_at: '2026-05-16T10:22:52Z'
++  created_by: importer:tpn
++  device: null
++  elevation_datum: unknown
++  elevation_m: 1501.89126
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
+@@ -21,7 +40,5 @@
+-  x_1992: 154325.24
+-  y_1992: 567596.39
+-  elevation_m: 1501.89126
+-  elevation_datum: unknown
+-  elevation_source: source_record
+-  horizontal_accuracy_m: null
+-  vertical_accuracy_m: null
++  method: source_record
++  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++
++    TPN WER_LOK: 17-05-2025 FF NMT'
++  observed_date: '2025-05-17'
+@@ -28,0 +46 @@
++  source_date: '2025-05-17'
+@@ -30,4 +47,0 @@
+-  observed_date: '2025-05-17'
+-  source_date: '2025-05-17'
+-  method: source_record
+-  device: null
+@@ -36,0 +51 @@
++  verified_at: null
+@@ -38,2 +53,19 @@
+-  verified_at: null
+-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
++  vertical_accuracy_m: null
++  x_1992: 154325.24
++  y_1992: 567596.39
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-002
++  lat: 49.25277039955315
++  lon: 19.92907822473404
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-27T17:05:52Z
++
++    TPN revision: 9ee52a0b3dddd95a389f2da08166a2addb17cb420cb7b22c21ef6659e552a0ce
+@@ -42,9 +74,13 @@
+-  created_at: '2026-05-16T10:22:52Z'
+-  created_by: importer:tpn
+-best_measurement:
+-  mode: auto
+-  measurement_id: m-001
+-  reason: null
+-  updated_at: '2026-05-16T10:22:52Z'
+-  updated_by: importer:tpn
+-attachments: []
++  observed_at: null
++  observed_date: '2026-05-27'
++  source: TPN
++  source_date: '2026-05-27'
++  source_ref: TPN:e6ba5010-45f5-4769-9026-229423ddf3cb
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 154333.544
++  y_1992: 567589.857
++name_local: Nyża pod Zachodem Pilotów
+@@ -52,4 +88,3 @@
+-created_at: '2026-05-16T10:22:52Z'
+-created_by: importer:tpn
+-updated_at: '2026-10-15T13:16:44Z'
+-updated_by: maintenance:PBI-082
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex
+--- /dev/null
++++ b/data/objects/STR/STR-0030.yml
+@@ -0,0 +1,58 @@
++attachments: []
++best_measurement:
++  measurement_id: m-001
++  mode: auto
++  reason: null
++  updated_at: '2026-10-19T18:54:41.078420Z'
++  updated_by: agent:codex
++category: jaskinia_otwor
++cave_id: C-1006
++created_at: '2026-10-19T18:54:41.078420Z'
++created_by: agent:codex
++external_refs:
++- external_id: 551df3ad-f3e1-4920-bd23-d741ac938ba8
++  ref_type: source_globalid
++  scope: object
++  system: TPN
++id: STR-0030
++id_assignment:
++  assigned_from_measurement_id: m-001
++  assigned_prefix: STR
++  method: auto
++  prefix_override_reason: null
++measurements:
++- created_at: '2026-10-19T18:54:41.078420Z'
++  created_by: agent:codex
++  device: null
++  elevation_datum: unknown
++  elevation_m: null
++  elevation_source: source_record
++  horizontal_accuracy_m: null
++  id: m-001
++  lat: 49.26586630293456
++  lon: 19.936818198902632
++  method: source_record
++  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
++
++    TPN LAST_EDITED_DATE: 2026-05-04T09:03:04Z
++
++    TPN revision: 98097d7078619264ff5a264b978c3fc097731271dc2dfd45ef49d9753331e7ee
++
++    TPN WER_LOK: FF NMT 04052026'
++  observed_at: null
++  observed_date: '2026-05-04'
++  source: TPN
++  source_date: '2026-05-04'
++  source_ref: TPN:551df3ad-f3e1-4920-bd23-d741ac938ba8
++  tags: []
++  verification_status: nieweryfikowany
++  verified_at: null
++  verified_by: null
++  vertical_accuracy_m: null
++  x_1992: 155795.9
++  y_1992: 568134.896
++name_local: Gawra w Sarniej Skale
++notes: null
++schema_version: 1
++updated_at: '2026-10-19T18:54:41.078420Z'
++updated_by: agent:codex

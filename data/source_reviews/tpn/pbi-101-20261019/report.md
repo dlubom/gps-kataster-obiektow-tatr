@@ -1,25 +1,7 @@
-# Paczka pbi-101-20261019 — pending
+# PBI-101 — rozstrzygnięta paczka
 
-Użytkownik po przedstawieniu propozycji polecił: „Na razie pozostaw wszystko pending”.
-640 decyzji ma status pending, reviewed_by/at=null. Nie wykonano apply.
-Nie ma nowego przyjętego stanu źródła ani application.json. Bramka CI ma
-blokować gotowość tej paczki do merge.
+614 approve / 26 defer / 0 pending. A578: rewizje bez zmian katalogu; B31: append i osobny select_new auto; C5: nowe Obiekty/Jaskinie; D26: niezależne badanie, bez akcji katalogowych.
 
-[Propozycje po rekordzie, przed/po i kandydaci](../../../../docs/asdlc/verification/PBI-101-review/review.md).
-[Zalecenia według ID](../../../../docs/asdlc/verification/PBI-101-review/recommendations.json).
-[Warunkowy diff izolowanej symulacji](../../../../docs/asdlc/verification/PBI-101-review/simulated-domain.patch).
-[Dowody i warunki kontynuacji](../../../../docs/asdlc/verification/PBI-101.md).
+[Pełne decyzje i zgody](../../../../docs/asdlc/verification/PBI-101-review/review.md). [Indywidualne odroczenia](../../../../docs/asdlc/verification/PBI-101-review/remaining-26.md). [Precyzja pochodnych i przyczyna błędu CI](../../../../docs/asdlc/tpn_sync_derived_precision.md).
 
-Pełne wejścia i execution są w changes.json; decyzje pending w decisions.yml.
-Propozycje: A001–A578 bez zmian katalogu, B001–B031 dopisanie lokalizacji
-i osobne keep best/jawny tryb, C001–C005 nowy Obiekt/Jaskinia,
-D001–D026 odroczenia ze wskazaniem kandydatów. To zalecenia, bez akceptacji.
-
-Snapshot pbi-101-live-20261019 utrwalono przed przygotowaniem paczki
-w 60afeca2d17bbc4b5aa690abc83da1d25d89a506. Przyjęty stan pochodzi
-wyłącznie z origin/main b98fd3febb400c7ee520046682c1bb16238429ee.
-Nie nadpisywać wejść, nie stosować zalecanych decyzji bez rozstrzygnięcia użytkownika.
-
-Hosted CI review ma dodatkowy błąd odtworzenia raportu przed kontrolą
-pending; [rzeczywisty wynik i handoff](../../../../docs/asdlc/verification/PBI-101-ci-handoff.md).
-Przyczyna nieustalona. Nie uznano failure za oczekiwany pending ani za odbiór.
+Źródła/snapshot i API revision_hash pozostają bez zmian. Pierwsza wersja raportu jest zachowana w docs/asdlc/verification/PBI-101-review/superseded-v1. Manifest ochrony PBI-099 nadal pending; chronione pliki bez zmian.

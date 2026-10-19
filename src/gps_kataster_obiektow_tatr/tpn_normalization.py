@@ -15,6 +15,7 @@ from pyproj import Geod
 
 from .coordinates import pl1992_to_wgs84
 from .tpn_api import ATTRIBUTES, globalid, parse_json, require, validate_attributes
+from .tpn_precision import csv_degrees
 from .tpn_snapshot import sha256, verify_snapshot
 
 VERSION = "tpn-sync-v1"
@@ -220,7 +221,12 @@ def read_csv(path: Path) -> dict[str, dict]:
         result[guid] = normalized(
             guid,
             values,
-            {"crs": "EPSG:4326", "lat": point.lat, "lon": point.lon, "elevation": "absent"},
+            {
+                "crs": "EPSG:4326",
+                "lat": csv_degrees(point.lat),
+                "lon": csv_degrees(point.lon),
+                "elevation": "absent",
+            },
             row,
             "csv",
             decimal(row["Z"]),

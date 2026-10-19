@@ -13,6 +13,7 @@ from .tpn_api import globalid, require
 from .tpn_best_guard import plan_best_action
 from .tpn_changes import Catalog, measurement_guid
 from .tpn_normalization import distance
+from .tpn_precision import projected_metres
 from .validator import format_issue, has_errors, validate_dataset
 
 
@@ -52,8 +53,8 @@ def measurement(row, identity, d):
         "id": identity,
         "lat": lat,
         "lon": lon,
-        "x_1992": xy.x_1992,
-        "y_1992": xy.y_1992,
+        "x_1992": projected_metres(xy.x_1992),
+        "y_1992": projected_metres(xy.y_1992),
         "elevation_m": None,
         "elevation_datum": "unknown",
         "elevation_source": "source_record",
