@@ -1,8 +1,9 @@
 # TPN: formaty i przykłady kontraktu
 
 Załącznik normatywny do [kontraktu PBI-095](tpn_sync_contract.md).
-To opis formatów do implementacji w PBI-096/097/100, nie pliki wejściowe
-obsługiwane przez obecne CLI. Nie uruchamiać ich przez `apply_review.py`.
+Manifest PBI-096 obsługuje `fetch_tpn_snapshot.py`; changes/decisions
+pozostają do implementacji PBI-097/100. Nie uruchamiać tych przykładów
+przez dotychczasowy `apply_review.py`.
 Przykładowe identyfikatory i wartości są syntetyczne. Wielkie symbole
 `SNAPSHOT`, `REV_*`, `LOC_*`, `HASH_*` zastępują rzeczywiste 64-znakowe
 SHA-256 (małe hex); w prawdziwym pliku symbole są niedozwolone.
@@ -72,7 +73,12 @@ files:
 `snapshot_hash` obejmuje również kanoniczny manifest bez własnego pola
 snapshot_hash. `files` nie zawiera samego manifestu (unikamy cyklu).
 Ścieżki wszystkich kontroli odnoszą się do rzeczywistych odpowiedzi API;
-PBI-096 ma sprawdzać ich zgodność z podsumowaniem `checks`.
+PBI-096 sprawdza ich zgodność z podsumowaniem `checks`.
+Wykonywalny manifest dodaje `layer-after.json` z rolą `schema_after`
+oraz `policy.md` z rolą `policy`; policy_hash jest SHA-256 dokładnego
+tekstu polityki. Walidator odtwarza manifest z plików, odrzucając także
+nieznane pola i fałszywe podsumowanie po ponownym przeliczeniu hashów.
+[Próba live i dokładna serializacja](verification/PBI-096.md).
 
 ## 2. Lista zmian i stan źródła
 

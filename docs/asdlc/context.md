@@ -2,42 +2,37 @@
 
 Last updated: 2026-10-19
 
-## Integracja TPN — PBI-095
+## Integracja TPN — PBI-096
 
-Użytkownik przyjął kierunek [planu](tpn_sync_plan.md) i zlecił wyłącznie
-PBI-095. Stan: **wykonane**. [Kontrakt](tpn_sync_contract.md),
-[przykłady formatów](tpn_sync_examples.md) oraz spec §8.4 określają
-przyszły proces; kod, schematy, katalog i workflow pozostają bez zmian.
-[Backlog PBI-095–103](tpn_sync_backlog.md), [dowody PBI-095](verification/PBI-095.md).
+Przyjęty [kontrakt PBI-095](tpn_sync_contract.md); użytkownik zlecił osobno
+wyłącznie PBI-096. Stan: **zweryfikowane — do dostarczenia**.
+[Dowody](verification/PBI-096.md), [backlog](tpn_sync_backlog.md),
+[instrukcja przejęcia i CLI](tpn_sync_handoff.md).
 
-Ustalenia: jeden PR na paczkę i osobne decyzje rekordów, zaległości przed
-cyklem miesięcznym, wyłącznie ludzki merge. Typed TPN/source_globalid,
-trzystronne porównanie, trwałe rewizje, preimage, defer/reject, kontrola
-kandydatów duplikatu i pełna historia. Nowy GUID nie dowodzi nowego obiektu.
-Dopisanie pomiaru wymaga odrębnego keep/select_new; manual i GNSS/geodezja
-są chronione niezależnie od source/status/accuracy null (także KSZ-0112).
+Nowe `scripts/fetch_tpn_snapshot.py fetch/verify`: pełne pola i geometria
+EPSG:4326, schemat/tożsamość warstwy, paginacja, count/ID przed i po,
+unikalne GUID, niezmienne surowe pliki, manifest i offline readback.
+Próba live jest w `data/sources/tpn/snapshots/pbi-096-live-20261019/`:
+1035 rekordów, trzy strony 500/500/35, kontrole zgodne. To dowód odczytu,
+nie przyjęta baza synchronizacji. API nie gwarantuje transakcyjności atrybutów.
+Historyczne liczniki/hash nie są wymaganym wynikiem przyszłego fetch.
 
-Decyzja użytkownika z PBI-095: bez daty terenowej użyć LAST_EDITED_DATE
-jako daty stanu źródła z jawnym komentarzem w notes. observed_at pozostaje
-null; brak modyfikacji odracza pomiar, bez daty pobrania/CREATED_DATE.
-Nie aktualizujemy przy okazji historycznych dat. Próg 0,1 m dotyczy tylko
-bootstrapu konwersji CSV/API; minimum 100 m to sygnał duplikatu do review.
+PR #12 sprawdzono jako otwarty draft; kontynuowana gałąź
+`codex/tpn-sync-planning`, baza PBI-096 `7a56e9be36022be5dbb6d79414ebf7ec9af71136`,
+main `b98fd3febb400c7ee520046682c1bb16238429ee`.
+Końcowy SHA i CI są odczytywane z PR; powyższe SHA są punktami startowymi.
+Katalog, istniejące źródła CSV/XLSX i workflow pozostają bez zmian.
 
-Aktualny PR #12 zweryfikowano jako otwarty draft; kontynuujemy gałąź
-`codex/tpn-sync-planning`, początkowy HEAD
-`02f5449d647540dda6b787cb1c97143c542ca6dc`, main
-`b98fd3febb400c7ee520046682c1bb16238429ee`. Dokładny dostarczony SHA/CI
-odczytuje się z PR i logu odbioru, nie z historycznego punktu startowego.
-[Instrukcja przejęcia](tpn_sync_handoff.md) podaje API i sposób pobrania.
-Historyczny JSON pozostaje poza Git i nie jest potrzebny do PBI-095.
-Historyczne liczniki w planie nie są stałymi nowego odczytu.
+Ustalenia domenowe pozostają: jeden PR i osobne decyzje rekordów,
+zaległości przed cyklem miesięcznym, wyłącznie ludzki merge; typed GLOBALID
+z możliwością kilku GUID jednego obiektu, trwałe rewizje/preimage/defer,
+pełna historia i osobne keep/select_new. Manual/GNSS/geodezja chronione
+niezależnie od source/status/accuracy null. Bez daty terenowej użyć
+LAST_EDITED_DATE jako daty stanu źródła z komentarzem; brak daty odracza
+pomiar, bez podstawiania fetch/CREATED_DATE. Brak Z nie usuwa wysokości.
 
-W PBI-095 sprawdzono publiczny schemat i jedną próbkę: 22 deklaracje
-z SHAPE, 21 atrybutów query i osobna geometria. Nie jest to pełny snapshot.
-TATER pozostaje nieinterpretowanym polem źródłowym z widocznymi zmianami.
-Następna karta po osobnym poleceniu: **PBI-096**, snapshot bez zmian katalogu.
-PBI-096: planowane — gotowe na osobne polecenie; PBI-097–103: planowane.
-Nie rozpoczęto implementacji ani schedule.
+Następna karta po dostarczeniu i osobnym poleceniu: **PBI-097** (różnice
+źródła i bootstrap, bez zapisu katalogu). PBI-097–103 nie rozpoczęto.
 Obecny applier CSV/XLSX nie zapewnia nowego protokołu; nie używać go do
 paczki synchronizacji przed wdrożeniem ochron i decyzji PBI-099/100.
 

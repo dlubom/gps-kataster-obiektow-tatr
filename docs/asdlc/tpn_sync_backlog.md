@@ -3,10 +3,10 @@
 Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
 [Indeks całego backlogu](backlog_v1.md).
 
-Użytkownik przyjął kierunek planu i zlecił wyłącznie **PBI-095**.
+Użytkownik przyjął kontrakt PBI-095 i w kolejnej sesji zlecił wyłącznie **PBI-096**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
-częścią specyfikacji przyszłej integracji. PBI-095: **wykonane**. PBI-096: **planowane — gotowe** na osobne
-zlecenie; PBI-097–103: **planowane**. Bez implementacji importera i harmonogramu.
+częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **zweryfikowane — do dostarczenia**.
+PBI-097–103: **planowane**. Bez implementacji porównania, importera i harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -78,8 +78,8 @@ rozstrzyga tożsamości. Wykonywalne fixture'y/schematy należą do dalszych PBI
 
 ## PBI-096: Pobierać kompletny i odtwarzalny snapshot publicznego API
 
-Status: planowane — gotowe. Zależność 095 wykonana; rozpoczęcie wymaga
-osobnego polecenia użytkownika, poza sesją PBI-095.
+Status: zweryfikowane — do dostarczenia. Zlecone osobno 2026-10-19.
+Dowody i dokładny stan dostawy: [PBI-096](verification/PBI-096.md).
 
 **Cel:** dostarczyć wiarygodne wejście do porównań bez modyfikacji katalogu.
 
@@ -89,17 +89,17 @@ walidacja schematu i manifestu, fixture'y. Kontekst: plan §2–4, [kontrakt](tp
 
 **Kryteria odbioru:**
 
-- [ ] Pobiera wszystkie pola, w tym GLOBALID/WER_LOK/UWAGI, i geometrię
+- [x] Pobiera wszystkie pola, w tym GLOBALID/WER_LOK/UWAGI, i geometrię
       z jawnym CRS. Manifest zawiera endpoint, parametry, czas, schemat,
       liczbę rekordów, listę ID oraz hashe rzeczywistych zapisanych plików.
-- [ ] Obsługuje paginację i limity usługi; sprawdza tożsamość warstwy,
+- [x] Obsługuje paginację i limity usługi; sprawdza tożsamość warstwy,
       kompletność ID, unikalność GUID i zgodność licznika przed/po odczycie.
-- [ ] Błędy HTTP/ArcGIS, brak pola, niepoprawne GUID/geometria, zdublowane
+- [x] Błędy HTTP/ArcGIS, brak pola, niepoprawne GUID/geometria, zdublowane
       lub brakujące strony i zmiana źródła podczas odczytu nie publikują
       częściowego snapshotu jako poprawnego. Ponowienia są ograniczone.
-- [ ] Ponowny zapis nie nadpisuje wcześniejszych dowodów; odczyt po zapisie
+- [x] Ponowny zapis nie nadpisuje wcześniejszych dowodów; odczyt po zapisie
       potwierdza hash i treść. Zwykłe testy działają bez sieci.
-- [ ] Jedna ręczna próba live potwierdza pełny odczyt; żaden YAML domenowy
+- [x] Jedna ręczna próba live potwierdza pełny odczyt; żaden YAML domenowy
       ani stary CSV/XLSX nie zmienia bajtów.
 
 ## PBI-097: Wyliczać zmiany TPN z uwzględnieniem katalogu i wcześniejszych decyzji

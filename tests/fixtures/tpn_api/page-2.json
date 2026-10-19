@@ -1,0 +1,180 @@
+{
+  "geometryType": "esriGeometryPoint",
+  "spatialReference": {
+    "wkid": 4326
+  },
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID",
+      "domain": null
+    },
+    {
+      "name": "NR_INWENT",
+      "type": "esriFieldTypeString",
+      "alias": "NR_INWENT",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "NAZWA",
+      "type": "esriFieldTypeString",
+      "alias": "NAZWA",
+      "length": 200,
+      "domain": null
+    },
+    {
+      "name": "DLUGOSC",
+      "type": "esriFieldTypeDouble",
+      "alias": "DLUGOSC",
+      "domain": null
+    },
+    {
+      "name": "GLEBOKOSC",
+      "type": "esriFieldTypeDouble",
+      "alias": "GLEBOKOSC",
+      "domain": null
+    },
+    {
+      "name": "PRZEWYZSZE",
+      "type": "esriFieldTypeDouble",
+      "alias": "PRZEWYZSZE",
+      "domain": null
+    },
+    {
+      "name": "DENIWELACJ",
+      "type": "esriFieldTypeDouble",
+      "alias": "DENIWELACJ",
+      "domain": null
+    },
+    {
+      "name": "SYSTEM",
+      "type": "esriFieldTypeString",
+      "alias": "system",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "OTWÓR",
+      "type": "esriFieldTypeString",
+      "alias": "otwór",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "OPIS",
+      "type": "esriFieldTypeString",
+      "alias": "opis",
+      "length": 254,
+      "domain": null
+    },
+    {
+      "name": "WER_LOK",
+      "type": "esriFieldTypeString",
+      "alias": "wer_lok",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "UWAGI",
+      "type": "esriFieldTypeString",
+      "alias": "uwagi",
+      "length": 254,
+      "domain": null
+    },
+    {
+      "name": "WERYF",
+      "type": "esriFieldTypeSmallInteger",
+      "alias": "Zweryfikowane",
+      "domain": null
+    },
+    {
+      "name": "GENEZA",
+      "type": "esriFieldTypeString",
+      "alias": "Geneza",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "FIELD",
+      "type": "esriFieldTypeInteger",
+      "alias": "Field",
+      "domain": null
+    },
+    {
+      "name": "CREATED_USER",
+      "type": "esriFieldTypeString",
+      "alias": "CREATED_USER",
+      "length": 255,
+      "domain": null
+    },
+    {
+      "name": "CREATED_DATE",
+      "type": "esriFieldTypeDate",
+      "alias": "CREATED_DATE",
+      "length": 8,
+      "domain": null
+    },
+    {
+      "name": "LAST_EDITED_USER",
+      "type": "esriFieldTypeString",
+      "alias": "LAST_EDITED_USER",
+      "length": 255,
+      "domain": null
+    },
+    {
+      "name": "LAST_EDITED_DATE",
+      "type": "esriFieldTypeDate",
+      "alias": "LAST_EDITED_DATE",
+      "length": 8,
+      "domain": null
+    },
+    {
+      "name": "GLOBALID",
+      "type": "esriFieldTypeGlobalID",
+      "alias": "GLOBALID",
+      "length": 38,
+      "domain": null
+    },
+    {
+      "name": "TATER",
+      "type": "esriFieldTypeString",
+      "alias": "TATER",
+      "length": 3,
+      "domain": null
+    }
+  ],
+  "features": [
+    {
+      "attributes": {
+        "OBJECTID": 9,
+        "NR_INWENT": null,
+        "NAZWA": "Próba 9",
+        "DLUGOSC": 0.0,
+        "GLEBOKOSC": null,
+        "PRZEWYZSZE": null,
+        "DENIWELACJ": null,
+        "SYSTEM": null,
+        "OTWÓR": null,
+        "OPIS": null,
+        "WER_LOK": "opis źródła",
+        "UWAGI": "nie zmieniać",
+        "WERYF": null,
+        "GENEZA": null,
+        "FIELD": null,
+        "CREATED_USER": null,
+        "CREATED_DATE": null,
+        "LAST_EDITED_USER": null,
+        "LAST_EDITED_DATE": 0,
+        "GLOBALID": "{00000009-1234-4234-8234-123456789abc}",
+        "TATER": null
+      },
+      "geometry": {
+        "x": 19.85,
+        "y": 49.25
+      }
+    }
+  ],
+  "exceededTransferLimit": false
+}

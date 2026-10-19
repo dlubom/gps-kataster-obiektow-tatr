@@ -3,8 +3,8 @@
 Stan: 2026-10-19. Ten plik wraz z planem i backlogiem w
 [PR #12](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/12)
 wystarcza do kontynuacji prac bez historii czatu i lokalnego build.
-Kierunek planu przyjęto w PBI-095; status bieżącej karty jest w backlogu
-i [logu PBI-095](verification/PBI-095.md).
+Kontrakt przyjęto w PBI-095. PBI-096 dostarcza snapshot/CLI; status
+dostawy jest w backlogu i [logu PBI-096](verification/PBI-096.md).
 
 ## Repozytorium i wejście w pracę
 
@@ -31,8 +31,9 @@ Kolejność czytania:
    projektowe oraz ryzyka w obecnym kodzie.
 3. [PBI-095–103](tpn_sync_backlog.md) — zakres, zależności i kryteria odbioru.
 4. [Kontrakt PBI-095](tpn_sync_contract.md) i [formaty](tpn_sync_examples.md).
-5. [Historyczna weryfikacja planowania](verification/tpn-sync-planning.md)
-   oraz [odbiór PBI-095](verification/PBI-095.md).
+5. [Odbiór PBI-095](verification/PBI-095.md) i najnowszy
+   [odbiór PBI-096](verification/PBI-096.md); wcześniejsze rozpoznanie
+   w [weryfikacji planowania](verification/tpn-sync-planning.md).
 
 ## Publiczne API i dokładne zapytanie
 
@@ -112,20 +113,47 @@ Są to wyniki rozpoznania, nie zaakceptowane zmiany katalogu.
 Przy pierwszym imporcie wymagane wejścia decyzji zostaną utrwalone zgodnie
 z PBI-096/101; obecny PR nie jest przyjętą bazą synchronizacji.
 
+## Pobieranie i kontrola snapshotu — PBI-096
+
+CLI jest zaimplementowane. Z repozytorium:
+
+```bash
+uv run --frozen python scripts/fetch_tpn_snapshot.py fetch \
+  --snapshot-id NOWY-UNIKALNY-ID --page-size 500 --attempts 2
+uv run --frozen python scripts/fetch_tpn_snapshot.py verify \
+  data/sources/tpn/snapshots/pbi-096-live-20261019
+```
+
+`fetch` wykonuje pełny odczyt i nie przyjmuje innego endpointu ani filtra.
+Limit strony jest minimum podanej wartości i limitu API. Próba błędna
+ponawia cały odczyt (maksymalnie 3 próby); istniejący snapshot-id zawsze
+odmawia nadpisania. `verify` działa offline i odtwarza kontrole z surowych
+plików. Nowy snapshot nie przesuwa przyjętej bazy synchronizacji.
+
+Próba live `pbi-096-live-20261019` jest teraz w Git, razem z manifestem,
+stronami, kontrolami i dokładnym tekstem polityki. 1035 rekordów, strony
+500/500/35; [hash, przedział czasu i weryfikacja](verification/PBI-096.md).
+To odrębny odczyt od historycznego JSON opisanego powyżej. Kolejne odczyty
+nie muszą mieć takich samych liczników ani hashów. Nie edytuj tej migawki.
+
+Manifest zawiera także `layer-after.json` (rola schema_after) i `policy.md`
+(rola policy, policy_hash jego dokładnych bajtów). Wszystkie ścieżki są
+względne do repo. Walidator nie ufa podsumowaniom ani complete=true.
+Zmiana schematu lub pojawienie się Z/M wymaga jawnej aktualizacji kontraktu.
+API nie daje transakcyjnej gwarancji atrybutów, co jest zapisane w manifeście.
+
 ## Granica następnego kroku
 
-Kierunek planu przyjęto na polecenie użytkownika, a PBI-095 doprecyzowuje
-kontrakt/spec/AGENTS. Bieżący status i odbiór są w backlogu oraz logu PBI-095;
-przed kontynuacją sprawdź zdalny SHA i CI. PBI-096 dotyczy wyłącznie
-pozyskania/odczytu snapshotu, bez importera katalogu, zmian pomiarów i schedule.
-Wymaga osobnego polecenia; ta sesja kończy się na PBI-095.
+Ta sesja kończy się po PBI-096. Po jego dostarczeniu następną gotową kartą
+jest PBI-097: bootstrap i różnice źródła względem katalogu i wcześniejszych
+decyzji, **bez zapisu danych domenowych**. Implementację uruchamia wyłącznie
+osobne polecenie użytkownika. PBI-098–103 nie są rozpoczęte.
 
 Ustalenia: jeden PR i decyzje po rekordzie, zaległości przed miesięcznym
 sprawdzaniem, wyłącznie ludzki merge, kontrola duplikatów, historia i ochrona
-GNSS/geodezji niezależnie od source/status/dokładności. Dopisanie pomiaru
+GNSS/geodezji niezależnie od source/status/unknown accuracy. Dopisanie pomiaru
 nie daje zgody na zmianę best. Data modyfikacji TPN z komentarzem opisuje
 stan źródła, gdy data terenowa jest nieznana; jej brak odracza pomiar.
-Spec §8.4 wprowadza wąski wyjątek TPN, bez rozszerzania integracji PIG/Geoportal.
 
 Po każdym wykonanym PBI: spójna dokumentacja, adekwatna weryfikacja,
 commit/push, zdalny SHA i CI tego SHA. Jedna karta na sesję, bez samodzielnego

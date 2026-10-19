@@ -7,8 +7,8 @@
 > Propozycja stosu technologicznego jest rekomendacją. Specyfikacja jest pisana pod podejście **git-native**: źródłem prawdy są pliki YAML w repozytorium, a bazy i eksporty są artefaktami generowanymi.
 >
 > **Rozszerzenie TPN, PBI-095 (2026-10-19):** zaakceptowany kierunek i
-> kontrakt §8.4. Implementacja PBI-096–103 pozostaje przyszłą pracą;
-> opis wymagań nie oznacza działającego importera ani harmonogramu.
+> kontrakt §8.4. PBI-096 dostarcza pobieranie i offline weryfikację snapshotu;
+> PBI-097–103 pozostają przyszłą pracą, bez importera i harmonogramu.
 
 ---
 
@@ -664,6 +664,10 @@ zapis całej partii, również w dry-run. Wszystkie zmiany przechodzą preflight
 ---
 
 ### 8.4 Kontrolowana integracja publicznego API TPN
+
+PBI-096: `scripts/fetch_tpn_snapshot.py fetch/verify` realizuje pozyskanie
+i kontrolny odczyt kompletnego snapshotu; [procedura i dowody](docs/asdlc/verification/PBI-096.md).
+Nie porównuje źródeł ani nie zmienia katalogu lub przyjętej bazy.
 
 Przyjęty kierunek rozszerza V1 wyłącznie o TPN: rozpatrzenie zaległości,
 następnie ręczne i dopiero po odbiorze miesięczne sprawdzanie API przez

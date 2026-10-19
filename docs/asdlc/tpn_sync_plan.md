@@ -111,7 +111,8 @@ a hash utrwala dokładnie treść, którą ostatecznie rozpatrywano.
 
 ## 4. Stan źródła, historia i powtarzalność
 
-Trwałe lokalizacje ustalone w PBI-095 (jeszcze nieutworzone):
+Trwałe lokalizacje ustalone w PBI-095 (snapshoty wdrożone w PBI-096;
+source_state/source_reviews pozostają przyszłą pracą):
 
 - `data/sources/tpn/snapshots/`: niezmienne odpowiedzi API użyte w decyzjach,
   manifesty zapytań, schemat i SHA-256; CSV/XLSX pozostają nienaruszone.

@@ -2,19 +2,18 @@
 
 Stan na: 2026-10-19
 
-## Integracja publicznego API TPN — kontrakt
+## Integracja publicznego API TPN
 
-[Plan integracji](tpn_sync_plan.md) i [karty PBI-095–103](tpn_sync_backlog.md)
-przyjęte jako kierunek przez użytkownika. Wyłącznie [PBI-095](verification/PBI-095.md)
-jest **wykonane**: spec/AGENTS, [kontrakt](tpn_sync_contract.md),
-[formaty i przykłady](tpn_sync_examples.md). PBI-096: planowane — gotowe
-na osobne zlecenie; PBI-097–103 pozostają planowane.
+[Plan](tpn_sync_plan.md), [kontrakt](tpn_sync_contract.md) i
+[karty PBI-095–103](tpn_sync_backlog.md): PBI-095 wykonane;
+[PBI-096](verification/PBI-096.md) **zweryfikowane — do dostarczenia**.
+Adapter/CLI zapisuje kompletny, odtwarzalny snapshot, a verify sprawdza go
+bez sieci. Próba live i testy offline wykonane; dane domenowe i stare
+CSV/XLSX bez zmian. Brak importera i harmonogramu.
 Kolejność: kontrakt → snapshot → różnice → duplikaty → ochrona GNSS/best →
 decyzje → pierwsza paczka danych → ręczny workflow PR → harmonogram.
-Ustalono jeden PR z osobnymi decyzjami dla rekordów i wyłącznie ludzki merge.
-Spec §8.4 dopuszcza wąski proces TPN. Ta dostawa obejmuje tylko kontrakt
-i dokumentację, bez implementacji, danych i workflow. Następny krok po
-odrębnym poleceniu: PBI-096; bieżąca sesja go nie rozpoczyna.
+Jeden PR na paczkę, osobne decyzje rekordów, wyłącznie ludzki merge.
+Następna karta po dostarczeniu i osobnym poleceniu: PBI-097; nie rozpoczęto.
 
 ## Wydanie v1.1.1
 

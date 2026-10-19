@@ -1,0 +1,198 @@
+{
+  "id": 6,
+  "name": "Jaskinie",
+  "type": "Feature Layer",
+  "geometryType": "esriGeometryPoint",
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID",
+      "domain": null
+    },
+    {
+      "name": "NR_INWENT",
+      "type": "esriFieldTypeString",
+      "alias": "NR_INWENT",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "NAZWA",
+      "type": "esriFieldTypeString",
+      "alias": "NAZWA",
+      "length": 200,
+      "domain": null
+    },
+    {
+      "name": "DLUGOSC",
+      "type": "esriFieldTypeDouble",
+      "alias": "DLUGOSC",
+      "domain": null
+    },
+    {
+      "name": "GLEBOKOSC",
+      "type": "esriFieldTypeDouble",
+      "alias": "GLEBOKOSC",
+      "domain": null
+    },
+    {
+      "name": "PRZEWYZSZE",
+      "type": "esriFieldTypeDouble",
+      "alias": "PRZEWYZSZE",
+      "domain": null
+    },
+    {
+      "name": "DENIWELACJ",
+      "type": "esriFieldTypeDouble",
+      "alias": "DENIWELACJ",
+      "domain": null
+    },
+    {
+      "name": "SYSTEM",
+      "type": "esriFieldTypeString",
+      "alias": "system",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "OTWÓR",
+      "type": "esriFieldTypeString",
+      "alias": "otwór",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "OPIS",
+      "type": "esriFieldTypeString",
+      "alias": "opis",
+      "length": 254,
+      "domain": null
+    },
+    {
+      "name": "WER_LOK",
+      "type": "esriFieldTypeString",
+      "alias": "wer_lok",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "UWAGI",
+      "type": "esriFieldTypeString",
+      "alias": "uwagi",
+      "length": 254,
+      "domain": null
+    },
+    {
+      "name": "WERYF",
+      "type": "esriFieldTypeSmallInteger",
+      "alias": "Zweryfikowane",
+      "domain": null
+    },
+    {
+      "name": "SHAPE",
+      "type": "esriFieldTypeGeometry",
+      "alias": "SHAPE",
+      "domain": null
+    },
+    {
+      "name": "GENEZA",
+      "type": "esriFieldTypeString",
+      "alias": "Geneza",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "FIELD",
+      "type": "esriFieldTypeInteger",
+      "alias": "Field",
+      "domain": null
+    },
+    {
+      "name": "CREATED_USER",
+      "type": "esriFieldTypeString",
+      "alias": "CREATED_USER",
+      "length": 255,
+      "domain": null
+    },
+    {
+      "name": "CREATED_DATE",
+      "type": "esriFieldTypeDate",
+      "alias": "CREATED_DATE",
+      "length": 8,
+      "domain": null
+    },
+    {
+      "name": "LAST_EDITED_USER",
+      "type": "esriFieldTypeString",
+      "alias": "LAST_EDITED_USER",
+      "length": 255,
+      "domain": null
+    },
+    {
+      "name": "LAST_EDITED_DATE",
+      "type": "esriFieldTypeDate",
+      "alias": "LAST_EDITED_DATE",
+      "length": 8,
+      "domain": null
+    },
+    {
+      "name": "GLOBALID",
+      "type": "esriFieldTypeGlobalID",
+      "alias": "GLOBALID",
+      "length": 38,
+      "domain": null
+    },
+    {
+      "name": "TATER",
+      "type": "esriFieldTypeString",
+      "alias": "TATER",
+      "length": 3,
+      "domain": null
+    }
+  ],
+  "advancedQueryCapabilities": {
+    "useStandardizedQueries": true,
+    "supportsStatistics": true,
+    "supportsPercentileStatistics": true,
+    "supportsHavingClause": true,
+    "supportsOrderBy": true,
+    "supportsDistinct": true,
+    "supportsCountDistinct": true,
+    "supportsAdvancedQueryRelated": true,
+    "supportsQueryRelatedPagination": true,
+    "supportsPagination": true,
+    "supportsLod": false,
+    "supportsQueryWithLodSR": false,
+    "supportsTrueCurve": true,
+    "supportsQueryWithDatumTransformation": true,
+    "supportsReturningQueryExtent": true,
+    "supportsQueryWithDistance": true,
+    "supportsSqlExpression": true,
+    "supportsTimeRelation": true,
+    "supportsSqlFormat": false,
+    "supportsQueryAnalytic": false,
+    "supportsCurrentUserQueries": true
+  },
+  "extent": {
+    "xmin": 2170085.6476836125,
+    "ymin": 6304697.798715464,
+    "xmax": 2261213.4413184035,
+    "ymax": 6344364.433534126,
+    "spatialReference": {
+      "wkid": 102100,
+      "latestWkid": 3857,
+      "xyTolerance": 0.001,
+      "zTolerance": 0.001,
+      "mTolerance": 0.001,
+      "falseX": -20037700,
+      "falseY": -30241100,
+      "xyUnits": 10000,
+      "falseZ": -100000,
+      "zUnits": 10000,
+      "falseM": -100000,
+      "mUnits": 10000
+    }
+  },
+  "maxRecordCount": 2
+}
