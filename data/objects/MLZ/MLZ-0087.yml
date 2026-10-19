@@ -14,6 +14,11 @@ external_refs:
   external_id: '{32002BF4-19E5-4BDC-8EF1-93D2E7B54909}'
   scope: object
   notes: TPN GLOBALID belongs to the object/source feature.
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{42D3F366-F55C-48CF-A5BC-1EAABE01CC7F}'
+  scope: object
+  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
   lat: 49.246909089048465
@@ -41,15 +46,43 @@ measurements:
     TPN WER_LOK: FF 01-06-2024'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-002
+  lat: 49.24692127487006
+  lon: 19.919367648867567
+  x_1992: 153674.87
+  y_1992: 566891.33
+  elevation_m: 1514.183319
+  elevation_datum: unknown
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{42D3F366-F55C-48CF-A5BC-1EAABE01CC7F}
+  observed_date: '2024-06-01'
+  source_date: '2024-06-01'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'TPN source-record measurement imported after operator review; not field-verified.
+
+    TPN WER_LOK: FF 1-06-2024'
+  created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
 best_measurement:
   mode: auto
   measurement_id: m-001
-  reason: null
-  updated_at: '2026-05-16T10:22:52Z'
-  updated_by: importer:tpn
+  reason: Przy remisie dat i nieznanej dokładności zachowano m-001 z MLZ-0087; brak podstaw do oceny przewagi dokładności.
+  updated_at: '2026-10-17T19:51:35Z'
+  updated_by: dl
 attachments: []
-notes: Imported from TPN source record after operator review.
+notes: >-
+  Scalono MLZ-0091/C-0888 do MLZ-0087/C-0866: F.F., Jaskinie 118–119/2025,
+  s. 37–38, plan jednego otworu. Dawne MLZ-0091/m-001 zachowano jako m-002.
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-10-17T19:51:35Z'
+updated_by: dl

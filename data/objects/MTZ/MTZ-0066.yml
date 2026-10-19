@@ -41,6 +41,32 @@ measurements:
     TPN UWAGI: lokalizacja orientacyjna'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-002
+  lat: 49.24073333333333
+  lon: 19.90425
+  x_1992: 152973.91
+  y_1992: 565799.64
+  elevation_m: null
+  elevation_datum: unknown
+  elevation_source: unknown
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: inne
+  source_ref: WR:2026-10-16:Locus
+  observed_date: '2026-10-16'
+  source_date: '2026-10-16'
+  method: source_record
+  device: null
+  tags: []
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: >-
+    W.R., zgłoszenie 2026-10-16: dolny otwór, zrzut Locus
+    N49°14.444′ E019°54.255′. Data i metoda pomiaru nieznane;
+    observed_date oznacza datę zgłoszenia. Do weryfikacji, bez wyboru do eksportu.
+  created_at: '2026-10-17T07:26:55Z'
+  created_by: dl
 best_measurement:
   mode: auto
   measurement_id: m-001
@@ -51,5 +77,5 @@ attachments: []
 notes: Imported from TPN source record after operator review.
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-10-17T07:26:55Z'
+updated_by: dl
