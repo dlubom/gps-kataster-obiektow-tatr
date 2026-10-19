@@ -4,11 +4,16 @@ Last updated: 2026-10-19
 
 ## Integracja TPN — PBI-097
 
-Status: **zweryfikowane — do dostarczenia**, osobne zlecenie 2026-10-19.
+Status: **wykonane 2026-10-19**, osobne zlecenie 2026-10-19.
 [Dowody](verification/PBI-097.md), [CLI/format](tpn_sync_comparison.md).
 PR #12 był otwarty jako draft, czysta gałąź `codex/tpn-sync-planning`,
 HEAD i origin zgodne: `98de33b5b4980af70dd0a51f69b954922cdd087a`.
 Kontynuowano tę gałąź; main `b98fd3febb400c7ee520046682c1bb16238429ee`.
+Implementacja `cd661a50ec0a8cc2f30ea6db8a67032eb4dc4a79`: push i
+[CI 39260297073](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/39260297073)
+PASS. Lokalnie 924 testy, Ruff, validate bez błędów, build i readback
+eksportów PASS; 2048 istniejących plików data/config bez zmian. Końcowy
+SHA dokumentacji i jego CI są utrwalane w opisie PR #12.
 
 `compare_tpn_snapshot.py` porównuje zweryfikowane snapshoty z katalogiem;
 bootstrap używa zachowanego CSV. Typed GUID pozostaje jedynym kluczem.

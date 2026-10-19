@@ -38,7 +38,7 @@ Python 3.12, istniejące PyYAML/PyProj, bez nowych zależności.
   checkoutu. Hash wszystkich istniejących data/config przed/po.
 - [x] Ruff, pełny pytest, validate, build i readback eksportów według runbooka;
   celowane mutacje krytycznych reguł i końcowy przegląd.
-- [ ] Trwały log, status/backlog/context/handoff, commit/push do PR #12,
+- [x] Trwały log, status/backlog/context/handoff, commit/push do PR #12,
   zdalny SHA i wszystkie joby jego CI. Stop po 097, prompt dla 098.
 
 ## Szczególna kontrola

@@ -6,7 +6,7 @@ Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
 Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-097**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
-PBI-097: **zweryfikowane — do dostarczenia**; PBI-098: **planowane — gotowe** po dostawie 097.
+PBI-097: **wykonane 2026-10-19**; PBI-098: **planowane — gotowe**.
 PBI-099–103: **planowane**. Porównanie jest tylko do odczytu; bez importera i harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
@@ -105,7 +105,7 @@ walidacja schematu i manifestu, fixture'y. Kontekst: plan §2–4, [kontrakt](tp
 
 ## PBI-097: Wyliczać zmiany TPN z uwzględnieniem katalogu i wcześniejszych decyzji
 
-Status: zweryfikowane — do dostarczenia. Zlecone osobno 2026-10-19.
+Status: wykonane 2026-10-19. Zlecone osobno 2026-10-19.
 [Dowody](verification/PBI-097.md), [CLI i format rejestru](tpn_sync_comparison.md).
 
 **Cel:** odróżnić zaległą różnicę źródła, niezależną zmianę lokalną i już
@@ -135,7 +135,7 @@ do danych domenowych. Kontekst: plan §3–5 i spec z 095.
 
 ## PBI-098: Wykrywać kandydatów duplikatów i kwalifikować nowe rekordy
 
-Status: planowane — gotowe po dostawie 097. Zależność: 097.
+Status: planowane — gotowe. Zależność: 097.
 Nie rozpoczęto; wymaga osobnego polecenia.
 
 **Cel:** automat może proponować nowy Obiekt tylko wtedy, gdy nie pomija
