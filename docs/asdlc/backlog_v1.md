@@ -9,7 +9,7 @@ Stan na: 2026-10-19
 [PBI-096](verification/PBI-096.md) **wykonane 2026-10-19**.
 Adapter/CLI zapisuje kompletny, odtwarzalny snapshot, a verify sprawdza go
 bez sieci. Próba live i testy offline wykonane; dane domenowe i stare
-CSV/XLSX bez zmian. Brak importera i harmonogramu.
+CSV/XLSX bez zmian. Bez importu produkcyjnego i harmonogramu.
 Kolejność: kontrakt → snapshot → różnice → duplikaty → ochrona GNSS/best →
 decyzje → pierwsza paczka danych → ręczny workflow PR → harmonogram.
 Jeden PR na paczkę, osobne decyzje rekordów, wyłącznie ludzki merge.
@@ -21,7 +21,9 @@ Kandydaci i kwalifikacja, [CLI/parametry](tpn_sync_candidates.md), bez YAML.
 [PBI-099](verification/PBI-099.md): **wykonane 2026-10-19**.
 [Strażnik/audyt best](tpn_sync_best_protection.md), manifest trzech auto→manual
 pending. Dane bez zmian; brak migracji bez jawnej akceptacji.
-Następna karta po osobnym poleceniu: PBI-100; nie rozpoczęto.
+[PBI-100](verification/PBI-100.md): **zweryfikowane lokalnie — do dostarczenia**.
+[Decyzje/planowanie/transakcja/bramka](tpn_sync_decisions.md), bez produkcyjnego
+importu i migracji. Następna karta po osobnym poleceniu: PBI-101; nie rozpoczęto.
 
 ## Wydanie v1.1.1
 

@@ -6,7 +6,8 @@ wystarcza do kontynuacji prac bez historii czatu i lokalnego build.
 Kontrakt przyjęto w PBI-095. PBI-096 dostarcza snapshot/CLI, a PBI-097
 porównanie tylko do odczytu. PBI-098 dodaje [kandydatów i kwalifikację](tpn_sync_candidates.md).
 PBI-099 dodaje [ochronę i audyt best](tpn_sync_best_protection.md).
-Aktualny status jest w backlogu oraz [logu PBI-099](verification/PBI-099.md);
+PBI-100 dostarcza [decyzje i zastosowanie](tpn_sync_decisions.md).
+Aktualny status jest w backlogu oraz [logu PBI-100](verification/PBI-100.md);
 [CLI i rejestr PBI-097](tpn_sync_comparison.md).
 
 ## Repozytorium i wejście w pracę
@@ -147,15 +148,17 @@ API nie daje transakcyjnej gwarancji atrybutów, co jest zapisane w manifeście.
 
 ## Granica następnego kroku
 
-Ta sesja kończy się po PBI-099. Następną kartą po osobnym poleceniu jest
-PBI-100: decyzje i zastosowanie paczki, bez pierwszego importu PBI-101.
-PBI-100–103 nie są rozpoczęte. [Odbiór PBI-099](verification/PBI-099.md).
-Manifest auto→manual jest pending; bez jawnej akceptacji brak migracji.
-Ochrona działa niezależnie od akceptacji. Nie używać starego apply_review.py
-do decyzji nowego protokołu.
-Porównanie PBI-097 używa snapshotu PBI-096 z Git i bieżącego katalogu;
-nie wymaga historycznych plików build ani liczb z rozpoznania.
-Nie zmienia przyjętej bazy, nie tworzy decyzji i nie uruchamia importu.
+Dostawa PBI-100 obejmuje narzędzia decyzji, planowania, transakcji i CI,
+zweryfikowane na fixture'ach i izolowanych kopiach. Nie wykonuje paczki
+produkcyjnej. Następne osobne zlecenie: wyłącznie PBI-101, zgodnie z jego
+aktualną kartą, z nowym pełnym snapshotem i indywidualnymi decyzjami człowieka.
+[Odbiór PBI-100](verification/PBI-100.md), [prompt](verification/PBI-100-next-task.md).
+Manifest auto→manual nadal pending; bez jawnej zgody brak migracji.
+Ochrona działa niezależnie od akceptacji. Zmieniona propozycja/preimage
+wymaga ponownego planu; sama obecność manifestu w Git nie jest zgodą.
+Porównanie i audyt odtwarzają wejścia z Git, bez starego build. Przyjęta baza
+pochodzi z origin/main, nigdy z kandydata na gałęzi. Nie uruchamiać starego
+apply_review.py na nowym formacie. PBI-101–103 nie rozpoczęto; bez harmonogramu.
 
 Ustalenia: jeden PR i decyzje po rekordzie, zaległości przed miesięcznym
 sprawdzaniem, wyłącznie ludzki merge, kontrola duplikatów, historia i ochrona

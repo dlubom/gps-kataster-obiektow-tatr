@@ -14,6 +14,8 @@ karty dopiero wdrożą jego wymagania.
 Nowy zakres dotyczy tylko TPN. YAML pozostaje źródłem prawdy katalogu.
 PBI-096–098 dostarczyły snapshot/porównanie/kwalifikację; PBI-099 dodaje
 [czysty strażnik i audyt best](tpn_sync_best_protection.md), bez importu.
+PBI-100 dostarcza [decyzje, wspólny plan, transakcję i bramkę](tpn_sync_decisions.md),
+zweryfikowane na fixture'ach; pierwsza paczka danych pozostaje w PBI-101.
 Bieżący status dostawy i akceptacji manifestu określa backlog.
 
 ## 1. Cel i ustalenia użytkownika

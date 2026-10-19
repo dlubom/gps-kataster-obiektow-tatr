@@ -10,7 +10,8 @@
 > kontrakt §8.4. PBI-096 dostarcza pobieranie i offline weryfikację snapshotu;
 > PBI-097 dostarcza porównanie CSV/API/YAML i odczyt przyjętego stanu;
 > PBI-098 dostarcza kwalifikację nowych rekordów, PBI-099 ochronę/audyt best;
-> PBI-100–103 pozostają przyszłą pracą, bez importera i harmonogramu.
+> PBI-100 dostarcza decyzje/planowanie/transakcję/bramkę, zweryfikowane na fixture'ach;
+> PBI-101–103 pozostają przyszłą pracą, bez paczki produkcyjnej i harmonogramu.
 
 ---
 
@@ -677,7 +678,12 @@ PBI-098: opcja `--qualify-new` dodaje kandydatów i bramkę nowych rekordów,
 [bez materializacji YAML](docs/asdlc/tpn_sync_candidates.md).
 PBI-099: opcja `--protect-best`, audyt katalogu i czysty strażnik jawnego
 keep/select_new; [zasady i manifest](docs/asdlc/tpn_sync_best_protection.md).
-Nie zapisuje pomiarów ani migracji; zastosowanie pozostaje w PBI-100.
+PBI-099 nie zapisuje pomiarów ani migracji. PBI-100 dostarcza
+[decyzje i zastosowanie paczki](docs/asdlc/tpn_sync_decisions.md):
+ścisłe execution/proposals, wspólny plan ID/best, pełny preflight, atomową
+zamianę data, wynikowe hashe/archiwum decyzji i bramkę pending/defer.
+Pierwsza paczka produkcyjna pozostaje osobnym PBI-101. Manifest migracji
+PBI-099 nadal pending; jego obecność w Git nie jest akceptacją.
 
 Przyjęty kierunek rozszerza V1 wyłącznie o TPN: rozpatrzenie zaległości,
 następnie ręczne i dopiero po odbiorze miesięczne sprawdzanie API przez
@@ -716,7 +722,8 @@ przesuwa przyjętej bazy; robi to dopiero ludzki merge. No-op nie tworzy PR.
 Stan źródła i dowody są osobne od YAML domenowego. Wersjonowane snapshoty,
 manifesty i decyzje pozwalają odtworzyć zatwierdzoną paczkę z czystego
 checkoutu. Obecny applier CSV/XLSX nie obsługuje tych formatów i ochron;
-implementację oraz odporność na awarie zapisu dostarczą kolejne karty.
+PBI-100 dostarcza osobny applier i odporność na awarie zapisu opisaną
+w instrukcji decyzji. PBI-101 dostarczy pierwszą paczkę danych.
 
 ---
 

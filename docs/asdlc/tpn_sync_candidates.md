@@ -120,7 +120,8 @@ review. Ważne rozstrzygnięcie pokazuje wynik człowieka, ale nie usuwa
 sygnału z bramki §6 i nie uruchamia przypisania lub merge.
 
 [Dowody odbioru](verification/PBI-098.md). Następny zakres po osobnym
-zleceniu: PBI-099. PBI-100 dopiero dostarczy producenta/stosowanie decyzji.
+zleceniu: PBI-099. PBI-100 dostarcza [producenta i stosowanie decyzji](tpn_sync_decisions.md),
+bez pierwszej paczki produkcyjnej PBI-101.
 
 PBI-099: `--protect-best` można łączyć z `--qualify-new`; dołącza
 [audyt ochrony całego katalogu](tpn_sync_best_protection.md), bez zmiany

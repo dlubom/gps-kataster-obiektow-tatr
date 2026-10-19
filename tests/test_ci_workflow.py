@@ -14,6 +14,7 @@ def test_validate_workflow_uses_local_validation_gate() -> None:
     assert set(workflow["on"]) == {"pull_request", "push"}
     assert workflow["on"]["push"]["branches"] == ["main"]
 
+    assert workflow["jobs"]["validate"]["steps"][0]["with"]["fetch-depth"] == 0
     run_commands = [step["run"] for step in workflow["jobs"]["validate"]["steps"] if "run" in step]
     assert run_commands == [
         "uv sync",
@@ -21,6 +22,7 @@ def test_validate_workflow_uses_local_validation_gate() -> None:
         "uv run ruff check src tests scripts",
         "uv run pytest",
         "uv run python scripts/validate.py",
+        'uv run python scripts/review_tpn_batch.py check --changed-from "$TPN_BASE_SHA"',
     ]
 
 

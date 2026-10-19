@@ -2,12 +2,13 @@
 
 Załącznik normatywny do [kontraktu PBI-095](tpn_sync_contract.md).
 Manifest PBI-096 obsługuje `fetch_tpn_snapshot.py`; raport changes i odczyt
-stanu dostarcza PBI-097 ([CLI/format](tpn_sync_comparison.md)). Decyzje/apply
-pozostają do implementacji PBI-100. Przykłady akcji poniżej są przyszłym
-formatem; PBI-097 emituje puste proposed_actions/candidates i zachowuje best.
-PBI-098 może uzupełniać candidates, a PBI-099 dołączać opcjonalny audyt
-[ochrony best](tpn_sync_best_protection.md); nadal nie stosują tych decyzji. Nie uruchamiać tych przykładów
-przez dotychczasowy `apply_review.py`.
+stanu dostarcza PBI-097 ([CLI/format](tpn_sync_comparison.md)). PBI-098
+uzupełnia candidates, a PBI-099 dołącza opcjonalny [audyt best](tpn_sync_best_protection.md).
+Te narzędzia porównawcze nie stosują decyzji i zachowują best.
+PBI-100 dostarcza [wykonywalny format, CLI i bramkę](tpn_sync_decisions.md),
+w tym hashowane execution/proposals. Poniższe przykłady są kontraktem
+syntetycznym; wykonywalne uzupełnienia opisuje instrukcja PBI-100.
+Nie uruchamiać tych przykładów przez dotychczasowy `apply_review.py`.
 Przykładowe identyfikatory i wartości są syntetyczne. Wielkie symbole
 `SNAPSHOT`, `REV_*`, `LOC_*`, `HASH_*` zastępują rzeczywiste 64-znakowe
 SHA-256 (małe hex); w prawdziwym pliku symbole są niedozwolone.
@@ -307,5 +308,5 @@ celu, typed referencji i dowodu tożsamości; NR_INWENT tylko na Jaskini.
 | Otwarty PR podczas kolejnego cyklu | Raport zaległości; brak drugiego PR i nadpisania decyzji. |
 
 PBI-095 weryfikuje kompletność i spójność opisu oraz składnię przykładów.
-Wykonywalne schematy, testy powyższych zachowań i dowody odporności na
-awarie należą do wskazanych dalszych PBI, nie są już wdrożonymi funkcjami.
+PBI-096–100 dostarczają wykonywalne kontrole i testy tych zachowań.
+Odbiór rzeczywistej paczki należy do PBI-101, a otwarty PR/cykl do PBI-102–103.

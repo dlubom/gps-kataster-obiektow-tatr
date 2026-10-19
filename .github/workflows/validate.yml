@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -42,3 +44,8 @@ jobs:
 
       - name: Validate YAML data
         run: uv run python scripts/validate.py
+
+      - name: Verify TPN batch decisions
+        env:
+          TPN_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: uv run python scripts/review_tpn_batch.py check --changed-from "$TPN_BASE_SHA"

@@ -1,3 +1,6 @@
+> PBI-100 używa tego strażnika w [łącznym planie i ponownym preflight](tpn_sync_decisions.md).
+> Manifest pozostaje pending; nie dodano zgody na migrację ani obejścia blokady.
+
 # Ochrona GNSS/geodezji i best — PBI-099
 
 Implementacja [kontraktu §6](tpn_sync_contract.md) i [planu §7](tpn_sync_plan.md).

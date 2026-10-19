@@ -426,16 +426,10 @@ def compare(
         valid_resolution = False
         if matches:
             resolution = matches[0]
-            expected_catalog = (
-                resolution["result_catalog_hash"]
-                if resolution["status"] == "approve"
-                else resolution["catalog_hash"]
-            )
-            expected_files = (
-                resolution["result_hashes"]
-                if resolution["status"] == "approve"
-                else resolution["preimage"]
-            )
+            # All decisions bind the result of the whole batch. A defer/reject
+            # must not become stale merely because another approved record changed it.
+            expected_catalog = resolution["result_catalog_hash"]
+            expected_files = resolution["result_hashes"]
             valid_resolution = (
                 resolution["target"] == target
                 and expected_catalog == catalog.hash

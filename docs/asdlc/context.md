@@ -2,6 +2,36 @@
 
 Last updated: 2026-10-19
 
+## Integracja TPN — PBI-100
+
+Status: **zweryfikowane lokalnie — do dostarczenia**, osobne zlecenie
+2026-10-19. [Dowody](verification/PBI-100.md), [CLI/format](tpn_sync_decisions.md).
+Start po fetch: otwarty draft PR #12, czysty HEAD/origin
+`ab7dd2d3cb6a9fd5cc8b80b964c5f1b67be6997c`, kontynuowana gałąź
+`codex/tpn-sync-planning`; main `b98fd3febb400c7ee520046682c1bb16238429ee`.
+
+Ścisłe decyzje i propozycje są związane z odtworzonym raportem, snapshotem,
+rewizją, celem, preimages i hashami bazy. Jeden plan przydziela ID całej
+partii i ocenia łącznie best wszystkich akcji Obiektu przez PBI-099.
+Dry-run pokazuje diff, best i rzeczywiste wiersze eksportów. Apply publikuje
+całe data jednym atomowym exchange na macOS/Linux; testy I/O i przerwania
+procesu potwierdzają pełny stary albo pełny nowy wynik. Ponowienie potwierdza
+wynikowe hashe i archiwum decyzji, potem jest no-op. Zmiana statusu propozycji
+przelicza wynik od bazy i zachowuje starsze rozstrzygnięcia.
+
+Bramka validate odrzuca pending i niezgodny diff/stan/archiwum; świadome
+odroczenia pozostają w kolejce. Wszystkie końcowe decyzje wiążą wynik całej
+partii, więc approve nie unieważnia równoległego defer/reject. Przyjęty stan
+nadal pochodzi wyłącznie z origin/main po ludzkim merge. Autoryzację lokalnego
+operatora przekazuje zaufany wywołujący CLI; uprawnienia workflow to PBI-102.
+Nie wykonano żadnego approve/reject/defer ani importu na katalogu produkcyjnym.
+
+2048 plików data/config, 1876 pomiarów i snapshoty/CSV/XLSX zachowane.
+Manifest PBI-099 odtworzony bajtowo: nadal **pending**; brak migracji.
+Ochrona GNSS/geodezji/manual działa bez zgody na migrację i nie ma obejścia.
+Następne osobne zlecenie: wyłącznie PBI-101, najpierw aktualne wejścia i
+indywidualne rozpatrzenie przez użytkownika. Bez merge/tagu/release/schedule.
+
 ## Integracja TPN — PBI-099
 
 Status: **wykonane 2026-10-19**, osobne zlecenie 2026-10-19.

@@ -1241,3 +1241,16 @@ def _markdown_text(value: str) -> str:
     if not text:
         return "-"
     return text.replace("|", "\\|").replace("\n", "<br>")
+
+
+def plan_tpn_review(
+    repo_root: Path, changes: dict, decisions: dict, *, reviewers: set[str]
+) -> dict:
+    """Plan the snapshot protocol separately from legacy CSV/XLSX decisions.
+
+    No format guessing or fallback to the legacy applier; all revision, source,
+    best and transaction checks belong to the TPN batch boundary.
+    """
+    from .tpn_batch import plan_batch
+
+    return plan_batch(repo_root, changes, decisions, reviewers=reviewers)

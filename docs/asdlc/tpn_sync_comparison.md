@@ -1,3 +1,6 @@
+> PBI-100: dostępne są [decyzje, zastosowanie i bramka](tpn_sync_decisions.md).
+> Poniższy opis PBI-097 zachowuje granicę samej porównywarki tylko do odczytu.
+
 # Porównanie TPN — PBI-097
 
 Implementacja [kontraktu](tpn_sync_contract.md) §2–5. Tylko odczyt katalogu,
@@ -100,7 +103,8 @@ wytworzyć stan z decyzji i zachować wcześniejsze dowody w source_reviews.
   catalog_hash obejmuje wszystkie YAML katalogu, config i data/shapes;
   result_catalog_hash oznacza ten sam zakres **po** zaakceptowanych akcjach.
   Przy reject/defer wynikowe hashe mogą być równe wejściowym.
-  Approve sprawdza wynikowe hashe, reject/defer wejściowe. Zmiana celu,
+  PBI-100: wszystkie końcowe statusy sprawdzają wynikowe hashe całej partii,
+  aby approve innego rekordu nie unieważniało defer/reject. Zmiana celu,
   pliku, konfiguracji lub katalogu wymaga ponownego review. Brak target
   nadal wiąże cały catalog_hash. Nieznana polityka blokuje odczyt.
 - `applied_locations`: lista `{location_hash, measurement_id,
@@ -123,6 +127,6 @@ wytworzyć stan z decyzji i zachować wcześniejsze dowody w source_reviews.
 
 `state_hash` jest SHA-256 kanonicznego stanu (null przy bootstrapie).
 `changes_hash` w checksums.json to SHA-256 dokładnych bajtów changes.json,
-łącznie z końcowym LF. PBI-100 ma nadal dostarczyć schemat/validator
-wykonywalnych decyzji i kontrolę zgodności całej paczki; raport PBI-097
+łącznie z końcowym LF. PBI-100 dostarcza schemat/validator
+wykonywalnych decyzji i kontrolę zgodności całej paczki; sam raport PBI-097
 nie jest zgodą na użycie starego apply_review.py.

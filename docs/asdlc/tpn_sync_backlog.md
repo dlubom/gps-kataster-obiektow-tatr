@@ -3,11 +3,12 @@
 Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
 [Indeks całego backlogu](backlog_v1.md).
 
-Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-099**.
+Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-100**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
 PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
-PBI-099: **wykonane 2026-10-19**; PBI-100–103: **planowane**. Porównanie jest tylko do odczytu; bez importera i harmonogramu.
+PBI-099: **wykonane 2026-10-19**; PBI-100: **zweryfikowane lokalnie — do dostarczenia**; PBI-101–103: **planowane**.
+Planowanie/apply jest testowane na fixture'ach; bez produkcyjnej paczki i harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -192,7 +193,8 @@ plan §7, `best_measurement.py`, regresja KSZ-0112/m-001.
 
 ## PBI-100: Rozpatrywać i stosować decyzje po rekordzie w jednej paczce
 
-Status: planowane. Zależności: 097, 098, 099.
+Status: zweryfikowane lokalnie — do dostarczenia. Zależności: 097, 098, 099.
+[Dowody](verification/PBI-100.md), [CLI i schematy](tpn_sync_decisions.md).
 
 **Cel:** człowiek wybiera skutek każdej zmiany, a ponowienie nie powiela
 pomiarów, notatek, referencji ani obiektów.
@@ -203,23 +205,23 @@ Kontekst: plan §4–8 i obecny format `staging_review_decisions.md`.
 
 **Kryteria odbioru:**
 
-- [ ] pending/approve/reject/defer i akcje metadata, append_measurement,
+- [x] pending/approve/reject/defer i akcje metadata, append_measurement,
       attach_source, new_object/link_cave mają przykłady i walidację.
       Automatyczne nowe propozycje są odróżnione od decyzji człowieka.
-- [ ] Każda decyzja wiąże snapshot, GUID, rewizję i preimage celu. Zmiana
+- [x] Każda decyzja wiąże snapshot, GUID, rewizję i preimage celu. Zmiana
       lokalnego celu, sprzeczne akcje lub niezatwierdzony konflikt blokują
       zastosowanie. Kilka akcji jednego obiektu jest planowane wspólnie.
-- [ ] Stare wartości lokalizacji pozostają; notes są uzupełniane bez utraty
+- [x] Stare wartości lokalizacji pozostają; notes są uzupełniane bez utraty
       tekstu, brak Z nie kasuje wysokości, null nie usuwa wartości milcząco.
       Zmiana opisu/daty źródła nie tworzy obserwacji lokalizacyjnej.
-- [ ] Cały plan, przydział ID i pełna walidacja następują przed zapisem.
+- [x] Cały plan, przydział ID i pełna walidacja następują przed zapisem.
       Błąd ostatniej decyzji oraz awaria zapisu nie zostawiają częściowo
       zmodyfikowanego katalogu ani stanu źródła.
-- [ ] Dwa zastosowania tej samej paczki dają identyczne pliki; nieznany
+- [x] Dwa zastosowania tej samej paczki dają identyczne pliki; nieznany
       albo niewspierany format decyzji jest błędem, nie pomijanym rekordem.
-- [ ] Bramka CI odrzuca pending i niespójność decyzji z rzeczywistym diffem;
+- [x] Bramka CI odrzuca pending i niespójność decyzji z rzeczywistym diffem;
       dopuszcza świadome defer, zapisując jego kolejkę po merge.
-- [ ] Dry-run pokazuje skutki w danych, best i eksportach, a apply daje
+- [x] Dry-run pokazuje skutki w danych, best i eksportach, a apply daje
       ten sam wynik. Kontrole nie wykonują treści wejściowej jako kodu.
 
 ## PBI-101: Przeprowadzić pierwsze uzgodnienie danych TPN
