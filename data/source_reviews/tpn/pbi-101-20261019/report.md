@@ -19,3 +19,7 @@ Snapshot pbi-101-live-20261019 utrwalono przed przygotowaniem paczki
 w 60afeca2d17bbc4b5aa690abc83da1d25d89a506. Przyjęty stan pochodzi
 wyłącznie z origin/main b98fd3febb400c7ee520046682c1bb16238429ee.
 Nie nadpisywać wejść, nie stosować zalecanych decyzji bez rozstrzygnięcia użytkownika.
+
+Hosted CI review ma dodatkowy błąd odtworzenia raportu przed kontrolą
+pending; [rzeczywisty wynik i handoff](../../../../docs/asdlc/verification/PBI-101-ci-handoff.md).
+Przyczyna nieustalona. Nie uznano failure za oczekiwany pending ani za odbiór.

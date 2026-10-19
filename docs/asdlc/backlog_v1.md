@@ -28,7 +28,9 @@ importu i migracji.
 [PBI-101](verification/PBI-101.md): **w toku — oczekuje na decyzje użytkownika**.
 Nowy snapshot utrwalony przed danymi; jedna paczka pbi-101-20261019 ma
 640 pending zgodnie z jawnym poleceniem użytkownika. [Konkretne propozycje](verification/PBI-101-review/review.md).
-Brak produkcyjnego apply i przyjętego stanu; bramka CI ma blokować pending.
+Brak produkcyjnego apply i przyjętego stanu. Dodatkowo hosted CI ma
+[niewyjaśniony błąd odtworzenia raportu](verification/PBI-101-ci-handoff.md)
+przed kontrolą pending; nie jest to oczekiwana porażka samego pending.
 Następny krok: kontynuacja wyłącznie PBI-101, [prompt](verification/PBI-101-next-task.md).
 
 ## Wydanie v1.1.1

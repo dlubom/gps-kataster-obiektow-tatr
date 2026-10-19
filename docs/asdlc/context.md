@@ -35,7 +35,15 @@ wszystkie 1876 pomiarów i 1007 best produkcji bez zmiany. Testy apply
 wyłącznie na nowym izolowanym klonie, autor simulation:codex, bez
 podszywania się pod użytkownika. Wyniki i warunkowy diff w dowodach.
 
-Dalsza praca: **kontynuacja PBI-101 po jawnych decyzjach dla konkretnych
+Hosted CI review 9a70337/run 39289000670: failure wcześniej niż pending,
+changes evidence/schema mismatch; regenerate report. 1077 testów, Ruff
+oraz YAML success; 11 kroków success / 1 failure / 2 skipped. Lokalny
+czysty klon odtwarza report i dochodzi do pending; przyczyna rozbieżności
+Linux/Mac nieustalona. [Dokładny handoff CI](verification/PBI-101-ci-handoff.md).
+Nie maskować tego jako oczekiwanej blokady pending, nie osłabiać strażnika
+ani nie nadpisywać immutable inputs. Kod/CI pozostały bez zmian.
+
+Dalsza praca: **wyjaśnienie rozbieżności CI i kontynuacja PBI-101 po jawnych decyzjach dla konkretnych
 propozycji**, bez ponownego pobierania/zmiany wejść aktywnej paczki bez
 uzgodnienia. Po zmianie podstawy wymagane nowe review. PBI-102–103
 pozostają planowane, bez merge/tagu/release/harmonogramu.

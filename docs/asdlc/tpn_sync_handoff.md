@@ -153,7 +153,10 @@ w opisie PR i [dowodach PBI-101](verification/PBI-101.md).
 PBI-101 **w toku**: nowy pełny snapshot i jedna paczka są utrwalone,
 [propozycje po rekordzie](verification/PBI-101-review/review.md) pokazane.
 Użytkownik nakazał pozostawić wszystko pending: 640/640, autor/czas null.
-Brak produkcyjnego apply i nowego stanu źródła; CI blokuje gotowość pending.
+Brak produkcyjnego apply i nowego stanu źródła. Hosted CI zatrzymuje się
+wcześniej niż pending na rozbieżności odtworzenia raportu:
+[rzeczywisty błąd i diagnostyka](verification/PBI-101-ci-handoff.md).
+Nie przypisywać tej porażki wyłącznie świadomemu pending.
 Testy zastosowania i readback symulacji wyłącznie w izolowanym klonie.
 [Prawidłowy następny prompt](verification/PBI-101-next-task.md) kontynuuje
 PBI-101 po jawnych decyzjach; nie rozpoczyna PBI-102.

@@ -8,13 +8,23 @@ kontynuuj codex/tpn-sync-planning. Nie polegaj na historii czatu ani build.
 
 Przeczytaj AGENTS, dokumenty kanoniczne, wszystkie tpn_sync_*, odbiory
 095–101, PBI-101-review/review.md, recommendations.json i warunkowy diff,
-aktywną paczkę data/source_reviews/tpn/pbi-101-20261019 oraz manifest 099.
+aktywną paczkę data/source_reviews/tpn/pbi-101-20261019, manifest 099
+i PBI-101-ci-handoff.md z rzeczywistym błędem hosted CI.
 PBI-100 jest odebrane. PBI-101 pozostaje w toku: użytkownik po obejrzeniu
 konkretnych propozycji polecił „Na razie pozostaw wszystko pending”.
 640 decyzji ma autora/czas null. Nie ma produkcyjnego apply ani stanu źródła.
 Nie zmieniaj tego polecenia w samodzielne approve/reject/defer.
 
-Najpierw przedstaw istniejące konkretne propozycje A001–A578, B001–B031,
+Najpierw odtwórz read-only rozbieżność hosted CI z handoffu: Linux
+zwraca changes evidence/schema mismatch przed kontrolą pending, Mac
+odtwarza raport kanonicznie i zwraca pending blocks merge. Pozyskaj diff
+expected/actual i dowód przyczyny; nie zakładaj, że CI jest czerwone tylko
+z powodu pending. Nie zmieniaj polityki ani narzędzi 096–100 i nie osłabiaj
+hashów/tolerancji bez jawnego uzgodnienia potrzebnej naprawy. Zachowaj
+immutable snapshot/changes i wszystkie decyzje pending. Użytkownik dotąd
+nie zatwierdził ani działań domenowych, ani rozszerzenia zakresu naprawy.
+
+Przed zastosowaniem przedstaw istniejące konkretne propozycje A001–A578, B001–B031,
 C001–C005, D001–D026 i uzyskaj jawne decyzje użytkownika dla wskazanych ID
 lub zakresów i wyjątków. Dodanie pomiaru i keep/select_new rozstrzygaj osobno.
 Nie podpisuj decyzji imieniem użytkownika. Manifest 099 pozostaje pending;

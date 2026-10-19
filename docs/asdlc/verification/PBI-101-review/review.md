@@ -6,6 +6,11 @@ Paczka `pbi-101-20261019`, baza `60afeca2d17bbc4b5aa690abc83da1d25d89a506`, przy
 
 Źródło jest rekordem punktowym TPN; kandydat i dystans nie dowodzą tożsamości otworu. API nie ma wysokości ani dokładności. Data poniżej jest dniem LAST_EDITED_DATE, z komentarzem o nieznanej dacie terenowej.
 
+Hosted CI 9a70337 ma dodatkową, niewyjaśnioną rozbieżność odtworzenia
+raportu przed bramką pending. [Rzeczywisty wynik i handoff](../PBI-101-ci-handoff.md).
+Nie jest to oczekiwana porażka wyłącznie z powodu pending; narzędzia i wejścia
+pozostały bez zmian.
+
 ## Zakres i odpowiedź
 
 | Grupa | Konkretne wpisy | Propozycja |

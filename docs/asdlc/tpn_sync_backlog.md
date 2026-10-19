@@ -232,8 +232,11 @@ Status: **w toku — oczekuje na decyzje użytkownika**. Zależność: 100.
 [Dowody](verification/PBI-101.md), [konkretne propozycje](verification/PBI-101-review/review.md).
 Nowy snapshot zweryfikowano i utrwalono przed przygotowaniem paczki.
 Po pokazaniu propozycji użytkownik polecił pozostawić wszystko pending:
-640/640 wpisów, autor/czas null. Brak produkcyjnego apply i stanu źródła;
-bramka CI powinna blokować pending. Testy zastosowania tylko w izolacji.
+640/640 wpisów, autor/czas null. Brak produkcyjnego apply i stanu źródła.
+Hosted CI 9a70337 zatrzymuje się jednak wcześniej niż pending:
+[changes evidence/schema mismatch](verification/PBI-101-ci-handoff.md).
+To dodatkowa nieodebrana rozbieżność odtworzenia Linux/Mac, bez naprawy
+lub obejścia w zakresie tej karty. Testy zastosowania tylko w izolacji.
 
 **Cel:** uporządkować zaległości i pozostawić wiarygodną bazę kolejnego cyklu.
 

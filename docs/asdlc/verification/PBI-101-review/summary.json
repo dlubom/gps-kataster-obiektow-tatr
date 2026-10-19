@@ -50,5 +50,13 @@
   },
   "simulation_tamper_blocked": true,
   "production_pending_gate_exit": 1,
-  "production_pending_gate_reason": "pending blocks merge"
+  "production_pending_gate_reason": "pending blocks merge",
+  "hosted_ci_review": {
+    "head_sha": "9a70337725c9098248fb98ec45979fd6fdacb3d4",
+    "run_id": 39289000670,
+    "conclusion": "failure",
+    "reason": "changes evidence/schema mismatch; regenerate report",
+    "pending_gate_reached": false,
+    "cause_confirmed": false
+  }
 }
