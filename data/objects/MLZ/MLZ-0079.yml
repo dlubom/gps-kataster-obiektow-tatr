@@ -1,80 +1,115 @@
-schema_version: 1
-id: MLZ-0079
+attachments: []
+best_measurement:
+  measurement_id: m-003
+  mode: auto
+  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
+    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
+    Obiekt MLZ-0079, nowy pomiar m-003; różnica względem poprzedniego TPN 4.70 m.
+    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
+    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
+    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
 category: jaskinia_otwor
-name_local: Średni Lej
 cave_id: C-0794
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+external_refs:
+- external_id: '{34B1E400-EED4-4773-8416-8D48D04038B4}'
+  notes: TPN GLOBALID belongs to the object/source feature.
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MLZ-0079
 id_assignment:
-  method: auto
   assigned_from_measurement_id: m-001
   assigned_prefix: MLZ
+  method: auto
   prefix_override_reason: null
-external_refs:
-- system: TPN
-  ref_type: source_globalid
-  external_id: '{34B1E400-EED4-4773-8416-8D48D04038B4}'
-  scope: object
-  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
-- id: m-001
-  lat: 49.23981391
-  lon: 19.92059166
-  x_1992: 152886.08
-  y_1992: 566990.0
-  elevation_m: 1879.9
+- created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+  device: null
   elevation_datum: unknown
+  elevation_m: 1879.9
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: PIG
-  source_ref: PIG:1563
-  observed_date: '2010-12-31'
-  source_date: '2010-12-31'
+  id: m-001
+  lat: 49.23981391
+  lon: 19.92059166
   method: source_record
-  device: null
+  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1563'
+  observed_date: '2010-12-31'
+  source: PIG
+  source_date: '2010-12-31'
+  source_ref: PIG:1563
   tags:
   - pig
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1563'
-  created_at: '2026-05-16T10:22:49Z'
-  created_by: importer:pig
-- id: m-002
-  lat: 49.23981391112247
-  lon: 19.920591663951324
+  verified_by: null
+  vertical_accuracy_m: null
   x_1992: 152886.08
   y_1992: 566990.0
-  elevation_m: 1870.207198
+- created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+  device: null
   elevation_datum: unknown
+  elevation_m: 1870.207198
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: TPN
-  source_ref: TPN:{34B1E400-EED4-4773-8416-8D48D04038B4}
-  observed_date: '2022-05-25'
-  source_date: '2022-05-25'
+  id: m-002
+  lat: 49.23981391112247
+  lon: 19.920591663951324
   method: source_record
-  device: null
-  tags:
-  - tpn
-  verification_status: nieweryfikowany
-  verified_by: null
-  verified_at: null
   notes: 'TPN source-record measurement imported after operator review; not field-verified.
 
     TPN WER_LOK: 11-02-2020 FF ortofotomapa'
-  created_at: '2026-05-16T10:22:52Z'
-  created_by: importer:tpn
-best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T10:41:53Z'
-  updated_by: dl
-attachments: []
+  observed_date: '2022-05-25'
+  source: TPN
+  source_date: '2022-05-25'
+  source_ref: TPN:{34B1E400-EED4-4773-8416-8D48D04038B4}
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152886.08
+  y_1992: 566990.0
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-003
+  lat: 49.239847644511535
+  lon: 19.92063056805087
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-02-11T12:19:56Z
+
+    TPN revision: 660ec148c1d93f22c9f07aeb9d9e93b84c9d6f0a7555d2071d6a89a43b3222ad
+
+    TPN WER_LOK: 11-02-2020 FF ortofotomapa'
+  observed_at: null
+  observed_date: '2026-02-11'
+  source: TPN
+  source_date: '2026-02-11'
+  source_ref: TPN:34b1e400-eed4-4773-8416-8d48d04038b4
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152889.863
+  y_1992: 566992.785
+name_local: Średni Lej
 notes: Imported from PIG source record after operator review.
-created_at: '2026-05-16T10:22:49Z'
-created_by: importer:pig
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+schema_version: 1
+updated_at: '2026-10-19T18:54:41.078420Z'
+updated_by: agent:codex

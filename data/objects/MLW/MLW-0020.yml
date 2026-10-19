@@ -1,80 +1,115 @@
-schema_version: 1
-id: MLW-0020
+attachments: []
+best_measurement:
+  measurement_id: m-003
+  mode: auto
+  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
+    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
+    Obiekt MLW-0020, nowy pomiar m-003; różnica względem poprzedniego TPN 1.21 m.
+    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
+    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
+    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
 category: jaskinia_otwor
-name_local: Koprowa Studnia
 cave_id: C-0508
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+external_refs:
+- external_id: '{B605E5EA-F1A5-43A2-803C-030B412B7415}'
+  notes: TPN GLOBALID belongs to the object/source feature.
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MLW-0020
 id_assignment:
-  method: auto
   assigned_from_measurement_id: m-001
   assigned_prefix: MLW
+  method: auto
   prefix_override_reason: null
-external_refs:
-- system: TPN
-  ref_type: source_globalid
-  external_id: '{B605E5EA-F1A5-43A2-803C-030B412B7415}'
-  scope: object
-  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
-- id: m-001
-  lat: 49.23937777
-  lon: 19.93037493
-  x_1992: 152846.32
-  y_1992: 567702.5
-  elevation_m: 1808.01
+- created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+  device: null
   elevation_datum: unknown
+  elevation_m: 1808.01
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: PIG
-  source_ref: PIG:1590
-  observed_date: '2014-12-31'
-  source_date: '2014-12-31'
+  id: m-001
+  lat: 49.23937777
+  lon: 19.93037493
   method: source_record
-  device: null
+  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1590'
+  observed_date: '2014-12-31'
+  source: PIG
+  source_date: '2014-12-31'
+  source_ref: PIG:1590
   tags:
   - pig
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1590'
-  created_at: '2026-05-16T10:22:49Z'
-  created_by: importer:pig
-- id: m-002
-  lat: 49.239347293489594
-  lon: 19.930248067221417
-  x_1992: 152842.82
-  y_1992: 567693.31
-  elevation_m: 1808.930858
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152846.32
+  y_1992: 567702.5
+- created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+  device: null
   elevation_datum: unknown
+  elevation_m: 1808.930858
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: TPN
-  source_ref: TPN:{B605E5EA-F1A5-43A2-803C-030B412B7415}
-  observed_date: '2024-07-30'
-  source_date: '2024-07-30'
+  id: m-002
+  lat: 49.239347293489594
+  lon: 19.930248067221417
   method: source_record
-  device: null
-  tags:
-  - tpn
-  verification_status: nieweryfikowany
-  verified_by: null
-  verified_at: null
   notes: 'TPN source-record measurement imported after operator review; not field-verified.
 
     TPN WER_LOK: 11-02-2020 FF ortofotomapa'
-  created_at: '2026-05-16T10:22:52Z'
-  created_by: importer:tpn
-best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T10:41:53Z'
-  updated_by: dl
-attachments: []
+  observed_date: '2024-07-30'
+  source: TPN
+  source_date: '2024-07-30'
+  source_ref: TPN:{B605E5EA-F1A5-43A2-803C-030B412B7415}
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152842.82
+  y_1992: 567693.31
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-003
+  lat: 49.23935809141422
+  lon: 19.930249838155245
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-02-11T12:20:43Z
+
+    TPN revision: 4f6c10b4f9d019c1e909da758dbe31e1dcd0b9c13a022f6a2cf015b45380999b
+
+    TPN WER_LOK: 11-02-2020 FF ortofotomapa'
+  observed_at: null
+  observed_date: '2026-02-11'
+  source: TPN
+  source_date: '2026-02-11'
+  source_ref: TPN:b605e5ea-f1a5-43a2-803c-030b412b7415
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152844.022
+  y_1992: 567693.424
+name_local: Koprowa Studnia
 notes: Imported from PIG source record after operator review.
-created_at: '2026-05-16T10:22:49Z'
-created_by: importer:pig
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+schema_version: 1
+updated_at: '2026-10-19T18:54:41.078420Z'
+updated_by: agent:codex

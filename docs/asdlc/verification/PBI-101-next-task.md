@@ -15,12 +15,11 @@ Przeczytaj kanoniczne pliki, tpn_sync_*, PBI-101.md, handoff CI, review.md,
 review-equivalence.json i archive superseded-v1. Snapshot 1035 API rekordów
 jest utrwalony w 60afeca; nie pobieraj go ponownie i nie zmieniaj źródeł.
 Aktualna rewizja tej samej paczki ma jawną precyzję pochodnych, potwierdzoną
-przyczyną Linux/Mac. 1081 testów, izolowane dry-run/apply, replay i eksporty
+przyczyną Linux/Mac. 1082 testów, izolowane dry-run/apply, replay i eksporty
 są lokalnie PASS. Stan przyjęty wyłącznie origin/main b98fd3f.
 
-Dokończ wyłącznie brakujące kroki wskazane w PBI-101.md: produkcyjne CLI
-apply na zgodnym preimage, check, idempotencja, brak pending, trwałe defer,
-zgodność diffu z decyzjami, commit/push, wszystkie joby/kroki/pełne logi
+Produkcja CLI apply/check PASS, zgodna z izolowaną próbą. Nie stosuj ponownie
+danych ręcznie. Dokończ wyłącznie dostarczenie: commit/push i wszystkie joby/kroki/pełne logi
 końcowego SHA i jego świeży build/readback. Surowe źródła, 1876 dawnych
 pomiarów, wysokości/daty/statusy/dokładności i 9 chronionych plików zachowaj.
 Nie polegaj na historycznym build. Nie osłabiaj hashów lub kontroli CI.

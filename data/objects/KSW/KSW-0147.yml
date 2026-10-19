@@ -1,78 +1,111 @@
-schema_version: 1
-id: KSW-0147
+attachments: []
+best_measurement:
+  measurement_id: m-003
+  mode: auto
+  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
+    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
+    Obiekt KSW-0147, nowy pomiar m-003; różnica względem poprzedniego TPN 74.82 m.
+    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
+    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
+    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
 category: jaskinia_otwor
-name_local: Jaskinia przy Sikawce
 cave_id: C-0476
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+external_refs:
+- external_id: '{71DD8DCE-2BC1-42F7-A5E9-174902CA7AED}'
+  notes: TPN GLOBALID belongs to the object/source feature.
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: KSW-0147
 id_assignment:
-  method: auto
   assigned_from_measurement_id: m-001
   assigned_prefix: KSW
+  method: auto
   prefix_override_reason: null
-external_refs:
-- system: TPN
-  ref_type: source_globalid
-  external_id: '{71DD8DCE-2BC1-42F7-A5E9-174902CA7AED}'
-  scope: object
-  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
-- id: m-001
-  lat: 49.24811664
-  lon: 19.88099996
-  x_1992: 153774.49
-  y_1992: 564098.26
-  elevation_m: 1305.0
+- created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+  device: null
   elevation_datum: unknown
+  elevation_m: 1305.0
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: PIG
-  source_ref: PIG:1173
-  observed_date: '2010-12-31'
-  source_date: '2010-12-31'
+  id: m-001
+  lat: 49.24811664
+  lon: 19.88099996
   method: source_record
-  device: null
+  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1173'
+  observed_date: '2010-12-31'
+  source: PIG
+  source_date: '2010-12-31'
+  source_ref: PIG:1173
   tags:
   - pig
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1173'
-  created_at: '2026-05-16T10:22:49Z'
-  created_by: importer:pig
-- id: m-002
-  lat: 49.24811663952398
-  lon: 19.880999960095412
+  verified_by: null
+  vertical_accuracy_m: null
   x_1992: 153774.49
   y_1992: 564098.26
-  elevation_m: 1310.098688
+- created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+  device: null
   elevation_datum: unknown
+  elevation_m: 1310.098688
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: TPN
-  source_ref: TPN:{71DD8DCE-2BC1-42F7-A5E9-174902CA7AED}
-  observed_date: '2022-05-25'
-  source_date: '2022-05-25'
+  id: m-002
+  lat: 49.24811663952398
+  lon: 19.880999960095412
   method: source_record
-  device: null
+  notes: TPN source-record measurement imported after operator review; not field-verified.
+  observed_date: '2022-05-25'
+  source: TPN
+  source_date: '2022-05-25'
+  source_ref: TPN:{71DD8DCE-2BC1-42F7-A5E9-174902CA7AED}
   tags:
   - tpn
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: TPN source-record measurement imported after operator review; not field-verified.
-  created_at: '2026-05-16T10:22:52Z'
-  created_by: importer:tpn
-best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T10:41:53Z'
-  updated_by: dl
-attachments: []
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 153774.49
+  y_1992: 564098.26
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-003
+  lat: 49.24787225375916
+  lon: 19.88195744765718
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-06-02T18:15:52Z
+
+    TPN revision: 8640a7f554d1d0cd7650505530d87bf12b81eb85ec5f7b0bc4bf9c6f09140ce1'
+  observed_at: null
+  observed_date: '2026-06-02'
+  source: TPN
+  source_date: '2026-06-02'
+  source_ref: TPN:71dd8dce-2bc1-42f7-a5e9-174902ca7aed
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 153748.142
+  y_1992: 564168.239
+name_local: Jaskinia przy Sikawce
 notes: Imported from PIG source record after operator review.
-created_at: '2026-05-16T10:22:49Z'
-created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+schema_version: 1
+updated_at: '2026-10-19T18:54:41.078420Z'
+updated_by: agent:codex

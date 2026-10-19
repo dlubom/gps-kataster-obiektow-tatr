@@ -1,80 +1,115 @@
-schema_version: 1
-id: MTZ-0027
+attachments: []
+best_measurement:
+  measurement_id: m-003
+  mode: auto
+  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
+    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
+    Obiekt MTZ-0027, nowy pomiar m-003; różnica względem poprzedniego TPN 2.01 m.
+    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
+    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
+    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
 category: jaskinia_otwor
-name_local: Jaskinia Mała w Mułowej
 cave_id: C-0341
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+external_refs:
+- external_id: '{23287A45-D91F-46D7-A9B2-2C6EBFDA9764}'
+  notes: TPN GLOBALID belongs to the object/source feature.
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MTZ-0027
 id_assignment:
-  method: auto
   assigned_from_measurement_id: m-001
   assigned_prefix: MTZ
+  method: auto
   prefix_override_reason: null
-external_refs:
-- system: TPN
-  ref_type: source_globalid
-  external_id: '{23287A45-D91F-46D7-A9B2-2C6EBFDA9764}'
-  scope: object
-  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
-- id: m-001
-  lat: 49.23809449
-  lon: 19.9011667
-  x_1992: 152677.97
-  y_1992: 565578.77
-  elevation_m: 1757.0
+- created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+  device: null
   elevation_datum: unknown
+  elevation_m: 1757.0
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: PIG
-  source_ref: PIG:1495
-  observed_date: '2013-12-31'
-  source_date: '2013-12-31'
+  id: m-001
+  lat: 49.23809449
+  lon: 19.9011667
   method: source_record
-  device: null
+  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1495'
+  observed_date: '2013-12-31'
+  source: PIG
+  source_date: '2013-12-31'
+  source_ref: PIG:1495
   tags:
   - pig
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1495'
-  created_at: '2026-05-16T10:22:49Z'
-  created_by: importer:pig
-- id: m-002
-  lat: 49.238258172590285
-  lon: 19.902225885303192
-  x_1992: 152697.08
-  y_1992: 565655.63
-  elevation_m: 1753.068244
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152677.97
+  y_1992: 565578.77
+- created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+  device: null
   elevation_datum: unknown
+  elevation_m: 1753.068244
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: TPN
-  source_ref: TPN:{23287A45-D91F-46D7-A9B2-2C6EBFDA9764}
-  observed_date: '2022-05-25'
-  source_date: '2022-05-25'
+  id: m-002
+  lat: 49.238258172590285
+  lon: 19.902225885303192
   method: source_record
-  device: null
-  tags:
-  - tpn
-  verification_status: nieweryfikowany
-  verified_by: null
-  verified_at: null
   notes: 'TPN source-record measurement imported after operator review; not field-verified.
 
     TPN WER_LOK: 11-03-2020 FF'
-  created_at: '2026-05-16T10:22:52Z'
-  created_by: importer:tpn
-best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T14:00:00Z'
-  updated_by: dl
-attachments: []
+  observed_date: '2022-05-25'
+  source: TPN
+  source_date: '2022-05-25'
+  source_ref: TPN:{23287A45-D91F-46D7-A9B2-2C6EBFDA9764}
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152697.08
+  y_1992: 565655.63
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-003
+  lat: 49.2382402987435
+  lon: 19.902221547034937
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-02-11T12:25:30Z
+
+    TPN revision: 6ceb8e92ec4cc1750fe735928ce73f363a3419581853c9b4ad31a14bb34286ab
+
+    TPN WER_LOK: 11-03-2020 FF'
+  observed_at: null
+  observed_date: '2026-02-11'
+  source: TPN
+  source_date: '2026-02-11'
+  source_ref: TPN:23287a45-d91f-46d7-a9b2-2c6ebfda9764
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152695.09
+  y_1992: 565655.338
+name_local: Jaskinia Mała w Mułowej
 notes: Imported from PIG source record after operator review.
-created_at: '2026-05-16T10:22:49Z'
-created_by: importer:pig
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+schema_version: 1
+updated_at: '2026-10-19T18:54:41.078420Z'
+updated_by: agent:codex

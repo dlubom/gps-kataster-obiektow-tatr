@@ -1,78 +1,113 @@
-schema_version: 1
-id: MTW-0063
+attachments: []
+best_measurement:
+  measurement_id: m-003
+  mode: auto
+  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
+    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
+    Obiekt MTW-0063, nowy pomiar m-003; różnica względem poprzedniego TPN 17.67 m.
+    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
+    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
+    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
 category: jaskinia_otwor
-name_local: Jaskinia Niska
 cave_id: C-0824
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+external_refs:
+- external_id: '{CDE95846-F436-4079-8594-4268E6048A6D}'
+  notes: TPN GLOBALID belongs to the object/source feature.
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MTW-0063
 id_assignment:
-  method: auto
   assigned_from_measurement_id: m-001
   assigned_prefix: MTW
+  method: auto
   prefix_override_reason: null
-external_refs:
-- system: TPN
-  ref_type: source_globalid
-  external_id: '{CDE95846-F436-4079-8594-4268E6048A6D}'
-  scope: object
-  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
-- id: m-001
-  lat: 49.26410397
-  lon: 19.8777252
-  x_1992: 155548.47
-  y_1992: 563839.38
-  elevation_m: 1165.0
+- created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+  device: null
   elevation_datum: unknown
+  elevation_m: 1165.0
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: PIG
-  source_ref: PIG:988
-  observed_date: '2010-12-31'
-  source_date: '2010-12-31'
+  id: m-001
+  lat: 49.26410397
+  lon: 19.8777252
   method: source_record
-  device: null
+  notes: 'PIG source-record measurement imported after operator review; not field-verified.
+    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/988'
+  observed_date: '2010-12-31'
+  source: PIG
+  source_date: '2010-12-31'
+  source_ref: PIG:988
   tags:
   - pig
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/988'
-  created_at: '2026-05-16T10:22:49Z'
-  created_by: importer:pig
-- id: m-002
-  lat: 49.2641039651145
-  lon: 19.87772519670315
+  verified_by: null
+  vertical_accuracy_m: null
   x_1992: 155548.47
   y_1992: 563839.38
-  elevation_m: 1183.945286
+- created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+  device: null
   elevation_datum: unknown
+  elevation_m: 1183.945286
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: TPN
-  source_ref: TPN:{CDE95846-F436-4079-8594-4268E6048A6D}
-  observed_date: '2022-05-25'
-  source_date: '2022-05-25'
+  id: m-002
+  lat: 49.2641039651145
+  lon: 19.87772519670315
   method: source_record
-  device: null
+  notes: TPN source-record measurement imported after operator review; not field-verified.
+  observed_date: '2022-05-25'
+  source: TPN
+  source_date: '2022-05-25'
+  source_ref: TPN:{CDE95846-F436-4079-8594-4268E6048A6D}
   tags:
   - tpn
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: TPN source-record measurement imported after operator review; not field-verified.
-  created_at: '2026-05-16T10:22:52Z'
-  created_by: importer:tpn
-best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T10:41:53Z'
-  updated_by: dl
-attachments: []
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 155548.47
+  y_1992: 563839.38
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-003
+  lat: 49.26426237097673
+  lon: 19.87770642143427
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-05-04T08:19:21Z
+
+    TPN revision: a48c9eb59eaec034afef8ae325d213c5649ac1f65df387aae31f15e9e35a133a
+
+    TPN WER_LOK: FF NMT 04052026'
+  observed_at: null
+  observed_date: '2026-05-04'
+  source: TPN
+  source_date: '2026-05-04'
+  source_ref: TPN:cde95846-f436-4079-8594-4268e6048a6d
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 155566.059
+  y_1992: 563837.81
+name_local: Jaskinia Niska
 notes: Imported from PIG source record after operator review.
-created_at: '2026-05-16T10:22:49Z'
-created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+schema_version: 1
+updated_at: '2026-10-19T18:54:41.078420Z'
+updated_by: agent:codex

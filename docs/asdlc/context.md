@@ -21,7 +21,7 @@ preimage nie zmieniły się. [Równoważność review](verification/PBI-101-revi
 CI 39311292320 na diagnostycznym 6d94f9c potwierdziło różnice końcowych
 cyfr projekcji CSV i odległości Linux/Mac. Naprawa deklaruje precyzję
 **wyłącznie pochodnych**, zachowując ścisłe hashe/API, progi i historię:
-[zasady](tpn_sync_derived_precision.md). 1081 testów PASS; izolowany
+[zasady](tpn_sync_derived_precision.md). 1082 testów PASS; izolowany
 stable dry-run/apply zgodny, replay noop=true, eksporty 10/10 PASS;
 1876 dawnych pomiarów i wszystkie 9 chronionych plików zachowane.
 Manifest PBI-099 nadal pending, bez migracji auto→manual. Niezmieniony
@@ -30,8 +30,8 @@ rozpoznanie historycznej zgodności 395 informacyjnych wpisów na podstawie
 uwierzytelnionego CSV, bez tworzenia decyzji i bez tolerancji dla późniejszego
 ruchu API. 138 testów zmienionych modułów PASS.
 
-Do ukończenia pozostaje produkcyjny CLI apply, końcowa bramka i dostarczenie
-z exact-SHA CI/readback. [Dowody](verification/PBI-101.md),
+Produkcja CLI apply zgodna bajtowo z izolowaną próbą; check ready=true.
+Do ukończenia pozostaje dostarczenie z exact-SHA CI/readback. [Dowody](verification/PBI-101.md),
 [handoff CI](verification/PBI-101-ci-handoff.md),
 [kontynuacja](verification/PBI-101-next-task.md). PBI-102–103 planowane;
 bez merge, tagu, release i harmonogramu. Nie pytać ponownie o przyjęte

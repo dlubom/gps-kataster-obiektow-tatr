@@ -25,13 +25,16 @@ pending. Dane bez zmian; brak migracji bez jawnej akceptacji.
 [Odbiór wszystkich jobów i logów CI](verification/PBI-100-ci-handoff.md) potwierdzony.
 [Decyzje/planowanie/transakcja/bramka](tpn_sync_decisions.md), bez produkcyjnego
 importu i migracji.
-[PBI-101](verification/PBI-101.md): **w toku — oczekuje na decyzje użytkownika**.
-Nowy snapshot utrwalony przed danymi; jedna paczka pbi-101-20261019 ma
-640 pending zgodnie z jawnym poleceniem użytkownika. [Konkretne propozycje](verification/PBI-101-review/review.md).
-Brak produkcyjnego apply i przyjętego stanu. Dodatkowo hosted CI ma
-[niewyjaśniony błąd odtworzenia raportu](verification/PBI-101-ci-handoff.md)
-przed kontrolą pending; nie jest to oczekiwana porażka samego pending.
-Następny krok: kontynuacja wyłącznie PBI-101, [prompt](verification/PBI-101-next-task.md).
+[PBI-101](verification/PBI-101.md): **w toku — końcowe zastosowanie/odbiór**.
+Wszystkie decyzje rozliczone: 614 approve / 26 defer / 0 pending.
+A578 zachowuje katalog; B31 append + osobny select_new auto; C5 nowe
+Obiekty/Jaskinie; D26 niezależne badanie w trwałej kolejce.
+[Konkretne decyzje](verification/PBI-101-review/review.md). Snapshot i
+pierwszy raport zachowane; jawna rewizja planu jest utrwalona przed danymi.
+[Przyczyna błędu odtwarzania i naprawa](tpn_sync_derived_precision.md)
+obejmuje wyłącznie pochodne; 1082 testy lokalnie PASS, izolowane apply/replay,
+check i 10 eksportów PASS. Pozostaje dostarczenie i exact-SHA CI/readback.
+Bez PBI-102, merge, tagu, release i harmonogramu.
 
 ## Wydanie v1.1.1
 

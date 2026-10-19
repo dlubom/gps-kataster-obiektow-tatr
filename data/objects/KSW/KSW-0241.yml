@@ -1,57 +1,94 @@
-schema_version: 1
-id: KSW-0241
+attachments: []
+best_measurement:
+  measurement_id: m-002
+  mode: auto
+  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
+    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
+    Obiekt KSW-0241, nowy pomiar m-002; różnica względem poprzedniego TPN 15.70 m.
+    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
+    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
+    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
 category: jaskinia_otwor
-name_local: Gawra we Wysrankach
 cave_id: C-0879
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+external_refs:
+- external_id: '{4C30384D-7D8D-48D8-8D57-AEA8CC59687C}'
+  notes: TPN GLOBALID belongs to the object/source feature.
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: KSW-0241
 id_assignment:
-  method: auto
   assigned_from_measurement_id: m-001
   assigned_prefix: KSW
+  method: auto
   prefix_override_reason: null
-external_refs:
-- system: TPN
-  ref_type: source_globalid
-  external_id: '{4C30384D-7D8D-48D8-8D57-AEA8CC59687C}'
-  scope: object
-  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
-- id: m-001
-  lat: 49.24975075016535
-  lon: 19.876947696655524
-  x_1992: 153952.67
-  y_1992: 563801.33
-  elevation_m: 1199.427985
+- created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+  device: null
   elevation_datum: unknown
+  elevation_m: 1199.427985
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: TPN
-  source_ref: TPN:{4C30384D-7D8D-48D8-8D57-AEA8CC59687C}
-  observed_date: '2024-03-22'
-  source_date: '2024-03-22'
+  id: m-001
+  lat: 49.24975075016535
+  lon: 19.876947696655524
   method: source_record
-  device: null
-  tags:
-  - tpn
-  verification_status: nieweryfikowany
-  verified_by: null
-  verified_at: null
   notes: 'TPN source-record measurement imported after operator review; not field-verified.
 
     TPN WER_LOK: 21-03-2024 TZK
 
     TPN UWAGI: Dane morfometr. orientacyjnie'
-  created_at: '2026-05-16T10:22:52Z'
-  created_by: importer:tpn
-best_measurement:
-  mode: auto
-  measurement_id: m-001
-  reason: null
-  updated_at: '2026-05-16T10:22:52Z'
-  updated_by: importer:tpn
-attachments: []
+  observed_date: '2024-03-22'
+  source: TPN
+  source_date: '2024-03-22'
+  source_ref: TPN:{4C30384D-7D8D-48D8-8D57-AEA8CC59687C}
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 153952.67
+  y_1992: 563801.33
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-002
+  lat: 49.24968194423332
+  lon: 19.87713595606838
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-06-02T14:15:32Z
+
+    TPN revision: c775cce963990e4475e63d8a5dc3659fa8d39a25bcdf2c0b3d8aa1da05d1d18b
+
+    TPN WER_LOK: 21-03-2024 TZK
+
+    TPN UWAGI: Dane morfometr. orientacyjnie'
+  observed_at: null
+  observed_date: '2026-06-02'
+  source: TPN
+  source_date: '2026-06-02'
+  source_ref: TPN:4c30384d-7d8d-48d8-8d57-aea8cc59687c
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 153945.182
+  y_1992: 563815.115
+name_local: Gawra we Wysrankach
 notes: Imported from TPN source record after operator review.
-created_at: '2026-05-16T10:22:52Z'
-created_by: importer:tpn
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+schema_version: 1
+updated_at: '2026-10-19T18:54:41.078420Z'
+updated_by: agent:codex

@@ -1,0 +1,58 @@
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: auto
+  reason: null
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
+category: jaskinia_otwor
+cave_id: C-1006
+created_at: '2026-10-19T18:54:41.078420Z'
+created_by: agent:codex
+external_refs:
+- external_id: 551df3ad-f3e1-4920-bd23-d741ac938ba8
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: STR-0030
+id_assignment:
+  assigned_from_measurement_id: m-001
+  assigned_prefix: STR
+  method: auto
+  prefix_override_reason: null
+measurements:
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-001
+  lat: 49.26586630293456
+  lon: 19.936818198902632
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-05-04T09:03:04Z
+
+    TPN revision: 98097d7078619264ff5a264b978c3fc097731271dc2dfd45ef49d9753331e7ee
+
+    TPN WER_LOK: FF NMT 04052026'
+  observed_at: null
+  observed_date: '2026-05-04'
+  source: TPN
+  source_date: '2026-05-04'
+  source_ref: TPN:551df3ad-f3e1-4920-bd23-d741ac938ba8
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 155795.9
+  y_1992: 568134.896
+name_local: Gawra w Sarniej Skale
+notes: null
+schema_version: 1
+updated_at: '2026-10-19T18:54:41.078420Z'
+updated_by: agent:codex

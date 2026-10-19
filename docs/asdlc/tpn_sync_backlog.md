@@ -8,8 +8,8 @@ Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-101**.
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
 PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
 PBI-099: **wykonane 2026-10-19**; PBI-100: **wykonane 2026-10-19**;
-PBI-101: **w toku — pending na polecenie użytkownika**; PBI-102–103: **planowane**.
-Jedna produkcyjna paczka ma 640 pending; apply tylko w izolowanej symulacji. Bez harmonogramu.
+PBI-101: **w toku — końcowe zastosowanie/odbiór**; PBI-102–103: **planowane**.
+Jedna paczka ma 614 approve / 26 defer / 0 pending; końcowy odbiór w toku. Bez harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -235,8 +235,8 @@ PR #12 i końcowy odbiór. [Decyzje](verification/PBI-101-review/review.md).
 Snapshot i źródła zachowane. Pierwszy plan keep jest w superseded-v1;
 nowa rewizja tej samej paczki ma zaakceptowane działania.
 [Przyczyna Linux/Mac i naprawa](tpn_sync_derived_precision.md) potwierdzone
-diagnostycznym CI; 1081 testów i izolowane zastosowanie/eksporty PASS.
-Pozostaje produkcyjne zastosowanie i pełny success CI końcowego SHA.
+diagnostycznym CI; 1082 testów i izolowane zastosowanie/eksporty PASS.
+Produkcyjne CLI apply/check PASS; pozostaje pełny success CI końcowego SHA.
 [Dowody](verification/PBI-101.md), [kontynuacja](verification/PBI-101-next-task.md).
 
 **Cel:** uporządkować zaległości i pozostawić wiarygodną bazę kolejnego cyklu.
@@ -320,10 +320,10 @@ obsługa zaległego PR, diagnostyka i krótki runbook. Bez automatycznego merge.
 
 ## Kontynuacja
 
-Bieżący zakres to wyłącznie niedokończone PBI-101. Nowy snapshot i jedna
-paczka są w Git; użytkownik nakazał pozostawić wszystkie decyzje pending.
-Przed produkcyjnym approve/reject/defer potrzebne jawne rozstrzygnięcia
-konkretnych propozycji, także osobno dodania pomiaru i wyboru best.
+Bieżący zakres to wyłącznie końcowy odbiór PBI-101. Snapshot, zgody, plan
+oraz zastosowana paczka mają 614 approve / 26 defer / 0 pending.
+D001–D026 czekają na niezależne badanie, bez zmian katalogu. Produkcyjny
+apply/check PASS; pozostają commit/push i dokładne końcowe CI/readback.
 [Gotowy prompt kontynuacji PBI-101](verification/PBI-101-next-task.md).
 Manifest trzech chronionych auto→manual nadal pending; bez migracji.
 Otwarty PR #12 kontynuujemy na jego gałęzi. PBI-102–103 nie rozpoczęto;

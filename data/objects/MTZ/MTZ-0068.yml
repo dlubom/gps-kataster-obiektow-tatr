@@ -1,0 +1,58 @@
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: auto
+  reason: null
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
+category: jaskinia_otwor
+cave_id: C-1009
+created_at: '2026-10-19T18:54:41.078420Z'
+created_by: agent:codex
+external_refs:
+- external_id: f27fa875-821f-45f6-8f02-c5a9ffc579e4
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MTZ-0068
+id_assignment:
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MTZ
+  method: auto
+  prefix_override_reason: null
+measurements:
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-001
+  lat: 49.234277473653904
+  lon: 19.9063092182706
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-06-16T11:38:50Z
+
+    TPN revision: 45b941debabd15a3fc6c0b3fbf98e0d90141221e0a049a3d82dd7a6a473cbb09
+
+    TPN WER_LOK: FF16062026'
+  observed_at: null
+  observed_date: '2026-06-16'
+  source: TPN
+  source_date: '2026-06-16'
+  source_ref: TPN:f27fa875-821f-45f6-8f02-c5a9ffc579e4
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152258.24
+  y_1992: 565958.074
+name_local: Jaskinia Lodowa Ponorowa
+notes: null
+schema_version: 1
+updated_at: '2026-10-19T18:54:41.078420Z'
+updated_by: agent:codex

@@ -18,7 +18,7 @@ różniły się w końcowych cyfrach, a zależne hashe wykazywały rozbieżnoś�
 [Jawne zasady naprawy](../tpn_sync_derived_precision.md) obejmują tylko
 pochodne, nie surowe API, stare pomiary ani tolerancje dopasowania.
 
-1081 testów PASS, w tym odtwarzanie przy symulowanym szumie platformy,
+1082 testów PASS, w tym odtwarzanie przy symulowanym szumie platformy,
 stabilny cache nowego pomiaru, niezmieniony promień kandydatów i odmowa
 zmiany raw API XY o 1e-18. Pełny raport 1035 rekordów jest kanonicznie
 identyczny przy obu znakach szumu projekcji 2e-14 stopnia i odległości
