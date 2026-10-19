@@ -8,6 +8,20 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [v1.1.1] - 2026-10-19
+
+### Dodano
+
+- Dodatkowy, nieweryfikowany pomiar dolnego otworu Ptasiej Studni;
+  dotychczasowy punkt eksportowy pozostaje bez zmian.
+
+### Naprawiono
+
+- Scalono zdublowane wpisy Rury nad Okapami i Szczeliny nad Okapami,
+  zachowując pełną historię pomiarów i oba GLOBALID TPN każdej pary.
+- Rozróżniono nazwy północnego i południowego otworu tunelu
+  w Skrajnej Giewonckiej Baszcie.
+
 ## [v1.1.0] - 2026-10-16
 
 ### Dodano
