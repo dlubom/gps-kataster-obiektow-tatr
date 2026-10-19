@@ -11,7 +11,8 @@
 > PBI-097 dostarcza porównanie CSV/API/YAML i odczyt przyjętego stanu;
 > PBI-098 dostarcza kwalifikację nowych rekordów, PBI-099 ochronę/audyt best;
 > PBI-100 dostarcza decyzje/planowanie/transakcję/bramkę, zweryfikowane na fixture'ach;
-> PBI-101–103 pozostają przyszłą pracą, bez paczki produkcyjnej i harmonogramu.
+> PBI-101 w toku: nowy snapshot i paczka pending do decyzji; bez produkcyjnego apply.
+> PBI-102–103 pozostają przyszłą pracą, bez harmonogramu.
 
 ---
 

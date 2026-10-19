@@ -1,0 +1,54 @@
+{
+  "batch_id": "pbi-101-20261019",
+  "base_commit": "60afeca2d17bbc4b5aa690abc83da1d25d89a506",
+  "accepted_state_commit": "b98fd3febb400c7ee520046682c1bb16238429ee",
+  "snapshot_hash": "481e83a1a113a0596947d40e30d7a186de0f0f51154957c5f48713c4ae3324d8",
+  "groups": {
+    "A": 578,
+    "D": 26,
+    "B": 31,
+    "C": 5
+  },
+  "pending": 640,
+  "simulated": true,
+  "simulation_author": "simulation:codex",
+  "domain_applied": false,
+  "summary": {
+    "local_conflict": 46,
+    "location_changed": 31,
+    "metadata_changed": 566,
+    "new_guid": 30,
+    "technical_only": 396,
+    "unmapped_guid": 31
+  },
+  "mode_changes": 31,
+  "candidate_sides": 273,
+  "production_status": "pending_by_explicit_user_instruction",
+  "production_state_written": false,
+  "simulation_dry_run_apply_equal": true,
+  "simulation_replay_noop": true,
+  "simulation_check_ready": true,
+  "baseline_readback": {
+    "readback": "PASS",
+    "artifacts": 10,
+    "objects": 1007,
+    "caves": 1001,
+    "measurements": 1876,
+    "best": 1007,
+    "sqlite_history_fields": "all present YAML fields",
+    "xlsx": "Best and Full, IDs, coordinates, status, date, provenance, notes, tags, audit"
+  },
+  "simulation_readback": {
+    "readback": "PASS",
+    "artifacts": 10,
+    "objects": 1012,
+    "caves": 1006,
+    "measurements": 1912,
+    "best": 1012,
+    "sqlite_history_fields": "all present YAML fields",
+    "xlsx": "Best and Full, IDs, coordinates, status, date, provenance, notes, tags, audit"
+  },
+  "simulation_tamper_blocked": true,
+  "production_pending_gate_exit": 1,
+  "production_pending_gate_reason": "pending blocks merge"
+}

@@ -2,6 +2,45 @@
 
 Last updated: 2026-10-19
 
+## Integracja TPN — PBI-101, oczekuje na decyzje
+
+Status: **w toku**, osobne zlecenie 2026-10-19. [Dowody](verification/PBI-101.md),
+[propozycje po rekordzie](verification/PBI-101-review/review.md),
+[prompt kontynuacji](verification/PBI-101-next-task.md).
+Przejęto czysty otwarty draft PR #12 na codex/tpn-sync-planning,
+HEAD/origin/PR 70c66782e276007a1ac0a34af03c18e68696ebcc;
+main b98fd3febb400c7ee520046682c1bb16238429ee.
+Końcowy odbiór PBI-100/run 39284447552 potwierdzony: completed/success,
+1/1 job, 14/14 kroków, pełne logi i archiwum, 1077 testów PASS.
+Opis PR uzupełniono; nie powtarzano implementacji PBI-096–100.
+
+NOWY snapshot pbi-101-live-20261019: 1035 rekordów, kompletne count/ID,
+strony 500/500/35, hash 481e83a1a113a0596947d40e30d7a186de0f0f51154957c5f48713c4ae3324d8.
+Zweryfikowany i commit/push przed danymi w 60afeca2d17bbc4b5aa690abc83da1d25d89a506.
+Paczka data/source_reviews/tpn/pbi-101-20261019 ma tę bazę i czyta stan
+przyjęty wyłącznie z main b98fd3f (bootstrap CSV; brak przyjętego rejestru).
+640 przypadków do decyzji, 395 pozostałych informacyjnych. Propozycje:
+A001–A578 przyjęcie źródła bez zmiany katalogu; B001–B031 nowy pomiar
+historii i osobne keep/jawne auto→manual niechronionych best; C001–C005
+nowe Obiekty/Jaskinie; D001–D026 indywidualne defer, 273 strony kandydatów.
+
+**Użytkownik po pokazaniu propozycji polecił: „Na razie pozostaw wszystko
+pending”.** Wszystkie 640 decyzji pending, autor/czas null. Nie ma
+produkcyjnego apply, approve/reject/defer, application ani nowego stanu
+źródła. Bramka CI aktywnej paczki ma blokować gotowość pending; zielone
+testy kodu nie kończą PBI-101. Wynik CI końcowego SHA utrwala opis PR.
+Manifest 099 odtworzony bajtowo i nadal pending, 9/9 preimages zgodne;
+3 chronione migracje bez zgody. 2047 śledzonych dawnych data/config,
+wszystkie 1876 pomiarów i 1007 best produkcji bez zmiany. Testy apply
+wyłącznie na nowym izolowanym klonie, autor simulation:codex, bez
+podszywania się pod użytkownika. Wyniki i warunkowy diff w dowodach.
+
+Dalsza praca: **kontynuacja PBI-101 po jawnych decyzjach dla konkretnych
+propozycji**, bez ponownego pobierania/zmiany wejść aktywnej paczki bez
+uzgodnienia. Po zmianie podstawy wymagane nowe review. PBI-102–103
+pozostają planowane, bez merge/tagu/release/harmonogramu.
+Poniższe sekcje PBI-095–100 są historią wcześniejszych etapów.
+
 ## Integracja TPN — PBI-100
 
 Status: **wykonane 2026-10-19**, osobne zlecenie

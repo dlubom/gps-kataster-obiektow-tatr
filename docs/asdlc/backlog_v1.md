@@ -24,7 +24,12 @@ pending. Dane bez zmian; brak migracji bez jawnej akceptacji.
 [PBI-100](verification/PBI-100.md): **wykonane 2026-10-19**.
 [Odbiór wszystkich jobów i logów CI](verification/PBI-100-ci-handoff.md) potwierdzony.
 [Decyzje/planowanie/transakcja/bramka](tpn_sync_decisions.md), bez produkcyjnego
-importu i migracji. Następna karta po osobnym poleceniu: PBI-101; nie rozpoczęto.
+importu i migracji.
+[PBI-101](verification/PBI-101.md): **w toku — oczekuje na decyzje użytkownika**.
+Nowy snapshot utrwalony przed danymi; jedna paczka pbi-101-20261019 ma
+640 pending zgodnie z jawnym poleceniem użytkownika. [Konkretne propozycje](verification/PBI-101-review/review.md).
+Brak produkcyjnego apply i przyjętego stanu; bramka CI ma blokować pending.
+Następny krok: kontynuacja wyłącznie PBI-101, [prompt](verification/PBI-101-next-task.md).
 
 ## Wydanie v1.1.1
 

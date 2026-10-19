@@ -148,19 +148,21 @@ API nie daje transakcyjnej gwarancji atrybutów, co jest zapisane w manifeście.
 
 ## Granica następnego kroku
 
-Dostawa PBI-100 obejmuje narzędzia decyzji, planowania, transakcji i CI,
-zweryfikowane na fixture'ach i izolowanych kopiach. Nie wykonuje paczki
-produkcyjnej. [Odbiór CI PBI-100](verification/PBI-100-ci-handoff.md)
-potwierdzony; status **wykonane 2026-10-19**. Zakończyć po PBI-100. Kolejne
-osobne zlecenie może objąć wyłącznie PBI-101, zgodnie z jego
-aktualną kartą, z nowym pełnym snapshotem i indywidualnymi decyzjami człowieka.
-[Odbiór PBI-100](verification/PBI-100.md), [prompt](verification/PBI-100-next-task.md).
-Manifest auto→manual nadal pending; bez jawnej zgody brak migracji.
-Ochrona działa niezależnie od akceptacji. Zmieniona propozycja/preimage
-wymaga ponownego planu; sama obecność manifestu w Git nie jest zgodą.
-Porównanie i audyt odtwarzają wejścia z Git, bez starego build. Przyjęta baza
-pochodzi z origin/main, nigdy z kandydata na gałęzi. Nie uruchamiać starego
-apply_review.py na nowym formacie. PBI-101–103 nie rozpoczęto; bez harmonogramu.
+PBI-100 zakończone; końcowy CI 70c6678/run 39284447552 potwierdzony
+w opisie PR i [dowodach PBI-101](verification/PBI-101.md).
+PBI-101 **w toku**: nowy pełny snapshot i jedna paczka są utrwalone,
+[propozycje po rekordzie](verification/PBI-101-review/review.md) pokazane.
+Użytkownik nakazał pozostawić wszystko pending: 640/640, autor/czas null.
+Brak produkcyjnego apply i nowego stanu źródła; CI blokuje gotowość pending.
+Testy zastosowania i readback symulacji wyłącznie w izolowanym klonie.
+[Prawidłowy następny prompt](verification/PBI-101-next-task.md) kontynuuje
+PBI-101 po jawnych decyzjach; nie rozpoczyna PBI-102.
+
+Manifest auto→manual nadal pending, 9/9 preimages zgodne; brak migracji.
+Ochrona działa niezależnie od zgody. Zmieniona propozycja/preimage wymaga
+ponownego review. Przyjęty stan czytamy wyłącznie z origin/main, nigdy
+z kandydata gałęzi. Nie nadpisywać aktywnego snapshotu ani paczki, nie
+używać starego apply_review.py. Bez merge/tagu/release i harmonogramu.
 
 Ustalenia: jeden PR i decyzje po rekordzie, zaległości przed miesięcznym
 sprawdzaniem, wyłącznie ludzki merge, kontrola duplikatów, historia i ochrona

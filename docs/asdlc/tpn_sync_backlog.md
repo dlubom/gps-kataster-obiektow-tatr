@@ -3,12 +3,13 @@
 Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
 [Indeks całego backlogu](backlog_v1.md).
 
-Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-100**.
+Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-101**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
 PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
-PBI-099: **wykonane 2026-10-19**; PBI-100: **wykonane 2026-10-19**; PBI-101–103: **planowane**.
-Planowanie/apply jest testowane na fixture'ach; bez produkcyjnej paczki i harmonogramu.
+PBI-099: **wykonane 2026-10-19**; PBI-100: **wykonane 2026-10-19**;
+PBI-101: **w toku — pending na polecenie użytkownika**; PBI-102–103: **planowane**.
+Jedna produkcyjna paczka ma 640 pending; apply tylko w izolowanej symulacji. Bez harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -227,7 +228,12 @@ Kontekst: plan §4–8 i obecny format `staging_review_decisions.md`.
 
 ## PBI-101: Przeprowadzić pierwsze uzgodnienie danych TPN
 
-Status: planowane. Zależność: 100.
+Status: **w toku — oczekuje na decyzje użytkownika**. Zależność: 100.
+[Dowody](verification/PBI-101.md), [konkretne propozycje](verification/PBI-101-review/review.md).
+Nowy snapshot zweryfikowano i utrwalono przed przygotowaniem paczki.
+Po pokazaniu propozycji użytkownik polecił pozostawić wszystko pending:
+640/640 wpisów, autor/czas null. Brak produkcyjnego apply i stanu źródła;
+bramka CI powinna blokować pending. Testy zastosowania tylko w izolacji.
 
 **Cel:** uporządkować zaległości i pozostawić wiarygodną bazę kolejnego cyklu.
 
@@ -237,7 +243,7 @@ PR. Bez harmonogramu i bez wymogu zakończenia wszystkich sporów.
 
 **Kryteria odbioru:**
 
-- [ ] Ponowny odczyt określa rzeczywisty bieżący zakres. Znane 30 nowych
+- [x] Ponowny odczyt określa rzeczywisty bieżący zakres. Znane 30 nowych
       GUID, 31 GUID bez mapowania i różnice z 2026-10-19 są punktem kontroli,
       a nie wymuszoną liczbą nowych Obiektów lub nowych pomiarów.
 - [ ] Każdy przypadek ma rozstrzygnięcie albo uzasadnione defer/reject;
@@ -310,9 +316,11 @@ obsługa zaległego PR, diagnostyka i krótki runbook. Bez automatycznego merge.
 
 ## Kontynuacja
 
-Bieżąca sesja kończy się po odbiorze PBI-100. Następna karta to
-PBI-101: pierwsze uzgodnienie danych TPN; wymaga nowego polecenia
-i indywidualnych decyzji użytkownika. PBI-101–103 nie rozpoczęto.
-[Gotowy prompt PBI-101](verification/PBI-100-next-task.md).
-Manifest trzech auto→manual pozostaje pending; brak migracji bez jawnej zgody.
-Otwarty PR #12 kontynuujemy na jego gałęzi; po ludzkim merge zaczynamy od main.
+Bieżący zakres to wyłącznie niedokończone PBI-101. Nowy snapshot i jedna
+paczka są w Git; użytkownik nakazał pozostawić wszystkie decyzje pending.
+Przed produkcyjnym approve/reject/defer potrzebne jawne rozstrzygnięcia
+konkretnych propozycji, także osobno dodania pomiaru i wyboru best.
+[Gotowy prompt kontynuacji PBI-101](verification/PBI-101-next-task.md).
+Manifest trzech chronionych auto→manual nadal pending; bez migracji.
+Otwarty PR #12 kontynuujemy na jego gałęzi. PBI-102–103 nie rozpoczęto;
+bez merge/tagu/release/harmonogramu.
