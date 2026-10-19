@@ -4,7 +4,7 @@ Last updated: 2026-10-19
 
 ## Integracja TPN — PBI-100
 
-Status: **zweryfikowane — oczekuje hosted CI**, osobne zlecenie
+Status: **wykonane 2026-10-19**, osobne zlecenie
 2026-10-19. [Dowody](verification/PBI-100.md), [CLI/format](tpn_sync_decisions.md).
 Start po fetch: otwarty draft PR #12, czysty HEAD/origin
 `ab7dd2d3cb6a9fd5cc8b80b964c5f1b67be6997c`, kontynuowana gałąź
@@ -29,11 +29,20 @@ Nie wykonano żadnego approve/reject/defer ani importu na katalogu produkcyjnym.
 2048 plików data/config, 1876 pomiarów i snapshoty/CSV/XLSX zachowane.
 Manifest PBI-099 odtworzony bajtowo: nadal **pending**; brak migracji.
 Ochrona GNSS/geodezji/manual działa bez zgody na migrację i nie ma obejścia.
-Najpierw dokończyć [odbiór CI PBI-100](verification/PBI-100-ci-handoff.md).
-Kod 77025ed jest wypchnięty; CI 39278211636 pozostaje in_progress bez
-kroków/logów. Lokalnie 1077 testów i 15/15 mutacji PASS. Status nie jest
-wykonane. Dopiero po odbiorze następne osobne zlecenie może objąć PBI-101,
-aktualne wejścia i indywidualne decyzje użytkownika. Bez merge/tagu/release/schedule.
+[Odbiór CI PBI-100](verification/PBI-100-ci-handoff.md) potwierdzony:
+77025ed / run 39278211636 i acf00ad / run 39280165485 completed/success,
+każdy 1/1 job i 14/14 kroków, logi: 1077 testów, Ruff, walidacja bez
+błędów (2067 ostrzeżeń) oraz bramka TPN PASS. Starszy c572070 także success;
+pełne 1076 testów potwierdza zbiorczy log archiwum GitHub, mimo niepełnych
+logów osobnych kroków. Nie stwierdzono awarii kodu; historycznych przyczyn
+opóźnienia statusów API nie da się ustalić z samych logów. Bez zmiany kodu/CI.
+Ponowiony audyt PBI-099 identyczny bajtowo; 9 testów ochrony, wspólnych
+preimages i CLI na izolowanych fixture’ach PASS. Lokalny wcześniejszy
+odbiór: 1077 testów i 15/15 mutacji PASS. Wynik CI końcowego commitu odbioru
+i jego dokładny SHA utrwala opis PR #12, bez kolejnego commitu z własnym SHA.
+Zakończyć po PBI-100. Następne osobne zlecenie: wyłącznie PBI-101, nowe
+wejścia i indywidualne decyzje użytkownika; [prompt](verification/PBI-100-next-task.md).
+PBI-101–103 nie rozpoczęto. Bez merge/tagu/release/schedule.
 
 ## Integracja TPN — PBI-099
 

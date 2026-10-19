@@ -7,7 +7,7 @@ Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-100**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
 PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
-PBI-099: **wykonane 2026-10-19**; PBI-100: **zweryfikowane — oczekuje hosted CI**; PBI-101–103: **planowane**.
+PBI-099: **wykonane 2026-10-19**; PBI-100: **wykonane 2026-10-19**; PBI-101–103: **planowane**.
 Planowanie/apply jest testowane na fixture'ach; bez produkcyjnej paczki i harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
@@ -193,7 +193,8 @@ plan §7, `best_measurement.py`, regresja KSZ-0112/m-001.
 
 ## PBI-100: Rozpatrywać i stosować decyzje po rekordzie w jednej paczce
 
-Status: zweryfikowane — oczekuje hosted CI. Zależności: 097, 098, 099.
+Status: wykonane 2026-10-19. Zależności: 097, 098, 099.
+[Odbiór hosted CI](verification/PBI-100-ci-handoff.md): wszystkie joby i kroki success, logi sprawdzone.
 [Dowody](verification/PBI-100.md), [CLI i schematy](tpn_sync_decisions.md).
 
 **Cel:** człowiek wybiera skutek każdej zmiany, a ponowienie nie powiela
@@ -309,8 +310,9 @@ obsługa zaległego PR, diagnostyka i krótki runbook. Bez automatycznego merge.
 
 ## Kontynuacja
 
-Bieżąca sesja kończy się po dostarczeniu PBI-099. Następna karta to
-PBI-100: decyzje po rekordzie i zastosowanie paczki, bez pierwszego importu
-PBI-101; wymaga nowego polecenia. PBI-100–103 nie rozpoczęto.
+Bieżąca sesja kończy się po odbiorze PBI-100. Następna karta to
+PBI-101: pierwsze uzgodnienie danych TPN; wymaga nowego polecenia
+i indywidualnych decyzji użytkownika. PBI-101–103 nie rozpoczęto.
+[Gotowy prompt PBI-101](verification/PBI-100-next-task.md).
 Manifest trzech auto→manual pozostaje pending; brak migracji bez jawnej zgody.
 Otwarty PR #12 kontynuujemy na jego gałęzi; po ludzkim merge zaczynamy od main.

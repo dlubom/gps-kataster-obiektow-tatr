@@ -21,7 +21,8 @@ Kandydaci i kwalifikacja, [CLI/parametry](tpn_sync_candidates.md), bez YAML.
 [PBI-099](verification/PBI-099.md): **wykonane 2026-10-19**.
 [Strażnik/audyt best](tpn_sync_best_protection.md), manifest trzech auto→manual
 pending. Dane bez zmian; brak migracji bez jawnej akceptacji.
-[PBI-100](verification/PBI-100.md): **zweryfikowane — oczekuje hosted CI**.
+[PBI-100](verification/PBI-100.md): **wykonane 2026-10-19**.
+[Odbiór wszystkich jobów i logów CI](verification/PBI-100-ci-handoff.md) potwierdzony.
 [Decyzje/planowanie/transakcja/bramka](tpn_sync_decisions.md), bez produkcyjnego
 importu i migracji. Następna karta po osobnym poleceniu: PBI-101; nie rozpoczęto.
 

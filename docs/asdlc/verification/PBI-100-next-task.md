@@ -1,7 +1,8 @@
 # Prompt po odebraniu PBI-100 — wyłącznie PBI-101
 
-Najpierw zamknąć [odbiór hosted CI PBI-100](PBI-100-ci-handoff.md).
-Poniższy prompt nie jest zgodą na rozpoczęcie PBI-101 w bieżącej dostawie.
+[Odbiór hosted CI PBI-100](PBI-100-ci-handoff.md) zakończony 2026-10-19.
+Poniższy prompt jest gotowy do osobnego zlecenia; nie jest zgodą na
+rozpoczęcie PBI-101 w bieżącej dostawie.
 
 ```text
 Pracuj w repozytorium:
