@@ -4,7 +4,7 @@ Last updated: 2026-10-19
 
 ## Integracja TPN — PBI-098
 
-Osobno zlecone 2026-10-19; **zweryfikowane — do dostarczenia**.
+Osobno zlecone 2026-10-19; **wykonane 2026-10-19**.
 [Dowody](verification/PBI-098.md), [CLI i polityka](tpn_sync_candidates.md).
 Start po fetch: otwarty draft PR #12, czysty HEAD/origin
 `ce7ace2e808932ce3ac646809082d614cf90ab51`; kontynuowano
@@ -21,6 +21,12 @@ indeks konkurentów. Brak/niepewność daje review; kwalifikacja nie tworzy YAML
 Dane domenowe, stare CSV/XLSX/snapshoty, config i workflow zachowane.
 Brak stosowania decyzji i ochrony PBI-099. Następne osobne zlecenie może
 objąć wyłącznie PBI-099. Stop po 098, bez merge/tagu/release/harmonogramu.
+Implementacja `b4069a5e5a5c54f4ab9ea31587c63e198544ee0a`: push i
+[CI 39264722466](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/39264722466)
+PASS (wszystkie joby/kroki). Lokalnie 975 testów, 12/12 mutacji, build i
+readback 10 artefaktów oraz czysty klon PASS. 2048 plików data/config bez
+zmian; 0 auto-propozycji / 31 review w zweryfikowanym snapshocie z Git.
+Końcowy SHA dokumentacji i jego CI utrwala opis PR #12.
 Historia niżej opisuje wcześniejsze dostawy.
 
 ## Integracja TPN — PBI-097

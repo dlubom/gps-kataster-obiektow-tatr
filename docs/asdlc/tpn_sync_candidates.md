@@ -18,7 +18,7 @@ uv run --frozen --no-sync --offline python scripts/compare_tpn_snapshot.py \
 
 Bez `--qualify-new` pozostaje raport PBI-097. Z flagą raport zawiera
 `candidate_policy` z wersją/hash, `candidate_source_inputs`,
-`candidate_comparison_hash`, `duplicate_state_hash`,
+`candidate_comparison_hash`, `candidate_catalog_gaps`, `duplicate_state_hash`,
 `duplicate_resolution_checks` i `qualification_summary`. Każdy bieżący
 niepowiązany GUID otrzymuje `candidates` i `new_record_qualification`.
 Markdown pokazuje te same dowody przy rekordzie. Obecne powiązane GUID

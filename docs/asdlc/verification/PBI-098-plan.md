@@ -32,10 +32,10 @@ ustala wykonawca. Python 3.12, istniejące PyProj/PyYAML, bez zależności.
 - [x] RED → GREEN: bramka wszystkich warunków §6, niekompletność → review;
   pamiętane same_opening/different_openings_same_cave/different_objects/
   unresolved, zmiana nazw/referencji/XY/celu/preimage/polityki → stale.
-- [ ] Snapshot verify i CLI offline PBI-096/097 z Git, dwa identyczne raporty,
+- [x] Snapshot verify i CLI offline PBI-096/097 z Git, dwa identyczne raporty,
   czysty checkout bez build, niezmienność data/config i readback.
 - [x] Ruff/pytest/validate/build/readback, mutacje i przegląd.
-- [ ] Status, kontekst i trwały log, commit/push, zdalny SHA i wszystkie
+- [x] Status, kontekst i trwały log, commit/push, zdalny SHA i wszystkie
   joby dokładnego CI. Stop po 098. Następny prompt wyłącznie 099.
 
 ## Szczególna kontrola

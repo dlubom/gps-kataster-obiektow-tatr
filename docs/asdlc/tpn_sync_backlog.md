@@ -6,7 +6,7 @@ Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
 Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-098**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
-PBI-097: **wykonane 2026-10-19**; PBI-098: **zweryfikowane — do dostarczenia**.
+PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
 PBI-099–103: **planowane**. Porównanie jest tylko do odczytu; bez importera i harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
@@ -135,7 +135,7 @@ do danych domenowych. Kontekst: plan §3–5 i spec z 095.
 
 ## PBI-098: Wykrywać kandydatów duplikatów i kwalifikować nowe rekordy
 
-Status: zweryfikowane — do dostarczenia. Zależność: 097.
+Status: wykonane 2026-10-19. Zależność: 097.
 Osobne zlecenie użytkownika 2026-10-19. [Dowody](verification/PBI-098.md),
 [CLI i parametry](tpn_sync_candidates.md).
 
