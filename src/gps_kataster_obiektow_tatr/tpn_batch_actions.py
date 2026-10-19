@@ -133,7 +133,7 @@ class DomainPlan:
                 _, files, _ = self.catalog.context(t["object_id"])
                 identities.update(files)
                 require(
-                    self.objects[t["object_id"]].get("cave_id") == t["cave_id"],
+                    self.catalog.objects[t["object_id"]].get("cave_id") == t["cave_id"],
                     "target cave mismatch",
                 )
             if t["cave_id"]:

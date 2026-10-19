@@ -313,7 +313,8 @@ def test_protection_blocks_select_and_pending_manifest_migration(batch_repo, pro
         assert hashes(root) == before
 
 
-def test_multiple_guids_one_object_plan_ids_and_best_together(batch_repo):
+@pytest.mark.parametrize("relink", [False, True])
+def test_multiple_guids_one_object_plan_ids_and_best_together(batch_repo, relink):
     from gps_kataster_obiektow_tatr.tpn_batch import apply_batch
     from gps_kataster_obiektow_tatr.tpn_normalization import normalize_feature
 
@@ -326,16 +327,37 @@ def test_multiple_guids_one_object_plan_ids_and_best_together(batch_repo):
     path.write_text(yaml.safe_dump(obj, allow_unicode=True))
     csv_source(root, [feature(), feature(guid=GUID2, oid=2)])
     snap = snapshot(root, "two", [feature(lon=19.801), feature(guid=GUID2, oid=2, lon=19.802)])
+    if relink:
+        cave = yaml.safe_load((root / "data/caves/C-0001.yml").read_text())
+        cave.update(id="C-0002", name="Confirmed destination cave", object_ids=[])
+        (root / "data/caves/C-0002.yml").write_text(yaml.safe_dump(cave, allow_unicode=True))
     recommit(root)
     a, b = append_action(), append_action(key="location-2")
     b["location_hash"] = normalize_feature(feature(guid=GUID2, oid=2, lon=19.802))["location_hash"]
     changes, decisions = many((root, snap), {GUID: [a], GUID2: [b]})
+    if relink:
+        from gps_kataster_obiektow_tatr.tpn_snapshot import sha256
+
+        proposal = next(
+            p for p in changes["execution"]["proposals"] if p["change_id"].startswith(GUID + ":")
+        )
+        action = {"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0002"}
+        proposal["actions"].insert(0, action)
+        proposal["preimage"]["data/caves/C-0002.yml"] = sha256(
+            (root / "data/caves/C-0002.yml").read_bytes()
+        )
+        decision = next(d for d in decisions["decisions"] if d["globalid"] == GUID)
+        decision["actions"] = deepcopy(proposal["actions"])
+        decision["preimage"] = deepcopy(proposal["preimage"])
+        decisions["changes_hash"] = sha256(canonical(changes) + b"\n")
     plan = apply_batch(root, changes, decisions, reviewers={"human"})
     obj = yaml.safe_load(path.read_text())
     assert [m["id"] for m in obj["measurements"]] == ["m-001", "m-002", "m-003"]
     assert obj["best_measurement"]["measurement_id"] == "m-001"
     assert len(plan["best_changes"]) == 1
     assert len(plan["measurement_map"]) == 2
+    if relink:
+        assert obj["cave_id"] == "C-0002"
 
 
 def test_bad_last_decision_and_conflicting_best_write_nothing(batch_repo):
