@@ -671,6 +671,8 @@ i kontrolny odczyt kompletnego snapshotu; [procedura i dowody](docs/asdlc/verifi
 PBI-097: `scripts/compare_tpn_snapshot.py` wylicza raport CSV/API/YAML
 i kolejnych cykli z przyjętym stanem, bez zmiany katalogu lub bazy.
 [CLI, normalizacja i format rejestru](docs/asdlc/tpn_sync_comparison.md).
+PBI-098: opcja `--qualify-new` dodaje kandydatów i bramkę nowych rekordów,
+[bez materializacji YAML](docs/asdlc/tpn_sync_candidates.md).
 
 Przyjęty kierunek rozszerza V1 wyłącznie o TPN: rozpatrzenie zaległości,
 następnie ręczne i dopiero po odbiorze miesięczne sprawdzanie API przez

@@ -1,4 +1,4 @@
-"""Read-only TPN three-way comparison; no decision applier or duplicate heuristic."""
+"""Read-only TPN comparison, optionally including candidate qualification."""
 
 from __future__ import annotations
 
@@ -266,6 +266,8 @@ def compare(
     batch_id: str,
     base_commit: str,
     state: dict | None = None,
+    candidate_policy=None,
+    duplicate_resolutions: list[dict] | None = None,
 ) -> dict:
     """Pure report generation; state is already accepted by the caller (CLI: main)."""
     root = Path(repo_root).resolve()
@@ -515,7 +517,7 @@ def compare(
                 else "source_missing",
             }
         )
-    return {
+    report = {
         "format": "tpn-changes",
         "format_version": 1,
         "batch_id": batch_id,
@@ -531,6 +533,36 @@ def compare(
         "requires_pr": any(r["actionable"] for r in rows),
         "summary": dict(sorted(Counter(c for r in rows for c in r["classification"]).items())),
     }
+    if candidate_policy is not None:
+        from .prefix_resolver import PrefixResolver
+        from .tpn_candidate_sources import pig_sides
+        from .tpn_candidates import augment
+
+        historical_sides, source_inputs = pig_sides(root)
+        extra_sources = {
+            f"snapshot:{key}": value
+            for key, value in sources.cache.items()
+            if key != manifest["snapshot_hash"]
+        }
+        if state is not None:
+            # Acceptance advances the comparison baseline, never erases the
+            # original source names/locations as duplicate-warning evidence.
+            extra_sources["historical_csv"] = read_csv(root / CSV_PATH)
+        augment(
+            report,
+            catalog,
+            current,
+            previous,
+            PrefixResolver(
+                config_path=root / "config/prefixes.yml", shapes_dir=root / "data/shapes"
+            ),
+            candidate_policy,
+            duplicate_resolutions if duplicate_resolutions is not None else [],
+            extra_sources,
+            historical_sides,
+            source_inputs,
+        )
+    return report
 
 
 def pretty_json(value: object, indent: int = 0) -> str:
@@ -572,6 +604,27 @@ def render_markdown(report: dict) -> str:
         pretty_json(report["summary"]),
         "```",
     ]
+    if "candidate_policy" in report:
+        lines.extend(
+            [
+                "",
+                "## Polityka kandydatów i kwalifikacja",
+                "```json",
+                pretty_json(
+                    {
+                        k: report[k]
+                        for k in (
+                            "candidate_policy",
+                            "candidate_source_inputs",
+                            "candidate_comparison_hash",
+                            "qualification_summary",
+                            "duplicate_resolution_checks",
+                        )
+                    }
+                ),
+                "```",
+            ]
+        )
     for row in report["records"]:
         lines.extend(
             [
@@ -595,6 +648,21 @@ def render_markdown(report: dict) -> str:
                 lines.append(
                     f"| {section}.{field} | {cell(old.get(field))} | {cell(new.get(field))} |"
                 )
+        if "new_record_qualification" in row:
+            lines.extend(
+                [
+                    "",
+                    "### Kandydaci i blokady automatu",
+                    "```json",
+                    pretty_json(
+                        {
+                            "candidates": row["candidates"],
+                            "qualification": row["new_record_qualification"],
+                        }
+                    ),
+                    "```",
+                ]
+            )
         lines.extend(
             [
                 "",

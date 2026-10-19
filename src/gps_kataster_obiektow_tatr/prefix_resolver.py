@@ -102,6 +102,20 @@ class PrefixResolver:
         self._poland_prefix = config.fallback_prefixes[POLAND_FALLBACK_KEY]
         self._slovakia_prefix = config.fallback_prefixes[SLOVAKIA_FALLBACK_KEY]
 
+    def qualification_regions(self, *, lat: float, lon: float) -> dict:
+        """All valley hits and country coverage; never choose the first overlap."""
+        point = wgs84_to_1992(lat=lat, lon=lon)
+        xy = {"easting": point.y_1992, "northing": point.x_1992}
+        return {
+            "valleys": [
+                {"name": feature.name, "prefix": feature.prefix}
+                for feature in self._valley_features
+                if feature.contains(**xy)
+            ],
+            "inside_pl_sk": _any_feature_contains(self._poland_features, **xy)
+            or _any_feature_contains(self._slovakia_features, **xy),
+        }
+
     def resolve(self, *, lat: float, lon: float) -> PrefixResolution:
         """Resolve a WGS84 coordinate to a valley prefix or PL/SK fallback."""
 

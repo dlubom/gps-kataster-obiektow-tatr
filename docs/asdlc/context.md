@@ -2,6 +2,27 @@
 
 Last updated: 2026-10-19
 
+## Integracja TPN — PBI-098
+
+Osobno zlecone 2026-10-19; **zweryfikowane — do dostarczenia**.
+[Dowody](verification/PBI-098.md), [CLI i polityka](tpn_sync_candidates.md).
+Start po fetch: otwarty draft PR #12, czysty HEAD/origin
+`ce7ace2e808932ce3ac646809082d614cf90ab51`; kontynuowano
+`codex/tpn-sync-planning`. Main: `b98fd3febb400c7ee520046682c1bb16238429ee`.
+
+Opcja `--qualify-new` porównuje wszystkie pomiary (także odrzucone), nazwy
+Obiektów/Jaskiń/źródłowe, NR_INWENT/SYSTEM oraz całą nową paczkę. Jawne
+progi: Levenshtein ≥0,90 i max(100 m, znane dokładności), granice włączne.
+Każda blokada ma dowód. Pełny indeks obejmuje CSV TPN także po przyjęciu
+bazy API i aliasy PIG. Dawny GUID po powrocie wymaga review. Pamięć
+rozstrzygnięć jest tylko odczytywana z main; hash podstawy wiąże pełny
+indeks konkurentów. Brak/niepewność daje review; kwalifikacja nie tworzy YAML.
+
+Dane domenowe, stare CSV/XLSX/snapshoty, config i workflow zachowane.
+Brak stosowania decyzji i ochrony PBI-099. Następne osobne zlecenie może
+objąć wyłącznie PBI-099. Stop po 098, bez merge/tagu/release/harmonogramu.
+Historia niżej opisuje wcześniejsze dostawy.
+
 ## Integracja TPN — PBI-097
 
 Status: **wykonane 2026-10-19**, osobne zlecenie 2026-10-19.

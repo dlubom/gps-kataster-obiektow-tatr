@@ -1,0 +1,8 @@
+[
+  {"case":"okna_w_ciemniaku","names":["Okno w Ciemniaku","Okno w Ciemniaku","Okno w Ciemniaku"],"longitudes":[19.9,19.9002,19.9005],"expected":"exact_name"},
+  {"case":"nyze_pod_zachodem_pilotow_ii","names":["Nyża pod Zachodem Pilotów II","Nyża pod Zachodem Pilotów II"],"longitudes":[19.85,19.851],"expected":"exact_name"},
+  {"case":"distant_homonyms","names":["Jaskinia Pod Lasem","Jaskinia Pod Lasem"],"longitudes":[19.7,20.1],"expected":"exact_name"},
+  {"case":"nearby_different_openings","names":["Otwór Górny I","Otwór Dolny II"],"longitudes":[19.8,19.80001],"expected":"nearby_position"},
+  {"case":"typo","names":["Jaskinia Próbna Nad Potokiem","Jaskinia Próbma Nad Potokiem"],"longitudes":[19.7,20.1],"expected":"similar_name"},
+  {"case":"unselected_rejected_history_only","names":["Unikalna Propozycja","Inna Historyczna Nazwa"],"longitudes":[19.8,19.80001],"expected":"nearby_position"}
+]

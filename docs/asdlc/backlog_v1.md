@@ -16,7 +16,9 @@ Jeden PR na paczkę, osobne decyzje rekordów, wyłącznie ludzki merge.
 [PBI-097](verification/PBI-097.md): **wykonane 2026-10-19**.
 Normalizacja, bootstrap CSV/API/YAML, trzystronne różnice, przyjęty stan,
 rewizje i defer/reject; [CLI/format](tpn_sync_comparison.md). Bez zapisu katalogu.
-Następna karta po osobnym poleceniu: PBI-098; nie rozpoczęto.
+[PBI-098](verification/PBI-098.md): **zweryfikowane — do dostarczenia**.
+Kandydaci i kwalifikacja, [CLI/parametry](tpn_sync_candidates.md), bez YAML.
+Następna karta po osobnym poleceniu: PBI-099; nie rozpoczęto.
 
 ## Wydanie v1.1.1
 

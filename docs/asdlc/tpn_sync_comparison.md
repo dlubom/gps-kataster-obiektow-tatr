@@ -2,7 +2,8 @@
 
 Implementacja [kontraktu](tpn_sync_contract.md) §2–5. Tylko odczyt katalogu,
 snapshotów i przyjętego rejestru; JSON/Markdown są raportami, nie decyzjami.
-PBI-098/099/100 dostarczą kandydatów, ochronę best i planowanie/stosowanie akcji.
+PBI-098 dodaje opcjonalne [wykrywanie kandydatów i kwalifikację](tpn_sync_candidates.md)
+przez `--qualify-new`. PBI-099/100 dostarczą ochronę best i planowanie/stosowanie akcji.
 
 ## Uruchomienie offline
 
@@ -54,7 +55,7 @@ Raport każdej pozycji zawiera pełne znormalizowane i surowe before/after,
 obecny obiekt, Jaskinię i istotne relacje, lokalne rozbieżności pól,
 WER_LOK/UWAGI, geodezyjną odległość i aktualny best. Markdown pokazuje
 pola źródła w tabelach before/after i czytelny JSON danych lokalnych.
-`proposed_actions=[]`, `candidates=[]`, best_after=best_before: brak
+Bez `--qualify-new`: `proposed_actions=[]`, `candidates=[]`, best_after=best_before: brak
 symulowanych decyzji. `measurement_needed` oznacza brak rozpoznanej
 historii dla różnicy lokalizacji; nie jest zgodą na dopisanie pomiaru.
 

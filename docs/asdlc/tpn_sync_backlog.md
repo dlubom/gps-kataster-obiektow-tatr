@@ -3,10 +3,10 @@
 Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
 [Indeks całego backlogu](backlog_v1.md).
 
-Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-097**.
+Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-098**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
-PBI-097: **wykonane 2026-10-19**; PBI-098: **planowane — gotowe**.
+PBI-097: **wykonane 2026-10-19**; PBI-098: **zweryfikowane — do dostarczenia**.
 PBI-099–103: **planowane**. Porównanie jest tylko do odczytu; bez importera i harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
@@ -135,8 +135,9 @@ do danych domenowych. Kontekst: plan §3–5 i spec z 095.
 
 ## PBI-098: Wykrywać kandydatów duplikatów i kwalifikować nowe rekordy
 
-Status: planowane — gotowe. Zależność: 097.
-Nie rozpoczęto; wymaga osobnego polecenia.
+Status: zweryfikowane — do dostarczenia. Zależność: 097.
+Osobne zlecenie użytkownika 2026-10-19. [Dowody](verification/PBI-098.md),
+[CLI i parametry](tpn_sync_candidates.md).
 
 **Cel:** automat może proponować nowy Obiekt tylko wtedy, gdy nie pomija
 sygnałów, że rekord opisuje istniejący otwór lub jaskinię.
@@ -147,18 +148,18 @@ przenosimy bez zmian heurystyki „jedyny kandydat” do automatycznych decyzji.
 
 **Kryteria odbioru:**
 
-- [ ] Porównuje nazwy lokalne/jaskiń/źródłowe, NR_INWENT, SYSTEM i pozycje
+- [x] Porównuje nazwy lokalne/jaskiń/źródłowe, NR_INWENT, SYSTEM i pozycje
       wszystkich pomiarów; sprawdza też kolizje między nowymi rekordami.
-- [ ] Normalizacja zachowuje oznaczenia różnych otworów; podobieństwo
+- [x] Normalizacja zachowuje oznaczenia różnych otworów; podobieństwo
       nazwy i promień przestrzenny mają jawne parametry oraz testy graniczne.
-- [ ] Wynik zawiera powód, kandydatów i dowody dla każdej blokady automatów;
+- [x] Wynik zawiera powód, kandydatów i dowody dla każdej blokady automatów;
       nie scala obiektów ani nie dołącza do istniejącej Jaskini samodzielnie.
-- [ ] Fixture'y obejmują nowe „Okna w Ciemniaku”, dwie „Nyże pod Zachodem
+- [x] Fixture'y obejmują nowe „Okna w Ciemniaku”, dwie „Nyże pod Zachodem
       Pilotów II”, dalekie homonimy, bliskie różne otwory, literówkę nazwy
       oraz kolizję wyłącznie z niewybranym pomiarem historycznym.
-- [ ] Pamiętane rozstrzygnięcie tego samego otworu/różnych otworów/różnych
+- [x] Pamiętane rozstrzygnięcie tego samego otworu/różnych otworów/różnych
       obiektów nie obowiązuje po zmianie jego istotnej podstawy.
-- [ ] Auto-propozycję otrzymują wyłącznie rekordy spełniające wszystkie
+- [x] Auto-propozycję otrzymują wyłącznie rekordy spełniające wszystkie
       warunki §6; brak danych lub niepewność daje review, nie fallback.
 
 ## PBI-099: Chronić pomiary geodezyjne i wybór best przed synchronizacją
@@ -304,7 +305,7 @@ obsługa zaległego PR, diagnostyka i krótki runbook. Bez automatycznego merge.
 
 ## Kontynuacja
 
-Bieżąca sesja kończy się po dostarczeniu PBI-097. Następna karta to
-PBI-098, kandydaci duplikatów i kwalifikacja nowych rekordów bez
-materializacji YAML; wymaga nowego polecenia. PBI-098–103 nie rozpoczęto.
+Bieżąca sesja kończy się po dostarczeniu PBI-098. Następna karta to
+PBI-099, ochrona GNSS/geodezji i best bez importu snapshotu; wymaga nowego
+polecenia. PBI-099–103 nie rozpoczęto.
 Otwarty PR #12 kontynuujemy na jego gałęzi; po ludzkim merge zaczynamy od main.

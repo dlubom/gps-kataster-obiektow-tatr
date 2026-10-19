@@ -13,7 +13,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from gps_kataster_obiektow_tatr.tpn_api import require  # noqa: E402
+from gps_kataster_obiektow_tatr.tpn_candidates import CandidatePolicy  # noqa: E402
 from gps_kataster_obiektow_tatr.tpn_changes import compare, render_markdown  # noqa: E402
+from gps_kataster_obiektow_tatr.tpn_duplicate_state import read_accepted_duplicates  # noqa: E402
 from gps_kataster_obiektow_tatr.tpn_normalization import canonical  # noqa: E402
 from gps_kataster_obiektow_tatr.tpn_snapshot import sha256, write_bytes  # noqa: E402
 from gps_kataster_obiektow_tatr.tpn_source_state import git, read_accepted_state  # noqa: E402
@@ -25,6 +27,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--snapshot", type=Path, required=True)
     parser.add_argument("--batch-id", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--qualify-new", action="store_true")
+    parser.add_argument("--name-similarity-threshold", default="0.90")
+    parser.add_argument("--radius-m", default="100")
     args = parser.parse_args(argv)
     try:
         root = args.repo_root.resolve()
@@ -41,7 +46,17 @@ def main(argv: list[str] | None = None) -> int:
         state, accepted_commit = read_accepted_state(root)
         head = git(root, "rev-parse", "HEAD").decode().strip()
         report = compare(
-            root, args.snapshot.resolve(), batch_id=args.batch_id, base_commit=head, state=state
+            root,
+            args.snapshot.resolve(),
+            batch_id=args.batch_id,
+            base_commit=head,
+            state=state,
+            candidate_policy=CandidatePolicy(args.name_similarity_threshold, args.radius_m)
+            if args.qualify_new
+            else None,
+            duplicate_resolutions=read_accepted_duplicates(root, accepted_commit)
+            if args.qualify_new
+            else None,
         )
         report["accepted_state_commit"] = accepted_commit
         payload = canonical(report) + b"\n"

@@ -4,8 +4,9 @@ Stan: 2026-10-19. Ten plik wraz z planem i backlogiem w
 [PR #12](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/12)
 wystarcza do kontynuacji prac bez historii czatu i lokalnego build.
 Kontrakt przyjęto w PBI-095. PBI-096 dostarcza snapshot/CLI, a PBI-097
-porównanie tylko do odczytu. Aktualny status jest w backlogu oraz
-[logu PBI-097](verification/PBI-097.md); [CLI i rejestr](tpn_sync_comparison.md).
+porównanie tylko do odczytu. PBI-098 dodaje [kandydatów i kwalifikację](tpn_sync_candidates.md).
+Aktualny status jest w backlogu oraz [logu PBI-098](verification/PBI-098.md);
+[CLI i rejestr PBI-097](tpn_sync_comparison.md).
 
 ## Repozytorium i wejście w pracę
 
@@ -145,9 +146,9 @@ API nie daje transakcyjnej gwarancji atrybutów, co jest zapisane w manifeście.
 
 ## Granica następnego kroku
 
-Ta sesja kończy się po PBI-097. Następną gotową kartą jest PBI-098:
-kandydaci duplikatów i kwalifikacja nowych rekordów, **bez materializacji YAML**.
-Uruchamia ją wyłącznie osobne polecenie. PBI-098–103 nie są rozpoczęte.
+Ta sesja kończy się po PBI-098. Następną kartą po osobnym poleceniu jest
+PBI-099: ochrona GNSS/geodezji i wyboru best, bez importu snapshotu.
+PBI-099–103 nie są rozpoczęte. [Odbiór PBI-098](verification/PBI-098.md).
 Porównanie PBI-097 używa snapshotu PBI-096 z Git i bieżącego katalogu;
 nie wymaga historycznych plików build ani liczb z rozpoznania.
 Nie zmienia przyjętej bazy, nie tworzy decyzji i nie uruchamia importu.
