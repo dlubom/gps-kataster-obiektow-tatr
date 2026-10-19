@@ -4,7 +4,7 @@ Last updated: 2026-10-19
 
 ## Integracja TPN — PBI-100
 
-Status: **zweryfikowane lokalnie — do dostarczenia**, osobne zlecenie
+Status: **zweryfikowane — oczekuje hosted CI**, osobne zlecenie
 2026-10-19. [Dowody](verification/PBI-100.md), [CLI/format](tpn_sync_decisions.md).
 Start po fetch: otwarty draft PR #12, czysty HEAD/origin
 `ab7dd2d3cb6a9fd5cc8b80b964c5f1b67be6997c`, kontynuowana gałąź
@@ -29,8 +29,11 @@ Nie wykonano żadnego approve/reject/defer ani importu na katalogu produkcyjnym.
 2048 plików data/config, 1876 pomiarów i snapshoty/CSV/XLSX zachowane.
 Manifest PBI-099 odtworzony bajtowo: nadal **pending**; brak migracji.
 Ochrona GNSS/geodezji/manual działa bez zgody na migrację i nie ma obejścia.
-Następne osobne zlecenie: wyłącznie PBI-101, najpierw aktualne wejścia i
-indywidualne rozpatrzenie przez użytkownika. Bez merge/tagu/release/schedule.
+Najpierw dokończyć [odbiór CI PBI-100](verification/PBI-100-ci-handoff.md).
+Kod 77025ed jest wypchnięty; CI 39278211636 pozostaje in_progress bez
+kroków/logów. Lokalnie 1077 testów i 15/15 mutacji PASS. Status nie jest
+wykonane. Dopiero po odbiorze następne osobne zlecenie może objąć PBI-101,
+aktualne wejścia i indywidualne decyzje użytkownika. Bez merge/tagu/release/schedule.
 
 ## Integracja TPN — PBI-099
 

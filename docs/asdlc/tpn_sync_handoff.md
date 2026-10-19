@@ -150,7 +150,9 @@ API nie daje transakcyjnej gwarancji atrybutów, co jest zapisane w manifeście.
 
 Dostawa PBI-100 obejmuje narzędzia decyzji, planowania, transakcji i CI,
 zweryfikowane na fixture'ach i izolowanych kopiach. Nie wykonuje paczki
-produkcyjnej. Następne osobne zlecenie: wyłącznie PBI-101, zgodnie z jego
+produkcyjnej. Najpierw dokończyć [odbiór CI PBI-100](verification/PBI-100-ci-handoff.md);
+PBI-100 ma status zweryfikowane, oczekuje hosted CI. Po odbiorze kolejne
+osobne zlecenie może objąć wyłącznie PBI-101, zgodnie z jego
 aktualną kartą, z nowym pełnym snapshotem i indywidualnymi decyzjami człowieka.
 [Odbiór PBI-100](verification/PBI-100.md), [prompt](verification/PBI-100-next-task.md).
 Manifest auto→manual nadal pending; bez jawnej zgody brak migracji.
