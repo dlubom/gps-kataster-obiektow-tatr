@@ -8,8 +8,8 @@ Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-101**.
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
 PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
 PBI-099: **wykonane 2026-10-19**; PBI-100: **wykonane 2026-10-19**;
-PBI-101: **w toku — końcowe zastosowanie/odbiór**; PBI-102–103: **planowane**.
-Jedna paczka ma 614 approve / 26 defer / 0 pending; końcowy odbiór w toku. Bez harmonogramu.
+PBI-101: **wykonane — dostarczone do PR #12**; PBI-102–103: **planowane**.
+Jedna paczka ma 614 approve / 26 defer / 0 pending; dane/CI/eksporty odebrane. Bez harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -228,7 +228,7 @@ Kontekst: plan §4–8 i obecny format `staging_review_decisions.md`.
 
 ## PBI-101: Przeprowadzić pierwsze uzgodnienie danych TPN
 
-Status: **w toku — wszystkie decyzje rozliczone, końcowe zastosowanie/CI**.
+Status: **wykonane — dane, CI i eksporty odebrane, PR do człowieka**.
 614 approve / 26 defer / 0 pending. Użytkownik przyjął A578, B31 select_new
 auto i C5; D26 jawnie odroczył do niezależnego badania oraz zlecił commit/push
 PR #12 i końcowy odbiór. [Decyzje](verification/PBI-101-review/review.md).
@@ -236,7 +236,9 @@ Snapshot i źródła zachowane. Pierwszy plan keep jest w superseded-v1;
 nowa rewizja tej samej paczki ma zaakceptowane działania.
 [Przyczyna Linux/Mac i naprawa](tpn_sync_derived_precision.md) potwierdzone
 diagnostycznym CI; 1082 testów i izolowane zastosowanie/eksporty PASS.
-Produkcyjne CLI apply/check PASS; pozostaje pełny success CI końcowego SHA.
+Produkcyjne CLI apply/check PASS; dane 16beb1e: CI 39316520323 success,
+wszystkie joby/kroki/logi odczytane; świeży readback 10/10 PASS.
+Końcowy SHA dokumentacji i odbiór CI/eksportów utrwala opis PR #12.
 [Dowody](verification/PBI-101.md), [kontynuacja](verification/PBI-101-next-task.md).
 
 **Cel:** uporządkować zaległości i pozostawić wiarygodną bazę kolejnego cyklu.
@@ -252,12 +254,12 @@ PR. Bez harmonogramu i bez wymogu zakończenia wszystkich sporów.
       a nie wymuszoną liczbą nowych Obiektów lub nowych pomiarów.
 - [x] Każdy przypadek ma rozstrzygnięcie albo uzasadnione defer/reject;
       duplikaty i nowe otwory znanych Jaskiń są ocenione indywidualnie.
-- [ ] Snapshot, manifest i decyzje trafiają do Git z danymi. Czysty
+- [x] Snapshot, manifest i decyzje trafiają do Git z danymi. Czysty
       checkout wystarcza do odtworzenia rozpatrzonych zmian.
-- [ ] Chronione best i istniejąca historia zachowują wartości; nowe
+- [x] Chronione best i istniejąca historia zachowują wartości; nowe
       rekordy TPN pozostają nieweryfikowane. Sprawdzony jest pełny zbiór,
       eksporty, readback i CI końcowego SHA.
-- [ ] PR przedstawia liczniki i rzeczywiste diffy nowych obiektów,
+- [x] PR przedstawia liczniki i rzeczywiste diffy nowych obiektów,
       metadanych, dodanych pomiarów, best i odroczeń; ponowienie jest no-op.
 
 **Granica:** karta dostarcza PR do człowieka. Merge wykonuje wyłącznie
@@ -320,11 +322,11 @@ obsługa zaległego PR, diagnostyka i krótki runbook. Bez automatycznego merge.
 
 ## Kontynuacja
 
-Bieżący zakres to wyłącznie końcowy odbiór PBI-101. Snapshot, zgody, plan
-oraz zastosowana paczka mają 614 approve / 26 defer / 0 pending.
-D001–D026 czekają na niezależne badanie, bez zmian katalogu. Produkcyjny
-apply/check PASS; pozostają commit/push i dokładne końcowe CI/readback.
-[Gotowy prompt kontynuacji PBI-101](verification/PBI-101-next-task.md).
+PBI-101 zakończono na dostarczeniu jednej paczki do PR #12: 614 approve /
+26 defer / 0 pending. Snapshot, decyzje, receipt i stan są w Git, CI oraz
+świeże eksporty odebrane. PR draft, bez merge; origin/main pozostaje bazą
+przyjętego stanu, a gałąź jest kandydatem do przyjęcia.
+D001–D026 czekają na niezależne badanie, bez nowych zmian katalogu.
+[Gotowy prompt review PR](verification/PBI-101-next-task.md).
 Manifest trzech chronionych auto→manual nadal pending; bez migracji.
-Otwarty PR #12 kontynuujemy na jego gałęzi. PBI-102–103 nie rozpoczęto;
-bez merge/tagu/release/harmonogramu.
+PBI-102–103 nie rozpoczęto; bez merge/tagu/release/harmonogramu.

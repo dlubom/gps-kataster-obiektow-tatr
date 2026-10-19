@@ -25,7 +25,7 @@ pending. Dane bez zmian; brak migracji bez jawnej akceptacji.
 [Odbiór wszystkich jobów i logów CI](verification/PBI-100-ci-handoff.md) potwierdzony.
 [Decyzje/planowanie/transakcja/bramka](tpn_sync_decisions.md), bez produkcyjnego
 importu i migracji.
-[PBI-101](verification/PBI-101.md): **w toku — końcowe zastosowanie/odbiór**.
+[PBI-101](verification/PBI-101.md): **wykonane — dostarczone do PR #12**.
 Wszystkie decyzje rozliczone: 614 approve / 26 defer / 0 pending.
 A578 zachowuje katalog; B31 append + osobny select_new auto; C5 nowe
 Obiekty/Jaskinie; D26 niezależne badanie w trwałej kolejce.
@@ -33,7 +33,9 @@ Obiekty/Jaskinie; D26 niezależne badanie w trwałej kolejce.
 pierwszy raport zachowane; jawna rewizja planu jest utrwalona przed danymi.
 [Przyczyna błędu odtwarzania i naprawa](tpn_sync_derived_precision.md)
 obejmuje wyłącznie pochodne; 1082 testy lokalnie PASS, izolowane apply/replay,
-check i 10 eksportów PASS. Pozostaje dostarczenie i exact-SHA CI/readback.
+check i 10 eksportów PASS. Dane 16beb1e: hosted CI 39316520323 success,
+wszystkie joby/kroki/pełne logi odczytane, świeży readback 10/10 PASS.
+Dokładny końcowy SHA i jego odbiór CI/eksportów utrwala opis PR #12.
 Bez PBI-102, merge, tagu, release i harmonogramu.
 
 ## Wydanie v1.1.1

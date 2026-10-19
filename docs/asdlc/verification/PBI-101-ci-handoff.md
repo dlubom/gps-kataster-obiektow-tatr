@@ -1,7 +1,8 @@
 # PBI-101 — przyczyna rozbieżności CI i końcowy odbiór
 
-Status: przyczyna potwierdzona, naprawa i pełne testy lokalne PASS; końcowy
-hosted success wymaga jeszcze dostarczenia zastosowanej paczki. Wszystkie
+Status: przyczyna potwierdzona i naprawiona; zastosowana paczka 16beb1e
+ma hosted CI 39316520323 success (wszystkie joby/kroki/pełne logi odczytane)
+i świeży readback eksportów 10/10 PASS. Wszystkie
 640 decyzji człowieka są rozliczone: 614 approve / 26 defer, bez pending.
 Wcześniejsze polecenie pozostawienia pending zostało jawnie zastąpione.
 
@@ -31,6 +32,7 @@ starego payloadu. Zaakceptowane API source/revision/change_id, cele,
 preimages, klasyfikacje i zbiory kandydatów pozostały bez zmian.
 
 Końcowy SHA, URL/wynik wszystkich jobów i kroków oraz odczyt pełnych logów
-utrwala opis PR #12. Przed oznaczeniem PBI-101 jako odebrane wymagany pełny
-success dla faktycznie dostarczonego SHA i świeży readback jego eksportów.
+utrwala opis PR #12. Dokumenty odbioru mają osobny commit; jego dokładne CI i świeży readback
+wymagają ponownego potwierdzenia przed zakończeniem sesji.
+[Trwały odbiór danych](PBI-101-review/delivery-data-proof.json).
 Bez PBI-102, merge, tagu, release i harmonogramu.

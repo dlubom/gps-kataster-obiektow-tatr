@@ -1,0 +1,227 @@
+{
+  "run_id": 39316520323,
+  "sha": "16beb1e5be8a1e45e5907865bc297dcb4f6ae8fc",
+  "url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/39316520323",
+  "status": "success",
+  "jobs": 1,
+  "steps": [
+    {
+      "job": "Validate code and data",
+      "name": "Set up job",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Checkout",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Set up Python",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Install uv",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Sync dependencies",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Check formatting",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Lint",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Test",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Validate YAML data",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Verify TPN batch decisions",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Post Install uv",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Post Set up Python",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Post Checkout",
+      "conclusion": "success"
+    },
+    {
+      "job": "Validate code and data",
+      "name": "Complete job",
+      "conclusion": "success"
+    }
+  ],
+  "all_archive_members_read": [
+    {
+      "name": "0_Validate code and data.txt",
+      "bytes": 524218,
+      "sha256": "af57e11c68a8f15b0b7e1ae664b16f0e2cd02c4c99f3ea6f451c157bfc98faf9"
+    },
+    {
+      "name": "Validate code and data/system.txt",
+      "bytes": 594,
+      "sha256": "57877544d47cac4b3f2d83dbf8bd4fb40c492adb61826bf83f9b8ce4858616ec"
+    },
+    {
+      "name": "Validate code and data/1_Set up job.txt",
+      "bytes": 2165,
+      "sha256": "630bc3daba16575cb30763dcdd2ce50b6f89c8c506af09c7d881092af8ea9fb8"
+    },
+    {
+      "name": "Validate code and data/2_Checkout.txt",
+      "bytes": 9743,
+      "sha256": "d0967af37f7d3805c361c66aba667a6f9e8d90c9d0c3f45e1b24873b1639b584"
+    },
+    {
+      "name": "Validate code and data/3_Set up Python.txt",
+      "bytes": 875,
+      "sha256": "943d4827495c0ef3a1320203fc9a8af763d5e54b6f8f6d648f7f0d778132fb24"
+    },
+    {
+      "name": "Validate code and data/4_Install uv.txt",
+      "bytes": 3511,
+      "sha256": "399ac09ff3e8a317b24eb2f8d92c5e9e2255a7f89dfd5b864538f338f8299858"
+    },
+    {
+      "name": "Validate code and data/5_Sync dependencies.txt",
+      "bytes": 3684,
+      "sha256": "2835a5378c9a666ac23737004967d37a9ab01993059ed0b35086a913da4d53be"
+    },
+    {
+      "name": "Validate code and data/6_Check formatting.txt",
+      "bytes": 995,
+      "sha256": "6ad3ca7903a65b50e1481a616eaaa73b38b156faeb2088648ed7da2724f9b091"
+    },
+    {
+      "name": "Validate code and data/7_Lint.txt",
+      "bytes": 969,
+      "sha256": "46a17fd8bfa0766ee9d6f8bf2663b6c0dfa684e328b1b0ca89edaf1cd05a3c3b"
+    },
+    {
+      "name": "Validate code and data/8_Test.txt",
+      "bytes": 6305,
+      "sha256": "6eee5a717f5f0fffead68865d47427fff1db8a4087c5c3ecc005694848f68c1f"
+    },
+    {
+      "name": "Validate code and data/9_Validate YAML data.txt",
+      "bytes": 491898,
+      "sha256": "1b5a8c932364f1a6cad8c73f13be70a9ec28ce068d1fea5a399fb9f06d23a5d1"
+    },
+    {
+      "name": "Validate code and data/10_Verify TPN batch decisions.txt",
+      "bytes": 1176,
+      "sha256": "dc5140e54cb5646a606a22883d8499c4f2aed919b334b244f4cd8698fdb92b9f"
+    },
+    {
+      "name": "Validate code and data/18_Post Install uv.txt",
+      "bytes": 488,
+      "sha256": "b6473345ec83917eb00834280a3bc1464f72893e9dcda85cedfb3f43d764ef8d"
+    },
+    {
+      "name": "Validate code and data/19_Post Set up Python.txt",
+      "bytes": 305,
+      "sha256": "0ae6af7f6f1682c445dcf93e3bd5279d483dab16539d712733ca8aaf17266728"
+    },
+    {
+      "name": "Validate code and data/20_Post Checkout.txt",
+      "bytes": 1747,
+      "sha256": "91f0d305a0781db1793f9ea5ba4e9705d794444543efcaa177ed1bb1e965f959"
+    },
+    {
+      "name": "Validate code and data/21_Complete job.txt",
+      "bytes": 396,
+      "sha256": "2f8b40e7c3d563ab06e6f928dd8e495c1280f25dac5350edd32ab0639ee34cee"
+    }
+  ],
+  "full_log_sha256": "498fb67b178dff88b8d898de401046f0bb763984f6773fe73469c8b70c564b46",
+  "evidence": [
+    "Validate code and data\tInstall uv\t2026-10-19T20:06:32.1918033Z (node:2324) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+    "Validate code and data\tCheck formatting\t2026-10-19T20:06:33.4667715Z 79 files already formatted",
+    "Validate code and data\tLint\t2026-10-19T20:06:33.5270427Z All checks passed!",
+    "Validate code and data\tTest\t2026-10-19T20:10:26.6714584Z ======================= 1082 passed in 232.44s (0:03:52) =======================",
+    "Validate code and data\tVerify TPN batch decisions\t2026-10-19T20:16:16.6212999Z {\"checked_batches\":[\"pbi-101-20261019\"],\"ready\":true}"
+  ],
+  "exports_readback": {
+    "readback": "PASS",
+    "artifacts": 10,
+    "objects": 1012,
+    "caves": 1006,
+    "measurements": 1912,
+    "best": 1012,
+    "sqlite_history_fields": "all present YAML fields",
+    "xlsx": "Best and Full, IDs, coordinates, status, date, provenance, notes, tags, audit"
+  },
+  "export_files": [
+    {
+      "name": "best-measurements.csv",
+      "sha256": "4c4ca41694916ea4dd3926e81a64560909d57fc3d09d4e9027d9523a96135acb",
+      "bytes": 646775
+    },
+    {
+      "name": "best-measurements.geojson",
+      "sha256": "4db12d70515f9ac0421c17f3690fead66c8bb4b6e283b613b790d06919d97b27",
+      "bytes": 1625665
+    },
+    {
+      "name": "best-measurements.gpx",
+      "sha256": "d046e8a6d52c7e3e66ad6af594e83249fc21d27a4f9651536ca7df03aad24223",
+      "bytes": 613346
+    },
+    {
+      "name": "best-measurements.shp.zip",
+      "sha256": "6822ac6077589464c1bd6e20323506997bc2b8e20439f5e001fcb14ce4031a1c",
+      "bytes": 146339
+    },
+    {
+      "name": "katalog.sqlite.zip",
+      "sha256": "06d44a4ac0eadddbcee6b7cd7be9cc0253da78bc458a7df33b42973ae6b9365a",
+      "bytes": 531880
+    },
+    {
+      "name": "katalog.xlsx",
+      "sha256": "23f90cd0b0fdbecc7d2edb3bae7a978b57733495c280eb20cd5ba9118a0473f1",
+      "bytes": 622197
+    },
+    {
+      "name": "metadata.json",
+      "sha256": "8beed7677734733bafcb5676ae57e7424161cf2a33903bb8930f2fb82b0ca4ce",
+      "bytes": 270
+    },
+    {
+      "name": "statistics.json",
+      "sha256": "e2464ca5643a5b1809c4e08b7fa794141ba86163e26bdc082eed2a4fd3486318",
+      "bytes": 886
+    },
+    {
+      "name": "statistics.md",
+      "sha256": "2c27aee923afb49ac14964f3632d05751a7c3224f96222935623cf93251eabca",
+      "bytes": 4167
+    }
+  ],
+  "export_source_commit": "16beb1e5be8a1e45e5907865bc297dcb4f6ae8fc"
+}

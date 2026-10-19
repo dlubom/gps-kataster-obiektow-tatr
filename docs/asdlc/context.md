@@ -2,9 +2,9 @@
 
 Last updated: 2026-10-19
 
-## Integracja TPN — PBI-101, końcowe zastosowanie i odbiór
+## Integracja TPN — PBI-101 wykonane, PR do ludzkiego review
 
-Status: **w toku — wszystkie decyzje użytkownika rozliczone**. Jedna paczka
+Status: **wykonane — dane, CI i eksporty odebrane**. Jedna paczka
 `pbi-101-20261019`: **614 approve / 26 defer / 0 pending**. A578 zachowuje
 katalog i best (573 auto, 5 manual); B31 dopisuje pomiary i osobno wybiera
 nowe best auto; C5 tworzy 5 Obiektów/Jaskiń; D26 odroczone do niezależnego
@@ -31,9 +31,13 @@ uwierzytelnionego CSV, bez tworzenia decyzji i bez tolerancji dla późniejszego
 ruchu API. 138 testów zmienionych modułów PASS.
 
 Produkcja CLI apply zgodna bajtowo z izolowaną próbą; check ready=true.
-Do ukończenia pozostaje dostarczenie z exact-SHA CI/readback. [Dowody](verification/PBI-101.md),
+Dostarczone dane 16beb1e: CI 39316520323 success, wszystkie joby/kroki/pełne
+logi odebrane; świeży readback 10/10 PASS. Odbiór końcowego commitu dokumentacji
+potwierdza opis PR #12, bez commitu wyłącznie dla własnego SHA. [Dowody](verification/PBI-101.md),
 [handoff CI](verification/PBI-101-ci-handoff.md),
-[kontynuacja](verification/PBI-101-next-task.md). PBI-102–103 planowane;
+[prompt review PR](verification/PBI-101-next-task.md). D26 pozostają do
+niezależnego badania; PR draft, stan gałęzi nie jest przyjętym stanem main.
+PBI-102–103 planowane;
 bez merge, tagu, release i harmonogramu. Nie pytać ponownie o przyjęte
 zakresy ani o zgodę na commit/push; utrwalone jawne decyzje są aktualne.
 
