@@ -27,6 +27,8 @@ obiektów. Ochrona musi obejmować GNSS z `source: inne` i `mode: auto`
 z porzuconych gałęzi nie traktujemy jako obecnej na main.
 Ta dostawa nie zmienia katalogu, kodu, bieżącej spec ani harmonogramów.
 [Weryfikacja kroku planistycznego](verification/tpn-sync-planning.md).
+[Samowystarczalny punkt startowy i zapytania API](tpn_sync_handoff.md):
+lokalnego JSON nie dodajemy do PR; nowy kontekst może pobrać bieżący stan.
 
 ## v1.1.1 — przygotowanie wydania
 

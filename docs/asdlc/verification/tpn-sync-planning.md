@@ -41,3 +41,16 @@ Nie wykonywać merge, tagu ani release w ramach tej dostawy.
 Następny krok: uzgodnienie projektu, potem nadanie gotowości wyłącznie
 PBI-095. Przed wykonaniem: świeży main, aktualny backlog i spec.
 Dalsze karty nie są zgodą na wykonanie importu w tej sesji.
+
+## Uzupełnienie do czystego kontekstu — 2026-10-19
+
+Na polecenie użytkownika dodano [instrukcję przejęcia](../tpn_sync_handoff.md):
+stan PR/gałęzi, kolejność dokumentów, dokładne parametry zapytania API,
+polecenie pobrania jednej strony i wymagane kontrole kompletności.
+JSON pozostał lokalnie poza Git. Instrukcja odróżnia odczyt bieżący od
+historycznej migawki; do kontynuacji planowania nie wymaga build ani czatu.
+Weryfikacja: **5 testów dokumentacji przeszło**, **78 lokalnych odnośników**
+poprawnych, składnia polecenia Bash poprawna, endpoint i wszystkie osiem
+parametrów zgodne z manifestem pierwotnego odczytu. Hash lokalnego JSON
+zgodny z manifestem; `git diff --check` bez błędów. Zakres: tylko dokumenty.
+Końcowy SHA/CI tego uzupełnienia również wskazuje opis PR #12.

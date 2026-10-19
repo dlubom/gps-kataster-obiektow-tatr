@@ -5,6 +5,8 @@ Data: 2026-10-19. Baza analizy: `main` / `origin/main`
 
 Status: **propozycja projektu i kolejności prac**. Ten dokument nie uruchamia
 importu ani harmonogramu. Karty wykonawcze: [backlog TPN](tpn_sync_backlog.md).
+[Start z czystego kontekstu i zapytania API](tpn_sync_handoff.md) zawiera
+instrukcję pobrania bieżącego JSON; lokalna kopia nie jest częścią PR.
 Obecna [specyfikacja](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md)
 wyłącza cykliczną synchronizację (§20–21); jej rozszerzenie jest pierwszym PBI.
 Nowy zakres dotyczy tylko TPN. YAML pozostaje źródłem prawdy katalogu.

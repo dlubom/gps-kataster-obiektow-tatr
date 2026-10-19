@@ -1,0 +1,126 @@
+# TPN: start z czystego kontekstu
+
+Stan: 2026-10-19. Ten plik wraz z planem i backlogiem w
+[PR #12](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/12)
+wystarcza do kontynuacji planowania bez historii czatu i lokalnego build.
+
+## Repozytorium i wejście w pracę
+
+- Repozytorium: `dlubom/gps-kataster-obiektow-tatr`.
+- Lokalnie: `/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr`.
+- PR planistyczny: **#12**, baza `main`, gałąź `codex/tpn-sync-planning`.
+- Sprawdź status i fetch origin, zachowaj cudze zmiany. Na czystym checkoutcie
+  odśwież main według AGENTS. Następnie sprawdź aktualny stan PR #12.
+- Jeśli PR jest nadal otwarty, dokumenty są na jego gałęzi, niekoniecznie
+  na main. Do kontynuacji tego PR użyj `gh pr checkout 12`; nie twórz
+  duplikatu PR ani nie merguj go tylko po to, by przeczytać dokumenty.
+- Jeśli PR został zmergowany, korzystaj z aktualnego main. Zamknięcie bez
+  merge nie oznacza przyjęcia planu. SHA i CI odczytaj z aktualnego PR.
+- Nie wznawiaj porzuconych gałęzi napraw ani ich historycznych PBI-034–077.
+
+Kolejność czytania:
+
+1. [AGENTS](../../AGENTS.md) i wymienione tam dokumenty kanoniczne:
+   [spec](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md),
+   [indeks backlogu](backlog_v1.md), [context](context.md),
+   [plan napraw](remediation_plan.md), [runbook](remediation_runbook.md).
+2. [Plan TPN](tpn_sync_plan.md) — wymagania, wyniki rozpoznania, decyzje
+   projektowe oraz ryzyka w obecnym kodzie.
+3. [PBI-095–103](tpn_sync_backlog.md) — zakres, zależności i kryteria odbioru.
+4. [Weryfikacja planowania](verification/tpn-sync-planning.md).
+
+## Publiczne API i dokładne zapytanie
+
+Źródło rozpoznane 2026-10-19, bez tokena i logowania:
+
+- [Opis warstwy i schemat JSON](https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6?f=pjson).
+- [Query](https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6/query).
+- [Licznik rekordów](https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6/query?where=1%3D1&returnCountOnly=true&f=json).
+- [Lista OBJECTID](https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6/query?where=1%3D1&returnIdsOnly=true&f=json).
+
+Dokładne parametry zapytania użytego do pobrania lokalnego JSON:
+
+| Parametr | Wartość |
+|---|---|
+| where | `1=1` |
+| outFields | `*` |
+| returnGeometry | `true` |
+| outSR | `4326` |
+| orderByFields | `OBJECTID` |
+| resultOffset | `0` |
+| resultRecordCount | `2000` |
+| f | `json` |
+
+Przykład ręcznego pobrania **jednej strony** do nowego katalogu roboczego
+(wykonuj z katalogu repozytorium; nie nadpisuje kopii z poprzedniej sesji):
+
+```bash
+mkdir -p build/exports/tpn-api
+TPN_FETCH_DIR=$(mktemp -d build/exports/tpn-api/manual.XXXXXX)
+curl --fail --show-error --silent --get \
+  'https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6/query' \
+  --data-urlencode 'where=1=1' \
+  --data-urlencode 'outFields=*' \
+  --data-urlencode 'returnGeometry=true' \
+  --data-urlencode 'outSR=4326' \
+  --data-urlencode 'orderByFields=OBJECTID' \
+  --data-urlencode 'resultOffset=0' \
+  --data-urlencode 'resultRecordCount=2000' \
+  --data-urlencode 'f=json' \
+  --output "$TPN_FETCH_DIR/tpn-otwory-jaskin-page-0.json"
+```
+
+To polecenie nie zastępuje kompletnego downloadera z PBI-096. Przed użyciem
+danych trzeba odczytać schemat i limit usługi, sprawdzić `error` w JSON
+(HTTP 200 nie wystarcza), `exceededTransferLimit`, count i pełny zbiór ID
+przed/po pobraniu oraz unikalność GLOBALID. Gdy strona nie obejmuje całego
+zbioru, pobierz kolejne strony z rosnącym offsetem zgodnie z rzeczywiście
+zwróconą liczbą rekordów. Niespójny lub niepełny odczyt nie jest bazą decyzji.
+
+Odpowiedź zawiera `features[].attributes` i `features[].geometry`.
+Przy outSR=4326: `x` to długość, `y` szerokość geograficzna. `GLOBALID`
+jest tożsamością źródłową otworu, `OBJECTID` technicznym ID usługi.
+`WER_LOK` i `UWAGI` mogą być null. Daty ArcGIS są milisekundami od epoki
+Unix; data edycji nie jest dowodem daty pomiaru. Brak Z nie kasuje lokalnej
+wysokości. Pobieraj wszystkie pola, nie tylko trzy wymienione w zleceniu.
+Nie zastępuj tej warstwy uboższą `SIPTPN/Geologia_i_gleby/MapServer/2`.
+
+## Gdzie jest JSON i co daje czysty checkout
+
+Na komputerze wykonującego rozpoznanie pozostały ignorowane pliki:
+
+- `build/exports/tpn-api/2026-10-19/tpn-otwory-jaskin.json`;
+- `build/exports/tpn-api/2026-10-19/download-metadata.json`;
+- `build/exports/tpn-api/2026-10-19/planning-source-comparison.json`.
+
+**Nie są częścią PR #12.** Użytkownik dopuścił pozostawienie JSON poza Git;
+do planowania i PBI-095 nie jest konieczny. Nie zakładaj dostępności tych
+plików w nowym checkoutcie. Polecenie wyżej pozwala pobrać bieżący stan API.
+Nie odtwarza historycznej migawki: nowe liczniki i SHA mogą się różnić.
+Hash z planu służy identyfikacji starego pliku, nie walidacji nowej odpowiedzi.
+
+W odczycie z 2026-10-19 było 1035 rekordów, 21 pól, 1035 niepustych GLOBALID,
+502 WER_LOK i 109 UWAGI. Względem zachowanego w repo CSV: 30 nowych GUID,
+0 znikniętych, 30 przesunięć ponad 1 m; 12 grup powtarzających się nazw
+w API. Plan podaje metodę i hashe, a CSV pozostaje dostępny w repo.
+Są to wyniki rozpoznania, nie zaakceptowane zmiany katalogu.
+Przy pierwszym imporcie wymagane wejścia decyzji zostaną utrwalone zgodnie
+z PBI-096/101; obecny PR nie jest przyjętą bazą synchronizacji.
+
+## Granica następnego kroku
+
+Plan i dziewięć kart są propozycją; sam prompt odczytujący kontekst nie
+oznacza akceptacji projektu ani rozpoczęcia implementacji. Pierwsza karta
+do wykonania po poleceniu użytkownika i uzgodnieniu kierunku to **PBI-095**:
+kontrakt, spec, AGENTS i przykłady. Bez importu, zmian pomiarów i schedule.
+
+Ustalone wymagania: jeden PR i osobne decyzje po rekordzie, miesięczne
+sprawdzanie po wdrożeniu, wyłącznie ludzki merge, kontrola duplikatów,
+zachowanie historii i ochrona geodezji. Ryzyko do uwzględnienia: GNSS
+z `source: inne` i best `auto` (KSZ-0112) nie jest obecnie chroniony samym
+priorytetem własnych zweryfikowanych. Nowy GUID nie dowodzi nowego Obiektu.
+Aktualna spec wyłącza synchronizację; PBI-095 ma wprowadzić wąski wyjątek.
+
+Po każdym wykonanym PBI: spójna dokumentacja, adekwatna weryfikacja,
+commit/push, zdalny SHA i CI tego SHA. Jedna karta na sesję, bez samodzielnego
+przechodzenia do kolejnej; merge/tag/release tylko po osobnym poleceniu.
