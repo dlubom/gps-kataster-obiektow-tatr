@@ -2,6 +2,29 @@
 
 Last updated: 2026-10-19
 
+## Integracja TPN — PBI-097
+
+Status: **zweryfikowane — do dostarczenia**, osobne zlecenie 2026-10-19.
+[Dowody](verification/PBI-097.md), [CLI/format](tpn_sync_comparison.md).
+PR #12 był otwarty jako draft, czysta gałąź `codex/tpn-sync-planning`,
+HEAD i origin zgodne: `98de33b5b4980af70dd0a51f69b954922cdd087a`.
+Kontynuowano tę gałąź; main `b98fd3febb400c7ee520046682c1bb16238429ee`.
+
+`compare_tpn_snapshot.py` porównuje zweryfikowane snapshoty z katalogiem;
+bootstrap używa zachowanego CSV. Typed GUID pozostaje jedynym kluczem.
+Normalizacja v1 i dokładne odciski są wersjonowane; raport ma pełne
+before/after, lokalny kontekst, historię i niezmieniony best. CLI czyta
+przyjęty stan wyłącznie z origin/main; nie zapisuje stanu ani danych.
+Bootstrapowe bindings są dowodami do review, nie akceptacją. Stan na
+main jeszcze nie istnieje. Zwykłe powtórzenie, defer i ważny reject
+nie wymagają nowego PR; zmieniona rewizja lub podstawa wraca do review.
+Zniknięcie i ponowne pojawienie się źródła zachowują wcześniejsze dowody.
+
+Dane domenowe, dotychczasowe snapshoty, CSV/XLSX, config i workflow bez zmian.
+Brak stosowania decyzji, kandydatów duplikatów i harmonogramu. Kończymy
+po PBI-097; PBI-098 jest następną kartą po osobnym poleceniu. Bez merge,
+tagu i release. Historia PBI-096 poniżej opisuje wcześniejszą sesję.
+
 ## Integracja TPN — PBI-096
 
 Przyjęty [kontrakt PBI-095](tpn_sync_contract.md); użytkownik zlecił osobno
@@ -32,7 +55,7 @@ LAST_EDITED_DATE jako daty stanu źródła z komentarzem; brak daty odracza
 pomiar, bez podstawiania fetch/CREATED_DATE. Brak Z nie usuwa wysokości.
 
 Następna karta po osobnym poleceniu: **PBI-097** (różnice
-źródła i bootstrap, bez zapisu katalogu). PBI-097–103 nie rozpoczęto.
+źródła i bootstrap, bez zapisu katalogu). To historyczny punkt przekazania; aktualny status PBI-097 jest powyżej.
 Obecny applier CSV/XLSX nie zapewnia nowego protokołu; nie używać go do
 paczki synchronizacji przed wdrożeniem ochron i decyzji PBI-099/100.
 

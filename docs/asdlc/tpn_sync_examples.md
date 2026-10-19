@@ -1,8 +1,10 @@
 # TPN: formaty i przykłady kontraktu
 
 Załącznik normatywny do [kontraktu PBI-095](tpn_sync_contract.md).
-Manifest PBI-096 obsługuje `fetch_tpn_snapshot.py`; changes/decisions
-pozostają do implementacji PBI-097/100. Nie uruchamiać tych przykładów
+Manifest PBI-096 obsługuje `fetch_tpn_snapshot.py`; raport changes i odczyt
+stanu dostarcza PBI-097 ([CLI/format](tpn_sync_comparison.md)). Decyzje/apply
+pozostają do implementacji PBI-100. Przykłady akcji poniżej są przyszłym
+formatem; PBI-097 emituje puste proposed_actions/candidates i zachowuje best. Nie uruchamiać tych przykładów
 przez dotychczasowy `apply_review.py`.
 Przykładowe identyfikatory i wartości są syntetyczne. Wielkie symbole
 `SNAPSHOT`, `REV_*`, `LOC_*`, `HASH_*` zastępują rzeczywiste 64-znakowe

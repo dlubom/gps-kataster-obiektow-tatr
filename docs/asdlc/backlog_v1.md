@@ -13,7 +13,10 @@ CSV/XLSX bez zmian. Brak importera i harmonogramu.
 Kolejność: kontrakt → snapshot → różnice → duplikaty → ochrona GNSS/best →
 decyzje → pierwsza paczka danych → ręczny workflow PR → harmonogram.
 Jeden PR na paczkę, osobne decyzje rekordów, wyłącznie ludzki merge.
-Następna karta po osobnym poleceniu: PBI-097; nie rozpoczęto.
+[PBI-097](verification/PBI-097.md): **zweryfikowane — do dostarczenia**.
+Normalizacja, bootstrap CSV/API/YAML, trzystronne różnice, przyjęty stan,
+rewizje i defer/reject; [CLI/format](tpn_sync_comparison.md). Bez zapisu katalogu.
+Następna karta po dostawie i osobnym poleceniu: PBI-098; nie rozpoczęto.
 
 ## Wydanie v1.1.1
 

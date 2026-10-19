@@ -3,10 +3,11 @@
 Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
 [Indeks całego backlogu](backlog_v1.md).
 
-Użytkownik przyjął kontrakt PBI-095 i w kolejnej sesji zlecił wyłącznie **PBI-096**.
+Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-097**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
-PBI-097: **planowane — gotowe** na osobne zlecenie; PBI-098–103: **planowane**. Bez implementacji porównania, importera i harmonogramu.
+PBI-097: **zweryfikowane — do dostarczenia**; PBI-098: **planowane — gotowe** po dostawie 097.
+PBI-099–103: **planowane**. Porównanie jest tylko do odczytu; bez importera i harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -104,8 +105,8 @@ walidacja schematu i manifestu, fixture'y. Kontekst: plan §2–4, [kontrakt](tp
 
 ## PBI-097: Wyliczać zmiany TPN z uwzględnieniem katalogu i wcześniejszych decyzji
 
-Status: planowane — gotowe. Zależność 096 wykonana; rozpoczęcie wymaga
-osobnego polecenia. Nie rozpoczęto w sesji PBI-096.
+Status: zweryfikowane — do dostarczenia. Zlecone osobno 2026-10-19.
+[Dowody](verification/PBI-097.md), [CLI i format rejestru](tpn_sync_comparison.md).
 
 **Cel:** odróżnić zaległą różnicę źródła, niezależną zmianę lokalną i już
 rozpatrzoną rewizję, także podczas pierwszego uruchomienia.
@@ -116,25 +117,26 @@ do danych domenowych. Kontekst: plan §3–5 i spec z 095.
 
 **Kryteria odbioru:**
 
-- [ ] Łączenie używa wyłącznie typu TPN/source_globalid. OBJECTID,
+- [x] Łączenie używa wyłącznie typu TPN/source_globalid. OBJECTID,
       NR_INWENT i nazwa nie stają się tożsamością otworu.
-- [ ] Raport klasyfikuje nowe GUID, zmiany metadanych/lokalizacji, braki
+- [x] Raport klasyfikuje nowe GUID, zmiany metadanych/lokalizacji, braki
       powiązań, konflikty lokalne i zniknięcia; pokazuje before/after,
       kontekst WER_LOK/UWAGI oraz odległości bez deklarowania dokładności.
-- [ ] Bootstrap rozpoznaje kilka GUID już scalonych w jednym Obiekcie,
+- [x] Bootstrap rozpoznaje kilka GUID już scalonych w jednym Obiekcie,
       stare pomiary i istniejące notatki. Nie odtwarza scalonych obiektów
       ani nie dopisuje tego samego źródłowego pomiaru pod innym ID.
-- [ ] Techniczne zmiany odpowiedzi nie udają nowego pomiaru; nieznane pola
+- [x] Techniczne zmiany odpowiedzi nie udają nowego pomiaru; nieznane pola
       lub zmiana polityki normalizacji wymagają jawnej migracji wersji.
-- [ ] Testy dwóch kolejnych cykli potwierdzają: baza przyjęta dopiero po
+- [x] Testy dwóch kolejnych cykli potwierdzają: baza przyjęta dopiero po
       merge, defer zachowany, reject ważny dla rewizji, nowa rewizja wraca
       do review, zmiana celu unieważnia nieaktualną decyzję.
-- [ ] Ten sam snapshot i ten sam katalog dają ten sam raport semantyczny;
+- [x] Ten sam snapshot i ten sam katalog dają ten sam raport semantyczny;
       no-op nie wymaga PR. Brak w niepełnym odczycie nie jest zniknięciem.
 
 ## PBI-098: Wykrywać kandydatów duplikatów i kwalifikować nowe rekordy
 
-Status: planowane. Zależność: 097.
+Status: planowane — gotowe po dostawie 097. Zależność: 097.
+Nie rozpoczęto; wymaga osobnego polecenia.
 
 **Cel:** automat może proponować nowy Obiekt tylko wtedy, gdy nie pomija
 sygnałów, że rekord opisuje istniejący otwór lub jaskinię.
@@ -302,7 +304,7 @@ obsługa zaległego PR, diagnostyka i krótki runbook. Bez automatycznego merge.
 
 ## Kontynuacja
 
-Bieżąca sesja kończy się po dostarczeniu PBI-095. Następna karta to
-PBI-096, wyłącznie pozyskanie i walidacja snapshotu bez zmian katalogu;
-wymaga nowego polecenia. Pozostałe karty pozostają planowane. Otwarty
-PR #12 kontynuujemy na jego gałęzi; po ludzkim merge zaczynamy od main.
+Bieżąca sesja kończy się po dostarczeniu PBI-097. Następna karta to
+PBI-098, kandydaci duplikatów i kwalifikacja nowych rekordów bez
+materializacji YAML; wymaga nowego polecenia. PBI-098–103 nie rozpoczęto.
+Otwarty PR #12 kontynuujemy na jego gałęzi; po ludzkim merge zaczynamy od main.

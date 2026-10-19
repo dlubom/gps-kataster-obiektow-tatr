@@ -3,8 +3,9 @@
 Stan: 2026-10-19. Ten plik wraz z planem i backlogiem w
 [PR #12](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/12)
 wystarcza do kontynuacji prac bez historii czatu i lokalnego build.
-Kontrakt przyjęto w PBI-095. PBI-096 dostarcza snapshot/CLI; status
-dostawy jest w backlogu i [logu PBI-096](verification/PBI-096.md).
+Kontrakt przyjęto w PBI-095. PBI-096 dostarcza snapshot/CLI, a PBI-097
+porównanie tylko do odczytu. Aktualny status jest w backlogu oraz
+[logu PBI-097](verification/PBI-097.md); [CLI i rejestr](tpn_sync_comparison.md).
 
 ## Repozytorium i wejście w pracę
 
@@ -32,7 +33,7 @@ Kolejność czytania:
 3. [PBI-095–103](tpn_sync_backlog.md) — zakres, zależności i kryteria odbioru.
 4. [Kontrakt PBI-095](tpn_sync_contract.md) i [formaty](tpn_sync_examples.md).
 5. [Odbiór PBI-095](verification/PBI-095.md) i najnowszy
-   [odbiór PBI-096](verification/PBI-096.md); wcześniejsze rozpoznanie
+   [odbiór PBI-096](verification/PBI-096.md) i [PBI-097](verification/PBI-097.md); wcześniejsze rozpoznanie
    w [weryfikacji planowania](verification/tpn-sync-planning.md).
 
 ## Publiczne API i dokładne zapytanie
@@ -144,10 +145,12 @@ API nie daje transakcyjnej gwarancji atrybutów, co jest zapisane w manifeście.
 
 ## Granica następnego kroku
 
-Ta sesja kończy się po PBI-096. Po jego dostarczeniu następną gotową kartą
-jest PBI-097: bootstrap i różnice źródła względem katalogu i wcześniejszych
-decyzji, **bez zapisu danych domenowych**. Implementację uruchamia wyłącznie
-osobne polecenie użytkownika. PBI-098–103 nie są rozpoczęte.
+Ta sesja kończy się po PBI-097. Następną gotową kartą jest PBI-098:
+kandydaci duplikatów i kwalifikacja nowych rekordów, **bez materializacji YAML**.
+Uruchamia ją wyłącznie osobne polecenie. PBI-098–103 nie są rozpoczęte.
+Porównanie PBI-097 używa snapshotu PBI-096 z Git i bieżącego katalogu;
+nie wymaga historycznych plików build ani liczb z rozpoznania.
+Nie zmienia przyjętej bazy, nie tworzy decyzji i nie uruchamia importu.
 
 Ustalenia: jeden PR i decyzje po rekordzie, zaległości przed miesięcznym
 sprawdzaniem, wyłącznie ludzki merge, kontrola duplikatów, historia i ochrona

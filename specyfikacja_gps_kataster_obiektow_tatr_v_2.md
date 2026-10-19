@@ -8,7 +8,8 @@
 >
 > **Rozszerzenie TPN, PBI-095 (2026-10-19):** zaakceptowany kierunek i
 > kontrakt §8.4. PBI-096 dostarcza pobieranie i offline weryfikację snapshotu;
-> PBI-097–103 pozostają przyszłą pracą, bez importera i harmonogramu.
+> PBI-097 dostarcza porównanie CSV/API/YAML i odczyt przyjętego stanu;
+> PBI-098–103 pozostają przyszłą pracą, bez importera i harmonogramu.
 
 ---
 
@@ -667,7 +668,9 @@ zapis całej partii, również w dry-run. Wszystkie zmiany przechodzą preflight
 
 PBI-096: `scripts/fetch_tpn_snapshot.py fetch/verify` realizuje pozyskanie
 i kontrolny odczyt kompletnego snapshotu; [procedura i dowody](docs/asdlc/verification/PBI-096.md).
-Nie porównuje źródeł ani nie zmienia katalogu lub przyjętej bazy.
+PBI-097: `scripts/compare_tpn_snapshot.py` wylicza raport CSV/API/YAML
+i kolejnych cykli z przyjętym stanem, bez zmiany katalogu lub bazy.
+[CLI, normalizacja i format rejestru](docs/asdlc/tpn_sync_comparison.md).
 
 Przyjęty kierunek rozszerza V1 wyłącznie o TPN: rozpatrzenie zaległości,
 następnie ręczne i dopiero po odbiorze miesięczne sprawdzanie API przez
