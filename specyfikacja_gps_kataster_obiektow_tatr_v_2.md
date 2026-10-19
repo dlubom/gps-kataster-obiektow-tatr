@@ -9,7 +9,8 @@
 > **Rozszerzenie TPN, PBI-095 (2026-10-19):** zaakceptowany kierunek i
 > kontrakt §8.4. PBI-096 dostarcza pobieranie i offline weryfikację snapshotu;
 > PBI-097 dostarcza porównanie CSV/API/YAML i odczyt przyjętego stanu;
-> PBI-098–103 pozostają przyszłą pracą, bez importera i harmonogramu.
+> PBI-098 dostarcza kwalifikację nowych rekordów, PBI-099 ochronę/audyt best;
+> PBI-100–103 pozostają przyszłą pracą, bez importera i harmonogramu.
 
 ---
 
@@ -276,7 +277,8 @@ manual oraz GNSS/geodezja i własne zweryfikowane w historii blokują zmianę
 best przez TPN. `append_measurement` wymaga osobnego `keep/select_new`;
 przy keep jawna zmiana auto → manual może utrwalić dotychczasowe ID.
 Samo dopisanie pomiaru nie oznacza zgody na zmianę eksportowanego punktu.
-To wymaganie dla PBI-099/100, nie zmiana działania obecnego selektora auto.
+PBI-099 dostarcza czysty strażnik i audyt, a PBI-100 zastosowanie decyzji;
+nie zmienia to ogólnego selektora auto.
 
 ### 4.5 `ExternalReference`
 
@@ -673,6 +675,9 @@ i kolejnych cykli z przyjętym stanem, bez zmiany katalogu lub bazy.
 [CLI, normalizacja i format rejestru](docs/asdlc/tpn_sync_comparison.md).
 PBI-098: opcja `--qualify-new` dodaje kandydatów i bramkę nowych rekordów,
 [bez materializacji YAML](docs/asdlc/tpn_sync_candidates.md).
+PBI-099: opcja `--protect-best`, audyt katalogu i czysty strażnik jawnego
+keep/select_new; [zasady i manifest](docs/asdlc/tpn_sync_best_protection.md).
+Nie zapisuje pomiarów ani migracji; zastosowanie pozostaje w PBI-100.
 
 Przyjęty kierunek rozszerza V1 wyłącznie o TPN: rozpatrzenie zaległości,
 następnie ręczne i dopiero po odbiorze miesięczne sprawdzanie API przez

@@ -267,6 +267,7 @@ def compare(
     base_commit: str,
     state: dict | None = None,
     candidate_policy=None,
+    protect_best: bool = False,
     duplicate_resolutions: list[dict] | None = None,
 ) -> dict:
     """Pure report generation; state is already accepted by the caller (CLI: main)."""
@@ -562,6 +563,10 @@ def compare(
             historical_sides,
             source_inputs,
         )
+    if protect_best:
+        from .tpn_best_guard import audit_catalog
+
+        report["best_protection"] = audit_catalog(catalog)
     return report
 
 
@@ -625,6 +630,10 @@ def render_markdown(report: dict) -> str:
                 "```",
             ]
         )
+    if "best_protection" in report:
+        from .tpn_best_guard import render_audit
+
+        lines.extend(["", render_audit(report["best_protection"])])
     for row in report["records"]:
         lines.extend(
             [

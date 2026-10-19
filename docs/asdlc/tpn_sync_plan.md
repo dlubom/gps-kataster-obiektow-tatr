@@ -12,6 +12,9 @@ instrukcję pobrania bieżącego JSON; lokalna kopia nie jest częścią PR.
 i §20–21 dopuszcza wąski proces TPN; PBI-095 ustala kontrakt, a kolejne
 karty dopiero wdrożą jego wymagania.
 Nowy zakres dotyczy tylko TPN. YAML pozostaje źródłem prawdy katalogu.
+PBI-096–098 dostarczyły snapshot/porównanie/kwalifikację; PBI-099 dodaje
+[czysty strażnik i audyt best](tpn_sync_best_protection.md), bez importu.
+Bieżący status dostawy i akceptacji manifestu określa backlog.
 
 ## 1. Cel i ustalenia użytkownika
 

@@ -656,3 +656,46 @@ def test_return_after_accepted_absence_requires_review_even_if_content_is_identi
     assert "new_guid" in row["classification"]
     assert row["review_status"] == "pending"
     assert report["requires_pr"] is True
+
+
+def test_optional_best_protection_covers_unmapped_history_without_changing_best(repo):
+    obj = object_data()
+    obj["best_measurement"] = {"mode": "auto", "measurement_id": "m-001", "reason": None}
+    obj["measurements"].append(
+        {
+            "id": "m-099",
+            "lat": 49.1,
+            "lon": 19.1,
+            "source": "inne",
+            "method": "gnss",
+            "verification_status": "odrzucony",
+            "horizontal_accuracy_m": None,
+        }
+    )
+    save_object(repo, obj)
+    # Object with no typed GUID must also be audited: KSZ-0112 has no TPN mapping.
+    other = object_data(guids=())
+    other["id"] = "KSW-9002"
+    other["cave_id"] = None
+    other["measurements"] = [
+        {"id": "m-001", "source": "inne", "method": "gnss", "lat": 49.2, "lon": 19.8}
+    ]
+    other["best_measurement"] = {"mode": "auto", "measurement_id": "m-001", "reason": None}
+    save_object(repo, other)
+    snap = snapshot(repo, "guard", [feature(lon=19.9)])
+    plain = compare(repo, snap)
+    report = changes.compare(
+        repo, snap, batch_id="test", base_commit="a" * 40, state=None, protect_best=True
+    )
+    assert report["records"] == plain["records"]
+    assert {p["object_id"] for p in report["best_protection"]["migration_proposals"]} == {
+        "KSW-9001",
+        "KSW-9002",
+    }
+    protected = report["best_protection"]["objects"][0]
+    assert any(e["measurement_id"] == "m-099" for e in protected["protection"]["evidence"])
+    row = report["records"][0]
+    assert row["best_before"] == row["best_after"] == obj["best_measurement"]
+    markdown = changes.render_markdown(report)
+    assert "Ochrona best" in markdown
+    assert "KSW-9002" in markdown and "m-001" in markdown

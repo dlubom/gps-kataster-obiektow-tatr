@@ -28,6 +28,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--batch-id", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--qualify-new", action="store_true")
+    parser.add_argument("--protect-best", action="store_true")
     parser.add_argument("--name-similarity-threshold", default="0.90")
     parser.add_argument("--radius-m", default="100")
     args = parser.parse_args(argv)
@@ -51,6 +52,7 @@ def main(argv: list[str] | None = None) -> int:
             batch_id=args.batch_id,
             base_commit=head,
             state=state,
+            protect_best=args.protect_best,
             candidate_policy=CandidatePolicy(args.name_similarity_threshold, args.radius_m)
             if args.qualify_new
             else None,

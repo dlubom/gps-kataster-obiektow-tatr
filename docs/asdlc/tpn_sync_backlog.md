@@ -3,11 +3,11 @@
 Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
 [Indeks całego backlogu](backlog_v1.md).
 
-Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-098**.
+Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-099**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
 PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
-PBI-099–103: **planowane**. Porównanie jest tylko do odczytu; bez importera i harmonogramu.
+PBI-099: **zweryfikowane — do dostarczenia**; PBI-100–103: **planowane**. Porównanie jest tylko do odczytu; bez importera i harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -164,7 +164,9 @@ przenosimy bez zmian heurystyki „jedyny kandydat” do automatycznych decyzji.
 
 ## PBI-099: Chronić pomiary geodezyjne i wybór best przed synchronizacją
 
-Status: planowane. Zależność kontraktowa: 095; w kolejności po 098.
+Status: **zweryfikowane — do dostarczenia**. Osobne zlecenie 2026-10-19.
+[Dowody](verification/PBI-099.md), [interfejs/CLI/manifest](tpn_sync_best_protection.md).
+Zależność kontraktowa: 095; w kolejności po 098.
 
 **Cel:** dodanie ustalenia TPN do historii nie zmienia samoistnie punktu
 wybranego do eksportów, zwłaszcza gdy istnieje GNSS/geodezja.
@@ -176,15 +178,15 @@ plan §7, `best_measurement.py`, regresja KSZ-0112/m-001.
 
 **Kryteria odbioru:**
 
-- [ ] Ochrona obejmuje obecne manual oraz GNSS/geodezję niezależnie od
+- [x] Ochrona obejmuje obecne manual oraz GNSS/geodezję niezależnie od
       source/status/accuracy null; nie ogranicza się do wlasne+zweryfikowany.
-- [ ] keep zachowuje wskazany pomiar, a wymaganą zmianę trybu pokazuje
+- [x] keep zachowuje wskazany pomiar, a wymaganą zmianę trybu pokazuje
       jawnie; select_new nie może zastąpić chronionego best przez TPN.
-- [ ] Manifest migracji wymienia konkretne obiekty, podstawę ochrony
+- [x] Manifest migracji wymienia konkretne obiekty, podstawę ochrony
       i uzasadnienie. Nie zmienia współrzędnych, statusu ani dokładności.
-- [ ] Testy obejmują GNSS z source inne i auto, GNSS w historii, własne
+- [x] Testy obejmują GNSS z source inne i auto, GNSS w historii, własne
       zweryfikowane, istniejący manual oraz niechroniony auto.
-- [ ] Porównanie przed/po danych i eksportów dowodzi zachowania punktów
+- [x] Porównanie przed/po danych i eksportów dowodzi zachowania punktów
       chronionych i wszystkich wcześniejszych pomiarów. Brak zatwierdzenia
       obiektu do migracji blokuje jego automatyczną zmianę, nie znosi ochrony.
 
@@ -305,7 +307,8 @@ obsługa zaległego PR, diagnostyka i krótki runbook. Bez automatycznego merge.
 
 ## Kontynuacja
 
-Bieżąca sesja kończy się po dostarczeniu PBI-098. Następna karta to
-PBI-099, ochrona GNSS/geodezji i best bez importu snapshotu; wymaga nowego
-polecenia. PBI-099–103 nie rozpoczęto.
+Bieżąca sesja kończy się po dostarczeniu PBI-099. Następna karta to
+PBI-100: decyzje po rekordzie i zastosowanie paczki, bez pierwszego importu
+PBI-101; wymaga nowego polecenia. PBI-100–103 nie rozpoczęto.
+Manifest trzech auto→manual pozostaje pending; brak migracji bez jawnej zgody.
 Otwarty PR #12 kontynuujemy na jego gałęzi; po ludzkim merge zaczynamy od main.

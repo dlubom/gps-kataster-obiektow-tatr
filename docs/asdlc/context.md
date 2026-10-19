@@ -2,6 +2,36 @@
 
 Last updated: 2026-10-19
 
+## Integracja TPN — PBI-099
+
+Status: **zweryfikowane — do dostarczenia**, osobne zlecenie 2026-10-19.
+[Dowody](verification/PBI-099.md), [strażnik/CLI](tpn_sync_best_protection.md).
+Start: czysty HEAD/origin/otwarty draft PR #12
+`6a0d415221a23ad5a31949612abdb68af06dccf9`; kontynuowana gałąź
+`codex/tpn-sync-planning`, main `b98fd3febb400c7ee520046682c1bb16238429ee`.
+
+Czysty strażnik chroni manual i całą historię GNSS/geodezji oraz własne
+zweryfikowane, niezależnie od source/status/best/accuracy=null. Keep zachowuje
+wskazane ID i wymaga jawnego manual, jeśli auto wybrałoby inny pomiar;
+select_new chronionego obiektu jest blokowane. Niejasny opis geodezji daje
+review z blokadą; jawne znaczniki nie wynikają z automatycznej analizy tekstu.
+Ogólny selektor auto bez zmian. Nowa propozycja nie przypisuje reason do
+starego autora/czasu; audyt wymaga uprawnionego zastosowania po akceptacji.
+
+Audyt obejmuje także obiekty bez TPN GUID. 9 chronionych, 6 już manual;
+[manifest](verification/PBI-099-protection-manifest.json) proponuje wyłącznie
+KSW-0201/m-003, KSW-0240/m-002, KSZ-0112/m-001 auto→manual. **Pending**,
+bez jawnej akceptacji i bez migracji danych. Brak zgody nie znosi ochrony.
+Opcjonalne --protect-best dołącza audyt do porównania PBI-097–098;
+records/best/actions bez zmian. Brak importu snapshotu i applierów PBI-100.
+2048 data/config, wszystkie 1876 pomiarów i 10 artefaktów zachowane.
+1029 testów i 16/16 celowanych mutacji PASS; poprawka luki underscore
+znalezionej przez niezależny review ma potwierdzone regresje RED→GREEN.
+
+Pozostaje dostarczenie i odczyt zdalnego SHA/CI. Zakończyć po PBI-099.
+Następna osobna karta: wyłącznie PBI-100; pierwsza paczka danych to PBI-101.
+Bez merge, tagu, release i harmonogramu. Historia poprzednich etapów poniżej.
+
 ## Integracja TPN — PBI-098
 
 Osobno zlecone 2026-10-19; **wykonane 2026-10-19**.

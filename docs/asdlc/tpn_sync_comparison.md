@@ -3,7 +3,9 @@
 Implementacja [kontraktu](tpn_sync_contract.md) §2–5. Tylko odczyt katalogu,
 snapshotów i przyjętego rejestru; JSON/Markdown są raportami, nie decyzjami.
 PBI-098 dodaje opcjonalne [wykrywanie kandydatów i kwalifikację](tpn_sync_candidates.md)
-przez `--qualify-new`. PBI-099/100 dostarczą ochronę best i planowanie/stosowanie akcji.
+przez `--qualify-new`. PBI-099 dodaje opcjonalny audyt `--protect-best` i czysty
+[strażnik best](tpn_sync_best_protection.md). Planowanie/stosowanie całej paczki
+pozostaje w PBI-100.
 
 ## Uruchomienie offline
 

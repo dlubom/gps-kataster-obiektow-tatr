@@ -4,7 +4,9 @@ Załącznik normatywny do [kontraktu PBI-095](tpn_sync_contract.md).
 Manifest PBI-096 obsługuje `fetch_tpn_snapshot.py`; raport changes i odczyt
 stanu dostarcza PBI-097 ([CLI/format](tpn_sync_comparison.md)). Decyzje/apply
 pozostają do implementacji PBI-100. Przykłady akcji poniżej są przyszłym
-formatem; PBI-097 emituje puste proposed_actions/candidates i zachowuje best. Nie uruchamiać tych przykładów
+formatem; PBI-097 emituje puste proposed_actions/candidates i zachowuje best.
+PBI-098 może uzupełniać candidates, a PBI-099 dołączać opcjonalny audyt
+[ochrony best](tpn_sync_best_protection.md); nadal nie stosują tych decyzji. Nie uruchamiać tych przykładów
 przez dotychczasowy `apply_review.py`.
 Przykładowe identyfikatory i wartości są syntetyczne. Wielkie symbole
 `SNAPSHOT`, `REV_*`, `LOC_*`, `HASH_*` zastępują rzeczywiste 64-znakowe
