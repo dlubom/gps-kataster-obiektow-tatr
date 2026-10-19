@@ -9,6 +9,7 @@ import tarfile
 import tempfile
 from contextlib import contextmanager
 from copy import deepcopy
+from itertools import islice
 from pathlib import Path
 
 from .tpn_api import require
@@ -67,6 +68,23 @@ def accepted_state_at(root, commit):
     return exact_json(git(root, "show", f"{commit}:{STATE_PATH}")) if paths else None
 
 
+def _evidence_differences(expected, actual, path="$"):
+    """Describe exact mismatches without changing the canonical acceptance rule."""
+    if isinstance(expected, dict) and isinstance(actual, dict):
+        if expected.keys() != actual.keys():
+            yield path + "/keys", sorted(expected), sorted(actual)
+        for key in sorted(expected.keys() & actual.keys()):
+            escaped = key.replace("~", "~0").replace("/", "~1")
+            yield from _evidence_differences(expected[key], actual[key], path + "/" + escaped)
+    elif isinstance(expected, list) and isinstance(actual, list):
+        if len(expected) != len(actual):
+            yield path + "/length", len(expected), len(actual)
+        for index, (left, right) in enumerate(zip(expected, actual, strict=False)):
+            yield from _evidence_differences(left, right, f"{path}/{index}")
+    elif canonical(expected) != canonical(actual):
+        yield path, expected, actual
+
+
 def verify_changes(root, base, changes, allow_merged=False):
     require(
         changes.get("format") == "tpn-changes"
@@ -107,10 +125,13 @@ def verify_changes(root, base, changes, allow_merged=False):
     )
     expected["accepted_state_commit"] = accepted
     actual = {k: v for k, v in changes.items() if k != "execution"}
-    require(
-        canonical(expected) == canonical(actual),
-        "changes evidence/schema mismatch; regenerate report",
-    )
+    if canonical(expected) != canonical(actual):
+        details = "; ".join(
+            f"{path}: expected={canonical(left).decode()[:200]} "
+            f"actual={canonical(right).decode()[:200]}"
+            for path, left, right in islice(_evidence_differences(expected, actual), 12)
+        )
+        require(False, "changes evidence/schema mismatch; regenerate report; " + details)
     return state
 
 

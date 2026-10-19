@@ -108,6 +108,28 @@ def append_action(key="new-location", mode="manual", kind="keep"):
     }
 
 
+def test_evidence_mismatch_identifies_exact_field_without_relaxing_comparison(batch_repo):
+    from decimal import Decimal
+
+    from gps_kataster_obiektow_tatr.tpn_api import SnapshotError
+    from gps_kataster_obiektow_tatr.tpn_batch import verify_changes
+
+    root, _ = batch_repo
+    changes, _ = prepare(batch_repo)
+    changed = deepcopy(changes)
+    geometry = changed["records"][0]["source_after"]["raw"]["geometry"]
+    geometry["x"] = Decimal(str(geometry["x"])) + Decimal("0.000000000000000001")
+    before = hashes(root)
+    with pytest.raises(SnapshotError) as error:
+        verify_changes(root, root, changed)
+    message = str(error.value)
+    assert "changes evidence/schema mismatch" in message
+    assert "$/records/0/source_after/raw/geometry/x" in message
+    assert "expected=19.801" in message
+    assert "actual=19.801000000000000001" in message
+    assert hashes(root) == before
+
+
 def test_append_preserves_history_height_and_best_and_replay(batch_repo):
     from gps_kataster_obiektow_tatr.tpn_batch import apply_batch, check_batch, plan_batch
 
