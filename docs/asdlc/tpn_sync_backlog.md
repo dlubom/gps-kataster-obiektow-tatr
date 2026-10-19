@@ -5,8 +5,8 @@ Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
 
 Użytkownik przyjął kierunek planu i zlecił wyłącznie **PBI-095**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
-częścią specyfikacji przyszłej integracji. PBI-095: **zweryfikowane — do dostarczenia**; PBI-096–103:
-**planowane**, bez implementacji importera i bez harmonogramu.
+częścią specyfikacji przyszłej integracji. PBI-095: **wykonane**. PBI-096: **planowane — gotowe** na osobne
+zlecenie; PBI-097–103: **planowane**. Bez implementacji importera i harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -42,7 +42,7 @@ Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gał�
 
 ## PBI-095: Uzgodnić kontrakt integracji i rozszerzyć specyfikację
 
-Status: zweryfikowane — do dostarczenia. Kierunek [projektu](tpn_sync_plan.md) przyjęty przez
+Status: wykonane 2026-10-19. Kierunek [projektu](tpn_sync_plan.md) przyjęty przez
 użytkownika 2026-10-19; zlecono wyłącznie tę kartę.
 Dowody: [PBI-095](verification/PBI-095.md).
 
@@ -78,7 +78,8 @@ rozstrzyga tożsamości. Wykonywalne fixture'y/schematy należą do dalszych PBI
 
 ## PBI-096: Pobierać kompletny i odtwarzalny snapshot publicznego API
 
-Status: planowane. Zależność: 095.
+Status: planowane — gotowe. Zależność 095 wykonana; rozpoczęcie wymaga
+osobnego polecenia użytkownika, poza sesją PBI-095.
 
 **Cel:** dostarczyć wiarygodne wejście do porównań bez modyfikacji katalogu.
 

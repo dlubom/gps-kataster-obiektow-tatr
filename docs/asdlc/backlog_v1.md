@@ -6,8 +6,9 @@ Stan na: 2026-10-19
 
 [Plan integracji](tpn_sync_plan.md) i [karty PBI-095–103](tpn_sync_backlog.md)
 przyjęte jako kierunek przez użytkownika. Wyłącznie [PBI-095](verification/PBI-095.md)
-jest **zweryfikowane — do dostarczenia**: spec/AGENTS, [kontrakt](tpn_sync_contract.md),
-[formaty i przykłady](tpn_sync_examples.md). PBI-096–103 pozostają planowane.
+jest **wykonane**: spec/AGENTS, [kontrakt](tpn_sync_contract.md),
+[formaty i przykłady](tpn_sync_examples.md). PBI-096: planowane — gotowe
+na osobne zlecenie; PBI-097–103 pozostają planowane.
 Kolejność: kontrakt → snapshot → różnice → duplikaty → ochrona GNSS/best →
 decyzje → pierwsza paczka danych → ręczny workflow PR → harmonogram.
 Ustalono jeden PR z osobnymi decyzjami dla rekordów i wyłącznie ludzki merge.

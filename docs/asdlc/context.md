@@ -5,7 +5,7 @@ Last updated: 2026-10-19
 ## Integracja TPN — PBI-095
 
 Użytkownik przyjął kierunek [planu](tpn_sync_plan.md) i zlecił wyłącznie
-PBI-095. Stan: **zweryfikowane — do dostarczenia**. [Kontrakt](tpn_sync_contract.md),
+PBI-095. Stan: **wykonane**. [Kontrakt](tpn_sync_contract.md),
 [przykłady formatów](tpn_sync_examples.md) oraz spec §8.4 określają
 przyszły proces; kod, schematy, katalog i workflow pozostają bez zmian.
 [Backlog PBI-095–103](tpn_sync_backlog.md), [dowody PBI-095](verification/PBI-095.md).
@@ -36,7 +36,8 @@ W PBI-095 sprawdzono publiczny schemat i jedną próbkę: 22 deklaracje
 z SHAPE, 21 atrybutów query i osobna geometria. Nie jest to pełny snapshot.
 TATER pozostaje nieinterpretowanym polem źródłowym z widocznymi zmianami.
 Następna karta po osobnym poleceniu: **PBI-096**, snapshot bez zmian katalogu.
-PBI-096–103 pozostają planowane; nie rozpoczęto implementacji ani schedule.
+PBI-096: planowane — gotowe na osobne polecenie; PBI-097–103: planowane.
+Nie rozpoczęto implementacji ani schedule.
 Obecny applier CSV/XLSX nie zapewnia nowego protokołu; nie używać go do
 paczki synchronizacji przed wdrożeniem ochron i decyzji PBI-099/100.
 
