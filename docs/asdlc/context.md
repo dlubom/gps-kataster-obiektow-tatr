@@ -4,7 +4,7 @@ Last updated: 2026-10-19
 
 ## Integracja TPN — PBI-099
 
-Status: **zweryfikowane — do dostarczenia**, osobne zlecenie 2026-10-19.
+Status: **wykonane 2026-10-19**, osobne zlecenie 2026-10-19.
 [Dowody](verification/PBI-099.md), [strażnik/CLI](tpn_sync_best_protection.md).
 Start: czysty HEAD/origin/otwarty draft PR #12
 `6a0d415221a23ad5a31949612abdb68af06dccf9`; kontynuowana gałąź
@@ -28,7 +28,11 @@ records/best/actions bez zmian. Brak importu snapshotu i applierów PBI-100.
 1029 testów i 16/16 celowanych mutacji PASS; poprawka luki underscore
 znalezionej przez niezależny review ma potwierdzone regresje RED→GREEN.
 
-Pozostaje dostarczenie i odczyt zdalnego SHA/CI. Zakończyć po PBI-099.
+Implementacja `68e8a7417ffc8d03be4d5f22cc23e9f26f6c2c2c`: push i
+[CI 39270425175](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/39270425175)
+PASS, jedyny job i wszystkie 13 kroków success. Czysty klon bez build
+odtworzył manifest i wyniki CLI. Końcowy SHA commitu odbioru i jego CI
+utrwala opis PR #12. Zakończyć po PBI-099.
 Następna osobna karta: wyłącznie PBI-100; pierwsza paczka danych to PBI-101.
 Bez merge, tagu, release i harmonogramu. Historia poprzednich etapów poniżej.
 

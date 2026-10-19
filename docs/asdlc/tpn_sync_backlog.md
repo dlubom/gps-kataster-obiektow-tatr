@@ -7,7 +7,7 @@ Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-099**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
 PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
-PBI-099: **zweryfikowane — do dostarczenia**; PBI-100–103: **planowane**. Porównanie jest tylko do odczytu; bez importera i harmonogramu.
+PBI-099: **wykonane 2026-10-19**; PBI-100–103: **planowane**. Porównanie jest tylko do odczytu; bez importera i harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -164,7 +164,7 @@ przenosimy bez zmian heurystyki „jedyny kandydat” do automatycznych decyzji.
 
 ## PBI-099: Chronić pomiary geodezyjne i wybór best przed synchronizacją
 
-Status: **zweryfikowane — do dostarczenia**. Osobne zlecenie 2026-10-19.
+Status: **wykonane 2026-10-19**. Osobne zlecenie 2026-10-19.
 [Dowody](verification/PBI-099.md), [interfejs/CLI/manifest](tpn_sync_best_protection.md).
 Zależność kontraktowa: 095; w kolejności po 098.
 

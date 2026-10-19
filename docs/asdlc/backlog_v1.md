@@ -18,7 +18,7 @@ Normalizacja, bootstrap CSV/API/YAML, trzystronne różnice, przyjęty stan,
 rewizje i defer/reject; [CLI/format](tpn_sync_comparison.md). Bez zapisu katalogu.
 [PBI-098](verification/PBI-098.md): **wykonane 2026-10-19**.
 Kandydaci i kwalifikacja, [CLI/parametry](tpn_sync_candidates.md), bez YAML.
-[PBI-099](verification/PBI-099.md): **zweryfikowane — do dostarczenia**.
+[PBI-099](verification/PBI-099.md): **wykonane 2026-10-19**.
 [Strażnik/audyt best](tpn_sync_best_protection.md), manifest trzech auto→manual
 pending. Dane bez zmian; brak migracji bez jawnej akceptacji.
 Następna karta po osobnym poleceniu: PBI-100; nie rozpoczęto.
