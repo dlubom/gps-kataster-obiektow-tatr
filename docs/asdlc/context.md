@@ -5,7 +5,7 @@ Last updated: 2026-10-19
 ## Integracja TPN — PBI-096
 
 Przyjęty [kontrakt PBI-095](tpn_sync_contract.md); użytkownik zlecił osobno
-wyłącznie PBI-096. Stan: **zweryfikowane — do dostarczenia**.
+wyłącznie PBI-096. Stan: **wykonane 2026-10-19**.
 [Dowody](verification/PBI-096.md), [backlog](tpn_sync_backlog.md),
 [instrukcja przejęcia i CLI](tpn_sync_handoff.md).
 
@@ -31,7 +31,7 @@ niezależnie od source/status/accuracy null. Bez daty terenowej użyć
 LAST_EDITED_DATE jako daty stanu źródła z komentarzem; brak daty odracza
 pomiar, bez podstawiania fetch/CREATED_DATE. Brak Z nie usuwa wysokości.
 
-Następna karta po dostarczeniu i osobnym poleceniu: **PBI-097** (różnice
+Następna karta po osobnym poleceniu: **PBI-097** (różnice
 źródła i bootstrap, bez zapisu katalogu). PBI-097–103 nie rozpoczęto.
 Obecny applier CSV/XLSX nie zapewnia nowego protokołu; nie używać go do
 paczki synchronizacji przed wdrożeniem ochron i decyzji PBI-099/100.

@@ -6,14 +6,14 @@ Stan na: 2026-10-19
 
 [Plan](tpn_sync_plan.md), [kontrakt](tpn_sync_contract.md) i
 [karty PBI-095–103](tpn_sync_backlog.md): PBI-095 wykonane;
-[PBI-096](verification/PBI-096.md) **zweryfikowane — do dostarczenia**.
+[PBI-096](verification/PBI-096.md) **wykonane 2026-10-19**.
 Adapter/CLI zapisuje kompletny, odtwarzalny snapshot, a verify sprawdza go
 bez sieci. Próba live i testy offline wykonane; dane domenowe i stare
 CSV/XLSX bez zmian. Brak importera i harmonogramu.
 Kolejność: kontrakt → snapshot → różnice → duplikaty → ochrona GNSS/best →
 decyzje → pierwsza paczka danych → ręczny workflow PR → harmonogram.
 Jeden PR na paczkę, osobne decyzje rekordów, wyłącznie ludzki merge.
-Następna karta po dostarczeniu i osobnym poleceniu: PBI-097; nie rozpoczęto.
+Następna karta po osobnym poleceniu: PBI-097; nie rozpoczęto.
 
 ## Wydanie v1.1.1
 
@@ -72,7 +72,7 @@ traktowane jako wdrożone. [Decyzja i zakres](remediation_plan.md),
 [runbook](remediation_runbook.md), [raport R1–R8](reviews/main-review-2026-10-12.md).
 
 Statusy: `planowane`, `planowane — gotowe`, `w toku`,
-`zweryfikowane — do dostarczenia`, `wykonane`, `zablokowane` z powodem.
+`wykonane 2026-10-19`, `wykonane`, `zablokowane` z powodem.
 Kolejność jest celowa: **trzy P1 → problemy danych → pozostałe P2**.
 Zależności w tabeli określają kolejność realizacji, nie wszystkie są
 zależnościami technicznymi. Każde PBI dostarcza samodzielnie sprawdzalne

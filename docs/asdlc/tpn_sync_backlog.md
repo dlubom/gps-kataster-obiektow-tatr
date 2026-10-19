@@ -5,8 +5,8 @@ Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
 
 Użytkownik przyjął kontrakt PBI-095 i w kolejnej sesji zlecił wyłącznie **PBI-096**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
-częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **zweryfikowane — do dostarczenia**.
-PBI-097–103: **planowane**. Bez implementacji porównania, importera i harmonogramu.
+częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
+PBI-097: **planowane — gotowe** na osobne zlecenie; PBI-098–103: **planowane**. Bez implementacji porównania, importera i harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -78,7 +78,7 @@ rozstrzyga tożsamości. Wykonywalne fixture'y/schematy należą do dalszych PBI
 
 ## PBI-096: Pobierać kompletny i odtwarzalny snapshot publicznego API
 
-Status: zweryfikowane — do dostarczenia. Zlecone osobno 2026-10-19.
+Status: wykonane 2026-10-19. Zlecone osobno 2026-10-19.
 Dowody i dokładny stan dostawy: [PBI-096](verification/PBI-096.md).
 
 **Cel:** dostarczyć wiarygodne wejście do porównań bez modyfikacji katalogu.
@@ -104,7 +104,8 @@ walidacja schematu i manifestu, fixture'y. Kontekst: plan §2–4, [kontrakt](tp
 
 ## PBI-097: Wyliczać zmiany TPN z uwzględnieniem katalogu i wcześniejszych decyzji
 
-Status: planowane. Zależność: 096.
+Status: planowane — gotowe. Zależność 096 wykonana; rozpoczęcie wymaga
+osobnego polecenia. Nie rozpoczęto w sesji PBI-096.
 
 **Cel:** odróżnić zaległą różnicę źródła, niezależną zmianę lokalną i już
 rozpatrzoną rewizję, także podczas pierwszego uruchomienia.

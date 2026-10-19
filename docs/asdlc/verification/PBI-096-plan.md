@@ -40,7 +40,7 @@ Transport: callable(endpoint, params) -> exact response bytes, with bounded time
 - [x] Run Ruff, complete pytest, YAML validation, artifact build/readback,
       protected-file hash comparison and targeted mutations.
 - [x] Independent final review; repair demonstrated defects and rerun affected checks.
-- [ ] Update PBI log/backlogs/context/handoff, commit/push, verify remote SHA and CI.
+- [x] Update PBI log/backlogs/context/handoff, commit/push, verify remote SHA and CI.
 
 No PBI-097 implementation, schedule, merge, tag or release. Final CI receipt goes
 in PR description to avoid recursive commits recording their own SHA.
@@ -52,3 +52,7 @@ tests pass, live readback succeeds, 8/8 isolated guard mutations killed.
 Independent review found no P1/P2; strict flag/CRS types reproduced RED and fixed.
 Power-loss directory durability remains documented rather than adding a new
 filesystem recovery subsystem. Detailed evidence: [PBI-096](PBI-096.md).
+
+Implementation delivered as a511e0b52a65253194e2a4752d1319227e201563;
+CI 39255804981 passed all jobs/steps. Final documentation receipt SHA/CI
+is recorded in PR #12 after its own validation. Stop at PBI-096.
