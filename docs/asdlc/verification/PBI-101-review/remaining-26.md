@@ -2,7 +2,7 @@
 
 578 wpisów A001–A578 przyjęto zgodnie z jawną decyzją użytkownika: aktualna rewizja TPN, bez nowego pomiaru i bez zmian katalogu. Zachowano 573 best auto i 5 istniejących manual. Zgoda na B31 i C5 jest zapisana osobno; razem rozstrzygnięto przez użytkownika 614/640 przypadków. Użytkownik następnie jawnie odroczył wszystkie D001–D026 do niezależnego badania i zlecił dokończenie oraz commit/push PR #12. [Zapis decyzji](user-decisions-D-20261019.json). Poniższe zalecenia N/J/O pozostają historią review; ostateczna decyzja dla każdego wiersza: **defer**, bez zmian katalogu.
 
-## Jak zdecydować
+## Historyczny formularz decyzji — wszystkie D odroczone
 
 - **N — dodać osobno:** nowy Obiekt i nowa Jaskinia, pierwszy pomiar TPN jako best auto, nieweryfikowany, bez wysokości i znanej dokładności. Nie zmieniać istniejących obiektów.
 - **J — dodać otwór do istniejącej Jaskini:** nowy Obiekt z pierwszym best auto, wskazana istniejąca Jaskinia; bez zmiany best jej obecnych obiektów.
@@ -75,6 +75,6 @@ Dokładne nazwy, GLOBALID, współrzędne i czas edycji rozróżniają powtarzaj
 | D025 | ef966744-eb95-48b3-b2ba-7a031f8df91a | 49.247950917614 | 19.883164220892 | 2026-06-02 | [mapa](https://www.openstreetmap.org/?mlat=49.2479509176144&mlon=19.883164220891572#map=19/49.2479509176144/19.883164220891572) |
 | D026 | fdd25a5f-1d27-4bab-9bf7-ebb1c062746c | 49.249662077873 | 19.877003828090 | 2026-06-02 | [mapa](https://www.openstreetmap.org/?mlat=49.24966207787314&mlon=19.877003828090277#map=19/49.24966207787314/19.877003828090277) |
 
-Możesz odpowiedzieć np. „N dla D004, D011, D013, D020; J dla D006; O dla D002, D008, D010; pozostałe jeszcze bez decyzji”. To wyłącznie przykład formatu odpowiedzi.
+Historyczny przykład formatu odpowiedzi: „N dla D004, D011, D013, D020; J dla D006; O dla D002, D008, D010; pozostałe jeszcze bez decyzji”. Nie jest prośbą o ponowne rozstrzygnięcie zaakceptowanych odroczeń.
 
-Pozostaje techniczne odświeżenie planu wykonawczego dla wcześniejszego B31 select_new oraz formalizacja C5. W starym pliku protokołu: 578 approve / 62 pending (B31 + C5 + D26). Nie ma CLI apply ani nowego stanu przyjętego; hosted CI z błędem odtworzenia pozostaje nierozwiązany. PBI-099 nadal pending.
+PBI-101 zakończone: **614 approve / 26 defer / 0 pending**. B31 select_new auto i C5 są zastosowane zgodnie ze zgodami; dane, CI i eksporty odebrane. [Odbiór](../PBI-101.md), [końcowe decyzje](review.md), [naprawa odtwarzania CI](../PBI-101-ci-handoff.md). Dawny wariant keep i częściowe pending zachowuje wyłącznie superseded-v1. D001–D026 pozostają w trwałej kolejce do niezależnego badania, bez akcji katalogowych. Stan gałęzi nadal jest kandydatem do przyjęcia przez ludzki merge; manifest ochrony PBI-099 pozostaje pending.

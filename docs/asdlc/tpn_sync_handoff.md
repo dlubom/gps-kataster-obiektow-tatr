@@ -1,20 +1,21 @@
 # TPN: start z czystego kontekstu
 
-Stan: 2026-10-19. Ten plik wraz z planem i backlogiem w
+Stan: 2026-10-20. Ten plik wraz z planem i backlogiem w
 [PR #12](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/12)
 wystarcza do kontynuacji prac bez historii czatu i lokalnego build.
 Kontrakt przyjęto w PBI-095. PBI-096 dostarcza snapshot/CLI, a PBI-097
 porównanie tylko do odczytu. PBI-098 dodaje [kandydatów i kwalifikację](tpn_sync_candidates.md).
 PBI-099 dodaje [ochronę i audyt best](tpn_sync_best_protection.md).
 PBI-100 dostarcza [decyzje i zastosowanie](tpn_sync_decisions.md).
-Aktualny status jest w backlogu oraz [logu PBI-100](verification/PBI-100.md);
+PBI-101 dostarcza pierwszą uzgodnioną paczkę: 614 approve / 26 defer / 0 pending.
+Aktualny status jest w backlogu oraz [logu PBI-101](verification/PBI-101.md);
 [CLI i rejestr PBI-097](tpn_sync_comparison.md).
 
 ## Repozytorium i wejście w pracę
 
 - Repozytorium: `dlubom/gps-kataster-obiektow-tatr`.
 - Lokalnie: `/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr`.
-- PR planistyczny: **#12**, baza `main`, gałąź `codex/tpn-sync-planning`.
+- PR integracji TPN: **#12**, baza `main`, gałąź `codex/tpn-sync-planning`.
 - Sprawdź status i fetch origin, zachowaj cudze zmiany. Sprawdź aktualny
   stan PR #12 przed wyborem gałęzi; kontynuacja otwartego PR ma
   pierwszeństwo przed domyślnym startem z main.
@@ -35,9 +36,15 @@ Kolejność czytania:
    projektowe oraz ryzyka w obecnym kodzie.
 3. [PBI-095–103](tpn_sync_backlog.md) — zakres, zależności i kryteria odbioru.
 4. [Kontrakt PBI-095](tpn_sync_contract.md) i [formaty](tpn_sync_examples.md).
-5. [Odbiór PBI-095](verification/PBI-095.md) i najnowszy
-   [odbiór PBI-096](verification/PBI-096.md) i [PBI-097](verification/PBI-097.md); wcześniejsze rozpoznanie
-   w [weryfikacji planowania](verification/tpn-sync-planning.md).
+5. Odbiory [PBI-095](verification/PBI-095.md), [096](verification/PBI-096.md),
+   [097](verification/PBI-097.md), [098](verification/PBI-098.md),
+   [099](verification/PBI-099.md), [100](verification/PBI-100.md)
+   i aktualny [PBI-101](verification/PBI-101.md).
+6. [Końcowe decyzje i zgody](verification/PBI-101-review/review.md),
+   verification.json, delivery-data-proof.json, review-equivalence.json
+   oraz archiwum superseded-v1 w `verification/PBI-101-review/`.
+   [Manifest ochrony PBI-099](verification/PBI-099-protection-manifest.json)
+   nadal pending. Końcowy SHA i wyniki jego CI odczytaj z opisu PR.
 
 ## Publiczne API i dokładne zapytanie
 
@@ -114,8 +121,9 @@ W odczycie z 2026-10-19 było 1035 rekordów, 21 pól, 1035 niepustych GLOBALID,
 0 znikniętych, 30 przesunięć ponad 1 m; 12 grup powtarzających się nazw
 w API. Plan podaje metodę i hashe, a CSV pozostaje dostępny w repo.
 Są to wyniki rozpoznania, nie zaakceptowane zmiany katalogu.
-Przy pierwszym imporcie wymagane wejścia decyzji zostaną utrwalone zgodnie
-z PBI-096/101; obecny PR nie jest przyjętą bazą synchronizacji.
+Wejścia decyzji PBI-101 są już utrwalone w Git: pełny snapshot, changes,
+decisions, receipt i kandydat stanu. Obecny PR nie jest przyjętą bazą
+synchronizacji przed ludzkim merge.
 
 ## Pobieranie i kontrola snapshotu — PBI-096
 
@@ -125,7 +133,7 @@ CLI jest zaimplementowane. Z repozytorium:
 uv run --frozen python scripts/fetch_tpn_snapshot.py fetch \
   --snapshot-id NOWY-UNIKALNY-ID --page-size 500 --attempts 2
 uv run --frozen python scripts/fetch_tpn_snapshot.py verify \
-  data/sources/tpn/snapshots/pbi-096-live-20261019
+  data/sources/tpn/snapshots/pbi-101-live-20261019
 ```
 
 `fetch` wykonuje pełny odczyt i nie przyjmuje innego endpointu ani filtra.
@@ -148,18 +156,30 @@ API nie daje transakcyjnej gwarancji atrybutów, co jest zapisane w manifeście.
 
 ## Granica następnego kroku
 
-PBI-100 zakończone; końcowy CI 70c6678/run 39284447552 potwierdzony
-w opisie PR i [dowodach PBI-101](verification/PBI-101.md).
-PBI-101 **w toku**: nowy pełny snapshot i jedna paczka są utrwalone,
-[propozycje po rekordzie](verification/PBI-101-review/review.md) pokazane.
-Użytkownik nakazał pozostawić wszystko pending: 640/640, autor/czas null.
-Brak produkcyjnego apply i nowego stanu źródła. Hosted CI zatrzymuje się
-wcześniej niż pending na rozbieżności odtworzenia raportu:
-[rzeczywisty błąd i diagnostyka](verification/PBI-101-ci-handoff.md).
-Nie przypisywać tej porażki wyłącznie świadomemu pending.
-Testy zastosowania i readback symulacji wyłącznie w izolowanym klonie.
-[Prawidłowy następny prompt](verification/PBI-101-next-task.md) kontynuuje
-PBI-101 po jawnych decyzjach; nie rozpoczyna PBI-102.
+PBI-101 **wykonane — dane, CI i eksporty odebrane**. Jedna paczka
+`pbi-101-20261019` ma **614 approve / 26 defer / 0 pending**.
+[Końcowe decyzje](verification/PBI-101-review/review.md): A001–A578 przyjęte
+bez zmian katalogu/best; B001–B031 append i osobny select_new auto;
+C001–C005 nowe Obiekty/Jaskinie; D001–D026 defer do niezależnego badania.
+Utrwalone zgody zastąpiły wcześniejsze polecenie pending. Nie pytać ponownie
+o te zakresy ani nie stosować danych ponownie.
+
+Produkcja CLI apply/check zakończona; wynik: 1012 Obiektów, 1006 Jaskiń,
+1912 pomiarów. Zachowano wszystkie 1876 dawnych pomiarów, 1001 dawnych
+Jaskiń i 9 chronionych plików. Snapshot, decisions, receipt i kandydat
+stanu są w Git. Dawny raport z pending i wariant keep pozostają wyłącznie
+w [archiwum superseded-v1](verification/PBI-101-review/superseded-v1/README.md).
+[Błąd odtwarzania Linux/Mac został naprawiony](verification/PBI-101-ci-handoff.md);
+odbiór danych/CI/eksportów dokumentuje [PBI-101](verification/PBI-101.md).
+Dokładny aktualny head oraz wynik wszystkich jobów, kroków i pełnych logów
+CI odczytaj na żywo z PR #12.
+
+PR pozostaje draftem do człowieka. Stan gałęzi jest kandydatem; przyjęta
+baza nadal pochodzi wyłącznie z origin/main. D26 pozostaje w trwałej kolejce.
+Review 2026-10-20 wykazał P2 dotyczące powielania notatek między cyklami;
+pozostaje otwarte i wymaga osobnego zlecenia. Niniejsza korekta P3 dotyczy
+tylko dokumentacji; [szczegóły i odbiór](verification/PBI-101.md#korekta-p3-po-niezależnym-review-2026-10-20).
+Merge pozostaje osobną decyzją człowieka; PBI-102–103 nie rozpoczęto.
 
 Manifest auto→manual nadal pending, 9/9 preimages zgodne; brak migracji.
 Ochrona działa niezależnie od zgody. Zmieniona propozycja/preimage wymaga

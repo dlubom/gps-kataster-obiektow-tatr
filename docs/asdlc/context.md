@@ -1,6 +1,17 @@
 # AS-DLC project context
 
-Last updated: 2026-10-19
+Last updated: 2026-10-20
+
+## Review PR #12 — korekta P3
+
+2026-10-20 użytkownik zlecił wyłącznie naprawę nieaktualnego kanonicznego
+handoffu P3. Uzgodniono aktywny handoff, status w specyfikacji i listę D26
+z odbiorem PBI-101: 614 approve / 26 defer / 0 pending, dane zastosowane,
+CI i eksporty odebrane. [Zakres i weryfikacja](verification/PBI-101.md#korekta-p3-po-niezależnym-review-2026-10-20).
+P2 z tego review (powielanie oznaczonych notatek między cyklami,
+`tpn_batch_actions.py` / `update_metadata`) pozostaje otwarte do osobnego
+zlecenia. Korekta P3 nie zmienia kodu, danych ani zgód. PR nadal draft;
+stan gałęzi jest kandydatem, merge należy do człowieka.
 
 ## Integracja TPN — PBI-101 wykonane, PR do ludzkiego review
 

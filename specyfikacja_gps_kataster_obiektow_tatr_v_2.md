@@ -11,7 +11,9 @@
 > PBI-097 dostarcza porównanie CSV/API/YAML i odczyt przyjętego stanu;
 > PBI-098 dostarcza kwalifikację nowych rekordów, PBI-099 ochronę/audyt best;
 > PBI-100 dostarcza decyzje/planowanie/transakcję/bramkę, zweryfikowane na fixture'ach;
-> PBI-101 w toku: nowy snapshot i paczka pending do decyzji; bez produkcyjnego apply.
+> PBI-101 wykonane: paczka zastosowana, 614 approve / 26 defer / 0 pending;
+> dane, CI i eksporty odebrane. PR #12 pozostaje draftem do człowieka;
+> stan gałęzi jest kandydatem, nie przyjętym main. [Odbiór](docs/asdlc/verification/PBI-101.md).
 > PBI-102–103 pozostają przyszłą pracą, bez harmonogramu.
 
 ---
@@ -683,7 +685,8 @@ PBI-099 nie zapisuje pomiarów ani migracji. PBI-100 dostarcza
 [decyzje i zastosowanie paczki](docs/asdlc/tpn_sync_decisions.md):
 ścisłe execution/proposals, wspólny plan ID/best, pełny preflight, atomową
 zamianę data, wynikowe hashe/archiwum decyzji i bramkę pending/defer.
-Pierwsza paczka produkcyjna pozostaje osobnym PBI-101. Manifest migracji
+Pierwszą zastosowaną paczkę dostarcza [PBI-101](docs/asdlc/verification/PBI-101.md):
+614 approve / 26 defer / 0 pending, PR #12 do człowieka. Manifest migracji
 PBI-099 nadal pending; jego obecność w Git nie jest akceptacją.
 
 Przyjęty kierunek rozszerza V1 wyłącznie o TPN: rozpatrzenie zaległości,
@@ -724,7 +727,8 @@ Stan źródła i dowody są osobne od YAML domenowego. Wersjonowane snapshoty,
 manifesty i decyzje pozwalają odtworzyć zatwierdzoną paczkę z czystego
 checkoutu. Obecny applier CSV/XLSX nie obsługuje tych formatów i ochron;
 PBI-100 dostarcza osobny applier i odporność na awarie zapisu opisaną
-w instrukcji decyzji. PBI-101 dostarczy pierwszą paczkę danych.
+w instrukcji decyzji. PBI-101 dostarcza pierwszą paczkę danych; jej stan
+na gałęzi pozostaje kandydatem do przyjęcia przez ludzki merge.
 
 ---
 
@@ -1400,10 +1404,10 @@ Poza aktualnym zakresem:
 - stałe importy masowe poza kontrolowanym procesem TPN §8.4,
 - cykliczna synchronizacja z PIG lub Geoportalem.
 
-W TPN pozostaje do implementacji kontrakt §8.4. Szczegóły fuzzy matching
-muszą przejść fixture'y w PBI-098, uprawnienia workflow próbę w PBI-102,
-a dzień/godzina cyklu są konfiguracją PBI-103. Nie są zgodą na rozpoczęcie
-tych kart przy dokumentacyjnym PBI-095.
+PBI-095–101 dostarczono w PR #12; dane i kandydat stanu czekają na ludzki
+merge. W TPN pozostają przyszłe PBI-102–103: próba uprawnień ręcznego
+workflow i konfiguracja dnia/godziny cyklu. Każda karta i poprawki po review
+wymagają osobnego zlecenia; obecny odbiór nie uruchamia harmonogramu.
 
 ---
 
