@@ -1,0 +1,100 @@
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: auto
+  reason: null
+  updated_at: '2026-10-20T16:04:54.133186Z'
+  updated_by: agent:codex
+category: jaskinia_otwor
+cave_id: C-1011
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs:
+- external_id: 4bbef00c-a6c1-4706-9590-9dbc61b70ddd
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+- external_id: 2cb1b34b-9aa8-440b-96e7-729bd2cdf7b6
+  notes: 'J. Nowak, Okno w Ciemniaku, Jaskinie 82 (2016), s. 27: portal i komin połączony
+    z powierzchnią. http://jaskinie.org.pl/files/Jaskinie__82_2016.pdf#page=27 Rekordy
+    D008 i D010 przyjęto jako ten sam otwór; zachowano oba źródła i pomiary.'
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MTZ-0070
+id_assignment:
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MTZ
+  method: auto
+  prefix_override_reason: null
+measurements:
+- created_at: '2026-10-20T16:04:54.133186Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-001
+  lat: 49.23207253551044
+  lon: 19.904438168831337
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-06-16T11:29:06Z
+
+    TPN revision: 702fbea0035612937a3db5ce2c81e9b63b75d7f92d8fa66c4c1dde7e90c8e89c
+
+    TPN WER_LOK: FF16062026'
+  observed_at: null
+  observed_date: '2026-06-16'
+  source: TPN
+  source_date: '2026-06-16'
+  source_ref: TPN:4bbef00c-a6c1-4706-9590-9dbc61b70ddd
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152011.565
+  y_1992: 565824.837
+- created_at: '2026-10-20T16:04:54.133186Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-002
+  lat: 49.23208829805866
+  lon: 19.90443548643466
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-06-16T11:28:22Z
+
+    TPN revision: 1f98fb62e5670d57371309d1ff86eb16b751a92b7663d93601df7b2002742de2'
+  observed_at: null
+  observed_date: '2026-06-16'
+  source: TPN
+  source_date: '2026-06-16'
+  source_ref: TPN:2cb1b34b-9aa8-440b-96e7-729bd2cdf7b6
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152013.315
+  y_1992: 565824.621
+name_local: Okno w Ciemniaku
+notes: '[D008; TPN 2cb1b34b-9aa8-440b-96e7-729bd2cdf7b6] J. Nowak, Okno w Ciemniaku,
+  Jaskinie 82 (2016), s. 27: portal i komin połączony z powierzchnią. http://jaskinie.org.pl/files/Jaskinie__82_2016.pdf#page=27
+  Rekordy D008 i D010 przyjęto jako ten sam otwór; zachowano oba źródła i pomiary.
+
+  [D010; TPN 4bbef00c-a6c1-4706-9590-9dbc61b70ddd] J. Nowak, Okno w Ciemniaku, Jaskinie
+  82 (2016), s. 27: portal i komin połączony z powierzchnią. http://jaskinie.org.pl/files/Jaskinie__82_2016.pdf#page=27
+
+  Metryka źródła TPN: DLUGOSC=4.5; PRZEWYZSZE=3.5.'
+schema_version: 1
+updated_at: '2026-10-20T16:04:54.133186Z'
+updated_by: agent:codex

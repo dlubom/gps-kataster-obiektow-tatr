@@ -8,6 +8,8 @@ porównanie tylko do odczytu. PBI-098 dodaje [kandydatów i kwalifikację](tpn_s
 PBI-099 dodaje [ochronę i audyt best](tpn_sync_best_protection.md).
 PBI-100 dostarcza [decyzje i zastosowanie](tpn_sync_decisions.md).
 PBI-101 dostarcza pierwszą uzgodnioną paczkę: 614 approve / 26 defer / 0 pending.
+Późniejsze decyzje użytkownika realizuje [suplement D26](verification/PBI-101-D26.md):
+kandydat stanu 640 approve / 0 defer / 0 pending; pierwotne archiwa bez zmian.
 Aktualny status jest w backlogu oraz [logu PBI-101](verification/PBI-101.md);
 [CLI i rejestr PBI-097](tpn_sync_comparison.md).
 
@@ -46,6 +48,8 @@ Kolejność czytania:
    [Manifest ochrony PBI-099](verification/PBI-099-protection-manifest.json)
    pozostaje historycznym audytem pending. Późniejsze jawnie zatwierdzone
    trzy przypięcia manual dokumentuje [osobny zapis](verification/PBI-099-manual-selection.json).
+   Następnie przeczytaj [wykonanie D26](verification/PBI-101-D26.md) i jego
+   [zgodę, bazę i hashe](verification/PBI-101-D26-resolution.json).
    Końcowy SHA i wyniki jego CI odczytaj z opisu PR.
 
 ## Publiczne API i dokładne zapytanie
@@ -158,15 +162,15 @@ API nie daje transakcyjnej gwarancji atrybutów, co jest zapisane w manifeście.
 
 ## Granica następnego kroku
 
-PBI-101 **wykonane — dane, CI i eksporty odebrane**. Jedna paczka
+PBI-101 **wykonane — dane, CI i eksporty odebrane**. Pierwotna paczka
 `pbi-101-20261019` ma **614 approve / 26 defer / 0 pending**.
 [Końcowe decyzje](verification/PBI-101-review/review.md): A001–A578 przyjęte
 bez zmian katalogu/best; B001–B031 append i osobny select_new auto;
-C001–C005 nowe Obiekty/Jaskinie; D001–D026 defer do niezależnego badania.
+C001–C005 nowe Obiekty/Jaskinie; D001–D026 odroczono wówczas do badania.
 Utrwalone zgody zastąpiły wcześniejsze polecenie pending. Nie pytać ponownie
 o te zakresy ani nie stosować danych ponownie.
 
-Produkcja CLI apply/check zakończona; wynik: 1012 Obiektów, 1006 Jaskiń,
+Pierwotne CLI apply/check zakończone; wynik: 1012 Obiektów, 1006 Jaskiń,
 1912 pomiarów. Zachowano wszystkie 1876 dawnych pomiarów, 1001 dawnych
 Jaskiń i 9 chronionych plików. Snapshot, decisions, receipt i kandydat
 stanu są w Git. Dawny raport z pending i wariant keep pozostają wyłącznie
@@ -177,7 +181,10 @@ Dokładny aktualny head oraz wynik wszystkich jobów, kroków i pełnych logów
 CI odczytaj na żywo z PR #12.
 
 PR pozostaje draftem do człowieka. Stan gałęzi jest kandydatem; przyjęta
-baza nadal pochodzi wyłącznie z origin/main. D26 pozostaje w trwałej kolejce.
+baza nadal pochodzi wyłącznie z origin/main. Użytkownik następnie zatwierdził
+D26: [wykonanie i odbiór](verification/PBI-101-D26.md). Wynik suplementu:
+1035 Obiektów, 1027 Jaskiń, 1938 pomiarów; 640 approve / 0 defer / 0 pending
+w kandydacie stanu. Historyczne 26 defer pozostaje w pierwotnych decyzjach.
 Po review 2026-10-20 poprawiono P3 (nieaktualny handoff), a na osobne
 zlecenie również P2 (powielanie notatek między cyklami). Test dwóch cykli
 potwierdza zachowanie pojedynczego fragmentu oraz odrzucenie kopii w after.

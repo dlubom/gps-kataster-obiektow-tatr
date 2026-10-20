@@ -1,0 +1,15 @@
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs: []
+id: C-1018
+name: Nyża pod Szarą Turnią IV
+notes: '[D013; TPN 70fc9cd8-57de-4c66-a50f-674b3c6f5d55] Nowa pozycja według TPN.
+  Dokumentacji nie odnaleziono.
+
+  Metryka źródła TPN: DLUGOSC=3.'
+object_ids:
+- STR-0034
+schema_version: 1
+system_name: null
+updated_at: '2026-10-20T16:04:54.133186Z'
+updated_by: agent:codex

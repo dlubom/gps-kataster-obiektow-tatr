@@ -1,5 +1,10 @@
 # PBI-101 — 26 odroczeń do niezależnego badania
 
+> **Dokument historyczny.** Poniższa tabela zachowuje pierwotne 26 defer.
+> Po badaniu użytkownik zatwierdził nowe decyzje 2026-10-20; aktualne
+> przypisania, wynik i odbiór opisuje [suplement D26](../PBI-101-D26.md).
+> Oryginalny JSON tej tabeli i pierwotne decyzje pozostają niezmienne.
+
 578 wpisów A001–A578 przyjęto zgodnie z jawną decyzją użytkownika: aktualna rewizja TPN, bez nowego pomiaru i bez zmian katalogu. Zachowano 573 best auto i 5 istniejących manual. Zgoda na B31 i C5 jest zapisana osobno; razem rozstrzygnięto przez użytkownika 614/640 przypadków. Użytkownik następnie jawnie odroczył wszystkie D001–D026 do niezależnego badania i zlecił dokończenie oraz commit/push PR #12. [Zapis decyzji](user-decisions-D-20261019.json). Poniższe zalecenia N/J/O pozostają historią review; ostateczna decyzja dla każdego wiersza: **defer**, bez zmian katalogu.
 
 ## Historyczny formularz decyzji — wszystkie D odroczone

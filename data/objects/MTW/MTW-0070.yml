@@ -1,0 +1,61 @@
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: auto
+  reason: null
+  updated_at: '2026-10-20T16:04:54.133186Z'
+  updated_by: agent:codex
+category: jaskinia_otwor
+cave_id: C-1013
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs:
+- external_id: 2549106f-2ea9-477a-a5d3-77e6b920c8e5
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MTW-0070
+id_assignment:
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MTW
+  method: auto
+  prefix_override_reason: null
+measurements:
+- created_at: '2026-10-20T16:04:54.133186Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-001
+  lat: 49.26385313676503
+  lon: 19.87900934046395
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-06-14T13:12:44Z
+
+    TPN revision: bc178859ce6b645aa23444b1289021490b207a67d05154be86567bf7f1967be5
+
+    TPN WER_LOK: FF 06062026'
+  observed_at: null
+  observed_date: '2026-06-14'
+  source: TPN
+  source_date: '2026-06-14'
+  source_ref: TPN:2549106f-2ea9-477a-a5d3-77e6b920c8e5
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 155521.679
+  y_1992: 563933.102
+name_local: Schron nad Komorą w Kończystej Turni
+notes: '[D005; TPN 2549106f-2ea9-477a-a5d3-77e6b920c8e5] Nowa pozycja według TPN.
+  Dokumentacji nie odnaleziono.
+
+  Metryka źródła TPN: DLUGOSC=3.'
+schema_version: 1
+updated_at: '2026-10-20T16:04:54.133186Z'
+updated_by: agent:codex

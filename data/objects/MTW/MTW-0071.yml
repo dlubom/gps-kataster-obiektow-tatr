@@ -1,0 +1,61 @@
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: auto
+  reason: null
+  updated_at: '2026-10-20T16:04:54.133186Z'
+  updated_by: agent:codex
+category: jaskinia_otwor
+cave_id: C-1015
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs:
+- external_id: 37ef7fe5-6e87-47d4-97c8-cb0ebd9ddeee
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MTW-0071
+id_assignment:
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MTW
+  method: auto
+  prefix_override_reason: null
+measurements:
+- created_at: '2026-10-20T16:04:54.133186Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-001
+  lat: 49.263609834607415
+  lon: 19.879155242621014
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-05-21T15:37:21Z
+
+    TPN revision: 1983bf1f06f31313e26424dc612cbab07fd0e628ebee86cccaa712a44a1d02e7
+
+    TPN WER_LOK: FF 21052026'
+  observed_at: null
+  observed_date: '2026-05-21'
+  source: TPN
+  source_date: '2026-05-21'
+  source_ref: TPN:37ef7fe5-6e87-47d4-97c8-cb0ebd9ddeee
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 155494.763
+  y_1992: 563944.029
+name_local: Dziura nad Zahradziskami
+notes: '[D009; TPN 37ef7fe5-6e87-47d4-97c8-cb0ebd9ddeee] Nowa pozycja według TPN.
+  Dokumentacji nie odnaleziono.
+
+  Metryka źródła TPN: DLUGOSC=5.'
+schema_version: 1
+updated_at: '2026-10-20T16:04:54.133186Z'
+updated_by: agent:codex

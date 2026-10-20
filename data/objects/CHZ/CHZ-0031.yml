@@ -1,0 +1,62 @@
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: auto
+  reason: null
+  updated_at: '2026-10-20T16:04:54.133186Z'
+  updated_by: agent:codex
+category: jaskinia_otwor
+cave_id: C-1023
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs:
+- external_id: a876a547-7912-4033-bb3f-8ed2f589c5f0
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: CHZ-0031
+id_assignment:
+  assigned_from_measurement_id: m-001
+  assigned_prefix: CHZ
+  method: auto
+  prefix_override_reason: null
+measurements:
+- created_at: '2026-10-20T16:04:54.133186Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-001
+  lat: 49.24315800000112
+  lon: 19.803833000273805
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-06-16T13:09:27Z
+
+    TPN revision: 6141712b74e44bcce4b78290ee01ad0a40d3b7e3761f7b0fa1d8cd3973b93a18
+
+    TPN WER_LOK: FF16062026'
+  observed_at: null
+  observed_date: '2026-06-16'
+  source: TPN
+  source_date: '2026-06-16'
+  source_ref: TPN:a876a547-7912-4033-bb3f-8ed2f589c5f0
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 153160.874
+  y_1992: 558489.794
+name_local: Jaskinia Cynamonowa
+notes: '[D018; TPN a876a547-7912-4033-bb3f-8ed2f589c5f0] S. Solarczyk, Jaskinia Cynamonowa,
+  Jaskinie 101 (2020), s. 33–34: plan i przekrój, współrzędne zgodne z punktem TPN;
+  głębokość na oryginalnym przekroju 11,9 m. http://jaskinie.org.pl/files/Jaskinie__101_2020.pdf#page=33
+
+  Metryka źródła TPN: DLUGOSC=47; GLEBOKOSC=11.9; PRZEWYZSZE=1.8; DENIWELACJ=13.7.'
+schema_version: 1
+updated_at: '2026-10-20T16:04:54.133186Z'
+updated_by: agent:codex

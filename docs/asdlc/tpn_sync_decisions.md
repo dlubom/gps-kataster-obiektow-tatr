@@ -175,3 +175,21 @@ niezgodność rzeczywistego diffu/stanu, brak archiwum i stan bez paczki.
 merge dopuszcza dawną bazę tylko gdy main zawiera dokładnie ten sam wynik
 i decyzje; samo przesunięcie main nie legalizuje starych/edytowanych decyzji.
 Nie dodano workflow_dispatch ani schedule. Zakończyć po PBI-100.
+
+## Zatwierdzony suplement D001–D026 w PR #12
+
+Użytkownik po badaniu źródeł zatwierdził wykonanie pozostałych D26 w tym
+samym PR. [Zapis zgody](verification/PBI-101-D26-resolution.json) wiąże
+nieruchomą bazę Git, snapshot, pierwotny plan, noty i wynikowe hashe.
+[Odbiór i przypisania](verification/PBI-101-D26.md) pokazują 23 nowe Obiekty,
+21 nowych Jaskiń i 26 nowych pomiarów. Pierwotne decisions/application,
+ich archiwa i tabela źródłowa D26 zachowują dokładne bajty.
+
+Kontrola `check` po kontroli przypięć manual odtwarza ten konkretny suplement
+z niezmiennej bazy i źródła. Porównuje wygenerowane pliki oraz cały wynik
+data; lista hashów receipt nie może zalegalizować obcej zmiany. Nowe D26
+otrzymują approve/bindings i lokalizacje zastosowane. Dla pozostałych 614
+zmienia się tylko wynikowy kontekst hashów całej partii, z zachowaniem
+pierwotnych decyzji, audytu i preimage. Stan gałęzi nadal jest kandydatem.
+Ponowne `apply` starej paczki odrzuca późniejszy suplement. Ten ograniczony
+odbiór nie dodaje obsługi ogólnych kolejnych paczek ani PBI-102–103.

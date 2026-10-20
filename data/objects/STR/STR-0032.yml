@@ -1,0 +1,61 @@
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: auto
+  reason: null
+  updated_at: '2026-10-20T16:04:54.133186Z'
+  updated_by: agent:codex
+category: jaskinia_otwor
+cave_id: C-1016
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs:
+- external_id: 55ed69a3-9228-452b-87ce-8133710292b1
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: STR-0032
+id_assignment:
+  assigned_from_measurement_id: m-001
+  assigned_prefix: STR
+  method: auto
+  prefix_override_reason: null
+measurements:
+- created_at: '2026-10-20T16:04:54.133186Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-001
+  lat: 49.25319985046087
+  lon: 19.928103567508114
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-06-14T12:42:13Z
+
+    TPN revision: 7c4915d207fd4ddae2329699ccc37b0e110a0c64510acb6127a757d2e13a7aa3
+
+    TPN WER_LOK: FF 27052026'
+  observed_at: null
+  observed_date: '2026-06-14'
+  source: TPN
+  source_date: '2026-06-14'
+  source_ref: TPN:55ed69a3-9228-452b-87ce-8133710292b1
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 154380.4
+  y_1992: 567518.366
+name_local: Nyża pod Szarą Turnią I
+notes: '[D011; TPN 55ed69a3-9228-452b-87ce-8133710292b1] Nowa pozycja według TPN.
+  Dokumentacji nie odnaleziono.
+
+  Metryka źródła TPN: DLUGOSC=3.8.'
+schema_version: 1
+updated_at: '2026-10-20T16:04:54.133186Z'
+updated_by: agent:codex

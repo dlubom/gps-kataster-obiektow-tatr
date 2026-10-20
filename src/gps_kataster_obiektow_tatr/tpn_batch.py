@@ -18,6 +18,7 @@ from .tpn_batch_protocol import prepare_documents, validate_documents
 from .tpn_best_migration import verified_manual_selection_tree
 from .tpn_candidates import CandidatePolicy
 from .tpn_changes import Catalog, compare
+from .tpn_d26_resolution import verified_d26_resolution_tree
 from .tpn_duplicate_state import read_accepted_duplicates
 from .tpn_normalization import CSV_PATH, canonical, digest, exact_json, read_csv, same_location
 from .tpn_snapshot import POLICY, sha256, validate_id
@@ -400,6 +401,12 @@ def _plan(root, changes, decisions, reviewers, allow_pending=True, check_only=Fa
                 plan_hash=digest(plan),
                 expected_tree=outcome,
             )
+            checked_outcome = verified_d26_resolution_tree(
+                root,
+                batch_id=changes["batch_id"],
+                plan_hash=digest(plan),
+                expected_tree=checked_outcome,
+            )
             require(current == checked_outcome, "actual diff/output does not match decisions")
             require(
                 receipt is not None and receipt["plan_hash"] == digest(plan),
@@ -454,6 +461,13 @@ def _plan(root, changes, decisions, reviewers, allow_pending=True, check_only=Fa
                 if check_only
                 else old_outcome
             )
+            if check_only:
+                checked_old_outcome = verified_d26_resolution_tree(
+                    root,
+                    batch_id=changes["batch_id"],
+                    plan_hash=digest(old_plan),
+                    expected_tree=checked_old_outcome,
+                )
             require(
                 current == checked_old_outcome,
                 "previous result/output changed; new review required",

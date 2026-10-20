@@ -1,6 +1,6 @@
 # Integracja TPN: PBI i stan realizacji
 
-Stan na: 2026-10-19. [Projekt i uzasadnienie](tpn_sync_plan.md).
+Stan na: 2026-10-20. [Projekt i uzasadnienie](tpn_sync_plan.md).
 [Indeks całego backlogu](backlog_v1.md).
 
 Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-101**.
@@ -9,7 +9,10 @@ częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2
 PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
 PBI-099: **wykonane 2026-10-19**; PBI-100: **wykonane 2026-10-19**;
 PBI-101: **wykonane — dostarczone do PR #12**; PBI-102–103: **planowane**.
-Jedna paczka ma 614 approve / 26 defer / 0 pending; dane/CI/eksporty odebrane. Bez harmonogramu.
+Pierwotna paczka ma 614 approve / 26 defer / 0 pending; jej dane/CI/eksporty odebrane.
+Zatwierdzony 2026-10-20 [suplement D26](verification/PBI-101-D26.md) daje
+kandydata stanu 640 approve / 0 defer / 0 pending, bez zmiany dawnych archiwów.
+Bez harmonogramu.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -322,11 +325,13 @@ obsługa zaległego PR, diagnostyka i krótki runbook. Bez automatycznego merge.
 
 ## Kontynuacja
 
-PBI-101 zakończono na dostarczeniu jednej paczki do PR #12: 614 approve /
+PBI-101 pierwotnie dostarczono do PR #12 z 614 approve /
 26 defer / 0 pending. Snapshot, decyzje, receipt i stan są w Git, CI oraz
 świeże eksporty odebrane. PR draft, bez merge; origin/main pozostaje bazą
 przyjętego stanu, a gałąź jest kandydatem do przyjęcia.
-D001–D026 czekają na niezależne badanie, bez nowych zmian katalogu.
+D001–D026 rozstrzygnięto osobną zgodą użytkownika z 2026-10-20:
+[suplement](verification/PBI-101-D26.md), 23 nowe Obiekty, 21 nowych Jaskiń,
+26 nowych pomiarów. Kandydat stanu ma 640 approve / 0 defer / 0 pending.
 [Gotowy prompt review PR](verification/PBI-101-next-task.md).
 Trzy przypięcia auto→manual zatwierdzono osobno 2026-10-20 i wykonano
 w tym samym PR #12; [zapis zgody i hashów](verification/PBI-099-manual-selection.json).

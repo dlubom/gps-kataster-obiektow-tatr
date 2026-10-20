@@ -2,6 +2,22 @@
 
 Last updated: 2026-10-20
 
+## PR #12 — wykonanie nowych decyzji D001–D026
+
+2026-10-20 użytkownik zatwierdził warianty M oraz osobne Jaskinie D009/D021,
+nowy otwór D006 i nowe pozostałe pozycje poza wskazanymi duplikatami.
+[Plan i odbiór](verification/PBI-101-D26.md),
+[osobny zapis zgody i wynikowych hashów](verification/PBI-101-D26-resolution.json).
+Katalog ma 1035 Obiektów, 1027 Jaskiń i 1938 pomiarów (+23/+21/+26).
+Nowy kandydat stanu: 640 approve / 0 defer / 0 pending. Wszystkie 1912
+pomiarów podstawy i 9 chronionych plików zachowują dane; D022 osobno
+przypina dotychczasowy m-001 MLW-0050 do manual, dając dziesiąty chroniony
+wybór. Niezależny odbiór 10 artefaktów potwierdził dane i historię.
+Historyczne 614 approve / 26 defer / 0 pending poniżej opisuje wynik
+pierwotnej paczki. Snapshoty, changes/decisions/application i archiwa
+pozostają niezmienne. Końcowe testy, SHA/CI i granice odbioru wskazuje
+log suplementu; stan gałęzi nadal czeka na ludzki review/merge.
+
 ## PR #12 — zatwierdzone przypięcie trzech best do manual
 
 2026-10-20 użytkownik zatwierdził auto→manual dla KSW-0201/m-003,

@@ -1,0 +1,61 @@
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: auto
+  reason: null
+  updated_at: '2026-10-20T16:04:54.133186Z'
+  updated_by: agent:codex
+category: jaskinia_otwor
+cave_id: C-1021
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs:
+- external_id: a32f96eb-2092-4974-9256-b1d26b3f35a3
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: CHZ-0030
+id_assignment:
+  assigned_from_measurement_id: m-001
+  assigned_prefix: CHZ
+  method: auto
+  prefix_override_reason: null
+measurements:
+- created_at: '2026-10-20T16:04:54.133186Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-001
+  lat: 49.24085926092091
+  lon: 19.801099619438673
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-06-17T08:32:00Z
+
+    TPN revision: 52b298ee38523e41f50a88e8783149671448fedd226bd7f95a3e17548e593b84
+
+    TPN WER_LOK: FF 27052026'
+  observed_at: null
+  observed_date: '2026-06-17'
+  source: TPN
+  source_date: '2026-06-17'
+  source_ref: TPN:a32f96eb-2092-4974-9256-b1d26b3f35a3
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152903.293
+  y_1992: 558293.611
+name_local: Gawra w Bobrowcu
+notes: '[D016; TPN a32f96eb-2092-4974-9256-b1d26b3f35a3] Nowa pozycja według TPN.
+  Dokumentacji nie odnaleziono.
+
+  Metryka źródła TPN: DLUGOSC=22; PRZEWYZSZE=6.'
+schema_version: 1
+updated_at: '2026-10-20T16:04:54.133186Z'
+updated_by: agent:codex

@@ -256,11 +256,13 @@ def test_migrated_catalog_preserves_nine_protected_manual_best_choices(
     report = guard.audit_catalog(catalog)
     current = {entry["object_id"]: entry for entry in report["objects"]}
     historical = {entry["object_id"]: entry for entry in historical_protection_manifest["objects"]}
-    assert len(current) == 9
-    assert current.keys() == historical.keys()
+    # D022 separately keeps the older MLW-0050 point through an explicit pin.
+    assert current.keys() == historical.keys() | {"MLW-0050"}
+    assert current["MLW-0050"]["best_before"]["mode"] == "manual"
+    assert current["MLW-0050"]["best_before"]["measurement_id"] == "m-001"
     assert report["migration_proposals"] == []
-    for identity, entry in current.items():
-        before = historical[identity]
+    for identity, before in historical.items():
+        entry = current[identity]
         assert entry["protection"]["protected"]
         assert entry["best_before"]["mode"] == "manual"
         assert entry["best_before"]["measurement_id"] == before["best_before"]["measurement_id"]
@@ -298,7 +300,7 @@ def test_audit_cli_writes_readable_manifest_exclusively_without_touching_catalog
     assert manifest == expected
     assert manifest["approval_status"] == "pending"
     assert manifest["migration_proposals"] == []
-    assert len(manifest["objects"]) == 9
+    assert len(manifest["objects"]) == 10
     markdown = (output / "report.md").read_text()
     for entry in manifest["objects"]:
         best = entry["best_before"]

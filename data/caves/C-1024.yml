@@ -1,0 +1,15 @@
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs: []
+id: C-1024
+name: Nyża pod Zachodem Pilotów III
+notes: '[D019; TPN adbf9ca1-deff-402f-a223-04ba9c1d0d35] Nowa pozycja według TPN.
+  Dokumentacji nie odnaleziono.
+
+  Metryka źródła TPN: DLUGOSC=3.'
+object_ids:
+- STR-0036
+schema_version: 1
+system_name: null
+updated_at: '2026-10-20T16:04:54.133186Z'
+updated_by: agent:codex

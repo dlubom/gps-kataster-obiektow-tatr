@@ -1,0 +1,60 @@
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: auto
+  reason: null
+  updated_at: '2026-10-20T16:04:54.133186Z'
+  updated_by: agent:codex
+category: jaskinia_otwor
+cave_id: C-1029
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs:
+- external_id: ef966744-eb95-48b3-b2ba-7a031f8df91a
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: KSW-0259
+id_assignment:
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSW
+  method: auto
+  prefix_override_reason: null
+measurements:
+- created_at: '2026-10-20T16:04:54.133186Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-001
+  lat: 49.2479509176144
+  lon: 19.883164220891572
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-06-02T18:14:30Z
+
+    TPN revision: 38267f647f1d889bfccde7780705a838bb149d68edc6614946c631bacd460778'
+  observed_at: null
+  observed_date: '2026-06-02'
+  source: TPN
+  source_date: '2026-06-02'
+  source_ref: TPN:ef966744-eb95-48b3-b2ba-7a031f8df91a
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 153757.909
+  y_1992: 564255.937
+name_local: Okno pod Sikawką
+notes: '[D025; TPN ef966744-eb95-48b3-b2ba-7a031f8df91a] J. Nowak, Z archiwum J cz.
+  VII — Sikawka, Jaskinie 73 (2013), s. 27–28: osobny opis i plan Okna pod Sikawką,
+  wyjaśnienie wcześniejszego pomylenia z Jaskinią przy Sikawce. http://jaskinie.org.pl/files/Jaskinie__73_2013.pdf#page=27
+
+  Metryka źródła TPN: DLUGOSC=3.5.'
+schema_version: 1
+updated_at: '2026-10-20T16:04:54.133186Z'
+updated_by: agent:codex

@@ -14,6 +14,9 @@
 > PBI-101 wykonane: paczka zastosowana, 614 approve / 26 defer / 0 pending;
 > dane, CI i eksporty odebrane. PR #12 pozostaje draftem do człowieka;
 > stan gałęzi jest kandydatem, nie przyjętym main. [Odbiór](docs/asdlc/verification/PBI-101.md).
+> Osobno zatwierdzony 2026-10-20 [suplement D26](docs/asdlc/verification/PBI-101-D26.md)
+> rozstrzyga pozostałe 26 rekordów: kandydat stanu 640 approve / 0 defer / 0 pending.
+> Oryginalne decyzje i archiwa zachowują historię wcześniejszych odroczeń.
 > PBI-102–103 pozostają przyszłą pracą, bez harmonogramu.
 
 ---
@@ -686,8 +689,11 @@ PBI-099 nie zapisuje pomiarów ani migracji. PBI-100 dostarcza
 ścisłe execution/proposals, wspólny plan ID/best, pełny preflight, atomową
 zamianę data, wynikowe hashe/archiwum decyzji i bramkę pending/defer.
 Pierwszą zastosowaną paczkę dostarcza [PBI-101](docs/asdlc/verification/PBI-101.md):
-614 approve / 26 defer / 0 pending, PR #12 do człowieka. Manifest migracji
-PBI-099 nadal pending; jego obecność w Git nie jest akceptacją.
+historycznie 614 approve / 26 defer / 0 pending. Późniejszy
+[suplement D26](docs/asdlc/verification/PBI-101-D26.md) daje 640 approve /
+0 defer / 0 pending w kandydacie stanu, PR #12 do człowieka. Manifest migracji
+PBI-099 pozostaje historyczny; osobno zatwierdzone trzy przypięcia manual
+dokumentuje [receipt](docs/asdlc/verification/PBI-099-manual-selection.json).
 
 Przyjęty kierunek rozszerza V1 wyłącznie o TPN: rozpatrzenie zaległości,
 następnie ręczne i dopiero po odbiorze miesięczne sprawdzanie API przez

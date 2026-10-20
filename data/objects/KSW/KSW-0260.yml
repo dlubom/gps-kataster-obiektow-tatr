@@ -1,0 +1,61 @@
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: auto
+  reason: null
+  updated_at: '2026-10-20T16:04:54.133186Z'
+  updated_by: agent:codex
+category: jaskinia_otwor
+cave_id: C-1030
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs:
+- external_id: fdd25a5f-1d27-4bab-9bf7-ebb1c062746c
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: KSW-0260
+id_assignment:
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSW
+  method: auto
+  prefix_override_reason: null
+measurements:
+- created_at: '2026-10-20T16:04:54.133186Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-001
+  lat: 49.24966207787314
+  lon: 19.877003828090277
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN LAST_EDITED_DATE: 2026-06-02T14:19:55Z
+
+    TPN revision: dedaed4d550d837dd184cd6b9402bb9a1d04804ebcb07e44d50cbb7d8d9801f7
+
+    TPN WER_LOK: FF 02062026'
+  observed_at: null
+  observed_date: '2026-06-02'
+  source: TPN
+  source_date: '2026-06-02'
+  source_ref: TPN:fdd25a5f-1d27-4bab-9bf7-ebb1c062746c
+  tags: []
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 153942.863
+  y_1992: 563805.528
+name_local: Nyża we Wysrankach
+notes: '[D026; TPN fdd25a5f-1d27-4bab-9bf7-ebb1c062746c] Nowa pozycja według TPN.
+  Dokumentacji nie odnaleziono.
+
+  Metryka źródła TPN: DLUGOSC=4.'
+schema_version: 1
+updated_at: '2026-10-20T16:04:54.133186Z'
+updated_by: agent:codex
