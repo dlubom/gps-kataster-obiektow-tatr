@@ -4,7 +4,8 @@ Stan na: 2026-10-20
 
 ## PBI-104: Paczka danych w opisie każdego PR
 
-**Status: w toku**, osobne polecenie użytkownika 2026-10-20, kontynuacja
+**Status: wykonane — implementacja i pierwsza paczka odebrane; końcowy CI w opisie PR**.
+Osobne polecenie użytkownika 2026-10-20, kontynuacja
 PR #12. Użytkownik zlecił komplet eksportów jak podczas wydania przy każdej
 PR-ce, z możliwością pobrania paczki z jej opisu i sprawdzenia zawartości.
 [Plan](pr_data_preview_plan.md), [dowody](verification/PBI-104.md),
@@ -15,19 +16,20 @@ head/base/merge/run/attempt i sumy SHA-256, ZIP Actions na 90 dni oraz
 aktualizowany blok opisu PR. Budowany jest dokładny syntetyczny merge
 z kontrolą rodziców; build ma odczyt, publisher korzysta z zaufanego kodu
 gałęzi domyślnej i metadanych API. Zachowuje ręczny opis i odrzuca stary
-SHA/run. Pierwszy ZIP i wpis #12 wymagają odbioru hosted oraz bootstrapu
-publishera, zanim ten workflow trafi przez ludzki merge na main.
+SHA/run. Pierwszy ZIP i wpis #12 odebrano przez bootstrap tego samego
+publishera; automatyczny trigger zacznie działać po ludzkim merge do main.
 
 Kryteria odbioru:
 
-- [ ] Każdy otwarty/aktualizowany/ponownie otwarty PR, także draft,
+- [x] Każdy otwarty/aktualizowany/ponownie otwarty PR bez konfliktu, także draft,
   otrzymuje komplet eksportów release do sprawdzenia.
-- [ ] Test zgodności z `release.yml`, manifest/sumy oraz readback ZIP
+- [x] Test zgodności z `release.yml`, manifest/sumy oraz readback ZIP
   potwierdzają komplet dziewięciu plików i właściwe źródła.
-- [ ] Publisher zachowuje opis autora, wskazuje bieżącą paczkę i jej
+- [x] Publisher zachowuje opis autora, wskazuje paczkę dla zapisanych SHA i jej
   wygaśnięcie, nie publikuje starszego SHA/runu ani wyniku obcego PR.
-- [ ] Testy packagera/publishera/workflow, pełna bramka, niezmienność
-  wejść, zdalny SHA i CI tego SHA oraz odczyt końcowego opisu #12.
+- [x] Testy packagera/publishera/workflow, pełna bramka i niezmienność
+  wejść. Odczyt ZIP i opisu #12 PASS; odbiór zdalnego końcowego SHA i jego
+  CI utrwala opis PR, bez kolejnego commitu wyłącznie dla własnego SHA.
 
 Dane/config/schema i surowe źródła pozostają bez zmian. Bez merge,
 tagu, release lub harmonogramu. To niezależna karta infrastruktury review;

@@ -4,8 +4,9 @@ Last updated: 2026-10-20
 
 ## PBI-104 — paczka danych w każdym PR, zaczynając od #12
 
-**W toku**, osobne zlecenie użytkownika 2026-10-20. Każdy PR, także draft,
-ma udostępniać w opisie ZIP z pełnym zestawem eksportów jak dla wydania.
+**Implementacja i pierwsza paczka odebrane**, osobne zlecenie użytkownika
+2026-10-20. Każdy PR bez konfliktu, także draft, buduje ZIP z pełnym zestawem
+eksportów jak dla wydania. Końcowy SHA dokumentacji i jego CI utrwala opis PR.
 [Plan](pr_data_preview_plan.md), [karta](backlog_v1.md#pbi-104-paczka-danych-w-opisie-każdego-pr),
 [odbiór](verification/PBI-104.md).
 
@@ -18,9 +19,11 @@ nie wykonuje kodu ani nie pobiera artefaktów PR. Zachowuje opis autora
 i odrzuca stary wynik. Build ma odczyt, publisher zapisuje opis PR.
 
 Automatyczny publisher będzie dostępny dopiero po ludzkim merge workflow
-do main. Pierwszy wpis #12 powstanie przez tę samą logikę uruchomioną
-lokalnie po odbiorze rzeczywistego ZIP. Testy, pełna bramka, zdalny SHA,
-hosted CI i ten wpis pozostają do potwierdzenia w logu PBI-104.
+do main. Pierwszy wpis #12 powstał przez tę samą logikę uruchomioną
+lokalnie po odbiorze rzeczywistego ZIP z runu `39471677801` dla `9a221645`.
+13/13 kroków buildu success; 11 plików ZIP, 10 sum i readback 10/10 PASS.
+Lokalnie 1177 pytest i 67 Node PASS, Ruff i TPN ready=true; 2122 pliki
+wejść bez zmian. Aktualny ZIP, źródła i wyniki końcowego CI wskazuje blok PR.
 Dane/config/schema i surowe źródła bez zmian; PBI-102–103 nadal planowane,
 bez merge, tagu, release lub harmonogramu.
 

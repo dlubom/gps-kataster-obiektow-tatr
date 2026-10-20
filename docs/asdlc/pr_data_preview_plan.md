@@ -51,19 +51,19 @@ metadanych API GitHub; jego kod pochodzi z zaufanej gałęzi domyślnej.
 
 ### 1. Packager i zgodność wydania
 
-- [ ] Dodać `tests/test_pr_data_preview.py` RED dla
+- [x] Dodać `tests/test_pr_data_preview.py` RED dla
   `scripts/build_pr_data_preview.py`: komplet plików,
   pochodzenie head/base/merge/run/attempt, sumy i błędne wejście.
 - [x] Oprzeć packager na `build_release_artifacts`, z wyjściem
   `build/pr-data/exports/`; zapisać `preview.json` oraz `SHA256SUMS`.
   Wspólny `RELEASE_ASSET_FILENAMES` w `release_artifacts.py` musi zgadzać
   się z dziewięcioma uploadami istniejącego `release.yml`.
-- [ ] Potwierdzić GREEN testów oraz zgodność danych z kanonicznym buildem
+- [x] Potwierdzić GREEN testów oraz zgodność danych z kanonicznym buildem
   release przy tych samych źródłach i parametrach generowania.
 
 ### 2. Publisher i workflow
 
-- [ ] Dodać `tests/test_pr_data_publisher.cjs` RED dla zachowania opisu,
+- [x] Dodać `tests/test_pr_data_publisher.cjs` RED dla zachowania opisu,
   aktualizacji stanu,
   starego SHA/runu, forka i błędnych metadanych API.
 - [x] Dodać `.github/workflows/pr-data.yml` z odczytem repozytorium,
@@ -80,9 +80,9 @@ metadanych API GitHub; jego kod pochodzi z zaufanej gałęzi domyślnej.
 
 - [x] Uruchomić testy celowane, pełną bramkę projektu i readback wszystkich
   formatów; potwierdzić niezmienność wejść i `git diff --check`.
-- [ ] Zapisać wyniki w [PBI-104](verification/PBI-104.md), przejrzeć diff,
+- [x] Zapisać wyniki w [PBI-104](verification/PBI-104.md), przejrzeć diff,
   commit/push do #12 i potwierdzić zdalny SHA oraz CI tego SHA.
-- [ ] Pobrać faktyczny ZIP Actions, zweryfikować jego komplet, manifest,
+- [x] Pobrać faktyczny ZIP Actions, zweryfikować jego komplet, manifest,
   sumy i zawartość eksportów; umieścić link w opisie #12 przez publisher API.
-- [ ] Odczytać końcowy opis PR. Utrwalić ograniczenie startowe publishera
+- [x] Odczytać opis PR. Utrwalić ograniczenie startowe publishera
   oraz URL runu/artefaktu; zakończyć bez merge, tagu i release.
