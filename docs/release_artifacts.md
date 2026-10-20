@@ -15,6 +15,61 @@ Oficjalne wydania sa wersjonowane semver tagami `vX.Y.Z`. Release jest
 publikowany recznie przez annotated tag, a notatki GitHub Release pochodza z
 sekcji `CHANGELOG.md` o tym samym numerze wersji.
 
+## Paczka danych w opisie PR
+
+Od PBI-104 każdy PR, także draft, otrzymuje podgląd pełnego eksportu po
+otwarciu, nowych commitach i ponownym otwarciu. W opisie PR znajduje się
+aktualizowany blok z linkiem **Pobierz pełną paczkę danych (ZIP)**. Link prowadzi do
+ZIP artefaktu GitHub Actions; pobranie wymaga zalogowania do GitHub.
+
+ZIP zawiera w katalogu głównym te same dziewięć plików, które publikuje
+`release.yml`: `best-measurements.geojson`, `best-measurements.csv`,
+`best-measurements.gpx`, `best-measurements.shp.zip`, `katalog.sqlite.zip`,
+`metadata.json`, `statistics.json`, `statistics.md`, `katalog.xlsx`.
+Pełna baza SQLite znajduje się wewnątrz `katalog.sqlite.zip`.
+Excel ma arkusze Best i Full zgodne z opisem poniżej. Wszystkie formaty
+powstają przez wspólny builder wydania, bez osobnych reguł wyboru best.
+
+Dodatkowe `preview.json` opisuje pochodzenie paczki: PR, head, base,
+syntetyczny merge, run i próbę uruchomienia. `SHA256SUMS` pozwala
+sprawdzić integralność zawartości. Budowany jest dokładny syntetyczny
+merge PR z jego bazą, z kontrolą obu rodziców, aby sprawdzać kandydata
+stanu po merge. Opis PR wskazuje SHA źródeł i run; nowy commit wymaga
+nowej paczki, a błąd lub oczekiwanie na build są widoczne w tym bloku.
+Jeśli baza PR przesunie się już po buildzie, nowy commit w PR albo jego
+zamknięcie i ponowne otwarcie wywoła nowy build z odświeżoną bazą.
+Ponowienie starego runu zachowuje pierwotne zdarzenie, base/head i SHA
+merge; nie odświeża bazy. Przed końcowym odbiorem porównaj zapisany base
+SHA z bieżącą bazą PR.
+
+Przy konflikcie scalania GitHub nie uruchamia zdarzenia `pull_request`,
+więc nowa paczka nie powstaje. Poprzedni blok pozostaje opisem zapisanych
+w nim SHA; przed jego użyciem sprawdź zgodność z aktualnym head i bazą.
+Po rozwiązaniu konfliktu nowy commit uruchomi eksport.
+
+Wersja ma etykietę `pr-{number}-{head12}`. Zawartość domenowa odpowiada
+eksportowi wydania z tego samego drzewa danych; numer wersji, SHA i czas
+generowania opisują podgląd. Późniejsze wydanie zachowa własny tag i czas.
+
+Artefakt jest przechowywany przez **90 dni**, w granicach ustawień
+repozytorium. Data wygaśnięcia widnieje w opisie PR. Po wygaśnięciu wywołaj
+nowe zdarzenie PR: dodaj commit albo zamknij i ponownie otwórz PR.
+GitHub pozwala ponawiać runy tylko przez 30 dni, więc ponowienie starego
+runu nie odtworzy paczki wygasłej po 90 dniach
+([dokumentacja GitHub](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/re-run-workflows-and-jobs)).
+Zachowaj ZIP lokalnie, jeśli ma służyć do dłuższego review. GitHub może
+wymagać zwykłego zatwierdzenia uruchomienia z forka przez opiekuna repozytorium.
+
+Publisher aktualizuje tylko oznaczony blok opisu PR i zachowuje tekst
+autora. Korzysta z metadanych API i zaufanego kodu gałęzi domyślnej,
+bez wykonywania kodu ani pobierania artefaktów PR. Dla pierwszej paczki
+#12 ten sam publisher uruchamia operator, ponieważ automatyczne zdarzenia
+`workflow_run` wymagają workflow w gałęzi domyślnej. Kolejne PR korzystają
+z niego automatycznie po ludzkim merge tej zmiany do main.
+
+Paczka służy do review. Oficjalna publikacja nadal wymaga osobnego
+polecenia i tagu `vX.Y.Z`; podgląd nie uruchamia merge ani wydania.
+
 ## Zestaw plikow
 
 | Plik | Rola | Geometria / format |

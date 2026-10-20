@@ -1,0 +1,80 @@
+name: PR data exports
+
+"on":
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-data-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build PR release exports
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout merge candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify merge candidate
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERGE_SHA: ${{ github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$MERGE_SHA"
+          test "$(git show -s --format=%P HEAD)" = "$BASE_SHA $HEAD_SHA"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Sync dependencies
+        run: uv sync --frozen
+
+      - name: Build complete release preview
+        id: build
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERGE_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: >-
+          uv run --frozen python scripts/build_pr_data_preview.py
+          --pr-number "$PR_NUMBER" --head-commit "$HEAD_SHA"
+          --base-commit "$BASE_SHA" --merge-commit "$MERGE_SHA"
+          --run-id "$RUN_ID" --run-attempt "$RUN_ATTEMPT"
+
+      - name: Upload complete data package
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.build.outputs.artifact_name }}
+          path: build/pr-data/exports/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Link package in run summary
+        env:
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERGE_SHA: ${{ github.sha }}
+        run: |
+          {
+            printf '## Podgląd danych PR\n\n[Pobierz pełną paczkę ZIP](%s)\n\n' "$ARTIFACT_URL"
+            printf 'HEAD PR: `%s`  \nBaza: `%s`  \nPróbny merge: `%s`\n' "$HEAD_SHA" "$BASE_SHA" "$MERGE_SHA"
+            printf '\nTe same pliki co w wydaniu, plus opis pochodzenia i SHA256SUMS. Retencja: 90 dni.\n'
+          } >> "$GITHUB_STEP_SUMMARY"

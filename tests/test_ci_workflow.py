@@ -21,6 +21,7 @@ def test_validate_workflow_uses_local_validation_gate() -> None:
         "uv run ruff format --check src tests scripts",
         "uv run ruff check src tests scripts",
         "uv run pytest",
+        "node --test tests/test_pr_data_publisher.cjs",
         "uv run python scripts/validate.py",
         'uv run python scripts/review_tpn_batch.py check --changed-from "$TPN_BASE_SHA"',
     ]

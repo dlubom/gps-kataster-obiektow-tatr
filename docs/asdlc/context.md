@@ -2,6 +2,28 @@
 
 Last updated: 2026-10-20
 
+## PBI-104 — paczka danych w każdym PR, zaczynając od #12
+
+**W toku**, osobne zlecenie użytkownika 2026-10-20. Każdy PR, także draft,
+ma udostępniać w opisie ZIP z pełnym zestawem eksportów jak dla wydania.
+[Plan](pr_data_preview_plan.md), [karta](backlog_v1.md#pbi-104-paczka-danych-w-opisie-każdego-pr),
+[odbiór](verification/PBI-104.md).
+
+Build `PR data exports` używa istniejącego buildera dla dokładnego
+syntetycznego merge PR z bazą: dziewięć plików release, manifest
+head/base/merge/run/attempt i sumy SHA-256. Artefakt Actions ma retencję
+90 dni w granicach polityki repozytorium. Osobny publisher z gałęzi
+domyślnej utrzymuje oznaczony blok opisu PR na podstawie metadanych API;
+nie wykonuje kodu ani nie pobiera artefaktów PR. Zachowuje opis autora
+i odrzuca stary wynik. Build ma odczyt, publisher zapisuje opis PR.
+
+Automatyczny publisher będzie dostępny dopiero po ludzkim merge workflow
+do main. Pierwszy wpis #12 powstanie przez tę samą logikę uruchomioną
+lokalnie po odbiorze rzeczywistego ZIP. Testy, pełna bramka, zdalny SHA,
+hosted CI i ten wpis pozostają do potwierdzenia w logu PBI-104.
+Dane/config/schema i surowe źródła bez zmian; PBI-102–103 nadal planowane,
+bez merge, tagu, release lub harmonogramu.
+
 ## PR #12 — wykonanie nowych decyzji D001–D026
 
 2026-10-20 użytkownik zatwierdził warianty M oraz osobne Jaskinie D009/D021,

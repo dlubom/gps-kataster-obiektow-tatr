@@ -1028,6 +1028,29 @@ Zadania:
 - wygenerowanie `metadata.json`,
 - opublikowanie GitHub Release.
 
+### 11.4 Paczka danych w opisie PR
+
+Każdy PR, także draft, buduje pełny zestaw eksportów z §13 po otwarciu,
+nowych commitach i ponownym otwarciu. `pr-data.yml` używa tego samego
+buildera co release i dokładnego syntetycznego merge PR z bazą; sprawdza
+zgodność rodziców commitu z base/head zdarzenia. Zbudowany stan jest
+kandydatem wyniku merge, a jego SHA jest zapisany w paczce. Przy konflikcie
+GitHub nie uruchamia tego workflow; poprzednia paczka dotyczy wyłącznie
+zapisanych w niej SHA. Rozwiązanie konfliktu i nowy commit uruchamiają eksport.
+
+Workflow `PR data exports` publikuje dziewięć plików release w jednym ZIP
+GitHub Actions, z `preview.json` i `SHA256SUMS`, na 90 dni w granicach
+polityki repozytorium. Osobny `publish-pr-data.yml` aktualizuje oznaczony
+fragment opisu PR linkiem do paczki, jej SHA/runu i datą wygaśnięcia;
+zachowuje opis autora i odrzuca nieaktualne wyniki. Publisher działa
+na zaufanym kodzie gałęzi domyślnej, czyta metadane API, bez wykonywania
+kodu ani pobierania artefaktów PR. Build ma uprawnienia odczytu.
+
+Pierwsza paczka jest przygotowywana dla PR #12. Automatyczny publisher
+zaczyna działać po ludzkim merge jego workflow do gałęzi domyślnej;
+opis pierwszej paczki aktualizuje ta sama logika uruchomiona przez operatora.
+[Szczegóły i odbiór PBI-104](docs/asdlc/pr_data_preview_plan.md).
+
 ---
 
 ## 12. Build: SQLite + SpatiaLite
@@ -1104,6 +1127,14 @@ historię z pakowanej bazy SQLite. Nie wybierają pomiarów ponownie.
 Markdown zawiera tabele PL/EN/SK i jest dodawany do opisu wydania.
 Brak deklarowanej dokładności oznacza wartość nieznaną, nie zero.
 Lokalny build bez wersji/commitu jest oznaczany jako podgląd lokalny.
+
+Paczka do review PR zawiera te same dziewięć publikowanych plików, generowane
+tym samym builderem i z tą samą zawartością domenową dla danych źródłowych
+danego merge. Wersja podglądu ma etykietę `pr-{number}-{head12}`; manifest
+wiąże head, base, merge, run i próbę uruchomienia. Numer wersji, SHA i czas
+generowania opisują podgląd, więc późniejszy release ma własne metadane.
+Podgląd nie nadaje taga ani nie publikuje GitHub Release. Oficjalne wydanie
+nadal wymaga osobnego polecenia i tagu semver. [Pobieranie paczki PR](docs/release_artifacts.md#paczka-danych-w-opisie-pr).
 
 Etykieta punktu GPX (`wpt/name`) używa `Obiekt.name_local`, zachowując nazwę
 konkretnego otworu. Brak, `null`, pusta nazwa lub same białe znaki oznaczają
