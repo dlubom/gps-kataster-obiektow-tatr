@@ -6,20 +6,25 @@ Last updated: 2026-10-20
 
 **Implementacja i pierwsza paczka odebrane**, osobne zlecenie użytkownika
 2026-10-20. Każdy PR bez konfliktu, także draft, buduje ZIP z pełnym zestawem
-eksportów jak dla wydania. Końcowy SHA dokumentacji i jego CI utrwala opis PR.
+eksportów jak dla wydania przez `pull_request`, przed rzeczywistym merge PR.
+Użytkownik doprecyzował retencję testowej paczki do **14 dni**; 14 testów Python,
+67 Node.js i Ruff PASS. Hosted CI tej korekty, końcowy SHA i bieżący ZIP
+utrwala opis PR.
 [Plan](pr_data_preview_plan.md), [karta](backlog_v1.md#pbi-104-paczka-danych-w-opisie-każdego-pr),
 [odbiór](verification/PBI-104.md).
 
 Build `PR data exports` używa istniejącego buildera dla dokładnego
 syntetycznego merge PR z bazą: dziewięć plików release, manifest
 head/base/merge/run/attempt i sumy SHA-256. Artefakt Actions ma retencję
-90 dni w granicach polityki repozytorium. Osobny publisher z gałęzi
+14 dni w granicach polityki repozytorium. Osobny publisher z gałęzi
 domyślnej utrzymuje oznaczony blok opisu PR na podstawie metadanych API;
 nie wykonuje kodu ani nie pobiera artefaktów PR. Zachowuje opis autora
 i odrzuca stary wynik. Build ma odczyt, publisher zapisuje opis PR.
 
-Automatyczny publisher będzie dostępny dopiero po ludzkim merge workflow
-do main. Pierwszy wpis #12 powstał przez tę samą logikę uruchomioną
+Ludzki merge workflow do main jednorazowo instaluje automatyczny publisher;
+podglądy kolejnych PR powstają przed ich rzeczywistym merge. Dotychczasowy
+release przez tag, changelog i dziewięć plików pozostaje bez zmian.
+Pierwszy wpis #12 powstał przez tę samą logikę uruchomioną
 lokalnie po odbiorze rzeczywistego ZIP z runu `39471677801` dla `9a221645`.
 13/13 kroków buildu success; 11 plików ZIP, 10 sum i readback 10/10 PASS.
 Lokalnie 1177 pytest i 67 Node PASS, Ruff i TPN ready=true; 2122 pliki

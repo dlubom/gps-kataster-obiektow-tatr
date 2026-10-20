@@ -64,7 +64,7 @@ jobs:
           name: ${{ steps.build.outputs.artifact_name }}
           path: build/pr-data/exports/
           if-no-files-found: error
-          retention-days: 90
+          retention-days: 14
 
       - name: Link package in run summary
         env:
@@ -76,5 +76,5 @@ jobs:
           {
             printf '## Podgląd danych PR\n\n[Pobierz pełną paczkę ZIP](%s)\n\n' "$ARTIFACT_URL"
             printf 'HEAD PR: `%s`  \nBaza: `%s`  \nPróbny merge: `%s`\n' "$HEAD_SHA" "$BASE_SHA" "$MERGE_SHA"
-            printf '\nTe same pliki co w wydaniu, plus opis pochodzenia i SHA256SUMS. Retencja: 90 dni.\n'
+            printf '\nPaczka testowa przed scaleniem PR. Te same pliki co w wydaniu, plus opis pochodzenia i SHA256SUMS. Retencja: 14 dni.\n'
           } >> "$GITHUB_STEP_SUMMARY"

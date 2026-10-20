@@ -12,12 +12,16 @@ PR-ce, z możliwością pobrania paczki z jej opisu i sprawdzenia zawartości.
 [kontrakt paczki](../release_artifacts.md#paczka-danych-w-opisie-pr).
 
 Zakres: workflow PR, wspólny builder dziewięciu plików release, manifest
-head/base/merge/run/attempt i sumy SHA-256, ZIP Actions na 90 dni oraz
-aktualizowany blok opisu PR. Budowany jest dokładny syntetyczny merge
+head/base/merge/run/attempt i sumy SHA-256, testowy ZIP Actions na 14 dni oraz
+aktualizowany blok opisu PR przed jego rzeczywistym merge. Wyzwalaczem
+jest `pull_request`. Budowany jest dokładny syntetyczny merge
 z kontrolą rodziców; build ma odczyt, publisher korzysta z zaufanego kodu
 gałęzi domyślnej i metadanych API. Zachowuje ręczny opis i odrzuca stary
 SHA/run. Pierwszy ZIP i wpis #12 odebrano przez bootstrap tego samego
-publishera; automatyczny trigger zacznie działać po ludzkim merge do main.
+publishera; ludzki merge workflow do main jest jednorazową instalacją
+publishera, nie warunkiem scalania kolejnych PR przed ich podglądem.
+Korekta retencji do 14 dni z 2026-10-20: testy celowane PASS; hosted CI
+i wyniki końcowego SHA utrwala opis PR. Oficjalny release pozostaje bez zmian.
 
 Kryteria odbioru:
 

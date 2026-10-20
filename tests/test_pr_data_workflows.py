@@ -52,7 +52,7 @@ def test_pr_data_builds_the_merge_candidate_with_read_only_permissions() -> None
         "name": "${{ steps.build.outputs.artifact_name }}",
         "path": "build/pr-data/exports/",
         "if-no-files-found": "error",
-        "retention-days": 90,
+        "retention-days": 14,
     }
 
 

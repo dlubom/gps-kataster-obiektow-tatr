@@ -1031,7 +1031,8 @@ Zadania:
 ### 11.4 Paczka danych w opisie PR
 
 Każdy PR, także draft, buduje pełny zestaw eksportów z §13 po otwarciu,
-nowych commitach i ponownym otwarciu. `pr-data.yml` używa tego samego
+nowych commitach i ponownym otwarciu, **przed rzeczywistym merge PR**.
+Wyzwalaczem jest `pull_request`. `pr-data.yml` używa tego samego
 buildera co release i dokładnego syntetycznego merge PR z bazą; sprawdza
 zgodność rodziców commitu z base/head zdarzenia. Zbudowany stan jest
 kandydatem wyniku merge, a jego SHA jest zapisany w paczce. Przy konflikcie
@@ -1039,16 +1040,17 @@ GitHub nie uruchamia tego workflow; poprzednia paczka dotyczy wyłącznie
 zapisanych w niej SHA. Rozwiązanie konfliktu i nowy commit uruchamiają eksport.
 
 Workflow `PR data exports` publikuje dziewięć plików release w jednym ZIP
-GitHub Actions, z `preview.json` i `SHA256SUMS`, na 90 dni w granicach
+GitHub Actions, z `preview.json` i `SHA256SUMS`, na 14 dni w granicach
 polityki repozytorium. Osobny `publish-pr-data.yml` aktualizuje oznaczony
 fragment opisu PR linkiem do paczki, jej SHA/runu i datą wygaśnięcia;
 zachowuje opis autora i odrzuca nieaktualne wyniki. Publisher działa
 na zaufanym kodzie gałęzi domyślnej, czyta metadane API, bez wykonywania
 kodu ani pobierania artefaktów PR. Build ma uprawnienia odczytu.
 
-Pierwsza paczka jest przygotowywana dla PR #12. Automatyczny publisher
-zaczyna działać po ludzkim merge jego workflow do gałęzi domyślnej;
-opis pierwszej paczki aktualizuje ta sama logika uruchomiona przez operatora.
+Pierwsza paczka powstała dla PR #12. Jednorazowa instalacja automatycznego
+publishera wymaga ludzkiego merge jego workflow do gałęzi domyślnej;
+nie jest to warunek scalania kolejnych PR przed publikacją ich podglądu.
+Opis pierwszej paczki aktualizuje ta sama logika uruchomiona przez operatora.
 [Szczegóły i odbiór PBI-104](docs/asdlc/pr_data_preview_plan.md).
 
 ---

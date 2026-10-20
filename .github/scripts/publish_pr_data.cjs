@@ -106,7 +106,8 @@ function renderBlock(run, pull, result, owner, repo) {
     'Paczka dotyczy wyłącznie wskazanych SHA HEAD i bazy. '
     + 'Nowszy commit lub baza wymagają nowej paczki. '
     + 'Konflikt scalenia uniemożliwia eksport podglądu.', '',
-    'To podgląd danych; numer przyszłego wydania, końcowy commit i czas generowania '
+    'To paczka testowa przed scaleniem PR; oficjalne wydanie jest osobnym krokiem. '
+    + 'Numer przyszłego wydania, końcowy commit i czas generowania '
     + 'mogą się różnić po scaleniu.',
     `${STATE}${JSON.stringify({ run_id: run.id, run_attempt: run.run_attempt })} -->`, END);
   return lines.join('\n');
@@ -152,7 +153,7 @@ async function exportStatus(github, args, run, pull, artifacts) {
     return { identity, message: '⚠️ Commit podglądu nie odpowiada aktualnej bazie i HEAD PR. '
       + 'Aktualna paczka nie jest dostępna.' };
   }
-  return { identity, artifact, message: '✅ Gotowy podgląd danych po scaleniu wskazanego HEAD z bazą PR.' };
+  return { identity, artifact, message: '✅ Gotowy podgląd danych wskazanego HEAD do sprawdzenia przed scaleniem PR.' };
 }
 
 module.exports = async function publishPrData({ github, context, core }) {

@@ -3,8 +3,8 @@
 > **Dla wykonawcy:** realizacja przez `superpowers:subagent-driven-development`
 > lub `superpowers:executing-plans`; poniższe kroki wyznaczają jeden PBI.
 
-**Cel:** każda PR-ka, zaczynając od #12, udostępnia w swoim opisie paczkę
-pozwalającą sprawdzić wszystkie pliki przyszłego eksportu wydania.
+**Cel:** każda PR-ka, zaczynając od #12, przed rzeczywistym merge udostępnia
+w swoim opisie paczkę pozwalającą sprawdzić wszystkie pliki przyszłego eksportu wydania.
 
 **Architektura:** workflow `PR data exports` buduje syntetyczny merge PR
 z jego bazą, korzystając z tego samego buildera co wydanie. Publikuje ZIP
@@ -26,10 +26,11 @@ metadanych API GitHub; jego kod pochodzi z zaufanej gałęzi domyślnej.
   względem base/head zdarzenia. Konflikt lub błąd buildu nie daje paczki sukcesu.
 - Zachować zestaw i semantykę eksportów release; dodatkowe pliki opisują
   pochodzenie podglądu i sumy SHA-256. Etykieta: `pr-{number}-{head12}`.
-- Retencja artefaktu: 90 dni, w granicach polityki repozytorium. Pobranie
-  wymaga zalogowania do GitHub. Ponowienie runu zachowuje stare zdarzenie
-  i jego SHA; po zmianie bazy lub wygaśnięciu paczki wymagany jest nowy
-  commit lub close/reopen PR. Limit ponawiania runów wynosi 30 dni.
+- Retencja testowego artefaktu PR: 14 dni, w granicach polityki repozytorium.
+  Pobranie wymaga zalogowania do GitHub. Ponowienie runu jest możliwe przez
+  30 dni i zachowuje stare zdarzenie oraz jego SHA; po wygaśnięciu paczki
+  ma sens tylko przy niezmienionych head/base. Nowy commit lub close/reopen
+  PR odświeża bazę oraz tworzy nową paczkę dla aktualnych źródeł.
 - Build ma uprawnienia odczytu. Publisher może pisać wyłącznie opis PR;
   nie wykonuje kodu PR ani nie pobiera jego artefaktów.
 - Nie zmieniać PBI-102–103, harmonogramu, tagów, changeloga ani procedury
@@ -44,8 +45,9 @@ metadanych API GitHub; jego kod pochodzi z zaufanej gałęzi domyślnej.
   `<!-- pr-data-preview:start -->` / `<!-- pr-data-preview:end -->`.
 - ZIP ma dziewięć plików release w katalogu głównym oraz manifest i sumy;
   brak pliku albo stara zawartość katalogu wyjściowego jest błędem.
-- Workflow publishera jest dostępny dopiero po ludzkim merge do main;
-  pierwszą paczkę #12 trzeba opisać tą samą logiką lokalnie przez API.
+- Ludzki merge workflow do main jest jednorazową instalacją publishera.
+  Każdy podgląd buduje `pull_request` przed rzeczywistym merge danego PR;
+  pierwszą paczkę #12 opisuje ta sama logika lokalnie przez API.
 
 ## Wykonanie
 
@@ -67,7 +69,7 @@ metadanych API GitHub; jego kod pochodzi z zaufanej gałęzi domyślnej.
   aktualizacji stanu,
   starego SHA/runu, forka i błędnych metadanych API.
 - [x] Dodać `.github/workflows/pr-data.yml` z odczytem repozytorium,
-  kontrolą merge i uploadem eksportów na 90 dni.
+  kontrolą merge i uploadem eksportów na 14 dni.
 - [x] Dodać `.github/workflows/publish-pr-data.yml` na `workflow_run`
   (`in_progress` / `completed`), z zaufanym checkoutem `workflow_sha`.
 - [x] Dodać `.github/scripts/publish_pr_data.cjs`; dane z API traktować
