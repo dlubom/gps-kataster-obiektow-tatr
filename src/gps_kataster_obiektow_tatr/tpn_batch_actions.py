@@ -263,12 +263,15 @@ class DomainPlan:
         if field == "notes":
             require(a["revision_hash"] == row["revision_hash"], "note revision mismatch")
             fragment = f"[TPN {row['revision_hash']}] {a['append_text']}"
-            expected = (base.get(field) or "") + ("\n" if base.get(field) else "") + fragment
-            require(a["after"] == expected, "note after must append exact fragment")
+            before = base.get(field) or ""
+            already_present = f"\n{fragment}\n" in f"\n{before}\n"
+            expected = before if already_present else before + ("\n" if before else "") + fragment
+            require(a["after"] == expected, "note after must preserve or append exact fragment")
             self.claim((*key, fragment))
-            current[field] = (
-                (current.get(field) or "") + ("\n" if current.get(field) else "") + fragment
-            )
+            if not already_present:
+                current[field] = (
+                    (current.get(field) or "") + ("\n" if current.get(field) else "") + fragment
+                )
         else:
             self.claim(key)
             current[field] = a["after"]

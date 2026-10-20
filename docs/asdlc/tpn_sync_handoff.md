@@ -176,9 +176,11 @@ CI odczytaj na żywo z PR #12.
 
 PR pozostaje draftem do człowieka. Stan gałęzi jest kandydatem; przyjęta
 baza nadal pochodzi wyłącznie z origin/main. D26 pozostaje w trwałej kolejce.
-Review 2026-10-20 wykazał P2 dotyczące powielania notatek między cyklami;
-pozostaje otwarte i wymaga osobnego zlecenia. Niniejsza korekta P3 dotyczy
-tylko dokumentacji; [szczegóły i odbiór](verification/PBI-101.md#korekta-p3-po-niezależnym-review-2026-10-20).
+Po review 2026-10-20 poprawiono P3 (nieaktualny handoff), a na osobne
+zlecenie również P2 (powielanie notatek między cyklami). Test dwóch cykli
+potwierdza zachowanie pojedynczego fragmentu oraz odrzucenie kopii w after.
+[Zakres i odbiór P2](verification/PBI-101.md#poprawka-p2-po-niezależnym-review-2026-10-20).
+Obie poprawki zachowują zaakceptowane dane i zgody.
 Merge pozostaje osobną decyzją człowieka; PBI-102–103 nie rozpoczęto.
 
 Manifest auto→manual nadal pending, 9/9 preimages zgodne; brak migracji.

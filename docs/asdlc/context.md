@@ -2,15 +2,29 @@
 
 Last updated: 2026-10-20
 
+## Review PR #12 — poprawka P2
+
+2026-10-20 użytkownik zlecił wyłącznie naprawę powielania notatek przy
+ponownym review tej samej rewizji, test dwóch cykli i commit/push/CI PR #12.
+`update_metadata` rozpoznaje istniejący cały oznaczony fragment i wymaga
+wtedy after==before; dopisanie kopii jest błędem preflight. Zachowuje ręczny
+tekst i różne nowe fragmenty. Test dwóch cykli obejmuje notes Obiektu,
+Jaskini i Pomiaru oraz tekst jedno- i wielowierszowy; RED→GREEN potwierdzone.
+1090 testów, Ruff, check ready=true i 2/2 celowane mutacje PASS.
+[Zakres i odbiór](verification/PBI-101.md#poprawka-p2-po-niezależnym-review-2026-10-20).
+Zaakceptowane dane, decyzje, snapshoty, kontrakt i superseded-v1 zachowują
+bajty; PBI-099 nadal pending. PR draft, stan gałęzi jest kandydatem,
+bez merge, release, PBI-102–103 i harmonogramu.
+
 ## Review PR #12 — korekta P3
 
 2026-10-20 użytkownik zlecił wyłącznie naprawę nieaktualnego kanonicznego
 handoffu P3. Uzgodniono aktywny handoff, status w specyfikacji i listę D26
 z odbiorem PBI-101: 614 approve / 26 defer / 0 pending, dane zastosowane,
 CI i eksporty odebrane. [Zakres i weryfikacja](verification/PBI-101.md#korekta-p3-po-niezależnym-review-2026-10-20).
-P2 z tego review (powielanie oznaczonych notatek między cyklami,
-`tpn_batch_actions.py` / `update_metadata`) pozostaje otwarte do osobnego
-zlecenia. Korekta P3 nie zmienia kodu, danych ani zgód. PR nadal draft;
+P2 z tego review pozostało wówczas otwarte do osobnego zlecenia;
+późniejszą poprawkę opisuje sekcja P2 powyżej. Korekta P3 nie zmieniała
+kodu, danych ani zgód. PR nadal draft;
 stan gałęzi jest kandydatem, merge należy do człowieka.
 
 ## Integracja TPN — PBI-101 wykonane, PR do ludzkiego review

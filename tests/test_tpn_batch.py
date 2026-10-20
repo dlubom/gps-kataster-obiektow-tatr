@@ -348,6 +348,124 @@ def test_metadata_notes_preserve_text_and_null_needs_explicit_clear(batch_repo):
     assert hashes(root) == before
 
 
+@pytest.mark.parametrize("kind", ["object", "cave", "measurement"])
+@pytest.mark.parametrize("append_text", ["Opis źródła", "Opis źródła\nDodatkowy kontekst"])
+def test_note_rereview_preserves_one_fragment_across_two_cycles(batch_repo, kind, append_text):
+    from gps_kataster_obiektow_tatr.tpn_batch import apply_batch, check_batch, prepare_batch
+    from gps_kataster_obiektow_tatr.tpn_normalization import exact_json, normalize_feature
+
+    root, snap = batch_repo
+    object_path = root / "data/objects/KSW/KSW-0001.yml"
+    path = root / "data/caves/C-0001.yml" if kind == "cave" else object_path
+    record = yaml.safe_load(path.read_text())
+    note_owner = record["measurements"][0] if kind == "measurement" else record
+    note_owner["notes"] = "Ręczna uwaga operatora"
+    path.write_text(yaml.safe_dump(record, allow_unicode=True))
+    recommit(root)
+    rev = normalize_feature(feature(lon=19.801))["revision_hash"]
+    fragment = f"[TPN {rev}] {append_text}"
+    expected = "Ręczna uwaga operatora\n" + fragment
+    target = {"kind": kind, "id": "C-0001" if kind == "cave" else "KSW-0001"}
+    if kind == "measurement":
+        target["measurement_id"] = "m-001"
+    action = {
+        "action": "update_metadata",
+        "target": target,
+        "field": "notes",
+        "before": "Ręczna uwaga operatora",
+        "after": expected,
+        "append_text": append_text,
+        "revision_hash": rev,
+    }
+    changes, decisions = prepare(batch_repo, [action])
+    apply_batch(root, changes, decisions, reviewers={"human"})
+    check_batch(root, "fixture-batch")
+    first = yaml.safe_load(path.read_text())
+    assert (first["measurements"][0] if kind == "measurement" else first)["notes"] == expected
+    receipt_path = root / "data/source_reviews/tpn/fixture-batch/application.json"
+    first_receipt = receipt_path.read_bytes()
+    recommit(root)
+
+    # An independent local edit requires reviewing the same source revision again.
+    obj = yaml.safe_load(object_path.read_text())
+    obj["name_local"] = "Potwierdzona lokalna nazwa"
+    object_path.write_text(yaml.safe_dump(obj, allow_unicode=True))
+    recommit(root)
+    head = git(root, "rev-parse", "HEAD")
+    state = exact_json((root / "data/source_state/tpn/state.json").read_bytes())
+    report = tpn_changes.compare(
+        root, snap, batch_id="second-cycle", base_commit=head, state=state, protect_best=True
+    )
+    report["accepted_state_commit"] = head
+    row = report["records"][0]
+    assert row["revision_hash"] == rev and row["requires_review"]
+    action["before"] = expected
+    proposal = {
+        "change_id": row["change_id"],
+        "target": row["target"],
+        "preimage": row["preimage"],
+        "actions": [action],
+        "conflict_acknowledgements": row["conflicts"],
+        "candidate_acknowledgements": [],
+    }
+
+    # A reviewed after value may not ask the applier to duplicate existing text.
+    action["after"] = expected + "\n" + fragment
+    invalid_changes, invalid_decisions = prepare_batch(root, report, [proposal])
+    invalid_decisions["decisions"][0].update(
+        status="approve",
+        reviewed_by="human",
+        reviewed_at="2026-10-20T10:00:00Z",
+        reason="Ponowne review po lokalnej korekcie nazwy",
+    )
+    before = hashes(root)
+    with pytest.raises(ValueError, match="note after"):
+        apply_batch(root, invalid_changes, invalid_decisions, reviewers={"human"})
+    assert hashes(root) == before
+
+    action["after"] = expected
+    changes, decisions = prepare_batch(root, report, [proposal])
+    decisions["decisions"][0].update(invalid_decisions["decisions"][0], actions=[action])
+    apply_batch(root, changes, decisions, reviewers={"human"})
+    check_batch(root, "second-cycle")
+    result = yaml.safe_load(path.read_text())
+    assert (result["measurements"][0] if kind == "measurement" else result)["notes"] == expected
+    final_object = yaml.safe_load(object_path.read_text())
+    assert final_object["name_local"] == obj["name_local"]
+    assert final_object["measurements"] == obj["measurements"]
+    assert final_object["best_measurement"] == obj["best_measurement"]
+    assert receipt_path.read_bytes() == first_receipt
+    after = hashes(root)
+    assert apply_batch(root, changes, decisions, reviewers={"human"})["noop"]
+    assert hashes(root) == after
+
+
+@pytest.mark.parametrize("existing", ["[TPN {rev}] Opis rozszerzony", "Cytat: [TPN {rev}] Opis"])
+def test_note_fragment_prefix_or_inline_quote_does_not_suppress_new_fragment(batch_repo, existing):
+    from gps_kataster_obiektow_tatr.tpn_batch import apply_batch
+    from gps_kataster_obiektow_tatr.tpn_normalization import normalize_feature
+
+    root, _ = batch_repo
+    rev = normalize_feature(feature(lon=19.801))["revision_hash"]
+    path = root / "data/objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(path.read_text())
+    obj["notes"] = existing.format(rev=rev)
+    path.write_text(yaml.safe_dump(obj, allow_unicode=True))
+    recommit(root)
+    action = {
+        "action": "update_metadata",
+        "target": {"kind": "object", "id": "KSW-0001"},
+        "field": "notes",
+        "before": obj["notes"],
+        "after": obj["notes"] + f"\n[TPN {rev}] Opis",
+        "append_text": "Opis",
+        "revision_hash": rev,
+    }
+    changes, decisions = prepare(batch_repo, [action])
+    apply_batch(root, changes, decisions, reviewers={"human"})
+    assert yaml.safe_load(path.read_text())["notes"] == action["after"]
+
+
 @pytest.mark.parametrize("protection", ["gnss", "manual", "own_verified", "historical_gnss"])
 def test_protection_blocks_select_and_pending_manifest_migration(batch_repo, protection):
     from gps_kataster_obiektow_tatr.tpn_batch import apply_batch

@@ -78,9 +78,14 @@ Jaskini. Wartość musi pochodzić ze wskazanej rewizji. Powód tożsamości jes
 w evidence; attach nie dopisuje pomiaru.
 
 Metadata dopuszcza name_local/category/notes Obiektu, name/system_name/notes
-Jaskini i notes pomiaru. Dla notes `after` musi być dokładnie before z dopisanym
-`[TPN REVISION_HASH] append_text`; wiele fragmentów jest łączonych z zachowaniem
-starego tekstu. Pozostałe pola można wyczyścić tylko z clear:true i reason,
+Jaskini i notes pomiaru. Nowy fragment `[TPN REVISION_HASH] append_text`
+wymaga `after` równego before z dopisanym fragmentem. Jeśli identyczny cały
+fragment już występuje w before na granicach wierszy, wymagane jest
+`after == before`; propozycja dopisania kopii jest odrzucana. Dotyczy to
+także tekstów wielowierszowych i ponownego review tej samej rewizji w nowej
+paczce. Sam prefiks lub cytat wewnątrz wiersza nie oznacza równości.
+Wiele różnych fragmentów jest łączonych z zachowaniem starego tekstu.
+Pozostałe pola można wyczyścić tylko z clear:true i reason,
 o ile dopuszcza to schemat domenowy. Nie można tym zmienić współrzędnych,
 wysokości, daty, źródła, dokładności ani weryfikacji pomiaru.
 
