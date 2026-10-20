@@ -52,10 +52,7 @@ measurements:
   x_1992: 152010.002
   y_1992: 565824.125
 name_local: Okno w Ciemniaku
-notes: '[D002; TPN 041adf4d-119c-4a51-93b9-982b2127d2a4] J. Nowak, Okno w Ciemniaku,
-  Jaskinie 82 (2016), s. 27: portal i komin połączony z powierzchnią. http://jaskinie.org.pl/files/Jaskinie__82_2016.pdf#page=27
-
-  Metryka źródła TPN: DLUGOSC=4.5; PRZEWYZSZE=3.5.'
+notes: null
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

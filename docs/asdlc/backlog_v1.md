@@ -77,6 +77,8 @@ Dokładny końcowy SHA i jego odbiór CI/eksportów utrwala opis PR #12.
 [suplement i odbiór](verification/PBI-101-D26.md). Nowy kandydat stanu ma
 640 approve / 0 defer / 0 pending; katalog ma 1035 Obiektów, 1027 Jaskiń
 i 1938 pomiarów. Oryginalne decyzje i archiwa pozostają niezmienne.
+Późniejsza [korekta opisów i bibliografii](verification/PBI-101-notes.md)
+porządkuje AE/AF i uzupełnia trzy źródła, zachowując wszystkie pomiary i best.
 Bez PBI-102, merge, tagu, release i harmonogramu.
 
 ## Wydanie v1.1.1

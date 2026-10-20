@@ -3,14 +3,14 @@ created_by: agent:codex
 external_refs: []
 id: C-1023
 name: Jaskinia Cynamonowa
-notes: '[D018; TPN a876a547-7912-4033-bb3f-8ed2f589c5f0] S. Solarczyk, Jaskinia Cynamonowa,
-  Jaskinie 101 (2020), s. 33–34: plan i przekrój, współrzędne zgodne z punktem TPN;
-  głębokość na oryginalnym przekroju 11,9 m. http://jaskinie.org.pl/files/Jaskinie__101_2020.pdf#page=33
+notes: 'S. Solarczyk, Jaskinia Cynamonowa, Jaskinie 101 (2020), s. 33–34: plan i przekrój,
+  współrzędne zgodne z punktem TPN; głębokość na oryginalnym przekroju 11,9 m. http://jaskinie.org.pl/files/Jaskinie__101_2020.pdf#page=33
 
-  Metryka źródła TPN: DLUGOSC=47; GLEBOKOSC=11.9; PRZEWYZSZE=1.8; DENIWELACJ=13.7.'
+  Metryka źródła TPN: długość 47 m; głębokość 11,9 m; przewyższenie 1,8 m; deniwelacja
+  13,7 m.'
 object_ids:
 - CHZ-0031
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

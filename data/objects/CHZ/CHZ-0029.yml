@@ -52,10 +52,7 @@ measurements:
   x_1992: 152855.236
   y_1992: 558282.494
 name_local: Schron pod Gawrą w Bobrowcu
-notes: '[D007; TPN 28bd775c-1b67-4aea-9ffb-49c32eef6bed] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
-
-  Metryka źródła TPN: DLUGOSC=3.'
+notes: null
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

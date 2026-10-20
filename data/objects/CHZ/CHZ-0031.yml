@@ -52,11 +52,7 @@ measurements:
   x_1992: 153160.874
   y_1992: 558489.794
 name_local: Jaskinia Cynamonowa
-notes: '[D018; TPN a876a547-7912-4033-bb3f-8ed2f589c5f0] S. Solarczyk, Jaskinia Cynamonowa,
-  Jaskinie 101 (2020), s. 33–34: plan i przekrój, współrzędne zgodne z punktem TPN;
-  głębokość na oryginalnym przekroju 11,9 m. http://jaskinie.org.pl/files/Jaskinie__101_2020.pdf#page=33
-
-  Metryka źródła TPN: DLUGOSC=47; GLEBOKOSC=11.9; PRZEWYZSZE=1.8; DENIWELACJ=13.7.'
+notes: null
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

@@ -10,6 +10,8 @@ PBI-100 dostarcza [decyzje i zastosowanie](tpn_sync_decisions.md).
 PBI-101 dostarcza pierwszą uzgodnioną paczkę: 614 approve / 26 defer / 0 pending.
 Późniejsze decyzje użytkownika realizuje [suplement D26](verification/PBI-101-D26.md):
 kandydat stanu 640 approve / 0 defer / 0 pending; pierwotne archiwa bez zmian.
+Następna [korekta opisów i bibliografii](verification/PBI-101-notes.md) porządkuje
+AE/AF oraz uzupełnia trzy źródła; nie zmienia pomiarów, best ani decyzji TPN.
 Aktualny status jest w backlogu oraz [logu PBI-101](verification/PBI-101.md);
 [CLI i rejestr PBI-097](tpn_sync_comparison.md).
 
@@ -50,6 +52,9 @@ Kolejność czytania:
    trzy przypięcia manual dokumentuje [osobny zapis](verification/PBI-099-manual-selection.json).
    Następnie przeczytaj [wykonanie D26](verification/PBI-101-D26.md) i jego
    [zgodę, bazę i hashe](verification/PBI-101-D26-resolution.json).
+   Korektę opisów odtwarza osobny
+   [zapis preimage i wyników](verification/PBI-101-catalog-notes.json).
+   Historyczny check wymaga zachowania w historii także przodka `8c18ee573e5224b8f02044d4f4b823459b6cbcd7`.
    Końcowy SHA i wyniki jego CI odczytaj z opisu PR.
 
 ## Publiczne API i dokładne zapytanie

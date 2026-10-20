@@ -52,10 +52,7 @@ measurements:
   x_1992: 154380.4
   y_1992: 567518.366
 name_local: Nyża pod Szarą Turnią I
-notes: '[D011; TPN 55ed69a3-9228-452b-87ce-8133710292b1] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
-
-  Metryka źródła TPN: DLUGOSC=3.8.'
+notes: null
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

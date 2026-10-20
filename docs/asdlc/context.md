@@ -2,6 +2,20 @@
 
 Last updated: 2026-10-20
 
+## PR #12 — opisy jaskiń, otworów i bibliografia
+
+Na zlecenie użytkownika poprawiono 28 opisów Jaskiń (Excel Full AF) i 24
+opisy Obiektów (AE): bibliografia występuje raz w opisie Jaskini, uwagi
+otworu pozostają przy Obiekcie, bez Dxxx i powtórzonych cytowań w tych polach.
+Dopisano źródła dla Jaskini w Kozim Grzbiecie, Jaskini Lodowej Ponorowej
+i Okna przy Źródle. Dla dwóch Gawr dokumentacji nie odnaleziono.
+Wszystkie 1938 pomiarów, 1035 wyborów best i referencje pozostają niezmienione.
+[Odbiór](verification/PBI-101-notes.md) oraz
+[zgoda i preimage](verification/PBI-101-catalog-notes.json) opisują korektę.
+Historyczne decyzje i receipt D26 zachowują bajty; check odtwarza osobno
+korektę notes/audytu i hashy kontekstu. Końcowe SHA, CI i ZIP wskazuje opis PR.
+Bez merge, tagu i release.
+
 ## PBI-104 — paczka danych w każdym PR, zaczynając od #12
 
 **Implementacja i pierwsza paczka odebrane**, osobne zlecenie użytkownika

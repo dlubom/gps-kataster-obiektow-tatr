@@ -3,13 +3,12 @@ created_by: agent:codex
 external_refs: []
 id: C-1026
 name: Komora w Kończystej Turni
-notes: '[D021; TPN c24021bb-73c2-4bc2-83f1-aabefc26492e] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
+notes: 'Nowa pozycja według TPN. Dokumentacji nie odnaleziono.
 
-  Metryka źródła TPN: DLUGOSC=7.'
+  Metryka źródła TPN: długość 7 m.'
 object_ids:
 - MTW-0073
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

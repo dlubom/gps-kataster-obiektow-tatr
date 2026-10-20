@@ -3,13 +3,12 @@ created_by: agent:codex
 external_refs: []
 id: C-1021
 name: Gawra w Bobrowcu
-notes: '[D016; TPN a32f96eb-2092-4974-9256-b1d26b3f35a3] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
+notes: 'Nowa pozycja według TPN. Dokumentacji nie odnaleziono.
 
-  Metryka źródła TPN: DLUGOSC=22; PRZEWYZSZE=6.'
+  Metryka źródła TPN: długość 22 m; przewyższenie 6 m.'
 object_ids:
 - CHZ-0030
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

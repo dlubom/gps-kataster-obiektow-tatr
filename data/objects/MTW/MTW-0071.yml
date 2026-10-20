@@ -52,10 +52,7 @@ measurements:
   x_1992: 155494.763
   y_1992: 563944.029
 name_local: Dziura nad Zahradziskami
-notes: '[D009; TPN 37ef7fe5-6e87-47d4-97c8-cb0ebd9ddeee] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
-
-  Metryka źródła TPN: DLUGOSC=5.'
+notes: null
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

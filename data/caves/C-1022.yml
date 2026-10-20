@@ -3,13 +3,12 @@ created_by: agent:codex
 external_refs: []
 id: C-1022
 name: Schron nad Wielką Równią
-notes: '[D017; TPN a61dc23d-4158-4eee-8bf0-885e41f79740] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
+notes: 'Nowa pozycja według TPN. Dokumentacji nie odnaleziono.
 
-  Metryka źródła TPN: DLUGOSC=6.'
+  Metryka źródła TPN: długość 6 m.'
 object_ids:
 - STR-0035
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

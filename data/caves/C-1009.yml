@@ -3,10 +3,13 @@ created_by: agent:codex
 external_refs: []
 id: C-1009
 name: Jaskinia Lodowa Ponorowa
-notes: null
+notes: 'J. Nowak, Z archiwum „J” cz. VIII – Dolina Mułowa, Jaskinie 85 (2016), s.
+  27–28: opis i plan Jaskini Lodowej Ponorowej. http://jaskinie.org.pl/files/Jaskinie__85_2016.pdf#page=27
+
+  Metryka źródła TPN: długość 8 m; głębokość 5,3 m.'
 object_ids:
 - MTZ-0068
 schema_version: 1
 system_name: null
-updated_at: '2026-10-19T18:54:41.078420Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

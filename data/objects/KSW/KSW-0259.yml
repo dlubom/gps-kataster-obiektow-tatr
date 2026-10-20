@@ -50,11 +50,7 @@ measurements:
   x_1992: 153757.909
   y_1992: 564255.937
 name_local: Okno pod Sikawką
-notes: '[D025; TPN ef966744-eb95-48b3-b2ba-7a031f8df91a] J. Nowak, Z archiwum J cz.
-  VII — Sikawka, Jaskinie 73 (2013), s. 27–28: osobny opis i plan Okna pod Sikawką,
-  wyjaśnienie wcześniejszego pomylenia z Jaskinią przy Sikawce. http://jaskinie.org.pl/files/Jaskinie__73_2013.pdf#page=27
-
-  Metryka źródła TPN: DLUGOSC=3.5.'
+notes: null
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

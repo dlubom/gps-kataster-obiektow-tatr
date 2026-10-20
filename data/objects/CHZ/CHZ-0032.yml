@@ -52,10 +52,7 @@ measurements:
   x_1992: 153693.833
   y_1992: 559062.217
 name_local: Rura w Olejarni
-notes: '[D023; TPN d96cd642-e9d3-4eb8-b9dc-d7df3f449705] J. Nowak, Dwie jaskinie w
-  Olejarni, Jaskinie 93 (2018), s. 32–33: osobny opis i plan Rury w Olejarni. http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32
-
-  Metryka źródła TPN: DLUGOSC=6.5; PRZEWYZSZE=2.'
+notes: null
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

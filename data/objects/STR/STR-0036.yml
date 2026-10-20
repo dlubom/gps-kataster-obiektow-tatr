@@ -52,10 +52,7 @@ measurements:
   x_1992: 154422.682
   y_1992: 567600.015
 name_local: Nyża pod Zachodem Pilotów III
-notes: '[D019; TPN adbf9ca1-deff-402f-a223-04ba9c1d0d35] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
-
-  Metryka źródła TPN: DLUGOSC=3.'
+notes: null
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

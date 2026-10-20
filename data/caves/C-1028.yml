@@ -3,13 +3,12 @@ created_by: agent:codex
 external_refs: []
 id: C-1028
 name: Nyża pod Zachodem Pilotów II
-notes: '[D024; TPN dec416bc-64f2-49e0-abf9-cb2c5a040004] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
+notes: 'Nowa pozycja według TPN. Dokumentacji nie odnaleziono.
 
-  Metryka źródła TPN: DLUGOSC=5.'
+  Metryka źródła TPN: długość 5 m.'
 object_ids:
 - STR-0038
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

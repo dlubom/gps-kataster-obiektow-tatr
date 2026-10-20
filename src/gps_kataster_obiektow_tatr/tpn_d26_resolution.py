@@ -345,6 +345,10 @@ def verified_d26_resolution_tree(root, *, batch_id, plan_hash, expected_tree):
         files, _ = build_d26_files(base, receipt)
     wanted = {path: sha256(raw) for path, raw in files.items()}
     require(receipt["result_hashes"] == wanted, "D26 derived result hashes mismatch")
+    from .tpn_catalog_notes import verified_notes_files
+
+    files = verified_notes_files(root, files)
+    wanted = {path: sha256(raw) for path, raw in files.items()}
     result = dict(expected_tree)
     for relative, checksum in wanted.items():
         require(

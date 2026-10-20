@@ -86,13 +86,7 @@ measurements:
   x_1992: 154170.348
   y_1992: 567547.316
 name_local: tunel w Skrajnej Giewonckiej Baszcie - otwór S
-notes: 'Otwór S wg TPN, arkusz Export, wiersz 874; punkt na południe od MLW-0044.
-
-  [D022; TPN ce72fc5c-f14b-4c6e-bd3e-b411934a8c30] Rekord przypisano do otworu S MLW-0050,
-  zachowując dotychczasowy best. KKTJ, J. Nowak, 04 Dolinki Reglowe 2026.07, s. 2,
-  poz. 28: Tunel 10,1 m. https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=395
-
-  Metryka źródła TPN: DLUGOSC=10.1; PRZEWYZSZE=2.1; DENIWELACJ=2.1.'
+notes: Otwór S wg TPN, arkusz Export, wiersz 874; punkt na południe od MLW-0044.
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

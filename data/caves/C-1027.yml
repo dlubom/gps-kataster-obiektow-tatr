@@ -3,13 +3,13 @@ created_by: agent:codex
 external_refs: []
 id: C-1027
 name: Rura w Olejarni
-notes: '[D023; TPN d96cd642-e9d3-4eb8-b9dc-d7df3f449705] J. Nowak, Dwie jaskinie w
-  Olejarni, Jaskinie 93 (2018), s. 32–33: osobny opis i plan Rury w Olejarni. http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32
+notes: 'J. Nowak, Dwie jaskinie w Olejarni, Jaskinie 93 (2018), s. 32–33: osobny opis
+  i plan Rury w Olejarni. http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32
 
-  Metryka źródła TPN: DLUGOSC=6.5; PRZEWYZSZE=2.'
+  Metryka źródła TPN: długość 6,5 m; przewyższenie 2 m.'
 object_ids:
 - CHZ-0032
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

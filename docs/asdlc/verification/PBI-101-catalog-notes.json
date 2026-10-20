@@ -1,0 +1,273 @@
+{
+  "format": "tpn-catalog-notes",
+  "format_version": 1,
+  "base_commit": "8c18ee573e5224b8f02044d4f4b823459b6cbcd7",
+  "applied_at": "2026-10-20T19:37:51Z",
+  "applied_by": "agent:codex",
+  "authorization_quote": "Tak, popraw to w PR #12: bibliografia raz w AF, uwagi otworu w AE, usuń z opisów Dxxx i duplikaty. Uzupełnij znalezione źródła, zachowaj historię pomiarów. Zrób commit/push i sprawdź CI oraz nową paczkę eksportów. Bez merge.",
+  "notes": {
+    "data/caves/C-0219.yml": {
+      "before_sha256": "b9bfdeca8b8eed3a307cd69ed29a10f5c0baa5f983a67a63746d805fd1252411",
+      "after": "Karta PIG 760 (T.E-08.07) opisuje dwa otwory: https://jaskiniepolski.pgi.gov.pl/Details/Information/760\nPIG sector: D. Kościeliska - Wsch.\nPIG morphometry: length_m=44, depth_m=18,6, denivelation_m=18,6\nPIG source state year: 2014\nMetryka źródła TPN: długość 44 m; głębokość 18,6 m; przewyższenie 0 m; deniwelacja 18,6 m."
+    },
+    "data/caves/C-0981.yml": {
+      "before_sha256": "c31b39d4d78026dc4338f0b5c3cd8b9a9517ee3f5ab54f43625a59abf0b29cc7",
+      "after": "KKTJ, J. Nowak, 04 Dolinki Reglowe 2026.07, s. 2, poz. 28: Tunel 10,1 m. https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=395\nHistoryczny import TPN:\nTPN length: 10\nTPN depth: 0\nTPN denivelation: 2\nTPN verification/location note: 15-11-2024 FF, orto\nMetryka źródła TPN: długość 10,1 m; przewyższenie 2,1 m; deniwelacja 2,1 m."
+    },
+    "data/caves/C-1005.yml": {
+      "before_sha256": "9e6abcda9fe1a2c6ac6d4b25969b1472fb312e36ff1cee4c15082a4e05c11bbf",
+      "after": "J. Nowak, Z archiwum „J” cz. VIII – Dolina Mułowa, Jaskinie 85 (2016), s. 28: opis i plan Jaskini w Kozim Grzbiecie. http://jaskinie.org.pl/files/Jaskinie__85_2016.pdf#page=28\nMetryka źródła TPN: długość 30 m; głębokość 10,5 m; przewyższenie 6,3 m; deniwelacja 16,8 m."
+    },
+    "data/caves/C-1006.yml": {
+      "before_sha256": "8f12860bd784ade765e833c08667c93ffe6571c4a13bfe8f5abf2e626027a25a",
+      "after": "Pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 3,3 m."
+    },
+    "data/caves/C-1007.yml": {
+      "before_sha256": "0e86ed9fa1832518c86b64d638c51faa1de00f363a1c1ca1e3d4145afa15077f",
+      "after": "F. Filar, Uzupełnienia z dolinek reglowych, Jaskinie 101 (2020), s. 31–32: opis i plan Okna przy Źródle na s. 32. http://jaskinie.org.pl/files/Jaskinie__101_2020.pdf#page=32\nMetryka źródła TPN: długość 3 m; przewyższenie 1,2 m; deniwelacja 1,2 m."
+    },
+    "data/caves/C-1008.yml": {
+      "before_sha256": "ea3994019006cd6ce229ceb64ccdb7812bce02d9c761efa225aa1ebfc24999a5",
+      "after": "Pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 4 m."
+    },
+    "data/caves/C-1009.yml": {
+      "before_sha256": "be4dc410c7193d1cdd1c960a7674cb389aa0f4419924a478e8ebd549164450ad",
+      "after": "J. Nowak, Z archiwum „J” cz. VIII – Dolina Mułowa, Jaskinie 85 (2016), s. 27–28: opis i plan Jaskini Lodowej Ponorowej. http://jaskinie.org.pl/files/Jaskinie__85_2016.pdf#page=27\nMetryka źródła TPN: długość 8 m; głębokość 5,3 m."
+    },
+    "data/caves/C-1010.yml": {
+      "before_sha256": "b760189bfbbef5060d1ef134489ca1209cd5c145989a2dd92fbdd6a050d0f39f",
+      "after": "J. Nowak, Dwie jaskinie w Olejarni, Jaskinie 93 (2018), s. 32–33: osobny opis i plan Szczeliny przy Zbójeckiej Dziurze. http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32\nMetryka źródła TPN: długość 15,5 m; przewyższenie 5,5 m."
+    },
+    "data/caves/C-1011.yml": {
+      "before_sha256": "822b2195fe511768132bab70c3e93c24a0e00131f176783e5343ad3724ade44d",
+      "after": "J. Nowak, Okno w Ciemniaku, Jaskinie 82 (2016), s. 27: portal i komin połączony z powierzchnią. http://jaskinie.org.pl/files/Jaskinie__82_2016.pdf#page=27\nMetryka źródła TPN: długość 4,5 m; przewyższenie 3,5 m."
+    },
+    "data/caves/C-1012.yml": {
+      "before_sha256": "9648fba0fb2ab2c6aeeec311d6d9ff8b1858dd6fb592aac2225ed7f6a30c93ad",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 3 m."
+    },
+    "data/caves/C-1013.yml": {
+      "before_sha256": "296a4dfbb1f18309cdd6c979832cbc140445613f07684705d66f48f3c62aebbf",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 3 m."
+    },
+    "data/caves/C-1014.yml": {
+      "before_sha256": "a0435296344071e97fb2d1a21c7eb8cf0ae7673add414a808bae7e0e0ee07546",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 3 m."
+    },
+    "data/caves/C-1015.yml": {
+      "before_sha256": "15a4f9ceb6de0ac07d09b1e3d4b4dcfceafca5e62bd9c5caa5b472b0e61e5549",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 5 m."
+    },
+    "data/caves/C-1016.yml": {
+      "before_sha256": "cb76f1b1af86d84dac7669273e5528b8fc59c4029171ef876d087c4c14eb554f",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 3,8 m."
+    },
+    "data/caves/C-1017.yml": {
+      "before_sha256": "f23409563fb39edcaac6d60aee4591f14c5fbc213e1bcf319718afc9bdd2b058",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 3 m."
+    },
+    "data/caves/C-1018.yml": {
+      "before_sha256": "c2feae5613a2a94f0de2492b6a7da82648338ec778c804226cee03360570d2ff",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 3 m."
+    },
+    "data/caves/C-1019.yml": {
+      "before_sha256": "c77dc167b8cf88361420c02a6153160a8af12dc5a047ce37410e6afc0f9bed38",
+      "after": "J. Nowak, Korytarz pod Ciemniakiem, Jaskinie 77 (2014), s. 29: ślepy ciąg z jednym wejściem, długość 8 m. http://jaskinie.org.pl/files/Jaskinie__77_2014.pdf#page=29\nMetryka źródła TPN: długość 8 m; przewyższenie 1,3 m."
+    },
+    "data/caves/C-1020.yml": {
+      "before_sha256": "b8df308c8eebb8f0765143c1a87151ccbecf6e8a79e5a781dc559239a2b1cba5",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 3 m."
+    },
+    "data/caves/C-1021.yml": {
+      "before_sha256": "cb34d2e565063d6e56e8af980a4cf68bac690664a993027ed8c9170f02a93c7a",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 22 m; przewyższenie 6 m."
+    },
+    "data/caves/C-1022.yml": {
+      "before_sha256": "c8b0f1342745a86a14271acfbc2647c86e1bfe5d2faf0aa267bb80b9e734bab2",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 6 m."
+    },
+    "data/caves/C-1023.yml": {
+      "before_sha256": "adf23879c70e676ef2a0c9cd84591349066ac28046fc75cfb5936cae43e0b6f5",
+      "after": "S. Solarczyk, Jaskinia Cynamonowa, Jaskinie 101 (2020), s. 33–34: plan i przekrój, współrzędne zgodne z punktem TPN; głębokość na oryginalnym przekroju 11,9 m. http://jaskinie.org.pl/files/Jaskinie__101_2020.pdf#page=33\nMetryka źródła TPN: długość 47 m; głębokość 11,9 m; przewyższenie 1,8 m; deniwelacja 13,7 m."
+    },
+    "data/caves/C-1024.yml": {
+      "before_sha256": "3b984986b2cadedacd92315ac6e9e75153795b3d529ddeb863e3eafecbd67aa3",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 3 m."
+    },
+    "data/caves/C-1025.yml": {
+      "before_sha256": "f3599d392591b4f647dc2d19919f48103e19b0edc5960c8b5119f82f067892e4",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 4 m."
+    },
+    "data/caves/C-1026.yml": {
+      "before_sha256": "22ec26ca232179b6fc75bd4884df3576369ae857d167eb1feb728e8c9a00ae45",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 7 m."
+    },
+    "data/caves/C-1027.yml": {
+      "before_sha256": "b29aa9efd4122b302b5074a6cdb8d20bc34b41e83daba6ba1fc48b9dc8069775",
+      "after": "J. Nowak, Dwie jaskinie w Olejarni, Jaskinie 93 (2018), s. 32–33: osobny opis i plan Rury w Olejarni. http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32\nMetryka źródła TPN: długość 6,5 m; przewyższenie 2 m."
+    },
+    "data/caves/C-1028.yml": {
+      "before_sha256": "bdf390d25305bc491af20573c6fca50c63af8f0793772ea61c7bad9fc0813c5f",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 5 m."
+    },
+    "data/caves/C-1029.yml": {
+      "before_sha256": "e41371d0ccc8cfefa5c8d0cd4b2a550cf40e207ddf75cb57cd0a71d0c7adbcd7",
+      "after": "J. Nowak, Z archiwum J cz. VII — Sikawka, Jaskinie 73 (2013), s. 27–28: osobny opis i plan Okna pod Sikawką, wyjaśnienie wcześniejszego pomylenia z Jaskinią przy Sikawce. http://jaskinie.org.pl/files/Jaskinie__73_2013.pdf#page=27\nMetryka źródła TPN: długość 3,5 m."
+    },
+    "data/caves/C-1030.yml": {
+      "before_sha256": "685d3dd35389979e3471ca3bc7db97104c62b05f9f70c37eb0b10d31ed25aba0",
+      "after": "Nowa pozycja według TPN. Dokumentacji nie odnaleziono.\nMetryka źródła TPN: długość 4 m."
+    },
+    "data/objects/CHZ/CHZ-0028.yml": {
+      "before_sha256": "defe40981a765454c4d1c96025c4241e97c02588fa42922858fd5e6fb3562537",
+      "after": null
+    },
+    "data/objects/CHZ/CHZ-0029.yml": {
+      "before_sha256": "aeb1142a03a5199bd2fd508dfb8d38444600c4328022f7c694481966143dc09c",
+      "after": null
+    },
+    "data/objects/CHZ/CHZ-0030.yml": {
+      "before_sha256": "f9e2a6c016612fde3b53c96da4d1edaab8d0ae048de6443d8dac1e1a04dbc737",
+      "after": null
+    },
+    "data/objects/CHZ/CHZ-0031.yml": {
+      "before_sha256": "c9a48e4a6b7590161ee1b5dfdb75eb640d8153259d13a7f01262a63a6423a760",
+      "after": null
+    },
+    "data/objects/CHZ/CHZ-0032.yml": {
+      "before_sha256": "189eb14910a90b898fca45afd532e62b470d7779183ededba9570359f50800be",
+      "after": null
+    },
+    "data/objects/KSW/KSW-0258.yml": {
+      "before_sha256": "9f69966f98d09950549b86c2bfe88a693cb289550ed4c504376074b5a4ab30cf",
+      "after": "Otwór N według TPN; drugi otwór Smoczej Jamy."
+    },
+    "data/objects/KSW/KSW-0259.yml": {
+      "before_sha256": "f63172f0be3429641e3ef24376ab626f0246b1611e96231fc09f7bf9a9030724",
+      "after": null
+    },
+    "data/objects/KSW/KSW-0260.yml": {
+      "before_sha256": "7c7813c37c1b552c0c0e352af53174018cac1b17a4e6f012c294bd1e0e353561",
+      "after": null
+    },
+    "data/objects/MLW/MLW-0050.yml": {
+      "before_sha256": "a146a1e7010c13bdfdc48502d08e907513ee62bede1af1257332b9ee8cd6f7e2",
+      "after": "Otwór S wg TPN, arkusz Export, wiersz 874; punkt na południe od MLW-0044."
+    },
+    "data/objects/MTW/MTW-0070.yml": {
+      "before_sha256": "f95bf08342cd780218cbdcbaf245ff116741a1257b8c507d3b0e29f01aea400a",
+      "after": null
+    },
+    "data/objects/MTW/MTW-0071.yml": {
+      "before_sha256": "2f1434e950d0f0ff06f70777b6bac0073a3bb2a616614beb72f43394d9afc4a1",
+      "after": null
+    },
+    "data/objects/MTW/MTW-0072.yml": {
+      "before_sha256": "8420563299fae9c3602df3bacc8f5ec0b396c1d84b215ac6cddd9274639d81ac",
+      "after": null
+    },
+    "data/objects/MTW/MTW-0073.yml": {
+      "before_sha256": "ec14c753482595cfeffcf78e921629325b2507cb34986e61eb85d3b1ff8dc4e1",
+      "after": null
+    },
+    "data/objects/MTZ/MTZ-0069.yml": {
+      "before_sha256": "8cad68ffd513486ccd734c22fcfd5cec4265c19fd6374eadcacd35f36e039fa0",
+      "after": null
+    },
+    "data/objects/MTZ/MTZ-0070.yml": {
+      "before_sha256": "73cb327b3a2d9c73d45410a2ca2134e87ea6445b89393ea6d221aadb1e1ffbb3",
+      "after": "Dwa wpisy TPN przyjęto jako ten sam otwór; zachowano oba źródła i pomiary."
+    },
+    "data/objects/MTZ/MTZ-0071.yml": {
+      "before_sha256": "c3a0bb0bf362c336d0b4fb2ef2f1e21dfaea50a9d85d37b6c9bac5b626328941",
+      "after": "Wpisy TPN „Korytarz w Ciemniaku” i „Korytarz pod Ciemniakiem” przyjęto jako ten sam otwór; zachowano oba źródła i pomiary."
+    },
+    "data/objects/STR/STR-0031.yml": {
+      "before_sha256": "b75df66839604c72b8b4ef89572aab9d2113e5952f5d0c7af496de684f606d54",
+      "after": null
+    },
+    "data/objects/STR/STR-0032.yml": {
+      "before_sha256": "3a1f1921b36514c59923a8c3e608d40a6a32d23156ab5ca5a6e5fe4c5cb1b462",
+      "after": null
+    },
+    "data/objects/STR/STR-0033.yml": {
+      "before_sha256": "568a521152ac9fcf218cd566cce1cf8c055007dd6ebfe1984d6837f6dd7dce2d",
+      "after": null
+    },
+    "data/objects/STR/STR-0034.yml": {
+      "before_sha256": "263eb18dbbb58c3d9b5567c052c648a535deedb4ad079e6fbe1cfaab3083b4f7",
+      "after": null
+    },
+    "data/objects/STR/STR-0035.yml": {
+      "before_sha256": "ce1252c34d95c0f04b62279e1996c34d527e15ea8895792fe217e6815464882a",
+      "after": null
+    },
+    "data/objects/STR/STR-0036.yml": {
+      "before_sha256": "a9cec269d9c43c78d53af41c20d40a34810da38af1e1dd25e2152fed0c039092",
+      "after": null
+    },
+    "data/objects/STR/STR-0037.yml": {
+      "before_sha256": "71b796edb2a017a4ee29c974e555f2770d84c27f7d8f5c0bb87466bf372577e7",
+      "after": null
+    },
+    "data/objects/STR/STR-0038.yml": {
+      "before_sha256": "653e4066bd0871af65ea5661cbe797b7d22a3138f93aa13833e7b08b958ecf0a",
+      "after": null
+    }
+  },
+  "result_hashes": {
+    "data/caves/C-0219.yml": "ec037ad4e97344fd739b71658b93bc51382e4fcd94be0a25794be8d0a118025d",
+    "data/caves/C-0981.yml": "859da796f4ace8b332ae70eeade8b3a03abeb5f721922e106afad272007aedf8",
+    "data/caves/C-1005.yml": "4b4b7be1e8e520bed7d69c4bec1a12c210bdc7993c622b51a891923202e57094",
+    "data/caves/C-1006.yml": "2337814376a1787dff475a6dc9479e77b009e2a3b073c8b359c2e4f4c4d2a411",
+    "data/caves/C-1007.yml": "d0842de6131ff9a24ce936cb680c3fc3f2467c7319cd893fccc060c412b5298f",
+    "data/caves/C-1008.yml": "613bfc1bc99744dafdb17cfa18d2f8c263d3a3f9b8e355ef996f604e06e91efb",
+    "data/caves/C-1009.yml": "38cda06ef7ff534bf1ec2f2dd5d9490b266d1d49baa5f94abeca16cfa2e8b883",
+    "data/caves/C-1010.yml": "b1b2976eff49651c281450061b12a7398f2bb09560948d2af69bfab3e24e30a3",
+    "data/caves/C-1011.yml": "5b8718c8943f24d022ef35409f3f7a13d3f2e44a2484d2fb73e0dcd23a7aead5",
+    "data/caves/C-1012.yml": "5b9bac933e3864229e8fe28d74dd6395ae3a9cdce162c0a5247d2da65c35d35a",
+    "data/caves/C-1013.yml": "6fe369770e3cc2d9b37a62979fd6cb0e98bd425ce82c8d7eb0e9f45da0aca0dd",
+    "data/caves/C-1014.yml": "63845f9ee21cdb322fa9e61b23762938e9960cc646a7539717d607cfb2e76792",
+    "data/caves/C-1015.yml": "60aeab52957bfdc09fe4ad9447739646f5884700424276fc00bdaeb61d749070",
+    "data/caves/C-1016.yml": "1c9d0f2d45c4d39597981d76c5110ddd8eaa3053567aad5cca102123a4a16587",
+    "data/caves/C-1017.yml": "04c0f7009d36eb8e4879df1147c610545586cc06527cf85a605a85f2c525fc85",
+    "data/caves/C-1018.yml": "ad383b2475df5d838b0d1fd1e00ae93e7058c53bf4543853764e4d5cf500ffb2",
+    "data/caves/C-1019.yml": "7ce95fb61ffbbcbc3b2ee51343219fdb15d0b6a5e7d2fc234766bc47697dde49",
+    "data/caves/C-1020.yml": "099724b8d536027313d0cd3b8ef123ae6b961a91fd0a07180b259883df289545",
+    "data/caves/C-1021.yml": "36f43c653969101f905f439ae7fb9b1ed40cd8246ba4f2cb164606ba7efeec07",
+    "data/caves/C-1022.yml": "4d26acf8f2b1edd534a4f828cdf710cb861c54627aca3664a13e5f3ddad55d31",
+    "data/caves/C-1023.yml": "1d386ce1678303758a750b6c47dc695915d632de537f11791e1c05951f488f72",
+    "data/caves/C-1024.yml": "4731e89a703ed3c721989a2610362fb4453f3017fcc6c4a4557ce8a1ea2ede2c",
+    "data/caves/C-1025.yml": "075beabd5f2e48109e15a8c870d565737216e2d484ddf5ed59473700f9c761cc",
+    "data/caves/C-1026.yml": "ed8969d80a7c8df61e3380b9510774259779ceaa9a308b34660fdf49f78ad4f2",
+    "data/caves/C-1027.yml": "2dad0abf41cbfba279d8b1143d233ca57cfee64038f5f7f0bf99034cb7de2857",
+    "data/caves/C-1028.yml": "453d814c60541828063fd4ce00f872498b66c9be341f04bc2568dc1f66f00d1e",
+    "data/caves/C-1029.yml": "20ce32444b3d2dc72f1254aa61cc9d1672c81a3af88c86f85dae0f2bfabd2bc1",
+    "data/caves/C-1030.yml": "f4d80effcea6c9f6d36f63247820ca9491aa513957300f9b267338fb64718380",
+    "data/objects/CHZ/CHZ-0028.yml": "44e01889113770026651a3f8bc4f31bcff39d347f97f5e4b6982bd50988b3f89",
+    "data/objects/CHZ/CHZ-0029.yml": "babc8a9bcd591a3e5ce54bcf5a90a10d1c8e2d545687b8ed34ca034d81d6e8ee",
+    "data/objects/CHZ/CHZ-0030.yml": "251df2d42977a0db8ee61afd5242aa01e18db39b4ed7bf342080074268c04b1f",
+    "data/objects/CHZ/CHZ-0031.yml": "5ec535f958a80b1526b9462f3a1e6748cf74958a50a2129510ca9d701e7cffc1",
+    "data/objects/CHZ/CHZ-0032.yml": "08c6964ab2c5eb65a5d9aae90bb6d88c5446c4c38239fdaa71661263422d763b",
+    "data/objects/KSW/KSW-0258.yml": "ef4a71ae96bb85129106ba6983771fe57ca39fd48b5be5c5539e1e75f326c8a1",
+    "data/objects/KSW/KSW-0259.yml": "db8a56523af9867f915a7eb0434216de99d43d417897810f6e16709790b35d07",
+    "data/objects/KSW/KSW-0260.yml": "8ced048f7c20f1539b3d35b004e16cdacf8b1b5750b581bbc6325b5c0d05271f",
+    "data/objects/MLW/MLW-0050.yml": "8dfe2a164fdff4200d9a5ce99590c0154976c610bd4d76b862408448138b1cb0",
+    "data/objects/MTW/MTW-0070.yml": "6ee04664f16c58a326fbb8a537ffeb5bc41345771de1158a3f0889cc2e39cb0a",
+    "data/objects/MTW/MTW-0071.yml": "0ae630e31021c19c080a7dac83f74ee87abd775b9170764aee28f8721271732f",
+    "data/objects/MTW/MTW-0072.yml": "c00eee190c38a435482d058243564372639d88d3c79b55e6373f8d4667b9cce9",
+    "data/objects/MTW/MTW-0073.yml": "5346843b364d8f9233208a8b6a01f9a28a58cc852e90a97e81e350b3b4a06d82",
+    "data/objects/MTZ/MTZ-0069.yml": "56c5b7e4c3171394b68e2f1c0ccfb268d7ced8b9e55a6e372dfc070ceaa91f11",
+    "data/objects/MTZ/MTZ-0070.yml": "7f37894a1f3f8d892f3482fb99c26165189ac55eb6676597b10ab2508be107e5",
+    "data/objects/MTZ/MTZ-0071.yml": "b5aa8cc7126a6cda0bcb19d49c47a79cff3b8ab308e1a75bbc9e12f169da2ef9",
+    "data/objects/STR/STR-0031.yml": "187aab5d9f4af636853df1afe6e7be9d98bf16bdf488912d1366829faf544afd",
+    "data/objects/STR/STR-0032.yml": "13342e36c7b6ad257b77f3e1dff6dd49269645fbf4d6cbd395df3db99ff72b21",
+    "data/objects/STR/STR-0033.yml": "1167e772703f934703ad45a0fb4239b65d8411f1a0712c7ff28a37db5ec582db",
+    "data/objects/STR/STR-0034.yml": "83e6452a2a4c6ba686d040dadfac1f6ad4d20fbae631544139200a2d46f40d5b",
+    "data/objects/STR/STR-0035.yml": "7ae2a77d44552b9eb8394e48af4902ac68db3acea7f3e71069aa96a32e5e192b",
+    "data/objects/STR/STR-0036.yml": "5a970e176bdb601b8d99a16d9e216b946f90ee80103c53f0d0ad992654bd7d78",
+    "data/objects/STR/STR-0037.yml": "ad3cb08a7492aab497f23451cdf4b194d0a4fc653ca56175c89551e4cb838994",
+    "data/objects/STR/STR-0038.yml": "bb5d80760fc8bf2c1508d898bf2bc9ee126f4a70da82d5481a4c45ddf75d8b5f",
+    "data/source_state/tpn/state.json": "5e00e643f3d2f796559e1162a6ed614958fdc57ad4f3d2cdbe7a980b31bc7c96"
+  }
+}

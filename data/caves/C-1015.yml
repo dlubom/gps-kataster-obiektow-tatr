@@ -3,13 +3,12 @@ created_by: agent:codex
 external_refs: []
 id: C-1015
 name: Dziura nad Zahradziskami
-notes: '[D009; TPN 37ef7fe5-6e87-47d4-97c8-cb0ebd9ddeee] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
+notes: 'Nowa pozycja według TPN. Dokumentacji nie odnaleziono.
 
-  Metryka źródła TPN: DLUGOSC=5.'
+  Metryka źródła TPN: długość 5 m.'
 object_ids:
 - MTW-0071
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

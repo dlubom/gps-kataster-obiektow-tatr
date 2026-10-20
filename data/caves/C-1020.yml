@@ -3,13 +3,12 @@ created_by: agent:codex
 external_refs: []
 id: C-1020
 name: Nyża za Jałowcem
-notes: '[D015; TPN 9beb2e85-ecb8-432a-90d4-623df217c6da] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
+notes: 'Nowa pozycja według TPN. Dokumentacji nie odnaleziono.
 
-  Metryka źródła TPN: DLUGOSC=3.'
+  Metryka źródła TPN: długość 3 m.'
 object_ids:
 - MTW-0072
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

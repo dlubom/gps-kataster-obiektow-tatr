@@ -52,10 +52,7 @@ measurements:
   x_1992: 154601.658
   y_1992: 568115.965
 name_local: Schron nad Wielką Równią
-notes: '[D017; TPN a61dc23d-4158-4eee-8bf0-885e41f79740] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
-
-  Metryka źródła TPN: DLUGOSC=6.'
+notes: null
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

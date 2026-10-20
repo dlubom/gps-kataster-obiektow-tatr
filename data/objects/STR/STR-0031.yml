@@ -52,10 +52,7 @@ measurements:
   x_1992: 154387.135
   y_1992: 567460.401
 name_local: Nyża pod Szarą Turnią III
-notes: '[D004; TPN 1792c71c-54b5-46ce-8e24-454f4a31e73f] Nowa pozycja według TPN.
-  Dokumentacji nie odnaleziono.
-
-  Metryka źródła TPN: DLUGOSC=3.'
+notes: null
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex

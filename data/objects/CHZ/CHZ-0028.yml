@@ -52,11 +52,7 @@ measurements:
   x_1992: 153665.276
   y_1992: 559063.322
 name_local: Szczelina przy Zbójeckiej Dziurze
-notes: '[D001; TPN 00a63f59-3d03-4703-a18e-27a0a75a7da1] J. Nowak, Dwie jaskinie w
-  Olejarni, Jaskinie 93 (2018), s. 32–33: osobny opis i plan Szczeliny przy Zbójeckiej
-  Dziurze. http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32
-
-  Metryka źródła TPN: DLUGOSC=15.5; PRZEWYZSZE=5.5.'
+notes: null
 schema_version: 1
-updated_at: '2026-10-20T16:04:54.133186Z'
+updated_at: '2026-10-20T19:37:51Z'
 updated_by: agent:codex
