@@ -2,6 +2,21 @@
 
 Last updated: 2026-10-20
 
+## PR #12 — zatwierdzone przypięcie trzech best do manual
+
+2026-10-20 użytkownik zatwierdził auto→manual dla KSW-0201/m-003,
+KSW-0240/m-002 i KSZ-0112/m-001 oraz polecił zachować zmianę w PR #12.
+Zachowano ID i pełną historię pomiarów; zmieniono wyłącznie tryb, powód
+i audyt wyboru oraz audyt obiektu. Wykonawca: agent:codex. Wysoka
+KSW-0189/m-003 była już manual i zachowuje dokładne bajty pliku.
+[Zgoda, podstawa i hashe przed/po](verification/PBI-099-manual-selection.json).
+Oryginalny manifest PBI-099 pozostaje niezmiennym historycznym audytem
+pending; nie jest aktualną listą oczekujących migracji. Dziewięć chronionych
+obiektów ma teraz manual. Oryginalne decyzje, receipt i stan paczki PBI-101
+pozostają niezmienione; bramka osobno sprawdza pierwotny wynik i te
+przypięcia. Ponowne apply starej paczki nadal odrzuca późniejszą zmianę.
+Bez merge, release, PBI-102–103 i harmonogramu.
+
 ## Review PR #12 — poprawka P2
 
 2026-10-20 użytkownik zlecił wyłącznie naprawę powielania notatek przy

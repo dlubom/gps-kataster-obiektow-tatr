@@ -15,6 +15,7 @@ from pathlib import Path
 from .tpn_api import require
 from .tpn_batch_actions import DomainPlan
 from .tpn_batch_protocol import prepare_documents, validate_documents
+from .tpn_best_migration import verified_manual_selection_tree
 from .tpn_candidates import CandidatePolicy
 from .tpn_changes import Catalog, compare
 from .tpn_duplicate_state import read_accepted_duplicates
@@ -391,8 +392,15 @@ def _plan(root, changes, decisions, reviewers, allow_pending=True, check_only=Fa
         for p, raw in files.items():
             outcome[p.removeprefix("data/")] = sha256(raw)
         current = current_nonbatch(root, changes["batch_id"])
+        checked_outcome = outcome
         if check_only:
-            require(current == outcome, "actual diff/output does not match decisions")
+            checked_outcome = verified_manual_selection_tree(
+                root,
+                batch_id=changes["batch_id"],
+                plan_hash=digest(plan),
+                expected_tree=outcome,
+            )
+            require(current == checked_outcome, "actual diff/output does not match decisions")
             require(
                 receipt is not None and receipt["plan_hash"] == digest(plan),
                 "missing/inconsistent application plan",
@@ -436,7 +444,20 @@ def _plan(root, changes, decisions, reviewers, allow_pending=True, check_only=Fa
                 and receipt["result_tree"] == old_outcome,
                 "application result evidence mismatch",
             )
-            require(current == old_outcome, "previous result/output changed; new review required")
+            checked_old_outcome = (
+                verified_manual_selection_tree(
+                    root,
+                    batch_id=changes["batch_id"],
+                    plan_hash=digest(old_plan),
+                    expected_tree=old_outcome,
+                )
+                if check_only
+                else old_outcome
+            )
+            require(
+                current == checked_old_outcome,
+                "previous result/output changed; new review required",
+            )
             # Every older linked decision remains durable, even after rejection of
             # an automatic proposal. Validate the chain, not only its newest tip.
             prior = receipt.get("previous_decisions_hash")
@@ -499,7 +520,7 @@ def _plan(root, changes, decisions, reviewers, allow_pending=True, check_only=Fa
                     "immutable changes file mismatch",
                 )
         plan["noop"] = bool(
-            receipt and receipt.get("plan_hash") == digest(plan) and current == outcome
+            receipt and receipt.get("plan_hash") == digest(plan) and current == checked_outcome
         )
         # noop is a runtime observation, not part of the deterministic plan hash.
         stable = {k: v for k, v in plan.items() if k != "noop"}

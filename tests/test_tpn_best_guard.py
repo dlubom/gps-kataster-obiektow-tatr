@@ -1,15 +1,45 @@
 """TPN protection is independent of source priority and never mutates history."""
 
+import json
 from copy import deepcopy
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
-import yaml
 
 from gps_kataster_obiektow_tatr import tpn_best_guard as guard
 from gps_kataster_obiektow_tatr.best_measurement import select_default_best_measurement_id
 
 REPO = Path(__file__).resolve().parents[1]
+
+
+@pytest.fixture
+def historical_protection_manifest():
+    return json.loads(
+        (REPO / "docs/asdlc/verification/PBI-099-protection-manifest.json").read_bytes()
+    )
+
+
+@pytest.fixture
+def historical_protection_catalog(historical_protection_manifest):
+    # The immutable audit retains the original selected measurements and auto bests.
+    # These compact objects exercise the old proposals independently of live YAML.
+    entries = historical_protection_manifest["objects"]
+    return SimpleNamespace(
+        objects={
+            entry["object_id"]: {
+                "id": entry["object_id"],
+                "name_local": entry["name"],
+                "measurements": [deepcopy(entry["selected_measurement"])],
+                "attachments": [],
+                "best_measurement": deepcopy(entry["best_before"]),
+            }
+            for entry in entries
+        },
+        paths={entry["object_id"]: entry["path"] for entry in entries},
+        hashes={entry["path"]: entry["preimage_sha256"] for entry in entries},
+        hash=historical_protection_manifest["catalog_hash"],
+    )
 
 
 def measurement(identity="m-001", **changes):
@@ -174,23 +204,27 @@ def test_invalid_histories_and_non_tpn_additions_cannot_reach_guard():
             guard.plan_best_action(obj(), new, action())
 
 
-def test_ksz_0112_regression_preserves_the_point_and_general_auto_algorithm():
-    old = yaml.safe_load((REPO / "data/objects/KSZ/KSZ-0112.yml").read_text())
+def test_ksz_0112_regression_preserves_the_point_and_general_auto_algorithm(
+    historical_protection_catalog,
+):
+    old = historical_protection_catalog.objects["KSZ-0112"]
     saved = deepcopy(old)
     assert select_default_best_measurement_id(old["measurements"] + [addition()]) == "m-002"
     result = guard.plan_best_action(old, [addition()], action())
     assert result["after"]["measurement_id"] == "m-001"
     assert not result["can_apply"]
+    assert "migration_manifest_approval_required" in result["blockers"]
     with pytest.raises(ValueError, match="TPN_BEST_PROTECTED"):
         guard.plan_best_action(old, [addition()], action("select_new", "m-002", "auto"))
     assert old == saved
 
 
-def test_catalog_audit_lists_exact_proposals_with_preimages_and_unchanged_best():
-    from gps_kataster_obiektow_tatr.tpn_changes import Catalog
+def test_catalog_audit_lists_exact_proposals_with_preimages_and_unchanged_best(
+    historical_protection_catalog, historical_protection_manifest
+):
     from gps_kataster_obiektow_tatr.tpn_normalization import digest
 
-    catalog = Catalog(REPO)
+    catalog = historical_protection_catalog
     saved = deepcopy(catalog.objects)
     report = guard.audit_catalog(catalog)
     assert report == guard.audit_catalog(catalog)
@@ -199,6 +233,7 @@ def test_catalog_audit_lists_exact_proposals_with_preimages_and_unchanged_best()
     assert report["policy"]["hash"] == digest(report["policy"]["rules"])
     proposals = {p["object_id"]: p for p in report["migration_proposals"]}
     assert set(proposals) == {"KSZ-0112", "KSW-0201", "KSW-0240"}
+    assert report["migration_proposals"] == historical_protection_manifest["migration_proposals"]
     for identity, proposal in proposals.items():
         assert proposal["before"] == saved[identity]["best_measurement"]
         assert proposal["after"]["measurement_id"] == proposal["before"]["measurement_id"]
@@ -210,13 +245,44 @@ def test_catalog_audit_lists_exact_proposals_with_preimages_and_unchanged_best()
     assert catalog.objects == saved
 
 
+def test_migrated_catalog_preserves_nine_protected_manual_best_choices(
+    historical_protection_manifest,
+):
+    from gps_kataster_obiektow_tatr.tpn_changes import Catalog
+    from gps_kataster_obiektow_tatr.tpn_snapshot import sha256
+
+    catalog = Catalog(REPO)
+    saved = deepcopy(catalog.objects)
+    report = guard.audit_catalog(catalog)
+    current = {entry["object_id"]: entry for entry in report["objects"]}
+    historical = {entry["object_id"]: entry for entry in historical_protection_manifest["objects"]}
+    assert len(current) == 9
+    assert current.keys() == historical.keys()
+    assert report["migration_proposals"] == []
+    for identity, entry in current.items():
+        before = historical[identity]
+        assert entry["protection"]["protected"]
+        assert entry["best_before"]["mode"] == "manual"
+        assert entry["best_before"]["measurement_id"] == before["best_before"]["measurement_id"]
+        assert entry["selected_measurement"] == before["selected_measurement"]
+        if before["best_before"]["mode"] == "manual":
+            assert entry["best_before"] == before["best_before"]
+    wysoka = historical["KSW-0189"]
+    assert current["KSW-0189"]["best_before"]["measurement_id"] == "m-003"
+    assert sha256((REPO / wysoka["path"]).read_bytes()) == wysoka["preimage_sha256"]
+    assert catalog.objects == saved
+
+
 def test_audit_cli_writes_readable_manifest_exclusively_without_touching_catalog(tmp_path):
-    import json
     import subprocess
     import sys
     import uuid
 
+    from gps_kataster_obiektow_tatr.tpn_changes import Catalog
+
     # Only reports may be written; the executable does not expose apply/migrate.
+    catalog = Catalog(REPO)
+    expected = guard.audit_catalog(catalog)
     output = REPO / "build" / "test-best-guard" / uuid.uuid4().hex
     command = [
         sys.executable,
@@ -229,12 +295,14 @@ def test_audit_cli_writes_readable_manifest_exclusively_without_touching_catalog
     completed = subprocess.run(command, capture_output=True, text=True)
     assert completed.returncode == 0, completed.stderr
     manifest = json.loads((output / "manifest.json").read_bytes())
+    assert manifest == expected
     assert manifest["approval_status"] == "pending"
-    assert len(manifest["migration_proposals"]) == 3
+    assert manifest["migration_proposals"] == []
+    assert len(manifest["objects"]) == 9
     markdown = (output / "report.md").read_text()
-    for p in manifest["migration_proposals"]:
-        assert p["object_id"] in markdown and p["before"]["measurement_id"] in markdown
-        assert p["after"]["reason"] in markdown
+    for entry in manifest["objects"]:
+        best = entry["best_before"]
+        assert f"| {entry['object_id']} | {best['measurement_id']} | {best['mode']} |" in markdown
     payload = (output / "manifest.json").read_bytes()
     second = subprocess.run(command, capture_output=True, text=True)
     assert second.returncode != 0
@@ -244,6 +312,7 @@ def test_audit_cli_writes_readable_manifest_exclusively_without_touching_catalog
     )
     assert outside.returncode != 0
     assert not (tmp_path / "not-a-report").exists()
+    assert Catalog(REPO).hashes == catalog.hashes
 
 
 @pytest.mark.parametrize(
@@ -345,8 +414,6 @@ def test_unclear_terms_after_underscores_cannot_bypass_review(value):
 
 
 def test_human_audit_shows_review_status_and_the_actual_unclear_evidence():
-    from types import SimpleNamespace
-
     catalog = SimpleNamespace(
         objects={"KSW-9001": obj(notes="Wzmianka: pomiar geodezyjny")},
         paths={"KSW-9001": "data/objects/KSW/KSW-9001.yml"},

@@ -328,5 +328,7 @@ PBI-101 zakończono na dostarczeniu jednej paczki do PR #12: 614 approve /
 przyjętego stanu, a gałąź jest kandydatem do przyjęcia.
 D001–D026 czekają na niezależne badanie, bez nowych zmian katalogu.
 [Gotowy prompt review PR](verification/PBI-101-next-task.md).
-Manifest trzech chronionych auto→manual nadal pending; bez migracji.
+Trzy przypięcia auto→manual zatwierdzono osobno 2026-10-20 i wykonano
+w tym samym PR #12; [zapis zgody i hashów](verification/PBI-099-manual-selection.json).
+Oryginalny manifest pending pozostaje historycznym audytem, bez zmiany bajtów.
 PBI-102–103 nie rozpoczęto; bez merge/tagu/release/harmonogramu.

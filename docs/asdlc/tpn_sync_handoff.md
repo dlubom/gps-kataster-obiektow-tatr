@@ -44,7 +44,9 @@ Kolejność czytania:
    verification.json, delivery-data-proof.json, review-equivalence.json
    oraz archiwum superseded-v1 w `verification/PBI-101-review/`.
    [Manifest ochrony PBI-099](verification/PBI-099-protection-manifest.json)
-   nadal pending. Końcowy SHA i wyniki jego CI odczytaj z opisu PR.
+   pozostaje historycznym audytem pending. Późniejsze jawnie zatwierdzone
+   trzy przypięcia manual dokumentuje [osobny zapis](verification/PBI-099-manual-selection.json).
+   Końcowy SHA i wyniki jego CI odczytaj z opisu PR.
 
 ## Publiczne API i dokładne zapytanie
 
@@ -183,7 +185,10 @@ potwierdza zachowanie pojedynczego fragmentu oraz odrzucenie kopii w after.
 Obie poprawki zachowują zaakceptowane dane i zgody.
 Merge pozostaje osobną decyzją człowieka; PBI-102–103 nie rozpoczęto.
 
-Manifest auto→manual nadal pending, 9/9 preimages zgodne; brak migracji.
+Historyczny manifest auto→manual zachowano bez zmian. Użytkownik następnie
+zatwierdził trzy przypięcia w tym samym PR: KSW-0201/m-003, KSW-0240/m-002
+i KSZ-0112/m-001. [Zapis zgody i wykonania](verification/PBI-099-manual-selection.json)
+wiąże pierwotne preimages i wynik; dziewięć chronionych obiektów ma manual.
 Ochrona działa niezależnie od zgody. Zmieniona propozycja/preimage wymaga
 ponownego review. Przyjęty stan czytamy wyłącznie z origin/main, nigdy
 z kandydata gałęzi. Nie nadpisywać aktywnego snapshotu ani paczki, nie

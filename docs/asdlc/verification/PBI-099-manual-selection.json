@@ -1,0 +1,34 @@
+{
+  "format": "tpn-protected-best-manual-selection",
+  "format_version": 1,
+  "batch_id": "pbi-101-20261019",
+  "batch_plan_hash": "9ce54524f03af640b4cfa0d0ef977f04c669c288b708e76d45946e5ff2b4a8f3",
+  "basis_commit": "83e1d3833e038722e9666dcaa5bf48dec5d5943a",
+  "proposal_manifest_sha256": "04f9b4e87825cca05d8ebe51e804134837181269bacc274ee0d0d1881c2d27d2",
+  "authorization": {
+    "source": "explicit-user-request",
+    "text": "tak zrob na manual a co z wysoka tam tez bym gnss juz ma manual ?; to niech bedzie w tym PR a nie osobno"
+  },
+  "applied_at": "2026-10-20T07:11:59Z",
+  "applied_by": "agent:codex",
+  "objects": [
+    {
+      "object_id": "KSW-0201",
+      "path": "data/objects/KSW/KSW-0201.yml",
+      "before_sha256": "4e232093ccad7ed3a4346cc541592625e6e9b90f61f5c74da6dcba569433e21c",
+      "after_sha256": "2c11763d9be80c2830f4009849824dca71df501f2ca622d4df0ab7d7ff3ccf20"
+    },
+    {
+      "object_id": "KSW-0240",
+      "path": "data/objects/KSW/KSW-0240.yml",
+      "before_sha256": "9dfce55a38c002c028322036781b62d79fab3cd9699f0fda0851cc128fdfd719",
+      "after_sha256": "9fea4f4f567df32b8a5e6854f55eb8c40061c3b663d05c738c8c96cac86a2d1f"
+    },
+    {
+      "object_id": "KSZ-0112",
+      "path": "data/objects/KSZ/KSZ-0112.yml",
+      "before_sha256": "f60ff9b16871ae3c900713752c406aaa4fe090e7b1bedfa7867ae553c0833a96",
+      "after_sha256": "b858e8d04dd871f5c992c3c3a5dacf6f733fe3c527c4de97c724a8bcdc1ea7cb"
+    }
+  ]
+}

@@ -1,5 +1,8 @@
 > PBI-100 używa tego strażnika w [łącznym planie i ponownym preflight](tpn_sync_decisions.md).
-> Manifest pozostaje pending; nie dodano zgody na migrację ani obejścia blokady.
+> Pierwotny manifest pending zachowuje bajty historycznego audytu.
+> Użytkownik osobno zatwierdził i zlecił trzy przypięcia manual w PR #12:
+> [zgoda i wykonanie](verification/PBI-099-manual-selection.json).
+> Strażnik TPN nadal blokuje niezatwierdzoną zmianę trybu.
 
 # Ochrona GNSS/geodezji i best — PBI-099
 
@@ -106,7 +109,13 @@ nie używać go do snapshotów ani przykładów decisions.yml synchronizacji.
 KSW-0201/m-003, KSW-0240/m-002, KSZ-0112/m-001.
 Każda ma before/after, podstawę ochrony, uzasadnienie i hash pliku.
 
-Status **pending**, bez akceptacji i bez migracji. Akceptacja wymaga
+Status pierwotnego audytu: **pending**, w PBI-099 bez akceptacji i migracji.
+Późniejsza zgoda i wykonanie trzech przypięć z 2026-10-20 są zapisane osobno
+w [receipt migracji](verification/PBI-099-manual-selection.json), zachowując
+oryginalny JSON. Bramka check weryfikuje dokładny pierwotny wynik paczki
+oraz wyłącznie zatwierdzone zmiany trybu/powodu/audytu. Nie uprawnia to apply
+do nadpisania późniejszych zmian ani do zastąpienia chronionego best.
+Akceptacja wymaga
 konkretnych obiektów/manifestu, kontroli aktualności preimages i zapisu
 rzeczywistego autora/czasu; nie wolno potraktować samego commitu raportu jako
 zgody. Zachować wskazane ID oraz wszystkie pomiary, współrzędne, wysokości,

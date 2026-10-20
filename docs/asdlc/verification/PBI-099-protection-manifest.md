@@ -1,6 +1,9 @@
 # Ochrona best — manifest do akceptacji
 
-Status: pending. Raport nie zatwierdza ani nie wykonuje migracji.
+Status historycznego raportu z 2026-10-19: pending. Raport sam nie zatwierdza
+ani nie wykonuje migracji. Trzy propozycje użytkownik następnie zatwierdził
+2026-10-20; [zapis zgody i wykonania](PBI-099-manual-selection.json).
+Poniższa tabela zachowuje stan sprzed migracji; oryginalny JSON pozostaje bez zmian.
 
 Katalog: `4b028a27efff27eb77eff21a07e26b0eb82ad07bd16b09a8ff3f373ed1e8989e`
 
