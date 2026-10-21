@@ -1,0 +1,36 @@
+name: Publish PR export preview
+
+"on":
+  workflow_run:
+    workflows: [PR export preview]
+    types: [in_progress, completed]
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+
+concurrency:
+  group: pr-preview-comment-${{ github.event.workflow_run.head_repository.id }}-${{ github.event.workflow_run.display_title }}
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  comment:
+    name: Update preview comment
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # workflow_run github.sha is trusted default-branch code, never PR code.
+      - name: Checkout trusted publisher
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Publish current preview status
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const publish = require('./.github/scripts/publish_pr_preview.cjs');
+            await publish({ github, context });

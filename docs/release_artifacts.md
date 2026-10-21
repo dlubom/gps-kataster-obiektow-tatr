@@ -1,5 +1,55 @@
 # Przeglad artefaktow release
 
+## Paczka testowa w komentarzu PR
+
+Każda nowa i ponownie otwarta PR oraz każdy jej push (także draft)
+uruchamia `PR export preview`. Po udanym buildzie komentarz bota
+**Paczka testowa eksportów** zawiera link **Pobierz ZIP eksportów**.
+Pobierz po zalogowaniu do GitHub i rozpakuj paczkę, aby obejrzeć np.
+Excel Best/Full, GPX w GPS lub GeoJSON/Shapefile w QGIS.
+ZIP obejmuje wszystkie dziewięć plików wydania wymienionych poniżej,
+`preview.json` i `SHA256SUMS` (`sha256sum -c SHA256SUMS` po rozpakowaniu).
+SQLite i Shapefile zachowują własne wewnętrzne ZIP-y jak w wydaniu.
+
+Retencja wynosi **14 dni** od uploadu; komentarz pokazuje datę wygaśnięcia.
+Po wygaśnięciu uruchom ponownie build albo wypchnij kolejny commit.
+Jedna aktualizowana wiadomość pokazuje budowanie, błąd albo najnowszy
+link; opis PR i komentarze ludzi pozostają tekstem autora.
+Podgląd nie jest oficjalnym wydaniem. Wersja w statystykach pozostaje
+pusta, a commit i czas opisują konkretny build podglądu.
+
+Build sprawdza dokładny syntetyczny merge, head i bazę, zapisane w manifeście
+i nazwie artefaktu. Opóźnione wyniki, starsze próby oraz paczki dla innej
+bazy/merge nie dostają aktualnego linku. Sama zmiana `main` nie uruchamia
+nowego buildu; odśwież PR przez push albo ponowne otwarcie. Przy konflikcie
+GitHub nie uruchamia `pull_request`: najpierw rozwiąż konflikt.
+Komentarz oznacza datowaną migawkę wskazanych SHA, a nie śledzenie bazy na żywo.
+
+Budowa działa bez zapisu do repozytorium i bez sekretów. Komentarz publikuje
+osobny `workflow_run`, używający kodu z domyślnej gałęzi i metadanych API.
+Nie pobiera ani nie wykonuje paczki ani kodu PR. Fork może wymagać
+standardowego zatwierdzenia uruchomienia Actions przez maintainerów.
+Zasady: [GitHub workflow_run](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run).
+
+**Pierwsza PR instalacyjna:** automatyczny komentarz ruszy po przyjęciu
+publishera na `main` (wymóg GitHub `workflow_run`). W samej instalacyjnej
+PR operator dodaje link po sprawdzeniu runu, SHA, 14-dniowej retencji
+i pobraniu ZIP-a. Odbiór tego wyjątku jest opisany w PR.
+
+Lokalny odpowiednik buildu (wyjściowy katalog musi jeszcze nie istnieć):
+
+```bash
+uv run --frozen python scripts/build_pr_preview.py \
+  --output-dir build/local-pr-preview --repository dlubom/gps-kataster-obiektow-tatr \
+  --pr-number 1 --head-sha HEAD_SHA --base-sha BASE_SHA --merge-sha MERGE_SHA \
+  --run-id 1 --run-attempt 1
+```
+
+Lokalne wartości pochodzenia są deklaracją operatora; CI weryfikuje SHA
+wobec checkoutu i rodziców commitu. Paczki nie zmieniają tagowego procesu wydania.
+
+## Oficjalna paczka wydania
+
 Ten dokument opisuje lokalna paczke generowana przez:
 
 ```bash

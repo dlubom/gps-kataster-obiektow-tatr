@@ -967,6 +967,30 @@ Minimalny schemat logiczny:
 
 ## 13. Release i eksporty
 
+### Paczka do przeglądu PR
+
+Otwarcie, ponowne otwarcie oraz każdy push do PR, także draftu, budują
+pełne eksporty przez istniejący builder wydania. Źródłem jest dokładny
+syntetyczny merge PR z bazą, ze sprawdzeniem SHA obu rodziców.
+ZIP GitHub Actions zawiera pliki wydania, `preview.json` (repozytorium,
+numer PR, head/base/merge SHA, run i próba, czas) oraz `SHA256SUMS`.
+Retencja wynosi 14 dni; link wymaga logowania GitHub.
+
+Zaufany workflow z domyślnej gałęzi utrzymuje jeden komentarz bota
+z aktualnym stanem budowania, błędem albo linkiem i datą wygaśnięcia.
+Weryfikuje aktualny head, bazę, merge i próbę; opóźniony wynik nie
+zastępuje nowszego. Kod PR ma tylko odczyt repozytorium; publisher
+nie pobiera ani nie wykonuje zawartości paczki.
+Zmiana samej bazy wymaga nowego buildu (push lub ponowne otwarcie PR).
+Konflikt merge uniemożliwia uruchomienie buildu `pull_request`.
+
+Workflow publikujący komentarz musi najpierw znaleźć się na `main`.
+W instalacyjnej PR link dodaje operator po sprawdzeniu artefaktu.
+Automatyzacja komentarza jest obsługą CI, poza zakresem aplikacyjnej
+integracji z GitHub API wykluczonej w §14. Paczka nie publikuje wydania.
+
+### Oficjalne wydanie
+
 Tag release:
 
 ```text
