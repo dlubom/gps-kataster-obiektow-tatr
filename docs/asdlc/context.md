@@ -6,14 +6,18 @@ Last updated: 2026-10-21
 
 Skrypt i lokalny skill `tpn-elevation`: jeden punkt lat/lon WGS84,
 tekst/JSON, wysokość gruntu z publicznego NMT `nmt_05m_mggp_2019` / 0,5 m.
-Najnowszość niepotwierdzona; układ wysokości i dokładność pionowa `unknown`.
-Nie określać wyniku jako n.p.m. ani nad elipsoidą bez dalszej dokumentacji.
+Najnowszość niepotwierdzona; dokładny układ wysokości i dokładność pionowa
+`unknown`. Korekta po wskazaniu użytkownika: legenda warstwy 0 potwierdza
+„m n.p.m.”, więc wynik ma `elevation_reference: sea_level`. Opis TPN
+podaje zakres dat nalotu `2019-10-14/2019-10-15`. Nie przypisywać
+konkretnego datum ani nie wykonywać konwersji pionowej na tej podstawie.
 [Obsługa](../operations.md), [plan](plans/PBI-106.md),
 [dowody](verification/PBI-106.md).
 Status: wykonane — [draft PR #15](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/15)
 do review; `codex/tpn-elevation` od main
-`a66b1744c624ce33eab959d7a306c8c084b657f3`. 853 testy, Ruff, walidacja,
-live API, readback i 8/8 mutacji przeszły. Ustalenia review naprawione
+`a66b1744c624ce33eab959d7a306c8c084b657f3`. Po korekcie: 864 testy,
+Ruff, walidacja, live API, readback i 4/4 nowych mutacji przeszły;
+pierwsza wersja ma osobny dowód 8/8 mutacji. Ustalenia review naprawione
 z odtworzonymi regresjami. Implementacja `baf1290` wypchnięta, CI validate
 i preview przeszły. Końcowy SHA/CI i odbiór paczki są wskazywane w opisie PR.
 Dane bez zmian. Bez merge, taga i wydania; zakończyć po PBI-106.

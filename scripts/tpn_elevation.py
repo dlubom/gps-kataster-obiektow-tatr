@@ -36,13 +36,18 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(json.dumps(result, ensure_ascii=False, allow_nan=False, indent=2))
     else:
         source = result["source"]
-        print(f"Wysokość gruntu NMT: {result['elevation_m']:.2f} m")
+        print(
+            f"Wysokość gruntu NMT: {result['elevation_m']:.2f} "
+            f"{source['elevation_reference_label']} (według legendy TPN)"
+        )
         print(f"WGS84: lat={args.lat}, lon={args.lon}")
         print(f"TPN: {source['model']}; siatka {source['grid_resolution_m']} m")
-        print("Układ wysokości: unknown; dokładność pionowa: unknown")
-        print("Najnowszość: unconfirmed; data pomiaru: unknown; interpolacja: unknown")
+        print("Dokładny układ wysokości: unknown; dokładność pionowa: unknown")
+        print(f"Data pozyskania danych: {source['data_date']} (według dokumentacji TPN)")
+        print("Najnowszość: unconfirmed; interpolacja: unknown")
         print(f"Pobrano: {result['retrieved_at']}")
         print(f"Źródło: {source['identify_url']}")
+        print(f"Legenda odniesienia wysokości: {source['legend_url']}")
         print("Liczba cyfr i siatka rastra nie określają dokładności wysokości.")
     return 0
 

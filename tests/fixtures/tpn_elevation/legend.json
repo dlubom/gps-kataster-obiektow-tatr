@@ -1,0 +1,136 @@
+{
+ "layers": [
+  {
+   "layerId": 0,
+   "layerName": "Topografia - wysokości",
+   "layerType": "Raster Layer",
+   "minScale": 0,
+   "maxScale": 0,
+   "legend": [
+    {
+     "label": "ADVANCEDLABELS - 2500",
+     "url": "8cb2b54d395d1098ccf9f391a7af996c",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAcUlEQVRYheXVgQnAMAwDQX3o/mN2jXaJL6goAxxyZPB1J0/Ed5nYRyA6iA3GBrHBzCU87SPjl5K5lmFtbdL/h2RtZPy1yV7L2GBk8NQnRAexwawlZPGmZO3Q01/KqU9If8LslRIbxAbjgtQnzA/WxhVfZr8DNfNb/z0AAAAASUVORK5CYII=",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 2250",
+     "url": "ae1b9a762740526abb72437ee39a1200",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAfUlEQVRYheXWUQ3AMAwDUV9UEOMz/kgGYtM43IelFMCTU1dRz3Nfb8RzgsnlB13x+Aln3cjUJ0x/wmkfGb+U7GsZGWTfHdKfMOXPhv6R6W8ZG4wMTn1C+hPGBnFB/J9DbBAbTD2IDcYF2bgc2PZpT3/Lw7oFOwuXAzIoJ/wA5EcDog2++vcAAAAASUVORK5CYII=",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 2150",
+     "url": "43bc34ff552a9f4c2dfe390e70c5ae62",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAcklEQVRYhe2UgQ2AQAwCj09Hck6HdYF3CUwwfAe4QEuZ5742xhkkJ4/RMgOxA2VXSLxCeYGKV8i5cuAvKz42izbL6rOMl8cXOVRdY6/CHCq+sWnbIfEKdV6v4Mq4+1A/sKzw+tp2y8QrlJVH5Q7NM30KXym+CiXEloakAAAAAElFTkSuQmCC",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 2000",
+     "url": "8c0a122f9b064f286f4db0078a2e0407",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAdUlEQVRYhe2WwQnAMAwDZdCgXb079B2FzmA9BPYNIM4xDuL3PoIRqsqZB1r1ABDxhnIbwgx3y204ccuF+JHhDixvIMxwb7kNB24ZZriGbTjwDWWNw/bDKc2hvIHa5hB4y/O+L0HhhifeUH5DhQcea9xvqPCRL3R6NiLDst2FAAAAAElFTkSuQmCC",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 1800",
+     "url": "293527e3a1b075290772912cbddd337a",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAb0lEQVRYhe1WwQ2AQAzi0X3d0qF8gENIEyLHAARaSDv3cwlGjGDlw9BKhw2FsvJhY4YKVygrHTYsK3+Gaque+rqss+WvGJ4uFwRb7i4z3zL6LCvfshfT+B/q/Db/Dzbj7zIbu4y+2KBtKcxXaGZ8AcRYb53PWcZkAAAAAElFTkSuQmCC",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 1700",
+     "url": "b8fc834c9d2cabcc8ba10532b2f4fc6d",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAdElEQVRYhe2VwQ3AMAwCL5V360IdvBOESl0hPJBsBkBHEE497y2Mqu10A8qKx0+odELFEzKEgUsRzbas/MhqOD2valo+Vk3Lxyq5/+XdcCm0u4fqF3nnR1a/yPQjVDwh6YSLy224zIbLTIidkPg3JD2yu5QPhjNOTFRSjOwAAAAASUVORK5CYII=",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 1600",
+     "url": "9d6b5861b956895e9dada7a3c073374e",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAb0lEQVRYhe2UURXAIBDDknsYmoX5lzIPzMR9lN0Q0BcI7bqee9N4lhTNgcYHVm8g8YTOIySeUOMJSSckntADLDtvYG0OdJxl8qtHN6HxhPyWv2+Z/KaQPl/GLzYHSKlx34b8LjvuyrZXz3FvSPh8vUJKA9gy7YPnAAAAAElFTkSuQmCC",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 1450",
+     "url": "4f94c0314b052570ed4c4e598ae07cb2",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAcUlEQVRYhe2WyQ3AMBACB2sLTVdpNH+niMzDEqEAxGGsneu5NyIGgky4XML4CuMSxraMrjB/ywe+wyUTps8ydZbjbzl1/yHHZ5jjFfK3/BFD6o4lCu/DFC5l9bUcl5DCDClcStoUImPYeoa0WUaGTvgCQ2gGPCe5z50AAAAASUVORK5CYII=",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 1300",
+     "url": "19f7431011e932305fd7581913525165",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAdElEQVRYhe2XwQnAMAwDJdDQHbaD9Je++84VDMoNIHxxbHCu514Cick0SYHzFC1PrxAmPsoFXdb4Llt0hUu0sulAlpxZ3ib7EV86Z7lOWfP3IUzwBev5yn0f233KGh/ovjd0n7JoZfcpCyY/nBV9k7LoQJgXAP8XSmE8Z2YAAAAASUVORK5CYII=",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 1200",
+     "url": "cf0a32d879903ff42836b5ca027588f6",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAZUlEQVRYhe2W0QmAUAwDL9DZ3dRvR4hLRHiYZoCj4VroXPdjghmiOBihLJBwJl6Zvgnltfx/y6SB2rWpWBv1VaatsvaWGyyzt1xg2fvOFVhmLZ9n2WGg+ioTzmAfb9lZ4AeWs8QXIJgjPCOj8psAAAAASUVORK5CYII=",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 1000",
+     "url": "e0a981087b5a4b460f03f30d879ad0a6",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAdElEQVRYhe2WwQkEQRACq8H8L67N597nJeFDcA1ACrWH0ef5mqCEo36IrB+6ekKoJ3Tc0FnDy5eSlfovhTghg7ecld7ZTMzGe4Rh6RZLYe0rcvWE9M+GdsLrz9Dt7yH1GV5/KWavZe+17LBhWMK/uQyd3c0fVWdP+JXuy18AAAAASUVORK5CYII=",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 900",
+     "url": "4e2ef523eaeb22544a6e2a04a888675d",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAW0lEQVRYhe2UsQ3AQAwCKdi/TgbLOpAh+OIluAFONrbg837GQQgf9YGQcPmEnjCEyzCGyzCG8NomhI1/qL1NwZU9YQgbM9TKoeDKnjCElRmqb2X3CdG2sm+f8AfwNHl4ClwiDgAAAABJRU5ErkJggg==",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    },
+    {
+     "label": "ADVANCEDLABELS - 764",
+     "url": "0a90d8d738eab10b9e50548b42732aab",
+     "imageData": "iVBORw0KGgoAAAANSUhEUgAAABQAAAA8CAYAAABmdppWAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAZklEQVRYhe2UsQ3AMAzDOPjK/lX026hHxAMBWwcQVKKkvucNjamklUfRDjx2w/jPMAu8TO0tG5/eGTfs6A3RAzNvNkwcNvMqZ4F3qf0cJuwwekP0wOgN8Vc+9srogdEb0g6kN37gDxZEfvXt+TYGAAAAAElFTkSuQmCC",
+     "contentType": "image/png",
+     "groupId": "0",
+     "height": 60,
+     "width": 20
+    }
+   ],
+   "legendGroups": [
+    {
+     "id": "0",
+     "heading": "m n.p.m."
+    }
+   ]
+  }
+ ]
+}

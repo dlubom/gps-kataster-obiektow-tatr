@@ -18,6 +18,8 @@ METADATA_URL = (
     f"https://gis.tpn.pl/portal/sharing/rest/content/items/{ITEM_ID}/info/metadata/metadata.xml"
 )
 MODEL = "nmt_05m_mggp_2019"
+LEGEND_URL = f"{SERVICE_URL}/legend?f=json"
+DATA_DESCRIPTION_URL = "https://geoportaltatry.pl/informacje_o_usludze/topografia.pdf"
 
 
 class ElevationError(ValueError):
@@ -72,6 +74,36 @@ def _check_metadata(data: bytes) -> None:
         raise ElevationError("SOURCE_CHANGED: review the model, grid, bands and CRS metadata")
 
 
+def _check_legend(payload: dict) -> str:
+    layers = payload.get("layers")
+    matches = (
+        [
+            layer
+            for layer in layers
+            if isinstance(layer, dict)
+            and type(layer.get("layerId")) is int
+            and layer["layerId"] == 0
+        ]
+        if isinstance(layers, list)
+        else []
+    )
+    if (
+        len(matches) != 1
+        or matches[0].get("layerName") != "Topografia - wysokości"
+        or matches[0].get("layerType") != "Raster Layer"
+    ):
+        raise ElevationError("SOURCE_CHANGED: expected the reviewed raster layer 0 legend")
+    groups = matches[0].get("legendGroups")
+    if (
+        not isinstance(groups, list)
+        or len(groups) != 1
+        or not isinstance(groups[0], dict)
+        or groups[0].get("heading") != "m n.p.m."
+    ):
+        raise ElevationError("SOURCE_CHANGED: review the publisher's elevation reference label")
+    return groups[0]["heading"]
+
+
 def _pixel_value(payload: dict) -> str:
     results = payload.get("results")
     if results == []:
@@ -101,8 +133,8 @@ def _pixel_value(payload: dict) -> str:
 def fetch_elevation(lat: float, lon: float, *, timeout: float = 20.0) -> dict:
     """Return one raster value with provenance; never write catalog data.
 
-    EPSG:4326 specifies the input's horizontal coordinates only. The source
-    does not document its vertical datum, accuracy or resampling algorithm.
+    The publisher labels elevations as metres above sea level. Its exact
+    vertical datum, accuracy and resampling algorithm remain undocumented.
     """
     for name, value, low, high in (
         ("lat", lat, -90, 90),
@@ -137,6 +169,8 @@ def fetch_elevation(lat: float, lon: float, *, timeout: float = 20.0) -> dict:
         raise ElevationError("SOURCE_CHANGED: review layer 0 identity and raster type")
     metadata = _read(METADATA_URL, timeout)
     _check_metadata(metadata)
+    legend = _read(LEGEND_URL, timeout)
+    reference_label = _check_legend(_json(legend))
 
     # Explicit point semantics and tiny map extent avoid a screen-pixel search.
     params = {
@@ -159,6 +193,7 @@ def fetch_elevation(lat: float, lon: float, *, timeout: float = 20.0) -> dict:
         "surface": "ground",
         "elevation_m": float(raw_value),
         "raw_elevation": raw_value,
+        "elevation_reference": "sea_level",
         "elevation_datum": "unknown",
         "vertical_accuracy_m": "unknown",
         "retrieved_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
@@ -166,7 +201,8 @@ def fetch_elevation(lat: float, lon: float, *, timeout: float = 20.0) -> dict:
             "provider": "TPN",
             "model": MODEL,
             "model_year_in_name": 2019,
-            "data_date": "unknown",
+            "data_date": "2019-10-14/2019-10-15",
+            "data_date_source_url": DATA_DESCRIPTION_URL,
             "latestness": "unconfirmed",
             "grid_resolution_m": 0.5,
             "horizontal_crs": "EPSG:2178",
@@ -175,6 +211,9 @@ def fetch_elevation(lat: float, lon: float, *, timeout: float = 20.0) -> dict:
             "layer_id": 0,
             "metadata_url": METADATA_URL,
             "metadata_sha256": hashlib.sha256(metadata).hexdigest(),
+            "elevation_reference_label": reference_label,
+            "legend_url": LEGEND_URL,
+            "legend_sha256": hashlib.sha256(legend).hexdigest(),
             "identify_url": identify_url,
             "response_sha256": hashlib.sha256(response).hexdigest(),
         },

@@ -20,6 +20,7 @@ def api(monkeypatch):
     responses = {
         "service": (FIXTURES / "service.json").read_bytes(),
         "metadata": (FIXTURES / "metadata.xml").read_bytes(),
+        "legend": (FIXTURES / "legend.json").read_bytes(),
         "identify": (FIXTURES / "identify.json").read_bytes(),
     }
 
@@ -40,6 +41,8 @@ def api(monkeypatch):
             data = responses["identify"]
         elif parsed.path.endswith("/metadata.xml"):
             data = responses["metadata"]
+        elif parsed.path.endswith("/legend"):
+            data = responses["legend"]
         else:
             assert parsed.path.endswith("/MapServer")
             data = responses["service"]
@@ -57,12 +60,20 @@ def test_point_read_preserves_value_and_uncertainty(api):
     assert result["raw_elevation"] == "1982.770020"
     assert result["point"] == {"lat": 49.232, "lon": 19.9816, "crs": "EPSG:4326"}
     assert result["elevation_datum"] == "unknown"
+    assert result["elevation_reference"] == "sea_level"
     assert result["vertical_accuracy_m"] == "unknown"
     assert result["surface"] == "ground"
     source = result["source"]
     assert source["model"] == "nmt_05m_mggp_2019"
     assert source["model_year_in_name"] == 2019
-    assert source["data_date"] == "unknown"
+    assert source["data_date"] == "2019-10-14/2019-10-15"
+    assert (
+        source["data_date_source_url"]
+        == "https://geoportaltatry.pl/informacje_o_usludze/topografia.pdf"
+    )
+    assert source["elevation_reference_label"] == "m n.p.m."
+    assert source["legend_url"].endswith("/legend?f=json")
+    assert len(source["legend_sha256"]) == 64
     assert source["latestness"] == "unconfirmed"
     assert source["grid_resolution_m"] == 0.5
     assert source["horizontal_crs"] == "EPSG:2178"
@@ -130,14 +141,14 @@ def test_malformed_or_ambiguous_result_is_rejected(api, payload):
         elevation.fetch_elevation(49.232, 19.9816)
 
 
-@pytest.mark.parametrize("part", ["service", "identify"])
+@pytest.mark.parametrize("part", ["service", "legend", "identify"])
 def test_arcgis_error_even_on_http_200(api, part):
     api[part] = b'{"error":{"code":499,"message":"Token Required"}}'
     with pytest.raises(elevation.ElevationError, match="API_ERROR.*499"):
         elevation.fetch_elevation(49.232, 19.9816)
 
 
-@pytest.mark.parametrize("part", ["service", "identify"])
+@pytest.mark.parametrize("part", ["service", "legend", "identify"])
 def test_invalid_json(api, part):
     api[part] = b"<html>maintenance</html>"
     with pytest.raises(elevation.ElevationError, match="INVALID_RESPONSE"):
@@ -171,6 +182,48 @@ def test_changed_service_layer_is_not_labelled_as_old_model(api, change):
 
 def test_crs_authority_must_also_match(api):
     api["metadata"] = api["metadata"].replace(b">EPSG</idCodeSpace>", b">OTHER</idCodeSpace>")
+    with pytest.raises(elevation.ElevationError, match="SOURCE_CHANGED"):
+        elevation.fetch_elevation(49.232, 19.9816)
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        "missing-layers",
+        "wrong-layer",
+        "duplicate-layer",
+        "missing-groups",
+        "empty-groups",
+        "wrong-heading",
+        "wrong-name",
+        "wrong-type",
+        "other-layer-heading",
+    ],
+)
+def test_changed_legend_cannot_claim_sea_level(api, change):
+    legend = json.loads(api["legend"])
+    layer = legend["layers"][0]
+    if change == "missing-layers":
+        legend.pop("layers")
+    elif change == "wrong-layer":
+        layer["layerId"] = 1
+    elif change == "duplicate-layer":
+        legend["layers"].append(dict(layer))
+    elif change == "missing-groups":
+        layer.pop("legendGroups")
+    elif change == "empty-groups":
+        layer["legendGroups"] = []
+    elif change == "wrong-heading":
+        layer["legendGroups"][0]["heading"] = "ellipsoidal m"
+    elif change == "wrong-name":
+        layer["layerName"] = "Other layer"
+    elif change == "wrong-type":
+        layer["layerType"] = "Feature Layer"
+    else:
+        other = dict(layer, layerId=1)
+        layer["legendGroups"] = [{"heading": "unknown"}]
+        legend["layers"].append(other)
+    api["legend"] = json.dumps(legend).encode()
     with pytest.raises(elevation.ElevationError, match="SOURCE_CHANGED"):
         elevation.fetch_elevation(49.232, 19.9816)
 
@@ -218,6 +271,7 @@ def test_cli_json(api, capsys):
     result = json.loads(output.out)
     assert result["raw_elevation"] == "1982.770020"
     assert result["elevation_datum"] == "unknown"
+    assert result["elevation_reference"] == "sea_level"
     assert output.err == ""
 
 
@@ -227,7 +281,10 @@ def test_cli_text_explains_unknown_datum(api, capsys):
     assert "1982.77 m" in output
     assert "unknown" in output
     assert "unconfirmed" in output
-    assert "n.p.m." not in output
+    assert "1982.77 m n.p.m." in output
+    assert "według legendy TPN" in output
+    assert "Dokładny układ wysokości: unknown" in output
+    assert "2019-10-14/2019-10-15" in output
 
 
 def test_cli_error_has_no_success_output(api, capsys):
