@@ -2,6 +2,20 @@
 
 Last updated: 2026-10-21
 
+## Odczyt wysokości NMT TPN — PBI-106
+
+Skrypt i lokalny skill `tpn-elevation`: jeden punkt lat/lon WGS84,
+tekst/JSON, wysokość gruntu z publicznego NMT `nmt_05m_mggp_2019` / 0,5 m.
+Najnowszość niepotwierdzona; układ wysokości i dokładność pionowa `unknown`.
+Nie określać wyniku jako n.p.m. ani nad elipsoidą bez dalszej dokumentacji.
+[Obsługa](../operations.md), [plan](plans/PBI-106.md),
+[dowody](verification/PBI-106.md).
+Status: zweryfikowane — do dostarczenia; `codex/tpn-elevation` od main
+`a66b1744c624ce33eab959d7a306c8c084b657f3`. 853 testy, Ruff, walidacja,
+live API, readback i 8/8 mutacji przeszły. Ustalenia review naprawione
+z odtworzonymi regresjami. Pozostało push/PR i CI końcowego SHA.
+Dane bez zmian. Bez merge, taga i wydania; zakończyć po PBI-106.
+
 ## Paczka eksportów w komentarzu PR — PBI-105
 
 Na polecenie użytkownika nowa praca zaczyna się od aktualnego `main`

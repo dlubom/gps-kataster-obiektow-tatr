@@ -3,6 +3,30 @@
 Ten dokument opisuje codzienna prace na danych YAML w V1. Zrodlem prawdy sa
 pliki w `data/`; katalog `build/` zawiera tylko artefakty wygenerowane lokalnie.
 
+## Wysokość gruntu z publicznego NMT TPN
+
+```bash
+uv run --frozen python scripts/tpn_elevation.py --lat 49.2320 --lon 19.9816
+uv run --frozen python scripts/tpn_elevation.py --lat 49.2320 --lon 19.9816 --json
+```
+
+Jeden punkt WGS84 w stopniach dziesiętnych; wynik jest wyłącznie odczytem.
+Lokalny skill: [`tpn-elevation`](../.agents/skills/tpn-elevation/SKILL.md).
+`--json` zachowuje surową wartość API, metadane, źródłowe URL-e i hashe.
+`--timeout` określa limit pojedynczego żądania (domyślnie 20 sekund).
+
+Źródło: publiczny NMT TPN `nmt_05m_mggp_2019`, siatka 0,5 m.
+Najnowszość jest **niepotwierdzona**, układ wysokości i dokładność pionowa
+pozostają **unknown**. Wyniku nie opisujemy jako „m n.p.m.” ani wysokości
+nad elipsoidą. WGS84 określa wejściowe lat/lon; siatka i liczba cyfr nie
+określają dokładności pionowej. Data pomiaru oraz interpolacja są nieznane.
+To wysokość gruntu w modelu, nie gwarantowana wysokość otworu jaskini.
+
+Brak danych i błędy dają niezerowy exit oraz diagnostykę na stderr.
+`SOURCE_CHANGED` oznacza potrzebę ponownego przeglądu metadanych modelu;
+skrypt nie przypisuje nowemu źródłu parametrów starego. Bez automatycznej
+zmiany modelu, YAML lub `best`. [Kontrakt i źródła](asdlc/plans/PBI-106.md).
+
 ## Struktura wejścia danych
 
 Walidacja, build SQLite, eksporty, importer TPN i review wymagają istniejącego
