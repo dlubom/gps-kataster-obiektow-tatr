@@ -24,7 +24,7 @@ niepowiązany GUID otrzymuje `candidates` i `new_record_qualification`.
 Markdown pokazuje te same dowody przy rekordzie. Obecne powiązane GUID
 pozostają w dotychczasowym porównaniu; detektor nie wybiera dla nich innego celu.
 
-Polityka `tpn-candidates-v1`:
+Domyślna polityka `tpn-candidates-v2` (reguły wykrywania bez zmian):
 
 - NFC, casefold, zwinięcie odstępów. Pozostają znaki diakrytyczne,
   interpunkcja, liczby, I/II/III, górny/dolny i wszystkie inne oznaczenia.
@@ -113,6 +113,21 @@ indeksu wiąże konkurentów z paczki i źródeł. Nowy trzeci kandydat,
 zmieniona historia, nazwa/XY/referencja/cel lub polityka unieważnia pamięć.
 Kontrola jest celowo konserwatywna: zmiana niezwiązanej części indeksu
 również wymaga ponownego review. Brak strony też oznacza stale.
+
+W v2 tożsamość strony źródłowej wiąże GUID i rewizję, a hash indeksu
+obejmuje unikalne dowody semantyczne oraz bieżącą mapę GUID → rewizja.
+Powrót A → B → A unieważnia pamięć B nawet wtedy, gdy obie rewizje
+już występują w historii. Samo przesunięcie tego samego
+snapshotu z bieżącego wejścia do przyjętej bazy lub ponowne wystąpienie
+tej samej treści w snapshotach dowodowych nie unieważnia rozstrzygnięcia.
+Pochodzenie i surowe snapshoty pozostają w raporcie. Zmiana nazw,
+referencji, lokalizacji, rewizji, katalogu lub zestawu konkurentów nadal
+wymaga review.
+
+Weryfikacja historycznych paczek odtwarza ich zapisaną politykę
+`tpn-candidates-v1` i pierwotne hashe dokładnie; nie migruje receiptów.
+Rozstrzygnięcia duplikatów zapisane dla v1 wymagają ponownego review
+przy nowym porównaniu v2. Inna, nieobsługiwana wersja jest odrzucana.
 
 Każda pamiętana para ma wynik valid/stale w `duplicate_resolution_checks`,
 również gdy dawny sygnał kolizji zniknął. Stale daje unresolved i ponowne

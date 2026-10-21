@@ -9,7 +9,7 @@ from decimal import Decimal
 from functools import lru_cache
 
 from .tpn_api import globalid, require
-from .tpn_normalization import decimal, digest, distance, text
+from .tpn_normalization import canonical, decimal, digest, distance, text
 from .tpn_precision import reported_distance
 
 CHECKS = {
@@ -51,8 +51,13 @@ def name_similarity(a: str, b: str) -> Decimal:
 class CandidatePolicy:
     name_similarity_threshold: Decimal = Decimal("0.90")
     radius_m: Decimal = Decimal("100")
+    version: str = "tpn-candidates-v2"
 
     def __post_init__(self):
+        require(
+            self.version in ("tpn-candidates-v1", "tpn-candidates-v2"),
+            "unsupported candidate policy version",
+        )
         threshold, radius = decimal(self.name_similarity_threshold), decimal(self.radius_m)
         require(threshold is not None and 0 < threshold <= 1, "invalid name threshold")
         require(radius is not None and radius >= 100, "candidate radius must be >=100 m")
@@ -61,7 +66,7 @@ class CandidatePolicy:
 
     def document(self) -> dict:
         return {
-            "version": "tpn-candidates-v1",
+            "version": self.version,
             "normalization": "NFC-casefold-collapse-whitespace-preserve-markers",
             "name_metric": "1-levenshtein/max-length",
             "name_similarity_threshold": self.name_similarity_threshold,
@@ -149,20 +154,31 @@ def pair_evidence(left: dict, right: dict, policy: CandidatePolicy) -> list[dict
     return evidence
 
 
-def source_side(record: dict, *, origin: str) -> dict:
+def source_side(record: dict, *, origin: str, semantic: bool = False) -> dict:
     metadata = record["metadata"]
+    # v1 remains available for exact replay of already published batch receipts.
+    # In v2 current/baseline/snapshot are evidence locations, not distinct sides.
+    key = (
+        f"source:{record['globalid']}:{record['revision_hash']}"
+        if semantic
+        else f"source:{origin}:{record['globalid']}"
+    )
+    target = {"globalid": record["globalid"]}
+    if not semantic:
+        target["origin"] = origin
+    field_origin = "source" if semantic else origin
     return {
-        "key": f"source:{origin}:{record['globalid']}",
-        "target": {"globalid": record["globalid"], "origin": origin},
+        "key": key,
+        "target": target,
         "names": [
-            {"field": f"{origin}.{k}", "value": metadata[k]}
+            {"field": f"{field_origin}.{k}", "value": metadata[k]}
             for k in ("NAZWA", "OTWÓR")
             if metadata.get(k)
         ],
-        "inventories": [{"field": f"{origin}.NR_INWENT", "value": metadata["NR_INWENT"]}]
+        "inventories": [{"field": f"{field_origin}.NR_INWENT", "value": metadata["NR_INWENT"]}]
         if metadata.get("NR_INWENT")
         else [],
-        "systems": [{"field": f"{origin}.SYSTEM", "value": metadata["SYSTEM"]}]
+        "systems": [{"field": f"{field_origin}.SYSTEM", "value": metadata["SYSTEM"]}]
         if metadata.get("SYSTEM")
         else [],
         "positions": [{**record["location"], "horizontal_accuracy_m": None}],
@@ -287,6 +303,7 @@ def augment(
     from .tpn_duplicate_state import validate_resolutions
 
     validate_resolutions(resolutions)
+    semantic = policy.version == "tpn-candidates-v2"
     sides = catalog_sides(catalog) + (historical_sides or [])
     catalog_gaps = [
         {"key": s["key"], "reason": "missing positions or usable catalog names"}
@@ -300,15 +317,32 @@ def augment(
         ("baseline", previous),
         *sorted(extra_sources.items()),
     ]:
-        sides.extend(source_side(record, origin=origin) for _, record in sorted(records.items()))
+        sides.extend(
+            source_side(record, origin=origin, semantic=semantic)
+            for _, record in sorted(records.items())
+        )
         if origin != "current":
             for guid, record in records.items():
                 historical_guids.setdefault(guid, []).append({"origin": origin, "record": record})
+    if semantic:
+        # Keep every distinct revision and all catalog/competitor evidence, but
+        # do not treat another copy of a revision in an accepted snapshot as new.
+        unique = {canonical(side): side for side in sides}
+        sides = [unique[key] for key in sorted(unique)]
     policy_doc = policy.document()
     report["candidate_policy"] = {**policy_doc, "policy_hash": digest(policy_doc)}
     report["duplicate_state_hash"] = digest(resolutions)
     report["candidate_source_inputs"] = source_inputs or {"complete": True}
-    source_set_hash = digest(sides)
+    source_set_hash = digest(
+        {
+            "sides": sides,
+            # A return to an older revision changes the current evidence even
+            # when both revisions already belong to the historical side set.
+            "current_source_revisions": {guid: r["revision_hash"] for guid, r in current.items()},
+        }
+        if semantic
+        else sides
+    )
     report["candidate_comparison_hash"] = source_set_hash
     report["candidate_catalog_gaps"] = catalog_gaps
     by_key = {s["key"]: s for s in sides}
@@ -332,7 +366,7 @@ def augment(
         after = row["source_after"]
         if after is None or "unmapped_guid" not in row["classification"]:
             continue
-        left = source_side(after, origin="current")
+        left = source_side(after, origin="current", semantic=semantic)
         candidates = []
         for right in sides:
             if right["target"].get("globalid") == row["globalid"]:
@@ -355,6 +389,22 @@ def augment(
                         ),
                     }
                 )
+        resolution_checks = [
+            check
+            for check in report["duplicate_resolution_checks"]
+            if left["key"] in check["pair"]
+            or (
+                semantic
+                and any(
+                    isinstance(side.get("target"), dict)
+                    and side["target"].get("globalid") == row["globalid"]
+                    for side in check["remembered"]["basis"]["sides"]
+                )
+            )
+        ]
+        # A policy migration changes side keys. Use the remembered GUID to
+        # require explicit review, never to silently migrate the old consent.
+        stale_resolution = any(check["status"] == "stale" for check in resolution_checks)
         metadata = after["metadata"]
         point = after["location"]
         regions = resolver.qualification_regions(lat=float(point["lat"]), lon=float(point["lon"]))
@@ -395,10 +445,7 @@ def augment(
             and not catalog_gaps,
             "source_review_clear": not source_context
             and not row["conflicts"]
-            and not any(
-                r["status"] == "stale" and left["key"] in r["pair"]
-                for r in report["duplicate_resolution_checks"]
-            ),
+            and not stale_resolution,
         }
         blocks = [
             {
@@ -413,9 +460,7 @@ def augment(
                     "conflicts": row["conflicts"],
                     "source_inputs": report["candidate_source_inputs"],
                     "catalog_gaps": catalog_gaps,
-                    "remembered_resolutions": [
-                        r for r in report["duplicate_resolution_checks"] if left["key"] in r["pair"]
-                    ],
+                    "remembered_resolutions": resolution_checks,
                 },
             }
             for k, v in checks.items()
@@ -434,10 +479,7 @@ def augment(
             "regions": regions,
             "proposed_actions": [],
         }
-        if any(
-            r["status"] == "stale" and left["key"] in r["pair"]
-            for r in report["duplicate_resolution_checks"]
-        ):
+        if stale_resolution:
             row["requires_review"] = True
             row["actionable"] = True
             row["review_status"] = "pending"

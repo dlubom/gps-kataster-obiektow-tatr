@@ -410,6 +410,155 @@ def test_apply_and_refresh_append_to_same_pr_and_check_exact_head(batch_repo, tm
     assert len(g.items) == 1 and g.refs[initial["branch"]] == refreshed["head"]
 
 
+@pytest.fixture
+def bound_workflow_proposal(batch_repo, tmp_path):
+    from gps_kataster_obiektow_tatr.tpn_batch import load_batch
+    from gps_kataster_obiektow_tatr.tpn_workflow import commit_data
+
+    root, _ = batch_repo
+    g = FakeGitHub(root, accepted(batch_repo))
+    initial_out = tmp_path / "initial"
+    initial = plan(g, root, initial_out)
+    work = initial_out / "work"
+    g.push(work, initial["head"], initial["branch"])
+    g.create_pull(initial["branch"], initial["batch_id"])
+    changes, _ = load_batch(work, initial["batch_id"])
+    action = {
+        "action": "append_measurement",
+        "object_id": "KSW-0001",
+        "measurement_key": "reviewed-location",
+        "location_hash": changes["records"][0]["location_hash"],
+        "best_action": {
+            "action": "keep",
+            "measurement_id": "m-001",
+            "resulting_mode": "manual",
+            "reason": "Keep the existing export point",
+        },
+    }
+    path = work / "data/source_reviews/tpn/gha-123/proposals.yml"
+    proposals = json.loads(path.read_text())
+    proposals[0]["actions"] = [action]
+    proposals[0]["conflict_acknowledgements"] = changes["records"][0]["conflicts"]
+    path.write_text(json.dumps(proposals))
+    edited = commit_data(work, "operator proposes a measurement with explicit keep")
+    g.push(work, edited, initial["branch"])
+    bound_out = tmp_path / "bound"
+    bound = plan(
+        g, root, bound_out, operation="refresh", pr_number=17, expected_head=edited, run_id="124"
+    )
+    g.push(bound_out / "work", bound["head"], bound["branch"])
+    return root, g, bound, action
+
+
+@pytest.mark.parametrize("advance_main", [False, True])
+def test_refresh_preserves_bound_human_proposal(bound_workflow_proposal, tmp_path, advance_main):
+    from gps_kataster_obiektow_tatr.tpn_batch import load_batch
+
+    root, g, bound, action = bound_workflow_proposal
+    if advance_main:
+        (root / "trusted_code.py").write_text("# Independent change on main\n")
+        git(root, "add", "trusted_code.py")
+        git(root, "commit", "-qm", "independent main change")
+        g.base = git(root, "rev-parse", "HEAD")
+        git(root, "update-ref", "refs/remotes/origin/main", g.base)
+    before = hashes(root)
+    out = tmp_path / "refreshed"
+    refreshed = plan(
+        g,
+        root,
+        out,
+        operation="refresh",
+        pr_number=17,
+        expected_head=bound["head"],
+        run_id="125",
+    )
+    changes, decisions = load_batch(out / "work", refreshed["batch_id"])
+    assert changes["execution"]["proposals"][0]["actions"] == [action]
+    assert decisions["decisions"][0]["actions"] == [action]
+    assert decisions["decisions"][0]["status"] == "pending"
+    assert decisions["decisions"][0]["reviewed_by"] is None
+    assert decisions["decisions"][0]["reviewed_at"] is None
+    integration().publish_workflow(
+        root,
+        g,
+        out,
+        actor="maintainer",
+        triggering_actor="maintainer",
+        trusted_sha=g.base,
+        operation="refresh",
+        run_id="125",
+        pr_number=17,
+        expected_head=bound["head"],
+    )
+    git(root, "merge-base", "--is-ancestor", bound["head"], refreshed["head"])
+    assert hashes(root) == before
+
+
+@pytest.mark.parametrize("changed_basis", ["source", "catalog"])
+def test_refresh_rejects_stale_bound_human_proposal(
+    bound_workflow_proposal, tmp_path, changed_basis
+):
+    root, g, bound, _ = bound_workflow_proposal
+    options = {}
+    if changed_basis == "source":
+        options["acquire"] = acquisition([feature(lon=19.803)])
+    else:
+        import yaml
+
+        path = root / "data/objects/KSW/KSW-0001.yml"
+        obj = yaml.safe_load(path.read_text())
+        obj["notes"] = "Independent local evidence"
+        path.write_text(yaml.safe_dump(obj, allow_unicode=True))
+        git(root, "add", str(path))
+        git(root, "commit", "-qm", "independent local catalog correction")
+        g.base = git(root, "rev-parse", "HEAD")
+        git(root, "update-ref", "refs/remotes/origin/main", g.base)
+    before, refs, writes = hashes(root), dict(g.refs), list(g.writes)
+    out = tmp_path / "stale-refresh"
+    with pytest.raises((ValueError, KeyError)):
+        plan(
+            g,
+            root,
+            out,
+            operation="refresh",
+            pr_number=17,
+            expected_head=bound["head"],
+            run_id="125",
+            **options,
+        )
+    assert hashes(root) == before and g.refs == refs and g.writes == writes
+    assert not (out / "candidate.bundle").exists()
+
+
+def test_refresh_regenerates_generated_proposals_for_new_source(batch_repo, tmp_path):
+    from gps_kataster_obiektow_tatr.tpn_batch import load_batch
+
+    root, _ = batch_repo
+    g = FakeGitHub(root, accepted(batch_repo))
+    initial_out = tmp_path / "generated"
+    initial = plan(g, root, initial_out)
+    g.push(initial_out / "work", initial["head"], initial["branch"])
+    g.create_pull(initial["branch"], initial["batch_id"])
+    before, _ = load_batch(initial_out / "work", initial["batch_id"])
+    out = tmp_path / "new-source"
+    refreshed = plan(
+        g,
+        root,
+        out,
+        operation="refresh",
+        pr_number=17,
+        expected_head=initial["head"],
+        run_id="124",
+        acquire=acquisition([feature(lon=19.803)]),
+    )
+    changes, decisions = load_batch(out / "work", refreshed["batch_id"])
+    assert float(changes["records"][0]["source_after"]["location"]["lon"]) == 19.803
+    assert decisions["decisions"][0]["change_id"] != before["records"][0]["change_id"]
+    assert decisions["decisions"][0]["actions"] == []
+    assert decisions["decisions"][0]["status"] == "pending"
+    assert (out / "candidate.bundle").is_file()
+
+
 def test_rest_pagination_and_human_permission_check():
     from gps_kataster_obiektow_tatr.tpn_workflow_api import GitHub
 

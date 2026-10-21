@@ -119,7 +119,9 @@ def verify_changes(root, base, changes, allow_merged=False):
         batch_id=changes["batch_id"],
         base_commit=changes["base_commit"],
         state=state,
-        candidate_policy=CandidatePolicy(policy["name_similarity_threshold"], policy["radius_m"])
+        candidate_policy=CandidatePolicy(
+            policy["name_similarity_threshold"], policy["radius_m"], version=policy["version"]
+        )
         if policy
         else None,
         protect_best="best_protection" in changes,

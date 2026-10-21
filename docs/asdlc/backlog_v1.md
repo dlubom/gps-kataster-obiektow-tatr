@@ -2,6 +2,12 @@
 
 Stan na: 2026-10-21
 
+Poprawki po review PR #12 na osobne zlecenie użytkownika: zachowanie
+ręcznych propozycji przy refresh (PBI-102), deduplikacja historycznej
+lokalizacji CSV/API (PBI-100) i stabilna pamięć par (PBI-098).
+[Wspólny zakres, regresje i odbiór](verification/PBI-100-review-20261021.md).
+Nie zmieniają poniższych warunków odbioru produkcyjnego PBI-102/103.
+
 ## PBI-103: Miesięczne sprawdzanie źródła TPN
 
 **Status: implementacja w PR #12, aktywacja i odbiór produkcyjny oczekują

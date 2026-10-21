@@ -109,7 +109,9 @@ ponowne przygotowanie kandydata od bieżącego main: nowe wejście i katalog
 paczki, wszystkie decyzje pending, ponowny przegląd źródła/preimages.
 Poprzednie commity pozostają przodkami nowego HEAD; brak force-push.
 Edycje proposals.yml są przenoszone tylko po ponownym sprawdzeniu kompletu
-change_id, celów, preimages i akcji. Jeśli źródło/main je unieważniły,
+change_id, celów, preimages i akcji, również gdy wcześniejszy refresh
+związał je już z paczką. Niezmienione propozycje automatyczne są generowane
+ponownie z nowego raportu. Jeśli źródło/main unieważniły ręczne propozycje,
 przebieg odmawia zapisu. Przywróć propozycje zgodne z bieżącym raportem;
 nie kopiuj poprzednich approve do nowej podstawy bez review.
 

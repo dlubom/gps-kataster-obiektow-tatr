@@ -15,6 +15,7 @@ from .tpn_workflow import (
     TRANSFER_REF,
     active_batch,
     apply_candidate,
+    automatic_proposals,
     prepare_candidate,
     run_git,
     validate_branch,
@@ -232,7 +233,12 @@ def plan_workflow(
                 with base_checkout(root, old_head) as previous:
                     changes, _ = load_batch(previous, batch)
                     proposed = load_unique_yaml(previous / batch_path(batch) / "proposals.yml")
-                    if canonical(proposed) != canonical(changes["execution"]["proposals"]):
+                    bound = changes["execution"]["proposals"]
+                    # Refresh binds edits into execution; they remain human proposals
+                    # on subsequent refreshes. Only untouched defaults are regenerated.
+                    if canonical(proposed) != canonical(bound) or canonical(bound) != canonical(
+                        automatic_proposals(changes)
+                    ):
                         custom_proposals = proposed
             result = prepare_candidate(
                 work,

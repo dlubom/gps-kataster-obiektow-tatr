@@ -3,6 +3,7 @@
 from decimal import Decimal
 
 import pytest
+from test_tpn_batch import batch_repo as batch_repo
 
 from gps_kataster_obiektow_tatr.tpn_candidates import (
     CandidatePolicy,
@@ -632,7 +633,7 @@ def test_historical_csv_names_remain_after_accepted_snapshot(tiny_repo):
     row = active_row(report)
     assert row["new_record_qualification"]["status"] == "review"
     assert any(
-        c["key"].startswith("source:historical_csv:")
+        c["target"].get("globalid") == old["attributes"]["GLOBALID"]
         and any(e["code"] == "exact_name" for e in c["evidence"])
         for c in row["candidates"]
     )
@@ -705,3 +706,250 @@ def test_missing_existing_measurement_blocks_comparison_completeness(tiny_repo):
     row = active_row(compare_tiny(tiny_repo, [clean_feature()]))
     assert row["new_record_qualification"]["checks"]["comparison_complete"] is False
     assert row["new_record_qualification"]["status"] == "review"
+
+
+@pytest.mark.parametrize("candidate_kind", ["object", "source"])
+def test_accepted_duplicate_decision_survives_identical_next_batch(batch_repo, candidate_kind):
+    import yaml
+    from test_tpn_batch import git
+    from test_tpn_changes import GUID, feature, snapshot
+
+    from gps_kataster_obiektow_tatr.tpn_batch import apply_batch, check_batch, prepare_batch
+    from gps_kataster_obiektow_tatr.tpn_changes import compare
+    from gps_kataster_obiektow_tatr.tpn_duplicate_state import read_accepted_duplicates
+    from gps_kataster_obiektow_tatr.tpn_normalization import canonical, digest
+    from gps_kataster_obiektow_tatr.tpn_source_state import read_accepted_state
+
+    root, initial_snapshot = batch_repo
+
+    def accept(message):
+        git(root, "add", ".")
+        git(root, "commit", "-qm", message)
+        git(root, "update-ref", "refs/remotes/origin/main", "HEAD")
+
+    def report_for(snap, label, *, qualify=False):
+        state, accepted = read_accepted_state(root)
+        report = compare(
+            root,
+            snap,
+            batch_id=label,
+            base_commit=git(root, "rev-parse", "HEAD"),
+            state=state,
+            candidate_policy=CandidatePolicy() if qualify else None,
+            duplicate_resolutions=read_accepted_duplicates(root, accepted) if qualify else None,
+        )
+        report["accepted_state_commit"] = accepted
+        return report
+
+    def reject_and_check(report):
+        changes, decisions = prepare_batch(root, report)
+        for decision in decisions["decisions"]:
+            decision.update(
+                status="reject",
+                reviewed_by="human",
+                reviewed_at="2026-10-21T00:01:00Z",
+                reason="Fixture explicit rejection",
+            )
+        apply_batch(root, changes, decisions, reviewers={"human"})
+        check_batch(root, report["batch_id"])
+
+    reject_and_check(report_for(initial_snapshot, "base-batch"))
+    accept("fixture: accept first batch")
+    pig = root / "data/sources/pig/pig_otwory_jaskin_.xlsx.-.Export.csv"
+    pig.parent.mkdir(parents=True)
+    pig.write_text("ID,Nazwa,Inne nazwy,Nr inw.\n")
+    obj = yaml.safe_load((root / "data/objects/KSW/KSW-0001.yml").read_text())
+    old = feature(lon=19.801)
+    new = clean_feature(
+        name=obj["name_local"] if candidate_kind == "object" else old["attributes"]["NAZWA"]
+    )
+    # The second case remembers a source that disappears from the accepted
+    # baseline but remains in the immutable evidence for its absence decision.
+    features = [old, new] if candidate_kind == "object" else [new]
+    review_snapshot = snapshot(root, "review", features)
+    accept("fixture: retain snapshot for review")
+    report = report_for(review_snapshot, "review-batch", qualify=True)
+    new_guid = new["attributes"]["GLOBALID"]
+    row = next(r for r in report["records"] if r["globalid"] == new_guid)
+    candidate = next(
+        c
+        for c in row["candidates"]
+        if (
+            c["target"].get("object_id") == "KSW-0001"
+            if candidate_kind == "object"
+            else c["target"].get("globalid") == GUID
+            and c["candidate_basis"]["positions"][0]["lon"] == Decimal("19.801")
+        )
+    )
+    basis = candidate["resolution"]["current_basis"]
+    memory = {
+        "pair": [s["key"] for s in basis["sides"]],
+        "basis": basis,
+        "basis_hash": digest(basis),
+        "outcome": "different_objects",
+        "evidence": "Fixture reviewed cave plan",
+        "reviewed_by": "human",
+        "reviewed_at": "2026-10-21T00:00:00Z",
+    }
+    # PBI-098 only reads duplicate memory; explicitly accept it in fixture main.
+    (root / "data/source_state/tpn/duplicates.json").write_bytes(
+        canonical({"format": "tpn-duplicate-state", "format_version": 1, "resolutions": [memory]})
+        + b"\n"
+    )
+    accept("fixture: accept duplicate decision")
+    report = report_for(review_snapshot, "review-batch", qualify=True)
+    assert report["duplicate_resolution_checks"][0]["status"] == "valid"
+    reject_and_check(report)
+    accept("fixture: accept source rejection batch")
+    result = report_for(snapshot(root, "next", features), "next-batch", qualify=True)
+    result_row = next(r for r in result["records"] if r["globalid"] == new_guid)
+    assert result["catalog_hash"] == report["catalog_hash"]
+    assert result_row["revision_hash"] == row["revision_hash"]
+    assert result["duplicate_resolution_checks"][0]["status"] == "valid"
+    assert result_row["review_status"] == "reject"
+    assert not result_row["actionable"] and not result["requires_pr"]
+
+
+@pytest.mark.parametrize("version", ["tpn-candidates-v0", "tpn-candidates-v3", None])
+def test_unknown_candidate_policy_version_cannot_generate_report(version):
+    with pytest.raises(ValueError, match="candidate policy version"):
+        CandidatePolicy(version=version)
+
+
+def test_legacy_candidate_report_replays_through_public_batch_api(batch_repo):
+    from test_tpn_batch import git
+
+    from gps_kataster_obiektow_tatr.tpn_batch import apply_batch, check_batch, prepare_batch
+    from gps_kataster_obiektow_tatr.tpn_changes import compare
+
+    root, snap = batch_repo
+    head = git(root, "rev-parse", "HEAD")
+    report = compare(
+        root,
+        snap,
+        batch_id="legacy-batch",
+        base_commit=head,
+        candidate_policy=CandidatePolicy(version="tpn-candidates-v1"),
+    )
+    report["accepted_state_commit"] = head
+    changes, decisions = prepare_batch(root, report)
+    for decision in decisions["decisions"]:
+        decision.update(
+            status="reject",
+            reviewed_by="human",
+            reviewed_at="2026-10-21T00:01:00Z",
+            reason="Legacy decision replay",
+        )
+    apply_batch(root, changes, decisions, reviewers={"human"})
+    check_batch(root, "legacy-batch")
+
+
+def test_legacy_duplicate_memory_requires_review_under_new_policy(tiny_repo):
+    from test_tpn_changes import snapshot, state_for
+
+    from gps_kataster_obiektow_tatr.tpn_changes import compare
+    from gps_kataster_obiektow_tatr.tpn_normalization import digest
+
+    snap = snapshot(tiny_repo, "legacy", [clean_feature(name="Wyjątkowa Nazwa Dawnego Punktu")])
+    report = compare(
+        tiny_repo,
+        snap,
+        batch_id="legacy",
+        base_commit="a" * 40,
+        candidate_policy=CandidatePolicy(version="tpn-candidates-v1"),
+    )
+    row = active_row(report)
+    candidate = next(c for c in row["candidates"] if c["key"] == "object:KSW-9001")
+    basis = candidate["resolution"]["current_basis"]
+    memory = {
+        "pair": [s["key"] for s in basis["sides"]],
+        "basis": basis,
+        "basis_hash": digest(basis),
+        "outcome": "different_objects",
+        "evidence": "Legacy reviewed pair",
+        "reviewed_by": "human",
+        "reviewed_at": "2026-10-21T00:00:00Z",
+    }
+    state = state_for({**report, "records": [row]}, "reject")
+    state["bindings"] = {}
+    result = compare(
+        tiny_repo,
+        snap,
+        batch_id="new-policy",
+        base_commit="a" * 40,
+        state=state,
+        candidate_policy=CandidatePolicy(),
+        duplicate_resolutions=[memory],
+    )
+    assert result["duplicate_resolution_checks"][0]["status"] == "stale"
+    assert active_row(result)["review_status"] == "pending"
+    assert active_row(result)["new_record_qualification"]["checks"]["source_review_clear"] is False
+    assert result["requires_pr"]
+
+
+def test_changed_source_revision_without_collision_reopens_historical_reject(tiny_repo):
+    from test_tpn_changes import state_for
+
+    from gps_kataster_obiektow_tatr.tpn_normalization import digest
+
+    original = clean_feature()
+    first = compare_tiny(tiny_repo, [original])
+    state = state_for({**first, "records": [active_row(first)]}, "reject")
+    state["bindings"] = {}
+    conflicting = clean_feature(name="Wyjątkowa Nazwa Dawnego Punktu")
+    second = compare_tiny(tiny_repo, [conflicting], "second", state=state)
+    row = active_row(second)
+    candidate = next(c for c in row["candidates"] if c["key"] == "object:KSW-9001")
+    basis = candidate["resolution"]["current_basis"]
+    memory = {
+        "pair": [s["key"] for s in basis["sides"]],
+        "basis": basis,
+        "basis_hash": digest(basis),
+        "outcome": "different_objects",
+        "evidence": "Review of the later source name",
+        "reviewed_by": "human",
+        "reviewed_at": "2026-10-21T00:00:00Z",
+    }
+    state["accepted_snapshot_hash"] = second["snapshot_hash"]
+    state["resolutions"].extend(state_for({**second, "records": [row]}, "reject")["resolutions"])
+    control = compare_tiny(tiny_repo, [original], "control", state=state)
+    assert active_row(control)["review_status"] == "reject" and not control["requires_pr"]
+    result = compare_tiny(
+        tiny_repo, [original], "returned", state=state, duplicate_resolutions=[memory]
+    )
+    assert active_row(result)["candidates"] == []
+    assert result["duplicate_resolution_checks"][0]["status"] == "stale"
+    assert active_row(result)["review_status"] == "pending"
+    assert active_row(result)["new_record_qualification"]["checks"]["source_review_clear"] is False
+    assert result["requires_pr"]
+
+
+@pytest.mark.parametrize("field", ["NAZWA", "NR_INWENT", "SYSTEM", "WER_LOK", "geometry"])
+def test_changed_competitor_evidence_invalidates_duplicate_memory(tiny_repo, field):
+    from copy import deepcopy
+
+    from gps_kataster_obiektow_tatr.tpn_normalization import digest
+
+    new = clean_feature(name="Wyjątkowa Nazwa Dawnego Punktu")
+    other = clean_feature("55555555-5555-4555-8555-555555555555", "Odrębny punkt", 3)
+    other["geometry"]["x"] = 20.1
+    report = compare_tiny(tiny_repo, [new, other])
+    candidate = next(c for c in active_row(report)["candidates"] if c["key"] == "object:KSW-9001")
+    basis = candidate["resolution"]["current_basis"]
+    memory = {
+        "pair": [s["key"] for s in basis["sides"]],
+        "basis": basis,
+        "basis_hash": digest(basis),
+        "outcome": "different_objects",
+        "evidence": "Reviewed comparison set",
+        "reviewed_by": "human",
+        "reviewed_at": "2026-10-21T00:00:00Z",
+    }
+    changed = deepcopy(other)
+    if field == "geometry":
+        changed["geometry"]["x"] = 20.1000000001
+    else:
+        changed["attributes"][field] = "Nowy dowód"
+    result = compare_tiny(tiny_repo, [new, changed], "next", duplicate_resolutions=[memory])
+    assert result["duplicate_resolution_checks"][0]["status"] == "stale"
+    assert result["requires_pr"]

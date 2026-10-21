@@ -326,6 +326,13 @@ class DomainPlan:
         require(
             (oid, a["measurement_key"]) not in self.measurement_keys, "duplicate measurement key"
         )
+        if row["target"] is not None and row["target"].get("object_id") == oid:
+            # Verified history includes accepted CSV/API associations even when
+            # the historical YAML coordinates differ from the exact API floats.
+            require(
+                not row["history"]["current_matches"],
+                "location already in history; acknowledge without append",
+            )
         location = row["source_after"]["location"]
         for m in obj["measurements"]:
             if measurement_guid(m) is not None:

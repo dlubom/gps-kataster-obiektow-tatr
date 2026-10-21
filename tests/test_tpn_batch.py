@@ -1377,6 +1377,82 @@ def test_rereview_keeps_csv_provenance_of_existing_location(batch_repo):
     assert result["records"][0]["history"]["current_matches"]
 
 
+@pytest.mark.parametrize(
+    ("final_lon", "already_applied"),
+    [(19.8, True), (19.8000000002, False)],
+    ids=["accepted-csv-location", "distinct-nearby-api-location"],
+)
+def test_append_respects_accepted_csv_location_history(batch_repo, final_lon, already_applied):
+    from gps_kataster_obiektow_tatr.tpn_batch import apply_batch, check_batch, prepare_batch
+    from gps_kataster_obiektow_tatr.tpn_source_state import read_accepted_state
+
+    root, _ = batch_repo
+    path = root / "data/objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(path.read_text())
+    old = obj["measurements"][0]
+    # Historical CSV conversion agrees with API A within 0.1 m, not exact floats.
+    old["lon"] = 19.8000000001
+    xy = wgs84_to_1992(old["lat"], old["lon"])
+    old.update(x_1992=xy.x_1992, y_1992=xy.y_1992)
+    path.write_text(yaml.safe_dump(obj, allow_unicode=True))
+
+    def approve(proposal, report, index):
+        changes, decisions = prepare_batch(root, report, [proposal])
+        decisions["decisions"][0].update(
+            status="approve",
+            reviewed_by="human",
+            reviewed_at=f"2026-10-{19 + index}T14:00:00Z",
+            reason="Acknowledge source history and keep the existing export point",
+        )
+        return changes, decisions
+
+    for index, lon in enumerate((19.8, 19.801, final_lon)):
+        batch_id = f"csv-history-{index}"
+        snap = snapshot(root, batch_id, [feature(lon=lon)])
+        recommit(root)
+        state, head = read_accepted_state(root)
+        report = tpn_changes.compare(
+            root, snap, batch_id=batch_id, base_commit=head, state=state, protect_best=True
+        )
+        report["accepted_state_commit"] = head
+        row = report["records"][0]
+        if index == 2:
+            assert row["measurement_needed"] is not already_applied
+            assert [m["measurement_id"] for m in row["history"]["current_matches"]] == (
+                ["m-001"] if already_applied else []
+            )
+        action = append_action()
+        action["location_hash"] = row["location_hash"]
+        proposal = {
+            "change_id": row["change_id"],
+            "target": row["target"],
+            "preimage": row["preimage"],
+            "actions": [action] if index else [],
+            "conflict_acknowledgements": row["conflicts"],
+            "candidate_acknowledgements": [],
+        }
+
+        changes, decisions = approve(proposal, report, index)
+        if index == 2 and already_applied:
+            before = hashes(root)
+            with pytest.raises(ValueError, match="already in history"):
+                apply_batch(root, changes, decisions, reviewers={"human"})
+            assert hashes(root) == before
+            # The valid decision acknowledges A without appending another observation.
+            changes, decisions = approve({**proposal, "actions": []}, report, index)
+        apply_batch(root, changes, decisions, reviewers={"human"})
+        check_batch(root, batch_id)
+    measurements = yaml.safe_load(path.read_text())["measurements"]
+    assert measurements[0] == old
+    assert [(m["id"], m["lon"]) for m in measurements] == (
+        [("m-001", 19.8000000001), ("m-002", 19.801)]
+        + ([] if already_applied else [("m-003", 19.8000000002)])
+    )
+    before = hashes(root)
+    assert apply_batch(root, changes, decisions, reviewers={"human"})["noop"]
+    assert hashes(root) == before
+
+
 def test_best_guard_sees_metadata_planned_in_same_batch(batch_repo):
     from gps_kataster_obiektow_tatr.tpn_batch import apply_batch
     from gps_kataster_obiektow_tatr.tpn_normalization import normalize_feature

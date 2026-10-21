@@ -2,6 +2,17 @@
 
 Last updated: 2026-10-21
 
+## PR #12 — trzy poprawki po review
+
+Osobne zlecenie użytkownika obejmuje zachowanie związanych ręcznych propozycji
+przy kolejnym refresh, blokadę ponownego append historycznej lokalizacji CSV/API
+oraz stabilną pamięć duplikatów po przesunięciu przyjętego snapshotu.
+Nowe porównania używają polityki kandydatów v2; historyczne paczki odtwarzają
+zapisaną v1, a dawna pamięć duplikatów wymaga review według v2.
+[Zakres, regresje i odbiór](verification/PBI-100-review-20261021.md).
+Końcowy SHA i jego CI utrwala opis PR #12. Katalog, pomiary, best,
+decyzje i snapshoty pozostają bez zmian. Bez merge i aktywacji harmonogramu.
+
 ## PBI-103 — harmonogram przygotowany, aktywacja czeka na odbiór PBI-102
 
 Osobne zlecenie 2026-10-21 w PR #12. Użytkownik potwierdził pierwszy dzień
