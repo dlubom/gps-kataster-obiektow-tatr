@@ -4,13 +4,13 @@ Workflow **TPN reviewed batch** (`tpn-sync.yml`) obsługuje
 `workflow_dispatch`: `prepare`, `apply`, `refresh` oraz miesięczne `schedule`
 korzystające z tego samego `prepare`. Aktywacja miesięczna jest domyślnie
 wyłączona do produkcyjnego odbioru PBI-102.
-[Plan wykonania](tpn_sync_workflow_plan.md), [kontrakt](tpn_sync_contract.md),
+[Kontrakt](tpn_sync_contract.md),
 [decyzje i akcje](tpn_sync_decisions.md), [odbiór PBI-102](verification/PBI-102.md).
 
 ## Instalacja i warunki pierwszej próby
 
 1. Człowiek rozpatruje i scala PR #12, zachowując jego historię oraz
-   wskazane commity bazowe. Stan PBI-101 staje się przyjęty dopiero na main.
+   [wymagane commity bazowe](verification/PBI-101-D26.md#warunek-zachowania-historii-przy-merge). Stan PBI-101 staje się przyjęty dopiero na main.
    Workflow odmawia prepare przed przyjęciem tego stanu. Nie scalać PR
    tylko w celu uruchomienia testu automatyzacji.
 2. W Settings → Actions → General → Workflow permissions maintainer

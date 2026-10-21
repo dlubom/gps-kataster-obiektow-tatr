@@ -11,11 +11,12 @@ Read these files before making changes:
    specification and domain model.
 2. `docs/asdlc/backlog_v1.md` - V1 backlog, PBI order, scope and verification.
 3. `docs/asdlc/context.md` - compact current state and operating agreements.
-4. `docs/asdlc/remediation_plan.md` and `docs/asdlc/remediation_runbook.md` -
-   active repair scope and delivery procedure.
-5. For TPN integration: `docs/asdlc/tpn_sync_handoff.md`,
-   `tpn_sync_plan.md`, `tpn_sync_backlog.md`, `tpn_sync_contract.md` and
-   `tpn_sync_examples.md` in `docs/asdlc/`, plus the latest PBI verification.
+4. `docs/asdlc/remediation_runbook.md` - verification and delivery procedure.
+   `remediation_plan.md` records the completed repair series; consult it
+   when working with that history.
+5. For TPN integration: `docs/asdlc/tpn_sync_handoff.md` routes to the
+   contract, examples, current backlog, relevant CLI/operator instructions
+   and PBI evidence. `tpn_sync_plan.md` records the original design.
 
 ## Main remediation from 2026-10-15
 
@@ -47,9 +48,13 @@ Read these files before making changes:
 - Use spec-anchored development: the spec defines current system intent.
 - Use PBIs as execution units: small scope, explicit verification, commit after
   each completed step.
-- Update `docs/asdlc/backlog_v1.md` when a PBI status changes.
+- Keep PBI status in its owning backlog: `docs/asdlc/backlog_v1.md`, or
+  `docs/asdlc/tpn_sync_backlog.md` for PBI-095–103. Link from the index.
 - Update `docs/asdlc/context.md` when an important decision, data fact, or
-  project status changes.
+  project status changes; replace stale text instead of appending history.
+- Keep one verification report per PBI. Update operator instructions when
+  behavior changes; do not duplicate them in completed plans, CI handoffs
+  or prompts for the next session. Preserve source and machine audit files.
 - Keep implementation conservative and close to the specification.
 - Prefer deterministic scripts, schemas and tests over prompt-only decisions.
 - Do not start bulk PIG/TPN import into final YAML until schema, fixtures and
@@ -57,7 +62,7 @@ Read these files before making changes:
 
 ## Current V1 boundaries
 
-- YAML in `data/` is the future source of truth.
+- YAML in `data/` is the source of truth.
 - SQLite, GeoJSON, GPX, CSV and Shapefile outputs are generated artifacts.
 - `Obiekt` is a concrete field object / point.
 - `Jaskinia` is a logical/catalog entity grouping one or more objects.
@@ -67,7 +72,7 @@ Read these files before making changes:
 - Frontend, PWA, general GitHub API integration, permanent Geoportal/PIG
   importers and their cyclic synchronization are outside V1. The only
   extension is the reviewed TPN batch process in spec section 8.4;
-  its future GitHub Actions may prepare one PR but never merge it.
+  its GitHub Actions may prepare one PR but never merge it.
 
 ## TPN integration — accepted contract, staged implementation
 

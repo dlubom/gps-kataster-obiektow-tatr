@@ -1,22 +1,11 @@
-# Integracja TPN: przyjęty kierunek i kolejność prac
+# Integracja TPN — historyczny projekt z 2026-10-19
 
-Data: 2026-10-19. Baza analizy: `main` / `origin/main`
-`b98fd3febb400c7ee520046682c1bb16238429ee`, po fetch i pull.
-
-Status: **kierunek przyjęty przez użytkownika w PBI-095**. Normatywne
-doprecyzowanie: [kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md).
-Ten dokument nie uruchamia importu ani harmonogramu. Karty wykonawcze: [backlog TPN](tpn_sync_backlog.md).
-[Start z czystego kontekstu i zapytania API](tpn_sync_handoff.md) zawiera
-instrukcję pobrania bieżącego JSON; lokalna kopia nie jest częścią PR.
-[Specyfikacja](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md) §8.4
-i §20–21 dopuszcza wąski proces TPN; PBI-095 ustala kontrakt, a kolejne
-karty dopiero wdrożą jego wymagania.
-Nowy zakres dotyczy tylko TPN. YAML pozostaje źródłem prawdy katalogu.
-PBI-096–098 dostarczyły snapshot/porównanie/kwalifikację; PBI-099 dodaje
-[czysty strażnik i audyt best](tpn_sync_best_protection.md), bez importu.
-PBI-100 dostarcza [decyzje, wspólny plan, transakcję i bramkę](tpn_sync_decisions.md),
-zweryfikowane na fixture'ach; pierwsza paczka danych pozostaje w PBI-101.
-Bieżący status dostawy i akceptacji manifestu określa backlog.
+Ten dokument zachowuje uzasadnienie i obserwacje z fazy projektowania
+PBI-095, na bazie `main` `b98fd3febb400c7ee520046682c1bb16238429ee`.
+Liczby, czas przyszły i kolejność poniżej opisują tamten stan, nie bieżące
+zadania. Normatywne reguły są w [kontrakcie](tpn_sync_contract.md) i
+[przykładach](tpn_sync_examples.md); aktualne statusy w
+[backlogu TPN](tpn_sync_backlog.md), instrukcje w [handoffie](tpn_sync_handoff.md).
 
 ## 1. Cel i ustalenia użytkownika
 

@@ -58,3 +58,19 @@ poprawnych, składnia polecenia Bash poprawna, endpoint i wszystkie osiem
 parametrów zgodne z manifestem pierwotnego odczytu. Hash lokalnego JSON
 zgodny z manifestem; `git diff --check` bez błędów. Zakres: tylko dokumenty.
 Końcowy SHA/CI tego uzupełnienia również wskazuje opis PR #12.
+
+## Porządkowanie dokumentacji PR #12 — 2026-10-21
+
+Na polecenie użytkownika usunięto 13 zakończonych planów, promptów kolejnych
+sesji i osobnych handoffów CI. Kontekst skrócono z 1415 do 67 linii,
+indeks backlogu z 1202 do 114, handoff z 235 do 73. Bieżące statusy TPN
+mają jedno miejsce w backlogu; specyfikacja odsyła do niego zamiast
+powielać historię dostaw. Szczegóły dawnych kart pozostają w historii Git.
+
+Weryfikacja: 5 testów dokumentacji PASS; 350 lokalnych odsyłaczy sprawdzono,
+bez błędów w aktywnych dokumentach (26 historycznych odsyłaczy w zamrożonych
+kopiach pozostawiono bez zmian). SHA-256 potwierdziły niezmienność 2279
+chronionych plików, w tym kodu, danych, kontraktu i archiwów. Kontrola
+`review_tpn_batch.py check --changed-from b98fd3febb400c7ee520046682c1bb16238429ee`
+zakończyła się `ready=true`; niezależny review i `git diff --check` bez
+zastrzeżeń. Zdalny SHA i CI dostawy wskazuje PR; bez merge i aktywacji TPN.

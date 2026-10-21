@@ -3,40 +3,31 @@
 Stan na: 2026-10-21. [Projekt i uzasadnienie](tpn_sync_plan.md).
 [Indeks całego backlogu](backlog_v1.md).
 
-Użytkownik przyjął kontrakt PBI-095; 2026-10-21 osobno zlecił PBI-102,
-a następnie **PBI-103 w PR #12**.
-[Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
-częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
-PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
-PBI-099: **wykonane 2026-10-19**; PBI-100: **wykonane 2026-10-19**;
-PBI-101: **wykonane — dostarczone do PR #12**;
-PBI-102: **implementacja w PR #12, do odbioru produkcyjnego**;
-PBI-103: **implementacja w PR #12, aktywacja i odbiór produkcyjny oczekują na PBI-102**.
-Pierwotna paczka ma 614 approve / 26 defer / 0 pending; jej dane/CI/eksporty odebrane.
-Zatwierdzony 2026-10-20 [suplement D26](verification/PBI-101-D26.md) daje
-kandydata stanu 640 approve / 0 defer / 0 pending, bez zmiany dawnych archiwów.
-Cron przygotowany, aktywacja miesięczna domyślnie wyłączona.
-Wykonujemy po jednej gotowej karcie na osobne polecenie.
-Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
+To źródło bieżących statusów i kryteriów odbioru TPN. Instrukcje pracy
+zebrano w [handoffie](tpn_sync_handoff.md); obowiązują
+[kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md).
 
-| PBI | Sprawdzalny wynik | Zależności |
+| PBI | Wynik | Status |
 |---|---|---|
-| 095 | Uzgodniony kontrakt w specyfikacji | Akceptacja projektu |
-| 096 | Kompletny, weryfikowalny snapshot API | 095 |
-| 097 | Bootstrap i różnice źródła względem stanu katalogu | 096 |
-| 098 | Kandydaci duplikatów i bramka dla nowych obiektów | 097 |
-| 099 | Ochrona GNSS/geodezji i istniejącego wyboru best | 095; kolejność po 098 |
-| 100 | Decyzje po rekordzie i idempotentne zastosowanie paczki | 097–099 |
-| 101 | Pierwsze rozpatrzenie aktualnych danych TPN | 100 |
-| 102 | Ręczne uruchomienie procesu tworzącego jeden PR | 101 |
-| 103 | Comiesięczne uruchomienie sprawdzonego procesu | 102 |
+| 095 | Kontrakt integracji | Wykonane |
+| 096 | Pobieranie kompletnego snapshotu API | Wykonane |
+| 097 | Porównanie źródła, katalogu i wcześniejszych decyzji | Wykonane |
+| 098 | Kandydaci duplikatów i nowych obiektów | Wykonane |
+| 099 | Ochrona historii i best | Wykonane |
+| 100 | Decyzje po rekordzie i zastosowanie paczki | Wykonane |
+| 101 | Pierwsze uzgodnienie danych i suplement D26 | Dostarczone w PR #12 do ludzkiego merge |
+| 102 | Ręczny workflow pojedynczego PR | Implementacja w PR #12; odbiór produkcyjny otwarty |
+| 103 | Comiesięczne sprawdzanie źródła | Implementacja w PR #12; aktywacja i odbiór po PBI-102 |
+
+Cron jest przygotowany na pierwszy dzień miesiąca, 03:17 UTC, ale wyłączony:
+`TPN_MONTHLY_ENABLED` nie ustawiono. Testy offline nie zastępują odbioru
+rzeczywistego tokena, utworzonego PR i jego CI/eksportów.
 
 ## Wspólny kontrakt wykonania
 
-- Kontekstem są aktualne spec, AGENTS, niniejszy plan i obecny main.
+- Kontekstem są aktualne spec, AGENTS, niniejszy backlog i obecny main.
   Historyczne PBI-034–077 nie są dowodem dostępności funkcji.
-- Każda karta zmienia tylko swój zakres. Status aktualizujemy w tym pliku
-  oraz indeksie, ważne ustalenia w `context.md`, dowody w
+- Każda karta zmienia tylko swój zakres. Status aktualizujemy w tym pliku, ważne ustalenia w `context.md`, dowody w
   `docs/asdlc/verification/PBI-NNN.md`.
 - Kod otrzymuje deterministyczne testy offline, fixture'y API oraz testy
   istotnych ścieżek błędów. Live API służy dodatkowej próbie, nie jest
@@ -201,7 +192,6 @@ plan §7, `best_measurement.py`, regresja KSZ-0112/m-001.
 ## PBI-100: Rozpatrywać i stosować decyzje po rekordzie w jednej paczce
 
 Status: wykonane 2026-10-19. Zależności: 097, 098, 099.
-[Odbiór hosted CI](verification/PBI-100-ci-handoff.md): wszystkie joby i kroki success, logi sprawdzone.
 [Dowody](verification/PBI-100.md), [CLI i schematy](tpn_sync_decisions.md).
 
 **Cel:** człowiek wybiera skutek każdej zmiany, a ponowienie nie powiela
@@ -234,18 +224,15 @@ Kontekst: plan §4–8 i obecny format `staging_review_decisions.md`.
 
 ## PBI-101: Przeprowadzić pierwsze uzgodnienie danych TPN
 
-Status: **wykonane — dane, CI i eksporty odebrane, PR do człowieka**.
-614 approve / 26 defer / 0 pending. Użytkownik przyjął A578, B31 select_new
-auto i C5; D26 jawnie odroczył do niezależnego badania oraz zlecił commit/push
-PR #12 i końcowy odbiór. [Decyzje](verification/PBI-101-review/review.md).
-Snapshot i źródła zachowane. Pierwszy plan keep jest w superseded-v1;
-nowa rewizja tej samej paczki ma zaakceptowane działania.
-[Przyczyna Linux/Mac i naprawa](tpn_sync_derived_precision.md) potwierdzone
-diagnostycznym CI; 1082 testów i izolowane zastosowanie/eksporty PASS.
-Produkcyjne CLI apply/check PASS; dane 16beb1e: CI 39316520323 success,
-wszystkie joby/kroki/logi odczytane; świeży readback 10/10 PASS.
-Końcowy SHA dokumentacji i odbiór CI/eksportów utrwala opis PR #12.
-[Dowody](verification/PBI-101.md), [kontynuacja](verification/PBI-101-next-task.md).
+Status: **wykonane — dostarczone w PR #12 do ludzkiego merge**.
+Pierwotna paczka miała 614 approve / 26 defer / 0 pending
+([decyzje](verification/PBI-101-review/review.md), [odbiór](verification/PBI-101.md)).
+Osobno zatwierdzony [suplement D26](verification/PBI-101-D26.md) daje
+640 approve / 0 defer / 0 pending; dawne archiwum pozostaje niezmienione.
+Trzy przypięcia manual dokumentuje
+[osobny receipt](verification/PBI-099-manual-selection.json), a korektę
+bibliografii [PBI-101-notes](verification/PBI-101-notes.md).
+Merge musi [zachować wymaganych przodków](verification/PBI-101-D26.md#warunek-zachowania-historii-przy-merge).
 
 **Cel:** uporządkować zaległości i pozostawić wiarygodną bazę kolejnego cyklu.
 
@@ -277,7 +264,7 @@ bazy produkcyjnego cyklu. Nie blokuje to testów narzędzi na fixture'ach.
 Status: **implementacja w PR #12, do odbioru produkcyjnego**.
 Osobne zlecenie 2026-10-21. Zależność: 101; próba produkcyjna po ludzkim
 merge 101 i osobnej decyzji maintenera o wyłączonym obecnie ustawieniu
-tworzenia PR przez GITHUB_TOKEN. [Plan](tpn_sync_workflow_plan.md),
+tworzenia PR przez GITHUB_TOKEN.
 [operator](tpn_sync_workflow.md), [dowody i pozostały odbiór](verification/PBI-102.md).
 Pierwsze pięć punktów poniżej sprawdzono na rzeczywistych lokalnych
 repozytoriach/fixture'ach z atrapą GitHub. Odbiór rzeczywistego tokena,
@@ -313,7 +300,7 @@ Kontekst: plan §8–9, istniejące validate CI i ochrona main.
 
 Status: **implementacja w PR #12, aktywacja i odbiór produkcyjny oczekują na PBI-102**.
 Osobne zlecenie 2026-10-21. Zależność: 102 i odbiór ręcznej ścieżki.
-[Plan](tpn_sync_monthly_plan.md), [operator](tpn_sync_workflow.md#harmonogram-miesięczny--pbi-103),
+[Operator](tpn_sync_workflow.md#harmonogram-miesięczny--pbi-103),
 [dowody i pozostały odbiór](verification/PBI-103.md).
 Uzgodniono pierwszy dzień miesiąca 03:17 UTC. Cron wymaga repozytoryjnej
 zmiennej TPN_MONTHLY_ENABLED=true; zmiennej nie ustawiono. Poniższe
@@ -339,21 +326,3 @@ obsługa zaległego PR, diagnostyka i krótki runbook. Bez automatycznego merge.
 - [ ] Runbook opisuje best-effort harmonogramu, możliwe wyłączenie po
       60 dniach nieaktywności i ręczne wznowienie. Uruchomienie próbne
       potwierdza ten sam wynik co ścieżka ręczna.
-
-## Kontynuacja
-
-PBI-101 pierwotnie dostarczono do PR #12 z 614 approve /
-26 defer / 0 pending. Snapshot, decyzje, receipt i stan są w Git, CI oraz
-świeże eksporty odebrane. PR draft, bez merge; origin/main pozostaje bazą
-przyjętego stanu, a gałąź jest kandydatem do przyjęcia.
-D001–D026 rozstrzygnięto osobną zgodą użytkownika z 2026-10-20:
-[suplement](verification/PBI-101-D26.md), 23 nowe Obiekty, 21 nowych Jaskiń,
-26 nowych pomiarów. Kandydat stanu ma 640 approve / 0 defer / 0 pending.
-[Gotowy prompt review PR](verification/PBI-101-next-task.md).
-Trzy przypięcia auto→manual zatwierdzono osobno 2026-10-20 i wykonano
-w tym samym PR #12; [zapis zgody i hashów](verification/PBI-099-manual-selection.json).
-Oryginalny manifest pending pozostaje historycznym audytem, bez zmiany bajtów.
-PBI-102 i następnie PBI-103 zlecono 2026-10-21 w tym samym PR.
-Rzeczywisty odbiór tokena/PR czeka na warunki 102; aktywacja i produkcyjny
-odbiór miesięczny czekają na jego zakończenie. Bez merge/tagu/release;
-TPN_MONTHLY_ENABLED pozostaje nieustawione.

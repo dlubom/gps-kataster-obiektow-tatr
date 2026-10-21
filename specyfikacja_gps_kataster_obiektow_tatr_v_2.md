@@ -6,22 +6,9 @@
 >
 > Propozycja stosu technologicznego jest rekomendacją. Specyfikacja jest pisana pod podejście **git-native**: źródłem prawdy są pliki YAML w repozytorium, a bazy i eksporty są artefaktami generowanymi.
 >
-> **Rozszerzenie TPN, PBI-095 (2026-10-19):** zaakceptowany kierunek i
-> kontrakt §8.4. PBI-096 dostarcza pobieranie i offline weryfikację snapshotu;
-> PBI-097 dostarcza porównanie CSV/API/YAML i odczyt przyjętego stanu;
-> PBI-098 dostarcza kwalifikację nowych rekordów, PBI-099 ochronę/audyt best;
-> PBI-100 dostarcza decyzje/planowanie/transakcję/bramkę, zweryfikowane na fixture'ach;
-> PBI-101 wykonane: paczka zastosowana, 614 approve / 26 defer / 0 pending;
-> dane, CI i eksporty odebrane. PR #12 pozostaje draftem do człowieka;
-> stan gałęzi jest kandydatem, nie przyjętym main. [Odbiór](docs/asdlc/verification/PBI-101.md).
-> Osobno zatwierdzony 2026-10-20 [suplement D26](docs/asdlc/verification/PBI-101-D26.md)
-> rozstrzyga pozostałe 26 rekordów: kandydat stanu 640 approve / 0 defer / 0 pending.
-> Oryginalne decyzje i archiwa zachowują historię wcześniejszych odroczeń.
-> PBI-102 zlecono osobno 2026-10-21 w PR #12: [ręczny workflow](docs/asdlc/tpn_sync_workflow.md)
-> prepare/apply/refresh, implementacja do odbioru produkcyjnego po ludzkim
-> merge PBI-101 i decyzji o ustawieniu tworzenia PR przez GITHUB_TOKEN.
-> [Odbiór i pozostały krok](docs/asdlc/verification/PBI-102.md).
-> PBI-103 pozostaje przyszłą pracą, bez harmonogramu.
+> **Rozszerzenie TPN:** zaakceptowany kontrakt integracji opisuje §8.4.
+> Status implementacji i otwarte warunki odbioru są utrzymywane w
+> [backlogu TPN](docs/asdlc/tpn_sync_backlog.md).
 
 ---
 
@@ -679,25 +666,10 @@ zapis całej partii, również w dry-run. Wszystkie zmiany przechodzą preflight
 
 ### 8.4 Kontrolowana integracja publicznego API TPN
 
-PBI-096: `scripts/fetch_tpn_snapshot.py fetch/verify` realizuje pozyskanie
-i kontrolny odczyt kompletnego snapshotu; [procedura i dowody](docs/asdlc/verification/PBI-096.md).
-PBI-097: `scripts/compare_tpn_snapshot.py` wylicza raport CSV/API/YAML
-i kolejnych cykli z przyjętym stanem, bez zmiany katalogu lub bazy.
-[CLI, normalizacja i format rejestru](docs/asdlc/tpn_sync_comparison.md).
-PBI-098: opcja `--qualify-new` dodaje kandydatów i bramkę nowych rekordów,
-[bez materializacji YAML](docs/asdlc/tpn_sync_candidates.md).
-PBI-099: opcja `--protect-best`, audyt katalogu i czysty strażnik jawnego
-keep/select_new; [zasady i manifest](docs/asdlc/tpn_sync_best_protection.md).
-PBI-099 nie zapisuje pomiarów ani migracji. PBI-100 dostarcza
-[decyzje i zastosowanie paczki](docs/asdlc/tpn_sync_decisions.md):
-ścisłe execution/proposals, wspólny plan ID/best, pełny preflight, atomową
-zamianę data, wynikowe hashe/archiwum decyzji i bramkę pending/defer.
-Pierwszą zastosowaną paczkę dostarcza [PBI-101](docs/asdlc/verification/PBI-101.md):
-historycznie 614 approve / 26 defer / 0 pending. Późniejszy
-[suplement D26](docs/asdlc/verification/PBI-101-D26.md) daje 640 approve /
-0 defer / 0 pending w kandydacie stanu, PR #12 do człowieka. Manifest migracji
-PBI-099 pozostaje historyczny; osobno zatwierdzone trzy przypięcia manual
-dokumentuje [receipt](docs/asdlc/verification/PBI-099-manual-selection.json).
+[Instrukcje i narzędzia](docs/asdlc/tpn_sync_handoff.md) opisują
+pobieranie snapshotów, porównanie, ochronę best i zastosowanie decyzji.
+[Backlog TPN](docs/asdlc/tpn_sync_backlog.md) określa stan odbioru;
+wyniki poszczególnych paczek są dowodami wykonania, nie wymaganiami.
 
 Przyjęty kierunek rozszerza V1 wyłącznie o TPN: rozpatrzenie zaległości,
 następnie ręczne i dopiero po odbiorze miesięczne sprawdzanie API przez
@@ -1055,7 +1027,7 @@ Pierwsza paczka powstała dla PR #12. Jednorazowa instalacja automatycznego
 publishera wymaga ludzkiego merge jego workflow do gałęzi domyślnej;
 nie jest to warunek scalania kolejnych PR przed publikacją ich podglądu.
 Opis pierwszej paczki aktualizuje ta sama logika uruchomiona przez operatora.
-[Szczegóły i odbiór PBI-104](docs/asdlc/pr_data_preview_plan.md).
+[Format i publikacja paczki PR](docs/release_artifacts.md#paczka-danych-w-opisie-pr).
 
 ---
 
@@ -1447,14 +1419,9 @@ Poza aktualnym zakresem:
 - stałe importy masowe poza kontrolowanym procesem TPN §8.4,
 - cykliczna synchronizacja z PIG lub Geoportalem.
 
-PBI-095–101 dostarczono w PR #12; dane i kandydat stanu czekają na ludzki
-merge. PBI-102 ma implementację ręcznego workflow w tym PR, do rzeczywistej
-próby tokena/PR/CI po warunkach opisanych w instrukcji. PBI-103 zlecono
-osobno 2026-10-21: pierwszy dzień miesiąca 03:17 UTC, ten sam prepare co
-dispatch i raport zaległości bez nadpisywania otwartego PR. Implementacja
-w PR wymaga TPN_MONTHLY_ENABLED=true; aktywacja i rzeczywisty odbiór
-miesięczny czekają na odbiór 102. [Operator](docs/asdlc/tpn_sync_workflow.md).
-Każda karta i poprawki po review wymagają osobnego zlecenia.
+Pozostały odbiór integracji TPN i warunki aktywacji opisują
+[backlog](docs/asdlc/tpn_sync_backlog.md) oraz
+[instrukcja operatora](docs/asdlc/tpn_sync_workflow.md).
 
 ---
 
