@@ -10,10 +10,12 @@ Najnowszość niepotwierdzona; układ wysokości i dokładność pionowa `unknow
 Nie określać wyniku jako n.p.m. ani nad elipsoidą bez dalszej dokumentacji.
 [Obsługa](../operations.md), [plan](plans/PBI-106.md),
 [dowody](verification/PBI-106.md).
-Status: zweryfikowane — do dostarczenia; `codex/tpn-elevation` od main
+Status: wykonane — [draft PR #15](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/15)
+do review; `codex/tpn-elevation` od main
 `a66b1744c624ce33eab959d7a306c8c084b657f3`. 853 testy, Ruff, walidacja,
 live API, readback i 8/8 mutacji przeszły. Ustalenia review naprawione
-z odtworzonymi regresjami. Pozostało push/PR i CI końcowego SHA.
+z odtworzonymi regresjami. Implementacja `baf1290` wypchnięta, CI validate
+i preview przeszły. Końcowy SHA/CI i odbiór paczki są wskazywane w opisie PR.
 Dane bez zmian. Bez merge, taga i wydania; zakończyć po PBI-106.
 
 ## Paczka eksportów w komentarzu PR — PBI-105
