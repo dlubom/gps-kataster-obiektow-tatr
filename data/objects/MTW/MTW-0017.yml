@@ -7,7 +7,7 @@ best_measurement:
     Obiekt MTW-0017, nowy pomiar m-003; różnica względem poprzedniego TPN 14.38 m.
     Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
     terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
-    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
+    pomiary i wysokości zachowane w historii; nowy best w chwili wyboru nie miał wysokości.'
   updated_at: '2026-10-19T18:54:41.078420Z'
   updated_by: agent:codex
 category: jaskinia_otwor
@@ -79,8 +79,8 @@ measurements:
   created_by: agent:codex
   device: null
   elevation_datum: unknown
-  elevation_m: null
-  elevation_source: source_record
+  elevation_m: 1139.910034
+  elevation_source: dem
   horizontal_accuracy_m: null
   id: m-003
   lat: 49.26373292586074
@@ -88,7 +88,13 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN WER_LOK: FF NMT 04052026'
+    TPN WER_LOK: FF NMT 04052026 Wysokość uzupełniona 2026-10-21 z NMT TPN nmt_05m_mggp_2019
+    (LiDAR 14–15.10.2019, piksel 0,5 m), odczyt dla dokładnych współrzędnych lat/lon tego pomiaru.
+    Jest to wysokość powierzchni modelu; układ wysokościowy i dokładność pionowa nieustalone.
+    Współrzędne i data stanu rekordu TPN pozostają bez zmian; data LiDAR dotyczy wyłącznie wysokości.
+    Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify.
+    Pełne zapytanie i surowa odpowiedź: data/sources/tpn/nmt/2026-10-21-heights-31.json, rekord
+    MTW-0017/m-003.'
   observed_at: null
   observed_date: '2026-05-04'
   source: TPN
@@ -105,5 +111,5 @@ measurements:
 name_local: Schronik w Kończystej Turni
 notes: null
 schema_version: 1
-updated_at: '2026-10-21T13:54:55.211774Z'
+updated_at: '2026-10-21T17:18:12.149652Z'
 updated_by: agent:codex

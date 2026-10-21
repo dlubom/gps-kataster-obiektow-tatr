@@ -14,6 +14,13 @@ Katalog kandydata zawiera **1035 Obiektów, 1027 Jaskiń i 1938 pomiarów**:
 Zachowano końcowe opisy, bibliografię, tagi, historię i wybory best z PR #12.
 Dane pozostają kandydatem do przyjęcia przez ludzki merge.
 
+W PR #13 użytkownik zatwierdził uzupełnienie 31 brakujących wysokości
+best z NMT TPN dla dokładnie tych samych obiektów, GLOBALID i współrzędnych.
+`elevation_source: dem`; datum i dokładność pionowa pozostają nieznane.
+Współrzędne, wybory best, daty i statusy zachowano. Surowe odczyty oraz
+zapytania: `data/sources/tpn/nmt/2026-10-21-heights-31.json`.
+To wysokość powierzchni modelu LiDAR 2019 o pikselu 0,5 m.
+
 Jedynym dodatkiem poza danymi jest obsługa podglądowych paczek eksportów
 [PBI-104](verification/PBI-104.md), wraz z testami i instrukcją.
 Kod importu/synchronizacji, ich harmonogram, snapshoty, decyzje i stan
