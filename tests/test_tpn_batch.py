@@ -283,6 +283,159 @@ def recommit(root):
     git(root, "update-ref", "refs/remotes/origin/main", "HEAD")
 
 
+def prepare_accepted_cycle(root, snap, batch_id, status, reviewed_at):
+    from gps_kataster_obiektow_tatr.tpn_batch import prepare_batch
+    from gps_kataster_obiektow_tatr.tpn_source_state import read_accepted_state
+
+    state, head = read_accepted_state(root)
+    report = tpn_changes.compare(root, snap, batch_id=batch_id, base_commit=head, state=state)
+    report["accepted_state_commit"] = head
+    proposals = [
+        {
+            "change_id": row["change_id"],
+            "target": row["target"],
+            "preimage": row["preimage"],
+            "actions": [],
+            "conflict_acknowledgements": row["conflicts"],
+            "candidate_acknowledgements": [],
+        }
+        for row in report["records"]
+        if row["requires_review"] or row["actionable"]
+    ]
+    changes, decisions = prepare_batch(root, report, proposals)
+    for decision in decisions["decisions"]:
+        decision.update(
+            status=status,
+            reviewed_by="human",
+            reviewed_at=reviewed_at,
+            reason="Fixture lifecycle review",
+        )
+    return changes, decisions
+
+
+@pytest.mark.parametrize("accepted_api", [False, True])
+@pytest.mark.parametrize("status", ["approve", "reject", "defer"])
+def test_absence_rereview_preserves_evidence_across_applied_cycles(
+    batch_repo, accepted_api, status
+):
+    from gps_kataster_obiektow_tatr.tpn_batch import apply_batch, check_batch
+    from gps_kataster_obiektow_tatr.tpn_normalization import exact_json
+
+    root, _ = batch_repo
+    if accepted_api:
+        changes, decisions = prepare(batch_repo)
+        apply_batch(root, changes, decisions, reviewers={"human"})
+        check_batch(root, "fixture-batch")
+        recommit(root)
+
+    gone = snapshot(root, "gone", [])
+    recommit(root)
+    first_changes, first_decisions = prepare_accepted_cycle(
+        root, gone, "first-absence", status, "2026-10-20T10:00:00Z"
+    )
+    apply_batch(root, first_changes, first_decisions, reviewers={"human"})
+    check_batch(root, "first-absence")
+    receipt_path = root / "data/source_reviews/tpn/first-absence/application.json"
+    receipt = receipt_path.read_bytes()
+    recommit(root)
+
+    later = snapshot(root, "still-gone", [])
+    path = root / "data/objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(path.read_text())
+    obj["notes"] = "Niezależna lokalna korekta"
+    path.write_text(yaml.safe_dump(obj, allow_unicode=True))
+    retained_object = path.read_bytes()
+    recommit(root)
+    changes, decisions = prepare_accepted_cycle(
+        root, later, "absence-rereview", status, "2026-10-21T10:00:00Z"
+    )
+    row = changes["records"][0]
+    assert row["revision_hash"] == first_changes["records"][0]["revision_hash"]
+    assert row["requires_review"] and "stale_resolution" in row["conflicts"]
+    apply_batch(root, changes, decisions, reviewers={"human"})
+    check_batch(root, "absence-rereview")
+    after = hashes(root)
+    assert apply_batch(root, changes, decisions, reviewers={"human"})["noop"]
+    assert hashes(root) == after
+
+    state = exact_json((root / "data/source_state/tpn/state.json").read_bytes())
+    for snap in (later, snapshot(root, "next-empty-snapshot", [])):
+        report = tpn_changes.compare(
+            root, snap, batch_id="next-cycle", base_commit=changes["base_commit"], state=state
+        )
+        assert not report["requires_pr"]
+        assert report["records"][0]["review_status"] == status
+        assert report["records"][0]["requires_review"] == (status == "defer")
+    resolution = next(r for r in state["resolutions"] if r["absence"] is not None)
+    assert resolution["snapshot_hash"] == first_changes["snapshot_hash"]
+    assert resolution["absence"] == {
+        "baseline": first_changes["baseline"],
+        "previous_revision_hash": first_changes["records"][0]["source_before"]["revision_hash"],
+    }
+    assert state["accepted_snapshot_hash"] == changes["snapshot_hash"]
+    assert path.read_bytes() == retained_object
+    assert receipt_path.read_bytes() == receipt
+
+
+@pytest.mark.parametrize("status", ["approve", "reject", "defer"])
+def test_returning_record_reopens_historical_decision_after_applied_absence(batch_repo, status):
+    from gps_kataster_obiektow_tatr.tpn_batch import apply_batch, check_batch
+    from gps_kataster_obiektow_tatr.tpn_normalization import exact_json
+
+    root, _ = batch_repo
+    changes, decisions = prepare(
+        batch_repo, [append_action()] if status == "approve" else [], status=status
+    )
+    apply_batch(root, changes, decisions, reviewers={"human"})
+    check_batch(root, "fixture-batch")
+    original_revision = decisions["decisions"][0]["revision_hash"]
+    receipt_path = root / "data/source_reviews/tpn/fixture-batch/application.json"
+    original_receipt = receipt_path.read_bytes()
+    path = root / "data/objects/KSW/KSW-0001.yml"
+    retained_object = path.read_bytes()
+    recommit(root)
+
+    gone = snapshot(root, "gone", [])
+    recommit(root)
+    changes, decisions = prepare_accepted_cycle(
+        root, gone, "absence", "approve", "2026-10-20T10:00:00Z"
+    )
+    apply_batch(root, changes, decisions, reviewers={"human"})
+    check_batch(root, "absence")
+    recommit(root)
+
+    returned = snapshot(root, "returned", [feature(lon=19.801)])
+    recommit(root)
+    changes, decisions = prepare_accepted_cycle(
+        root, returned, "return-review", "approve", "2026-10-21T10:00:00Z"
+    )
+    row = changes["records"][0]
+    assert row["revision_hash"] == original_revision
+    assert row["source_before"] is None and "new_guid" in row["classification"]
+    assert row["review_status"] == "pending"
+    assert row["requires_review"] and row["actionable"] and changes["requires_pr"]
+    assert len(decisions["decisions"]) == 1
+    apply_batch(root, changes, decisions, reviewers={"human"})
+    check_batch(root, "return-review")
+    after = hashes(root)
+    assert apply_batch(root, changes, decisions, reviewers={"human"})["noop"]
+    assert hashes(root) == after
+    recommit(root)
+
+    state = exact_json((root / "data/source_state/tpn/state.json").read_bytes())
+    report = tpn_changes.compare(
+        root,
+        returned,
+        batch_id="next-cycle",
+        base_commit=git(root, "rev-parse", "HEAD"),
+        state=state,
+    )
+    assert report["records"][0]["review_status"] == "approve"
+    assert not report["records"][0]["requires_review"] and not report["requires_pr"]
+    assert path.read_bytes() == retained_object
+    assert receipt_path.read_bytes() == original_receipt
+
+
 def many(batch_repo, actions_by_guid, statuses=None):
     from gps_kataster_obiektow_tatr.tpn_batch import prepare_batch
 

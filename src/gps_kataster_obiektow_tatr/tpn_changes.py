@@ -469,7 +469,10 @@ def compare(
             expected_catalog = resolution["result_catalog_hash"]
             expected_files = resolution["result_hashes"]
             valid_resolution = (
-                resolution["target"] == target
+                # Presence after an accepted absence is a new review event,
+                # even when its content matches a historical source revision.
+                (after is None or before is not None)
+                and resolution["target"] == target
                 and expected_catalog == catalog.hash
                 and expected_files == preimage
             )

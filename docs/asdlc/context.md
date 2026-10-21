@@ -1,6 +1,16 @@
 # AS-DLC project context
 
-Last updated: 2026-10-20
+Last updated: 2026-10-21
+
+## PR #12 — ponowne review nieobecności i powrót rekordu
+
+Na zlecenie użytkownika naprawiono dwa błędy cyklu TPN: ponowne review
+nieobecności zachowuje pierwotny snapshot i baseline zdarzenia, a powrót
+identycznej treści po przyjętej nieobecności wymaga nowej decyzji.
+Dziewięć regresji wykonuje rzeczywiste apply/check i kolejne porównania;
+[zakres i odbiór](verification/PBI-100.md#poprawki-cyklu-źródła-w-pr-12--2026-10-21).
+Zmiana dotyczy kodu, testów i dokumentacji; stan źródła oraz katalog PR
+pozostają niezmienione. Końcowy SHA i jego CI utrwala opis PR #12.
 
 ## PR #12 — opisy jaskiń, otworów i bibliografia
 

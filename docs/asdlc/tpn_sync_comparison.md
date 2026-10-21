@@ -116,6 +116,10 @@ wytworzyć stan z decyzji i zachować wcześniejsze dowody w source_reviews.
   `{baseline, previous_revision_hash}`. baseline to deskryptor przyjętego
   snapshotu lub CSV z raportu. Czytnik odtwarza poprzedni rekord i hash
   zdarzenia zniknięcia; pusty snapshot nie legitymizuje dowolnego hasha.
+  Ponowne review tego samego zdarzenia zachowuje jego pierwotny
+  `snapshot_hash` oraz `absence`, także po przesunięciu przyjętej bazy na
+  pusty snapshot. Bieżące `batch_id`/`changes_hash` wiążą nową decyzję,
+  a `accepted_snapshot_hash` wskazuje nowy snapshot całej paczki.
 - `deferred`: lista `{globalid, revision_hash, snapshot_hash}`, dokładnie
   odpowiadająca rozstrzygnięciom defer. Trwały snapshot daje pełną dawną
   rewizję; nowa rewizja oznacza superseded, nie usunięcie dowodu.
@@ -124,6 +128,11 @@ wytworzyć stan z decyzji i zachować wcześniejsze dowody w source_reviews.
   późniejszy wpis listy); wcześniejsze odroczenia zachowują własne źródło.
   Utrzymująca się nieobecność nie tworzy ponownie tego samego PR. Zmiana
   lokalnego celu unieważnia także reject wcześniej znikniętego rekordu.
+
+Powrót GUID nieobecnego w przyjętym snapshotcie wymaga nowej decyzji,
+nawet gdy rewizja treści, cel i katalog są identyczne jak przed zniknięciem.
+Historyczne approve/reject/defer nie rozstrzyga powrotu. Po jawnym review
+i przyjęciu snapshotu z rekordem niezmieniony kolejny cykl jest ponownie no-op.
 
 `state_hash` jest SHA-256 kanonicznego stanu (null przy bootstrapie).
 `changes_hash` w checksums.json to SHA-256 dokładnych bajtów changes.json,

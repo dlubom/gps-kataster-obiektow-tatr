@@ -280,6 +280,22 @@ def make_state(changes, decisions, previous, domain, files):
             if row["source_after"] is None
             else None,
         }
+        if row["source_after"] is None:
+            # Re-review changes the local decision context, not the historical
+            # absence event. Its revision still binds the original snapshot
+            # and the last baseline that actually contained this GUID.
+            prior_absence = next(
+                (
+                    r
+                    for r in state["resolutions"]
+                    if (r["globalid"], r["revision_hash"]) == (d["globalid"], d["revision_hash"])
+                    and r["absence"] is not None
+                ),
+                None,
+            )
+            if prior_absence is not None:
+                resolution["snapshot_hash"] = prior_absence["snapshot_hash"]
+                resolution["absence"] = deepcopy(prior_absence["absence"])
         state["resolutions"] = [
             r
             for r in state["resolutions"]

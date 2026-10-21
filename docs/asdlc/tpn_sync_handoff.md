@@ -1,6 +1,6 @@
 # TPN: start z czystego kontekstu
 
-Stan: 2026-10-20. Ten plik wraz z planem i backlogiem w
+Stan: 2026-10-21. Ten plik wraz z planem i backlogiem w
 [PR #12](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/12)
 wystarcza do kontynuacji prac bez historii czatu i lokalnego build.
 Kontrakt przyjęto w PBI-095. PBI-096 dostarcza snapshot/CLI, a PBI-097
@@ -12,6 +12,10 @@ Późniejsze decyzje użytkownika realizuje [suplement D26](verification/PBI-101
 kandydat stanu 640 approve / 0 defer / 0 pending; pierwotne archiwa bez zmian.
 Następna [korekta opisów i bibliografii](verification/PBI-101-notes.md) porządkuje
 AE/AF oraz uzupełnia trzy źródła; nie zmienia pomiarów, best ani decyzji TPN.
+Poprawki cyklu źródła z 2026-10-21 zachowują dowody ponownie rozpatrywanej
+nieobecności i wymuszają nową decyzję po powrocie rekordu, także przy
+identycznej treści. [Odbiór](verification/PBI-100.md#poprawki-cyklu-źródła-w-pr-12--2026-10-21)
+obejmuje rzeczywiste apply/check i następne porównania na fixture'ach.
 Aktualny status jest w backlogu oraz [logu PBI-101](verification/PBI-101.md);
 [CLI i rejestr PBI-097](tpn_sync_comparison.md).
 
