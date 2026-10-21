@@ -34,17 +34,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-06-16T11:38:50Z
-
-    TPN revision: 45b941debabd15a3fc6c0b3fbf98e0d90141221e0a049a3d82dd7a6a473cbb09
-
     TPN WER_LOK: FF16062026'
   observed_at: null
   observed_date: '2026-06-16'
   source: TPN
   source_date: '2026-06-16'
   source_ref: TPN:f27fa875-821f-45f6-8f02-c5a9ffc579e4
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -54,5 +51,5 @@ measurements:
 name_local: Jaskinia Lodowa Ponorowa
 notes: null
 schema_version: 1
-updated_at: '2026-10-19T18:54:41.078420Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

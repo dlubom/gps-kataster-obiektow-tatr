@@ -22,14 +22,12 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - BYZ-0008
-notes: 'PIG aliases: Elektrownia, Mała Jaskinia
+notes: 'Inne nazwy według PIG: Elektrownia, Mała Jaskinia
 
-  PIG sector: D. Bystrej - Zach.
+  Sektor według PIG: D. Bystrej - Zach.
 
-  PIG morphometry: length_m=185, depth_m=12, denivelation_m=12
-
-  PIG source state year: 2013'
+  PIG; stan źródła 2013: długość 185 m; głębokość 12 m; deniwelacja 12 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

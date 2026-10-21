@@ -12,6 +12,7 @@ from .staging_review import _dataset_with_review_changes
 from .tpn_api import globalid, require
 from .tpn_best_guard import plan_best_action
 from .tpn_changes import Catalog, measurement_guid
+from .tpn_editorial_notes import measurement_notes
 from .tpn_normalization import distance
 from .tpn_precision import projected_metres
 from .validator import format_issue, has_errors, validate_dataset
@@ -33,7 +34,7 @@ def next_id(prefix, used, width):
     return result
 
 
-def measurement(row, identity, d):
+def measurement(row, identity, d, *, legacy=False):
     source = row["source_after"]
     require(source is not None, "missing source cannot create measurement")
     time = source["source_time"]
@@ -44,8 +45,9 @@ def measurement(row, identity, d):
     notes = [
         "Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.",
         "TPN LAST_EDITED_DATE: " + time["source_modified_at"],
-        "TPN revision: " + row["revision_hash"],
     ]
+    if legacy:
+        notes.append("TPN revision: " + row["revision_hash"])
     for key in ("WER_LOK", "UWAGI"):
         if source["metadata"][key] is not None:
             notes.append(f"TPN {key}: {source['metadata'][key]}")
@@ -67,11 +69,11 @@ def measurement(row, identity, d):
         "source_date": time["source_date"],
         "method": "source_record",
         "device": None,
-        "tags": [],
+        "tags": [] if legacy else ["tpn"],
         "verification_status": "nieweryfikowany",
         "verified_by": None,
         "verified_at": None,
-        "notes": "\n".join(notes),
+        "notes": "\n".join(notes) if legacy else measurement_notes("\n".join(notes)),
         "created_at": d["reviewed_at"],
         "created_by": d["reviewed_by"],
     }
@@ -80,6 +82,7 @@ def measurement(row, identity, d):
 class DomainPlan:
     def __init__(self, root, changes, decisions):
         self.root, self.changes, self.decisions = root, changes, decisions
+        self.legacy_measurements = changes["execution"]["format_version"] == 1
         self.catalog = Catalog(root)
         self.dataset = load_dataset(root / "data")
         self.resolver = PrefixResolver(
@@ -343,7 +346,7 @@ class DomainPlan:
                 require(not equal, "location already in history; acknowledge without append")
         ids = {m["id"] for m in obj["measurements"]}
         mid = next_id("m-", ids, 3)
-        new = measurement(row, mid, d)
+        new = measurement(row, mid, d, legacy=self.legacy_measurements)
         self.measurement_keys[(oid, a["measurement_key"])] = mid
         self.additions[oid].append(new)
         self.best_actions[oid].append((a["best_action"], d))
@@ -413,7 +416,7 @@ class DomainPlan:
         category = a.get("category") or row.get("new_record_qualification", {}).get("category")
         require(category is not None, "uncertain category requires explicit category/evidence")
         require(meta["NAZWA"], "new object requires name")
-        m = measurement(row, "m-001", d)
+        m = measurement(row, "m-001", d, legacy=self.legacy_measurements)
         self.objects[oid] = {
             "schema_version": 1,
             "id": oid,

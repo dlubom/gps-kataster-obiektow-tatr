@@ -54,6 +54,7 @@ Zachowaj też dokładne ścieżki i bajty wejść kontroli danych:
 - `verification/PBI-101-D26-resolution.json`
 - `verification/PBI-101-review/remaining-26.json`
 - `verification/PBI-101-catalog-notes.json`
+- `verification/PBI-101-editorial-correction.json`
 
 Snapshoty, decyzje, receipty, preimages i patche audytowe w `data/` oraz
 `verification/` są dowodami odtwarzania, nie nadmiarową dokumentacją.
@@ -65,6 +66,9 @@ Pierwotne odroczenia i późniejsze decyzje D26 mają pozostać rozróżnialne.
 wymaga, by przodkami HEAD pozostały commity `83e1d383…`, `d1f958bc…`
 i `8c18ee57…`. Squash/rebase zastępujący tę historię psuje odtworzenie
 kontroli. Merge wykonuje wyłącznie człowiek na osobne polecenie.
+Późniejsza korekta redakcyjna wymaga też przodka
+`87a19510580364f96a85edea69e0099ffc4f9a4d`; jej receipt nie zmienia starszych
+decyzji, dokumentów wejściowych ani wyników wyboru best.
 
 Następny etap to [produkcyjny odbiór PBI-102](verification/PBI-102.md),
 po spełnieniu warunków operatora. Dopiero po nim można osobno zatwierdzić

@@ -22,14 +22,12 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - BYZ-0030
-notes: 'PIG aliases: w Kasprowej I
+notes: 'Inne nazwy według PIG: w Kasprowej I
 
-  PIG sector: D. Bystrej - Zach.
+  Sektor według PIG: D. Bystrej - Zach.
 
-  PIG morphometry: length_m=605, depth_m=28, denivelation_m=31
-
-  PIG source state year: 2014'
+  PIG; stan źródła 2014: długość 605 m; głębokość 28 m; deniwelacja 31 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

@@ -34,17 +34,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-05-24T17:49:41Z
-
-    TPN revision: a4e6104b19377df1e03f38b8ed311f19cd4ddbd230bb17801fc7e17fda448bdd
-
     TPN WER_LOK: FF  24052026'
   observed_at: null
   observed_date: '2026-05-24'
   source: TPN
   source_date: '2026-05-24'
   source_ref: TPN:dec416bc-64f2-49e0-abf9-cb2c5a040004
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -54,5 +51,5 @@ measurements:
 name_local: Nyża pod Zachodem Pilotów II
 notes: null
 schema_version: 1
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

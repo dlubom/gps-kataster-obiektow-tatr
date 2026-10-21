@@ -22,10 +22,8 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - PL-0016
-notes: 'PIG morphometry: length_m=4, depth_m=3,5, denivelation_m=3,5
-
-  PIG source state year: 2014'
+notes: 'PIG; stan źródła 2014: długość 4 m; głębokość 3,5 m; deniwelacja 3,5 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T13:00:00Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

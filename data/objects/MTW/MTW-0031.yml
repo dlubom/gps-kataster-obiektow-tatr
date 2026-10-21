@@ -38,8 +38,7 @@ measurements:
   lat: 49.26411136
   lon: 19.87848084
   method: source_record
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/962'
+  notes: null
   observed_date: '2010-12-31'
   source: PIG
   source_date: '2010-12-31'
@@ -63,7 +62,7 @@ measurements:
   lat: 49.26411135898811
   lon: 19.878480842128265
   method: source_record
-  notes: TPN source-record measurement imported after operator review; not field-verified.
+  notes: null
   observed_date: '2022-05-25'
   source: TPN
   source_date: '2022-05-25'
@@ -89,17 +88,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-05-04T08:18:54Z
-
-    TPN revision: 797229725c7ef9c2f73f16b9364a7c0f0711ec95ec5cf93dff4ce2fa6e834696
-
     TPN WER_LOK: FF NMT 04052026'
   observed_at: null
   observed_date: '2026-05-04'
   source: TPN
   source_date: '2026-05-04'
   source_ref: TPN:0257a120-426e-4b7d-b47f-1d9f853c6c85
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -107,7 +103,7 @@ measurements:
   x_1992: 155545.443
   y_1992: 563868.14
 name_local: Dziura w Kończystej Niżnia
-notes: Imported from PIG source record after operator review.
+notes: null
 schema_version: 1
-updated_at: '2026-10-19T18:54:41.078420Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

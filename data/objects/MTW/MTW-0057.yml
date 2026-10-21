@@ -38,8 +38,7 @@ measurements:
   lat: 49.24220941
   lon: 19.90589457
   method: source_record
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1527'
+  notes: null
   observed_date: '2010-12-31'
   source: PIG
   source_date: '2010-12-31'
@@ -63,7 +62,7 @@ measurements:
   lat: 49.24220941234638
   lon: 19.905894566305243
   method: source_record
-  notes: TPN source-record measurement imported after operator review; not field-verified.
+  notes: null
   observed_date: '2022-05-25'
   source: TPN
   source_date: '2022-05-25'
@@ -89,17 +88,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-05-09T16:24:59Z
-
-    TPN revision: b08c96f057b7583409161f745f5e661c8561f4d330753ac0dc5f6040c4fe4667
-
     TPN WER_LOK: FF 09052026'
   observed_at: null
   observed_date: '2026-05-09'
   source: TPN
   source_date: '2026-05-09'
   source_ref: TPN:e0642496-f87c-4eee-a7a0-a60365191209
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -107,7 +103,7 @@ measurements:
   x_1992: 153175.035
   y_1992: 565887.048
 name_local: Dziura pod Ratuszem
-notes: Imported from PIG source record after operator review.
+notes: null
 schema_version: 1
-updated_at: '2026-10-19T18:54:41.078420Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

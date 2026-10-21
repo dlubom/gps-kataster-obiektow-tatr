@@ -34,17 +34,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-06-14T13:12:44Z
-
-    TPN revision: bc178859ce6b645aa23444b1289021490b207a67d05154be86567bf7f1967be5
-
     TPN WER_LOK: FF 06062026'
   observed_at: null
   observed_date: '2026-06-14'
   source: TPN
   source_date: '2026-06-14'
   source_ref: TPN:2549106f-2ea9-477a-a5d3-77e6b920c8e5
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -54,5 +51,5 @@ measurements:
 name_local: Schron nad Komorą w Kończystej Turni
 notes: null
 schema_version: 1
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

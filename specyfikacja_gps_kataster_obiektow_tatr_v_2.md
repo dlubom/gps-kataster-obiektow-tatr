@@ -505,7 +505,8 @@ Plik TPN zawiera rekordy punktowe. W V1 przyjmujemy:
 | `Z` | Wysokość | `Pomiar.elevation_m`, z `elevation_source: source_record`. |
 | `DLUGOSC`, `GLEBOKOSC`, `DENIWELACJ` | Dane morfometryczne | W V1 raczej notatka / przyszłe pola jaskini, nie część obiektu terenowego. |
 | `SYSTEM` | Informacja o systemie | `Jaskinia.system_name`, jeśli jednoznaczne. |
-| `WER_LOK`, `UWAGI` | Kontekst i zastrzeżenia źródłowe lokalizacji | Etykietowane `TPN WER_LOK:` / `TPN UWAGI:` w `Pomiar.notes`, dla nowych i dopasowanych rekordów. |
+| `WER_LOK` | Kontekst ustalenia lokalizacji | Etykietowane `TPN WER_LOK:` w `Pomiar.notes`; bez interpretacji jako daty pomiaru terenowego. |
+| `UWAGI` | Kontekst zależny od treści | Lokalizacja w `Pomiar.notes`, stan/rozpoznanie otworu w `Obiekt.notes`, morfometria i literatura w `Jaskinia.notes`; oryginał zawsze w źródle/audycie. |
 
 Zasady:
 
@@ -521,8 +522,9 @@ Zasady:
   To reguła importu początkowego. W przyszłych paczkach TPN pierwszeństwo
   ma kontrakt §8.4: osobna decyzja best oraz ochrona GNSS/geodezji.
 - Import TPN służy do uaktualnienia i skorygowania szkieletu utworzonego wcześniej z PIG.
-- Teksty `WER_LOK` i `UWAGI` zachowują treść źródłową; nie podnoszą statusu
-  `verification_status`. Finalizacja review zachowuje je przy pomiarze.
+- Teksty `WER_LOK` i `UWAGI` nie podnoszą statusu `verification_status`.
+  Pierwotna finalizacja review zachowywała oba pola przy pomiarze;
+  zatwierdzona korekta redakcyjna PR #12 rozdziela `UWAGI` według znaczenia.
   Jednorazowe uzupełnienie z lokalnego CSV wymaga jednoznacznego powiązania
   `Obiekt.external_refs` (`TPN/source_globalid`) i pomiaru
   (`source: TPN`, `source_ref: TPN:{GLOBALID}`). Nie dopasowuje po nazwie
@@ -531,6 +533,21 @@ Zasady:
   Nie zmienia punktów, best, kategorii ani statusów. Dry-run zapisuje
   manifest przed/po z hashem źródła; niepewne dopasowania są raportowane
   i pomijane. [Procedura](docs/operations.md#odtworzenie-kontekstu-tpn-pbi-082).
+
+Zasady uwag zaakceptowane 2026-10-21:
+
+- `Pomiar.notes`: pochodzenie, sposób ustalenia i ograniczenia konkretnej
+  lokalizacji; jawne wyjaśnienie daty źródłowej przy nieznanej dacie terenowej.
+- `Obiekt.notes`: rozpoznanie konkretnego otworu, jego stan i istotne
+  rozbieżności tożsamości. `Jaskinia.notes`: aliasy, morfometria ze źródłem
+  i stanem danych, literatura i zastrzeżenia dotyczące całej jaskini.
+- Nie powtarzamy komunikatów o imporcie ani pól technicznych. `revision_hash`
+  pozostaje w strukturach synchronizacji, poza uwagami czytelnika.
+  Pomiary `source: TPN` mają tag `tpn`; tag nie oznacza weryfikacji terenowej.
+- Wersje historyczne opisów, metryk i zastrzeżeń pozostają odtwarzalne z Git,
+  snapshotów i receiptów. Zera ze źródła nie stają się automatycznie null.
+  Haszowany kontrakt §8.4 pozostaje historycznym wejściem bez zmiany bajtów;
+  ta zgoda dotyczy ograniczonej korekty i redakcji propozycji operatora.
 
 ### 7.2 PIG / Jaskinie Polski
 

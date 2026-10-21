@@ -38,8 +38,7 @@ measurements:
   lat: 49.23937779
   lon: 19.93042784
   method: source_record
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/4826'
+  notes: null
   observed_date: '2014-12-31'
   source: PIG
   source_date: '2014-12-31'
@@ -63,9 +62,7 @@ measurements:
   lat: 49.239314307520935
   lon: 19.93066796095015
   method: source_record
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
-
-    TPN WER_LOK: 11-02-2020 FF ortofotomapa'
+  notes: 'TPN WER_LOK: 11-02-2020 FF ortofotomapa'
   observed_date: '2022-05-25'
   source: TPN
   source_date: '2022-05-25'
@@ -91,17 +88,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-02-11T12:20:39Z
-
-    TPN revision: 46a91bb5220100c07a632a1a892f95070bd76990a1b76f08eefc93e85c703d17
-
     TPN WER_LOK: 11-02-2020 FF ortofotomapa'
   observed_at: null
   observed_date: '2026-02-11'
   source: TPN
   source_date: '2026-02-11'
   source_ref: TPN:de04bc2c-8e52-43a7-8881-0677c9a98590
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -109,7 +103,7 @@ measurements:
   x_1992: 152839.062
   y_1992: 567725.216
 name_local: Jaskinia Świstacza
-notes: Imported from PIG source record after operator review.
+notes: null
 schema_version: 1
-updated_at: '2026-10-19T18:54:41.078420Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

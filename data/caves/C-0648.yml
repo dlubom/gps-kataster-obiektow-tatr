@@ -22,14 +22,12 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MLZ-0068
-notes: 'PIG aliases: SYSTEM Jaskinia Wielka Śnieżna
+notes: 'Inne nazwy według PIG: SYSTEM Jaskinia Wielka Śnieżna
 
-  PIG sector: D. Małej Łąki - Zach.
+  Sektor według PIG: D. Małej Łąki - Zach.
 
-  PIG morphometry: length_m=14954, depth_m=602,5, denivelation_m=622
-
-  PIG source state year: 2013'
+  PIG; stan źródła 2013: długość 14954 m; głębokość 602,5 m; deniwelacja 622 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

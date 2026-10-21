@@ -34,17 +34,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-06-14T12:42:41Z
-
-    TPN revision: f114364a59ad37cd44ed3d8486328caa3d21cd4993139c233ce2dc00eb092acb
-
     TPN WER_LOK: FF 27052026'
   observed_at: null
   observed_date: '2026-06-14'
   source: TPN
   source_date: '2026-06-14'
   source_ref: TPN:b51c01e8-271e-4aef-802d-c87025a09845
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -54,5 +51,5 @@ measurements:
 name_local: Nyża pod Szarą Turnią II
 notes: null
 schema_version: 1
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

@@ -40,9 +40,7 @@ measurements:
   lat: 49.25130595909141
   lon: 19.92843580556172
   method: source_record
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
-
-    TPN WER_LOK: 15-11-2024 FF, orto'
+  notes: 'TPN WER_LOK: 15-11-2024 FF, orto'
   observed_date: '2024-11-15'
   source: TPN
   source_date: '2024-11-15'
@@ -68,17 +66,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-05-09T16:43:06Z
-
-    TPN revision: cd99b786dd5a8352ea183981d3854b9627912fd7077278c6dcb1e274a6ff7af4
-
     TPN WER_LOK: FF 09052026'
   observed_at: null
   observed_date: '2026-05-09'
   source: TPN
   source_date: '2026-05-09'
   source_ref: TPN:ce72fc5c-f14b-4c6e-bd3e-b411934a8c30
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -86,7 +81,7 @@ measurements:
   x_1992: 154170.348
   y_1992: 567547.316
 name_local: tunel w Skrajnej Giewonckiej Baszcie - otwór S
-notes: Otwór S wg TPN, arkusz Export, wiersz 874; punkt na południe od MLW-0044.
+notes: Otwór S według TPN; położony na południe od MLW-0044.
 schema_version: 1
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

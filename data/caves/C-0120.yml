@@ -22,14 +22,14 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MTW-0010
-notes: 'PIG aliases: SYSTEM Jaskinia Wielka Śnieżna
+notes: 'Inne nazwy według PIG: SYSTEM Jaskinia Wielka Śnieżna
 
-  PIG sector: D. Miętusia - Wsch.
+  Sektor według PIG: D. Miętusia - Wsch.
 
-  PIG morphometry: length_m=7185, depth_m=354, denivelation_m=370
+  PIG; stan źródła 2013: długość 7185 m; głębokość 354 m; deniwelacja 370 m.
 
-  PIG source state year: 2013'
+  Uwagi TPN: dł. jako suma 5 jaskin składowych wg PIG.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

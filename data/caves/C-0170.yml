@@ -22,12 +22,10 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MTW-0018
-notes: 'PIG sector: D. Miętusia - Wsch.
+notes: 'Sektor według PIG: D. Miętusia - Wsch.
 
-  PIG morphometry: length_m=57, depth_m=19,6, denivelation_m=19,6
-
-  PIG source state year: 2013'
+  PIG; stan źródła 2013: długość 57 m; głębokość 19,6 m; deniwelacja 19,6 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

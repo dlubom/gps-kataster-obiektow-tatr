@@ -36,11 +36,7 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
-
-    TPN WER_LOK: 15-5-2024 TZK
-
-    TPN UWAGI: zasypana, ale widoczne belkowanie stropu'
+  notes: 'TPN WER_LOK: 15-5-2024 TZK'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 best_measurement:
@@ -50,14 +46,9 @@ best_measurement:
   updated_at: '2026-05-16T10:22:52Z'
   updated_by: importer:tpn
 attachments: []
-notes: 'Imported from TPN source record after operator review. Source TPN row 273
-  has empty NR_INWENT and NAZWA; maintainer review 2026-05-16 assigned the working
-  name BEZ_NAZWY_001.
-
-  PBI-083: TPN GENEZA=sztolnia, row 273, GLOBALID {A5C7088E-A2FE-4898-AE2E-B0A9B420B17D};
-  UWAGI: zasypana, ale widoczne belkowanie stropu. Category corrected from source
-  evidence; location and measurement status remain unverified.'
+notes: 'Nazwa robocza BEZ_NAZWY_001: źródłowy rekord TPN nie podaje nazwy ani numeru
+  inwentarzowego. Według TPN sztolnia; zasypana, ale widoczne belkowanie stropu.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-10-15T13:40:44Z'
-updated_by: maintenance:PBI-083
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

@@ -22,15 +22,13 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MLW-0009
-notes: 'PIG aliases: Jaskinia Mnichowa Wyżnia, Jaskinia pod Zadnimi Mnichami, Jaskinia
-  w Mnichach, Mnichowa, Wyżnia Mnichowa Studnia
+notes: 'Inne nazwy według PIG: Jaskinia Mnichowa Wyżnia, Jaskinia pod Zadnimi Mnichami,
+  Jaskinia w Mnichach, Mnichowa, Wyżnia Mnichowa Studnia
 
-  PIG sector: D. Małej Łąki - Wsch.
+  Sektor według PIG: D. Małej Łąki - Wsch.
 
-  PIG morphometry: length_m=79, depth_m=31,5, denivelation_m=31,5
-
-  PIG source state year: 2014'
+  PIG; stan źródła 2014: długość 79 m; głębokość 31,5 m; deniwelacja 31,5 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

@@ -34,17 +34,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-06-16T11:41:04Z
-
-    TPN revision: f6cf40c6ee81bd84bec7f8c4b1e0eb5ff19c1a5bfaff7bd16389de30ee0f1337
-
     TPN WER_LOK: FF16062026'
   observed_at: null
   observed_date: '2026-06-16'
   source: TPN
   source_date: '2026-06-16'
   source_ref: TPN:4d57492d-d68a-471e-b00e-770a594a2c7b
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -54,5 +51,5 @@ measurements:
 name_local: Jaskinia w Kozim Grzbiecie
 notes: null
 schema_version: 1
-updated_at: '2026-10-19T18:54:41.078420Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

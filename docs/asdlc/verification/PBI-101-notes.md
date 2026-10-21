@@ -80,3 +80,83 @@ Szczegółowe logi, skrypty audytu i paczki pozostają w ignorowanym
 i ponowny odczyt paczki zbudowanej dla tego SHA zostaną utrwalone w opisie
 [PR #12](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/12) po push,
 bez kolejnych commitów wpisujących własne SHA. Brak merge, tagu i release.
+
+## Uporządkowanie trzech rodzajów uwag — 2026-10-21
+
+Podstawa: `87a19510580364f96a85edea69e0099ffc4f9a4d`, ten sam PR #12.
+Zlecenie użytkownika: „usuń TPN revision z uwag, zostaw go w plikach
+synchronizacji, dodaj brakujące tagi tpn i uporządkuj trzy rodzaje uwag
+według proponowanego podziału […] zachowując historię i wybór best”.
+
+Plan realizowany w tej sesji:
+
+- [x] Test reprodukcji braku tagów i technicznych hashy w uwagach; zachowanie
+      starego formatu wykonywania paczek do odtwarzania historycznych decyzji.
+- [x] Deterministyczna korekta: pomiar — pochodzenie i ograniczenia lokalizacji;
+      obiekt — rozpoznanie i stan otworu; jaskinia — aliasy, morfometria,
+      literatura. Usunięcie komunikatów importu, poprawa kodowania i języka.
+- [x] Osobny receipt i kontrola korekty względem stałej podstawy; stare decyzje,
+      snapshoty, receipty i hashe rewizji źródeł pozostają niezmienione.
+- [x] Porównanie wszystkich pól poza notes/tags i audytem; pełna bramka,
+      kontrola TPN, odczyt eksportów oraz niezależny review.
+
+Wynik commit/push, zdalny SHA, CI i paczka końcowego SHA są utrzymywane w
+opisie istniejącego PR #12. Dostawa nie obejmuje merge, tagu ani release.
+
+Zmiany notes/tags nie stanowią nowych decyzji o tożsamości, pomiarach lub
+best. Kontrakt synchronizacji jest hashowanym historycznym wejściem;
+zachowujemy jego bajty. Zaktualizowane zasady redakcyjne opisuje specyfikacja
+i instrukcja operatora, a źródłowe wersje treści pozostają w Git/audycie.
+
+### Odbiór korekty
+
+Receipt: [PBI-101-editorial-correction.json](PBI-101-editorial-correction.json).
+Deterministyczne reguły i kontrola odtwarzania są w `tpn_editorial_notes.py`
+i `tpn_editorial_correction.py`; receipt nie przyjmuje dowolnych patchy danych.
+Kontrola wymaga zachowania przodka `87a1951…`. Starsze guardy sprawdzają
+swoje historyczne bajty, a następnie osobna kontrola porównuje cały rzeczywisty
+wynik z odtworzoną korektą i sprawdza niezmienność pięciu dawnych dokumentów
+wejściowych. Oryginalne plan/apply nadal odrzuca replay starej paczki.
+
+Niezależny strukturalny diff potwierdził:
+
+- Zmieniono notes/audyt wszystkich 1035 Obiektów i 1027 Jaskiń; 1935 pomiarów
+  ma poprawioną treść notes. Wszystkie 1938 pomiarów zachowują pozostałe pola,
+  kolejność i identyfikatory; jedyny wyjątek poza notes to 62 dodania tagu `tpn`.
+- Wszystkie 1066 pomiarów TPN mają tag `tpn`; w uwagach nie ma `TPN revision`
+  ani powielonego `LAST_EDITED_DATE`. Wyjaśnienie nieznanej daty terenowej
+  pozostaje przy 62 nowych ustaleniach TPN.
+- Wszystkie 1035 struktur best i 3617 referencji są identyczne z podstawą.
+  W source state zmieniono wyłącznie `result_hashes` i `result_catalog_hash`;
+  640 rozstrzygnięć, hashe rewizji, powiązania i historia pozostają te same.
+- Pozostałe 51 plików data, pięć dawnych dokumentów wejściowych i kontrakt
+  zachowują bajty. Nie dodano nowych źródeł ani rozstrzygnięć tożsamości.
+- Zastrzeżenia lokalizacji pozostają przy pomiarach; uwagi o zasypaniu otworu
+  są przy obiekcie, o morfometrii i literaturze przy jaskini. Dwie cytacje
+  Jaskinie 118–119/2025 i 116–117/2024 przeniesiono z dawnych notes obiektów,
+  bez nowego badania bibliograficznego. Starsze i nowsze metryki TPN oraz
+  źródłowe zera pozostają rozróżnione. Poprawiono 25 zapisów Chochołowskiej.
+
+Lokalny readback 10/10 artefaktów: wszystkie tabele i pola SQLite, ZIP SQLite,
+CSV, GeoJSON, GPX, wszystkie rekordy SHP, metadane, statystyki i Excel
+Best/Full (121983 sprawdzone komórki). Integralność i FK poprawne.
+
+Testy najpierw odtworzyły brak tagu/hash w notes i błędne przeniesienie źródła
+morfometrii. Dwa celowane mutanty zabite: zmiana historycznej współrzędnej
+oraz pominięcie kontroli dokumentów historycznych. Niezależny review
+odtworzył lukę drugiego typu; dodano kontrolę bieżących bajtów manifestu
+PBI-099 i remaining-26 oraz dwa testy RED→GREEN. Po poprawce brak dalszych
+krytycznych/istotnych uwag review. Test chronionych best uwzględnia wyłącznie
+zatwierdzoną redakcję notes, zachowując porównanie wszystkich pozostałych pól,
+ostrzeżenie „unknown GNSS”, źródłowy preimage i dokładny hash nowego pliku.
+
+Lokalnie: Ruff format/check, 67 testów Node, pięć testów dokumentacji, walidacja
+bez błędów (2133 istniejące ostrzeżenia), kontrola TPN `ready=true`. Pierwszy
+pełny przebieg Python: 1278 PASS / 1 FAIL — stare porównanie całych notes
+chronionego pomiaru. Po opisanej aktualizacji testu cały jego zestaw 54/54
+PASS; pozostałe testy przeszły w pełnym przebiegu. Nowy zestaw korekty:
+18/18 PASS. Wynik wszystkich 1279 testów końcowego SHA jest wskazywany w
+opisie PR dopiero po zakończeniu CI; lokalnego pierwszego FAIL nie
+przedstawiamy jako zielonego przebiegu.
+Logi i niezależne skrypty porównań: ignorowany
+`build/verification/pr12-notes-rethink-20261021/`.

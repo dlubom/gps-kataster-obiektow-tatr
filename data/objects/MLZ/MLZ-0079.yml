@@ -38,8 +38,7 @@ measurements:
   lat: 49.23981391
   lon: 19.92059166
   method: source_record
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1563'
+  notes: null
   observed_date: '2010-12-31'
   source: PIG
   source_date: '2010-12-31'
@@ -63,9 +62,7 @@ measurements:
   lat: 49.23981391112247
   lon: 19.920591663951324
   method: source_record
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
-
-    TPN WER_LOK: 11-02-2020 FF ortofotomapa'
+  notes: 'TPN WER_LOK: 11-02-2020 FF ortofotomapa'
   observed_date: '2022-05-25'
   source: TPN
   source_date: '2022-05-25'
@@ -91,17 +88,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-02-11T12:19:56Z
-
-    TPN revision: 660ec148c1d93f22c9f07aeb9d9e93b84c9d6f0a7555d2071d6a89a43b3222ad
-
     TPN WER_LOK: 11-02-2020 FF ortofotomapa'
   observed_at: null
   observed_date: '2026-02-11'
   source: TPN
   source_date: '2026-02-11'
   source_ref: TPN:34b1e400-eed4-4773-8416-8d48d04038b4
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -109,7 +103,7 @@ measurements:
   x_1992: 152889.863
   y_1992: 566992.785
 name_local: Średni Lej
-notes: Imported from PIG source record after operator review.
+notes: null
 schema_version: 1
-updated_at: '2026-10-19T18:54:41.078420Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

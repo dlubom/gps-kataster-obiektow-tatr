@@ -38,8 +38,7 @@ measurements:
   lat: 49.2398889
   lon: 19.92520556
   method: source_record
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1592'
+  notes: null
   observed_date: '2013-12-31'
   source: PIG
   source_date: '2013-12-31'
@@ -63,7 +62,7 @@ measurements:
   lat: 49.239888895619956
   lon: 19.925205563763825
   method: source_record
-  notes: TPN source-record measurement imported after operator review; not field-verified.
+  notes: null
   observed_date: '2022-05-25'
   source: TPN
   source_date: '2022-05-25'
@@ -87,17 +86,14 @@ measurements:
   lat: 49.23987014050215
   lon: 19.92527898654571
   method: source_record
-  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
-
-    TPN LAST_EDITED_DATE: 2026-02-11T12:24:50Z
-
-    TPN revision: 33de506eff0f54aab5a8bb738f341ffc275b5d9c762026920e1378e463b2dade'
+  notes: Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
   observed_at: null
   observed_date: '2026-02-11'
   source: TPN
   source_date: '2026-02-11'
   source_ref: TPN:7006936a-289f-4f87-8614-3c6253d13228
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -105,7 +101,7 @@ measurements:
   x_1992: 152896.491
   y_1992: 567331.008
 name_local: Bliźniacza Studnia
-notes: Imported from PIG source record after operator review.
+notes: null
 schema_version: 1
-updated_at: '2026-10-19T18:54:41.078420Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

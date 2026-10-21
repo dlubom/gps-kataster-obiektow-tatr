@@ -6,11 +6,11 @@ name: Jaskinia w Kozim Grzbiecie
 notes: 'J. Nowak, Z archiwum „J” cz. VIII – Dolina Mułowa, Jaskinie 85 (2016), s.
   28: opis i plan Jaskini w Kozim Grzbiecie. http://jaskinie.org.pl/files/Jaskinie__85_2016.pdf#page=28
 
-  Metryka źródła TPN: długość 30 m; głębokość 10,5 m; przewyższenie 6,3 m; deniwelacja
-  16,8 m.'
+  TPN; stan rekordu 2026-06-16: długość 30 m; głębokość 10,5 m; przewyższenie 6,3
+  m; deniwelacja 16,8 m.'
 object_ids:
 - MTZ-0067
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

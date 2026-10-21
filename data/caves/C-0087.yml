@@ -22,12 +22,10 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MLW-0002
-notes: 'PIG sector: D. Małej Łąki - Wsch.
+notes: 'Sektor według PIG: D. Małej Łąki - Wsch.
 
-  PIG morphometry: length_m=3, depth_m=0, denivelation_m=1
-
-  PIG source state year: 2018'
+  PIG; stan źródła 2018: długość 3 m; głębokość 0 m; deniwelacja 1 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

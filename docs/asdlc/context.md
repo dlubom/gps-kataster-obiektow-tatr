@@ -38,6 +38,11 @@ Najważniejsze dowody:
 - [Korekta opisów i bibliografii](verification/PBI-101-notes.md) oraz
   [poprawki po review](verification/PBI-100-review-20261021.md).
 
+Uzgodniony podział uwag: pomiar — pochodzenie i ograniczenia lokalizacji;
+obiekt — rozpoznanie i stan otworu; jaskinia — aliasy, morfometria i literatura.
+`revision_hash` pozostaje w synchronizacji, poza uwagami; pomiary TPN mają tag
+`tpn`. Korekta redakcyjna nie zmienia historii pomiarów ani wyborów best.
+
 Do wykonania pozostaje odbiór produkcyjny ręcznego workflow, a następnie
 aktywacja i odbiór cyklu miesięcznego. Szczegóły i warunki:
 [PBI-102/103](tpn_sync_backlog.md). Harmonogram jest zaimplementowany,
@@ -45,6 +50,7 @@ ale wyłączony; `TPN_MONTHLY_ENABLED` nie ustawiono.
 
 Merge wymaga **zachowania historii commitów** wskazanych w
 [warunku odtworzenia paczki](verification/PBI-101-D26.md#warunek-zachowania-historii-przy-merge).
+Korekta redakcyjna wymaga także przodka `87a19510580364f96a85edea69e0099ffc4f9a4d`.
 Squash/rebase zastępujący te commity uniemożliwia odtworzenie historycznych
 kontroli. Merge, zmiana uprawnień Actions i aktywacja harmonogramu wymagają
 odrębnych poleceń.

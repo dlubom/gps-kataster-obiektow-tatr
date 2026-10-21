@@ -34,17 +34,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-06-16T13:33:50Z
-
-    TPN revision: 987668cf9a5776893249eb4151030ab0b92a31bcff676f711296bdd05c887546
-
     TPN WER_LOK: FF16062026'
   observed_at: null
   observed_date: '2026-06-16'
   source: TPN
   source_date: '2026-06-16'
   source_ref: TPN:d96cd642-e9d3-4eb8-b9dc-d7df3f449705
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -54,5 +51,5 @@ measurements:
 name_local: Rura w Olejarni
 notes: null
 schema_version: 1
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

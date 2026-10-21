@@ -5,14 +5,8 @@ system_name: null
 external_refs: []
 object_ids:
 - MLZ-0101
-notes: 'TPN length: 8
-
-  TPN depth: 2,6
-
-  TPN denivelation: 5,5
-
-  TPN verification/location note: 05-08-2021 FF NMT'
+notes: 'TPN; historyczny import: długość 8 m; głębokość 2,6 m; deniwelacja 5,5 m.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

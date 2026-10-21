@@ -34,17 +34,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-05-21T15:37:21Z
-
-    TPN revision: 1983bf1f06f31313e26424dc612cbab07fd0e628ebee86cccaa712a44a1d02e7
-
     TPN WER_LOK: FF 21052026'
   observed_at: null
   observed_date: '2026-05-21'
   source: TPN
   source_date: '2026-05-21'
   source_ref: TPN:37ef7fe5-6e87-47d4-97c8-cb0ebd9ddeee
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -54,5 +51,5 @@ measurements:
 name_local: Dziura nad Zahradziskami
 notes: null
 schema_version: 1
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

@@ -22,12 +22,10 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - KSZ-0051
-notes: 'PIG sector: D. Kościeliska - Zach.
+notes: 'Sektor według PIG: D. Kościeliska - Zach.
 
-  PIG morphometry: length_m=3,3, depth_m=0, denivelation_m=0
-
-  PIG source state year: 2010'
+  PIG; stan źródła 2010: długość 3,3 m; głębokość 0 m; deniwelacja 0 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

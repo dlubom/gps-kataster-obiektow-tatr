@@ -34,17 +34,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-05-09T16:38:11Z
-
-    TPN revision: 6064efb0ca1761b8a62171e586f39c2ac7496173b0793400a52b8b92821e69a4
-
     TPN WER_LOK: FF 09052026'
   observed_at: null
   observed_date: '2026-05-09'
   source: TPN
   source_date: '2026-05-09'
   source_ref: TPN:6ebd9c00-d272-4909-85ec-00ae2bb6632d
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -54,5 +51,5 @@ measurements:
 name_local: Okno przy Źródle
 notes: null
 schema_version: 1
-updated_at: '2026-10-19T18:54:41.078420Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

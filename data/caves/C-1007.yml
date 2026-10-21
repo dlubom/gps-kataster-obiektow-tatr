@@ -6,10 +6,11 @@ name: Okno przy Źródle
 notes: 'F. Filar, Uzupełnienia z dolinek reglowych, Jaskinie 101 (2020), s. 31–32:
   opis i plan Okna przy Źródle na s. 32. http://jaskinie.org.pl/files/Jaskinie__101_2020.pdf#page=32
 
-  Metryka źródła TPN: długość 3 m; przewyższenie 1,2 m; deniwelacja 1,2 m.'
+  TPN; stan rekordu 2026-05-09: długość 3 m; przewyższenie 1,2 m; deniwelacja 1,2
+  m.'
 object_ids:
 - BIA-0009
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

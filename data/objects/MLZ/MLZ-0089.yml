@@ -41,11 +41,7 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
-
-    TPN WER_LOK: 23-09-2023 FF, NMT
-
-    TPN UWAGI: Dane morfometr. orentacyjne'
+  notes: 'TPN WER_LOK: 23-09-2023 FF, NMT'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-002
@@ -69,22 +65,20 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
-
-    TPN WER_LOK: FF 23-09-2023 NMT'
+  notes: 'TPN WER_LOK: FF 23-09-2023 NMT'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 best_measurement:
   mode: auto
   measurement_id: m-001
-  reason: Przy remisie dat i nieznanej dokładności zachowano m-001 z MLZ-0089; brak podstaw do oceny przewagi dokładności.
+  reason: Przy remisie dat i nieznanej dokładności zachowano m-001 z MLZ-0089; brak
+    podstaw do oceny przewagi dokładności.
   updated_at: '2026-10-17T19:51:35Z'
   updated_by: dl
 attachments: []
-notes: >-
-  Scalono MLZ-0107/C-0998 do MLZ-0089/C-0875: F.F., Jaskinie 116–117/2024,
-  s. 49–50, plan jednego otworu. Dawne MLZ-0107/m-001 zachowano jako m-002.
+notes: Dwa wpisy TPN rozpoznano jako ten sam otwór; zachowano oba pomiary i referencje
+  źródłowe.
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-10-17T19:51:35Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

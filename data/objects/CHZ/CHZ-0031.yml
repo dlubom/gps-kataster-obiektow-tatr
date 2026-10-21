@@ -34,17 +34,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-06-16T13:09:27Z
-
-    TPN revision: 6141712b74e44bcce4b78290ee01ad0a40d3b7e3761f7b0fa1d8cd3973b93a18
-
     TPN WER_LOK: FF16062026'
   observed_at: null
   observed_date: '2026-06-16'
   source: TPN
   source_date: '2026-06-16'
   source_ref: TPN:a876a547-7912-4033-bb3f-8ed2f589c5f0
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -54,5 +51,5 @@ measurements:
 name_local: Jaskinia Cynamonowa
 notes: null
 schema_version: 1
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

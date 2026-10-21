@@ -218,7 +218,7 @@ def build_d26_files(base, receipt):
             "D26 exact API location already present",
         )
         mid = next_id("m-", {m["id"] for m in obj["measurements"]}, 3)
-        added = measurement(row, mid, audit)
+        added = measurement(row, mid, audit, legacy=True)
         obj["measurements"].append(added)
         if ident == "D022":
             before = domain.catalog.objects[oid]

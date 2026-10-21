@@ -22,14 +22,12 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MTZ-0044
-notes: 'PIG aliases: Komin, Studnia, Komin Miętusiański
+notes: 'Inne nazwy według PIG: Komin, Studnia, Komin Miętusiański
 
-  PIG sector: D. Miętusia - Zach.
+  Sektor według PIG: D. Miętusia - Zach.
 
-  PIG morphometry: length_m=30, depth_m=30, denivelation_m=30
-
-  PIG source state year: 2010'
+  PIG; stan źródła 2010: długość 30 m; głębokość 30 m; deniwelacja 30 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

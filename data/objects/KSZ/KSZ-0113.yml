@@ -36,10 +36,7 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'TPN source-record measurement imported after multi-opening review; not field-verified.
-    TPN row 759 has OTWÓR=N, matching the northern opening described in the PIG dump.
-
-    TPN WER_LOK: 2023-08-23 MB NMT'
+  notes: 'TPN WER_LOK: 2023-08-23 MB NMT'
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
 best_measurement:
@@ -49,10 +46,8 @@ best_measurement:
   updated_at: '2026-05-16T19:30:00Z'
   updated_by: dl
 attachments: []
-notes: Created during multi-opening review. PIG dump for Jaskinia Mylna states other_entrances
-  include 3 (północny) - ku NE, 1084 m n.p.m.; TPN row 759 provides this object-level
-  point.
+notes: Północny otwór Jaskini Mylnej; według PIG otwór 3, ku NE, 1084 m n.p.m.
 created_at: '2026-05-16T19:30:00Z'
 created_by: dl
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

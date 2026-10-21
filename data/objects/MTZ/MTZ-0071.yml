@@ -42,17 +42,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-06-16T11:30:41Z
-
-    TPN revision: 01216c884dc22035e965378ca344f245e413aac414d8cf0812e238e15d89cc43
-
     TPN WER_LOK: FF 16062026'
   observed_at: null
   observed_date: '2026-06-16'
   source: TPN
   source_date: '2026-06-16'
   source_ref: TPN:8e246480-f366-4d0f-ba7e-a601e865fd03
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -70,17 +67,14 @@ measurements:
   lat: 49.2321110675022
   lon: 19.90313059173134
   method: source_record
-  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
-
-    TPN LAST_EDITED_DATE: 2026-06-16T11:23:43Z
-
-    TPN revision: 0c0261924a0f921891f1cacae7e9bbb61fedcf6b0408b8eee15ac477efbcdcb1'
+  notes: Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
   observed_at: null
   observed_date: '2026-06-16'
   source: TPN
   source_date: '2026-06-16'
   source_ref: TPN:0bfc7731-a83a-40e6-b773-766798366add
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -91,5 +85,5 @@ name_local: Korytarz pod Ciemniakiem
 notes: Wpisy TPN „Korytarz w Ciemniaku” i „Korytarz pod Ciemniakiem” przyjęto jako
   ten sam otwór; zachowano oba źródła i pomiary.
 schema_version: 1
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

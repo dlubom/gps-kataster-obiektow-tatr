@@ -38,8 +38,7 @@ measurements:
   lat: 49.26360953
   lon: 19.8777365
   method: source_record
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/982'
+  notes: null
   observed_date: '2010-12-31'
   source: PIG
   source_date: '2010-12-31'
@@ -63,7 +62,7 @@ measurements:
   lat: 49.263609525873136
   lon: 19.87773649990552
   method: source_record
-  notes: TPN source-record measurement imported after operator review; not field-verified.
+  notes: null
   observed_date: '2022-05-25'
   source: TPN
   source_date: '2022-05-25'
@@ -89,17 +88,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-05-04T08:28:40Z
-
-    TPN revision: 2b21c2931a2f7576806aedb54b6de181fd65fc109658d53362738e6e58a5f49a
-
     TPN WER_LOK: FF NMT 04052026'
   observed_at: null
   observed_date: '2026-05-04'
   source: TPN
   source_date: '2026-05-04'
   source_ref: TPN:d532520a-cc0f-4f01-9089-01c883cc553b
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -107,7 +103,7 @@ measurements:
   x_1992: 155507.194
   y_1992: 563836.389
 name_local: Schronik w Kończystej Turni
-notes: Imported from PIG source record after operator review.
+notes: null
 schema_version: 1
-updated_at: '2026-10-19T18:54:41.078420Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

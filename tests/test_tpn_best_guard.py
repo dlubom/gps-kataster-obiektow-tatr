@@ -249,13 +249,16 @@ def test_migrated_catalog_preserves_nine_protected_manual_best_choices(
     historical_protection_manifest,
 ):
     from gps_kataster_obiektow_tatr.tpn_changes import Catalog
+    from gps_kataster_obiektow_tatr.tpn_editorial_correction import BASE_COMMIT, RECEIPT
     from gps_kataster_obiektow_tatr.tpn_snapshot import sha256
+    from gps_kataster_obiektow_tatr.tpn_source_state import git
 
     catalog = Catalog(REPO)
     saved = deepcopy(catalog.objects)
     report = guard.audit_catalog(catalog)
     current = {entry["object_id"]: entry for entry in report["objects"]}
     historical = {entry["object_id"]: entry for entry in historical_protection_manifest["objects"]}
+    editorial = json.loads((REPO / RECEIPT).read_bytes())
     # D022 separately keeps the older MLW-0050 point through an explicit pin.
     assert current.keys() == historical.keys() | {"MLW-0050"}
     assert current["MLW-0050"]["best_before"]["mode"] == "manual"
@@ -266,12 +269,26 @@ def test_migrated_catalog_preserves_nine_protected_manual_best_choices(
         assert entry["protection"]["protected"]
         assert entry["best_before"]["mode"] == "manual"
         assert entry["best_before"]["measurement_id"] == before["best_before"]["measurement_id"]
-        assert entry["selected_measurement"] == before["selected_measurement"]
+        selected = deepcopy(entry["selected_measurement"])
+        original = deepcopy(before["selected_measurement"])
+        notes, old_notes = selected.pop("notes"), original.pop("notes")
+        assert selected == original
+        if notes != old_notes:
+            # The approved editorial correction translates uncertainty; it must
+            # retain the original unknown-GNSS warning and all structured data.
+            assert "unknown GNSS" in old_notes and "unknown GNSS" in notes
+            assert "niepotwierdzone" in notes
+        assert (
+            sha256((REPO / before["path"]).read_bytes())
+            == editorial["result_hashes"][before["path"]]
+        )
         if before["best_before"]["mode"] == "manual":
             assert entry["best_before"] == before["best_before"]
     wysoka = historical["KSW-0189"]
     assert current["KSW-0189"]["best_before"]["measurement_id"] == "m-003"
-    assert sha256((REPO / wysoka["path"]).read_bytes()) == wysoka["preimage_sha256"]
+    assert (
+        sha256(git(REPO, "show", BASE_COMMIT + ":" + wysoka["path"])) == wysoka["preimage_sha256"]
+    )
     assert catalog.objects == saved
 
 

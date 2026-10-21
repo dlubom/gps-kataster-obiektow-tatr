@@ -38,9 +38,7 @@ measurements:
   lat: 49.2526949682589
   lon: 19.929166613270816
   method: source_record
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
-
-    TPN WER_LOK: 17-05-2025 FF NMT'
+  notes: 'TPN WER_LOK: 17-05-2025 FF NMT'
   observed_date: '2025-05-17'
   source: TPN
   source_date: '2025-05-17'
@@ -66,17 +64,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-05-27T17:05:52Z
-
-    TPN revision: 9ee52a0b3dddd95a389f2da08166a2addb17cb420cb7b22c21ef6659e552a0ce
-
     TPN WER_LOK: 17-05-2025 FF NMT'
   observed_at: null
   observed_date: '2026-05-27'
   source: TPN
   source_date: '2026-05-27'
   source_ref: TPN:e6ba5010-45f5-4769-9026-229423ddf3cb
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -84,7 +79,7 @@ measurements:
   x_1992: 154333.544
   y_1992: 567589.857
 name_local: Nyża pod Zachodem Pilotów
-notes: Imported from TPN source record after operator review.
+notes: null
 schema_version: 1
-updated_at: '2026-10-19T18:54:41.078420Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

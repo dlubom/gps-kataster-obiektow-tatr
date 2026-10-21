@@ -6,10 +6,10 @@ name: Rura w Olejarni
 notes: 'J. Nowak, Dwie jaskinie w Olejarni, Jaskinie 93 (2018), s. 32–33: osobny opis
   i plan Rury w Olejarni. http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32
 
-  Metryka źródła TPN: długość 6,5 m; przewyższenie 2 m.'
+  TPN; stan rekordu 2026-06-16: długość 6,5 m; przewyższenie 2 m.'
 object_ids:
 - CHZ-0032
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

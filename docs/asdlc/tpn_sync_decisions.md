@@ -17,6 +17,23 @@ nie są decyzjami o rzeczywistych obiektach.
 
 ## Przygotowanie i rozpatrzenie
 
+Nowe `prepare` zapisuje `execution.format_version: 2`: pomiar ma tag `tpn`
+i nie zawiera technicznego `TPN revision` ani kopii `LAST_EDITED_DATE` w uwagach.
+Wyjaśnienie nieznanej daty terenowej pozostaje; dokładna data źródła i hash
+rewizji pozostają w utrwalonym `changes.json`, decyzjach i stanie synchronizacji.
+Wersja 1 nadal odtwarza historyczne bajty paczek; nie zmieniaj wersji
+istniejącego execution/changes w celu przepisania zastosowanych decyzji.
+
+Przy review `UWAGI` rozdziel treść: lokalizacja przy pomiarze, stan otworu
+przy obiekcie, morfometria i literatura przy jaskini. Znane uwagi morfometryczne
+i o stanie otworu nie są automatycznie kopiowane do nowych pomiarów w wersji 2;
+operator umieszcza je w osobnej jawnej propozycji `update_metadata` dla
+właściwej encji. Nieznane sformułowania pozostają do oceny przy pomiarze.
+Nie traktuj braku dokumentacji w przejrzanych źródłach jako jej nieistnienia.
+Nie usuwaj niepewności, historycznych metryk ani surowych danych. Jednorazową
+zatwierdzoną korektę PR #12 odtwarza osobny receipt opisany w
+[raporcie](verification/PBI-101-notes.md#uporządkowanie-trzech-rodzajów-uwag--2026-10-21).
+
 1. Sprawdź aktualny Git/PR i fetch origin. Snapshot musi być zweryfikowany
    i utrwalony w commicie wskazanym przez `base_commit` raportu. Nie zmieniaj
    snapshotu, CSV/XLSX ani polityki `tpn-sync-v1`.

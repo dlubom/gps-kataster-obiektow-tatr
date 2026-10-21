@@ -36,10 +36,7 @@ measurements:
   verification_status: odrzucony
   verified_by: dl
   verified_at: '2026-10-16T10:35:51Z'
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1031
-
-    Przegląd mapowy 2026-10-16: punkt odrzucony; leży przy potoku Bystra w Dolinie
+  notes: 'Przegląd mapowy 2026-10-16: punkt odrzucony; leży przy potoku Bystra w Dolinie
     Bystrej, około 326 m na zachód od TPN, sprzecznie z opisem otworu na zachodnim
     zboczu Boczania po prawej stronie Doliny Jaworzynki.'
   created_at: '2026-05-16T10:22:49Z'
@@ -65,23 +62,20 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
-
-    TPN WER_LOK: 12-04-2023 TZK po kontroli'
+  notes: 'TPN WER_LOK: 12-04-2023 TZK po kontroli'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 best_measurement:
   mode: auto
   measurement_id: m-002
-  reason: 'TPN odpowiada zachodniemu zboczu Boczania i podejściu przez Jaworzynkę
-    opisanemu w PIG:1031; leży około 4 m od skałki oznaczonej w OSM
-    (https://www.openstreetmap.org/way/1107389119). Przegląd mapowy nie określa
-    dokładności położenia otworu; status pozostaje nieweryfikowany.'
+  reason: TPN odpowiada zachodniemu zboczu Boczania i podejściu przez Jaworzynkę opisanemu
+    w PIG:1031; leży około 4 m od skałki oznaczonej w OSM (https://www.openstreetmap.org/way/1107389119).
+    Przegląd mapowy nie określa dokładności położenia otworu; status pozostaje nieweryfikowany.
   updated_at: '2026-10-16T10:35:51Z'
   updated_by: dl
 attachments: []
-notes: Imported from PIG source record after operator review.
+notes: null
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-16T10:35:51Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

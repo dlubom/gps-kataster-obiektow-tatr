@@ -34,17 +34,14 @@ measurements:
   method: source_record
   notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN LAST_EDITED_DATE: 2026-06-17T08:32:32Z
-
-    TPN revision: 52767533c8616e62a11fafb131b4ac61e520e48367600a9339ca4e133fc3ff63
-
     TPN WER_LOK: FF 27052026'
   observed_at: null
   observed_date: '2026-06-17'
   source: TPN
   source_date: '2026-06-17'
   source_ref: TPN:28bd775c-1b67-4aea-9ffb-49c32eef6bed
-  tags: []
+  tags:
+  - tpn
   verification_status: nieweryfikowany
   verified_at: null
   verified_by: null
@@ -54,5 +51,5 @@ measurements:
 name_local: Schron pod Gawrą w Bobrowcu
 notes: null
 schema_version: 1
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

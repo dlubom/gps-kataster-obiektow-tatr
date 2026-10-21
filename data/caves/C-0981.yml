@@ -3,22 +3,15 @@ created_by: importer:tpn
 external_refs: []
 id: C-0981
 name: tunel w Skrajnej Giewonckiej Baszcie
-notes: 'KKTJ, J. Nowak, 04 Dolinki Reglowe 2026.07, s. 2, poz. 28: Tunel 10,1 m. https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=395
+notes: 'TPN; historyczny import: długość 10 m; głębokość 0 m; deniwelacja 2 m.
 
-  Historyczny import TPN:
+  KKTJ, J. Nowak, 04 Dolinki Reglowe 2026.07, s. 2, poz. 28: Tunel 10,1 m. https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=395
 
-  TPN length: 10
-
-  TPN depth: 0
-
-  TPN denivelation: 2
-
-  TPN verification/location note: 15-11-2024 FF, orto
-
-  Metryka źródła TPN: długość 10,1 m; przewyższenie 2,1 m; deniwelacja 2,1 m.'
+  TPN; stan rekordu 2026-05-09: długość 10,1 m; przewyższenie 2,1 m; deniwelacja 2,1
+  m.'
 object_ids:
 - MLW-0050
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex

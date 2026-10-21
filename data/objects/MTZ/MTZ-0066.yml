@@ -36,9 +36,7 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
-
-    TPN UWAGI: lokalizacja orientacyjna'
+  notes: 'TPN UWAGI: lokalizacja orientacyjna'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-002
@@ -61,10 +59,9 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: >-
-    W.R., zgłoszenie 2026-10-16: dolny otwór, zrzut Locus
-    N49°14.444′ E019°54.255′. Data i metoda pomiaru nieznane;
-    observed_date oznacza datę zgłoszenia. Do weryfikacji, bez wyboru do eksportu.
+  notes: 'W.R., zgłoszenie 2026-10-16: dolny otwór, zrzut Locus N49°14.444′ E019°54.255′.
+    Data i metoda pomiaru nieznane; observed_date oznacza datę zgłoszenia. Do weryfikacji,
+    bez wyboru do eksportu.'
   created_at: '2026-10-17T07:26:55Z'
   created_by: dl
 best_measurement:
@@ -74,8 +71,8 @@ best_measurement:
   updated_at: '2026-05-16T10:22:52Z'
   updated_by: importer:tpn
 attachments: []
-notes: Imported from TPN source record after operator review.
+notes: null
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-10-17T07:26:55Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

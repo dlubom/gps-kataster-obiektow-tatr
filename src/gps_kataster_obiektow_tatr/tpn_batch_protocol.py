@@ -217,7 +217,7 @@ def prepare_documents(report, proposals=None):
         ]
     changes["execution"] = {
         "format": "tpn-execution-proposals",
-        "format_version": 1,
+        "format_version": 2,
         "proposals": deepcopy(proposals),
     }
     decisions = {
@@ -265,7 +265,7 @@ def validate_documents(changes, decisions, *, reviewers, allow_pending=True):
     require(
         execution["format"] == "tpn-execution-proposals"
         and type(execution["format_version"]) is int
-        and execution["format_version"] == 1,
+        and execution["format_version"] in (1, 2),
         "unsupported proposals format/version",
     )
     rows = {

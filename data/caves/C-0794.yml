@@ -22,15 +22,13 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MLZ-0079
-notes: 'PIG aliases: Awen Górny, Dziura pod Lejem, Śnieżny Lej, Śnieżna Studnia w
-  Kotlinach
+notes: 'Inne nazwy według PIG: Awen Górny, Dziura pod Lejem, Śnieżny Lej, Śnieżna
+  Studnia w Kotlinach
 
-  PIG sector: D. Małej Łąki - Zach.
+  Sektor według PIG: D. Małej Łąki - Zach.
 
-  PIG morphometry: length_m=30, depth_m=16, denivelation_m=16
-
-  PIG source state year: 2010'
+  PIG; stan źródła 2010: długość 30 m; głębokość 16 m; deniwelacja 16 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

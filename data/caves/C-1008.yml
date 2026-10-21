@@ -3,12 +3,12 @@ created_by: agent:codex
 external_refs: []
 id: C-1008
 name: Gawra w Grześkówkach
-notes: 'Pozycja według TPN. Dokumentacji nie odnaleziono.
+notes: 'W przeglądzie źródeł 2026-10-20 nie odnaleziono odrębnej dokumentacji.
 
-  Metryka źródła TPN: długość 4 m.'
+  TPN; stan rekordu 2026-10-04: długość 4 m.'
 object_ids:
 - DZI-0011
 schema_version: 1
 system_name: null
-updated_at: '2026-10-20T19:37:51Z'
+updated_at: '2026-10-21T13:54:55.211774Z'
 updated_by: agent:codex
