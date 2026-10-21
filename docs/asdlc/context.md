@@ -1,6 +1,25 @@
 # AS-DLC project context
 
-Last updated: 2026-10-19
+Last updated: 2026-10-21
+
+## Paczka eksportów w komentarzu PR — PBI-105
+
+Na polecenie użytkownika nowa praca zaczyna się od aktualnego `main`
+`b98fd3febb400c7ee520046682c1bb16238429ee` na `codex/pr-export-preview`.
+Użytkownik zatwierdził pełne eksporty syntetycznego merge każdej PR,
+także draftów i kolejnych pushów, jeden aktualizowany komentarz bota
+i 14-dniową retencję. Wykorzystujemy builder obecny na `main`.
+[Odbiór](verification/PBI-105.md), [instrukcja](../release_artifacts.md).
+Status: wykonane — [draft PR #14](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/14)
+do review. 805 testów pytest, 28 scenariuszy
+Node, Ruff, walidacja bez błędów i pełny lokalny readback przeszły.
+Dane katalogu, wersja i oficjalny proces wydania bez zmian.
+Publisher `workflow_run` aktywuje się po instalacji na domyślnej gałęzi;
+link w instalacyjnej PR dodaje operator po readbacku paczki.
+CI implementacji i pobrana paczka przeszły pełny odczyt; zaufany publisher
+wygenerował poprawny komentarz z rzeczywistych metadanych API w próbie
+bez zapisu. Końcowy SHA/CI oraz aktualna paczka i readback są w opisie PR.
+Bez merge, taga i publikacji wydania; nie rozpoczynać kolejnego PBI.
 
 ## v1.1.1 — przygotowanie wydania
 
