@@ -1,78 +1,109 @@
-schema_version: 1
-id: MTW-0017
+attachments: []
+best_measurement:
+  measurement_id: m-003
+  mode: auto
+  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
+    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
+    Obiekt MTW-0017, nowy pomiar m-003; różnica względem poprzedniego TPN 14.38 m.
+    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
+    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
+    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
 category: jaskinia_otwor
-name_local: Schronik w Kończystej Turni
 cave_id: C-0165
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+external_refs:
+- external_id: '{D532520A-CC0F-4F01-9089-01C883CC553B}'
+  notes: TPN GLOBALID belongs to the object/source feature.
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MTW-0017
 id_assignment:
-  method: auto
   assigned_from_measurement_id: m-001
   assigned_prefix: MTW
+  method: auto
   prefix_override_reason: null
-external_refs:
-- system: TPN
-  ref_type: source_globalid
-  external_id: '{D532520A-CC0F-4F01-9089-01C883CC553B}'
-  scope: object
-  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
-- id: m-001
-  lat: 49.26360953
-  lon: 19.8777365
-  x_1992: 155493.53
-  y_1992: 563840.84
-  elevation_m: 1135.0
+- created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+  device: null
   elevation_datum: unknown
+  elevation_m: 1135.0
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: PIG
-  source_ref: PIG:982
-  observed_date: '2010-12-31'
-  source_date: '2010-12-31'
+  id: m-001
+  lat: 49.26360953
+  lon: 19.8777365
   method: source_record
-  device: null
+  notes: null
+  observed_date: '2010-12-31'
+  source: PIG
+  source_date: '2010-12-31'
+  source_ref: PIG:982
   tags:
   - pig
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/982'
-  created_at: '2026-05-16T10:22:49Z'
-  created_by: importer:pig
-- id: m-002
-  lat: 49.263609525873136
-  lon: 19.87773649990552
+  verified_by: null
+  vertical_accuracy_m: null
   x_1992: 155493.53
   y_1992: 563840.84
-  elevation_m: 1130.228315
+- created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+  device: null
   elevation_datum: unknown
+  elevation_m: 1130.228315
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: TPN
-  source_ref: TPN:{D532520A-CC0F-4F01-9089-01C883CC553B}
-  observed_date: '2022-05-25'
-  source_date: '2022-05-25'
+  id: m-002
+  lat: 49.263609525873136
+  lon: 19.87773649990552
   method: source_record
-  device: null
+  notes: null
+  observed_date: '2022-05-25'
+  source: TPN
+  source_date: '2022-05-25'
+  source_ref: TPN:{D532520A-CC0F-4F01-9089-01C883CC553B}
   tags:
   - tpn
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: TPN source-record measurement imported after operator review; not field-verified.
-  created_at: '2026-05-16T10:22:52Z'
-  created_by: importer:tpn
-best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T10:41:53Z'
-  updated_by: dl
-attachments: []
-notes: Imported from PIG source record after operator review.
-created_at: '2026-05-16T10:22:49Z'
-created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 155493.53
+  y_1992: 563840.84
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-003
+  lat: 49.26373292586074
+  lon: 19.877677490491408
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN WER_LOK: FF NMT 04052026'
+  observed_at: null
+  observed_date: '2026-05-04'
+  source: TPN
+  source_date: '2026-05-04'
+  source_ref: TPN:d532520a-cc0f-4f01-9089-01c883cc553b
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 155507.194
+  y_1992: 563836.389
+name_local: Schronik w Kończystej Turni
+notes: null
+schema_version: 1
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

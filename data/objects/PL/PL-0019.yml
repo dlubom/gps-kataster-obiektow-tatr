@@ -36,13 +36,10 @@ measurements:
   verification_status: odrzucony
   verified_by: dl
   verified_at: '2026-10-16T09:27:53Z'
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1041
-
-    Przegląd mapowy 2026-10-16 (PBI-087), decyzja dl: lokalizacja odrzucona.
-    Punkt leży około 2,47 km od obrysu Skały Kmietowicza w OSM (way 351368137),
-    sprzecznie z opisem PIG umieszczającym schron u podstawy tej skały przy drodze.
-    Zachowano oryginalne współrzędne i referencję PIG w historii.'
+  notes: 'Przegląd mapowy 2026-10-16 (PBI-087), decyzja dl: lokalizacja odrzucona.
+    Punkt leży około 2,47 km od obrysu Skały Kmietowicza w OSM (way 351368137), sprzecznie
+    z opisem PIG umieszczającym schron u podstawy tej skały przy drodze. Zachowano
+    oryginalne współrzędne i referencję PIG w historii.'
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
@@ -66,27 +63,25 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
+  notes: 'TPN WER_LOK: 13-02-2020 FF ortofotomapa
 
-    TPN WER_LOK: 13-02-2020 FF ortofotomapa
-
-    Przegląd mapowy 2026-10-16 (PBI-087): punkt przy obrysie Skały Kmietowicza
-    (https://www.openstreetmap.org/way/351368137), około 12 m od oznaczenia schronu II
-    (https://www.openstreetmap.org/node/3568686870). Pozostaje najlepszą dostępną
-    lokalizacją. Kontrola mapowa nie wyznacza dokładności pomiaru ani dokładnego
-    położenia otworu; status nieweryfikowany pozostaje do dalszego rozpoznania.'
+    Przegląd mapowy 2026-10-16 (PBI-087): punkt przy obrysie Skały Kmietowicza (https://www.openstreetmap.org/way/351368137),
+    około 12 m od oznaczenia schronu II (https://www.openstreetmap.org/node/3568686870).
+    Pozostaje najlepszą dostępną lokalizacją. Kontrola mapowa nie wyznacza dokładności
+    pomiaru ani dokładnego położenia otworu; status nieweryfikowany pozostaje do dalszego
+    rozpoznania.'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 best_measurement:
   mode: auto
   measurement_id: m-002
-  reason: 'Przegląd mapowy PBI-087: TPN przy Skale Kmietowicza; punkt PIG m-001
-    odrzucony jako sprzeczny z położeniem skały i opisem schronu.'
+  reason: 'Przegląd mapowy PBI-087: TPN przy Skale Kmietowicza; punkt PIG m-001 odrzucony
+    jako sprzeczny z położeniem skały i opisem schronu.'
   updated_at: '2026-10-16T09:27:53Z'
   updated_by: dl
 attachments: []
-notes: Imported from PIG source record after operator review.
+notes: null
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-16T09:27:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

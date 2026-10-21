@@ -22,14 +22,12 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MLZ-0004
-notes: 'PIG aliases: Schronisko w Wielkiej Turni
+notes: 'Inne nazwy według PIG: Schronisko w Wielkiej Turni
 
-  PIG sector: D. Małej Łąki - Zach.
+  Sektor według PIG: D. Małej Łąki - Zach.
 
-  PIG morphometry: length_m=19, depth_m=15, denivelation_m=15
-
-  PIG source state year: 2014'
+  PIG; stan źródła 2014: długość 19 m; głębokość 15 m; deniwelacja 15 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

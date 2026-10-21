@@ -22,12 +22,10 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MTZ-0016
-notes: 'PIG sector: D. Miętusia - Zach.
+notes: 'Sektor według PIG: D. Miętusia - Zach.
 
-  PIG morphometry: length_m=810, depth_m=108, denivelation_m=145
-
-  PIG source state year: 2013'
+  PIG; stan źródła 2013: długość 810 m; głębokość 108 m; deniwelacja 145 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

@@ -1,0 +1,14 @@
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs: []
+id: C-1024
+name: Nyża pod Zachodem Pilotów III
+notes: 'W przeglądzie źródeł 2026-10-20 nie odnaleziono odrębnej dokumentacji.
+
+  TPN; stan rekordu 2026-05-24: długość 3 m.'
+object_ids:
+- STR-0036
+schema_version: 1
+system_name: null
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

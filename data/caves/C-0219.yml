@@ -1,33 +1,37 @@
-schema_version: 1
-id: C-0219
-name: Smocza Jama
-system_name: null
-external_refs:
-- system: NR_INWENT
-  ref_type: inventory_number
-  external_id: T.E-08.07
-  scope: cave
-  notes: Inventory number belongs to the cave/catalog entry, not the object.
-- system: PIG
-  ref_type: catalog_id
-  external_id: '760'
-  scope: cave
-  notes: PIG catalog record identifier.
-  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/760
-- system: PIG
-  ref_type: url
-  external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/760
-  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/760
-  scope: cave
-  notes: PIG catalog record link.
-object_ids:
-- KSW-0065
-notes: 'PIG sector: D. Kościeliska - Wsch.
-
-  PIG morphometry: length_m=44, depth_m=18,6, denivelation_m=18,6
-
-  PIG source state year: 2014'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+external_refs:
+- external_id: T.E-08.07
+  notes: Inventory number belongs to the cave/catalog entry, not the object.
+  ref_type: inventory_number
+  scope: cave
+  system: NR_INWENT
+- external_id: '760'
+  notes: PIG catalog record identifier.
+  ref_type: catalog_id
+  scope: cave
+  system: PIG
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/760
+- external_id: https://jaskiniepolski.pgi.gov.pl/Details/Information/760
+  notes: PIG catalog record link.
+  ref_type: url
+  scope: cave
+  system: PIG
+  url: https://jaskiniepolski.pgi.gov.pl/Details/Information/760
+id: C-0219
+name: Smocza Jama
+notes: 'Karta PIG 760 (T.E-08.07) opisuje dwa otwory: https://jaskiniepolski.pgi.gov.pl/Details/Information/760
+
+  Sektor według PIG: D. Kościeliska - Wsch.
+
+  PIG; stan źródła 2014: długość 44 m; głębokość 18,6 m; deniwelacja 18,6 m.
+
+  TPN; stan rekordu 2023-08-28: długość 44 m; głębokość 18,6 m; przewyższenie 0 m;
+  deniwelacja 18,6 m.'
+object_ids:
+- KSW-0065
+- KSW-0258
+schema_version: 1
+system_name: null
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

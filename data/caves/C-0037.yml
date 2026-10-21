@@ -22,14 +22,12 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MTZ-0004
-notes: 'PIG aliases: W Małej Świstówce
+notes: 'Inne nazwy według PIG: W Małej Świstówce
 
-  PIG sector: D. Miętusia - Zach.
+  Sektor według PIG: D. Miętusia - Zach.
 
-  PIG morphometry: length_m=50, depth_m=6,5, denivelation_m=6,5
-
-  PIG source state year: 2013'
+  PIG; stan źródła 2013: długość 50 m; głębokość 6,5 m; deniwelacja 6,5 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

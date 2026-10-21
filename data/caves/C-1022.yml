@@ -1,0 +1,14 @@
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs: []
+id: C-1022
+name: Schron nad Wielką Równią
+notes: 'W przeglądzie źródeł 2026-10-20 nie odnaleziono odrębnej dokumentacji.
+
+  TPN; stan rekordu 2026-10-03: długość 6 m.'
+object_ids:
+- STR-0035
+schema_version: 1
+system_name: null
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

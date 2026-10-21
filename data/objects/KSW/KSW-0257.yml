@@ -36,10 +36,7 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'TPN source-record measurement imported after multi-opening review; not field-verified.
-    TPN row 290 has OTWÓR="Jaskinia Biała".
-
-    TPN WER_LOK: NMT FF 12-05-2020'
+  notes: 'TPN WER_LOK: NMT FF 12-05-2020'
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
 - id: m-002
@@ -64,9 +61,8 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: Source provided as unknown GNSS for Jaskinia Biała. Maintainer instruction
-    and PIG other_entrances identify this as the upper opening of Jaskinia Zimna,
-    not a separate cave.
+  notes: Punkt przekazany jako „unknown GNSS” dla Jaskini Białej; pochodzenie i metoda
+    pomiaru niepotwierdzone.
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
 best_measurement:
@@ -76,10 +72,9 @@ best_measurement:
   updated_at: '2026-05-16T19:30:00Z'
   updated_by: dl
 attachments: []
-notes: Created during multi-opening review. PIG dump for Jaskinia Zimna says other_entrances="2
-  (Jaskinia Biała) - ku SW, 1260 m n.p.m."; TPN row 290 and the supplied GNSS point
-  both describe this upper opening.
+notes: 'Górny otwór Jaskini Zimnej, Jaskinia Biała; według PIG otwór 2, ku SW, 1260
+  m n.p.m. Dolny otwór: KSW-0090.'
 created_at: '2026-05-16T19:30:00Z'
 created_by: dl
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

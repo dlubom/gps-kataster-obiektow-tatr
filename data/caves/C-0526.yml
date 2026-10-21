@@ -22,14 +22,13 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - KSW-0158
-notes: 'PIG aliases: Niżnia pod Zamkiem, Groby, Ziobrowa, Zbiorowa, Koliba Niższa
+notes: 'Inne nazwy według PIG: Niżnia pod Zamkiem, Groby, Ziobrowa, Zbiorowa, Koliba
+  Niższa
 
-  PIG sector: D. Kościeliska - Wsch.
+  Sektor według PIG: D. Kościeliska - Wsch.
 
-  PIG morphometry: length_m=123, depth_m=0, denivelation_m=10,8
-
-  PIG source state year: 2013'
+  PIG; stan źródła 2013: długość 123 m; głębokość 0 m; deniwelacja 10,8 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

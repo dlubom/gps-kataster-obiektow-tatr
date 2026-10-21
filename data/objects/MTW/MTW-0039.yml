@@ -1,78 +1,109 @@
-schema_version: 1
-id: MTW-0039
+attachments: []
+best_measurement:
+  measurement_id: m-003
+  mode: auto
+  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
+    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
+    Obiekt MTW-0039, nowy pomiar m-003; różnica względem poprzedniego TPN 74.27 m.
+    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
+    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
+    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
 category: jaskinia_otwor
-name_local: Nyża pod Progiem w Kończystej
 cave_id: C-0536
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+external_refs:
+- external_id: '{9BA8F361-D7AA-413F-BC86-AC235940F603}'
+  notes: TPN GLOBALID belongs to the object/source feature.
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MTW-0039
 id_assignment:
-  method: auto
   assigned_from_measurement_id: m-001
   assigned_prefix: MTW
+  method: auto
   prefix_override_reason: null
-external_refs:
-- system: TPN
-  ref_type: source_globalid
-  external_id: '{9BA8F361-D7AA-413F-BC86-AC235940F603}'
-  scope: object
-  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
-- id: m-001
-  lat: 49.26372345
-  lon: 19.88020702
-  x_1992: 155508.28
-  y_1992: 564020.38
-  elevation_m: 1125.0
+- created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+  device: null
   elevation_datum: unknown
+  elevation_m: 1125.0
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: PIG
-  source_ref: PIG:989
-  observed_date: '2010-12-31'
-  source_date: '2010-12-31'
+  id: m-001
+  lat: 49.26372345
+  lon: 19.88020702
   method: source_record
-  device: null
+  notes: null
+  observed_date: '2010-12-31'
+  source: PIG
+  source_date: '2010-12-31'
+  source_ref: PIG:989
   tags:
   - pig
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/989'
-  created_at: '2026-05-16T10:22:49Z'
-  created_by: importer:pig
-- id: m-002
-  lat: 49.26372345142175
-  lon: 19.88020701888239
+  verified_by: null
+  vertical_accuracy_m: null
   x_1992: 155508.28
   y_1992: 564020.38
-  elevation_m: 1196.543358
+- created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+  device: null
   elevation_datum: unknown
+  elevation_m: 1196.543358
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: TPN
-  source_ref: TPN:{9BA8F361-D7AA-413F-BC86-AC235940F603}
-  observed_date: '2022-05-25'
-  source_date: '2022-05-25'
+  id: m-002
+  lat: 49.26372345142175
+  lon: 19.88020701888239
   method: source_record
-  device: null
+  notes: null
+  observed_date: '2022-05-25'
+  source: TPN
+  source_date: '2022-05-25'
+  source_ref: TPN:{9BA8F361-D7AA-413F-BC86-AC235940F603}
   tags:
   - tpn
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: TPN source-record measurement imported after operator review; not field-verified.
-  created_at: '2026-05-16T10:22:52Z'
-  created_by: importer:tpn
-best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T10:41:53Z'
-  updated_by: dl
-attachments: []
-notes: Imported from PIG source record after operator review.
-created_at: '2026-05-16T10:22:49Z'
-created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 155508.28
+  y_1992: 564020.38
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-003
+  lat: 49.26330019605871
+  lon: 19.87941770037199
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN WER_LOK: FF 21052026'
+  observed_at: null
+  observed_date: '2026-05-21'
+  source: TPN
+  source_date: '2026-05-21'
+  source_ref: TPN:9ba8f361-d7aa-413f-bc86-ac235940f603
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 155460.573
+  y_1992: 563963.518
+name_local: Nyża pod Progiem w Kończystej
+notes: null
+schema_version: 1
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

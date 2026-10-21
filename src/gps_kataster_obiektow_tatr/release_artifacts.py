@@ -22,6 +22,17 @@ from gps_kataster_obiektow_tatr.release_statistics import write_release_statisti
 from gps_kataster_obiektow_tatr.validator import ValidationIssue
 
 SQLITE_ZIP_FILENAME = "katalog.sqlite.zip"
+RELEASE_ASSET_FILENAMES = (
+    "best-measurements.geojson",
+    "best-measurements.csv",
+    "best-measurements.gpx",
+    "best-measurements.shp.zip",
+    SQLITE_ZIP_FILENAME,
+    "metadata.json",
+    "statistics.json",
+    "statistics.md",
+    "katalog.xlsx",
+)
 
 
 @dataclass(frozen=True, slots=True)

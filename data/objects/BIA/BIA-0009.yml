@@ -1,0 +1,55 @@
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: auto
+  reason: null
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
+category: jaskinia_otwor
+cave_id: C-1007
+created_at: '2026-10-19T18:54:41.078420Z'
+created_by: agent:codex
+external_refs:
+- external_id: 6ebd9c00-d272-4909-85ec-00ae2bb6632d
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: BIA-0009
+id_assignment:
+  assigned_from_measurement_id: m-001
+  assigned_prefix: BIA
+  method: auto
+  prefix_override_reason: null
+measurements:
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-001
+  lat: 49.25953732835311
+  lon: 19.953589664455603
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+
+    TPN WER_LOK: FF 09052026'
+  observed_at: null
+  observed_date: '2026-05-09'
+  source: TPN
+  source_date: '2026-05-09'
+  source_ref: TPN:6ebd9c00-d272-4909-85ec-00ae2bb6632d
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 155107.781
+  y_1992: 569363.541
+name_local: Okno przy Źródle
+notes: null
+schema_version: 1
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

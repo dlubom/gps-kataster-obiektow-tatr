@@ -22,15 +22,13 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - KSZ-0009
-notes: 'PIG aliases: Jaskinia Mylna T.E-08.04, Jaskinia Obłazkowa T.E-08.035 Jaskinia
-  Raptawicka T.E-08.03, SYSTEM Mylna-Obłazkowa
+notes: 'Inne nazwy według PIG: Jaskinia Mylna T.E-08.04, Jaskinia Obłazkowa T.E-08.035
+  Jaskinia Raptawicka T.E-08.03, SYSTEM Mylna-Obłazkowa
 
-  PIG sector: D. Kościeliska - Zach.
+  Sektor według PIG: D. Kościeliska - Zach.
 
-  PIG morphometry: length_m=2404, depth_m=71,3, denivelation_m=76,1
-
-  PIG source state year: 2015'
+  PIG; stan źródła 2015: długość 2404 m; głębokość 71,3 m; deniwelacja 76,1 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:22:49Z'
-updated_by: importer:pig
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

@@ -1,78 +1,107 @@
-schema_version: 1
-id: MLZ-0012
+attachments: []
+best_measurement:
+  measurement_id: m-003
+  mode: auto
+  reason: 'Aktualny punkt TPN wybrany jako best zgodnie z jawną decyzją użytkownika
+    dla B001–B031: przyjąć nowe lokalizacje jako preferowane i pozostawić tryb auto.
+    Obiekt MLZ-0012, nowy pomiar m-003; różnica względem poprzedniego TPN 5.74 m.
+    Jest to decyzja o wyborze punktu, bez potwierdzenia dokładności ani daty pomiaru
+    terenowego; data pochodzi ze stanu źródła. Status pozostaje nieweryfikowany. Stare
+    pomiary i wysokości zachowane w historii; nowy best nie ma wysokości.'
+  updated_at: '2026-10-19T18:54:41.078420Z'
+  updated_by: agent:codex
 category: jaskinia_otwor
-name_local: Bliźniacza Studnia
 cave_id: C-0111
+created_at: '2026-05-16T10:22:49Z'
+created_by: importer:pig
+external_refs:
+- external_id: '{7006936A-289F-4F87-8614-3C6253D13228}'
+  notes: TPN GLOBALID belongs to the object/source feature.
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MLZ-0012
 id_assignment:
-  method: auto
   assigned_from_measurement_id: m-001
   assigned_prefix: MLZ
+  method: auto
   prefix_override_reason: null
-external_refs:
-- system: TPN
-  ref_type: source_globalid
-  external_id: '{7006936A-289F-4F87-8614-3C6253D13228}'
-  scope: object
-  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
-- id: m-001
-  lat: 49.2398889
-  lon: 19.92520556
-  x_1992: 152898.51
-  y_1992: 567325.64
-  elevation_m: 1795.0
+- created_at: '2026-05-16T10:22:49Z'
+  created_by: importer:pig
+  device: null
   elevation_datum: unknown
+  elevation_m: 1795.0
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: PIG
-  source_ref: PIG:1592
-  observed_date: '2013-12-31'
-  source_date: '2013-12-31'
+  id: m-001
+  lat: 49.2398889
+  lon: 19.92520556
   method: source_record
-  device: null
+  notes: null
+  observed_date: '2013-12-31'
+  source: PIG
+  source_date: '2013-12-31'
+  source_ref: PIG:1592
   tags:
   - pig
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1592'
-  created_at: '2026-05-16T10:22:49Z'
-  created_by: importer:pig
-- id: m-002
-  lat: 49.239888895619956
-  lon: 19.925205563763825
+  verified_by: null
+  vertical_accuracy_m: null
   x_1992: 152898.51
   y_1992: 567325.64
-  elevation_m: 1790.540605
+- created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+  device: null
   elevation_datum: unknown
+  elevation_m: 1790.540605
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: TPN
-  source_ref: TPN:{7006936A-289F-4F87-8614-3C6253D13228}
-  observed_date: '2022-05-25'
-  source_date: '2022-05-25'
+  id: m-002
+  lat: 49.239888895619956
+  lon: 19.925205563763825
   method: source_record
-  device: null
+  notes: null
+  observed_date: '2022-05-25'
+  source: TPN
+  source_date: '2022-05-25'
+  source_ref: TPN:{7006936A-289F-4F87-8614-3C6253D13228}
   tags:
   - tpn
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: TPN source-record measurement imported after operator review; not field-verified.
-  created_at: '2026-05-16T10:22:52Z'
-  created_by: importer:tpn
-best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T10:41:53Z'
-  updated_by: dl
-attachments: []
-notes: Imported from PIG source record after operator review.
-created_at: '2026-05-16T10:22:49Z'
-created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152898.51
+  y_1992: 567325.64
+- created_at: '2026-10-19T18:54:41.078420Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-003
+  lat: 49.23987014050215
+  lon: 19.92527898654571
+  method: source_record
+  notes: Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
+  observed_at: null
+  observed_date: '2026-02-11'
+  source: TPN
+  source_date: '2026-02-11'
+  source_ref: TPN:7006936a-289f-4f87-8614-3c6253d13228
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 152896.491
+  y_1992: 567331.008
+name_local: Bliźniacza Studnia
+notes: null
+schema_version: 1
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

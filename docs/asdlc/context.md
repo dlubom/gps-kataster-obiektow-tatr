@@ -1,22 +1,55 @@
 # AS-DLC project context
 
-Last updated: 2026-10-19
+Last updated: 2026-10-21
 
-## v1.1.1 — przygotowanie wydania
+## Wydzielenie danych TPN z PR #12
 
-[PBI-094](verification/PBI-094.md): użytkownik zatwierdził wpis changelogu,
-merge, tag i publikację v1.1.1 oraz sprawdzenie CI i plików wydania.
-Baza: aktualny `main` po PR #9, `c44f24425b87e3ce161bc1f1a21c0a958e99a449`;
-[CI po merge](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/39243172221)
-przeszło, ochrona main została przywrócona.
-W katalogu jest 1007 obiektów, 1001 jaskiń i 1876 pomiarów.
-Przygotowanie wydania zmienia wersję i dokumentację; dane pozostają bez zmian.
-Odbiór wymaga CI końcowego main, annotated tagu i odczytu plików ze
-[strony v1.1.1](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/tag/v1.1.1).
-Przygotowanie zweryfikowane: 800 testów, Ruff, walidacja bez błędów
-(2067 ostrzeżeń), odczyt 10 artefaktów; 2037 plików danych/config bez zmian.
-Końcowy SHA, wyniki CI i odbiór publikacji są wskazane w PR wydania oraz na
-stronie v1.1.1. Brak kolejnego gotowego PBI.
+Na polecenie użytkownika przygotowano osobny PR do `main`, kopiując
+`data/objects/` i `data/caves/` z HEAD PR #12
+`36807e3573d44f60db26b35be9aa581b2754f0a3`. Baza tej pracy:
+`b98fd3febb400c7ee520046682c1bb16238429ee`.
+
+Katalog kandydata zawiera **1035 Obiektów, 1027 Jaskiń i 1938 pomiarów**:
+28 nowych obiektów, 26 nowych jaskiń i 62 nowe pomiary względem bazy.
+Zachowano końcowe opisy, bibliografię, tagi, historię i wybory best z PR #12.
+Dane pozostają kandydatem do przyjęcia przez ludzki merge.
+
+Jedynym dodatkiem poza danymi jest obsługa podglądowych paczek eksportów
+[PBI-104](verification/PBI-104.md), wraz z testami i instrukcją.
+Kod importu/synchronizacji, ich harmonogram, snapshoty, decyzje i stan
+protokołu pozostają w [PR #12](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/12).
+Źródłowe uzasadnienia i historyczne dowody tego PR można czytać pod
+[wskazanym niezmiennym SHA](https://github.com/dlubom/gps-kataster-obiektow-tatr/tree/36807e3573d44f60db26b35be9aa581b2754f0a3/docs/asdlc/verification).
+Nie deklarujemy instalacji ani odbioru procesu synchronizacji.
+
+Późniejsze przyjęcie kodu z PR #12 wymaga aktualizacji jego gałęzi względem
+przyjętych danych oraz ponownego sprawdzenia stanu/preimages synchronizacji.
+Nie przenosić jego wymogów zachowania historii na ten niezależny PR danych.
+PR #12 pozostaje otwarty; jego gałęzi nie zmieniono.
+
+## Podgląd i dostarczenie
+
+Paczka powstaje przed scaleniem z dokładnego syntetycznego merge PR:
+pełne eksporty wydania, manifest pochodzenia i SHA256SUMS, retencja 14 dni.
+Do instalacji publishera na `main` pierwszy link w opisie PR publikuje
+operator. [Instrukcja](../release_artifacts.md#paczka-danych-w-opisie-pr).
+Końcowy SHA, CI oraz link i odbiór paczki są w opisie PR.
+Merge, tag i oficjalne wydanie wymagają osobnego polecenia.
+
+## Stałe granice
+
+- YAML w `data/` jest źródłem prawdy; SQLite i eksporty są generowane.
+- `Obiekt` oznacza punkt terenowy, `Jaskinia` grupę katalogową.
+- Zachowujemy historię pomiarów, ręczne best i niepewności źródeł.
+- Seria PBI-078–086 i wydania do v1.1.1 są zakończone;
+  nie wznawiać porzuconych gałęzi. [Backlog](backlog_v1.md).
+- Nowe zadanie zaczyna się z aktualnego `main`; bez osobnego polecenia
+  nie rozpoczynać kolejnego PBI ani zmian sąsiednich.
+
+## v1.1.1
+
+Wydanie v1.1.1 jest opublikowane; [PBI-094](verification/PBI-094.md).
+Szczegóły odbioru są na stronie wydania i w PR wydania.
 
 ## v1.1.0 — PR #7
 

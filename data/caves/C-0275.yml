@@ -22,12 +22,10 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - KSW-0083
-notes: 'PIG sector: D. Kościeliska - Wsch.
+notes: 'Sektor według PIG: D. Kościeliska - Wsch.
 
-  PIG morphometry: length_m=12, depth_m=6, denivelation_m=6
-
-  PIG source state year: 2014'
+  PIG; stan źródła 2014: długość 12 m; głębokość 6 m; deniwelacja 6 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

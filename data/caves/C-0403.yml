@@ -22,18 +22,14 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - KSZ-0047
-notes: 'PIG aliases: Raptawicka Jama, Jaskinie Pawlikowskiego
+notes: 'Inne nazwy według PIG: Raptawicka Jama, Jaskinie Pawlikowskiego
 
-  PIG sector: D. Kościeliska - Zach.
+  Sektor według PIG: D. Kościeliska - Zach.
 
-  PIG morphometry: length_m=560, depth_m=22,4, denivelation_m=27,2
+  PIG; stan źródła 2015: długość 560 m; głębokość 22,4 m; deniwelacja 27,2 m.
 
-  PIG source state year: 2015
-
-  Multi-opening review 2026-05-16: marked as part of system Jaskinie
-  Pawlikowskiego and added supplied Pawlikowskiego:Raptawicka unknown-GNSS
-  measurement to KSZ-0047.'
+  Według PIG należy do systemu Jaskinie Pawlikowskiego.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T19:30:00Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

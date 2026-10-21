@@ -1,0 +1,15 @@
+created_at: '2026-10-20T16:04:54.133186Z'
+created_by: agent:codex
+external_refs: []
+id: C-1010
+name: Szczelina przy Zbójeckiej Dziurze
+notes: 'J. Nowak, Dwie jaskinie w Olejarni, Jaskinie 93 (2018), s. 32–33: osobny opis
+  i plan Szczeliny przy Zbójeckiej Dziurze. http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32
+
+  TPN; stan rekordu 2026-06-16: długość 15,5 m; przewyższenie 5,5 m.'
+object_ids:
+- CHZ-0028
+schema_version: 1
+system_name: null
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

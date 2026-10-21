@@ -22,14 +22,12 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - KSW-0082
-notes: 'PIG aliases: Żółta, Żółta Grota, Kraków
+notes: 'Inne nazwy według PIG: Żółta, Żółta Grota, Kraków
 
-  PIG sector: D. Kościeliska - Wsch.
+  Sektor według PIG: D. Kościeliska - Wsch.
 
-  PIG morphometry: length_m=16,6, depth_m=0, denivelation_m=6,75
-
-  PIG source state year: 2014'
+  PIG; stan źródła 2014: długość 16,6 m; głębokość 0 m; deniwelacja 6,75 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

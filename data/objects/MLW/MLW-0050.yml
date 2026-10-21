@@ -1,55 +1,87 @@
-schema_version: 1
-id: MLW-0050
+attachments: []
+best_measurement:
+  measurement_id: m-001
+  mode: manual
+  reason: 'Rekord przypisano do otworu S MLW-0050, zachowując dotychczasowy best.
+    KKTJ, J. Nowak, 04 Dolinki Reglowe 2026.07, s. 2, poz. 28: Tunel 10,1 m. https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=395'
+  updated_at: '2026-10-20T16:04:54.133186Z'
+  updated_by: agent:codex
 category: jaskinia_otwor
-name_local: tunel w Skrajnej Giewonckiej Baszcie - otwór S
 cave_id: C-0981
+created_at: '2026-05-16T10:22:52Z'
+created_by: importer:tpn
+external_refs:
+- external_id: '{9B566416-3888-4900-B351-CF81FC2A387E}'
+  notes: TPN GLOBALID belongs to the object/source feature.
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+- external_id: ce72fc5c-f14b-4c6e-bd3e-b411934a8c30
+  notes: 'Rekord przypisano do otworu S MLW-0050, zachowując dotychczasowy best. KKTJ,
+    J. Nowak, 04 Dolinki Reglowe 2026.07, s. 2, poz. 28: Tunel 10,1 m. https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=395'
+  ref_type: source_globalid
+  scope: object
+  system: TPN
+id: MLW-0050
 id_assignment:
-  method: auto
   assigned_from_measurement_id: m-001
   assigned_prefix: MLW
+  method: auto
   prefix_override_reason: null
-external_refs:
-- system: TPN
-  ref_type: source_globalid
-  external_id: '{9B566416-3888-4900-B351-CF81FC2A387E}'
-  scope: object
-  notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
-- id: m-001
-  lat: 49.25130595909141
-  lon: 19.92843580556172
-  x_1992: 154170.22
-  y_1992: 567545.12
-  elevation_m: 1649.736398
+- created_at: '2026-05-16T10:22:52Z'
+  created_by: importer:tpn
+  device: null
   elevation_datum: unknown
+  elevation_m: 1649.736398
   elevation_source: source_record
   horizontal_accuracy_m: null
-  vertical_accuracy_m: null
-  source: TPN
-  source_ref: TPN:{9B566416-3888-4900-B351-CF81FC2A387E}
-  observed_date: '2024-11-15'
-  source_date: '2024-11-15'
+  id: m-001
+  lat: 49.25130595909141
+  lon: 19.92843580556172
   method: source_record
-  device: null
+  notes: 'TPN WER_LOK: 15-11-2024 FF, orto'
+  observed_date: '2024-11-15'
+  source: TPN
+  source_date: '2024-11-15'
+  source_ref: TPN:{9B566416-3888-4900-B351-CF81FC2A387E}
   tags:
   - tpn
   verification_status: nieweryfikowany
-  verified_by: null
   verified_at: null
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 154170.22
+  y_1992: 567545.12
+- created_at: '2026-10-20T16:04:54.133186Z'
+  created_by: agent:codex
+  device: null
+  elevation_datum: unknown
+  elevation_m: null
+  elevation_source: source_record
+  horizontal_accuracy_m: null
+  id: m-002
+  lat: 49.25130687175565
+  lon: 19.928466013383918
+  method: source_record
+  notes: 'Data pomiaru terenowego nieznana; użyto daty modyfikacji rekordu TPN.
 
-    TPN WER_LOK: 15-11-2024 FF, orto'
-  created_at: '2026-05-16T10:22:52Z'
-  created_by: importer:tpn
-best_measurement:
-  mode: auto
-  measurement_id: m-001
-  reason: null
-  updated_at: '2026-05-16T10:22:52Z'
-  updated_by: importer:tpn
-attachments: []
-notes: Otwór S wg TPN, arkusz Export, wiersz 874; punkt na południe od MLW-0044.
-created_at: '2026-05-16T10:22:52Z'
-created_by: importer:tpn
-updated_at: '2026-10-17T07:26:55Z'
-updated_by: dl
+    TPN WER_LOK: FF 09052026'
+  observed_at: null
+  observed_date: '2026-05-09'
+  source: TPN
+  source_date: '2026-05-09'
+  source_ref: TPN:ce72fc5c-f14b-4c6e-bd3e-b411934a8c30
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_at: null
+  verified_by: null
+  vertical_accuracy_m: null
+  x_1992: 154170.348
+  y_1992: 567547.316
+name_local: tunel w Skrajnej Giewonckiej Baszcie - otwór S
+notes: Otwór S według TPN; położony na południe od MLW-0044.
+schema_version: 1
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

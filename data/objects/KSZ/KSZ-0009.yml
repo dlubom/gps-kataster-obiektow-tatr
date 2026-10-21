@@ -31,8 +31,7 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/10935'
+  notes: null
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 best_measurement:
@@ -42,8 +41,8 @@ best_measurement:
   updated_at: '2026-05-16T10:22:49Z'
   updated_by: importer:pig
 attachments: []
-notes: Imported from PIG source record after operator review.
+notes: null
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:22:49Z'
-updated_by: importer:pig
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

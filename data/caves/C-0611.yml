@@ -22,14 +22,12 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MLZ-0064
-notes: 'PIG aliases: Wąska, Niska
+notes: 'Inne nazwy według PIG: Wąska, Niska
 
-  PIG sector: D. Małej Łąki - Zach.
+  Sektor według PIG: D. Małej Łąki - Zach.
 
-  PIG morphometry: length_m=30, depth_m=5,1, denivelation_m=5,1
-
-  PIG source state year: 2010'
+  PIG; stan źródła 2010: długość 30 m; głębokość 5,1 m; deniwelacja 5,1 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

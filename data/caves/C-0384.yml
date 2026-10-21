@@ -22,12 +22,10 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - SUW-0003
-notes: 'PIG sector: D. Suchej Wody
+notes: 'Sektor według PIG: D. Suchej Wody
 
-  PIG morphometry: length_m=5, depth_m=2, denivelation_m=2
-
-  PIG source state year: 2014'
+  PIG; stan źródła 2014: długość 5 m; głębokość 2 m; deniwelacja 2 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

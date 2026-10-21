@@ -1,6 +1,13 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-10-19
+Stan na: 2026-10-21
+
+## Paczki podglądowe PR
+
+- [PBI-104](verification/PBI-104.md): obsługa pełnych eksportów w PR danych,
+  wydzielona z PR #12 na polecenie użytkownika. Zweryfikowane lokalnie;
+  końcowe dostarczenie, CI i odbiór paczki są wskazane w opisie PR.
+  Automatyczny publisher wymaga instalacji na `main`; pierwszy wpis publikuje operator.
 
 ## Wydanie v1.1.1
 

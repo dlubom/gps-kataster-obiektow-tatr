@@ -36,11 +36,9 @@ measurements:
   verification_status: odrzucony
   verified_by: dl
   verified_at: '2026-10-16T10:04:18Z'
-  notes: 'PIG source-record measurement imported after operator review; not field-verified.
-    Source: https://jaskiniepolski.pgi.gov.pl/Details/Information/1042
-
-    Przegląd mapowy 2026-10-16: punkt odrzucony; leży przy dnie doliny w rejonie
-    Skały Kmietowicza, około 735 m od TPN, sprzecznie z opisem sztolni na Huciańskim Klinie.'
+  notes: 'Przegląd mapowy 2026-10-16: punkt odrzucony; leży przy dnie doliny w rejonie
+    Skały Kmietowicza, około 735 m od TPN, sprzecznie z opisem sztolni na Huciańskim
+    Klinie.'
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
@@ -64,29 +62,22 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'TPN source-record measurement imported after operator review; not field-verified.
-
-    TPN WER_LOK: 13-02-2020 FF ortofotomapa
-
-    TPN UWAGI: Sztolnia nr 7 wg Jach Jaskinie nr 3 (28) 2002'
+  notes: 'TPN WER_LOK: 13-02-2020 FF ortofotomapa'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 best_measurement:
   mode: auto
   measurement_id: m-002
-  reason: 'TPN odpowiada położeniu sztolni na Huciańskim Klinie, około 23 m od
-    oznaczenia Wojtkowej Szpary w OSM (https://www.openstreetmap.org/node/8809914844).
-    Źródło TPN określa lokalizację jako przybliżoną; dokładność pozostaje nieznana.'
+  reason: TPN odpowiada położeniu sztolni na Huciańskim Klinie, około 23 m od oznaczenia
+    Wojtkowej Szpary w OSM (https://www.openstreetmap.org/node/8809914844). Źródło
+    TPN określa lokalizację jako przybliżoną; dokładność pozostaje nieznana.
   updated_at: '2026-10-16T10:04:18Z'
   updated_by: dl
 attachments: []
-notes: 'Imported from PIG source record after operator review.
-
-  Przegląd 2026-10-16: obiekt terenowy opisuje wylot sztolni nr 7 prowadzącej
-  do naturalnej jaskini Wojtkowa Szpara (C-0361). Według PIG:1042 i Jach (2002)
-  wejścia do naturalnej próżni znajdują się 6-8 m wewnątrz sztolni. Kategoria
-  sztolnia dotyczy wylotu na powierzchni; TPN zachowuje GENEZA=jaskinia/sztolnia.'
+notes: Wylot sztolni nr 7 prowadzącej do naturalnej jaskini Wojtkowa Szpara. Według
+  PIG:1042 i Jach (2002) wejścia do naturalnej próżni znajdują się 6–8 m wewnątrz
+  sztolni. Kategoria sztolnia dotyczy wylotu na powierzchni; TPN podaje genezę jaskinia/sztolnia.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-16T10:04:18Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

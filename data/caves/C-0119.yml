@@ -22,14 +22,12 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - LEJ-0004
-notes: 'PIG aliases: Schronisko nad Ścieżką
+notes: 'Inne nazwy według PIG: Schronisko nad Ścieżką
 
-  PIG sector: D. Lejowa
+  Sektor według PIG: D. Lejowa
 
-  PIG morphometry: length_m=14, depth_m=0, denivelation_m=1,4
-
-  PIG source state year: 2010'
+  PIG; stan źródła 2010: długość 14 m; głębokość 0 m; deniwelacja 1,4 m.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

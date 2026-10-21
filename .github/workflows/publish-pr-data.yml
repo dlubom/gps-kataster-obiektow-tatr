@@ -1,0 +1,34 @@
+name: Publish PR data link
+
+"on":
+  workflow_run:
+    workflows: [PR data exports]
+    types: [in_progress, completed]
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+
+concurrency:
+  group: pr-data-publish-${{ github.event.workflow_run.head_repository.id }}-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Update PR data download
+    if: github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout trusted publisher
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+
+      - name: Update data block in PR description
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const publish = require('./.github/scripts/publish_pr_data.cjs');
+            await publish({ github, context, core });

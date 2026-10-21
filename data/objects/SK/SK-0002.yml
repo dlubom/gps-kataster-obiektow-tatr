@@ -37,8 +37,8 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'DMS source coordinate E19:55:47.53 N49:13:35.8 converted to decimal
-    WGS84 lon=19.92986944, lat=49.22661111.'
+  notes: 'Współrzędne źródłowe E19:55:47.53 N49:13:35.8 przeliczono na WGS84: lon=19.92986944,
+    lat=49.22661111.'
   created_at: '2026-05-16T19:04:29Z'
   created_by: dl
 best_measurement:
@@ -48,10 +48,8 @@ best_measurement:
   updated_at: '2026-05-16T19:04:29Z'
   updated_by: dl
 attachments: []
-notes: 'Slovak cave opening added from maintainer-supplied source coordinates.
-  Prefix SK is a country fallback because the point is outside configured valley
-  polygons.'
+notes: null
 created_at: '2026-05-16T19:04:29Z'
 created_by: dl
-updated_at: '2026-05-16T19:35:23Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex

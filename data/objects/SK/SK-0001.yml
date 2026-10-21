@@ -37,7 +37,8 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: Maintainer supplied WGS84 E19.91418777 N49.22918839 and elevation 2016 m.
+  notes: Współrzędne WGS84 E19.91418777 N49.22918839 i wysokość 2016 m przekazane
+    przez maintenera.
   created_at: '2026-05-16T19:04:29Z'
   created_by: dl
 best_measurement:
@@ -47,9 +48,8 @@ best_measurement:
   updated_at: '2026-05-16T19:04:29Z'
   updated_by: dl
 attachments: []
-notes: 'Slovak object added from maintainer-supplied coordinates. Prefix SK is
-  a country fallback because the point is outside configured valley polygons.'
+notes: null
 created_at: '2026-05-16T19:04:29Z'
 created_by: dl
-updated_at: '2026-05-16T19:04:29Z'
-updated_by: dl
+updated_at: '2026-10-21T13:54:55.211774Z'
+updated_by: agent:codex
