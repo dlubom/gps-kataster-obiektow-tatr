@@ -1449,9 +1449,12 @@ Poza aktualnym zakresem:
 
 PBI-095–101 dostarczono w PR #12; dane i kandydat stanu czekają na ludzki
 merge. PBI-102 ma implementację ręcznego workflow w tym PR, do rzeczywistej
-próby tokena/PR/CI po warunkach opisanych w instrukcji. PBI-103 (konfiguracja
-dnia/godziny cyklu) pozostaje przyszłe. Każda karta i poprawki po review
-wymagają osobnego zlecenia; obecny odbiór nie uruchamia harmonogramu.
+próby tokena/PR/CI po warunkach opisanych w instrukcji. PBI-103 zlecono
+osobno 2026-10-21: pierwszy dzień miesiąca 03:17 UTC, ten sam prepare co
+dispatch i raport zaległości bez nadpisywania otwartego PR. Implementacja
+w PR wymaga TPN_MONTHLY_ENABLED=true; aktywacja i rzeczywisty odbiór
+miesięczny czekają na odbiór 102. [Operator](docs/asdlc/tpn_sync_workflow.md).
+Każda karta i poprawki po review wymagają osobnego zlecenia.
 
 ---
 

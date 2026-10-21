@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Trusted main entrypoint for the two stages of the manual TPN workflow."""
+"""Trusted main entrypoint shared by manual and monthly TPN runs."""
 
 from __future__ import annotations
 
@@ -18,6 +18,10 @@ from gps_kataster_obiektow_tatr.tpn_workflow_github import (  # noqa: E402
     plan_workflow,
     publish_workflow,
 )
+from gps_kataster_obiektow_tatr.tpn_workflow_reporting import (  # noqa: E402
+    render_run_summary,
+    run_report,
+)
 
 
 def main():
@@ -25,17 +29,22 @@ def main():
     parser.add_argument("phase", choices=("plan", "publish"))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    result = {}
+    trusted_context = False
     try:
         require(os.environ.get("GITHUB_REF") == "refs/heads/main", "dispatch only from main")
         trusted = os.environ["GITHUB_SHA"]
         require(
             os.environ["GITHUB_WORKFLOW_SHA"] == trusted, "workflow must come from trusted main"
         )
+        trusted_context = True
         api = GitHub(os.environ["GITHUB_REPOSITORY"], os.environ["GITHUB_TOKEN"])
         number = os.environ.get("TPN_PR_NUMBER", "").strip()
         require(not number or number.isascii() and number.isdecimal(), "invalid PR number")
         options = {
-            "operation": os.environ["TPN_OPERATION"],
+            "operation": os.environ.get("TPN_OPERATION") or "prepare",
+            "event_name": os.environ["GITHUB_EVENT_NAME"],
+            "monthly_enabled": os.environ.get("TPN_MONTHLY_ENABLED") == "true",
             "run_id": os.environ["GITHUB_RUN_ID"],
             "actor": os.environ["GITHUB_ACTOR"],
             "triggering_actor": os.environ["GITHUB_TRIGGERING_ACTOR"],
@@ -51,32 +60,18 @@ def main():
         if target := os.environ.get("GITHUB_OUTPUT"):
             with Path(target).open("a") as stream:
                 stream.write("outcome=" + result["outcome"] + "\n")
+        diagnostic = run_report(args.output, result)
         if target := os.environ.get("GITHUB_STEP_SUMMARY"):
             with Path(target).open("a") as stream:
-                stream.write("## Ręczna paczka TPN\n\nWynik: `" + result["outcome"] + "`.\n\n")
-                if result["head"]:
-                    stream.write(
-                        "HEAD: `"
-                        + result["head"]
-                        + "`; pending: "
-                        + str(result["pending"])
-                        + ".\n\n"
-                    )
-                if result["pr_number"]:
-                    stream.write(
-                        "[PR](https://github.com/"
-                        + api.repository
-                        + "/pull/"
-                        + str(result["pr_number"])
-                        + ")\n\n"
-                    )
-                stream.write(
-                    "Po zapisie człowiek wybiera **Approve workflows to run**, sprawdza CI "
-                    "i eksporty dokładnego HEAD. Pending blokuje merge; merge tylko ludzki.\n"
-                )
+                stream.write(render_run_summary(result, diagnostic))
         print(json.dumps(result, ensure_ascii=False))
     except (ValueError, OSError, KeyError, TypeError) as exc:
         print("TPN_WORKFLOW_INVALID: " + str(exc), file=sys.stderr)
+        if trusted_context:
+            diagnostic = run_report(args.output, result, error=exc)
+            if target := os.environ.get("GITHUB_STEP_SUMMARY"):
+                with Path(target).open("a") as stream:
+                    stream.write(render_run_summary(result, diagnostic))
         return 1
     return 0
 

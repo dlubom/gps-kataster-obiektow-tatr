@@ -193,8 +193,13 @@ def test_publish_rechecks_bundle_context_and_live_state(batch_repo, tmp_path, ta
         g.items.append(
             {
                 "state": "open",
+                "number": 45,
                 "base": {"ref": "main"},
-                "head": {"ref": "tpn-sync/other", "repo": {"full_name": g.repository}},
+                "head": {
+                    "ref": "tpn-sync/other",
+                    "sha": "f" * 40,
+                    "repo": {"full_name": g.repository},
+                },
             }
         )
     if tamper == "open":

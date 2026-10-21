@@ -2,6 +2,17 @@
 
 Stan na: 2026-10-21
 
+## PBI-103: Miesięczne sprawdzanie źródła TPN
+
+**Status: implementacja w PR #12, aktywacja i odbiór produkcyjny oczekują
+na PBI-102**; osobne zlecenie 2026-10-21. Uzgodniono pierwszy dzień miesiąca,
+03:17 UTC. Wspólny prepare dla schedule/dispatch, raport świeżego źródła
+i zaległości przy otwartym PR. Zmienna repozytoryjna TPN_MONTHLY_ENABLED
+domyślnie wyłącza cykl; nie ustawiono jej ani uprawnień Actions.
+[Karta](tpn_sync_backlog.md#pbi-103-sprawdzać-źródło-co-miesiąc-i-otwierać-pr-do-review),
+[plan](tpn_sync_monthly_plan.md), [operator](tpn_sync_workflow.md),
+[dowody/pozostały krok](verification/PBI-103.md).
+
 ## PBI-102: Ręczny workflow jednej paczki TPN
 
 **Status: implementacja w PR #12, do odbioru produkcyjnego**; osobne
@@ -11,7 +22,7 @@ zlecenie 2026-10-21. [Karta i kryteria](tpn_sync_backlog.md#pbi-102-przygotowywa
 Dispatch prepare/apply/refresh, jeden PR, zapis z zaufanego main i pełna
 kontrola danych/bazy. Odbiór rzeczywistego GITHUB_TOKEN/CI i PR czeka na
 ludzki merge PBI-101 oraz osobną decyzję maintenera o wyłączonym obecnie
-ustawieniu tworzenia PR przez Actions. PBI-103 pozostaje planowane.
+ustawieniu tworzenia PR przez Actions. Stan PBI-103 opisano wyżej.
 
 ## PBI-104: Paczka danych w opisie każdego PR
 

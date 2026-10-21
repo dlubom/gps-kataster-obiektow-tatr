@@ -24,6 +24,7 @@ from .tpn_changes import compare, render_markdown
 from .tpn_duplicate_state import read_accepted_duplicates
 from .tpn_snapshot import SNAPSHOTS, validate_id, verify_snapshot
 from .tpn_source_state import git
+from .tpn_workflow_reporting import source_report
 
 TRANSFER_REF = "refs/heads/tpn-candidate"
 BRANCH_PREFIX = "tpn-sync/"
@@ -139,7 +140,17 @@ def current_main(root, expected):
     require(run_git(root, "rev-parse", "refs/remotes/origin/main") == expected, "main advanced")
 
 
-def prepare_candidate(root, main, batch_id, acquire, *, previous_head=None, proposals=None):
+def prepare_candidate(
+    root,
+    main,
+    batch_id,
+    acquire,
+    *,
+    previous_head=None,
+    proposals=None,
+    report_dir=None,
+    inspection_only=False,
+):
     root = Path(root)
     validate_id(batch_id)
     current_main(root, main)
@@ -149,7 +160,11 @@ def prepare_candidate(root, main, batch_id, acquire, *, previous_head=None, prop
     snap = acquire(root, batch_id)
     verify_snapshot(snap)
     require(Path(snap) == root / SNAPSHOTS / batch_id, "snapshot outside workflow namespace")
-    snapshot_commit = commit_data(root, "chore: preserve TPN workflow snapshot " + batch_id)
+    snapshot_commit = (
+        main
+        if inspection_only
+        else commit_data(root, "chore: preserve TPN workflow snapshot " + batch_id)
+    )
     report = compare(
         root,
         snap,
@@ -161,6 +176,10 @@ def prepare_candidate(root, main, batch_id, acquire, *, previous_head=None, prop
         duplicate_resolutions=read_accepted_duplicates(root, main),
     )
     report["accepted_state_commit"] = main
+    if report_dir is not None:
+        source_report(report_dir, report, snap)
+    if inspection_only:
+        return {"outcome": "existing", "summary": report["summary"]}
     if not report["requires_pr"]:
         return {"outcome": "noop", "summary": report["summary"]}
     proposals = automatic_proposals(report) if proposals is None else proposals

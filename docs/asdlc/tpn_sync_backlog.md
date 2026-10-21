@@ -3,18 +3,19 @@
 Stan na: 2026-10-21. [Projekt i uzasadnienie](tpn_sync_plan.md).
 [Indeks całego backlogu](backlog_v1.md).
 
-Użytkownik przyjął kontrakt PBI-095; 2026-10-21 osobno zlecił **PBI-102 w PR #12**.
+Użytkownik przyjął kontrakt PBI-095; 2026-10-21 osobno zlecił PBI-102,
+a następnie **PBI-103 w PR #12**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
 PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
 PBI-099: **wykonane 2026-10-19**; PBI-100: **wykonane 2026-10-19**;
 PBI-101: **wykonane — dostarczone do PR #12**;
 PBI-102: **implementacja w PR #12, do odbioru produkcyjnego**;
-PBI-103: **planowane**.
+PBI-103: **implementacja w PR #12, aktywacja i odbiór produkcyjny oczekują na PBI-102**.
 Pierwotna paczka ma 614 approve / 26 defer / 0 pending; jej dane/CI/eksporty odebrane.
 Zatwierdzony 2026-10-20 [suplement D26](verification/PBI-101-D26.md) daje
 kandydata stanu 640 approve / 0 defer / 0 pending, bez zmiany dawnych archiwów.
-Bez harmonogramu.
+Cron przygotowany, aktywacja miesięczna domyślnie wyłączona.
 Wykonujemy po jednej gotowej karcie na osobne polecenie.
 Numeracja 095–103 kontynuuje istniejący backlog, bez wznawiania starych gałęzi.
 
@@ -310,7 +311,14 @@ Kontekst: plan §8–9, istniejące validate CI i ochrona main.
 
 ## PBI-103: Sprawdzać źródło co miesiąc i otwierać PR do review
 
-Status: planowane. Zależność: 102 i odbiór ręcznej ścieżki.
+Status: **implementacja w PR #12, aktywacja i odbiór produkcyjny oczekują na PBI-102**.
+Osobne zlecenie 2026-10-21. Zależność: 102 i odbiór ręcznej ścieżki.
+[Plan](tpn_sync_monthly_plan.md), [operator](tpn_sync_workflow.md#harmonogram-miesięczny--pbi-103),
+[dowody i pozostały odbiór](verification/PBI-103.md).
+Uzgodniono pierwszy dzień miesiąca 03:17 UTC. Cron wymaga repozytoryjnej
+zmiennej TPN_MONTHLY_ENABLED=true; zmiennej nie ustawiono. Poniższe
+scenariusze sprawdzają implementację na izolowanych repozytoriach i atrapie
+GitHub. Nie oznaczają rzeczywistego odbioru tokena/PR ani aktywacji schedule.
 
 **Cel:** regularnie wykrywać nowe informacje, zachowując kontrolę człowieka.
 
@@ -319,14 +327,14 @@ obsługa zaległego PR, diagnostyka i krótki runbook. Bez automatycznego merge.
 
 **Kryteria odbioru:**
 
-- [ ] Uzgodniony dzień/godzina/strefa dają jeden planowany przebieg w
+- [x] Uzgodniony dzień/godzina/strefa dają jeden planowany przebieg w
       miesiącu; ręczna ścieżka nadal działa. Brak osobnego zadania Codex.
-- [ ] Brak zmian nie daje commitu/PR. Zmiany tworzą draft; aktywny PR
+- [x] Brak zmian nie daje commitu/PR. Zmiany tworzą draft; aktywny PR
       pozostaje nienaruszony, a wynik nowego sprawdzenia i zaległość są
       widoczne w run summary/artefakcie. Nie powstaje miesięczna kopia PR.
-- [ ] Po ludzkim merge następna paczka używa przyjętej bazy i zachowuje
+- [x] Po ludzkim merge następna paczka używa przyjętej bazy i zachowuje
       odroczenia; zamknięcie bez merge nie gubi zmian.
-- [ ] Testy cykli obejmują no-op, nową rewizję, błąd API i PR otwarty przez
+- [x] Testy cykli obejmują no-op, nową rewizję, błąd API i PR otwarty przez
       dwa miesiące. Konfiguracja nie zawiera merge/release/approval bota.
 - [ ] Runbook opisuje best-effort harmonogramu, możliwe wyłączenie po
       60 dniach nieaktywności i ręczne wznowienie. Uruchomienie próbne
@@ -345,6 +353,7 @@ D001–D026 rozstrzygnięto osobną zgodą użytkownika z 2026-10-20:
 Trzy przypięcia auto→manual zatwierdzono osobno 2026-10-20 i wykonano
 w tym samym PR #12; [zapis zgody i hashów](verification/PBI-099-manual-selection.json).
 Oryginalny manifest pending pozostaje historycznym audytem, bez zmiany bajtów.
-PBI-102 zlecono 2026-10-21 w tym samym PR; rzeczywisty odbiór tokena/PR
-czeka na warunki opisane w karcie. PBI-103 nie rozpoczęto;
-bez merge/tagu/release/harmonogramu.
+PBI-102 i następnie PBI-103 zlecono 2026-10-21 w tym samym PR.
+Rzeczywisty odbiór tokena/PR czeka na warunki 102; aktywacja i produkcyjny
+odbiór miesięczny czekają na jego zakończenie. Bez merge/tagu/release;
+TPN_MONTHLY_ENABLED pozostaje nieustawione.

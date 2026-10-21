@@ -1,7 +1,9 @@
-# Ręczny workflow TPN — operator
+# Workflow TPN — operator
 
-Workflow **TPN manual batch** (`tpn-sync.yml`) ma wyłącznie
-`workflow_dispatch`: `prepare`, `apply`, `refresh`. Nie ma harmonogramu.
+Workflow **TPN reviewed batch** (`tpn-sync.yml`) obsługuje
+`workflow_dispatch`: `prepare`, `apply`, `refresh` oraz miesięczne `schedule`
+korzystające z tego samego `prepare`. Aktywacja miesięczna jest domyślnie
+wyłączona do produkcyjnego odbioru PBI-102.
 [Plan wykonania](tpn_sync_workflow_plan.md), [kontrakt](tpn_sync_contract.md),
 [decyzje i akcje](tpn_sync_decisions.md), [odbiór PBI-102](verification/PBI-102.md).
 
@@ -32,12 +34,14 @@ wykonania po tych warunkach. Testy z atrapą GitHub nie są ich zamiennikiem.
 
 ## Przygotowanie i review
 
-Actions → **TPN manual batch** → Run workflow → main → `prepare`.
+Actions → **TPN reviewed batch** → Run workflow → main → `prepare`.
 `pr_number` i `expected_head` pozostają puste.
 
 Pełny snapshot przechodzi kontrole API i offline readback przed publikacją.
 No-op nie tworzy gałęzi ani PR. Błąd źródła nie publikuje częściowej paczki.
 Znany otwarty PR kończy przebieg jako `existing`, bez zmiany jego danych.
+Najpierw wykonuje jednak świeży pełny odczyt i porównanie względem main;
+wynik, numer/HEAD/wiek zaległego PR są w summary i artefakcie `tpn-check-*`.
 Jest jeden wspólny klucz concurrency dla wszystkich trybów.
 
 Istotna zmiana tworzy jeden draft PR z gałęzi `tpn-sync/gha-RUN_ID`.
@@ -128,6 +132,65 @@ i zakończy się brakiem transferu; nie zmienia to zachowanej gałęzi.
 
 Przed każdym push ponownie sprawdzane są uprawnienia/kontekst, main,
 otwarty PR i oczekiwany HEAD. Zwykły push odrzuca rozbieżną gałąź.
+
+## Harmonogram miesięczny — PBI-103
+
+Użytkownik uzgodnił **pierwszy dzień miesiąca, 03:17 UTC**, cron
+`17 3 1 * *` (w Polsce 04:17 zimą / 05:17 latem). Jedno zdarzenie miesięcznie
+na domyślnej gałęzi. Nie tworzymy zadania Codex. Harmonogram uruchamia
+wyłącznie prepare; apply i refresh wymagają ręcznych wejść i decyzji.
+
+Przed aktywacją maintainer kończy rzeczywisty odbiór PBI-102: token/PR,
+indywidualne decyzje, pending/checki/eksporty i ludzki merge zgodnie z kartą.
+Zapisuje dowód w [PBI-102](verification/PBI-102.md). Następnie ustawia
+**repozytoryjną zmienną Actions** `TPN_MONTHLY_ENABLED` na dokładne `true`
+(Settings → Secrets and variables → Actions → Variables).
+Ten PBI nie ustawia zmiennej ani uprawnień. Brak/inny tekst daje `disabled`
+bez wywołań API, push lub PR; ręczny dispatch działa niezależnie.
+Publisher ponownie sprawdza wartość aktywacji przekazaną do jego joba.
+Test funkcji potwierdza odmowę przy false; świeżość vars po zmianie w trakcie
+rzeczywistego runu pozostaje częścią odbioru produkcyjnego. Usunięcie zmiennej
+wyłącza przyszłe sprawdzanie miesięczne, zachowując ręczną obsługę.
+Aby awaryjnie zatrzymać trwający przebieg, anuluj go w Actions.
+
+Każde aktywne sprawdzenie wykonuje pełny odczyt, walidację i porównanie.
+No-op nie publikuje commitu/PR. Istotne zmiany bez otwartej paczki tworzą
+draft przez dotychczasowy publisher. Przy otwartym PR nie tworzy nowej
+gałęzi ani commitu, nie zmienia decyzji i nie odświeża paczki. Raport
+obejmuje najnowsze źródło względem **przyjętego main**, a nie treści
+nieprzyjętego PR. Nawet po dwóch miesiącach nadal wskazuje tę samą zaległość.
+Po merge kolejny cykl czyta przyjęty stan i odroczenia; zamknięcie bez merge
+nie akceptuje zmian. Błąd API daje czerwony krok i diagnostykę, także przy
+otwartym PR, bez częściowej publikacji.
+
+Odzyskanie osieroconej gałęzi po awarii push → create PR zachowuje jej
+dotychczasowy HEAD. Osobna inspekcja z bieżącego main wykonuje świeży odczyt
+i zapisuje diagnostykę; błąd tego odczytu blokuje publikację. Raport może
+pokazać rewizję nowszą od odzyskiwanej paczki. Po odzyskaniu operator
+rozpatruje potrzebę jawnego refresh, bez podmiany dawnego snapshotu.
+
+Summary zawiera wynik `disabled/noop/existing/publish/error`, klasyfikacje,
+liczbę odroczeń oraz zaległy PR i jego wiek w pełnych dniach. Artefakt
+`tpn-check-RUN_ID-ATTEMPT` zachowuje przez 14 dni `diagnostics.json`,
+`check/report.json`, `check/report.md` i `check/snapshot/` (gdy powstały).
+To diagnostyka uruchomienia, nie trwała decyzja źródłowa. Snapshot można
+sprawdzić offline po skopiowaniu do zapisanej w manifeście ścieżki
+`data/sources/tpn/snapshots/gha-RUN_ID/` w kopii repo. Dla publikacji surowy
+snapshot i decyzje pozostają w Git. Pobierz diagnostykę przed upływem
+retencji, jeśli ma być dowodem odbioru.
+
+GitHub nie gwarantuje punktualności schedule: przy obciążeniu może opóźnić
+lub pominąć zdarzenie. W publicznym repo po 60 dniach bez aktywności może
+automatycznie wyłączyć workflow. Nie dodajemy sztucznych commitów keepalive.
+Sprawdź Actions → TPN reviewed batch; w razie wyłączenia wybierz
+**Enable workflow** (lub `gh workflow enable tpn-sync.yml`), sprawdź
+zmienną aktywacji i uruchom `prepare` ręcznie z main. Ten sam kod daje
+ten sam wynik dla tych samych wejść. Samo ponowienie starego runu nie
+pobiera bieżącego main. Kontroluj świeżość ostatniego udanego odczytu i
+artefaktu, nie samą obecność cron w YAML.
+[GitHub: schedule](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule),
+[wyłączanie i wznawianie](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/disable-and-enable-workflows)
+— sprawdzono 2026-10-21. [Odbiór i granice PBI-103](verification/PBI-103.md).
 Artefakt transferowy jest związany z repo/run/operatorem/SHA i ma hash
 bundle. Publisher ponownie odtwarza cały wynik danych; checkoutuje tylko
 main, nie wykonuje kodu ani zależności PR. Paczki Actions mają retencję

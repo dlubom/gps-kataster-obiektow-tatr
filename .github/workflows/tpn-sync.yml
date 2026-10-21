@@ -1,6 +1,9 @@
-name: TPN manual batch
+name: TPN reviewed batch
 
 "on":
+  schedule:
+    # UTC; activation remains blocked until the PBI-102 production acceptance.
+    - cron: '17 3 1 * *'
   workflow_dispatch:
     inputs:
       operation:
@@ -55,10 +58,21 @@ jobs:
         id: plan
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          TPN_OPERATION: ${{ inputs.operation }}
+          TPN_OPERATION: ${{ inputs.operation || 'prepare' }}
+          TPN_MONTHLY_ENABLED: ${{ vars.TPN_MONTHLY_ENABLED }}
           TPN_PR_NUMBER: ${{ inputs.pr_number }}
           TPN_EXPECTED_HEAD: ${{ inputs.expected_head }}
         run: uv run --frozen python scripts/run_tpn_sync.py plan --output build/tpn-transfer
+      - name: Preserve source check and backlog diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tpn-check-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/tpn-transfer/diagnostics.json
+            build/tpn-transfer/check/
+          if-no-files-found: warn
+          retention-days: 14
       - name: Upload candidate for checked publication
         if: steps.plan.outputs.outcome == 'publish'
         uses: actions/upload-artifact@v4
@@ -102,7 +116,8 @@ jobs:
       - name: Recheck main, HEAD, data, authorization and publish
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          TPN_OPERATION: ${{ inputs.operation }}
+          TPN_OPERATION: ${{ inputs.operation || 'prepare' }}
+          TPN_MONTHLY_ENABLED: ${{ vars.TPN_MONTHLY_ENABLED }}
           TPN_PR_NUMBER: ${{ inputs.pr_number }}
           TPN_EXPECTED_HEAD: ${{ inputs.expected_head }}
         run: uv run --frozen python scripts/run_tpn_sync.py publish --output build/tpn-transfer

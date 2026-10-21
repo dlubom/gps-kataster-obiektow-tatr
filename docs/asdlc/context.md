@@ -2,6 +2,21 @@
 
 Last updated: 2026-10-21
 
+## PBI-103 — harmonogram przygotowany, aktywacja czeka na odbiór PBI-102
+
+Osobne zlecenie 2026-10-21 w PR #12. Użytkownik potwierdził pierwszy dzień
+miesiąca, 03:17 UTC. Schedule używa tego samego prepare co dispatch.
+Przy otwartym PR zapisuje świeże porównanie względem przyjętego main,
+numer/HEAD/wiek zaległości w summary i artefakcie z retencją 14 dni;
+nie zmienia istniejącej paczki ani decyzji.
+
+Aktywacja wymaga TPN_MONTHLY_ENABLED=true. Nie ustawiono tej zmiennej;
+przed produkcyjnym odbiorem ręcznej ścieżki 102 pozostaje disabled,
+bez wywołań API/publikacji. Nie zmieniono uprawnień Actions ani ochrony main.
+Testy izolowanych cykli nie zamykają odbioru rzeczywistego tokena/PR/schedule.
+[Plan](tpn_sync_monthly_plan.md), [operator](tpn_sync_workflow.md),
+[odbiór i kontynuacja](verification/PBI-103.md). Bez merge, tagu i release.
+
 ## PBI-102 — ręczny workflow, do odbioru produkcyjnego
 
 Osobne zlecenie 2026-10-21, kontynuacja PR #12. Implementacja dispatch
@@ -18,7 +33,7 @@ Odczyt 2026-10-21: can_approve_pull_request_reviews=false (tworzenie PR
 przez GITHUB_TOKEN wyłączone); ustawień nie zmieniono. Wymagany check
 Validate code and data/app15368 i ludzkie review pozostają aktywne.
 Dane/config/schema i historia PBI-101 nie są zmieniane przez to zadanie.
-PBI-103 nadal planowane; bez merge/tagu/release/harmonogramu.
+Aktualny zakres 103 opisano wyżej; brak aktywacji miesięcznej i merge/tagu/release.
 
 ## PR #12 — ponowne review nieobecności i powrót rekordu
 

@@ -270,7 +270,11 @@ planowaniu partii, bez kolizji przy wielu pomiarach jednego obiektu.
 
 Rekomendacja: GitHub Actions, wspólna implementacja dla ręcznego
 `workflow_dispatch` i późniejszego `schedule`. Pierwszy dzień miesiąca,
-godzina poza początkiem pełnej godziny; szczegół do konfiguracji.
+godzina poza początkiem pełnej godziny. W osobnym zleceniu PBI-103
+2026-10-21 uzgodniono **03:17 UTC**, cron `17 3 1 * *`.
+Implementacja w PR #12 pozostaje domyślnie nieaktywna
+(`TPN_MONTHLY_ENABLED` nieustawione), do rzeczywistego odbioru PBI-102.
+Aktualny [runbook](tpn_sync_workflow.md) i [odbiór](verification/PBI-103.md).
 Nie tworzymy osobnego zadania w aplikacji Codex.
 
 Przebieg tworzy draft PR od aktualnego main tylko dla istotnych zmian lub

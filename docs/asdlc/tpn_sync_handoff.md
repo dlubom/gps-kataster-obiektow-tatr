@@ -27,7 +27,11 @@ i [odbiór/pozostały krok](verification/PBI-102.md). Rzeczywista próba
 GITHUB_TOKEN/PR/CI czeka na ludzki merge PBI-101 i osobną decyzję
 maintenera o wyłączonym obecnie ustawieniu tworzenia PR przez Actions.
 Nie traktować lokalnego fixture ani kandydata gałęzi jako odbioru produkcji.
-PBI-103 pozostaje planowane, harmonogramu nie dodano.
+PBI-103 zlecono następnie osobno 2026-10-21. Uzgodniony cron: pierwszy dzień
+miesiąca 03:17 UTC. Implementacja i [diagnostyka](tpn_sync_workflow.md)
+są w tym PR; [odbiór i granice](verification/PBI-103.md).
+Aktywacja i odbiór produkcyjny nadal oczekują na zakończenie 102.
+TPN_MONTHLY_ENABLED nie ustawiono; bez tej zmiennej schedule daje disabled.
 
 - Repozytorium: `dlubom/gps-kataster-obiektow-tatr`.
 - Lokalnie: `/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr`.
@@ -209,7 +213,7 @@ potwierdza zachowanie pojedynczego fragmentu oraz odrzucenie kopii w after.
 Obie poprawki zachowują zaakceptowane dane i zgody.
 Merge pozostaje osobną decyzją człowieka. PBI-102 zlecono później osobno
 2026-10-21; aktualny odbiór i ograniczenia opisano na początku tego pliku.
-PBI-103 nie rozpoczęto.
+Aktualny zakres PBI-103 i wyłączoną aktywację opisano na początku pliku.
 
 Historyczny manifest auto→manual zachowano bez zmian. Użytkownik następnie
 zatwierdził trzy przypięcia w tym samym PR: KSW-0201/m-003, KSW-0240/m-002

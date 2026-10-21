@@ -22,6 +22,7 @@ from .tpn_workflow import (
     workspace,
     write_bundle,
 )
+from .tpn_workflow_reporting import run_report
 from .yaml_io import load_unique_yaml
 
 PLAN_KEYS = {
@@ -42,7 +43,20 @@ PLAN_KEYS = {
     "pending",
     "outcome",
     "bundle_sha256",
+    "event_name",
 }
+
+
+def enabled_event(operation, event_name, monthly_enabled, pr_number, expected_head):
+    require(event_name in ("workflow_dispatch", "schedule"), "unsupported workflow event")
+    if event_name == "schedule":
+        require(
+            operation == "prepare" and pr_number == 0 and expected_head == "",
+            "schedule supports only untargeted prepare",
+        )
+        require(type(monthly_enabled) is bool, "invalid monthly activation")
+        return monthly_enabled
+    return True
 
 
 def own_pull(pull, repository):
@@ -96,17 +110,22 @@ def plan_workflow(
     pr_number=0,
     expected_head="",
     acquire=None,
+    event_name="workflow_dispatch",
+    monthly_enabled=False,
 ):
     require(operation in ("prepare", "apply", "refresh"), "unsupported operation")
     require(re.fullmatch(r"[0-9]+", run_id), "invalid run ID")
     require(type(pr_number) is int and pr_number >= 0, "invalid PR number")
-    authorize_context(root, api, trusted_sha, actor, triggering_actor)
+    enabled = enabled_event(operation, event_name, monthly_enabled, pr_number, expected_head)
+    if enabled:
+        authorize_context(root, api, trusted_sha, actor, triggering_actor)
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=True)
     require(not (output / "plan.json").exists(), "transfer already exists; no overwrite")
     doc = {
         "format": "tpn-workflow-transfer",
-        "format_version": 1,
+        "format_version": 2,
+        "event_name": event_name,
         "operation": operation,
         "run_id": run_id,
         "repository": api.repository,
@@ -123,9 +142,24 @@ def plan_workflow(
         "outcome": "noop",
         "bundle_sha256": "",
     }
+    if not enabled:
+        doc["outcome"] = "disabled"
+        (output / "plan.json").write_bytes(json_bytes(doc))
+        run_report(output, doc)
+        return doc
     pulls = api.pulls()
     opened = open_sync(pulls, api.repository)
+    run_report(output, doc, opened)
     if operation == "prepare" and opened:
+        work = workspace(root, trusted_sha, output / "work")
+        prepare_candidate(
+            work,
+            trusted_sha,
+            "gha-" + run_id,
+            acquire or (lambda r, ident: fetch_snapshot(r, ident, 500, 2)),
+            inspection_only=True,
+            report_dir=output / "check",
+        )
         doc["outcome"] = "existing"
     else:
         old_head, custom_proposals = None, None
@@ -171,6 +205,15 @@ def plan_workflow(
                 work, trusted_sha, batch, initial=recovery, actor=triggering_actor
             )
             if recovery:
+                inspection = workspace(root, trusted_sha, output / "inspection")
+                prepare_candidate(
+                    inspection,
+                    trusted_sha,
+                    "gha-" + run_id,
+                    acquire or (lambda r, ident: fetch_snapshot(r, ident, 500, 2)),
+                    inspection_only=True,
+                    report_dir=output / "check",
+                )
                 check_batch(work, batch, allow_pending=True)
                 result = {
                     "outcome": "publish",
@@ -198,6 +241,7 @@ def plan_workflow(
                 acquire or (lambda r, ident: fetch_snapshot(r, ident, 500, 2)),
                 previous_head=old_head,
                 proposals=custom_proposals,
+                report_dir=output / "check",
             )
         doc.update({k: v for k, v in result.items() if k in doc})
         if doc["outcome"] == "publish":
@@ -212,6 +256,7 @@ def plan_workflow(
             write_bundle(work, trusted_sha, doc["head"], bundle)
             doc["bundle_sha256"] = sha256(bundle.read_bytes())
     (output / "plan.json").write_bytes(json_bytes(doc))
+    run_report(output, doc, opened)
     return doc
 
 
@@ -227,7 +272,13 @@ def publish_workflow(
     trusted_sha,
     pr_number=0,
     expected_head="",
+    event_name="workflow_dispatch",
+    monthly_enabled=False,
 ):
+    require(
+        enabled_event(operation, event_name, monthly_enabled, pr_number, expected_head),
+        "monthly schedule disabled before publication",
+    )
     authorize_context(root, api, trusted_sha, actor, triggering_actor)
     output = Path(output).resolve()
     doc = exact_json((output / "plan.json").read_bytes())
@@ -235,7 +286,7 @@ def publish_workflow(
         set(doc) == PLAN_KEYS
         and doc["format"] == "tpn-workflow-transfer"
         and type(doc["format_version"]) is int
-        and doc["format_version"] == 1,
+        and doc["format_version"] == 2,
         "invalid workflow transfer",
     )
     for key, expected in {
@@ -247,6 +298,7 @@ def publish_workflow(
         "triggering_actor": triggering_actor,
         "pr_number": pr_number,
         "requested_head": expected_head,
+        "event_name": event_name,
     }.items():
         require(doc[key] == expected, "transfer context mismatch: " + key)
     if doc["outcome"] in ("noop", "existing"):
@@ -276,7 +328,9 @@ def publish_workflow(
         require(api.main() == trusted_sha, "main advanced before publication")
         opened = open_sync(api.pulls(), api.repository)
         if operation == "prepare" and opened:
-            return {**doc, "outcome": "existing"}
+            result = {**doc, "outcome": "existing", "head": "", "pending": 0}
+            run_report(output, result, opened)
+            return result
         if operation != "prepare":
             pull = api.pull(pr_number)
             require(pull["head"]["sha"] in (doc["expected_head"], doc["head"]), "PR HEAD changed")
