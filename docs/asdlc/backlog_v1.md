@@ -4,7 +4,8 @@ Stan na: 2026-10-21
 
 ## PBI-105: Paczki eksportów w komentarzach PR
 
-Status: zweryfikowane — do dostarczenia, na osobnej gałęzi od aktualnego `main`
+Status: wykonane — [draft PR #14](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/14)
+do review, na osobnej gałęzi od aktualnego `main`
 `b98fd3febb400c7ee520046682c1bb16238429ee`, na polecenie użytkownika.
 [Dowody](verification/PBI-105.md). Numery 095–104 pozostają poza tą pracą.
 
@@ -18,7 +19,9 @@ stan budowania/błędu, ochrona przed starym SHA/bazą/merge/próbą i obcym
 repozytorium, aktualizacja komentarza bez dotykania tekstu autora,
 pełna bramka lokalna, readback publicznego ZIP-a i CI końcowego SHA.
 Automatyczny komentator wymaga instalacji workflow na `main`; pierwszy
-link publikuje operator. Następny krok: dostarczyć wyłącznie tę PR.
+link publikuje operator. 805 testów, 28 scenariuszy Node, Ruff, walidacja,
+review, CI i pobrany ZIP przeszły; końcowy SHA/CI i paczka w opisie PR.
+Zakończono zakres tego PBI. Merge i wydanie wymagają osobnego polecenia.
 
 ## Wydanie v1.1.1
 

@@ -10,12 +10,15 @@ Użytkownik zatwierdził pełne eksporty syntetycznego merge każdej PR,
 także draftów i kolejnych pushów, jeden aktualizowany komentarz bota
 i 14-dniową retencję. Wykorzystujemy builder obecny na `main`.
 [Odbiór](verification/PBI-105.md), [instrukcja](../release_artifacts.md).
-Status: zweryfikowane — do dostarczenia. 805 testów pytest, 28 scenariuszy
+Status: wykonane — [draft PR #14](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/14)
+do review. 805 testów pytest, 28 scenariuszy
 Node, Ruff, walidacja bez błędów i pełny lokalny readback przeszły.
 Dane katalogu, wersja i oficjalny proces wydania bez zmian.
 Publisher `workflow_run` aktywuje się po instalacji na domyślnej gałęzi;
 link w instalacyjnej PR dodaje operator po readbacku paczki.
-Dostarczyć osobną PR, potwierdzić końcowy SHA/CI i artefakt.
+CI implementacji i pobrana paczka przeszły pełny odczyt; zaufany publisher
+wygenerował poprawny komentarz z rzeczywistych metadanych API w próbie
+bez zapisu. Końcowy SHA/CI oraz aktualna paczka i readback są w opisie PR.
 Bez merge, taga i publikacji wydania; nie rozpoczynać kolejnego PBI.
 
 ## v1.1.1 — przygotowanie wydania
