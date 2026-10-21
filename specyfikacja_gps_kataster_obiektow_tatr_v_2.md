@@ -17,7 +17,11 @@
 > Osobno zatwierdzony 2026-10-20 [suplement D26](docs/asdlc/verification/PBI-101-D26.md)
 > rozstrzyga pozostałe 26 rekordów: kandydat stanu 640 approve / 0 defer / 0 pending.
 > Oryginalne decyzje i archiwa zachowują historię wcześniejszych odroczeń.
-> PBI-102–103 pozostają przyszłą pracą, bez harmonogramu.
+> PBI-102 zlecono osobno 2026-10-21 w PR #12: [ręczny workflow](docs/asdlc/tpn_sync_workflow.md)
+> prepare/apply/refresh, implementacja do odbioru produkcyjnego po ludzkim
+> merge PBI-101 i decyzji o ustawieniu tworzenia PR przez GITHUB_TOKEN.
+> [Odbiór i pozostały krok](docs/asdlc/verification/PBI-102.md).
+> PBI-103 pozostaje przyszłą pracą, bez harmonogramu.
 
 ---
 
@@ -1444,8 +1448,9 @@ Poza aktualnym zakresem:
 - cykliczna synchronizacja z PIG lub Geoportalem.
 
 PBI-095–101 dostarczono w PR #12; dane i kandydat stanu czekają na ludzki
-merge. W TPN pozostają przyszłe PBI-102–103: próba uprawnień ręcznego
-workflow i konfiguracja dnia/godziny cyklu. Każda karta i poprawki po review
+merge. PBI-102 ma implementację ręcznego workflow w tym PR, do rzeczywistej
+próby tokena/PR/CI po warunkach opisanych w instrukcji. PBI-103 (konfiguracja
+dnia/godziny cyklu) pozostaje przyszłe. Każda karta i poprawki po review
 wymagają osobnego zlecenia; obecny odbiór nie uruchamia harmonogramu.
 
 ---

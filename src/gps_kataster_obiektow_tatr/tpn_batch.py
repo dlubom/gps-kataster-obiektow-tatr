@@ -540,6 +540,7 @@ def _plan(root, changes, decisions, reviewers, allow_pending=True, check_only=Fa
                         "report.md",
                         "checksums.json",
                         "application.json",
+                        "proposals.yml",
                     )
                     or name.startswith("applications/"),
                     "unknown batch evidence file",
@@ -640,9 +641,11 @@ def load_batch(root, batch_id):
     )
 
 
-def check_batch(root, batch_id):
+def check_batch(root, batch_id, *, allow_pending=False):
     root = Path(root).resolve()
     changes, decisions = load_batch(root, batch_id)
     reviewers = {d["reviewed_by"] for d in decisions["decisions"] if d["reviewed_by"] is not None}
-    plan, _ = _plan(root, changes, decisions, reviewers, allow_pending=False, check_only=True)
+    plan, _ = _plan(
+        root, changes, decisions, reviewers, allow_pending=allow_pending, check_only=True
+    )
     return plan

@@ -1,6 +1,17 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-10-20
+Stan na: 2026-10-21
+
+## PBI-102: Ręczny workflow jednej paczki TPN
+
+**Status: implementacja w PR #12, do odbioru produkcyjnego**; osobne
+zlecenie 2026-10-21. [Karta i kryteria](tpn_sync_backlog.md#pbi-102-przygotowywać-pojedynczy-pr-przez-ręczne-uruchomienie-workflow),
+[plan](tpn_sync_workflow_plan.md), [operator](tpn_sync_workflow.md),
+[dowody/pozostały krok](verification/PBI-102.md).
+Dispatch prepare/apply/refresh, jeden PR, zapis z zaufanego main i pełna
+kontrola danych/bazy. Odbiór rzeczywistego GITHUB_TOKEN/CI i PR czeka na
+ludzki merge PBI-101 oraz osobną decyzję maintenera o wyłączonym obecnie
+ustawieniu tworzenia PR przez Actions. PBI-103 pozostaje planowane.
 
 ## PBI-104: Paczka danych w opisie każdego PR
 
@@ -37,7 +48,7 @@ Kryteria odbioru:
 
 Dane/config/schema i surowe źródła pozostają bez zmian. Bez merge,
 tagu, release lub harmonogramu. To niezależna karta infrastruktury review;
-PBI-102–103 TPN zachowują status planowany.
+PBI-104 nie uruchamia PBI-102–103; późniejsze zlecenie 102 opisano wyżej.
 
 ## Integracja publicznego API TPN
 
@@ -79,7 +90,8 @@ Dokładny końcowy SHA i jego odbiór CI/eksportów utrwala opis PR #12.
 i 1938 pomiarów. Oryginalne decyzje i archiwa pozostają niezmienne.
 Późniejsza [korekta opisów i bibliografii](verification/PBI-101-notes.md)
 porządkuje AE/AF i uzupełnia trzy źródła, zachowując wszystkie pomiary i best.
-Bez PBI-102, merge, tagu, release i harmonogramu.
+PBI-102 zlecono osobno 2026-10-21; bieżący stan i granice opisuje sekcja
+na początku tego pliku. Bez merge, tagu, release i harmonogramu.
 
 ## Wydanie v1.1.1
 

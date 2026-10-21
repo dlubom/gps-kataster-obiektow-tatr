@@ -2,6 +2,24 @@
 
 Last updated: 2026-10-21
 
+## PBI-102 — ręczny workflow, do odbioru produkcyjnego
+
+Osobne zlecenie 2026-10-21, kontynuacja PR #12. Implementacja dispatch
+prepare/apply/refresh zachowuje jeden PR i poprzednie commity; kod pochodzi
+z dokładnego main. Odczyt przygotowuje bundle, osobny publisher sprawdza
+bazę równą main plus nowy snapshot, odtwarza dane i wykonuje zwykły push.
+Nowe propozycje są pending, istniejące akcje nie zapisują danych przed
+decyzją uprawnionego dispatchera. [Plan](tpn_sync_workflow_plan.md),
+[operator](tpn_sync_workflow.md), [odbiór i pozostały krok](verification/PBI-102.md).
+
+Próba rzeczywistego tokena/PR/akceptacji CI pozostaje do wykonania po
+ludzkim merge PBI-101 i osobnej decyzji maintenera o ustawieniu Actions.
+Odczyt 2026-10-21: can_approve_pull_request_reviews=false (tworzenie PR
+przez GITHUB_TOKEN wyłączone); ustawień nie zmieniono. Wymagany check
+Validate code and data/app15368 i ludzkie review pozostają aktywne.
+Dane/config/schema i historia PBI-101 nie są zmieniane przez to zadanie.
+PBI-103 nadal planowane; bez merge/tagu/release/harmonogramu.
+
 ## PR #12 — ponowne review nieobecności i powrót rekordu
 
 Na zlecenie użytkownika naprawiono dwa błędy cyklu TPN: ponowne review

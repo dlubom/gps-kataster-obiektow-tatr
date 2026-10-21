@@ -1,14 +1,16 @@
 # Integracja TPN: PBI i stan realizacji
 
-Stan na: 2026-10-20. [Projekt i uzasadnienie](tpn_sync_plan.md).
+Stan na: 2026-10-21. [Projekt i uzasadnienie](tpn_sync_plan.md).
 [Indeks całego backlogu](backlog_v1.md).
 
-Użytkownik przyjął kontrakt PBI-095 i osobno zlecił wyłącznie **PBI-101**.
+Użytkownik przyjął kontrakt PBI-095; 2026-10-21 osobno zlecił **PBI-102 w PR #12**.
 [Kontrakt](tpn_sync_contract.md) i [przykłady](tpn_sync_examples.md) są
 częścią specyfikacji integracji. PBI-095: **wykonane**. PBI-096: **wykonane 2026-10-19**.
 PBI-097: **wykonane 2026-10-19**; PBI-098: **wykonane 2026-10-19**.
 PBI-099: **wykonane 2026-10-19**; PBI-100: **wykonane 2026-10-19**;
-PBI-101: **wykonane — dostarczone do PR #12**; PBI-102–103: **planowane**.
+PBI-101: **wykonane — dostarczone do PR #12**;
+PBI-102: **implementacja w PR #12, do odbioru produkcyjnego**;
+PBI-103: **planowane**.
 Pierwotna paczka ma 614 approve / 26 defer / 0 pending; jej dane/CI/eksporty odebrane.
 Zatwierdzony 2026-10-20 [suplement D26](verification/PBI-101-D26.md) daje
 kandydata stanu 640 approve / 0 defer / 0 pending, bez zmiany dawnych archiwów.
@@ -271,7 +273,14 @@ bazy produkcyjnego cyklu. Nie blokuje to testów narzędzi na fixture'ach.
 
 ## PBI-102: Przygotowywać pojedynczy PR przez ręczne uruchomienie workflow
 
-Status: planowane. Zależność: 101; próba produkcyjna po ludzkim merge 101.
+Status: **implementacja w PR #12, do odbioru produkcyjnego**.
+Osobne zlecenie 2026-10-21. Zależność: 101; próba produkcyjna po ludzkim
+merge 101 i osobnej decyzji maintenera o wyłączonym obecnie ustawieniu
+tworzenia PR przez GITHUB_TOKEN. [Plan](tpn_sync_workflow_plan.md),
+[operator](tpn_sync_workflow.md), [dowody i pozostały odbiór](verification/PBI-102.md).
+Pierwsze pięć punktów poniżej sprawdzono na rzeczywistych lokalnych
+repozytoriach/fixture'ach z atrapą GitHub. Odbiór rzeczywistego tokena,
+utworzonego nim PR i CI/eksportów pozostaje nieukończonym etapem.
 
 **Cel:** sprawdzić publikację i przegląd paczki przed jej cyklicznym użyciem.
 
@@ -281,16 +290,16 @@ Kontekst: plan §8–9, istniejące validate CI i ochrona main.
 
 **Kryteria odbioru:**
 
-- [ ] Pełne poprawne wejście i istotna zmiana tworzą jeden draft PR;
+- [x] Pełne poprawne wejście i istotna zmiana tworzą jeden draft PR;
       no-op i błędne/niepełne API nie tworzą PR ani nie zmieniają main.
-- [ ] Bot przedstawia propozycje nowych rekordów oraz pending dla
+- [x] Bot przedstawia propozycje nowych rekordów oraz pending dla
       istniejących; tylko uprawniony operator stosuje decyzje.
-- [ ] Istniejący otwarty PR nie jest zastępowany nowym ani nadpisywany.
+- [x] Istniejący otwarty PR nie jest zastępowany nowym ani nadpisywany.
       Ponowienia/równoległe przebiegi nie tworzą dwóch paczek; zamknięcie
       bez merge nie przesuwa przyjętej bazy.
-- [ ] Edycja decyzji i ponowne zastosowanie dopisują commit do tego samego
+- [x] Edycja decyzji i ponowne zastosowanie dopisują commit do tego samego
       PR, bez force-push. Zmiana main wymusza kontrolę aktualności decyzji.
-- [ ] Zaufany kod pochodzi z main; wejściowy PR nie dostarcza wykonywanego
+- [x] Zaufany kod pochodzi z main; wejściowy PR nie dostarcza wykonywanego
       kodu do joba z uprawnieniami zapisu. Token ma minimalny zakres.
 - [ ] Zweryfikowano rzeczywisty mechanizm uruchamiania/akceptacji CI dla
       GITHUB_TOKEN, wszystkie wymagane checki dokładnego SHA oraz blokadę
@@ -336,4 +345,6 @@ D001–D026 rozstrzygnięto osobną zgodą użytkownika z 2026-10-20:
 Trzy przypięcia auto→manual zatwierdzono osobno 2026-10-20 i wykonano
 w tym samym PR #12; [zapis zgody i hashów](verification/PBI-099-manual-selection.json).
 Oryginalny manifest pending pozostaje historycznym audytem, bez zmiany bajtów.
-PBI-102–103 nie rozpoczęto; bez merge/tagu/release/harmonogramu.
+PBI-102 zlecono 2026-10-21 w tym samym PR; rzeczywisty odbiór tokena/PR
+czeka na warunki opisane w karcie. PBI-103 nie rozpoczęto;
+bez merge/tagu/release/harmonogramu.

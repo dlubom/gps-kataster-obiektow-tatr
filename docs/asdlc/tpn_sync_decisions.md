@@ -1,5 +1,14 @@
 # Decyzje i zastosowanie paczki — PBI-100
 
+Ręczną automatyzację tego CLI dodaje późniejsze PBI-102:
+[instrukcja operatora](tpn_sync_workflow.md). Etap publikacji używa kodu
+z main i niezależnej kotwicy base=main+snapshot. Propozycje istniejących
+rekordów mogą zawierać akcje przy pending, lecz nie są wtedy materializowane.
+`proposals.yml` jest formularzem nowej rewizji przez jawne refresh; nie
+zmienia niezmiennego execution/changes istniejącej paczki. Zwykły check
+nadal odrzuca pending; wewnętrzna kontrola publishera potwierdza tylko
+spójność propozycji i nie jest checkiem dopuszczającym merge.
+
 Implementacja kontraktu PBI-095 §6–8. Dotyczy snapshotów PBI-096, raportu
 PBI-097, kwalifikacji PBI-098 i strażnika PBI-099. Dotychczasowy format
 CSV/XLSX `apply_review.py` pozostaje osobną ścieżką. **PBI-100 nie wykonuje

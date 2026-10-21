@@ -170,14 +170,12 @@ class DomainPlan:
                 continue
             automatic = d["status"] == "pending"
             if automatic:
-                if not p["actions"]:
-                    continue
                 q = row.get("new_record_qualification", {})
-                require(
-                    q.get("status") == "automatic_proposal"
-                    and row["proposal_origin"] == "automatic",
-                    "pending may materialize only qualified automatic new proposals",
-                )
+                # Existing and uncertain proposals remain visible, without applying
+                # any of their actions before an authorized human decision.
+                if not p["actions"] or q.get("status") != "automatic_proposal":
+                    continue
+                require(row["proposal_origin"] == "automatic", "invalid automatic proposal origin")
                 require(
                     p["target"] is None
                     and all(a["action"] in ("new_object", "create_cave") for a in p["actions"]),
