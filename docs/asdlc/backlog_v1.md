@@ -4,7 +4,7 @@ Stan na: 2026-10-22
 
 ## PBI-108: Reużywalny zrzut trzech warstw TPN
 
-Status: zweryfikowane — do dostarczenia, na polecenie użytkownika 2026-10-22, po zatwierdzeniu
+Status: zweryfikowane — do potwierdzenia CI, na polecenie użytkownika 2026-10-22, po zatwierdzeniu
 [kontraktu](plans/PBI-108.md). Samo pobieranie jaskiń, lejów krasowych
 i sztolni/kopalń; jeden JSON z wcięciami, pełne atrybuty i metadane,
 punkty WGS84, kontrola kompletności, zapis bez nadpisania.
@@ -12,9 +12,12 @@ Pierwszy zrzut istnieje lokalnie w ignorowanym `data/sources/tpn/api/`;
 **nie commitować zrzutów**. Bez porównań, importu i automatyzacji.
 Praca od aktualnego main, bez wznawiania lub zamykania PR #12/#13.
 [Draft PR #18](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/18):
-kod wypchnięty, preview i odczyt paczki przeszły. Ostateczny sukces
-validate dokładnego HEAD pozostaje do potwierdzenia podczas incydentu
-GitHub Actions; same udane kroki przy workflow `in_progress` nie wystarczą.
+poprawka po review zachowuje pusty punkt ArcGIS `x: null`. **909 testów**,
+Ruff, walidacja, odczyt 10 eksportów, **3/3 nowych mutacji** i niezależny
+review poprawki przeszły. Kod `ca5298a` wypchnięty; preview i odczyt jego
+paczki przeszły. Job validate i wszystkie kroki mają sukces, lecz workflow
+nadal `in_progress` (2026-10-22 18:36 UTC). Ostateczny sukces validate
+dokładnego HEAD pozostaje do potwierdzenia; końcowy SHA/CI w opisie PR.
 [Dowody](verification/PBI-108.md).
 
 ## PBI-107: Wydanie v1.1.2

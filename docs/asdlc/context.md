@@ -12,12 +12,15 @@ Bez porównywania, importu, zmian katalogu i automatyzacji; PR #12/#13
 pozostają bez zmian. [Kontrakt](plans/PBI-108.md), [dowody](verification/PBI-108.md).
 Gałąź `codex/tpn-data-download` od main
 `4924415de3cd5c3bd9e1fe2c541f42e023e4a21a`. Lokalnie zweryfikowane:
-895 testów, Ruff, walidacja bez błędów, live 1035/122/71 rekordów,
-odczyt 10 eksportów, 6/6 mutacji i niezależny review bez ustaleń.
-Kod `3be4bfe` wypchnięty do [draft PR #18](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/18);
+909 testów (45 downloadera), Ruff, walidacja bez błędów, live 1035/122/71
+rekordów i odczyt 10 eksportów. Po review poprawiono obsługę pustego punktu
+ArcGIS `x: null`, zachowując źródłową reprezentację i walidację zwykłych
+punktów; **3/3 nowych mutacji** i niezależny review poprawki przeszły
+(pierwotna implementacja ma osobny dowód 6/6 mutacji).
+Poprawka `ca5298a` wypchnięta do [draft PR #18](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/18);
 preview i pobrana paczka przeszły pełny odczyt. **CI do potwierdzenia:**
-wszystkie kroki validate mają sukces, lecz workflow/job nadal `in_progress`
-podczas aktywnego incydentu GitHub Actions (stan 2026-10-22 16:37 UTC).
+job validate i wszystkie kroki mają sukces, lecz workflow nadal `in_progress`
+(stan 2026-10-22 18:36 UTC).
 Nie oznaczać PBI jako wykonane bez końcowego sukcesu CI dokładnego HEAD;
 końcowy SHA i przebiegi dokumentacji wskazuje opis PR. Brak kolejnego PBI.
 
