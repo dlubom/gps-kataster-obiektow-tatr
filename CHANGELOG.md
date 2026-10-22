@@ -8,6 +8,16 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [v1.1.2] - 2026-10-22
+
+### Naprawiono
+
+- Zaktualizowano lokalizację dolnego otworu Ptasiej Studni
+  (MTZ-0066): jako best wybrano współrzędne Wojciecha Rolińskiego
+  z wysokością gruntu 1446,8 m z NMT TPN.
+  Wysokość samego otworu pozostaje do weryfikacji.
+  Zachowano pełną historię pomiarów.
+
 ## [v1.1.1] - 2026-10-19
 
 ### Dodano

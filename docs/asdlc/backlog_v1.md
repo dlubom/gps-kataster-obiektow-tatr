@@ -1,6 +1,15 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-10-21
+Stan na: 2026-10-22
+
+## PBI-107: Wydanie v1.1.2
+
+Status: przygotowanie zweryfikowane — do dostarczenia, na polecenie użytkownika 2026-10-22.
+Zaakceptowany wpis changelogu dla poprawki Ptasiej z PR #16;
+wersja pakietu/lock/testu, PR, CI, merge, annotated tag i publikacja.
+Bez zmian katalogu. Odbiór: CI dokładnego SHA oraz pobranie i odczyt
+wszystkich plików wydania, w tym best MTZ-0066 = m-003.
+[Dowody](verification/PBI-107.md).
 
 ## PBI-106: Odczyt wysokości NMT TPN i lokalny skill
 
