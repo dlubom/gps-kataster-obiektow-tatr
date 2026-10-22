@@ -17,8 +17,10 @@ Lokalnie: **938 testów**, Ruff, walidacja, odczyt 10 eksportów,
 Końcowe pliki: `data/sources/tpn/api/simple-20261022-final/`, wyłącznie
 lokalnie. NMT: 1226 wysokości, dwa jawne braki dla `Przeł. Bobrowiecka`
 OBJECTID 1/2. Źródło i 2036 śledzonych danych/config bez zmian.
-Status: zweryfikowane — do dostarczenia/odbioru CI; zakończyć po tym PBI,
-bez merge/tagu/wydania. Końcowy SHA/CI i preview wskazuje opis PR #18.
+Status: wykonane — do review. Implementacja `8edbd9b` wypchnięta;
+validate i preview **completed/success**, pobrana paczka odczytana.
+Zakończyć po tym PBI, bez merge/tagu/wydania. Końcowy SHA dokumentacji,
+CI i odbiór jego paczki wskazuje opis PR #18.
 
 ## Lokalny zrzut API TPN — PBI-108
 
@@ -36,11 +38,11 @@ ArcGIS `x: null`, zachowując źródłową reprezentację i walidację zwykłych
 punktów; **3/3 nowych mutacji** i niezależny review poprawki przeszły
 (pierwotna implementacja ma osobny dowód 6/6 mutacji).
 Poprawka `ca5298a` wypchnięta do [draft PR #18](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/18);
-preview i pobrana paczka przeszły pełny odczyt. **CI do potwierdzenia:**
-job validate i wszystkie kroki mają sukces, lecz workflow nadal `in_progress`
-(stan 2026-10-22 18:36 UTC).
-Nie oznaczać PBI jako wykonane bez końcowego sukcesu CI dokładnego HEAD;
-końcowy SHA i przebiegi dokumentacji wskazuje opis PR. Brak kolejnego PBI.
+preview i pobrana paczka przeszły pełny odczyt. Wcześniejszy stan CI
+`in_progress` z 18:36 UTC jest historyczny: pełny odbiór PR przy PBI-109
+potwierdził validate i preview `8edbd9b` **completed/success** oraz odczyt
+paczki. PBI-108 wykonane; końcowy SHA i przebiegi dokumentacji wskazuje
+opis PR. Brak kolejnego PBI.
 
 ## Wydanie v1.1.2 — PBI-107
 
