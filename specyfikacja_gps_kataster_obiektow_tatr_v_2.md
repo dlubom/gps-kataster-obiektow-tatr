@@ -463,6 +463,19 @@ przerywa staging TPN z błędem przed dopasowaniem i zapisem raportu.
 
 ### 7.1 TPN
 
+Pomocniczy `scripts/fetch_tpn_data.py [--output PATH] [--timeout SECONDS]`
+pobiera całe trzy publiczne warstwy: jaskinie `Topografia___wektor_MIL1/MapServer/6`,
+leje `SIPTPN/Geologia_i_gleby/MapServer/3` oraz sztolnie/kopalnie
+`SIPTPN/Dziedzictwo_kulturowe/MapServer/13`. Jeden JSON z wcięciami zachowuje
+oddzielne warstwy, wszystkie atrybuty bez interpretacji, geometrię WGS84,
+metadane JSON/XML, URL-e i przedział pobrania UTC. Licznik i komplet ID są
+sprawdzane przed i po pobraniu; każda partia musi zawierać dokładnie żądane ID.
+Gotowy plik jest publikowany atomowo bez nadpisania. Domyślny datowany zrzut
+trafia do ignorowanego `data/sources/tpn/api/` i nie jest commitowany.
+To odczyt źródła, bez importu, porównań, zmian YAML/`best` lub harmonogramu.
+[Kontrakt PBI-108](docs/asdlc/plans/PBI-108.md),
+[obsługa i ograniczenia](docs/operations.md#pobieranie-jaskiń-lejów-i-sztolni-z-api-tpn).
+
 Pomocniczy odczyt `scripts/tpn_elevation.py --lat LAT --lon LON [--json]`
 zwraca wysokość gruntu z publicznego NMT TPN, bez zapisu do `Pomiar` lub
 zmiany `best`. Użytkownik zatwierdził źródło `nmt_05m_mggp_2019` / 0,5 m

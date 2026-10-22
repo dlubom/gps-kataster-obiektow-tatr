@@ -2,6 +2,20 @@
 
 Last updated: 2026-10-22
 
+## Lokalny zrzut API TPN — PBI-108
+
+Użytkownik zatwierdził mały, niezależny downloader trzech całych warstw TPN:
+jaskinie, leje, sztolnie/kopalnie. Jeden czytelny JSON zachowuje wszystkie
+atrybuty, punkty WGS84, metadane JSON/XML i pochodzenie. **Zrzuty wyłącznie
+lokalnie, bez commitowania**; `data/sources/tpn/api/` jest ignorowany.
+Bez porównywania, importu, zmian katalogu i automatyzacji; PR #12/#13
+pozostają bez zmian. [Kontrakt](plans/PBI-108.md), [dowody](verification/PBI-108.md).
+Gałąź `codex/tpn-data-download` od main
+`4924415de3cd5c3bd9e1fe2c541f42e023e4a21a`. Lokalnie zweryfikowane:
+895 testów, Ruff, walidacja bez błędów, live 1035/122/71 rekordów,
+odczyt 10 eksportów, 6/6 mutacji i niezależny review bez ustaleń.
+Do dostarczenia przez draft PR i CI dokładnego SHA.
+
 ## Wydanie v1.1.2 — PBI-107
 
 Użytkownik zatwierdził wpis changelogu, przygotowanie i publikację v1.1.2

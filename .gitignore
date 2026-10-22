@@ -2,6 +2,7 @@
 build/
 dist/
 *.egg-info/
+data/sources/tpn/api/
 
 # Python tooling
 __pycache__/

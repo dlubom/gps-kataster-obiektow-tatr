@@ -3,6 +3,57 @@
 Ten dokument opisuje codzienna prace na danych YAML w V1. Zrodlem prawdy sa
 pliki w `data/`; katalog `build/` zawiera tylko artefakty wygenerowane lokalnie.
 
+## Pobieranie jaskiń, lejów i sztolni z API TPN
+
+```bash
+uv run --frozen python scripts/fetch_tpn_data.py
+uv run --frozen python scripts/fetch_tpn_data.py --output data/sources/tpn/api/moj-zrzut.json
+```
+
+Domyślnie powstaje nowy `data/sources/tpn/api/tpn-<UTC>.json` w katalogu
+repozytorium, także przy uruchomieniu skryptu z innego katalogu roboczego.
+Wskazany `--output` jest ścieżką względem bieżącego katalogu lub absolutną.
+Katalog `data/sources/tpn/api/` jest ignorowany przez Git: zrzuty pozostają
+lokalnymi plikami i **nie są commitowane**. Sam skrypt nie wykonuje operacji Git.
+`--timeout` ogranicza każde żądanie HTTP (domyślnie 30 sekund).
+
+Jeden JSON UTF-8 z wcięciami zawiera `schema_version: 1`, `started_at`,
+`finished_at` (UTC) i osobne `layers.jaskinie`, `layers.leje_krasowe`,
+`layers.sztolnie_kopalnie`. Każda warstwa zachowuje:
+
+- `source_url`, wszystkie `request_urls`, pełne `metadata` JSON i `metadata_xml`;
+- `object_ids`, `record_count` oraz scalony źródłowy `feature_set`;
+- wszystkie `feature_set.features[].attributes`, także nowe pola, null
+  i daty źródłowe w formacie API, bez mapowania do modelu katalogu;
+- `feature_set.features[].geometry` żądaną w EPSG:4326: `x` to długość,
+  `y` szerokość geograficzna. Źródłowe Z/M, jeśli dostępne, są zachowywane;
+  nie przypisujemy im datum pionowego. Brak geometrii pozostaje brakiem.
+
+Pełne metadane warstwy zawierają m.in. aliasy, typy i domeny kodowe pól,
+opisy oraz układy źródłowe. `SHAPE` jest opisem pola geometrii w metadanych,
+nie dodatkowym atrybutem rekordu. Metadane nie są przeliczane do WGS84;
+układ zwróconych punktów określa `feature_set.spatialReference`.
+
+Źródła: [jaskinie](https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6),
+[leje](https://gis.tpn.pl/server/rest/services/SIPTPN/Geologia_i_gleby/MapServer/3),
+[sztolnie i kopalnie](https://gis.tpn.pl/server/rest/services/SIPTPN/Dziedzictwo_kulturowe/MapServer/13).
+Są pobierane w całości, bez filtrów geograficznych lub deduplikacji między
+warstwami. Nie każdy lej jest potwierdzoną formą krasową, a nazwy sztolni
+mogą opisywać rejon; zachowujemy źródłowe zastrzeżenia.
+
+Skrypt porównuje niezależny licznik i listę ID przed/po oraz komplet każdej
+partii. To nie jest transakcja serwera: zmiana atrybutów istniejącego ID
+w trakcie pobierania może pozostać niewykryta. Przedział UTC opisuje pobranie,
+nie datę pomiaru. Obecnie trzy warstwy nie deklarują załączników ani relacji;
+skrypt zachowuje te deklaracje, ale nie pobiera plików załączników.
+
+Gotowy wynik jest publikowany atomowo, dopiero po pobraniu trzech warstw.
+Istniejący plik (również utworzony równolegle) nie zostanie nadpisany.
+HTTP/API error, niepełny zbiór, błędna odpowiedź lub błąd zapisu daje kod 1
+i diagnostykę na stderr, bez częściowego pliku wynikowego.
+Bez importu, porównań, zmian YAML i `best` lub automatyzacji.
+[Kontrakt i odbiór PBI-108](asdlc/plans/PBI-108.md).
+
 ## Wysokość gruntu z publicznego NMT TPN
 
 ```bash

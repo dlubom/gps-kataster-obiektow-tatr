@@ -2,6 +2,17 @@
 
 Stan na: 2026-10-22
 
+## PBI-108: Reużywalny zrzut trzech warstw TPN
+
+Status: zweryfikowane — do dostarczenia, na polecenie użytkownika 2026-10-22, po zatwierdzeniu
+[kontraktu](plans/PBI-108.md). Samo pobieranie jaskiń, lejów krasowych
+i sztolni/kopalń; jeden JSON z wcięciami, pełne atrybuty i metadane,
+punkty WGS84, kontrola kompletności, zapis bez nadpisania.
+Pierwszy zrzut istnieje lokalnie w ignorowanym `data/sources/tpn/api/`;
+**nie commitować zrzutów**. Bez porównań, importu i automatyzacji.
+Praca od aktualnego main, bez wznawiania lub zamykania PR #12/#13.
+[Dowody](verification/PBI-108.md).
+
 ## PBI-107: Wydanie v1.1.2
 
 Status: przygotowanie zweryfikowane — do dostarczenia, na polecenie użytkownika 2026-10-22.
