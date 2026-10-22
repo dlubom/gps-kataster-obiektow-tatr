@@ -1,6 +1,16 @@
 # AS-DLC project context
 
-Last updated: 2026-10-21
+Last updated: 2026-10-22
+
+## Wydanie v1.1.2 — PBI-107
+
+Użytkownik zatwierdził wpis changelogu, przygotowanie i publikację v1.1.2
+oraz kontrolę CI i paczki. Baza: main `94a17267145b4d64c2ec91a206ef5c39530c987a`,
+po PR #16; ochrona main przywrócona, CI przeszło. Best dolnego otworu
+Ptasiej MTZ-0066 to manual m-003: współrzędne Wojciecha Rolińskiego
+z wysokością gruntu NMT TPN 1446,8 m; wysokość otworu do weryfikacji.
+[Dowody i odbiór](verification/PBI-107.md). Przygotowanie zweryfikowane lokalnie: 864 testy, Ruff, walidacja i odczyt paczki przeszły;
+końcowy SHA, CI i odbiór publikacji będą w PR wydania.
 
 ## Odczyt wysokości NMT TPN — PBI-106
 
