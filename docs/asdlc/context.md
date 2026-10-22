@@ -2,6 +2,24 @@
 
 Last updated: 2026-10-22
 
+## Uproszczone pliki TPN i NMT — PBI-109
+
+Użytkownik zatwierdził po wywiadzie `simple.json` i `simple-nmt.json`
+dla wszystkich trzech warstw oraz NMT w dokładnych źródłowych punktach.
+Zachowujemy informacje obiektów i identyfikatory; usuwamy otoczkę usług
+i pola autorów/dat edycji, rozwijamy znane kody. Raw i dowód NMT są osobno.
+Pliki wyłącznie lokalnie; rozszerzenie istniejącego draft PR #18
+na `codex/tpn-data-download`, baza sesji `7927b56`, main po fetch nadal
+`4924415de3cd5c3bd9e1fe2c541f42e023e4a21a`. Nie przełączamy na nową gałąź,
+bo użytkownik jawnie wybrał aktualny PR. [Odbiór](verification/PBI-109.md).
+Lokalnie: **938 testów**, Ruff, walidacja, odczyt 10 eksportów,
+**8/8 mutacji**, niezależny review i odczyt wszystkich 1228 rekordów przeszły.
+Końcowe pliki: `data/sources/tpn/api/simple-20261022-final/`, wyłącznie
+lokalnie. NMT: 1226 wysokości, dwa jawne braki dla `Przeł. Bobrowiecka`
+OBJECTID 1/2. Źródło i 2036 śledzonych danych/config bez zmian.
+Status: zweryfikowane — do dostarczenia/odbioru CI; zakończyć po tym PBI,
+bez merge/tagu/wydania. Końcowy SHA/CI i preview wskazuje opis PR #18.
+
 ## Lokalny zrzut API TPN — PBI-108
 
 Użytkownik zatwierdził mały, niezależny downloader trzech całych warstw TPN:

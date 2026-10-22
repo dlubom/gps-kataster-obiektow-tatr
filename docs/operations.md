@@ -56,6 +56,60 @@ i diagnostykę na stderr, bez częściowego pliku wynikowego.
 Bez importu, porównań, zmian YAML i `best` lub automatyzacji.
 [Kontrakt i odbiór PBI-108](asdlc/plans/PBI-108.md).
 
+### Uproszczone pliki i wysokość NMT
+
+Do czytania danych użyj wersji simple. Możesz ją utworzyć z istniejącego
+zrzutu bez ponownego pobierania warstw:
+
+```bash
+uv run --frozen python scripts/fetch_tpn_data.py \
+  --input data/sources/tpn/api/tpn-20261022T162014287693Z.json \
+  --simple-dir data/sources/tpn/api/simple-20261022 --with-nmt
+```
+
+Pomiń `--with-nmt`, aby utworzyć tylko `simple.json`, całkowicie offline.
+Można też połączyć pobranie nowego źródła z uproszczeniem:
+`scripts/fetch_tpn_data.py --simple-dir data/sources/tpn/api/nowy-simple --with-nmt`.
+`--input` wyklucza `--output` i wymaga `--simple-dir`.
+Wybierz nowy katalog docelowy; istniejące pliki nigdy nie są nadpisywane.
+
+- `simple.json`: trzy listy (`jaskinie`, `leje_krasowe`, `sztolnie_kopalnie`),
+  jeden płaski rekord na obiekt, wszystkie atrybuty poza `CREATED_USER`,
+  `CREATED_DATE`, `LAST_EDITED_USER`, `LAST_EDITED_DATE`, plus `lat`/`lon` WGS84.
+  Nazwy pól, ID, null, uwagi i nieznane/przyszłe atrybuty są zachowane.
+  Znane kody są zastąpione opisami z domen zapisanych w surowym zrzucie;
+  nieznane kody pozostają źródłowymi wartościami. Np. `WERYF: "1"` lejów
+  staje się `WERYF: "odnaleziony"`. Nie interpretujemy `TATER` ani `FIELD`.
+  Dodatkowe składowe geometrii (np. źródłowe Z/M) zachowuje
+  `geometria_dodatkowa`; nie stają się one wysokością NMT.
+- `simple-nmt.json`: te same rekordy i dodatkowo `wysokosc_gruntu_nmt_m`
+  (metry n.p.m. według legendy TPN) oraz `status_nmt`: `ok`, `brak_danych`
+  lub `brak_wspolrzednych`. W dwóch ostatnich przypadkach wysokość jest
+  `null`; żaden rekord nie znika i nie zastępujemy braku zerem.
+- `nmt-evidence.json`: osobny techniczny zapis pochodzenia — SHA-256
+  wejściowego pliku, ID rekordów i pełne wyniki istniejącego czytnika NMT:
+  źródło, model, daty, raw value, URL-e i hashe. Nie ma tych metadanych
+  w dwóch plikach do czytania.
+
+Surowy zrzut pozostaje niezmienny. NMT jest odczytywany dla dokładnego
+punktu źródłowego każdego rekordu, bez filtrowania lub łączenia warstw.
+Wysokość dotyczy **gruntu**, a nie gwarantowanej wysokości otworu w ścianie.
+Dokładny układ pionowy i dokładność są nieznane; najnowszość modelu
+`nmt_05m_mggp_2019` jest niepotwierdzona. Zaokrąglenie w pliku simple do
+dwóch miejsc dziesiętnych służy czytelności, nie określa dokładności.
+Pełna liczba z API pozostaje w osobnym dowodzie.
+
+Czytnik sprawdza usługę, XML modelu i legendę raz na partię, następnie
+wykonuje jedno żądanie na każdy punkt. Wypisuje postęp na stderr.
+Tylko faktyczne `NO_DATA` oznacza brak pokrycia; błąd HTTP/API, wadliwa
+odpowiedź lub zmiana modelu przerywają odczyt (exit 1). Plik simple może
+już istnieć, ale `simple-nmt.json` powstaje atomowo dopiero po odczycie
+całej partii i zapisaniu osobnego dowodu. Każdy plik jest publikowany
+oddzielnie, bez transakcji obejmującej całą grupę plików.
+Zrzut i wersje simple w `data/sources/tpn/api/` pozostają lokalne,
+ignorowane przez Git; nie trafiają do paczki katalogu ani do wydania.
+[Zakres i weryfikacja PBI-109](asdlc/verification/PBI-109.md).
+
 ## Wysokość gruntu z publicznego NMT TPN
 
 ```bash

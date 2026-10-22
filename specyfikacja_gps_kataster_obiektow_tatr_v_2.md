@@ -476,6 +476,20 @@ To odczyt źródła, bez importu, porównań, zmian YAML/`best` lub harmonogramu
 [Kontrakt PBI-108](docs/asdlc/plans/PBI-108.md),
 [obsługa i ograniczenia](docs/operations.md#pobieranie-jaskiń-lejów-i-sztolni-z-api-tpn).
 
+Rozszerzenie PBI-109 dodaje opcjonalne `--simple-dir PATH [--with-nmt]`
+oraz `--input RAW_JSON` do ponownego użycia lokalnego zrzutu. `simple.json`
+zachowuje wszystkie dane obiektów, identyfikatory i współrzędne WGS84,
+pomija otoczkę usług i cztery pola autorów/dat edycji; domeny kodowe
+zamienia na opisy, nieznane pola/kody i null pozostają bez interpretacji.
+`simple-nmt.json` dodaje `wysokosc_gruntu_nmt_m` i `status_nmt`, odczytując
+dotychczasowy NMT w dokładnych punktach TPN dla wszystkich trzech warstw.
+Pochodzenie jest oddzielone do lokalnego `nmt-evidence.json`. Surowy zrzut,
+YAML i best pozostają bez zmian. Brak punktu/pokrycia daje null i jawny
+status; błąd usługi lub zmiana źródła blokują publikację pliku NMT.
+Kontrola źródła jest wspólna dla partii, wynik i dowód pozostają per punkt.
+Wszystkie wygenerowane pliki są lokalne i nie są commitowane.
+[Kontrakt i dowody](docs/asdlc/verification/PBI-109.md).
+
 Pomocniczy odczyt `scripts/tpn_elevation.py --lat LAT --lon LON [--json]`
 zwraca wysokość gruntu z publicznego NMT TPN, bez zapisu do `Pomiar` lub
 zmiany `best`. Użytkownik zatwierdził źródło `nmt_05m_mggp_2019` / 0,5 m

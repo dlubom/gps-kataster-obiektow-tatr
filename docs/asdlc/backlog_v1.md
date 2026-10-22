@@ -2,6 +2,20 @@
 
 Stan na: 2026-10-22
 
+## PBI-109: Uproszczone pliki TPN i wysokość gruntu NMT
+
+Status: zweryfikowane — do dostarczenia i potwierdzenia CI. Użytkownik
+2026-10-22 zatwierdził dwa JSON-y simple,
+wszystkie trzy warstwy, rozwinięcie kodów i usunięcie metadanych technicznych
+oraz wysokości NMT wszystkich punktów. Rozbudowa w istniejącym draft PR #18,
+na `codex/tpn-data-download`; pliki wynikowe wyłącznie lokalnie.
+Nowy moduł uproszczenia, rozszerzenie CLI i reużycie kontroli źródła NMT
+w obrębie partii. Bez importu, zmian YAML/best, merge i wydania.
+[Zakres i odbiór](verification/PBI-109.md): **938 testów**, Ruff,
+walidacja, odczyt 10 eksportów, **8/8 mutacji** i niezależny review przeszły.
+Wyniki lokalne mają 1228 rekordów, 1226 wysokości i 2 jawne braki NMT.
+Zakończyć po PBI-109.
+
 ## PBI-108: Reużywalny zrzut trzech warstw TPN
 
 Status: zweryfikowane — do potwierdzenia CI, na polecenie użytkownika 2026-10-22, po zatwierdzeniu

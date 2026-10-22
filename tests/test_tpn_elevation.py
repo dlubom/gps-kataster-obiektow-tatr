@@ -83,6 +83,44 @@ def test_point_read_preserves_value_and_uncertainty(api):
     assert result["retrieved_at"].endswith("Z")
 
 
+def test_batch_client_checks_source_once_and_keeps_point_specific_results(monkeypatch):
+    calls = []
+
+    def read(url, timeout):
+        calls.append(url)
+        if "/identify?" in url:
+            lat = float(parse_qs(urlparse(url).query)["geometry"][0].split(",")[1])
+            return json.dumps(
+                {
+                    "results": [
+                        {
+                            "layerId": 0,
+                            "attributes": {
+                                "Stretch.Pixel Value": str(lat * 10),
+                            },
+                        }
+                    ]
+                }
+            ).encode()
+        name = (
+            "metadata.xml"
+            if "/metadata.xml" in url
+            else ("legend.json" if "/legend?" in url else "service.json")
+        )
+        return (FIXTURES / name).read_bytes()
+
+    monkeypatch.setattr(elevation, "_read", read)
+    client = elevation.ElevationClient(timeout=9)
+    first = client.fetch(49.2, 19.9)
+    second = client.fetch(49.3, 20.1)
+    assert first["elevation_m"] == 492
+    assert second["elevation_m"] == 493
+    assert second["point"] == {"lat": 49.3, "lon": 20.1, "crs": "EPSG:4326"}
+    assert first["source"]["identify_url"] != second["source"]["identify_url"]
+    assert len(calls) == 5  # three source checks plus one query per point
+    assert first["source"]["response_sha256"] != second["source"]["response_sha256"]
+
+
 @pytest.mark.parametrize(
     "lat,lon", [(float("nan"), 20), (49, float("inf")), (91, 20), (49, -181), (True, 20)]
 )
@@ -112,6 +150,19 @@ def test_no_data_is_an_error(api, payload):
     api["identify"] = json.dumps(payload).encode()
     with pytest.raises(elevation.ElevationError, match="NO_DATA"):
         elevation.fetch_elevation(49.232, 19.9816)
+
+
+def test_no_data_error_retains_point_and_response_provenance(api):
+    api["identify"] = b'{"results":[]}'
+    with pytest.raises(elevation.ElevationError, match="NO_DATA") as error:
+        elevation.ElevationClient().fetch(49.232, 19.9816)
+    proof = error.value.evidence
+    assert proof["point"] == {"lat": 49.232, "lon": 19.9816, "crs": "EPSG:4326"}
+    assert proof["elevation_m"] is None
+    assert proof["retrieved_at"].endswith("Z")
+    assert proof["source"]["model"] == "nmt_05m_mggp_2019"
+    assert len(proof["source"]["response_sha256"]) == 64
+    assert "geometry=19.9816%2C49.232" in proof["source"]["identify_url"]
 
 
 @pytest.mark.parametrize("value", ["NaN", "Infinity", "-Infinity", "1e999", "", "abc", None, True])
