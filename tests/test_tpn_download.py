@@ -149,18 +149,57 @@ def test_same_count_with_changed_ids_is_rejected(api):
         download.fetch_snapshot()
 
 
-def test_empty_layers_and_null_geometry_remain_source_data(api):
+def test_empty_layers_remain_source_data(api):
     api.update(ids=[], count=0)
     assert all(
         layer["feature_set"]["features"] == []
         for layer in download.fetch_snapshot()["layers"].values()
     )
-    api.update(ids=[1], count=1)
-    api["page"] = lambda page: page["features"][0].update(geometry=None)
-    assert all(
-        layer["feature_set"]["features"][0]["geometry"] is None
-        for layer in download.fetch_snapshot()["layers"].values()
-    )
+
+
+@pytest.mark.parametrize("geometry", [None, {"x": None}, {"x": None, "y": None}])
+def test_missing_geometry_preserves_records_and_source_representation(api, tmp_path, geometry):
+    def empty_point(page):
+        for feature in page["features"]:
+            if feature["attributes"]["OBJECTID"] == 2:
+                feature["geometry"] = geometry
+
+    api["page"] = empty_point
+    output = tmp_path / "snapshot.json"
+    download.write_snapshot(output, download.fetch_snapshot())
+    snapshot = json.loads(output.read_text())
+    assert set(snapshot["layers"]) == {"jaskinie", "leje_krasowe", "sztolnie_kopalnie"}
+    for layer in snapshot["layers"].values():
+        assert layer["record_count"] == 3
+        assert layer["object_ids"] == [1, 2, 3]
+        features = layer["feature_set"]["features"]
+        assert [feature["attributes"]["OBJECTID"] for feature in features] == [1, 2, 3]
+        assert features[1]["geometry"] == geometry
+        assert features[1]["attributes"]["NOWE_POLE"] == "Żółta jaskinia"
+        assert features[0]["geometry"] == {"x": 19.01, "y": 49.2}
+        assert features[2]["geometry"] == {"x": 19.03, "y": 49.2}
+
+
+@pytest.mark.parametrize(
+    "geometry",
+    [
+        {},
+        {"y": 49.2},
+        {"x": 19.2},
+        {"x": 19.2, "y": None},
+        {"x": "19.2", "y": 49.2},
+        {"x": True, "y": 49.2},
+        {"x": float("nan"), "y": 49.2},
+        {"x": 19.2, "y": float("inf")},
+        {"x": 180.1, "y": 49.2},
+        {"x": 19.2, "y": -90.1},
+        [],
+    ],
+)
+def test_malformed_or_invalid_nonempty_geometry_is_rejected(api, geometry):
+    api["page"] = lambda page: page["features"][0].update(geometry=geometry)
+    with pytest.raises(download.DownloadError, match="Invalid WGS84 point"):
+        download.fetch_snapshot()
 
 
 @pytest.mark.parametrize(

@@ -28,6 +28,8 @@ Jeden JSON UTF-8 z wcięciami zawiera `schema_version: 1`, `started_at`,
 - `feature_set.features[].geometry` żądaną w EPSG:4326: `x` to długość,
   `y` szerokość geograficzna. Źródłowe Z/M, jeśli dostępne, są zachowywane;
   nie przypisujemy im datum pionowego. Brak geometrii pozostaje brakiem.
+  Pusty punkt ArcGIS (`{"x": null}`, także z `"y": null`) zachowujemy
+  bez zmian; nie jest błędem współrzędnych.
 
 Pełne metadane warstwy zawierają m.in. aliasy, typy i domeny kodowe pól,
 opisy oraz układy źródłowe. `SHAPE` jest opisem pola geometrii w metadanych,

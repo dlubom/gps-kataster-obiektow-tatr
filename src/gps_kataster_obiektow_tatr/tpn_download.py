@@ -137,13 +137,21 @@ def _fetch_layer(url: str, timeout: float) -> dict:
             ):
                 raise DownloadError(f"Incomplete feature attributes: {url}")
             geometry = feature.get("geometry")
-            if geometry is not None and (
-                not isinstance(geometry, dict)
-                or any(
-                    type(geometry.get(axis)) not in (int, float)
-                    or not math.isfinite(geometry[axis])
-                    or not -bound <= geometry[axis] <= bound
-                    for axis, bound in (("x", 180), ("y", 90))
+            # ArcGIS represents an empty point with an explicit null x.
+            is_empty_point = (
+                isinstance(geometry, dict) and "x" in geometry and geometry["x"] is None
+            )
+            if (
+                geometry is not None
+                and not is_empty_point
+                and (
+                    not isinstance(geometry, dict)
+                    or any(
+                        type(geometry.get(axis)) not in (int, float)
+                        or not math.isfinite(geometry[axis])
+                        or not -bound <= geometry[axis] <= bound
+                        for axis, bound in (("x", 180), ("y", 90))
+                    )
                 )
             ):
                 raise DownloadError(f"Invalid WGS84 point: {url}")
