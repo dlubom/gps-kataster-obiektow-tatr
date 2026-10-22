@@ -11,6 +11,10 @@ punkty WGS84, kontrola kompletności, zapis bez nadpisania.
 Pierwszy zrzut istnieje lokalnie w ignorowanym `data/sources/tpn/api/`;
 **nie commitować zrzutów**. Bez porównań, importu i automatyzacji.
 Praca od aktualnego main, bez wznawiania lub zamykania PR #12/#13.
+[Draft PR #18](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/18):
+kod wypchnięty, preview i odczyt paczki przeszły. Ostateczny sukces
+validate dokładnego HEAD pozostaje do potwierdzenia podczas incydentu
+GitHub Actions; same udane kroki przy workflow `in_progress` nie wystarczą.
 [Dowody](verification/PBI-108.md).
 
 ## PBI-107: Wydanie v1.1.2

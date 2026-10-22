@@ -14,7 +14,12 @@ Gałąź `codex/tpn-data-download` od main
 `4924415de3cd5c3bd9e1fe2c541f42e023e4a21a`. Lokalnie zweryfikowane:
 895 testów, Ruff, walidacja bez błędów, live 1035/122/71 rekordów,
 odczyt 10 eksportów, 6/6 mutacji i niezależny review bez ustaleń.
-Do dostarczenia przez draft PR i CI dokładnego SHA.
+Kod `3be4bfe` wypchnięty do [draft PR #18](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/18);
+preview i pobrana paczka przeszły pełny odczyt. **CI do potwierdzenia:**
+wszystkie kroki validate mają sukces, lecz workflow/job nadal `in_progress`
+podczas aktywnego incydentu GitHub Actions (stan 2026-10-22 16:37 UTC).
+Nie oznaczać PBI jako wykonane bez końcowego sukcesu CI dokładnego HEAD;
+końcowy SHA i przebiegi dokumentacji wskazuje opis PR. Brak kolejnego PBI.
 
 ## Wydanie v1.1.2 — PBI-107
 
