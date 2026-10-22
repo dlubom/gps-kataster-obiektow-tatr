@@ -3,6 +3,37 @@
 Ten dokument opisuje codzienna prace na danych YAML w V1. Zrodlem prawdy sa
 pliki w `data/`; katalog `build/` zawiera tylko artefakty wygenerowane lokalnie.
 
+## Wysokość gruntu z publicznego NMT TPN
+
+```bash
+uv run --frozen python scripts/tpn_elevation.py --lat 49.2320 --lon 19.9816
+uv run --frozen python scripts/tpn_elevation.py --lat 49.2320 --lon 19.9816 --json
+```
+
+Jeden punkt WGS84 w stopniach dziesiętnych; wynik jest wyłącznie odczytem.
+Lokalny skill: [`tpn-elevation`](../.agents/skills/tpn-elevation/SKILL.md).
+`--json` zachowuje surową wartość API, metadane, źródłowe URL-e i hashe.
+`--timeout` określa limit pojedynczego żądania (domyślnie 20 sekund).
+
+Źródło: publiczny NMT TPN `nmt_05m_mggp_2019`, siatka 0,5 m.
+Wynik jest publikowany jako **m n.p.m. według legendy TPN**. JSON oddziela
+`elevation_reference: sea_level` od `elevation_datum: unknown`: dokładny
+układ pionowy (np. Kronsztadt86 lub PL-EVRF2007-NH) nie jest zadeklarowany.
+Odczyt sprawdza nagłówek legendy warstwy 0 i zachowuje jej URL oraz hash.
+[Dokumentacja TPN](https://geoportaltatry.pl/informacje_o_usludze/topografia.pdf),
+strona 4 „Wysokości”, podaje nalot 14–15.10.2019 r., 12 pkt/m² i raster
+0,5 m utworzony w TerraSolid z modelu trójkątowego po klasyfikacji LiDAR.
+`source.data_date` zachowuje zakres `2019-10-14/2019-10-15` z odnośnikiem
+do tego opisu. Skrypt wykonuje cztery żądania HTTP.
+Najnowszość jest **niepotwierdzona**, dokładność pionowa i interpolacja
+pozostają **unknown**. Siatka i liczba cyfr nie określają dokładności.
+To wysokość gruntu w modelu, nie gwarantowana wysokość otworu jaskini.
+
+Brak danych i błędy dają niezerowy exit oraz diagnostykę na stderr.
+`SOURCE_CHANGED` oznacza potrzebę ponownego przeglądu metadanych modelu;
+skrypt nie przypisuje nowemu źródłu parametrów starego. Bez automatycznej
+zmiany modelu, YAML lub `best`. [Kontrakt i źródła](asdlc/plans/PBI-106.md).
+
 ## Struktura wejścia danych
 
 Walidacja, build SQLite, eksporty, importer TPN i review wymagają istniejącego

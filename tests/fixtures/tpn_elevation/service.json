@@ -1,0 +1,282 @@
+{
+ "currentVersion": 11.5,
+ "cimVersion": "3.5.0",
+ "serviceDescription": "",
+ "mapName": "Topografia - wysokości",
+ "description": "",
+ "copyrightText": "",
+ "supportsDynamicLayers": true,
+ "layers": [
+  {
+   "id": 0,
+   "name": "Topografia - wysokości",
+   "parentLayerId": -1,
+   "defaultVisibility": true,
+   "subLayerIds": null,
+   "minScale": 0,
+   "maxScale": 0,
+   "type": "Raster Layer",
+   "supportsDynamicLegends": true
+  }
+ ],
+ "tables": [],
+ "spatialReference": {
+  "wkid": 102100,
+  "latestWkid": 3857,
+  "xyTolerance": 0.001,
+  "zTolerance": 0.001,
+  "mTolerance": 0.001,
+  "falseX": -20037700,
+  "falseY": -30241100,
+  "xyUnits": 10000,
+  "falseZ": -100000,
+  "zUnits": 10000,
+  "falseM": -100000,
+  "mUnits": 10000
+ },
+ "singleFusedMapCache": true,
+ "tileInfo": {
+  "rows": 512,
+  "cols": 512,
+  "dpi": 96,
+  "format": "Mixed",
+  "compressionQuality": 75,
+  "origin": {
+   "x": -2.0037508342787E7,
+   "y": 2.0037508342787E7
+  },
+  "spatialReference": {
+   "wkid": 102100,
+   "latestWkid": 3857,
+   "xyTolerance": 0.001,
+   "zTolerance": 0.001,
+   "mTolerance": 0.001,
+   "falseX": -20037700,
+   "falseY": -30241100,
+   "xyUnits": 10000,
+   "falseZ": -100000,
+   "zUnits": 10000,
+   "falseM": -100000,
+   "mUnits": 10000
+  },
+  "lods": [
+   {
+    "level": 0,
+    "resolution": 78271.516964,
+    "scale": 2.9582876379577726E8
+   },
+   {
+    "level": 1,
+    "resolution": 39135.75848199995,
+    "scale": 1.4791438189788842E8
+   },
+   {
+    "level": 2,
+    "resolution": 19567.87924100005,
+    "scale": 7.395719094894451E7
+   },
+   {
+    "level": 3,
+    "resolution": 9783.93962049995,
+    "scale": 3.697859547447197E7
+   },
+   {
+    "level": 4,
+    "resolution": 4891.96981024998,
+    "scale": 1.8489297737236E7
+   },
+   {
+    "level": 5,
+    "resolution": 2445.98490512499,
+    "scale": 9244648.868618
+   },
+   {
+    "level": 6,
+    "resolution": 1222.992452562495,
+    "scale": 4622324.434309
+   },
+   {
+    "level": 7,
+    "resolution": 611.496226281245,
+    "scale": 2311162.2171544908
+   },
+   {
+    "level": 8,
+    "resolution": 305.74811314069,
+    "scale": 1155581.1085775006
+   },
+   {
+    "level": 9,
+    "resolution": 152.874056570279,
+    "scale": 577790.5542885009
+   },
+   {
+    "level": 10,
+    "resolution": 76.4370282852055,
+    "scale": 288895.2771444999
+   },
+   {
+    "level": 11,
+    "resolution": 38.2185141425366,
+    "scale": 144447.6385719999
+   },
+   {
+    "level": 12,
+    "resolution": 19.1092570712683,
+    "scale": 72223.81928599995
+   },
+   {
+    "level": 13,
+    "resolution": 9.55462853563415,
+    "scale": 36111.90964299998
+   },
+   {
+    "level": 14,
+    "resolution": 4.777314267817075,
+    "scale": 18055.95482149999
+   },
+   {
+    "level": 15,
+    "resolution": 2.388657133974685,
+    "scale": 9027.977411
+   },
+   {
+    "level": 16,
+    "resolution": 1.19432856698734,
+    "scale": 4513.988705499991
+   },
+   {
+    "level": 17,
+    "resolution": 0.597164283427525,
+    "scale": 2256.9943524999994
+   },
+   {
+    "level": 18,
+    "resolution": 0.2985821417799085,
+    "scale": 1128.4971764999998
+   },
+   {
+    "level": 19,
+    "resolution": 0.1492910708238085,
+    "scale": 564.2485880000006
+   },
+   {
+    "level": 20,
+    "resolution": 0.07464553541190416,
+    "scale": 282.124294
+   },
+   {
+    "level": 21,
+    "resolution": 0.03732276770595208,
+    "scale": 141.062147
+   },
+   {
+    "level": 22,
+    "resolution": 0.01866138385297604,
+    "scale": 70.5310735
+   }
+  ]
+ },
+ "storageInfo": {
+  "storageFormat": "esriMapCacheStorageModeCompactV2",
+  "packetSize": 128
+ },
+ "initialExtent": {
+  "xmin": 2203951.7330415146,
+  "ymin": 6305564.796561208,
+  "xmax": 2237391.7330415156,
+  "ymax": 6330229.476048388,
+  "spatialReference": {
+   "wkid": 102100,
+   "latestWkid": 3857,
+   "xyTolerance": 0.001,
+   "zTolerance": 0.001,
+   "mTolerance": 0.001,
+   "falseX": -20037700,
+   "falseY": -30241100,
+   "xyUnits": 10000,
+   "falseZ": -100000,
+   "zUnits": 10000,
+   "falseM": -100000,
+   "mUnits": 10000
+  }
+ },
+ "fullExtent": {
+  "xmin": 2197991.2269896553,
+  "ymin": 6303959.365318058,
+  "xmax": 2244878.3981249672,
+  "ymax": 6333739.9992821375,
+  "spatialReference": {
+   "wkid": 102100,
+   "latestWkid": 3857,
+   "xyTolerance": 0.001,
+   "zTolerance": 0.001,
+   "mTolerance": 0.001,
+   "falseX": -20037700,
+   "falseY": -30241100,
+   "xyUnits": 10000,
+   "falseZ": -100000,
+   "zUnits": 10000,
+   "falseM": -100000,
+   "mUnits": 10000
+  }
+ },
+ "datesInUnknownTimezone": false,
+ "minScale": 288895,
+ "maxScale": 0,
+ "minLOD": 10,
+ "maxLOD": 19,
+ "units": "esriMeters",
+ "supportedImageFormatTypes": "PNG32,PNG24,PNG,JPG,DIB,TIFF,EMF,PS,PDF,GIF,SVG,SVGZ,BMP",
+ "documentInfo": {
+  "Title": "Map6",
+  "Author": "",
+  "Comments": "",
+  "Subject": "",
+  "Category": "",
+  "Version": "3.1.0",
+  "AntialiasingMode": "Fast",
+  "TextAntialiasingMode": "Force",
+  "Keywords": ""
+ },
+ "supportsQueryDomains": true,
+ "capabilities": "Query,Map,Data",
+ "supportedQueryFormats": "JSON, geoJSON, PBF",
+ "exportTilesAllowed": false,
+ "referenceScale": 0.0,
+ "datumTransformations": [
+  {
+   "geoTransforms": [
+    {
+     "wkid": 1149,
+     "latestWkid": 1149,
+     "transformForward": false,
+     "name": "ETRS_1989_To_WGS_1984"
+    }
+   ]
+  },
+  {
+   "geoTransforms": [
+    {
+     "wkid": 1149,
+     "latestWkid": 1149,
+     "transformForward": true,
+     "name": "ETRS_1989_To_WGS_1984"
+    }
+   ]
+  }
+ ],
+ "supportsDatumTransformation": true,
+ "archivingInfo": {"supportsHistoricMoment": false},
+ "supportsClipping": true,
+ "supportsSpatialFilter": true,
+ "supportsTimeRelation": true,
+ "supportsQueryDataElements": true,
+ "mapUnits": {"uwkid": 9001},
+ "maxSelectionCount": 2000,
+ "maxRecordCount": 2000,
+ "maxImageHeight": 4096,
+ "maxImageWidth": 4096,
+ "supportedExtensions": "",
+ "serviceItemId": "6750310b9d3e4e24a888b8d1ee32ef81"
+}

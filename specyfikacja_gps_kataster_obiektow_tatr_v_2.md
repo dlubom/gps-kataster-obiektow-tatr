@@ -463,6 +463,17 @@ przerywa staging TPN z błędem przed dopasowaniem i zapisem raportu.
 
 ### 7.1 TPN
 
+Pomocniczy odczyt `scripts/tpn_elevation.py --lat LAT --lon LON [--json]`
+zwraca wysokość gruntu z publicznego NMT TPN, bez zapisu do `Pomiar` lub
+zmiany `best`. Użytkownik zatwierdził źródło `nmt_05m_mggp_2019` / 0,5 m
+przy niepotwierdzonej najnowszości. Legenda warstwy 0 określa wartości jako
+„m n.p.m.” (`elevation_reference: sea_level`); dokładny układ wysokości
+i dokładność pionowa są `unknown`. Wejście EPSG:4326 nie ustala datum
+pionowego. Zakres dat nalotu według opisu „Wysokości” TPN to
+`2019-10-14/2019-10-15`; wynik zachowuje odnośnik do tego dokumentu.
+Brak danych i błędy nie dają wysokości zastępczej. Zmiana rozpoznanego
+modelu wymaga ponownego przeglądu. [Kontrakt PBI-106](docs/asdlc/plans/PBI-106.md).
+
 TPN jest traktowany jako źródło o wyższym priorytecie niż PIG dla aktualnej lokalizacji obiektu.
 
 Plik TPN zawiera rekordy punktowe. W V1 przyjmujemy:

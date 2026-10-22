@@ -2,6 +2,21 @@
 
 Stan na: 2026-10-21
 
+## PBI-106: Odczyt wysokości NMT TPN i lokalny skill
+
+Status: wykonane — [draft PR #15](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/15)
+do review, na polecenie użytkownika 2026-10-21.
+[Zakres i odbiór](plans/PBI-106.md). Jeden punkt WGS84, tekst/JSON,
+NMT `nmt_05m_mggp_2019` / 0,5 m, najnowszość niepotwierdzona,
+dokładny układ wysokości i dokładność pionowa `unknown`. Po korekcie
+źródłowej: „m n.p.m.” z legendy warstwy 0 oraz zakres dat danych
+14–15.10.2019 według opisu TPN. Wyłącznie odczyt;
+skill lokalny dla repozytorium. Bez zmiany katalogu i `best`.
+[Dowody](verification/PBI-106.md): po korekcie 864 testy, Ruff, walidacja,
+live API, readback i 4/4 nowych mutacji; pierwotna implementacja i jej CI
+mają oddzielny zapis odbioru (w tym wcześniejsze 8/8 mutacji).
+Końcowy SHA/CI dokumentacji i odbiór paczki są w opisie PR.
+
 ## PBI-105: Paczki eksportów w komentarzach PR
 
 Status: wykonane — [draft PR #14](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/14)

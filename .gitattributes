@@ -1,0 +1,2 @@
+# Preserve the public source response byte-for-byte, including its whitespace.
+tests/fixtures/tpn_elevation/metadata.xml -text -whitespace
