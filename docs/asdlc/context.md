@@ -27,8 +27,13 @@ Lokalnie: 950 testów i Ruff przeszły; walidacja 0 błędów / 2109 ostrzeżeń
 odczyt 10/10 eksportów (44365 komórek pomiarów Excel) oraz zachowanie
 1877 wcześniejszych pomiarów i wszystkich 10 chronionych obiektów potwierdzone.
 Stan po zmianie: 1007 obiektów, 1001 jaskiń, 1911 pomiarów.
-Status: zweryfikowane — do dostarczenia; pozostaje push, draft PR i odbiór
-CI/paczki dokładnego SHA. Końcowy SHA, CI i odbiór paczki będą w opisie PR.
+Status: wykonane — [draft PR #19](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/19)
+do review. Niezależny review bez ustaleń P1/P2/P3. Dane `b8bfb7b` wypchnięte;
+validate [39950830783](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/39950830783)
+i preview [39950830818](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/39950830818)
+mają completed/success. Pobrana paczka 12500650903: digest ZIP i wszystkie
+10 sum payloadu zgodne, odczyt 10/10 eksportów przeszedł (Best 1007,
+Full 1911). Końcowy SHA dokumentacji, CI i odbiór jego paczki wskazuje opis PR.
 Bez merge, taga i wydania. PBI-110 pozostaje osobnym projektem.
 
 ## Wywierzyska — projekt PBI-110, PR #18

@@ -4,7 +4,8 @@ Stan na: 2026-10-23
 
 ## PBI-111: Odświeżenie istniejących rekordów po GLOBALID TPN
 
-Status: zweryfikowane — do dostarczenia w osobnym draft PR od main `835b47a`.
+Status: wykonane — do review w [draft PR #19](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/19),
+osobno od main `835b47a`.
 Uzgodniono dopasowanie wyłącznie `TPN/source_globalid`, zachowanie historii,
 pełne porównanie informacji TPN i osobne przedstawienie NMT gruntu.
 Nowszy stan TPN może zastąpić poprzedni TPN w `auto`; istniejące manual
@@ -24,8 +25,11 @@ Wyjaśnienia w YAML i opisie PR; bez osobnego raportu MD dla korekty danych.
 Lokalnie: 950 testów, Ruff, walidacja bez błędów (2109 ostrzeżeń),
 odczyt 10/10 eksportów, w tym 44365 komórek pomiarów Excel, oraz zachowanie
 1877 wcześniejszych pomiarów i 10 chronionych obiektów potwierdzone.
-Katalog: 1007 obiektów, 1001 jaskiń, 1911 pomiarów. Pozostaje push, draft
-PR i odbiór CI/paczki dokładnego SHA. Bez merge, taga i wydania.
+Katalog: 1007 obiektów, 1001 jaskiń, 1911 pomiarów. Niezależny review
+bez ustaleń P1/P2/P3. Dane `b8bfb7b` wypchnięte; validate i preview
+completed/success, pobrana paczka ma zgodny digest ZIP, 10 sum payloadu
+i odczyt 10/10 eksportów. Końcowy SHA dokumentacji, CI i odbiór jego
+paczki wskazuje opis PR #19. Bez merge, taga i wydania.
 
 ## PBI-110: Wywierzyska w lokalnym zrzucie TPN
 
