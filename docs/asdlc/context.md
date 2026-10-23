@@ -2,6 +2,18 @@
 
 Last updated: 2026-10-23
 
+## Nowe obiekty TPN — projekt PBI-113
+
+Po wywiadzie uzgodniono 20 nowych Obiektów, 19 Jaskiń i 21 pomiarów
+z 31 niedopasowanych GLOBALID warstwy jaskiń zrzutu z 22.10.2026.
+Sam jednoznaczny TPN wystarcza do wpisu `nieweryfikowany`; konkretne
+konflikty odkładamy. Użytkownik zaakceptował jeden Korytarz 6408/7044,
+oba źródła i Best 7044 oraz odroczenie Schronu nad Wielką Równią.
+Smocza Jama N jest nowym otworem istniejącej C-0219. Dziesięć rekordów
+pozostaje odroczonych; issue i istniejące pary nie są teraz zmieniane.
+[Projekt z pełną listą](plans/PBI-113-new-tpn-objects.md) wymaga akceptacji
+przed realizacją. Katalog, Best, kod i schemat pozostają bez zmian.
+
 ## Wydanie v1.2.0 — zatwierdzone
 
 2026-10-23 użytkownik zaakceptował dokładny wpis changeloga i v1.2.0,
