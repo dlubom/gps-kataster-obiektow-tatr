@@ -1,0 +1,21 @@
+schema_version: 1
+id: C-1038
+name: Szczelina przy Zbójeckiej Dziurze
+system_name: null
+external_refs: []
+object_ids:
+- CHZ-0033
+notes: |-
+  Dodano po przeglądzie tożsamości według PBI-113, na podstawie rekordu TPN; bez numeru inwentarzowego i bez niezależnej weryfikacji terenowej.
+
+  Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {00A63F59-3D03-4703-A18E-27A0A75A7DA1}; OBJECTID 7045 w zrzucie 2026-10-22.
+
+  TPN morfometria [m]: DLUGOSC=15.5; PRZEWYZSZE=5.5. Wartości źródłowe, bez ponownej interpretacji.
+
+  TPN GENEZA: jaskinia.
+
+  Nowak 2018, Jaskinie 93, s. 32–33 dokumentuje odrębność od Zbójeckiej Dziury: http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32. Rozbieżności metryk i dojścia między źródłami nie zostały rozstrzygnięte; dane TPN zachowano bez korekty XY.
+created_at: '2026-10-23T18:10:08Z'
+created_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:10:08Z'
+updated_by: maintenance:PBI-113

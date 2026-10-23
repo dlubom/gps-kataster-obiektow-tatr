@@ -1,8 +1,8 @@
-# PBI-113: nowe obiekty z lokalnego zrzutu TPN — projekt do akceptacji
+# PBI-113: nowe obiekty z lokalnego zrzutu TPN
 
-Stan: 2026-10-23. Zakres i rozstrzygnięcia uzgodniono w wywiadzie;
-ten zapis projektu wymaga akceptacji przed realizacją. Katalog pozostaje
-bez zmian. Baza: `caf7bae69b28eb037810215889cb87f763b2c6bd`.
+Stan: 2026-10-23. Użytkownik polecił realizację projektu w PR #28.
+Zakres i odroczenia z review zachowano; materializacja zweryfikowana lokalnie,
+do dostarczenia. Baza: `caf7bae69b28eb037810215889cb87f763b2c6bd`.
 
 ## Cel i wybrane podejście
 
@@ -43,30 +43,35 @@ mapowanie otworu lub konflikt nazw odraczamy.
 OBJECTID wskazuje wiersz wyłącznie przypiętego zrzutu. Trwałą referencją
 jest pełny GLOBALID tego wiersza; przed zapisem potwierdzić oba identyfikatory
 oraz pełne współrzędne. Prefiksy sprawdzono bieżącym resolverem, wszystkie
-mają status `ok`. Numery ID przydzielić przy realizacji według obecnych zasad,
-bez ponownego użycia dawnych ID lub zmiany istniejących.
+mają status `ok`. Numery ID przydzielono po sprawdzeniu resolvera i całej historii Git,
+bez ponownego użycia dawnych ID lub zmiany istniejących. Podczas review
+wykryto kolizję pierwszych propozycji z nadal istniejącymi PR #12/#13
+(np. dawny MTZ-0067/C-1005 to Jaskinia w Kozim Grzbiecie). Wszystkie nowe,
+jeszcze nieutrwalone ID przydzielono powyżej historycznych maksimów:
+C-1030, KSW-0260, STR-0038, BIA-0009, MTW-0073, MTZ-0071, CHZ-0032, DZI-0011.
+Nie zmieniono danych ani statusu tamtych PR. Tabela zawiera końcowe ID.
 
-| OBJECTID | Obiekt | Prefix | Jaskinia |
-| --- | --- | --- | --- |
-| 3846 | Smocza Jama — otwór N | KSW | istniejąca C-0219 |
-| 6401 | Gawra w Sarniej Skale | STR | nowa |
-| 6402 | Okno przy Źródle | BIA | nowa |
-| 6405 | Nyża pod Szarą Turnią I | STR | nowa |
-| 6406 | Schron nad Komorą w Kończystej Turni | MTW | nowa |
-| 6407 | Nyża za Jałowcem | MTW | nowa |
-| 7042 | Nyża pod Szarą Turnią II | STR | nowa |
-| 7044 + 6408 | Korytarz pod Ciemniakiem | MTZ | jedna nowa |
-| 7045 | Szczelina przy Zbójeckiej Dziurze | CHZ | nowa |
-| 7361 | Gawra w Bobrowcu | CHZ | nowa |
-| 7362 | Nyża we Wysrankach | KSW | nowa |
-| 7363 | Nyża pod Szarą Turnią III | STR | nowa |
-| 7366 | Jaskinia Lodowa Ponorowa | MTZ | nowa |
-| 7367 | Jaskinia Cynamonowa | CHZ | nowa |
-| 7368 | Rura w Olejarni | CHZ | nowa |
-| 7377 | Schron pod Gawrą w Bobrowcu | CHZ | nowa |
-| 7378 | Okno pod Sikawką | KSW | nowa |
-| 7379 | Nyża pod Szarą Turnią IV | STR | nowa |
-| 7682 | Gawra w Grześkówkach | DZI | nowa |
+| OBJECTID | Obiekt | Prefix | Jaskinia | Nadane ID Obiektu / Jaskini |
+| --- | --- | --- | --- | --- |
+| 3846 | Smocza Jama — otwór N | KSW | istniejąca C-0219 | KSW-0261 / C-0219 |
+| 6401 | Gawra w Sarniej Skale | STR | nowa | STR-0039 / C-1031 |
+| 6402 | Okno przy Źródle | BIA | nowa | BIA-0010 / C-1032 |
+| 6405 | Nyża pod Szarą Turnią I | STR | nowa | STR-0040 / C-1033 |
+| 6406 | Schron nad Komorą w Kończystej Turni | MTW | nowa | MTW-0074 / C-1034 |
+| 6407 | Nyża za Jałowcem | MTW | nowa | MTW-0075 / C-1035 |
+| 7042 | Nyża pod Szarą Turnią II | STR | nowa | STR-0041 / C-1036 |
+| 7044 + 6408 | Korytarz pod Ciemniakiem | MTZ | jedna nowa | MTZ-0072 / C-1037 |
+| 7045 | Szczelina przy Zbójeckiej Dziurze | CHZ | nowa | CHZ-0033 / C-1038 |
+| 7361 | Gawra w Bobrowcu | CHZ | nowa | CHZ-0034 / C-1039 |
+| 7362 | Nyża we Wysrankach | KSW | nowa | KSW-0262 / C-1040 |
+| 7363 | Nyża pod Szarą Turnią III | STR | nowa | STR-0042 / C-1041 |
+| 7366 | Jaskinia Lodowa Ponorowa | MTZ | nowa | MTZ-0073 / C-1042 |
+| 7367 | Jaskinia Cynamonowa | CHZ | nowa | CHZ-0035 / C-1043 |
+| 7368 | Rura w Olejarni | CHZ | nowa | CHZ-0036 / C-1044 |
+| 7377 | Schron pod Gawrą w Bobrowcu | CHZ | nowa | CHZ-0037 / C-1045 |
+| 7378 | Okno pod Sikawką | KSW | nowa | KSW-0263 / C-1046 |
+| 7379 | Nyża pod Szarą Turnią IV | STR | nowa | STR-0043 / C-1047 |
+| 7682 | Gawra w Grześkówkach | DZI | nowa | DZI-0012 / C-1048 |
 
 ### Smocza Jama
 
@@ -163,7 +168,7 @@ pozostają poza zakresem naprawy.
   issue #8/#23/#24. Zrzuty i źródłowe PDF-y pozostają lokalne.
   Merge, tag i release wymagają odrębnego polecenia.
 
-## Realizacja i odbiór po akceptacji projektu
+## Realizacja i odbiór
 
 1. Potwierdzić bieżący Git, hash raw i NMT, wszystkie 31 GUID i podział
    20 dodanych / 11 odroczonych. Przy zmianie bazy przeliczyć kolizje i ID.
@@ -181,3 +186,22 @@ pozostają poza zakresem naprawy.
 6. Commit/push, odczyt zdalnego SHA, terminalne CI dla tego SHA i odczyt
    pobranej paczki PR. Uzasadnienia zmian danych w YAML i opisie PR;
    nie rozbudowywać osobnego raportu dla samej materializacji.
+
+## Odbiór materializacji — 2026-10-23
+
+- 19 nowych Obiektów i 18 Jaskiń według tabeli; 20 pomiarów i GUID.
+  Katalog: 1026/1019/1928. Wszystkie 11 odroczonych GUID pozostaje poza katalogiem.
+- Dokładne XY, niezaokrąglone NMT, daty LAST_EDITED_DATE i pochodzenie
+  wszystkich nowych pomiarów zgodne z przypiętym raw i dowodem NMT.
+  SHA-256 dowodu NMT: `d9fa6e4169e18ef26603fa215db7bab0efe604a536617c2a96a919109a95ec14`.
+- 1007 dawnych Obiektów i 1000 Jaskiń identyczne bajtowo; w C-0219 zmieniono
+  wyłącznie `object_ids`, `updated_at` i `updated_by`.
+- 951 testów, Ruff format/lint, walidacja i build PASS; 2123 ostrzeżenia
+  walidacji obejmują jawnie nieznane dokładności, bez błędów. Użyto istniejącego
+  środowiska przez `uv run --frozen --no-sync --offline`.
+- Niezależny odczyt SQLite, CSV, GeoJSON, GPX, Shapefile, Excel Best/Full,
+  metadata, statystyk i ZIP SQLite: 136727 porównań, 0 błędów.
+- Końcowy SHA, wynik CI oraz odbiór pobranej paczki są podawane w opisie PR #28.
+  Stan lokalny: zweryfikowane — do dostarczenia. Po korekcie ID powtórzono
+  pełną bramkę i odczyt eksportów z tym samym wynikiem. Niezależny review:
+  jedyny finding dotyczący ID naprawiono; pozostałe kontrole bez ustaleń. Bez merge, taga i wydania.

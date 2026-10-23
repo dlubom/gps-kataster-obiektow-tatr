@@ -1,0 +1,66 @@
+schema_version: 1
+id: DZI-0012
+category: jaskinia_otwor
+name_local: Gawra w Grześkówkach
+cave_id: C-1048
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: DZI
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{C9DC792D-FDD9-4AD9-B024-26B8C795CDAF}'
+  scope: object
+  notes: 'Rekord punktowy TPN, OBJECTID 7682 w zrzucie 2026-10-22; TPN NAZWA: Gawra w Grześkówkach.'
+measurements:
+- id: m-001
+  lat: 49.268889145683346
+  lon: 19.936981261083442
+  x_1992: 156131.99
+  y_1992: 568142.59
+  elevation_m: 1160.319946
+  elevation_datum: unknown
+  elevation_source: dem
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{C9DC792D-FDD9-4AD9-B024-26B8C795CDAF}
+  observed_date: '2026-10-04'
+  source_date: '2026-10-04'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: |-
+    Stan rekordu API TPN z 2026-10-04, odczytany 2026-10-22. observed_date i source_date oznaczają datę edycji LAST_EDITED_DATE (UTC), nie datę pomiaru w terenie; observed_at pozostaje nieznane.
+
+    Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 7682, GLOBALID {C9DC792D-FDD9-4AD9-B024-26B8C795CDAF}; TPN NAZWA: Gawra w Grześkówkach. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:51.348147Z w dokładnych współrzędnych tego pomiaru: 1160.319946 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
+
+    Odczyt per punkt: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.936981261083442%2C49.268889145683346&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.936971261083443%2C49.26887914568334%2C19.936991261083442%2C49.26889914568335&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+    SHA-256 odpowiedzi NMT: 97e6afec8efe65fab25c493858ac0ee0466e4a46809425ed7eec1d06aa832d63.
+
+    TPN WER_LOK: 04102026
+
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu). Wpis nieweryfikowany, bez niezależnej weryfikacji terenowej.
+  created_at: '2026-10-23T18:10:08Z'
+  created_by: maintenance:PBI-113
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: Jedyny pomiar TPN; bez niezależnej weryfikacji terenowej.
+  updated_at: '2026-10-23T18:10:08Z'
+  updated_by: maintenance:PBI-113
+attachments: []
+notes: |-
+  Dodano po przeglądzie tożsamości według PBI-113. Jednoznaczny rekord TPN wystarcza do wpisu nieweryfikowanego; nie jest to weryfikacja terenowa.
+created_at: '2026-10-23T18:10:08Z'
+created_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:10:08Z'
+updated_by: maintenance:PBI-113

@@ -1,0 +1,66 @@
+schema_version: 1
+id: CHZ-0036
+category: jaskinia_otwor
+name_local: Rura w Olejarni
+cave_id: C-1044
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: CHZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{D96CD642-E9D3-4EB8-B9DC-D7DF3F449705}'
+  scope: object
+  notes: 'Rekord punktowy TPN, OBJECTID 7368 w zrzucie 2026-10-22; TPN NAZWA: Rura w Olejarni.'
+measurements:
+- id: m-001
+  lat: 49.247898045743995
+  lon: 19.811777669961646
+  x_1992: 153693.83
+  y_1992: 559062.22
+  elevation_m: 1116.969971
+  elevation_datum: unknown
+  elevation_source: dem
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{D96CD642-E9D3-4EB8-B9DC-D7DF3F449705}
+  observed_date: '2026-06-16'
+  source_date: '2026-06-16'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: |-
+    Stan rekordu API TPN z 2026-06-16, odczytany 2026-10-22. observed_date i source_date oznaczają datę edycji LAST_EDITED_DATE (UTC), nie datę pomiaru w terenie; observed_at pozostaje nieznane.
+
+    Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 7368, GLOBALID {D96CD642-E9D3-4EB8-B9DC-D7DF3F449705}; TPN NAZWA: Rura w Olejarni. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:49.916709Z w dokładnych współrzędnych tego pomiaru: 1116.969971 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
+
+    Odczyt per punkt: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.811777669961646%2C49.247898045743995&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.811767669961647%2C49.24788804574399%2C19.811787669961646%2C49.247908045744&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+    SHA-256 odpowiedzi NMT: 075fbe3b2700d1cf65ab09144aee8c1ed9807b86cd97d4a82608e0c39e82e371.
+
+    TPN WER_LOK: FF16062026
+
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu). Wpis nieweryfikowany, bez niezależnej weryfikacji terenowej.
+  created_at: '2026-10-23T18:10:08Z'
+  created_by: maintenance:PBI-113
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: Jedyny pomiar TPN; bez niezależnej weryfikacji terenowej.
+  updated_at: '2026-10-23T18:10:08Z'
+  updated_by: maintenance:PBI-113
+attachments: []
+notes: |-
+  Dodano po przeglądzie tożsamości według PBI-113. Jednoznaczny rekord TPN wystarcza do wpisu nieweryfikowanego; nie jest to weryfikacja terenowa.
+created_at: '2026-10-23T18:10:08Z'
+created_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:10:08Z'
+updated_by: maintenance:PBI-113

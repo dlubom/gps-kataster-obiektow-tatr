@@ -1,0 +1,21 @@
+schema_version: 1
+id: C-1046
+name: Okno pod Sikawką
+system_name: null
+external_refs: []
+object_ids:
+- KSW-0263
+notes: |-
+  Dodano po przeglądzie tożsamości według PBI-113, na podstawie rekordu TPN; bez numeru inwentarzowego i bez niezależnej weryfikacji terenowej.
+
+  Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {EF966744-EB95-48B3-B2BA-7A031F8DF91A}; OBJECTID 7378 w zrzucie 2026-10-22.
+
+  TPN morfometria [m]: DLUGOSC=3.5. Wartości źródłowe, bez ponownej interpretacji.
+
+  TPN GENEZA: jaskinia.
+
+  Nowak 2013, Jaskinie 73, s. 27–28 rozdziela Okno pod Sikawką od Jaskini przy Sikawce: http://jaskinie.org.pl/files/Jaskinie__73_2013.pdf#page=27.
+created_at: '2026-10-23T18:10:08Z'
+created_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:10:08Z'
+updated_by: maintenance:PBI-113

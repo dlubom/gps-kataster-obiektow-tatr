@@ -2,7 +2,7 @@
 
 Last updated: 2026-10-23
 
-## Nowe obiekty TPN — projekt PBI-113
+## Nowe obiekty TPN — realizacja PBI-113
 
 Po wywiadzie i review projekt obejmuje 19 nowych Obiektów, 18 Jaskiń i 20 pomiarów
 z 31 niedopasowanych GLOBALID warstwy jaskiń zrzutu z 22.10.2026.
@@ -14,8 +14,19 @@ Po review 23.10.2026 użytkownik odroczył również Jaskinię w Kozim Grzbiecie
 wskazuje, któremu otwarciu odpowiada punkt.
 Smocza Jama N jest nowym otworem istniejącej C-0219. Jedenaście rekordów
 pozostaje odroczonych; issue i istniejące pary nie są teraz zmieniane.
-[Projekt z pełną listą](plans/PBI-113-new-tpn-objects.md) wymaga akceptacji
-przed realizacją. Katalog, Best, kod i schemat pozostają bez zmian.
+2026-10-23 użytkownik polecił realizację [projektu z pełną listą](plans/PBI-113-new-tpn-objects.md)
+w istniejącym PR #28, na gałęzi `codex/tpn-new-objects-proposal`.
+Bieżący main potwierdzony: `caf7bae69b28eb037810215889cb87f763b2c6bd`.
+ID przydzielono ponad maksimum całej historii Git, aby nie użyć ponownie
+numerów z niezależnych PR #12/#13. Nowe Obiekty: KSW-0261–0263, STR-0039–0043, BIA-0010, MTW-0074–0075,
+MTZ-0072–0073, CHZ-0033–0037 i DZI-0012; nowe Jaskinie C-1031–C-1048.
+Status: zweryfikowane lokalnie — do dostarczenia. Katalog: 1026 Obiektów,
+1019 Jaskiń, 1928 pomiarów. 951 testów, Ruff, walidacja i niezależny odczyt
+wszystkich eksportów PASS. Wszystkie 1007 wcześniejszych Obiektów i 1000
+Jaskiń zachowano bajtowo; C-0219 otrzymuje KSW-0261 i audyt aktualizacji.
+Kod i schemat bez zmian. Końcowy SHA, CI i odbiór pobranej paczki wskazuje
+opis PR #28.
+Merge, tag i wydanie wymagają odrębnego polecenia.
 
 ## Wydanie v1.2.0 — zatwierdzone
 

@@ -1,0 +1,67 @@
+schema_version: 1
+id: CHZ-0033
+category: jaskinia_otwor
+name_local: Szczelina przy Zbójeckiej Dziurze
+cave_id: C-1038
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: CHZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{00A63F59-3D03-4703-A18E-27A0A75A7DA1}'
+  scope: object
+  notes: 'Rekord punktowy TPN, OBJECTID 7045 w zrzucie 2026-10-22; TPN NAZWA: Szczelina przy Zbójeckiej
+    Dziurze.'
+measurements:
+- id: m-001
+  lat: 49.247641014687375
+  lon: 19.811788641224744
+  x_1992: 153665.28
+  y_1992: 559063.32
+  elevation_m: 1137.660034
+  elevation_datum: unknown
+  elevation_source: dem
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{00A63F59-3D03-4703-A18E-27A0A75A7DA1}
+  observed_date: '2026-06-16'
+  source_date: '2026-06-16'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: |-
+    Stan rekordu API TPN z 2026-06-16, odczytany 2026-10-22. observed_date i source_date oznaczają datę edycji LAST_EDITED_DATE (UTC), nie datę pomiaru w terenie; observed_at pozostaje nieznane.
+
+    Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 7045, GLOBALID {00A63F59-3D03-4703-A18E-27A0A75A7DA1}; TPN NAZWA: Szczelina przy Zbójeckiej Dziurze. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:48.185420Z w dokładnych współrzędnych tego pomiaru: 1137.660034 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
+
+    Odczyt per punkt: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.811788641224744%2C49.247641014687375&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.811778641224745%2C49.24763101468737%2C19.811798641224744%2C49.24765101468738&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+    SHA-256 odpowiedzi NMT: 9fc41a43b9458b051c77fefbacdea27a4c5906accd68abfa7848250b2e59e345.
+
+    TPN WER_LOK: FF16062026
+
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu). Wpis nieweryfikowany, bez niezależnej weryfikacji terenowej.
+  created_at: '2026-10-23T18:10:08Z'
+  created_by: maintenance:PBI-113
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: Jedyny pomiar TPN; bez niezależnej weryfikacji terenowej.
+  updated_at: '2026-10-23T18:10:08Z'
+  updated_by: maintenance:PBI-113
+attachments: []
+notes: |-
+  Dodano po przeglądzie tożsamości według PBI-113. Jednoznaczny rekord TPN wystarcza do wpisu nieweryfikowanego; nie jest to weryfikacja terenowa.
+created_at: '2026-10-23T18:10:08Z'
+created_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:10:08Z'
+updated_by: maintenance:PBI-113

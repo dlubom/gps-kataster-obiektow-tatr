@@ -1,0 +1,19 @@
+schema_version: 1
+id: C-1042
+name: Jaskinia Lodowa Ponorowa
+system_name: null
+external_refs: []
+object_ids:
+- MTZ-0073
+notes: |-
+  Dodano po przeglądzie tożsamości według PBI-113, na podstawie rekordu TPN; bez numeru inwentarzowego i bez niezależnej weryfikacji terenowej.
+
+  Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {F27FA875-821F-45F6-8F02-C5A9FFC579E4}; OBJECTID 7366 w zrzucie 2026-10-22.
+
+  TPN morfometria [m]: DLUGOSC=8.0; GLEBOKOSC=5.3. Wartości źródłowe, bez ponownej interpretacji.
+
+  TPN GENEZA: jaskinia.
+created_at: '2026-10-23T18:10:08Z'
+created_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:10:08Z'
+updated_by: maintenance:PBI-113

@@ -4,8 +4,8 @@ Stan na: 2026-10-23
 
 ## PBI-113: Nowe obiekty z lokalnego zrzutu TPN
 
-Status: planowane — projekt do akceptacji. Po wywiadzie zakres obejmuje
-19 nowych Obiektów, 18 Jaskiń, 20 pomiarów i 20 GLOBALID; 11 rekordów
+Status: zweryfikowane lokalnie — do dostarczenia w PR #28, na polecenie użytkownika 2026-10-23.
+Zakres: 19 nowych Obiektów, 18 Jaskiń, 20 pomiarów i 20 GLOBALID; 11 rekordów
 odroczono. Jednoznaczny TPN wystarcza do wpisu nieweryfikowanego.
 Smocza Jama N trafia do C-0219; Korytarz 6408/7044 tworzy jeden Obiekt
 z dwoma źródłami, Best 7044. Schron nad Wielką Równią pozostaje odroczony.
@@ -13,7 +13,11 @@ Po review użytkownik odroczył również Jaskinię w Kozim Grzbiecie (6410)
 do ustalenia, któremu otwarciu z opisu Nowaka odpowiada punkt TPN.
 NMT oznacza grunt, z zachowaniem dokładnego XY i pochodzenia.
 [Projekt, pełna lista i odbiór](plans/PBI-113-new-tpn-objects.md).
-Katalog i kod bez zmian; aktualizacja issue i naprawy dawnych par później.
+Katalog po materializacji: 1026 Obiektów, 1019 Jaskiń i 1928 pomiarów.
+951 testów, Ruff, walidacja i niezależny odczyt wszystkich eksportów PASS.
+Dawne Obiekty zachowane bajtowo; jedyna zmiana dawnej Jaskini to członkostwo
+i audyt C-0219. Kod i schemat bez zmian; końcowy SHA, CI i odbiór pobranej
+paczki będą wskazane w opisie PR. Aktualizacja issue i naprawy dawnych par później.
 
 ## Wydanie v1.2.0
 
