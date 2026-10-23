@@ -1,0 +1,36 @@
+GeographicLib projection tests
+Test project /Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/verification/wgs84-pl1992-v1.2.0-20261023/vendor/geographiclib-build
+    Start 174: TransverseMercatorProj0
+1/8 Test #174: TransverseMercatorProj0 ..........   Passed    0.16 sec
+    Start 175: TransverseMercatorProj1
+2/8 Test #175: TransverseMercatorProj1 ..........   Passed    0.00 sec
+    Start 176: TransverseMercatorProj2
+3/8 Test #176: TransverseMercatorProj2 ..........   Passed    0.00 sec
+    Start 177: TransverseMercatorProj3
+4/8 Test #177: TransverseMercatorProj3 ..........   Passed    0.00 sec
+    Start 178: TransverseMercatorProj4
+5/8 Test #178: TransverseMercatorProj4 ..........   Passed    0.00 sec
+    Start 179: TransverseMercatorProj5
+6/8 Test #179: TransverseMercatorProj5 ..........   Passed    0.00 sec
+    Start 180: TransverseMercatorProj6
+7/8 Test #180: TransverseMercatorProj6 ..........   Passed    0.00 sec
+    Start 181: TransverseMercatorProj7
+8/8 Test #181: TransverseMercatorProj7 ..........   Passed    0.00 sec
+
+100% tests passed out of 8
+
+Total Test time (real) =   0.19 sec
+
+Audit negative controls
+asset bytes without matching GitHub digest: PASS (rejected)
+missing CSV point: PASS (rejected)
+duplicate CSV point: PASS (rejected)
+swapped PL-1992 axes: PASS (rejected)
+nonfinite latitude: PASS (rejected)
+injected 3 cm projection error: PASS (rejected)
+
+Durable evidence readback
+PASS: 1908 unique measurement keys; 1007 selected; 11872 representations; 9/9 asset digests.
+PASS: every CSV delta and distance recalculated; CSV maxima match summary.json.
+PASS: both audit scripts Ruff format/check.
+PASS: git diff --exit-code -- data config schema src scripts tests pyproject.toml uv.lock.

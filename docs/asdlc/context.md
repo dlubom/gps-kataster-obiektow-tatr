@@ -2,6 +2,19 @@
 
 Last updated: 2026-10-23
 
+## Niezależna kontrola współrzędnych eksportów — PBI-112
+
+Na polecenie użytkownika po zatwierdzeniu metody zbadano publiczne v1.2.0,
+commit `caf7bae69b28eb037810215889cb87f763b2c6bd`, niezależnym GeographicLib
+2.7 TransverseMercatorExact na GRS80. SHA-256 9/9 plików zgodne; wszystkie
+1908 pomiarów i 1007 punktów best w każdym formacie, 11 872 reprezentacje.
+Zero błędów osi i przekroczeń 20 mm. Maksimum 6,60 mm w Shapefile;
+w pełnych danych 6,19 mm, zgodne z zapisaną precyzją. To zgodność rachunkowa
+przy jawnym przybliżeniu WGS84–ETRF2000-PL, bez ustalenia dokładności
+terenowej. [Raport, CSV i powtórzenie](verification/PBI-112.md).
+Status: wykonane — do review; końcowy commit i CI wskazuje opis PR audytu. Bez zmiany danych,
+kodu aplikacji, merge, taga i wydania.
+
 ## Wydanie v1.2.0 — zatwierdzone
 
 2026-10-23 użytkownik zaakceptował dokładny wpis changeloga i v1.2.0,

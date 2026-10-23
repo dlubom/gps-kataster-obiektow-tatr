@@ -1,0 +1,540 @@
+{
+  "release": {
+    "source_commit": "caf7bae69b28eb037810215889cb87f763b2c6bd",
+    "version": "v1.2.0"
+  },
+  "published_at": "2026-10-23T15:08:50Z",
+  "release_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/tag/v1.2.0",
+  "assets": [
+    {
+      "name": "best-measurements.csv",
+      "size": 660503,
+      "sha256": "786e15e314f6f8c9357b62e56bb4122a550812bc33fd6dfc2d0aec5d9d84fc8b",
+      "url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/best-measurements.csv"
+    },
+    {
+      "name": "best-measurements.geojson",
+      "size": 1634554,
+      "sha256": "6c995241788855f9fedc2c9637aadac72f40884706b87ff3e47a379f642243d0",
+      "url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/best-measurements.geojson"
+    },
+    {
+      "name": "best-measurements.gpx",
+      "size": 639135,
+      "sha256": "02b9b4cab6a3ebb54b3a2336f0fb5664d76f78db656bdd43377396c6fe089332",
+      "url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/best-measurements.gpx"
+    },
+    {
+      "name": "best-measurements.shp.zip",
+      "size": 144907,
+      "sha256": "9f12b5fd8d681cfa35a84142062dc4e5299e97f5c868312b67035989118057ae",
+      "url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/best-measurements.shp.zip"
+    },
+    {
+      "name": "katalog.sqlite.zip",
+      "size": 510671,
+      "sha256": "b095e36bc82af031baaf6bba391576bf3e01772ffa78617640290f6163688ec6",
+      "url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/katalog.sqlite.zip"
+    },
+    {
+      "name": "katalog.xlsx",
+      "size": 623736,
+      "sha256": "6a47919cf998c98e5ce1c7644145bc795f25309d9d21a59e9390c2362e5bfe87",
+      "url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/katalog.xlsx"
+    },
+    {
+      "name": "metadata.json",
+      "size": 270,
+      "sha256": "2c83d2cbf844ac1c4ab95f03e43ee60d265e0f8f3412b2b50bfb45ebbf4dfa75",
+      "url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/metadata.json"
+    },
+    {
+      "name": "statistics.json",
+      "size": 891,
+      "sha256": "94654b04785fa3e50b174d6ff2c1fd1e45245949f317a140e6760232f79e45ec",
+      "url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/statistics.json"
+    },
+    {
+      "name": "statistics.md",
+      "size": 4142,
+      "sha256": "aefcb2ba05d065fffbeca6a07f932e7b5d34e27e80eec5ae904792f3ebca140f",
+      "url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/statistics.md"
+    }
+  ],
+  "geographiclib": {
+    "version": "2.7",
+    "commit": "15cddd7eed9f7f61ead6dba2229d45b271dbdeda",
+    "binary_sha256": "f14f62b454eee0c78158d0d561a1796eb373f90504a2a3860607a51468edc906",
+    "parameters": [
+      "-e",
+      "6378137",
+      "1/298.257222101",
+      "-l",
+      "19",
+      "-k",
+      "0.9993",
+      "-p",
+      "9"
+    ],
+    "controls_xy": [
+      [
+        -5300000.0,
+        500000.0
+      ],
+      [
+        125826.89278689586,
+        500000.0
+      ],
+      [
+        126308.49047214258,
+        426879.939100835
+      ],
+      [
+        126308.49047214258,
+        573120.060899165
+      ]
+    ]
+  },
+  "threshold_m": 0.02,
+  "coverage": {
+    "SQLite measurements": 1908,
+    "SQLite objects": 1007,
+    "CSV": 1007,
+    "GeoJSON properties": 1007,
+    "GeoJSON geometry": 1007,
+    "GPX": 1007,
+    "Shapefile attributes": 1007,
+    "Shapefile geometry": 1007,
+    "Excel Best": 1007,
+    "Excel Full": 1908
+  },
+  "cross_format": {
+    "SQLite measurements": {
+      "max_wgs84_difference_deg": 0,
+      "max_xy_difference_m": 0,
+      "degree_tolerance": 1e-12,
+      "xy_tolerance_m": 1e-09,
+      "native_xy": true
+    },
+    "SQLite objects": {
+      "max_wgs84_difference_deg": 0,
+      "max_xy_difference_m": 0,
+      "degree_tolerance": 1e-12,
+      "xy_tolerance_m": 1e-09,
+      "native_xy": true
+    },
+    "CSV": {
+      "max_wgs84_difference_deg": 4.998668146072305e-11,
+      "max_xy_difference_m": 0,
+      "degree_tolerance": 5.01e-11,
+      "xy_tolerance_m": 1e-09,
+      "native_xy": true
+    },
+    "GeoJSON properties": {
+      "max_wgs84_difference_deg": 0,
+      "max_xy_difference_m": 0,
+      "degree_tolerance": 1e-12,
+      "xy_tolerance_m": 1e-09,
+      "native_xy": true
+    },
+    "GeoJSON geometry": {
+      "max_wgs84_difference_deg": 0,
+      "max_xy_difference_m": 0,
+      "degree_tolerance": 1e-12,
+      "xy_tolerance_m": 1e-09,
+      "native_xy": false
+    },
+    "GPX": {
+      "max_wgs84_difference_deg": 4.998668146072305e-11,
+      "max_xy_difference_m": 0,
+      "degree_tolerance": 5.01e-11,
+      "xy_tolerance_m": 1e-09,
+      "native_xy": false
+    },
+    "Shapefile attributes": {
+      "max_wgs84_difference_deg": 4.999996860988176e-09,
+      "max_xy_difference_m": 0,
+      "degree_tolerance": 5.01e-09,
+      "xy_tolerance_m": 0.000501,
+      "native_xy": true
+    },
+    "Shapefile geometry": {
+      "max_wgs84_difference_deg": 4.999996860988176e-09,
+      "max_xy_difference_m": 0,
+      "degree_tolerance": 5.01e-09,
+      "xy_tolerance_m": 1e-09,
+      "native_xy": true
+    },
+    "Excel Best": {
+      "max_wgs84_difference_deg": 4.998668146072305e-11,
+      "max_xy_difference_m": 0,
+      "degree_tolerance": 5.01e-11,
+      "xy_tolerance_m": 1e-09,
+      "native_xy": false
+    },
+    "Excel Full": {
+      "max_wgs84_difference_deg": 7.105427357601002e-15,
+      "max_xy_difference_m": 0,
+      "degree_tolerance": 1e-12,
+      "xy_tolerance_m": 1e-09,
+      "native_xy": true
+    }
+  },
+  "by_format": {
+    "SQLite measurements": {
+      "rows": 1908,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006185793058234762,
+      "median_distance_m": 2.998835425262205e-09,
+      "p95_distance_m": 0.0005728185497848855,
+      "max_abs_delta_x_m": 0.004937472724122927,
+      "max_abs_delta_y_m": 0.004963880986906588
+    },
+    "SQLite objects": {
+      "rows": 1007,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006185793058234762,
+      "median_distance_m": 1.1641532182693481e-09,
+      "p95_distance_m": 4.889443516731262e-09,
+      "max_abs_delta_x_m": 0.004937472724122927,
+      "max_abs_delta_y_m": 0.004963880986906588
+    },
+    "CSV": {
+      "rows": 1007,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006182969499447086,
+      "median_distance_m": 3.704123742373464e-06,
+      "p95_distance_m": 6.382659550896152e-06,
+      "max_abs_delta_x_m": 0.004939384729368612,
+      "max_abs_delta_y_m": 0.004963880986906588
+    },
+    "GeoJSON properties": {
+      "rows": 1007,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006185793058234762,
+      "median_distance_m": 1.1641532182693481e-09,
+      "p95_distance_m": 4.889443516731262e-09,
+      "max_abs_delta_x_m": 0.004937472724122927,
+      "max_abs_delta_y_m": 0.004963880986906588
+    },
+    "GeoJSON geometry": {
+      "rows": 1007,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006185793058234762,
+      "median_distance_m": 1.1641532182693481e-09,
+      "p95_distance_m": 4.889443516731262e-09,
+      "max_abs_delta_x_m": 0.004937472724122927,
+      "max_abs_delta_y_m": 0.004963880986906588
+    },
+    "GPX": {
+      "rows": 1007,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006182969499447086,
+      "median_distance_m": 3.704123742373464e-06,
+      "p95_distance_m": 6.382659550896152e-06,
+      "max_abs_delta_x_m": 0.004939384729368612,
+      "max_abs_delta_y_m": 0.004963880986906588
+    },
+    "Shapefile attributes": {
+      "rows": 1007,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006596539994796394,
+      "median_distance_m": 0.00036343874164682143,
+      "p95_distance_m": 0.0006198432853039643,
+      "max_abs_delta_x_m": 0.004863174457568675,
+      "max_abs_delta_y_m": 0.00483726104721427
+    },
+    "Shapefile geometry": {
+      "rows": 1007,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006596539994796394,
+      "median_distance_m": 0.00036343874164682143,
+      "p95_distance_m": 0.0006198432853039643,
+      "max_abs_delta_x_m": 0.004863174457568675,
+      "max_abs_delta_y_m": 0.00483726104721427
+    },
+    "Excel Best": {
+      "rows": 1007,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006182969499447086,
+      "median_distance_m": 3.704123742373464e-06,
+      "p95_distance_m": 6.382659550896152e-06,
+      "max_abs_delta_x_m": 0.004939384729368612,
+      "max_abs_delta_y_m": 0.004963880986906588
+    },
+    "Excel Full": {
+      "rows": 1908,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006185793058234762,
+      "median_distance_m": 3.0715624285720323e-09,
+      "p95_distance_m": 0.0005728185497848855,
+      "max_abs_delta_x_m": 0.004937472724122927,
+      "max_abs_delta_y_m": 0.004963880986906588
+    }
+  },
+  "all_measurements": {
+    "rows": 1908,
+    "over_0_02_m": 0,
+    "max_distance_m": 0.006185793058234762,
+    "median_distance_m": 2.998835425262205e-09,
+    "p95_distance_m": 0.0005728185497848855,
+    "max_abs_delta_x_m": 0.004937472724122927,
+    "max_abs_delta_y_m": 0.004963880986906588
+  },
+  "selected_measurements": {
+    "rows": 1007,
+    "over_0_02_m": 0,
+    "max_distance_m": 0.006185793058234762,
+    "median_distance_m": 1.1641532182693481e-09,
+    "p95_distance_m": 4.889443516731262e-09,
+    "max_abs_delta_x_m": 0.004937472724122927,
+    "max_abs_delta_y_m": 0.004963880986906588
+  },
+  "all_representations": {
+    "rows": 11872,
+    "over_0_02_m": 0,
+    "max_distance_m": 0.006596539994796394,
+    "median_distance_m": 3.109939670141265e-06,
+    "p95_distance_m": 0.000571405409570181,
+    "max_abs_delta_x_m": 0.004939384729368612,
+    "max_abs_delta_y_m": 0.004963880986906588
+  },
+  "worst_measurements": [
+    {
+      "format": "SQLite measurements",
+      "object_id": "MTZ-0066",
+      "measurement_id": "m-002",
+      "source": "inne",
+      "selected": false,
+      "native_xy": true,
+      "lat": 49.24073333333333,
+      "lon": 19.90425,
+      "x_1992": 152973.91,
+      "y_1992": 565799.64,
+      "reference_x": 152973.9146705307,
+      "reference_y": 565799.635944118,
+      "delta_x_m": -0.004670530703151599,
+      "delta_y_m": 0.004055881989188492,
+      "distance_m": 0.006185793058234762,
+      "over_0_02_m": false,
+      "max_distance_all_formats_m": 0.006185793058234762
+    },
+    {
+      "format": "SQLite measurements",
+      "object_id": "MTZ-0066",
+      "measurement_id": "m-003",
+      "source": "inne",
+      "selected": true,
+      "native_xy": true,
+      "lat": 49.24073333333333,
+      "lon": 19.90425,
+      "x_1992": 152973.91,
+      "y_1992": 565799.64,
+      "reference_x": 152973.9146705307,
+      "reference_y": 565799.635944118,
+      "delta_x_m": -0.004670530703151599,
+      "delta_y_m": 0.004055881989188492,
+      "distance_m": 0.006185793058234762,
+      "over_0_02_m": false,
+      "max_distance_all_formats_m": 0.006185793058234762
+    },
+    {
+      "format": "SQLite measurements",
+      "object_id": "MTW-0065",
+      "measurement_id": "m-003",
+      "source": "TPN",
+      "selected": true,
+      "native_xy": true,
+      "lat": 49.26426450542717,
+      "lon": 19.87816642861684,
+      "x_1992": 155566.68,
+      "y_1992": 563871.26,
+      "reference_x": 155566.68429545127,
+      "reference_y": 563871.264425042,
+      "delta_x_m": -0.004295451275538653,
+      "delta_y_m": -0.004425041959621012,
+      "distance_m": 0.006167000730090212,
+      "over_0_02_m": false,
+      "max_distance_all_formats_m": 0.006596539994796394
+    },
+    {
+      "format": "SQLite measurements",
+      "object_id": "KSZ-0064",
+      "measurement_id": "m-003",
+      "source": "inne",
+      "selected": true,
+      "native_xy": true,
+      "lat": 49.2393861277,
+      "lon": 19.8622047217,
+      "x_1992": 152788.47,
+      "y_1992": 562741.86,
+      "reference_x": 152788.46683301497,
+      "reference_y": 562741.864963881,
+      "delta_x_m": 0.0031669850286561996,
+      "delta_y_m": -0.004963880986906588,
+      "distance_m": 0.005888115880645118,
+      "over_0_02_m": false,
+      "max_distance_all_formats_m": 0.005888115880645118
+    },
+    {
+      "format": "SQLite measurements",
+      "object_id": "MLZ-0079",
+      "measurement_id": "m-003",
+      "source": "TPN",
+      "selected": true,
+      "native_xy": true,
+      "lat": 49.239847644511535,
+      "lon": 19.92063056805087,
+      "x_1992": 152889.86,
+      "y_1992": 566992.79,
+      "reference_x": 152889.86339805461,
+      "reference_y": 566992.785322924,
+      "delta_x_m": -0.0033980546286329627,
+      "delta_y_m": 0.004677076009102166,
+      "distance_m": 0.005781160372632206,
+      "over_0_02_m": false,
+      "max_distance_all_formats_m": 0.005781160372632206
+    },
+    {
+      "format": "SQLite measurements",
+      "object_id": "SK-0002",
+      "measurement_id": "m-001",
+      "source": "inne",
+      "selected": true,
+      "native_xy": true,
+      "lat": 49.22661111,
+      "lon": 19.92986944,
+      "x_1992": 151427.05,
+      "y_1992": 567683.16,
+      "reference_x": 151427.05486317445,
+      "reference_y": 567683.1573660721,
+      "delta_x_m": -0.004863174457568675,
+      "delta_y_m": 0.0026339279720559716,
+      "distance_m": 0.0055306457459077295,
+      "over_0_02_m": false,
+      "max_distance_all_formats_m": 0.0055306457459077295
+    },
+    {
+      "format": "SQLite measurements",
+      "object_id": "KSW-0241",
+      "measurement_id": "m-002",
+      "source": "TPN",
+      "selected": true,
+      "native_xy": true,
+      "lat": 49.24968194423332,
+      "lon": 19.87713595606838,
+      "x_1992": 153945.18,
+      "y_1992": 563815.12,
+      "reference_x": 153945.18210480642,
+      "reference_y": 563815.115131613,
+      "delta_x_m": -0.0021048064227215946,
+      "delta_y_m": 0.004868387011811137,
+      "distance_m": 0.005303904427297069,
+      "over_0_02_m": false,
+      "max_distance_all_formats_m": 0.005303904427297069
+    },
+    {
+      "format": "SQLite measurements",
+      "object_id": "MTW-0057",
+      "measurement_id": "m-003",
+      "source": "TPN",
+      "selected": true,
+      "native_xy": true,
+      "lat": 49.24253336771759,
+      "lon": 19.905484187953224,
+      "x_1992": 153175.04,
+      "y_1992": 565887.05,
+      "reference_x": 153175.03506252728,
+      "reference_y": 565887.048197193,
+      "delta_x_m": 0.004937472724122927,
+      "delta_y_m": 0.0018028070917353034,
+      "distance_m": 0.005256305766550209,
+      "over_0_02_m": false,
+      "max_distance_all_formats_m": 0.005256927819175136
+    },
+    {
+      "format": "SQLite measurements",
+      "object_id": "MTW-0052",
+      "measurement_id": "m-003",
+      "source": "TPN",
+      "selected": true,
+      "native_xy": true,
+      "lat": 49.263577417975604,
+      "lon": 19.878911640356993,
+      "x_1992": 155490.95,
+      "y_1992": 563926.35,
+      "reference_x": 155490.95456090756,
+      "reference_y": 563926.352560958,
+      "delta_x_m": -0.004560907545965165,
+      "delta_y_m": -0.002560958033427596,
+      "distance_m": 0.0052307154091786835,
+      "over_0_02_m": false,
+      "max_distance_all_formats_m": 0.005414313713011499
+    },
+    {
+      "format": "SQLite measurements",
+      "object_id": "STR-0028",
+      "measurement_id": "m-002",
+      "source": "TPN",
+      "selected": true,
+      "native_xy": true,
+      "lat": 49.25277039955315,
+      "lon": 19.92907822473404,
+      "x_1992": 154333.54,
+      "y_1992": 567589.86,
+      "reference_x": 154333.54402603488,
+      "reference_y": 567589.8568697011,
+      "delta_x_m": -0.004026034876005724,
+      "delta_y_m": 0.0031302989227697253,
+      "distance_m": 0.005099777266578192,
+      "over_0_02_m": false,
+      "max_distance_all_formats_m": 0.00535299503235161
+    }
+  ],
+  "unexplained_differences": 0,
+  "by_source": {
+    "PIG": {
+      "rows": 860,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.004112381391466407,
+      "median_distance_m": 0.0003594565760981548,
+      "p95_distance_m": 0.0005861767536275012,
+      "max_abs_delta_x_m": 0.0005593800451606512,
+      "max_abs_delta_y_m": 0.004103851970285177
+    },
+    "TPN": {
+      "rows": 1035,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006167000730090212,
+      "median_distance_m": 1.1641532182693481e-09,
+      "p95_distance_m": 3.725290298461914e-09,
+      "max_abs_delta_x_m": 0.004937472724122927,
+      "max_abs_delta_y_m": 0.004868387011811137
+    },
+    "inne": {
+      "rows": 11,
+      "over_0_02_m": 0,
+      "max_distance_m": 0.006185793058234762,
+      "median_distance_m": 0.0032769566053819517,
+      "p95_distance_m": 0.006185793058234762,
+      "max_abs_delta_x_m": 0.004863174457568675,
+      "max_abs_delta_y_m": 0.004963880986906588
+    },
+    "wlasne": {
+      "rows": 2,
+      "over_0_02_m": 0,
+      "max_distance_m": 4.936039954880525e-06,
+      "median_distance_m": 4.9237836001928525e-06,
+      "p95_distance_m": 4.936039954880525e-06,
+      "max_abs_delta_x_m": 4.903587978333235e-06,
+      "max_abs_delta_y_m": 2.293032594025135e-06
+    }
+  },
+  "checks": {
+    "asset_hashes": "PASS",
+    "sqlite_integrity_and_fk": "PASS",
+    "unique_and_complete_ids": "PASS",
+    "geometry_axes_and_shp_crs": "PASS",
+    "cross_format_values_with_declared_rounding": "PASS"
+  }
+}

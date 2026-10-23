@@ -1,0 +1,70 @@
+{
+  "tag_name": "v1.2.0",
+  "published_at": "2026-10-23T15:08:50Z",
+  "html_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/tag/v1.2.0",
+  "assets": [
+    {
+      "name": "best-measurements.csv",
+      "id": 669488771,
+      "size": 660503,
+      "digest": "sha256:786e15e314f6f8c9357b62e56bb4122a550812bc33fd6dfc2d0aec5d9d84fc8b",
+      "browser_download_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/best-measurements.csv"
+    },
+    {
+      "name": "best-measurements.geojson",
+      "id": 669488765,
+      "size": 1634554,
+      "digest": "sha256:6c995241788855f9fedc2c9637aadac72f40884706b87ff3e47a379f642243d0",
+      "browser_download_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/best-measurements.geojson"
+    },
+    {
+      "name": "best-measurements.gpx",
+      "id": 669488776,
+      "size": 639135,
+      "digest": "sha256:02b9b4cab6a3ebb54b3a2336f0fb5664d76f78db656bdd43377396c6fe089332",
+      "browser_download_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/best-measurements.gpx"
+    },
+    {
+      "name": "best-measurements.shp.zip",
+      "id": 669488769,
+      "size": 144907,
+      "digest": "sha256:9f12b5fd8d681cfa35a84142062dc4e5299e97f5c868312b67035989118057ae",
+      "browser_download_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/best-measurements.shp.zip"
+    },
+    {
+      "name": "katalog.sqlite.zip",
+      "id": 669488762,
+      "size": 510671,
+      "digest": "sha256:b095e36bc82af031baaf6bba391576bf3e01772ffa78617640290f6163688ec6",
+      "browser_download_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/katalog.sqlite.zip"
+    },
+    {
+      "name": "katalog.xlsx",
+      "id": 669488802,
+      "size": 623736,
+      "digest": "sha256:6a47919cf998c98e5ce1c7644145bc795f25309d9d21a59e9390c2362e5bfe87",
+      "browser_download_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/katalog.xlsx"
+    },
+    {
+      "name": "metadata.json",
+      "id": 669488796,
+      "size": 270,
+      "digest": "sha256:2c83d2cbf844ac1c4ab95f03e43ee60d265e0f8f3412b2b50bfb45ebbf4dfa75",
+      "browser_download_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/metadata.json"
+    },
+    {
+      "name": "statistics.json",
+      "id": 669488794,
+      "size": 891,
+      "digest": "sha256:94654b04785fa3e50b174d6ff2c1fd1e45245949f317a140e6760232f79e45ec",
+      "browser_download_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/statistics.json"
+    },
+    {
+      "name": "statistics.md",
+      "id": 669488797,
+      "size": 4142,
+      "digest": "sha256:aefcb2ba05d065fffbeca6a07f932e7b5d34e27e80eec5ae904792f3ebca140f",
+      "browser_download_url": "https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/download/v1.2.0/statistics.md"
+    }
+  ]
+}

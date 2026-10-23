@@ -2,6 +2,17 @@
 
 Stan na: 2026-10-23
 
+## PBI-112: Niezależna kontrola eksportów WGS84 → PL-1992
+
+Status: wykonane — do review. Użytkownik zatwierdził
+kontrolę całej paczki ostatniego wydania niezależnym silnikiem GeographicLib.
+Publiczne v1.2.0: SHA-256 9/9 plików zgodne; 1908 pomiarów, 1007 punktów best,
+11 872 reprezentacje współrzędnych. Maksymalna różnica 6,60 mm; zero
+przekroczeń 20 mm, poprawne osie i kompletne klucze we wszystkich formatach.
+Raport, CSV per pomiar i skrypt odtwarzający w [odbiorze](verification/PBI-112.md).
+Końcowy commit, PR i CI wskazuje opis PR audytu.
+Bez zmiany danych, kodu aplikacji, merge i wydania.
+
 ## Wydanie v1.2.0
 
 Status: przygotowanie zweryfikowane lokalnie — do dostarczenia w PR #19. Użytkownik zaakceptował
