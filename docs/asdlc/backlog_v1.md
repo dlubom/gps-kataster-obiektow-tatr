@@ -2,6 +2,31 @@
 
 Stan na: 2026-10-23
 
+## PBI-111: Odświeżenie istniejących rekordów po GLOBALID TPN
+
+Status: zweryfikowane — do dostarczenia w osobnym draft PR od main `835b47a`.
+Uzgodniono dopasowanie wyłącznie `TPN/source_globalid`, zachowanie historii,
+pełne porównanie informacji TPN i osobne przedstawienie NMT gruntu.
+Nowszy stan TPN może zastąpić poprzedni TPN w `auto`; istniejące manual
+i pomiary GNSS/geodezyjne wymagają zachowania wybranego punktu.
+Różnice samej transformacji zgodne z PL-1992 do zapisanej precyzji 0,01 m
+nie tworzą pomiarów. Bez nowych obiektów/jaskiń, importera lub harmonogramu.
+
+Zrzut z 2026-10-22: 1004 GLOBALID w 1002 obiektach, 31 zmian lokalizacji,
+20 nowych `WER_LOK` (17 nakłada się na zmiany lokalizacji), 34 dopisane
+pomiary i 3 uzupełnienia długości przy istniejących jaskiniach. API nie
+podaje Z: nowe wysokości pozostają null; wcześniejsze wysokości i pomiary
+są zachowane. NMT jest wyłącznie osobnym porównaniem w opisie PR.
+Źródłowe null/puste wartości nie usuwają wcześniejszych informacji.
+Odbiór: diff historii i chronionych best, walidacja, pełne testy,
+odczyt eksportów w tym SQLite/Excel, zdalny SHA i CI tego SHA.
+Wyjaśnienia w YAML i opisie PR; bez osobnego raportu MD dla korekty danych.
+Lokalnie: 950 testów, Ruff, walidacja bez błędów (2109 ostrzeżeń),
+odczyt 10/10 eksportów, w tym 44365 komórek pomiarów Excel, oraz zachowanie
+1877 wcześniejszych pomiarów i 10 chronionych obiektów potwierdzone.
+Katalog: 1007 obiektów, 1001 jaskiń, 1911 pomiarów. Pozostaje push, draft
+PR i odbiór CI/paczki dokładnego SHA. Bez merge, taga i wydania.
+
 ## PBI-110: Wywierzyska w lokalnym zrzucie TPN
 
 Status: planowane — projekt do akceptacji w istniejącym PR #18.

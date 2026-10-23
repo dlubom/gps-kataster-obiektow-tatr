@@ -28,8 +28,14 @@ notes: 'PIG aliases: SYSTEM Ptasia Studnia
 
   PIG morphometry: length_m=6283, depth_m=352, denivelation_m=352
 
-  PIG source state year: 2013'
+  PIG source state year: 2013
+
+
+  TPN API, odczyt 2026-10-22, stan rekordu 2026-05-31, GLOBALID {E03549BE-8CD5-4C62-865B-15FC23EC2AB2}
+  (MTZ-0015): DLUGOSC=7153 m; wcześniejszy eksport TPN podawał 6874 m. To informacja katalogowa
+  TPN, bez niezależnej weryfikacji; wcześniejsze dane PIG pozostają odrębnym źródłem. Źródło:
+  https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-10-23T11:59:37Z'
+updated_by: maintenance:PBI-111

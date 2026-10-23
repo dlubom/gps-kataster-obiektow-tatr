@@ -43,15 +43,59 @@ measurements:
     TPN UWAGI: Dane morfometr. orientacyjnie'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-002
+  lat: 49.24968194423332
+  lon: 19.87713595606838
+  x_1992: 153945.18
+  y_1992: 563815.12
+  elevation_m: null
+  elevation_datum: unknown
+  elevation_source: unknown
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{4C30384D-7D8D-48D8-8D57-AEA8CC59687C}
+  observed_at: null
+  observed_date: '2026-06-02'
+  source_date: '2026-06-02'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Stan rekordu API TPN z 2026-06-02, odczytany 2026-10-22. observed_date i source_date
+    oznaczają datę edycji LAST_EDITED_DATE, nie datę pomiaru w terenie; observed_at pozostaje
+    nieznane.
+
+
+    Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID
+    {4C30384D-7D8D-48D8-8D57-AEA8CC59687C}.
+
+
+    API podaje punkt XY bez wysokości. Nie przeniesiono wysokości poprzedniego pomiaru; wysokość
+    gruntu NMT jest osobnym porównaniem w PR.
+
+
+    TPN WER_LOK: 21-03-2024 TZK
+
+
+    TPN UWAGI: Dane morfometr. orientacyjnie
+
+
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu).'
+  created_at: '2026-10-23T11:59:37Z'
+  created_by: maintenance:PBI-111
 best_measurement:
   mode: auto
-  measurement_id: m-001
-  reason: null
-  updated_at: '2026-05-16T10:22:52Z'
-  updated_by: importer:tpn
+  measurement_id: m-002
+  reason: Nowszy stan tego samego rekordu TPN; bez niezależnej weryfikacji terenowej.
+  updated_at: '2026-10-23T11:59:37Z'
+  updated_by: maintenance:PBI-111
 attachments: []
 notes: Imported from TPN source record after operator review.
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-10-23T11:59:37Z'
+updated_by: maintenance:PBI-111
