@@ -71,35 +71,46 @@ measurements:
   y_1992: 561393.11
   elevation_m: 1675.02
   elevation_datum: unknown
-  elevation_source: gnss
+  elevation_source: other
   horizontal_accuracy_m: null
   vertical_accuracy_m: null
   source: inne
-  source_ref: unknown:gnss:BandziochKominiarskiGorny
+  source_ref: JKTZ:773c8e2e6aa910c8ba78192ae6741d107c6598e2:BandziochKom:136
   observed_date: '2026-05-16'
   source_date: null
-  method: gnss
+  method: siec_pomiarowa
   device: null
   tags:
-  - gnss
-  - source_unknown
+  - jktz
+  - survey_network
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'Source provided as unknown GNSS for Bandzioch Kominiarski Gorny.
-    Elevation 1675.02 m supplied with the BandziochKom:136 fix. PIG dump
-    confirms Jaskinia Bańdzioch Kominiarski has lower and upper openings.'
+  notes: 'Pozycja z sieci pomiarowej jaskini: stacja BandziochKom:136, górny otwór wyznaczony
+    ciągiem międzyotworowym BK-CG.SRV od dolnego otworu BandziochKom:000. To dolna kotwica
+    ma historyczny opis unknown - GNSS; górny punkt nie jest odrębnym pomiarem GNSS. Historyczny
+    wynik UTM 34N: E 415839.34, N 5455064.26, H 1675.02 m. Wysokość górnego punktu uzupełniono
+    wcześniej w GPS ff24813ec81c3c14dc0a64377ed6c378e50053a8. Źródło pozycji: historyczna
+    sieć JKTZ, rewizja 773c8e2e6aa910c8ba78192ae6741d107c6598e2 sprzed wydzielenia wspólnego
+    pliku otworów w 6561bab3bdcd37f607820a4a1f0373147b63572e. Odtworzenie kompilacji Survex
+    1.4.24 tej rewizji oraz przeliczenie EPSG:32634 do WGS84 potwierdziło zgodność pozycji
+    i wysokości z obecnymi wartościami, do zapisanej precyzji. Korekta pochodzenia 2026-10-23
+    usuwa błędną klasyfikację bezpośredniego GNSS z importu GPS b83dede4bf36ccbf87e9e3dbf97e5c6493c2de14.
+    observed_date 2026-05-16 zachowano jako dotychczasową datę zapisu punktu w GPS; nie potwierdza
+    daty pomiarów terenowych. Datum wysokości i dokładności pozostają nieznane; status weryfikacji
+    bez zmian. Źródła: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/773c8e2e6aa910c8ba78192ae6741d107c6598e2/Poligony/D_Koscieliska/Kom_Wierch/Bandzioch_Kom/BK-CG.SRV.'
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
 best_measurement:
   mode: manual
   measurement_id: m-003
-  reason: Supplied GNSS point represents the upper opening after multi-opening review.
-  updated_at: '2026-05-16T19:30:00Z'
+  reason: Ręcznie zachowana pozycja górnego otworu BandziochKom:136 z ciągu międzyotworowego
+    JKTZ; automatyczny TPN nie zastępuje tego wskazania.
+  updated_at: '2026-10-23T13:45:51Z'
   updated_by: dl
 attachments: []
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-17T06:43:08Z'
+updated_at: '2026-10-23T13:45:51Z'
 updated_by: dl

@@ -185,6 +185,17 @@ Istniejące artefakty i źródłowe bajty są zachowane; poprawny dokument
 zachowuje wartości i kolejność list. Jest to reguła parsera, niezależna
 od późniejszych kontroli schematu i lokalnych ID pomiarów.
 
+## Pozycja z sieci pomiarowej jaskini
+
+`method: siec_pomiarowa` oznacza pozycję wyznaczoną z sieci pomiarowej
+jaskini, również z powiązanych ciągów powierzchniowych. W `source_ref`
+i `notes` zapisz rewizję źródła, stację i kotwicę sieci. Nie oznaczaj
+punktu jako GNSS tylko dlatego, że kotwica pochodziła z GNSS. Wynikowa
+wysokość ma `elevation_source: other`; nieznane datum i dokładności
+pozostają nieznane. Zapisany punkt dowiązania o niepotwierdzonej pierwotnej
+metodzie ma `method: source_record`, `elevation_source: source_record`.
+Nowa metoda nie zmienia statusu weryfikacji, priorytetu auto ani manual best.
+
 ## Dodanie recznego pomiaru
 
 1. Znajdz obiekt w `data/objects/{PREFIX}/{OBJECT_ID}.yml`.

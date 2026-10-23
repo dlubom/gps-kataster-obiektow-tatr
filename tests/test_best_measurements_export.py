@@ -111,6 +111,44 @@ def test_dbf_notes_truncate_at_utf8_boundary(tmp_path, note):
     assert actual == note.encode("utf-8")[:254].decode("utf-8", errors="ignore")
 
 
+def test_survey_network_manual_point_survives_newer_tpn_in_database_and_exports(tmp_path):
+    data = tmp_path / "data"
+    _write_sample_data(data)
+    path = data / "objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(path.read_text())
+    obj["measurements"][0].update(
+        source="inne",
+        method="siec_pomiarowa",
+        source_ref="JKTZ:historical:Survey:entrance",
+        elevation_source="other",
+    )
+    obj["best_measurement"].update(
+        mode="manual", measurement_id="m-001", reason="Position from a cave survey network."
+    )
+    _write_yaml(path, obj)
+
+    database = build_sqlite_database(data_dir=data, output_path=tmp_path / "katalog.sqlite")
+    with sqlite3.connect(database.sqlite_path) as conn:
+        assert conn.execute(
+            "SELECT mode,measurement_id,computed_best_measurement_id FROM best_measurements"
+        ).fetchone() == ("manual", "m-001", "m-002")
+        assert conn.execute(
+            "SELECT method,source_ref FROM measurements WHERE id='m-001'"
+        ).fetchone() == ("siec_pomiarowa", "JKTZ:historical:Survey:entrance")
+
+    result = export_best_measurements(data_dir=data, output_dir=tmp_path / "exports")
+    with result.csv_path.open(encoding="utf-8", newline="") as stream:
+        row = list(csv.DictReader(stream))[0]
+    assert (row["best_mode"], row["measurement_id"], row["method"]) == (
+        "manual",
+        "m-001",
+        "siec_pomiarowa",
+    )
+    assert row["verification_status"] == "nieweryfikowany"
+    feature = json.loads(result.geojson_path.read_text())["features"][0]
+    assert feature["properties"]["method"] == "siec_pomiarowa"
+
+
 def test_tpn_best_context_readable_in_all_full_text_exports(tmp_path):
     data = tmp_path / "data"
     _write_sample_data(data)

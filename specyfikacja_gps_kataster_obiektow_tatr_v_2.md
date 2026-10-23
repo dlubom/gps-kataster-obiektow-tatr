@@ -179,7 +179,7 @@ oraz pusta jaskinia pozostają legalne.
 | `observed_at` | datetime, opt | Dokładny czas pomiaru, jeśli znany. |
 | `observed_date` | date | Data pomiaru, ustalenia albo stanu źródła. |
 | `source_date` | date, opt | Data publikacji / aktualności źródła, jeśli różni się od daty pomiaru. |
-| `method` | enum | `gps_receiver` \| `gnss` \| `smartfon` \| `mapa_topo` \| `source_record` \| `ustalenie` \| `inne`. |
+| `method` | enum | `gps_receiver` \| `gnss` \| `smartfon` \| `mapa_topo` \| `source_record` \| `siec_pomiarowa` \| `ustalenie` \| `inne`. |
 | `device` | string, opt | Marka / model urządzenia, jeśli dotyczy. |
 | `tags` | lista string | Wolne tagi, np. `weryfikacja_terenowa`. |
 | `verification_status` | enum | `nieweryfikowany` \| `zweryfikowany` \| `odrzucony`. |
@@ -189,6 +189,15 @@ oraz pusta jaskinia pozostają legalne.
 
 Zasady:
 
+- `method: siec_pomiarowa` oznacza pozycję wyznaczoną z sieci pomiarowej
+  jaskini, również z powiązanych pomiarów powierzchniowych. `source_ref`
+  i `notes` wskazują źródłową rewizję, stację oraz sposób dowiązania.
+  Nie oznacza to bezpośredniego pomiaru GNSS ani statusu `zweryfikowany`.
+  Wysokość wynikowa z sieci ma `elevation_source: other`; datum i dokładność
+  pozostają nieznane, jeśli źródło ich nie potwierdza. Zapisany punkt
+  dowiązania o nieznanej pierwotnej metodzie ma `method: source_record`
+  i `elevation_source: source_record`. Metoda nie zmienia priorytetów auto
+  ani ręcznego wyboru best.
 - `Pomiar.id` jest unikalny w obrębie jednego obiektu, także dla identycznych
   rekordów oraz pomiarów odrzuconych lub niewskazanych jako best. To samo
   lokalne ID (np. `m-001`) w różnych obiektach jest dozwolone. Kolizja daje

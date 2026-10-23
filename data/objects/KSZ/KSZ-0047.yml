@@ -73,34 +73,46 @@ measurements:
   y_1992: 562742.35
   elevation_m: 1141.31
   elevation_datum: unknown
-  elevation_source: gnss
+  elevation_source: other
   horizontal_accuracy_m: null
   vertical_accuracy_m: null
   source: inne
-  source_ref: unknown:gnss:Pawlikowskiego:Raptawicka
+  source_ref: JKTZ:773c8e2e6aa910c8ba78192ae6741d107c6598e2:Pawlikowskiego:Raptawicka:1.0
   observed_date: '2026-05-16'
   source_date: null
-  method: gnss
+  method: siec_pomiarowa
   device: null
   tags:
-  - gnss
-  - source_unknown
+  - jktz
+  - survey_network
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: Source provided as Pawlikowskiego:Raptawicka, unknown GNSS. PIG dump identifies
-    Jaskinia Raptawicka as part of system Jaskinie Pawlikowskiego.
+  notes: 'Pozycja z sieci pomiarowej jaskini: stacja Pawlikowskiego:Raptawicka:1.0, wynik
+    sieci systemu Pawlikowskiego obejmującej pomiary jaskiń i ciąg powierzchniowy Obłazkowa–Raptawicka.
+    Kotwica sieci: Pawlikowskiego:Mylna:0, pierwotna metoda wyznaczenia kotwicy niepotwierdzona.
+    Historyczny wynik UTM 34N: E 417181.04, N 5454744.17, H 1141.31 m. Źródło pozycji: historyczna
+    sieć JKTZ, rewizja 773c8e2e6aa910c8ba78192ae6741d107c6598e2 sprzed wydzielenia wspólnego
+    pliku otworów w 6561bab3bdcd37f607820a4a1f0373147b63572e. Odtworzenie kompilacji Survex
+    1.4.24 tej rewizji oraz przeliczenie EPSG:32634 do WGS84 potwierdziło zgodność pozycji
+    i wysokości z obecnymi wartościami, do zapisanej precyzji. Korekta pochodzenia 2026-10-23
+    usuwa błędną klasyfikację bezpośredniego GNSS z importu GPS b83dede4bf36ccbf87e9e3dbf97e5c6493c2de14.
+    observed_date 2026-05-16 zachowano jako dotychczasową datę zapisu punktu w GPS; nie potwierdza
+    daty pomiarów terenowych. Datum wysokości i dokładności pozostają nieznane; status weryfikacji
+    bez zmian. Źródła: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/773c8e2e6aa910c8ba78192ae6741d107c6598e2/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Powierzchnia/POW_ORM.SRV,
+    https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/773c8e2e6aa910c8ba78192ae6741d107c6598e2/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Raptawicka/RAPTAW_S.SRV.'
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
 best_measurement:
   mode: manual
   measurement_id: m-003
-  reason: Supplied Pawlikowskiego GNSS point is the reviewed current coordinate.
-  updated_at: '2026-05-16T19:30:00Z'
+  reason: Ręcznie zachowana pozycja stacji Raptawicka:1.0 z sieci pomiarowej JKTZ; automatyczny
+    TPN nie zastępuje tego wskazania.
+  updated_at: '2026-10-23T13:45:51Z'
   updated_by: dl
 attachments: []
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-10-23T13:45:51Z'
+updated_by: dl

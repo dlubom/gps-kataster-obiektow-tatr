@@ -12,8 +12,13 @@ zgodne do precyzji PL-1992 0,01 m nie tworzą pomiaru. Nowszy TPN zastępuje
 poprzedni TPN w auto; pomiary GNSS/manual pozostają zachowane.
 Na polecenie użytkownika 2026-10-23 best KSW-0201/m-003, KSW-0240/m-002
 i KSZ-0112/m-001 zmieniono z auto na manual z uzasadnieniem i audytem.
-ID best i całe pomiary bez zmian. Wszystkie 9 punktów GNSS/GNSS+LIDAR
-ma manual best; Wysoka KSW-0189/m-003 już miała manual.
+Ten krok zachował ID best i całe pomiary; Wysoka KSW-0189/m-003 już miała manual.
+Po audycie historii poprawiono błędną klasyfikację GNSS czterech m-003:
+Raptawicka KSZ-0047, Obłazkowa KSZ-0090 i górny Bańdzioch LEJ-0002 to
+`siec_pomiarowa`; Mylna KSZ-0064 to `source_record`, punkt dowiązania sieci.
+Rozszerzono enum schematu i specyfikację, bez zmiany manual, ID best,
+współrzędnych, wysokości, dat, dokładności ani statusów.
+[Plan](plans/PBI-111-provenance.md), [odbiór](verification/PBI-111-provenance.md).
 
 1004 dopasowane GLOBALID w 1002 obiektach: 31 nowych pomiarów XY,
 3 rozszerzenia uwag istniejącego m-002 (PL-0005/0024/0031, bez zmiany
@@ -22,11 +27,13 @@ Katalog: 1007 obiektów, 1001 jaskiń, 1908 pomiarów. Na polecenie użytkownika
 31 nowych pomiarów otrzymuje wysokość gruntu z NMT TPN w dokładnym XY:
 `elevation_source: dem`, datum unknown, dokładność pionowa null. Zachowano
 wartości odczytu oraz jego źródło i datę w notes; wysokość gruntu nie
-potwierdza wysokości otworu w ścianie. Dotychczasowe pomiary pozostają bez zmian.
-Źródła i wcześniejsze pomiary zachowane, trzy dotychczasowe notes rozszerzone.
-Uzasadnienia w YAML i opisie PR, bez dodatkowego raportu MD. Odbiór bieżącego
-SHA (walidacja, testy, eksporty SQLite/Excel, CI i paczka) wskazuje opis PR.
-Bez nowych encji, zmian kodu/schematu, merge, taga i wydania.
+potwierdza wysokości otworu w ścianie. Dotychczasowe wartości lokalizacyjne zachowane.
+Źródła i historia zachowane; oprócz trzech dopisków TPN poprawiono pochodzenie
+czterech punktów JKTZ zgodnie z historią git.
+Uzasadnienia aktualizacji TPN w YAML i opisie PR; rozszerzenie schematu
+i korektę pochodzenia opisuje powyższy odbiór. Końcowy SHA i CI wskazuje opis PR.
+Bez nowych encji i zmian algorytmu auto; schemat rozszerzono o jedną metodę.
+Bez merge, taga i wydania.
 
 ## PBI-110: Wywierzyska w lokalnym zrzucie TPN
 

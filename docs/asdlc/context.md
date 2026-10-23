@@ -28,10 +28,20 @@ Aktualizacja TPN zachowuje pomiary wszystkich 10 chronionych obiektów.
 KSW-0240/m-002 (Czarna III) i KSZ-0112/m-001 (Bańdzioch dolny)
 otrzymują `mode: manual`, aby przyszły TPN nie zastąpił ich automatycznie.
 Zmieniono wyłącznie tryb, uzasadnienie i audyt best oraz audyt obiektów.
-Pomiary, ID best i statusy weryfikacji zachowane. Pełny przegląd katalogu:
-7 pomiarów GNSS i 2 punkty LIDAR zakotwiczone GNSS, wszystkie jako manual best.
-Wysoka KSW-0189/m-003 już była manual, podobnie KSW-0257/m-002,
-KSZ-0047/m-003, KSZ-0064/m-003, KSZ-0090/m-003 i LEJ-0002/m-003.
+Ten krok zachował pomiary, ID best i statusy weryfikacji. Wysoka
+KSW-0189/m-003 już była manual, podobnie KSW-0257/m-002, KSZ-0047/m-003,
+KSZ-0064/m-003, KSZ-0090/m-003 i LEJ-0002/m-003.
+
+Po audycie historii JKTZ użytkownik zaakceptował metodę `siec_pomiarowa`
+dla KSZ-0047/m-003 (Raptawicka), KSZ-0090/m-003 (Obłazkowa) i LEJ-0002/m-003
+(górny Bańdzioch). KSZ-0064/m-003 (Mylna) to `source_record`, punkt dowiązania
+sieci o niepotwierdzonej pierwotnej metodzie. Poprawiono source_ref, tags,
+elevation_source, notes i uzasadnienia manual oraz audyt. Mode manual, ID best,
+wszystkie współrzędne, wysokości, datum, dokładności, daty i statusy zachowano.
+Wcześniejsze określenie wszystkich tych punktów jako GNSS było błędną
+klasyfikacją importu. Obecnie: 3 rekordy oznaczone GNSS, 2 GNSS+LIDAR,
+3 pozycje z sieci i 1 kotwica, wszystkie z manual best.
+[Zakres](plans/PBI-111-provenance.md), [dowody](verification/PBI-111-provenance.md).
 Odbiór dokładnego końcowego SHA, CI i paczki wskazuje opis PR #19.
 Bez merge, taga i wydania. PR #12/#13 oraz projekt PBI-110 są niezależne.
 
