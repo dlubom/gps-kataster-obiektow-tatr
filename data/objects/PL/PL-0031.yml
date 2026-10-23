@@ -61,7 +61,14 @@ measurements:
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: TPN source-record measurement imported after operator review; not field-verified.
+  notes: 'TPN source-record measurement imported after operator review; not field-verified.
+
+
+    Uzupełnienie API TPN, odczyt 2026-10-22, stan rekordu 2026-09-14.
+
+    TPN WER_LOK: FF 08092026
+
+    TPN WERYF: 1 (kod źródłowy; status projektu bez zmian).'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 best_measurement:
@@ -74,5 +81,5 @@ attachments: []
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T13:00:00Z'
-updated_by: dl
+updated_at: '2026-10-23T12:29:41Z'
+updated_by: maintenance:PBI-111

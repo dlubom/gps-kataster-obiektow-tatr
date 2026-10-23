@@ -2,6 +2,63 @@
 
 Last updated: 2026-10-23
 
+## Wydanie v1.2.0 — zatwierdzone
+
+2026-10-23 użytkownik zaakceptował dokładny wpis changeloga i v1.2.0,
+commit w istniejącym PR #19, merge, chwilową zmianę wymogu review
+z natychmiastowym przywróceniem ochrony oraz publikację po weryfikacji CI.
+Baza main: `835b47a4493ed4337c3d9799e91d701c18a7d335` (PR #18),
+HEAD PR #19 przed przygotowaniem: `18ab873536b3ba6e8698c69191e1f76b1f543375`.
+Wydanie obejmuje PBI-108/109 i PBI-111; PBI-110 nadal wymaga osobnej
+akceptacji projektu i implementacji. Historyczne ograniczenie „bez merge,
+taga i wydania” poniższych etapów zastępuje to polecenie wyłącznie dla
+wydania v1.2.0 i PR #19. Przygotowanie zweryfikowane lokalnie: 951 testów,
+Ruff, walidacja i odczyt 10/10 artefaktów PASS; do dostarczenia w PR #19.
+[Procedura i wyniki](verification/v1.2.0.md).
+
+## Istniejące rekordy TPN — PBI-111
+
+[Draft PR #19](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/19),
+gałąź `codex/tpn-existing-refresh`, baza main `835b47a4493ed4337c3d9799e91d701c18a7d335`.
+Po korekcie użytkownika nowy pomiar powstaje wyłącznie przy zmianie XY;
+pozostałe informacje dopisujemy w istniejącym rekordzie. Sama różnica
+konwersji zgodna do zapisanej precyzji PL-1992 0,01 m jest pomijana.
+Nowszy TPN zastępuje poprzedni TPN w auto; GNSS/manual zachowujemy.
+
+Źródło: lokalny `data/sources/tpn/api/tpn-20261022T162014287693Z.json`,
+SHA-256 `9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f`.
+1004 GLOBALID w 1002 obiektach: 31 nowych pomiarów, 3 uzupełnienia uwag
+m-002 w PL-0005/0024/0031 i 3 notatki długości jaskiń. Te trzy obiekty
+zachowują stare XY, wysokości, daty, statusy oraz całe best. Stan po zmianie:
+1007 obiektów, 1001 jaskiń, 1908 pomiarów. Na polecenie użytkownika nowe
+31 pomiarów XY otrzymuje wysokość gruntu NMT TPN w tych samych pełnych
+współrzędnych: `elevation_source: dem`, datum unknown, dokładność pionowa null.
+Wartości pochodzą z dowodów per punkt w lokalnym `simple-20261022-final/nmt-evidence.json`;
+notes zachowują model, URL i czas odczytu. To grunt, bez potwierdzenia
+wysokości otworu w ścianie; stare pomiary i trzy dopiski WER_LOK bez zmian.
+`LAST_EDITED_DATE` to data stanu źródła, nie pomiaru w terenie.
+Aktualizacja TPN zachowuje pomiary wszystkich 10 chronionych obiektów.
+2026-10-23, na polecenie użytkownika, KSW-0201/m-003 (Czarna),
+KSW-0240/m-002 (Czarna III) i KSZ-0112/m-001 (Bańdzioch dolny)
+otrzymują `mode: manual`, aby przyszły TPN nie zastąpił ich automatycznie.
+Zmieniono wyłącznie tryb, uzasadnienie i audyt best oraz audyt obiektów.
+Ten krok zachował pomiary, ID best i statusy weryfikacji. Wysoka
+KSW-0189/m-003 już była manual, podobnie KSW-0257/m-002, KSZ-0047/m-003,
+KSZ-0064/m-003, KSZ-0090/m-003 i LEJ-0002/m-003.
+
+Po audycie historii JKTZ użytkownik zaakceptował metodę `siec_pomiarowa`
+dla KSZ-0047/m-003 (Raptawicka), KSZ-0090/m-003 (Obłazkowa) i LEJ-0002/m-003
+(górny Bańdzioch). KSZ-0064/m-003 (Mylna) to `source_record`, punkt dowiązania
+sieci o niepotwierdzonej pierwotnej metodzie. Poprawiono source_ref, tags,
+elevation_source, notes i uzasadnienia manual oraz audyt. Mode manual, ID best,
+wszystkie współrzędne, wysokości, datum, dokładności, daty i statusy zachowano.
+Wcześniejsze określenie wszystkich tych punktów jako GNSS było błędną
+klasyfikacją importu. Obecnie: 3 rekordy oznaczone GNSS, 2 GNSS+LIDAR,
+3 pozycje z sieci i 1 kotwica, wszystkie z manual best.
+[Zakres](plans/PBI-111-provenance.md), [dowody](verification/PBI-111-provenance.md).
+Odbiór dokładnego końcowego SHA, CI i paczki wskazuje opis PR #19.
+Bez merge, taga i wydania. PR #12/#13 oraz projekt PBI-110 są niezależne.
+
 ## Wywierzyska — projekt PBI-110, PR #18
 
 Użytkownik zatwierdził wywierzyska z udokumentowaną klasyfikacją i punktem,

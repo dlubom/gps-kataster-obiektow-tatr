@@ -66,15 +66,58 @@ measurements:
     TPN WER_LOK: 11-02-2020 FF ortofotomapa'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-003
+  lat: 49.23935809141422
+  lon: 19.930249838155245
+  x_1992: 152844.02
+  y_1992: 567693.42
+  elevation_m: 1808.589966
+  elevation_datum: unknown
+  elevation_source: dem
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{B605E5EA-F1A5-43A2-803C-030B412B7415}
+  observed_at: null
+  observed_date: '2026-02-11'
+  source_date: '2026-02-11'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Stan rekordu API TPN z 2026-02-11, odczytany 2026-10-22. observed_date i source_date
+    oznaczają datę edycji LAST_EDITED_DATE, nie datę pomiaru w terenie; observed_at pozostaje
+    nieznane.
+
+
+    Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID
+    {B605E5EA-F1A5-43A2-803C-030B412B7415}.
+
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019.
+    Odczyt 2026-10-22T19:14:51.373646Z w dokładnych współrzędnych tego pomiaru. m n.p.m. według
+    legendy TPN; datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość
+    gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer.
+
+
+    TPN WER_LOK: 11-02-2020 FF ortofotomapa
+
+
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu).'
+  created_at: '2026-10-23T11:59:37Z'
+  created_by: maintenance:PBI-111
 best_measurement:
   mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T10:41:53Z'
-  updated_by: dl
+  measurement_id: m-003
+  reason: Nowszy stan tego samego rekordu TPN; bez niezależnej weryfikacji terenowej.
+  updated_at: '2026-10-23T11:59:37Z'
+  updated_by: maintenance:PBI-111
 attachments: []
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-10-23T12:46:36Z'
+updated_by: maintenance:PBI-111

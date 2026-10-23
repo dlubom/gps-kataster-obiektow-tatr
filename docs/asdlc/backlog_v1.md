@@ -2,6 +2,48 @@
 
 Stan na: 2026-10-23
 
+## Wydanie v1.2.0
+
+Status: przygotowanie zweryfikowane lokalnie — do dostarczenia w PR #19. Użytkownik zaakceptował
+treść changeloga i wersję v1.2.0 oraz polecił commit, merge z chwilową
+zmianą wymogu review i przywróceniem ochrony, CI i publikację wydania.
+Zakres wydania: PR #18 (PBI-108/109) oraz PR #19 (PBI-111).
+Projekt PBI-110 pozostaje niewdrożony. Lokalnie: 951 testów, Ruff,
+walidacja i odczyt 10/10 artefaktów PASS. [Odbiór](verification/v1.2.0.md).
+
+## PBI-111: Odświeżenie istniejących rekordów po GLOBALID TPN
+
+Status: draft [PR #19](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/19) do review.
+Zasada po korekcie użytkownika: nowy pomiar tylko przy rzeczywistej zmianie
+współrzędnych tego samego `TPN/source_globalid`; pozostałe informacje
+uzupełniamy w istniejącym pomiarze lub jaskini. Różnice samej konwersji
+zgodne do precyzji PL-1992 0,01 m nie tworzą pomiaru. Nowszy TPN zastępuje
+poprzedni TPN w auto; pomiary GNSS/manual pozostają zachowane.
+Na polecenie użytkownika 2026-10-23 best KSW-0201/m-003, KSW-0240/m-002
+i KSZ-0112/m-001 zmieniono z auto na manual z uzasadnieniem i audytem.
+Ten krok zachował ID best i całe pomiary; Wysoka KSW-0189/m-003 już miała manual.
+Po audycie historii poprawiono błędną klasyfikację GNSS czterech m-003:
+Raptawicka KSZ-0047, Obłazkowa KSZ-0090 i górny Bańdzioch LEJ-0002 to
+`siec_pomiarowa`; Mylna KSZ-0064 to `source_record`, punkt dowiązania sieci.
+Rozszerzono enum schematu i specyfikację, bez zmiany manual, ID best,
+współrzędnych, wysokości, dat, dokładności ani statusów.
+[Plan](plans/PBI-111-provenance.md), [odbiór](verification/PBI-111-provenance.md).
+
+1004 dopasowane GLOBALID w 1002 obiektach: 31 nowych pomiarów XY,
+3 rozszerzenia uwag istniejącego m-002 (PL-0005/0024/0031, bez zmiany
+best, dat, wysokości i statusów) oraz 3 notatki długości jaskiń.
+Katalog: 1007 obiektów, 1001 jaskiń, 1908 pomiarów. Na polecenie użytkownika
+31 nowych pomiarów otrzymuje wysokość gruntu z NMT TPN w dokładnym XY:
+`elevation_source: dem`, datum unknown, dokładność pionowa null. Zachowano
+wartości odczytu oraz jego źródło i datę w notes; wysokość gruntu nie
+potwierdza wysokości otworu w ścianie. Dotychczasowe wartości lokalizacyjne zachowane.
+Źródła i historia zachowane; oprócz trzech dopisków TPN poprawiono pochodzenie
+czterech punktów JKTZ zgodnie z historią git.
+Uzasadnienia aktualizacji TPN w YAML i opisie PR; rozszerzenie schematu
+i korektę pochodzenia opisuje powyższy odbiór. Końcowy SHA i CI wskazuje opis PR.
+Bez nowych encji i zmian algorytmu auto; schemat rozszerzono o jedną metodę.
+Bez merge, taga i wydania.
+
 ## PBI-110: Wywierzyska w lokalnym zrzucie TPN
 
 Status: planowane — projekt do akceptacji w istniejącym PR #18.

@@ -64,15 +64,58 @@ measurements:
   notes: TPN source-record measurement imported after operator review; not field-verified.
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-003
+  lat: 49.26369744590149
+  lon: 19.878434328324417
+  x_1992: 155503.89
+  y_1992: 563891.48
+  elevation_m: 1165.540039
+  elevation_datum: unknown
+  elevation_source: dem
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{F3AE1E5E-BA6A-4C62-86FE-A4F42892808C}
+  observed_at: null
+  observed_date: '2026-05-04'
+  source_date: '2026-05-04'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Stan rekordu API TPN z 2026-05-04, odczytany 2026-10-22. observed_date i source_date
+    oznaczają datę edycji LAST_EDITED_DATE, nie datę pomiaru w terenie; observed_at pozostaje
+    nieznane.
+
+
+    Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID
+    {F3AE1E5E-BA6A-4C62-86FE-A4F42892808C}.
+
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019.
+    Odczyt 2026-10-22T19:18:23.692714Z w dokładnych współrzędnych tego pomiaru. m n.p.m. według
+    legendy TPN; datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość
+    gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer.
+
+
+    TPN WER_LOK: FF NMT 04052026
+
+
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu).'
+  created_at: '2026-10-23T11:59:37Z'
+  created_by: maintenance:PBI-111
 best_measurement:
   mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T10:41:53Z'
-  updated_by: dl
+  measurement_id: m-003
+  reason: Nowszy stan tego samego rekordu TPN; bez niezależnej weryfikacji terenowej.
+  updated_at: '2026-10-23T11:59:37Z'
+  updated_by: maintenance:PBI-111
 attachments: []
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-10-23T12:46:36Z'
+updated_by: maintenance:PBI-111

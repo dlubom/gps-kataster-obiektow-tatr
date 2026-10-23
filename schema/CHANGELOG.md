@@ -1,5 +1,14 @@
 # Schema changelog
 
+## schema_version: 1 — rozszerzenie 2026-10-23
+
+- Dodano `Pomiar.method: siec_pomiarowa`: pozycja wyznaczona z sieci
+  pomiarowej jaskini, w tym z powiązanych pomiarów powierzchniowych.
+  Nie oznacza bezpośredniego GNSS ani weryfikacji terenowej. Zapisany punkt
+  dowiązania o nieznanej pierwotnej metodzie pozostaje `source_record`.
+- Rozszerzenie enumu bez zmiany pól i schema_version; konsumenci stosujący
+  zamkniętą listę metod muszą uwzględnić nową wartość.
+
 ## schema_version: 1 - 2026-05-15
 
 - Dodano kontrakty JSON Schema dla plikow YAML `Obiekt`, `Jaskinia` i `Relacja`.
