@@ -69,9 +69,9 @@ measurements:
   lon: 19.878434328324417
   x_1992: 155503.89
   y_1992: 563891.48
-  elevation_m: null
+  elevation_m: 1165.540039
   elevation_datum: unknown
-  elevation_source: unknown
+  elevation_source: dem
   horizontal_accuracy_m: null
   vertical_accuracy_m: null
   source: TPN
@@ -95,8 +95,10 @@ measurements:
     {F3AE1E5E-BA6A-4C62-86FE-A4F42892808C}.
 
 
-    API podaje punkt XY bez wysokości. Nie przeniesiono wysokości poprzedniego pomiaru; wysokość
-    gruntu NMT jest osobnym porównaniem w PR.
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019.
+    Odczyt 2026-10-22T19:18:23.692714Z w dokładnych współrzędnych tego pomiaru. m n.p.m. według
+    legendy TPN; datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość
+    gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer.
 
 
     TPN WER_LOK: FF NMT 04052026
@@ -115,5 +117,5 @@ attachments: []
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-23T11:59:37Z'
+updated_at: '2026-10-23T12:46:36Z'
 updated_by: maintenance:PBI-111

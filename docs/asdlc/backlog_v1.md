@@ -14,8 +14,11 @@ poprzedni TPN w auto; chronione GNSS/manual pozostają bez zmian.
 1004 dopasowane GLOBALID w 1002 obiektach: 31 nowych pomiarów XY,
 3 rozszerzenia uwag istniejącego m-002 (PL-0005/0024/0031, bez zmiany
 best, dat, wysokości i statusów) oraz 3 notatki długości jaskiń.
-Katalog: 1007 obiektów, 1001 jaskiń, 1908 pomiarów. Brak Z w API oznacza
-null wysokości tylko dla 31 nowych pomiarów; NMT gruntu jest osobno w PR.
+Katalog: 1007 obiektów, 1001 jaskiń, 1908 pomiarów. Na polecenie użytkownika
+31 nowych pomiarów otrzymuje wysokość gruntu z NMT TPN w dokładnym XY:
+`elevation_source: dem`, datum unknown, dokładność pionowa null. Zachowano
+wartości odczytu oraz jego źródło i datę w notes; wysokość gruntu nie
+potwierdza wysokości otworu w ścianie. Dotychczasowe pomiary pozostają bez zmian.
 Źródła i wcześniejsze pomiary zachowane, trzy dotychczasowe notes rozszerzone.
 Uzasadnienia w YAML i opisie PR, bez dodatkowego raportu MD. Odbiór bieżącego
 SHA (walidacja, testy, eksporty SQLite/Excel, CI i paczka) wskazuje opis PR.

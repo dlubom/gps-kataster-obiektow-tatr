@@ -16,8 +16,12 @@ SHA-256 `9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f`.
 1004 GLOBALID w 1002 obiektach: 31 nowych pomiarów, 3 uzupełnienia uwag
 m-002 w PL-0005/0024/0031 i 3 notatki długości jaskiń. Te trzy obiekty
 zachowują stare XY, wysokości, daty, statusy oraz całe best. Stan po zmianie:
-1007 obiektów, 1001 jaskiń, 1908 pomiarów. Nowe pomiary XY mają null wysokości
-(API nie podaje Z); NMT gruntu pozostaje osobnym porównaniem w PR.
+1007 obiektów, 1001 jaskiń, 1908 pomiarów. Na polecenie użytkownika nowe
+31 pomiarów XY otrzymuje wysokość gruntu NMT TPN w tych samych pełnych
+współrzędnych: `elevation_source: dem`, datum unknown, dokładność pionowa null.
+Wartości pochodzą z dowodów per punkt w lokalnym `simple-20261022-final/nmt-evidence.json`;
+notes zachowują model, URL i czas odczytu. To grunt, bez potwierdzenia
+wysokości otworu w ścianie; stare pomiary i trzy dopiski WER_LOK bez zmian.
 `LAST_EDITED_DATE` to data stanu źródła, nie pomiaru w terenie.
 Wszystkie 10 chronionych obiektów pozostają bajtowo bez zmian; własne
 zweryfikowane punkty Czarnej mają priorytet ponad TPN w auto.
