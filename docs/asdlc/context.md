@@ -14,8 +14,14 @@ PL-EVRF2007-NH pochodzi ze skorowidza, zachowanego w dowodach.
 Pod Wantą ma rozbieżność punktów PIG–TPN ok. 106 m; wycinek obejmuje oba.
 Nie rozstrzygnięto lokalizacji ani wysokości progu. Katalog i kod bez zmian,
 skill pozostaje propozycją; brak automatycznej decyzji o weryfikacji/best.
-Końcowy SHA i CI researchu wskazuje opis PR. Nie rozpoczynać implementacji
-ani szczegółowego pilotażu w ramach zakończenia tego researchu.
+Na dalsze polecenie użytkownika oceniono oba wycinki 2025: osobne znaczniki
+TPN/PIG, XYZ z nieznanym datum i umowny XY@Z*, CloudCompare, QGIS,
+przekroje oraz indeksy rzeczywistych odbić. [Ocena 2025](verification/PBI-112/2025-assessment/README.md)
+wskazuje dwie potencjalne struktury przy TPN (PW-C1: 53 dolne odbicia,
+SN-C1: 26), lecz nie potwierdza otworu ani progu. Nie wyznaczono korekty
+XY/Z i nie zmieniono katalogu. PR #29 sprawdzono jako otwarty draft;
+końcowy SHA i CI wskazuje opis PR. Nie rozpoczynać porównania 2012/2023,
+testu Śnieżnej Studni ani implementacji skilla w ramach tego zakresu.
 
 ## Wydanie v1.2.0 — zatwierdzone
 

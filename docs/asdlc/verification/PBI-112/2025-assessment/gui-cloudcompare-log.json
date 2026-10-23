@@ -1,0 +1,549 @@
+{
+  "global_shift": [
+    -567000.0,
+    -152000.0,
+    0.0
+  ],
+  "views": [
+    {
+      "file": "gui-sniezna-full-top.png",
+      "success": true,
+      "center_xyz": [
+        567413.3091657814,
+        152936.68716171788,
+        1710.4385274541676
+      ],
+      "width_m": 125,
+      "azimuth_from_north_deg": 90,
+      "view": "top",
+      "forward": [
+        0,
+        0,
+        -1
+      ],
+      "up": [
+        0,
+        1,
+        0
+      ],
+      "point_size_px": 2,
+      "projection": "orthographic"
+    },
+    {
+      "file": "gui-sniezna-detail-top.png",
+      "success": true,
+      "center_xyz": [
+        567415.75,
+        152930.445,
+        1702.495
+      ],
+      "width_m": 40,
+      "azimuth_from_north_deg": 90,
+      "view": "top",
+      "forward": [
+        0,
+        0,
+        -1
+      ],
+      "up": [
+        0,
+        1,
+        0
+      ],
+      "point_size_px": 2,
+      "projection": "orthographic"
+    },
+    {
+      "file": "gui-sniezna-detail-exposure.png",
+      "success": true,
+      "center_xyz": [
+        567415.75,
+        152930.445,
+        1702.495
+      ],
+      "width_m": 40,
+      "azimuth_from_north_deg": 90,
+      "view": "exposure",
+      "forward": [
+        -1.0,
+        -6.123233995736766e-17,
+        -0.0
+      ],
+      "up": [
+        -0.0,
+        -0.0,
+        1.0
+      ],
+      "point_size_px": 2,
+      "projection": "orthographic"
+    },
+    {
+      "file": "gui-sniezna-detail-underside.png",
+      "success": true,
+      "center_xyz": [
+        567415.75,
+        152930.445,
+        1702.495
+      ],
+      "width_m": 40,
+      "azimuth_from_north_deg": 90,
+      "view": "underside",
+      "forward": [
+        -0.8191520442889918,
+        -5.015859645267624e-17,
+        0.573576436351046
+      ],
+      "up": [
+        0.573576436351046,
+        3.5121427342182706e-17,
+        0.8191520442889918
+      ],
+      "point_size_px": 2,
+      "projection": "orthographic"
+    },
+    {
+      "file": "gui-pod-wanta-full-top.png",
+      "success": true,
+      "center_xyz": [
+        566322.1288261509,
+        153020.09499492383,
+        1770.3330714346025
+      ],
+      "width_m": 240,
+      "azimuth_from_north_deg": 202.5,
+      "view": "top",
+      "forward": [
+        0,
+        0,
+        -1
+      ],
+      "up": [
+        0,
+        1,
+        0
+      ],
+      "point_size_px": 2,
+      "projection": "orthographic"
+    },
+    {
+      "file": "gui-pod-wanta-pig-top.png",
+      "success": true,
+      "center_xyz": [
+        566324.49,
+        152969.1,
+        1747.0
+      ],
+      "width_m": 40,
+      "azimuth_from_north_deg": 202.5,
+      "view": "top",
+      "forward": [
+        0,
+        0,
+        -1
+      ],
+      "up": [
+        0,
+        1,
+        0
+      ],
+      "point_size_px": 2,
+      "projection": "orthographic"
+    },
+    {
+      "file": "gui-pod-wanta-pig-exposure.png",
+      "success": true,
+      "center_xyz": [
+        566324.49,
+        152969.1,
+        1747.0
+      ],
+      "width_m": 40,
+      "azimuth_from_north_deg": 202.5,
+      "view": "exposure",
+      "forward": [
+        0.38268343236508967,
+        0.9238795325112868,
+        -0.0
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "point_size_px": 2,
+      "projection": "orthographic"
+    },
+    {
+      "file": "gui-pod-wanta-pig-underside.png",
+      "success": true,
+      "center_xyz": [
+        566324.49,
+        152969.1,
+        1747.0
+      ],
+      "width_m": 40,
+      "azimuth_from_north_deg": 202.5,
+      "view": "underside",
+      "forward": [
+        0.3134759159373913,
+        0.7567978077333787,
+        0.573576436351046
+      ],
+      "up": [
+        -0.21949819938655468,
+        -0.5299155298754943,
+        0.8191520442889918
+      ],
+      "point_size_px": 2,
+      "projection": "orthographic"
+    },
+    {
+      "file": "gui-pod-wanta-tpn-top.png",
+      "success": true,
+      "center_xyz": [
+        566319.78,
+        153075.02,
+        1793.56
+      ],
+      "width_m": 40,
+      "azimuth_from_north_deg": 202.5,
+      "view": "top",
+      "forward": [
+        0,
+        0,
+        -1
+      ],
+      "up": [
+        0,
+        1,
+        0
+      ],
+      "point_size_px": 2,
+      "projection": "orthographic"
+    },
+    {
+      "file": "gui-pod-wanta-tpn-exposure.png",
+      "success": true,
+      "center_xyz": [
+        566319.78,
+        153075.02,
+        1793.56
+      ],
+      "width_m": 40,
+      "azimuth_from_north_deg": 202.5,
+      "view": "exposure",
+      "forward": [
+        0.38268343236508967,
+        0.9238795325112868,
+        -0.0
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "point_size_px": 2,
+      "projection": "orthographic"
+    },
+    {
+      "file": "gui-pod-wanta-tpn-underside.png",
+      "success": true,
+      "center_xyz": [
+        566319.78,
+        153075.02,
+        1793.56
+      ],
+      "width_m": 40,
+      "azimuth_from_north_deg": 202.5,
+      "view": "underside",
+      "forward": [
+        0.3134759159373913,
+        0.7567978077333787,
+        0.573576436351046
+      ],
+      "up": [
+        -0.21949819938655468,
+        -0.5299155298754943,
+        0.8191520442889918
+      ],
+      "point_size_px": 2,
+      "projection": "orthographic"
+    }
+  ],
+  "markers": [
+    {
+      "scene": "sniezna full (class 7 and withheld excluded)",
+      "site": "sniezna",
+      "object_id": "MLZ-0068",
+      "measurement_id": "m-001",
+      "source": "PIG",
+      "E": 567417.26,
+      "N": 152928.35,
+      "Z": 1700.7,
+      "elevation_datum": "unknown",
+      "source_file": "data/objects/MLZ/MLZ-0068.yml",
+      "nearest_record_index": 144073,
+      "nearest_xyz": [
+        567417.26,
+        152928.29,
+        1700.0
+      ],
+      "nearest_dxy": 0.059999999997671694,
+      "proxy_xyz": [
+        567417.26,
+        152928.35,
+        1700.0
+      ]
+    },
+    {
+      "scene": "sniezna full (class 7 and withheld excluded)",
+      "site": "sniezna",
+      "object_id": "MLZ-0068",
+      "measurement_id": "m-002",
+      "source": "TPN",
+      "E": 567414.24,
+      "N": 152932.54,
+      "Z": 1699.800044,
+      "elevation_datum": "unknown",
+      "source_file": "data/objects/MLZ/MLZ-0068.yml",
+      "nearest_record_index": 23920,
+      "nearest_xyz": [
+        567414.28,
+        152932.56,
+        1697.51
+      ],
+      "nearest_dxy": 0.04472135957863018,
+      "proxy_xyz": [
+        567414.24,
+        152932.54,
+        1697.51
+      ]
+    },
+    {
+      "scene": "sniezna-detail 30m crop",
+      "site": "sniezna",
+      "object_id": "MLZ-0068",
+      "measurement_id": "m-001",
+      "source": "PIG",
+      "E": 567417.26,
+      "N": 152928.35,
+      "Z": 1700.7,
+      "elevation_datum": "unknown",
+      "source_file": "data/objects/MLZ/MLZ-0068.yml",
+      "nearest_record_index": 144073,
+      "nearest_xyz": [
+        567417.26,
+        152928.29,
+        1700.0
+      ],
+      "nearest_dxy": 0.059999999997671694,
+      "proxy_xyz": [
+        567417.26,
+        152928.35,
+        1700.0
+      ]
+    },
+    {
+      "scene": "sniezna-detail 30m crop",
+      "site": "sniezna",
+      "object_id": "MLZ-0068",
+      "measurement_id": "m-002",
+      "source": "TPN",
+      "E": 567414.24,
+      "N": 152932.54,
+      "Z": 1699.800044,
+      "elevation_datum": "unknown",
+      "source_file": "data/objects/MLZ/MLZ-0068.yml",
+      "nearest_record_index": 23920,
+      "nearest_xyz": [
+        567414.28,
+        152932.56,
+        1697.51
+      ],
+      "nearest_dxy": 0.04472135957863018,
+      "proxy_xyz": [
+        567414.24,
+        152932.54,
+        1697.51
+      ]
+    },
+    {
+      "scene": "sniezna-close 10m crop",
+      "site": "sniezna",
+      "object_id": "MLZ-0068",
+      "measurement_id": "m-001",
+      "source": "PIG",
+      "E": 567417.26,
+      "N": 152928.35,
+      "Z": 1700.7,
+      "elevation_datum": "unknown",
+      "source_file": "data/objects/MLZ/MLZ-0068.yml",
+      "nearest_record_index": 144073,
+      "nearest_xyz": [
+        567417.26,
+        152928.29,
+        1700.0
+      ],
+      "nearest_dxy": 0.059999999997671694,
+      "proxy_xyz": [
+        567417.26,
+        152928.35,
+        1700.0
+      ]
+    },
+    {
+      "scene": "sniezna-close 10m crop",
+      "site": "sniezna",
+      "object_id": "MLZ-0068",
+      "measurement_id": "m-002",
+      "source": "TPN",
+      "E": 567414.24,
+      "N": 152932.54,
+      "Z": 1699.800044,
+      "elevation_datum": "unknown",
+      "source_file": "data/objects/MLZ/MLZ-0068.yml",
+      "nearest_record_index": 23920,
+      "nearest_xyz": [
+        567414.28,
+        152932.56,
+        1697.51
+      ],
+      "nearest_dxy": 0.04472135957863018,
+      "proxy_xyz": [
+        567414.24,
+        152932.54,
+        1697.51
+      ]
+    },
+    {
+      "scene": "pod-wanta full (class 7 and withheld excluded)",
+      "site": "pod-wanta",
+      "object_id": "MTW-0054",
+      "measurement_id": "m-001",
+      "source": "PIG",
+      "E": 566324.49,
+      "N": 152969.1,
+      "Z": 1793.3,
+      "elevation_datum": "unknown",
+      "source_file": "data/objects/MTW/MTW-0054.yml",
+      "nearest_record_index": 46137,
+      "nearest_xyz": [
+        566324.55,
+        152969.09,
+        1746.57
+      ],
+      "nearest_dxy": 0.060827625359632334,
+      "proxy_xyz": [
+        566324.49,
+        152969.1,
+        1746.57
+      ]
+    },
+    {
+      "scene": "pod-wanta full (class 7 and withheld excluded)",
+      "site": "pod-wanta",
+      "object_id": "MTW-0054",
+      "measurement_id": "m-002",
+      "source": "TPN",
+      "E": 566319.78,
+      "N": 153075.02,
+      "Z": 1790.525556,
+      "elevation_datum": "unknown",
+      "source_file": "data/objects/MTW/MTW-0054.yml",
+      "nearest_record_index": 466740,
+      "nearest_xyz": [
+        566319.86,
+        153075.11000000002,
+        1791.47
+      ],
+      "nearest_dxy": 0.12041594577922196,
+      "proxy_xyz": [
+        566319.78,
+        153075.02,
+        1791.47
+      ]
+    },
+    {
+      "scene": "pod-wanta-pig 30m crop",
+      "site": "pod-wanta",
+      "object_id": "MTW-0054",
+      "measurement_id": "m-001",
+      "source": "PIG",
+      "E": 566324.49,
+      "N": 152969.1,
+      "Z": 1793.3,
+      "elevation_datum": "unknown",
+      "source_file": "data/objects/MTW/MTW-0054.yml",
+      "nearest_record_index": 46137,
+      "nearest_xyz": [
+        566324.55,
+        152969.09,
+        1746.57
+      ],
+      "nearest_dxy": 0.060827625359632334,
+      "proxy_xyz": [
+        566324.49,
+        152969.1,
+        1746.57
+      ]
+    },
+    {
+      "scene": "pod-wanta-tpn 30m crop",
+      "site": "pod-wanta",
+      "object_id": "MTW-0054",
+      "measurement_id": "m-002",
+      "source": "TPN",
+      "E": 566319.78,
+      "N": 153075.02,
+      "Z": 1790.525556,
+      "elevation_datum": "unknown",
+      "source_file": "data/objects/MTW/MTW-0054.yml",
+      "nearest_record_index": 466740,
+      "nearest_xyz": [
+        566319.86,
+        153075.11000000002,
+        1791.47
+      ],
+      "nearest_dxy": 0.12041594577922196,
+      "proxy_xyz": [
+        566319.78,
+        153075.02,
+        1791.47
+      ]
+    },
+    {
+      "scene": "pod-wanta-close 10m crop",
+      "site": "pod-wanta",
+      "object_id": "MTW-0054",
+      "measurement_id": "m-002",
+      "source": "TPN",
+      "E": 566319.78,
+      "N": 153075.02,
+      "Z": 1790.525556,
+      "elevation_datum": "unknown",
+      "source_file": "data/objects/MTW/MTW-0054.yml",
+      "nearest_record_index": 466740,
+      "nearest_xyz": [
+        566319.86,
+        153075.11000000002,
+        1791.47
+      ],
+      "nearest_dxy": 0.12041594577922196,
+      "proxy_xyz": [
+        566319.78,
+        153075.02,
+        1791.47
+      ]
+    }
+  ],
+  "sources": {
+    "sniezna-2025-100m.las": {
+      "sha256": "62deee44273b39bab805ae01498c045fc68d4b6aecbe7bb7812f1f47b3e6dfab",
+      "count": 264297
+    },
+    "pod-wanta-2025-both-positions.las": {
+      "sha256": "1191a08a5431d853dbed4178b55c179d1302ddbc55e6516e402f8ca558434cbf",
+      "count": 582112
+    }
+  }
+}
