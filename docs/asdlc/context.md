@@ -4,37 +4,25 @@ Last updated: 2026-10-23
 
 ## Istniejące rekordy TPN — PBI-111
 
-Nowa praca po scaleniu PR #18: main/origin `835b47a4493ed4337c3d9799e91d701c18a7d335`,
-gałąź `codex/tpn-existing-refresh`, osobny draft PR. PR #12/#13 pozostają
-niezależne; nie przenosimy z nich danych ani decyzji. Użytkownik uzgodnił
-dopisywanie zmienionych pomiarów do istniejącego obiektu po GLOBALID,
-pełne porównanie informacji i NMT osobno. Nowszy TPN zastępuje wcześniejszy
-TPN w auto; chronimy manual i GNSS/geodezyjne. Różnice samej konwersji
-zgodne do 0,01 m zapisanej precyzji PL-1992 są pomijane.
+[Draft PR #19](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/19),
+gałąź `codex/tpn-existing-refresh`, baza main `835b47a4493ed4337c3d9799e91d701c18a7d335`.
+Po korekcie użytkownika nowy pomiar powstaje wyłącznie przy zmianie XY;
+pozostałe informacje dopisujemy w istniejącym rekordzie. Sama różnica
+konwersji zgodna do zapisanej precyzji PL-1992 0,01 m jest pomijana.
+Nowszy TPN zastępuje poprzedni TPN w auto; GNSS/manual zachowujemy.
 
-Z lokalnego raw `data/sources/tpn/api/tpn-20261022T162014287693Z.json`
-(SHA-256 `9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f`)
-dopasowano 1004 GLOBALID do 1002 obiektów. Zakres: 34 pomiary (31 zmian
-lokalizacji, 20 WER_LOK, 17 wspólnych) i 3 notatki długości jaskiń.
-Nie powstają nowe encje. Zachowujemy wcześniejsze pomiary, wysokości,
-statusy i źródła. `LAST_EDITED_DATE` opisuje stan rekordu, nie dzień
-pomiaru terenowego. API nie podaje Z; nowe pomiary mają null wysokości,
-a odczyty gruntu NMT z `simple-20261022-final` są osobno w opisie PR.
-Żaden kandydat nie obejmuje GNSS/geodezyjnego ani manual best. Zweryfikowane
-własne punkty Czarnej `KSW-0201/m-003` i `KSW-0240/m-002` pozostają w auto
-z wyższym priorytetem niż TPN; nie wymagają zmiany w tej aktualizacji.
-Lokalnie: 950 testów i Ruff przeszły; walidacja 0 błędów / 2109 ostrzeżeń,
-odczyt 10/10 eksportów (44365 komórek pomiarów Excel) oraz zachowanie
-1877 wcześniejszych pomiarów i wszystkich 10 chronionych obiektów potwierdzone.
-Stan po zmianie: 1007 obiektów, 1001 jaskiń, 1911 pomiarów.
-Status: wykonane — [draft PR #19](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/19)
-do review. Niezależny review bez ustaleń P1/P2/P3. Dane `b8bfb7b` wypchnięte;
-validate [39950830783](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/39950830783)
-i preview [39950830818](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/39950830818)
-mają completed/success. Pobrana paczka 12500650903: digest ZIP i wszystkie
-10 sum payloadu zgodne, odczyt 10/10 eksportów przeszedł (Best 1007,
-Full 1911). Końcowy SHA dokumentacji, CI i odbiór jego paczki wskazuje opis PR.
-Bez merge, taga i wydania. PBI-110 pozostaje osobnym projektem.
+Źródło: lokalny `data/sources/tpn/api/tpn-20261022T162014287693Z.json`,
+SHA-256 `9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f`.
+1004 GLOBALID w 1002 obiektach: 31 nowych pomiarów, 3 uzupełnienia uwag
+m-002 w PL-0005/0024/0031 i 3 notatki długości jaskiń. Te trzy obiekty
+zachowują stare XY, wysokości, daty, statusy oraz całe best. Stan po zmianie:
+1007 obiektów, 1001 jaskiń, 1908 pomiarów. Nowe pomiary XY mają null wysokości
+(API nie podaje Z); NMT gruntu pozostaje osobnym porównaniem w PR.
+`LAST_EDITED_DATE` to data stanu źródła, nie pomiaru w terenie.
+Wszystkie 10 chronionych obiektów pozostają bajtowo bez zmian; własne
+zweryfikowane punkty Czarnej mają priorytet ponad TPN w auto.
+Odbiór dokładnego końcowego SHA, CI i paczki wskazuje opis PR #19.
+Bez merge, taga i wydania. PR #12/#13 oraz projekt PBI-110 są niezależne.
 
 ## Wywierzyska — projekt PBI-110, PR #18
 

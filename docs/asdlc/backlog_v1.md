@@ -4,32 +4,22 @@ Stan na: 2026-10-23
 
 ## PBI-111: Odświeżenie istniejących rekordów po GLOBALID TPN
 
-Status: wykonane — do review w [draft PR #19](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/19),
-osobno od main `835b47a`.
-Uzgodniono dopasowanie wyłącznie `TPN/source_globalid`, zachowanie historii,
-pełne porównanie informacji TPN i osobne przedstawienie NMT gruntu.
-Nowszy stan TPN może zastąpić poprzedni TPN w `auto`; istniejące manual
-i pomiary GNSS/geodezyjne wymagają zachowania wybranego punktu.
-Różnice samej transformacji zgodne z PL-1992 do zapisanej precyzji 0,01 m
-nie tworzą pomiarów. Bez nowych obiektów/jaskiń, importera lub harmonogramu.
+Status: draft [PR #19](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/19) do review.
+Zasada po korekcie użytkownika: nowy pomiar tylko przy rzeczywistej zmianie
+współrzędnych tego samego `TPN/source_globalid`; pozostałe informacje
+uzupełniamy w istniejącym pomiarze lub jaskini. Różnice samej konwersji
+zgodne do precyzji PL-1992 0,01 m nie tworzą pomiaru. Nowszy TPN zastępuje
+poprzedni TPN w auto; chronione GNSS/manual pozostają bez zmian.
 
-Zrzut z 2026-10-22: 1004 GLOBALID w 1002 obiektach, 31 zmian lokalizacji,
-20 nowych `WER_LOK` (17 nakłada się na zmiany lokalizacji), 34 dopisane
-pomiary i 3 uzupełnienia długości przy istniejących jaskiniach. API nie
-podaje Z: nowe wysokości pozostają null; wcześniejsze wysokości i pomiary
-są zachowane. NMT jest wyłącznie osobnym porównaniem w opisie PR.
-Źródłowe null/puste wartości nie usuwają wcześniejszych informacji.
-Odbiór: diff historii i chronionych best, walidacja, pełne testy,
-odczyt eksportów w tym SQLite/Excel, zdalny SHA i CI tego SHA.
-Wyjaśnienia w YAML i opisie PR; bez osobnego raportu MD dla korekty danych.
-Lokalnie: 950 testów, Ruff, walidacja bez błędów (2109 ostrzeżeń),
-odczyt 10/10 eksportów, w tym 44365 komórek pomiarów Excel, oraz zachowanie
-1877 wcześniejszych pomiarów i 10 chronionych obiektów potwierdzone.
-Katalog: 1007 obiektów, 1001 jaskiń, 1911 pomiarów. Niezależny review
-bez ustaleń P1/P2/P3. Dane `b8bfb7b` wypchnięte; validate i preview
-completed/success, pobrana paczka ma zgodny digest ZIP, 10 sum payloadu
-i odczyt 10/10 eksportów. Końcowy SHA dokumentacji, CI i odbiór jego
-paczki wskazuje opis PR #19. Bez merge, taga i wydania.
+1004 dopasowane GLOBALID w 1002 obiektach: 31 nowych pomiarów XY,
+3 rozszerzenia uwag istniejącego m-002 (PL-0005/0024/0031, bez zmiany
+best, dat, wysokości i statusów) oraz 3 notatki długości jaskiń.
+Katalog: 1007 obiektów, 1001 jaskiń, 1908 pomiarów. Brak Z w API oznacza
+null wysokości tylko dla 31 nowych pomiarów; NMT gruntu jest osobno w PR.
+Źródła i wcześniejsze pomiary zachowane, trzy dotychczasowe notes rozszerzone.
+Uzasadnienia w YAML i opisie PR, bez dodatkowego raportu MD. Odbiór bieżącego
+SHA (walidacja, testy, eksporty SQLite/Excel, CI i paczka) wskazuje opis PR.
+Bez nowych encji, zmian kodu/schematu, merge, taga i wydania.
 
 ## PBI-110: Wywierzyska w lokalnym zrzucie TPN
 
