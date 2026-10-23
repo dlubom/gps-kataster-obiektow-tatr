@@ -72,6 +72,9 @@ Można też połączyć pobranie nowego źródła z uproszczeniem:
 `scripts/fetch_tpn_data.py --simple-dir data/sources/tpn/api/nowy-simple --with-nmt`.
 `--input` wyklucza `--output` i wymaga `--simple-dir`.
 Wybierz nowy katalog docelowy; istniejące pliki nigdy nie są nadpisywane.
+Surowy zrzut i pliki simple muszą mieć różne ścieżki. Kolizja, również
+przez ścieżkę względną lub dowiązanie katalogu, przerywa polecenie przed
+pobieraniem danych i tworzeniem plików.
 
 - `simple.json`: trzy listy (`jaskinie`, `leje_krasowe`, `sztolnie_kopalnie`),
   jeden płaski rekord na obiekt, wszystkie atrybuty poza `CREATED_USER`,

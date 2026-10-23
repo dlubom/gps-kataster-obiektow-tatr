@@ -19,6 +19,13 @@ Nie oznaczać PBI-110 jako gotowego lub wykonanego przed akceptacją projektu.
 
 ## Uproszczone pliki TPN i NMT — PBI-109
 
+2026-10-23: na polecenie użytkownika naprawa P3 z review PR #18 —
+porównanie planowanych ścieżek raw/simple przed siecią, także przez `..`
+i dowiązanie katalogu. [Dowód RED/GREEN](verification/PBI-109.md#poprawka-po-review-2026-10-23--kolizje-ścieżek-wyjściowych).
+Bez ponownego lokalnego buildu eksportów.
+Lokalny odbiór poprawki: **950 testów**, Ruff i walidacja bez błędów;
+niezależny review bez ustaleń. Końcowy SHA i CI wskazuje opis PR #18.
+
 Użytkownik zatwierdził po wywiadzie `simple.json` i `simple-nmt.json`
 dla wszystkich trzech warstw oraz NMT w dokładnych źródłowych punktach.
 Zachowujemy informacje obiektów i identyfikatory; usuwamy otoczkę usług

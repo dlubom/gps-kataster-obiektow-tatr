@@ -56,7 +56,12 @@ def main(argv: Sequence[str] | None = None) -> int:
                     args.simple_dir / "simple-nmt.json",
                     args.simple_dir / "nmt-evidence.json",
                 ]
+        resolved_targets = set()
         for target in targets + ([] if args.input else [output]):
+            resolved = target.resolve()
+            if resolved in resolved_targets:
+                raise ValueError(f"Output paths collide: {resolved}. Choose a different --output.")
+            resolved_targets.add(resolved)
             if target.exists() or target.is_symlink():
                 raise FileExistsError(f"Output already exists: {target}")
         if args.input:

@@ -295,3 +295,39 @@ def test_existing_nmt_evidence_blocks_before_any_api_or_plain_output(
     assert cli.main(["--input", str(raw), "--simple-dir", str(output), "--with-nmt"]) == 1
     assert existing.read_text() == "keep this evidence"
     assert not (output / "simple.json").exists()
+
+
+@pytest.mark.parametrize(
+    "filename, with_nmt",
+    [
+        ("simple.json", False),
+        ("simple.json", True),
+        ("simple-nmt.json", True),
+        ("nmt-evidence.json", True),
+    ],
+)
+@pytest.mark.parametrize("path_form", ["absolute", "relative", "symlink"])
+def test_colliding_output_paths_fail_before_download_or_file_creation(
+    tmp_path, monkeypatch, capsys, filename, with_nmt, path_form
+):
+    output = tmp_path / "simple"
+    output.mkdir()
+    raw = output / filename
+    if path_form == "relative":
+        monkeypatch.chdir(tmp_path)
+        raw = Path("simple") / ".." / "simple" / filename
+    elif path_form == "symlink":
+        alias = tmp_path / "alias"
+        alias.symlink_to(output, target_is_directory=True)
+        raw = alias / filename
+    cli = load_cli()
+    monkeypatch.setattr(
+        cli, "fetch_snapshot", lambda **kw: pytest.fail("must reject collision before download")
+    )
+    args = ["--output", str(raw), "--simple-dir", str(output)]
+    if with_nmt:
+        args.append("--with-nmt")
+    assert cli.main(args) == 1
+    error = capsys.readouterr().err
+    assert "collid" in error.lower() and filename in error
+    assert list(output.iterdir()) == []
