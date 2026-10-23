@@ -32,11 +32,11 @@ mapowanie otworu lub konflikt nazw odraczamy.
   Sprawdzono hash raw, zgodność GUID/OBJECTID i dokładnego XY oraz
   niezaokrąglone wartości wysokości dla wszystkich 31 kandydatów.
   `simple-nmt.json` jest widokiem zaokrąglonym, nie źródłem dokładności.
-- Do dodania: **20 Obiektów, 19 Jaskiń, 21 Pomiarów i 21 GLOBALID**.
-  Dziesięć rekordów pozostaje odroczonych. Każdy z 31 rekordów ma dokładnie
+- Do dodania: **19 Obiektów, 18 Jaskiń, 20 Pomiarów i 20 GLOBALID**.
+  Jedenaście rekordów pozostaje odroczonych. Każdy z 31 rekordów ma dokładnie
   jedną dyspozycję w tabelach poniżej.
-- Oczekiwany katalog względem bazy: **1027 obiektów, 1020 jaskiń,
-  1929 pomiarów**. Przed wykonaniem ponownie potwierdzić bazę i liczniki.
+- Oczekiwany katalog względem bazy: **1026 obiektów, 1019 jaskiń,
+  1928 pomiarów**. Przed wykonaniem ponownie potwierdzić bazę i liczniki.
 
 ## Lista do dodania
 
@@ -54,7 +54,6 @@ bez ponownego użycia dawnych ID lub zmiany istniejących.
 | 6405 | Nyża pod Szarą Turnią I | STR | nowa |
 | 6406 | Schron nad Komorą w Kończystej Turni | MTW | nowa |
 | 6407 | Nyża za Jałowcem | MTW | nowa |
-| 6410 | Jaskinia w Kozim Grzbiecie | MTZ | nowa |
 | 7042 | Nyża pod Szarą Turnią II | STR | nowa |
 | 7044 + 6408 | Korytarz pod Ciemniakiem | MTZ | jedna nowa |
 | 7045 | Szczelina przy Zbójeckiej Dziurze | CHZ | nowa |
@@ -113,15 +112,24 @@ uzasadnienie wyboru i nie odrzucać drugiego pomiaru.
   nie mają konkretnego dowodu utożsamienia z sąsiadami. Sama bliskość,
   wspólny toponim lub nazwa „pod/nad” nie oznacza wspólnego `cave_id`.
 
-## Dziesięć odroczonych rekordów
+## Jedenaście odroczonych rekordów
 
 | OBJECTID | Grupa | Powód odroczenia |
 | --- | --- | --- |
 | 6409, 7364, 7380 | Okno w Ciemniaku | plan ma portal i komin do powierzchni; brak mapowania GUID na otwory/powtórzenia |
+| 6410 | Jaskinia w Kozim Grzbiecie | opis i przekrój rozróżniają wejście główne oraz okno nad nim; TPN nie określa otworu |
 | 6722, 7043 | Dziura nad Zahradziskami / Komora w Kończystej Turni | 0,169 m, różne nazwy i długości 5/7 m; nieustalona zmiana nazwy lub odrębność |
 | 6403, 6404, 7041 | Nyże pod Zachodem Pilotów | dwa różne II, III i istniejąca nienumerowana STR-0028; nieustalona tożsamość i numeracja |
 | 6721 | Tunel w Skrajnej Giewonckiej Baszcie | nowy punkt nie wskazuje otworu S/N; nie tworzyć trzeciego obiektu z samego nowego GUID |
 | 7681 | Schron nad Wielką Równią | użytkownik wybrał odroczenie relacji do istniejącej Gawry/Jaskini; nie jest to stwierdzenie duplikatu |
+
+Po review 23.10.2026 użytkownik zdecydował odroczyć Jaskinię w Kozim
+Grzbiecie, OBJECTID 6410, GLOBALID `{4D57492D-D68A-471E-B00E-770A594A2C7B}`.
+[Nowak 2016, Jaskinie 85, s. 28](http://jaskinie.org.pl/files/Jaskinie__85_2016.pdf#page=28)
+opisuje wejście do głównego ciągu pod okapem oraz przewieszone okno nad nim,
+prowadzące do ciągu bocznego. TPN ma `OTWÓR=null`; nie ustalono, któremu
+otwarciu odpowiada punkt. Rekord pozostaje odroczony do rozstrzygnięcia
+tej tożsamości; nie przesądza to błędnego XY ani potrzeby drugiego Obiektu.
 
 [Nowak 2016, Jaskinie 82, s. 27](http://jaskinie.org.pl/files/Jaskinie__82_2016.pdf#page=27)
 potwierdza wielootworowość Okna, lecz nie przypisuje trzech GUID.
@@ -158,15 +166,15 @@ pozostają poza zakresem naprawy.
 ## Realizacja i odbiór po akceptacji projektu
 
 1. Potwierdzić bieżący Git, hash raw i NMT, wszystkie 31 GUID i podział
-   21 dodanych / 10 odroczonych. Przy zmianie bazy przeliczyć kolizje i ID.
-2. Nadać ID zgodnie z resolverem i obecnym rejestrem, utworzyć 20 Obiektów
-   i 19 Jaskiń, dopisać otwór do C-0219. Każdy pomiar zachowuje własny GUID,
+   20 dodanych / 11 odroczonych. Przy zmianie bazy przeliczyć kolizje i ID.
+2. Nadać ID zgodnie z resolverem i obecnym rejestrem, utworzyć 19 Obiektów
+   i 18 Jaskiń, dopisać otwór do C-0219. Każdy pomiar zachowuje własny GUID,
    punkt i NMT; Korytarz ma oba źródła oraz Best z 7044.
 3. Walidacja YAML, symetria członkostwa, unikalność ID/GLOBALID i zgodność
    WGS84/PL-1992; pełna bramka projektu według runbooka.
 4. Porównać katalog z bazą: wszystkie dawne Obiekty i ich pomiary/Best
    bez zmian; dawne Jaskinie poza członkostwem/audytem C-0219 bez zmian.
-   Potwierdzić liczniki i brak dziesięciu odroczonych GUID w nowych danych.
+   Potwierdzić liczniki i brak jedenastu odroczonych GUID w nowych danych.
 5. Niezależnie odczytać SQLite i wszystkie formaty eksportów, w tym pełne
    wiersze Best/Full, oba pomiary Korytarza i jeden Best na nowy Obiekt.
    Potwierdzić tagi, referencje, NMT i notatki pochodzenia w artefaktach.
