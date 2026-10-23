@@ -4,7 +4,7 @@ Stan na: 2026-10-23
 
 ## PBI-113: Nowe obiekty z lokalnego zrzutu TPN
 
-Status: zweryfikowane lokalnie — do dostarczenia w PR #28, na polecenie użytkownika 2026-10-23.
+Status: wykonane — do review w draft PR #28, na polecenie użytkownika 2026-10-23.
 Zakres: 19 nowych Obiektów, 18 Jaskiń, 20 pomiarów i 20 GLOBALID; 11 rekordów
 odroczono. Jednoznaczny TPN wystarcza do wpisu nieweryfikowanego.
 Smocza Jama N trafia do C-0219; Korytarz 6408/7044 tworzy jeden Obiekt
@@ -17,7 +17,8 @@ Katalog po materializacji: 1026 Obiektów, 1019 Jaskiń i 1928 pomiarów.
 951 testów, Ruff, walidacja i niezależny odczyt wszystkich eksportów PASS.
 Dawne Obiekty zachowane bajtowo; jedyna zmiana dawnej Jaskini to członkostwo
 i audyt C-0219. Kod i schemat bez zmian; końcowy SHA, CI i odbiór pobranej
-paczki będą wskazane w opisie PR. Aktualizacja issue i naprawy dawnych par później.
+paczki wskazano w opisie PR. Commit danych `40bf339`: validate i preview
+completed/success, pobrana paczka odczytana bez błędów. Aktualizacja issue i naprawy dawnych par później.
 
 ## Wydanie v1.2.0
 

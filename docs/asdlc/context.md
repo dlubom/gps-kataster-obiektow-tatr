@@ -20,12 +20,14 @@ Bieżący main potwierdzony: `caf7bae69b28eb037810215889cb87f763b2c6bd`.
 ID przydzielono ponad maksimum całej historii Git, aby nie użyć ponownie
 numerów z niezależnych PR #12/#13. Nowe Obiekty: KSW-0261–0263, STR-0039–0043, BIA-0010, MTW-0074–0075,
 MTZ-0072–0073, CHZ-0033–0037 i DZI-0012; nowe Jaskinie C-1031–C-1048.
-Status: zweryfikowane lokalnie — do dostarczenia. Katalog: 1026 Obiektów,
+Status: wykonane — do review w draft PR #28. Katalog: 1026 Obiektów,
 1019 Jaskiń, 1928 pomiarów. 951 testów, Ruff, walidacja i niezależny odczyt
 wszystkich eksportów PASS. Wszystkie 1007 wcześniejszych Obiektów i 1000
 Jaskiń zachowano bajtowo; C-0219 otrzymuje KSW-0261 i audyt aktualizacji.
 Kod i schemat bez zmian. Końcowy SHA, CI i odbiór pobranej paczki wskazuje
-opis PR #28.
+opis PR #28. Commit danych `40bf339` dostarczony; validate i preview
+completed/success. Pobrana paczka: 136753 porównania, 0 błędów, zgodne
+HEAD/base/merge/run i 10/10 sum kontrolnych.
 Merge, tag i wydanie wymagają odrębnego polecenia.
 
 ## Wydanie v1.2.0 — zatwierdzone

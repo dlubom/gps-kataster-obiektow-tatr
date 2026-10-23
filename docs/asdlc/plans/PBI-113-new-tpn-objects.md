@@ -1,8 +1,8 @@
 # PBI-113: nowe obiekty z lokalnego zrzutu TPN
 
 Stan: 2026-10-23. Użytkownik polecił realizację projektu w PR #28.
-Zakres i odroczenia z review zachowano; materializacja zweryfikowana lokalnie,
-do dostarczenia. Baza: `caf7bae69b28eb037810215889cb87f763b2c6bd`.
+Zakres i odroczenia z review zachowano; materializacja wykonana — do review
+w draft PR #28. Baza: `caf7bae69b28eb037810215889cb87f763b2c6bd`.
 
 ## Cel i wybrane podejście
 
@@ -202,6 +202,15 @@ pozostają poza zakresem naprawy.
 - Niezależny odczyt SQLite, CSV, GeoJSON, GPX, Shapefile, Excel Best/Full,
   metadata, statystyk i ZIP SQLite: 136727 porównań, 0 błędów.
 - Końcowy SHA, wynik CI oraz odbiór pobranej paczki są podawane w opisie PR #28.
-  Stan lokalny: zweryfikowane — do dostarczenia. Po korekcie ID powtórzono
+  Po korekcie ID powtórzono
   pełną bramkę i odczyt eksportów z tym samym wynikiem. Niezależny review:
   jedyny finding dotyczący ID naprawiono; pozostałe kontrole bez ustaleń. Bez merge, taga i wydania.
+
+Commit danych `40bf339d60ca281477cb28f94dd43c1d8ffee17b` potwierdzono zdalnie.
+[Validate](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/40001826303)
+i [preview](https://github.com/dlubom/gps-kataster-obiektow-tatr/actions/runs/40001826305)
+zakończone `completed/success`, wszystkie joby i kroki również. Pobrana
+paczka 12521389970: digest ZIP i CRC, 10/10 sum kontrolnych, zgodne
+HEAD/base/merge/run; 136753 porównania wszystkich formatów, 0 błędów.
+Zdalny blob MTZ-0072 zgodny z lokalnym. Końcowy SHA dokumentacji, jego CI
+i odbiór jego paczki wskazuje opis PR; PBI-113 wykonane, zakończyć po nim.
