@@ -6,7 +6,7 @@ Last updated: 2026-10-23
 
 Metoda zatwierdzona przez użytkownika 2026-10-23; audyt dziewięciu publicznych
 plików v1.2.0, przypięty do caf7bae69b28eb037810215889cb87f763b2c6bd.
-Status: zweryfikowane lokalnie — do dostarczenia przez draft PR.
+Status: audyt wykonany — [draft PR #22](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/22) do review.
 [Plan](plans/PBI-112.md), [wyniki i odtworzenie](verification/PBI-112.md).
 16 par ≤ 1 m obejmuje 29 obiektów; 11 grup identycznych współrzędnych.
 Jedyny duplikat nazwy: BYW-0041/BYW-0043, Koleba w Zawracie Kasprowym.
