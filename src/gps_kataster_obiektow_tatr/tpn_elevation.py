@@ -130,12 +130,7 @@ def _pixel_value(payload: dict) -> str:
     return value
 
 
-def fetch_elevation(lat: float, lon: float, *, timeout: float = 20.0) -> dict:
-    """Return one raster value with provenance; never write catalog data.
-
-    The publisher labels elevations as metres above sea level. Its exact
-    vertical datum, accuracy and resampling algorithm remain undocumented.
-    """
+def _validate_input(lat: float, lon: float, timeout: float) -> None:
     for name, value, low, high in (
         ("lat", lat, -90, 90),
         ("lon", lon, -180, 180),
@@ -150,6 +145,8 @@ def fetch_elevation(lat: float, lon: float, *, timeout: float = 20.0) -> dict:
         ):
             raise ElevationError(f"INVALID_INPUT: invalid {name}")
 
+
+def _source_info(timeout: float) -> dict:
     service = _json(_read(f"{SERVICE_URL}?f=json", timeout))
     if service.get("serviceItemId") != ITEM_ID:
         raise ElevationError("SOURCE_CHANGED: service no longer identifies the reviewed source")
@@ -171,50 +168,79 @@ def fetch_elevation(lat: float, lon: float, *, timeout: float = 20.0) -> dict:
     _check_metadata(metadata)
     legend = _read(LEGEND_URL, timeout)
     reference_label = _check_legend(_json(legend))
-
-    # Explicit point semantics and tiny map extent avoid a screen-pixel search.
-    params = {
-        "f": "json",
-        "geometry": f"{lon},{lat}",
-        "geometryType": "esriGeometryPoint",
-        "sr": "4326",
-        "layers": "all:0",
-        "tolerance": "0",
-        "mapExtent": f"{lon - 0.00001},{lat - 0.00001},{lon + 0.00001},{lat + 0.00001}",
-        "imageDisplay": "1000,1000,96",
-        "returnGeometry": "false",
-    }
-    identify_url = f"{SERVICE_URL}/identify?{urlencode(params)}"
-    response = _read(identify_url, timeout)
-    raw_value = _pixel_value(_json(response))
     return {
-        "format_version": 1,
-        "point": {"lat": lat, "lon": lon, "crs": "EPSG:4326"},
-        "surface": "ground",
-        "elevation_m": float(raw_value),
-        "raw_elevation": raw_value,
-        "elevation_reference": "sea_level",
-        "elevation_datum": "unknown",
-        "vertical_accuracy_m": "unknown",
-        "retrieved_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
-        "source": {
-            "provider": "TPN",
-            "model": MODEL,
-            "model_year_in_name": 2019,
-            "data_date": "2019-10-14/2019-10-15",
-            "data_date_source_url": DATA_DESCRIPTION_URL,
-            "latestness": "unconfirmed",
-            "grid_resolution_m": 0.5,
-            "horizontal_crs": "EPSG:2178",
-            "resampling": "unknown",
-            "service_url": SERVICE_URL,
-            "layer_id": 0,
-            "metadata_url": METADATA_URL,
-            "metadata_sha256": hashlib.sha256(metadata).hexdigest(),
-            "elevation_reference_label": reference_label,
-            "legend_url": LEGEND_URL,
-            "legend_sha256": hashlib.sha256(legend).hexdigest(),
-            "identify_url": identify_url,
-            "response_sha256": hashlib.sha256(response).hexdigest(),
-        },
+        "provider": "TPN",
+        "model": MODEL,
+        "model_year_in_name": 2019,
+        "data_date": "2019-10-14/2019-10-15",
+        "data_date_source_url": DATA_DESCRIPTION_URL,
+        "latestness": "unconfirmed",
+        "grid_resolution_m": 0.5,
+        "horizontal_crs": "EPSG:2178",
+        "resampling": "unknown",
+        "service_url": SERVICE_URL,
+        "layer_id": 0,
+        "metadata_url": METADATA_URL,
+        "metadata_sha256": hashlib.sha256(metadata).hexdigest(),
+        "elevation_reference_label": reference_label,
+        "legend_url": LEGEND_URL,
+        "legend_sha256": hashlib.sha256(legend).hexdigest(),
     }
+
+
+class ElevationClient:
+    """Read points using one reviewed source check per client/batch.
+
+    No persistent cache or fallback model. Each point retains its own URL,
+    response hash, raw value and retrieval time.
+    """
+
+    def __init__(self, *, timeout: float = 20.0):
+        _validate_input(0, 0, timeout)
+        self.timeout = timeout
+        self._source = None
+
+    def fetch(self, lat: float, lon: float) -> dict:
+        _validate_input(lat, lon, self.timeout)
+        if self._source is None:
+            self._source = _source_info(self.timeout)
+        # Explicit point semantics and tiny extent avoid a screen-pixel search.
+        params = {
+            "f": "json",
+            "geometry": f"{lon},{lat}",
+            "geometryType": "esriGeometryPoint",
+            "sr": "4326",
+            "layers": "all:0",
+            "tolerance": "0",
+            "mapExtent": f"{lon - 0.00001},{lat - 0.00001},{lon + 0.00001},{lat + 0.00001}",
+            "imageDisplay": "1000,1000,96",
+            "returnGeometry": "false",
+        }
+        identify_url = f"{SERVICE_URL}/identify?{urlencode(params)}"
+        response = _read(identify_url, self.timeout)
+        proof = {
+            "format_version": 1,
+            "point": {"lat": lat, "lon": lon, "crs": "EPSG:4326"},
+            "surface": "ground",
+            "elevation_reference": "sea_level",
+            "elevation_datum": "unknown",
+            "vertical_accuracy_m": "unknown",
+            "retrieved_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
+            "source": {
+                **self._source,
+                "identify_url": identify_url,
+                "response_sha256": hashlib.sha256(response).hexdigest(),
+            },
+        }
+        try:
+            raw_value = _pixel_value(_json(response))
+        except ElevationError as exc:
+            if str(exc).startswith("NO_DATA:"):
+                exc.evidence = {**proof, "elevation_m": None, "raw_elevation": None}
+            raise
+        return {**proof, "elevation_m": float(raw_value), "raw_elevation": raw_value}
+
+
+def fetch_elevation(lat: float, lon: float, *, timeout: float = 20.0) -> dict:
+    """Return one ground value with provenance; never write catalog data."""
+    return ElevationClient(timeout=timeout).fetch(lat, lon)

@@ -1,6 +1,54 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-10-22
+Stan na: 2026-10-23
+
+## PBI-110: Wywierzyska w lokalnym zrzucie TPN
+
+Status: planowane — projekt do akceptacji w istniejącym PR #18.
+Użytkownik zatwierdził wywierzyska również spoza turystycznego API,
+udokumentowaną klasyfikację i lokalizację oraz wypływy okresowe.
+Zwykłe źródła wykluczone; ponory pozostają osobnym zadaniem.
+[Projekt i rozpoznanie źródeł](plans/PBI-110-design.md) wskazuje trzy
+rekordy POI, Goryczkowe z PIG i okresowy wypływ Kasprowej Niżniej.
+Lokalizacja Bystrej jest nierozstrzygnięta; tekst tabeli PIG odczytano,
+ale odbiór oryginalnego PDF pozostaje bramką przed implementacją odpisu.
+Nie zmieniono kodu, katalogu YAML ani best. Następny krok: akceptacja
+konkretnego projektu i decyzja o sposobie przedstawienia Bystrej.
+
+## PBI-109: Uproszczone pliki TPN i wysokość gruntu NMT
+
+Status: wykonane — do review w PR #18. Użytkownik
+2026-10-22 zatwierdził dwa JSON-y simple,
+wszystkie trzy warstwy, rozwinięcie kodów i usunięcie metadanych technicznych
+oraz wysokości NMT wszystkich punktów. Rozbudowa w istniejącym draft PR #18,
+na `codex/tpn-data-download`; pliki wynikowe wyłącznie lokalnie.
+Nowy moduł uproszczenia, rozszerzenie CLI i reużycie kontroli źródła NMT
+w obrębie partii. Bez importu, zmian YAML/best, merge i wydania.
+[Zakres i odbiór](verification/PBI-109.md): **938 testów**, Ruff,
+walidacja, odczyt 10 eksportów, **8/8 mutacji** i niezależny review przeszły.
+Wyniki lokalne mają 1228 rekordów, 1226 wysokości i 2 jawne braki NMT.
+Implementacja `8edbd9b` wypchnięta, validate i preview **completed/success**;
+pobrana paczka przeszła pełny odczyt. Końcowy SHA dokumentacji, CI i odbiór
+jego paczki wskazuje opis PR #18.
+Zakończyć po PBI-109.
+
+## PBI-108: Reużywalny zrzut trzech warstw TPN
+
+Status: wykonane — do review w PR #18, na polecenie użytkownika 2026-10-22, po zatwierdzeniu
+[kontraktu](plans/PBI-108.md). Samo pobieranie jaskiń, lejów krasowych
+i sztolni/kopalń; jeden JSON z wcięciami, pełne atrybuty i metadane,
+punkty WGS84, kontrola kompletności, zapis bez nadpisania.
+Pierwszy zrzut istnieje lokalnie w ignorowanym `data/sources/tpn/api/`;
+**nie commitować zrzutów**. Bez porównań, importu i automatyzacji.
+Praca od aktualnego main, bez wznawiania lub zamykania PR #12/#13.
+[Draft PR #18](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/18):
+poprawka po review zachowuje pusty punkt ArcGIS `x: null`. **909 testów**,
+Ruff, walidacja, odczyt 10 eksportów, **3/3 nowych mutacji** i niezależny
+review poprawki przeszły. Kod `ca5298a` wypchnięty; preview i odczyt jego
+paczki przeszły. Wcześniejszy stan CI `in_progress` z 18:36 UTC został
+zastąpiony pełnym odbiorem PR przy PBI-109: validate i preview `8edbd9b`
+mają **completed/success**, paczka odczytana. Końcowy SHA/CI w opisie PR.
+[Dowody](verification/PBI-108.md).
 
 ## PBI-107: Wydanie v1.1.2
 

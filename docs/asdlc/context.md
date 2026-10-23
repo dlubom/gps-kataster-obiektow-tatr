@@ -1,6 +1,70 @@
 # AS-DLC project context
 
-Last updated: 2026-10-22
+Last updated: 2026-10-23
+
+## Wywierzyska — projekt PBI-110, PR #18
+
+Użytkownik zatwierdził wywierzyska z udokumentowaną klasyfikacją i punktem,
+również spoza turystycznej warstwy TPN, oraz wypływy okresowe. Zwykłe
+źródła wykluczone; ponory mają osobny zakres. Kontynuacja istniejącego
+PR #18 na `codex/tpn-data-download`; po fetch HEAD `27d6569`, main `4924415`.
+[Projekt](plans/PBI-110-design.md) zapisuje źródła, propozycję listy i bramki.
+POI ma trzy jawne wywierzyska. Kasprowa Niżnia ma udokumentowany okresowy
+wypływ z jednego wejścia. Tabela PIG wskazuje GPS/WGS-84 Goryczkowego;
+pełne bajty PDF i wizualny odbiór tabeli pozostają do uzyskania.
+PIG Bystrej i posterunek TPN różnią się o około 300 m; nie wybieramy punktu
+ani nie przypisujemy nazw Górne/Dolne. To nowa decyzja do rozstrzygnięcia.
+Status: planowane — projekt do akceptacji; kod, YAML i best bez zmian.
+Nie oznaczać PBI-110 jako gotowego lub wykonanego przed akceptacją projektu.
+
+## Uproszczone pliki TPN i NMT — PBI-109
+
+2026-10-23: na polecenie użytkownika naprawa P3 z review PR #18 —
+porównanie planowanych ścieżek raw/simple przed siecią, także przez `..`
+i dowiązanie katalogu. [Dowód RED/GREEN](verification/PBI-109.md#poprawka-po-review-2026-10-23--kolizje-ścieżek-wyjściowych).
+Bez ponownego lokalnego buildu eksportów.
+Lokalny odbiór poprawki: **950 testów**, Ruff i walidacja bez błędów;
+niezależny review bez ustaleń. Końcowy SHA i CI wskazuje opis PR #18.
+
+Użytkownik zatwierdził po wywiadzie `simple.json` i `simple-nmt.json`
+dla wszystkich trzech warstw oraz NMT w dokładnych źródłowych punktach.
+Zachowujemy informacje obiektów i identyfikatory; usuwamy otoczkę usług
+i pola autorów/dat edycji, rozwijamy znane kody. Raw i dowód NMT są osobno.
+Pliki wyłącznie lokalnie; rozszerzenie istniejącego draft PR #18
+na `codex/tpn-data-download`, baza sesji `7927b56`, main po fetch nadal
+`4924415de3cd5c3bd9e1fe2c541f42e023e4a21a`. Nie przełączamy na nową gałąź,
+bo użytkownik jawnie wybrał aktualny PR. [Odbiór](verification/PBI-109.md).
+Lokalnie: **938 testów**, Ruff, walidacja, odczyt 10 eksportów,
+**8/8 mutacji**, niezależny review i odczyt wszystkich 1228 rekordów przeszły.
+Końcowe pliki: `data/sources/tpn/api/simple-20261022-final/`, wyłącznie
+lokalnie. NMT: 1226 wysokości, dwa jawne braki dla `Przeł. Bobrowiecka`
+OBJECTID 1/2. Źródło i 2036 śledzonych danych/config bez zmian.
+Status: wykonane — do review. Implementacja `8edbd9b` wypchnięta;
+validate i preview **completed/success**, pobrana paczka odczytana.
+Zakończyć po tym PBI, bez merge/tagu/wydania. Końcowy SHA dokumentacji,
+CI i odbiór jego paczki wskazuje opis PR #18.
+
+## Lokalny zrzut API TPN — PBI-108
+
+Użytkownik zatwierdził mały, niezależny downloader trzech całych warstw TPN:
+jaskinie, leje, sztolnie/kopalnie. Jeden czytelny JSON zachowuje wszystkie
+atrybuty, punkty WGS84, metadane JSON/XML i pochodzenie. **Zrzuty wyłącznie
+lokalnie, bez commitowania**; `data/sources/tpn/api/` jest ignorowany.
+Bez porównywania, importu, zmian katalogu i automatyzacji; PR #12/#13
+pozostają bez zmian. [Kontrakt](plans/PBI-108.md), [dowody](verification/PBI-108.md).
+Gałąź `codex/tpn-data-download` od main
+`4924415de3cd5c3bd9e1fe2c541f42e023e4a21a`. Lokalnie zweryfikowane:
+909 testów (45 downloadera), Ruff, walidacja bez błędów, live 1035/122/71
+rekordów i odczyt 10 eksportów. Po review poprawiono obsługę pustego punktu
+ArcGIS `x: null`, zachowując źródłową reprezentację i walidację zwykłych
+punktów; **3/3 nowych mutacji** i niezależny review poprawki przeszły
+(pierwotna implementacja ma osobny dowód 6/6 mutacji).
+Poprawka `ca5298a` wypchnięta do [draft PR #18](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/18);
+preview i pobrana paczka przeszły pełny odczyt. Wcześniejszy stan CI
+`in_progress` z 18:36 UTC jest historyczny: pełny odbiór PR przy PBI-109
+potwierdził validate i preview `8edbd9b` **completed/success** oraz odczyt
+paczki. PBI-108 wykonane; końcowy SHA i przebiegi dokumentacji wskazuje
+opis PR. Brak kolejnego PBI.
 
 ## Wydanie v1.1.2 — PBI-107
 

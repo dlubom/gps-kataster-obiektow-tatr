@@ -3,6 +3,116 @@
 Ten dokument opisuje codzienna prace na danych YAML w V1. Zrodlem prawdy sa
 pliki w `data/`; katalog `build/` zawiera tylko artefakty wygenerowane lokalnie.
 
+## Pobieranie jaskiń, lejów i sztolni z API TPN
+
+```bash
+uv run --frozen python scripts/fetch_tpn_data.py
+uv run --frozen python scripts/fetch_tpn_data.py --output data/sources/tpn/api/moj-zrzut.json
+```
+
+Domyślnie powstaje nowy `data/sources/tpn/api/tpn-<UTC>.json` w katalogu
+repozytorium, także przy uruchomieniu skryptu z innego katalogu roboczego.
+Wskazany `--output` jest ścieżką względem bieżącego katalogu lub absolutną.
+Katalog `data/sources/tpn/api/` jest ignorowany przez Git: zrzuty pozostają
+lokalnymi plikami i **nie są commitowane**. Sam skrypt nie wykonuje operacji Git.
+`--timeout` ogranicza każde żądanie HTTP (domyślnie 30 sekund).
+
+Jeden JSON UTF-8 z wcięciami zawiera `schema_version: 1`, `started_at`,
+`finished_at` (UTC) i osobne `layers.jaskinie`, `layers.leje_krasowe`,
+`layers.sztolnie_kopalnie`. Każda warstwa zachowuje:
+
+- `source_url`, wszystkie `request_urls`, pełne `metadata` JSON i `metadata_xml`;
+- `object_ids`, `record_count` oraz scalony źródłowy `feature_set`;
+- wszystkie `feature_set.features[].attributes`, także nowe pola, null
+  i daty źródłowe w formacie API, bez mapowania do modelu katalogu;
+- `feature_set.features[].geometry` żądaną w EPSG:4326: `x` to długość,
+  `y` szerokość geograficzna. Źródłowe Z/M, jeśli dostępne, są zachowywane;
+  nie przypisujemy im datum pionowego. Brak geometrii pozostaje brakiem.
+  Pusty punkt ArcGIS (`{"x": null}`, także z `"y": null`) zachowujemy
+  bez zmian; nie jest błędem współrzędnych.
+
+Pełne metadane warstwy zawierają m.in. aliasy, typy i domeny kodowe pól,
+opisy oraz układy źródłowe. `SHAPE` jest opisem pola geometrii w metadanych,
+nie dodatkowym atrybutem rekordu. Metadane nie są przeliczane do WGS84;
+układ zwróconych punktów określa `feature_set.spatialReference`.
+
+Źródła: [jaskinie](https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6),
+[leje](https://gis.tpn.pl/server/rest/services/SIPTPN/Geologia_i_gleby/MapServer/3),
+[sztolnie i kopalnie](https://gis.tpn.pl/server/rest/services/SIPTPN/Dziedzictwo_kulturowe/MapServer/13).
+Są pobierane w całości, bez filtrów geograficznych lub deduplikacji między
+warstwami. Nie każdy lej jest potwierdzoną formą krasową, a nazwy sztolni
+mogą opisywać rejon; zachowujemy źródłowe zastrzeżenia.
+
+Skrypt porównuje niezależny licznik i listę ID przed/po oraz komplet każdej
+partii. To nie jest transakcja serwera: zmiana atrybutów istniejącego ID
+w trakcie pobierania może pozostać niewykryta. Przedział UTC opisuje pobranie,
+nie datę pomiaru. Obecnie trzy warstwy nie deklarują załączników ani relacji;
+skrypt zachowuje te deklaracje, ale nie pobiera plików załączników.
+
+Gotowy wynik jest publikowany atomowo, dopiero po pobraniu trzech warstw.
+Istniejący plik (również utworzony równolegle) nie zostanie nadpisany.
+HTTP/API error, niepełny zbiór, błędna odpowiedź lub błąd zapisu daje kod 1
+i diagnostykę na stderr, bez częściowego pliku wynikowego.
+Bez importu, porównań, zmian YAML i `best` lub automatyzacji.
+[Kontrakt i odbiór PBI-108](asdlc/plans/PBI-108.md).
+
+### Uproszczone pliki i wysokość NMT
+
+Do czytania danych użyj wersji simple. Możesz ją utworzyć z istniejącego
+zrzutu bez ponownego pobierania warstw:
+
+```bash
+uv run --frozen python scripts/fetch_tpn_data.py \
+  --input data/sources/tpn/api/tpn-20261022T162014287693Z.json \
+  --simple-dir data/sources/tpn/api/simple-20261022 --with-nmt
+```
+
+Pomiń `--with-nmt`, aby utworzyć tylko `simple.json`, całkowicie offline.
+Można też połączyć pobranie nowego źródła z uproszczeniem:
+`scripts/fetch_tpn_data.py --simple-dir data/sources/tpn/api/nowy-simple --with-nmt`.
+`--input` wyklucza `--output` i wymaga `--simple-dir`.
+Wybierz nowy katalog docelowy; istniejące pliki nigdy nie są nadpisywane.
+Surowy zrzut i pliki simple muszą mieć różne ścieżki. Kolizja, również
+przez ścieżkę względną lub dowiązanie katalogu, przerywa polecenie przed
+pobieraniem danych i tworzeniem plików.
+
+- `simple.json`: trzy listy (`jaskinie`, `leje_krasowe`, `sztolnie_kopalnie`),
+  jeden płaski rekord na obiekt, wszystkie atrybuty poza `CREATED_USER`,
+  `CREATED_DATE`, `LAST_EDITED_USER`, `LAST_EDITED_DATE`, plus `lat`/`lon` WGS84.
+  Nazwy pól, ID, null, uwagi i nieznane/przyszłe atrybuty są zachowane.
+  Znane kody są zastąpione opisami z domen zapisanych w surowym zrzucie;
+  nieznane kody pozostają źródłowymi wartościami. Np. `WERYF: "1"` lejów
+  staje się `WERYF: "odnaleziony"`. Nie interpretujemy `TATER` ani `FIELD`.
+  Dodatkowe składowe geometrii (np. źródłowe Z/M) zachowuje
+  `geometria_dodatkowa`; nie stają się one wysokością NMT.
+- `simple-nmt.json`: te same rekordy i dodatkowo `wysokosc_gruntu_nmt_m`
+  (metry n.p.m. według legendy TPN) oraz `status_nmt`: `ok`, `brak_danych`
+  lub `brak_wspolrzednych`. W dwóch ostatnich przypadkach wysokość jest
+  `null`; żaden rekord nie znika i nie zastępujemy braku zerem.
+- `nmt-evidence.json`: osobny techniczny zapis pochodzenia — SHA-256
+  wejściowego pliku, ID rekordów i pełne wyniki istniejącego czytnika NMT:
+  źródło, model, daty, raw value, URL-e i hashe. Nie ma tych metadanych
+  w dwóch plikach do czytania.
+
+Surowy zrzut pozostaje niezmienny. NMT jest odczytywany dla dokładnego
+punktu źródłowego każdego rekordu, bez filtrowania lub łączenia warstw.
+Wysokość dotyczy **gruntu**, a nie gwarantowanej wysokości otworu w ścianie.
+Dokładny układ pionowy i dokładność są nieznane; najnowszość modelu
+`nmt_05m_mggp_2019` jest niepotwierdzona. Zaokrąglenie w pliku simple do
+dwóch miejsc dziesiętnych służy czytelności, nie określa dokładności.
+Pełna liczba z API pozostaje w osobnym dowodzie.
+
+Czytnik sprawdza usługę, XML modelu i legendę raz na partię, następnie
+wykonuje jedno żądanie na każdy punkt. Wypisuje postęp na stderr.
+Tylko faktyczne `NO_DATA` oznacza brak pokrycia; błąd HTTP/API, wadliwa
+odpowiedź lub zmiana modelu przerywają odczyt (exit 1). Plik simple może
+już istnieć, ale `simple-nmt.json` powstaje atomowo dopiero po odczycie
+całej partii i zapisaniu osobnego dowodu. Każdy plik jest publikowany
+oddzielnie, bez transakcji obejmującej całą grupę plików.
+Zrzut i wersje simple w `data/sources/tpn/api/` pozostają lokalne,
+ignorowane przez Git; nie trafiają do paczki katalogu ani do wydania.
+[Zakres i weryfikacja PBI-109](asdlc/verification/PBI-109.md).
+
 ## Wysokość gruntu z publicznego NMT TPN
 
 ```bash
