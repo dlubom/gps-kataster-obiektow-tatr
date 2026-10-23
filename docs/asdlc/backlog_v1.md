@@ -1,6 +1,19 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-10-22
+Stan na: 2026-10-23
+
+## PBI-110: Wywierzyska w lokalnym zrzucie TPN
+
+Status: planowane — projekt do akceptacji w istniejącym PR #18.
+Użytkownik zatwierdził wywierzyska również spoza turystycznego API,
+udokumentowaną klasyfikację i lokalizację oraz wypływy okresowe.
+Zwykłe źródła wykluczone; ponory pozostają osobnym zadaniem.
+[Projekt i rozpoznanie źródeł](plans/PBI-110-design.md) wskazuje trzy
+rekordy POI, Goryczkowe z PIG i okresowy wypływ Kasprowej Niżniej.
+Lokalizacja Bystrej jest nierozstrzygnięta; tekst tabeli PIG odczytano,
+ale odbiór oryginalnego PDF pozostaje bramką przed implementacją odpisu.
+Nie zmieniono kodu, katalogu YAML ani best. Następny krok: akceptacja
+konkretnego projektu i decyzja o sposobie przedstawienia Bystrej.
 
 ## PBI-109: Uproszczone pliki TPN i wysokość gruntu NMT
 

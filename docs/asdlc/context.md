@@ -1,6 +1,21 @@
 # AS-DLC project context
 
-Last updated: 2026-10-22
+Last updated: 2026-10-23
+
+## Wywierzyska — projekt PBI-110, PR #18
+
+Użytkownik zatwierdził wywierzyska z udokumentowaną klasyfikacją i punktem,
+również spoza turystycznej warstwy TPN, oraz wypływy okresowe. Zwykłe
+źródła wykluczone; ponory mają osobny zakres. Kontynuacja istniejącego
+PR #18 na `codex/tpn-data-download`; po fetch HEAD `27d6569`, main `4924415`.
+[Projekt](plans/PBI-110-design.md) zapisuje źródła, propozycję listy i bramki.
+POI ma trzy jawne wywierzyska. Kasprowa Niżnia ma udokumentowany okresowy
+wypływ z jednego wejścia. Tabela PIG wskazuje GPS/WGS-84 Goryczkowego;
+pełne bajty PDF i wizualny odbiór tabeli pozostają do uzyskania.
+PIG Bystrej i posterunek TPN różnią się o około 300 m; nie wybieramy punktu
+ani nie przypisujemy nazw Górne/Dolne. To nowa decyzja do rozstrzygnięcia.
+Status: planowane — projekt do akceptacji; kod, YAML i best bez zmian.
+Nie oznaczać PBI-110 jako gotowego lub wykonanego przed akceptacją projektu.
 
 ## Uproszczone pliki TPN i NMT — PBI-109
 
