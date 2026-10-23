@@ -1,0 +1,32 @@
+{
+  "transformers": [
+    {
+      "description": "axis order change (2D) + Inverse of ETRF2000-PL to WGS 84 (1) + Poland CS92 + axis order change (2D)",
+      "accuracy_m": 1.0,
+      "definition": "proj=pipeline step proj=unitconvert xy_in=deg xy_out=rad step proj=tmerc lat_0=0 lon_0=19 k=0.9993 x_0=500000 y_0=-5300000 ellps=GRS80",
+      "operations": [
+        {
+          "name": "axis order change (2D)",
+          "accuracy_m": -1.0,
+          "remarks": null
+        },
+        {
+          "name": "Inverse of ETRF2000-PL to WGS 84 (1)",
+          "accuracy_m": 1.0,
+          "remarks": "For many purposes ETRF2000-PL can be considered to be coincident with WGS 84. This approximation ignores the low accuracy of the WGS 84 ensemble and the application of tectonic plate motion to WGS 84 data."
+        },
+        {
+          "name": "Poland CS92",
+          "accuracy_m": -1.0,
+          "remarks": "See Poland CS2000 zones (codes 18305-08) for cadastral survey and mapping at larger scales."
+        },
+        {
+          "name": "axis order change (2D)",
+          "accuracy_m": -1.0,
+          "remarks": null
+        }
+      ]
+    }
+  ],
+  "note": "Metadata inspection only. No PyProj coordinate calculations are used by audit.py."
+}

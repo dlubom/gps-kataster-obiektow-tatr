@@ -1,0 +1,31 @@
+{
+  "geographiclib_commit": "15cddd7eed9f7f61ead6dba2229d45b271dbdeda",
+  "geographiclib_tarball_url": "https://api.github.com/repos/geographiclib/geographiclib/tarball/15cddd7eed9f7f61ead6dba2229d45b271dbdeda",
+  "geographiclib_tarball_sha256": "c283b179efb73324dcb0491c75d4932009c929bc59d836e4e7e4afb7f40593d3",
+  "pl1992_definition_url": "https://eli.gov.pl/api/acts/DU/2012/1247/text.html",
+  "pl1992_definition_html_sha256": "43f5acf3a35ab563af6a4bf055737b9ade94dae489403d3a8b9e600d1e0069ff",
+  "parameters_reference": "Table 10: GRS80; origin 0 deg, 19 E; northing -5300000 m; easting 500000 m; scale 0.9993; X northing, Y easting.",
+  "grs80_flattening_reference": "https://github.com/geographiclib/geographiclib/blob/15cddd7eed9f7f61ead6dba2229d45b271dbdeda/develop/test-distribution.sh#L363",
+  "environment": {
+    "python": "3.12.13",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "openpyxl": "3.1.5",
+    "pyshp": "3.0.3",
+    "compiler": "Apple clang 21.0.0",
+    "cmake": "4.4.3"
+  },
+  "rejected_controls": [
+    "altered asset digest",
+    "missing CSV point",
+    "duplicate CSV point",
+    "swapped PL-1992 axes",
+    "nonfinite latitude",
+    "injected 3 cm projection error"
+  ],
+  "upstream_projection_tests": {
+    "total": 8,
+    "passed": 8,
+    "ctest_regex": "TransverseMercatorProj"
+  },
+  "note": "Exact source commit is authoritative for GeographicLib. GitHub tarball packaging can change; binary hash is build/platform-specific. No PyProj coordinate calculation in audit.py."
+}
