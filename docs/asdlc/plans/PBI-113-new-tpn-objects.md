@@ -214,3 +214,21 @@ paczka 12521389970: digest ZIP i CRC, 10/10 sum kontrolnych, zgodne
 HEAD/base/merge/run; 136753 porównania wszystkich formatów, 0 błędów.
 Zdalny blob MTZ-0072 zgodny z lokalnym. Końcowy SHA dokumentacji, jego CI
 i odbiór jego paczki wskazuje opis PR; PBI-113 wykonane, zakończyć po nim.
+
+## Korekta opisów i bibliografii — 2026-10-23
+
+Na polecenie użytkownika usunięto odniesienia do PBI/PR i procesu pracy
+z opisów 18 nowych Jaskiń i 19 Obiektów. Siedem nazw ma potwierdzenie
+w wykazach Jakuba Nowaka/KKTJ 2026.07: Okno przy Źródle, Korytarz pod
+Ciemniakiem, Szczelina przy Zbójeckiej Dziurze, Jaskinia Lodowa Ponorowa,
+Cynamonowa, Rura w Olejarni i Okno pod Sikawką. Pięć z nich ma również
+odczytane oryginalne artykuły. Bibliografia w YAML zawiera 12 referencji,
+konkretne strony i pozycje; nie przypisuje listom autorstwa pomiarów.
+Dla pozostałych 11 nazw nie ustalono niezależnego źródła mimo rozszerzenia
+poszukiwań na dawne wykazy, materiały klubowe, inne publikacje i PIG.
+Zachowano nazwy TPN i jawną niepewność, bez dopasowań przez samo sąsiedztwo.
+Rozdzielono 5,3 m literatury od 5,5 m TPN dla Szczeliny; deniwelację 2 m
+od przewyższenia TPN dla Rury; 11,3 m listy KKTJ od 11,9 m artykułu i TPN
+dla Cynamonowej. Nie zmieniono pomiarów, współrzędnych, wysokości ani Best.
+Dowody merytoryczne są w opisach/referencjach YAML; końcowy SHA, CI oraz
+odczyt paczki korekty wskazuje opis PR #28. Bez merge, taga i wydania.

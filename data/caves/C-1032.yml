@@ -2,18 +2,23 @@ schema_version: 1
 id: C-1032
 name: Okno przy Źródle
 system_name: null
-external_refs: []
+external_refs:
+- system: inne
+  ref_type: url
+  external_id: https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=395#page=3
+  url: https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=395#page=3
+  scope: cave
+  notes: 'Załącznik „04 Dolinki Reglowe 2026.07” do zestawienia Jakuba Nowaka „Jaskinie Tatr”, KKTJ, 10.07.2026;
+    s. 3, Dolina Białego, lp. 4; nazwa w wykazie: Okno przy Źródle.'
 object_ids:
 - BIA-0010
 notes: |-
-  Dodano po przeglądzie tożsamości według PBI-113, na podstawie rekordu TPN; bez numeru inwentarzowego i bez niezależnej weryfikacji terenowej.
+  Okno przy Źródle figuruje pod tą samą nazwą w zestawieniu Jakuba Nowaka „Jaskinie Tatr”, KKTJ, załącznik „04 Dolinki Reglowe 2026.07”, s. 3, Dolina Białego, lp. 4. Długość 3 m, deniwelacja i przewyższenie 1,2 m są zgodne z danymi TPN. Wykaz potwierdza nazwę i metryki jaskini; nie potwierdza dokładnych współrzędnych otworu.
 
-  Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {6EBD9C00-D272-4909-85EC-00AE2BB6632D}; OBJECTID 6402 w zrzucie 2026-10-22.
+  Dane TPN (stan rekordu 2026-05-09, zrzut 2026-10-22): długość 3 m; przewyższenie 1,2 m; deniwelacja 1,2 m. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {6EBD9C00-D272-4909-85EC-00AE2BB6632D}, OBJECTID 6402.
 
-  TPN morfometria [m]: DLUGOSC=3.0; PRZEWYZSZE=1.2; DENIWELACJ=1.2. Wartości źródłowe, bez ponownej interpretacji.
-
-  TPN GENEZA: jaskinia.
+  Geneza w TPN: jaskinia.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-23T18:10:08Z'
-updated_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:37:18Z'
+updated_by: maintenance:literature

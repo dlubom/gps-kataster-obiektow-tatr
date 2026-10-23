@@ -59,8 +59,8 @@ best_measurement:
   updated_by: maintenance:PBI-113
 attachments: []
 notes: |-
-  Dodano po przeglądzie tożsamości według PBI-113. Jednoznaczny rekord TPN wystarcza do wpisu nieweryfikowanego; nie jest to weryfikacja terenowa. TPN OTWÓR: N. Drugi otwór Smoczej Jamy, powiązany z istniejącą C-0219; TPN 410 z OTWÓR=S pozostaje przy KSW-0065. PIG 760 opisuje dwa połączone otwory: https://jaskiniepolski.pgi.gov.pl/Details/Information/760. Historycznego pomiaru PIG nie przeniesiono.
+  Północny otwór Smoczej Jamy według pola TPN OTWÓR=N. Południowy otwór TPN 410 pozostaje powiązany z KSW-0065. PIG 760 opisuje dwa połączone otwory: https://jaskiniepolski.pgi.gov.pl/Details/Information/760. Historyczny pomiar PIG dotyczy KSW-0065.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-23T18:10:08Z'
-updated_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:37:18Z'
+updated_by: maintenance:literature

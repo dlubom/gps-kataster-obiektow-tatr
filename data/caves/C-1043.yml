@@ -2,20 +2,29 @@ schema_version: 1
 id: C-1043
 name: Jaskinia Cynamonowa
 system_name: null
-external_refs: []
+external_refs:
+- system: inne
+  ref_type: url
+  external_id: http://jaskinie.org.pl/files/Jaskinie__101_2020.pdf#page=33
+  url: http://jaskinie.org.pl/files/Jaskinie__101_2020.pdf#page=33
+  scope: cave
+  notes: Sylwia Solarczyk, „Jaskinia Cynamonowa”, Jaskinie 4 (101), 2020, s. 33–34; opis, plan i metryka.
+- system: inne
+  ref_type: url
+  external_id: https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=394#page=3
+  url: https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=394#page=3
+  scope: cave
+  notes: 'Załącznik „03 Dol. Chochołowska 2026.07” do zestawienia Jakuba Nowaka „Jaskinie Tatr”, KKTJ,
+    10.07.2026; s. 3, lp. 84; nazwa w wykazie: Jaskinia Cynamonowa.'
 object_ids:
 - CHZ-0035
 notes: |-
-  Dodano po przeglądzie tożsamości według PBI-113, na podstawie rekordu TPN; bez numeru inwentarzowego i bez niezależnej weryfikacji terenowej.
+  Sylwia Solarczyk opisała „Jaskinię Cynamonową” w „Jaskiniach” 101 (2020), s. 33–34, z planem i współrzędnymi otworu. Nazwa, długość 47 m, deniwelacja 13,7 m, głębokość 11,9 m i przewyższenie 1,8 m są zgodne z TPN. Nazwę wymienia także zestawienie Jakuba Nowaka/KKTJ „03 Dol. Chochołowska 2026.07”, s. 3, lp. 84; podaje ono jednak głębokość 11,3 m, odmienną od artykułu i TPN.
 
-  Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {A876A547-7912-4033-BB3F-8ED2F589C5F0}; OBJECTID 7367 w zrzucie 2026-10-22.
+  Dane TPN (stan rekordu 2026-06-16, zrzut 2026-10-22): długość 47 m; głębokość 11,9 m; przewyższenie 1,8 m; deniwelacja 13,7 m. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {A876A547-7912-4033-BB3F-8ED2F589C5F0}, OBJECTID 7367.
 
-  TPN morfometria [m]: DLUGOSC=47.0; GLEBOKOSC=11.9; PRZEWYZSZE=1.8; DENIWELACJ=13.7. Wartości źródłowe, bez ponownej interpretacji.
-
-  TPN GENEZA: jaskinia.
-
-  Solarczyk 2020, Jaskinie 101, s. 33–34 zawiera osobny plan i współrzędne Cynamonowej zgodne z punktem TPN: http://jaskinie.org.pl/files/Jaskinie__101_2020.pdf#page=33. Nie utożsamiono z pobliską Kokonową.
+  Geneza w TPN: jaskinia.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-23T18:10:08Z'
-updated_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:37:18Z'
+updated_by: maintenance:literature

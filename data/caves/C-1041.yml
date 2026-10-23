@@ -6,16 +6,12 @@ external_refs: []
 object_ids:
 - STR-0042
 notes: |-
-  Dodano po przeglądzie tożsamości według PBI-113, na podstawie rekordu TPN; bez numeru inwentarzowego i bez niezależnej weryfikacji terenowej.
+  Nazwa i dane morfometryczne według rekordu TPN. Odrębne źródło bibliograficzne nieustalone.
 
-  Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {1792C71C-54B5-46CE-8E24-454F4A31E73F}; OBJECTID 7363 w zrzucie 2026-10-22.
+  Dane TPN (stan rekordu 2026-06-14, zrzut 2026-10-22): długość 3 m. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {1792C71C-54B5-46CE-8E24-454F4A31E73F}, OBJECTID 7363.
 
-  TPN morfometria [m]: DLUGOSC=3.0. Wartości źródłowe, bez ponownej interpretacji.
-
-  TPN GENEZA: jaskinia.
-
-  Zachowano numerację TPN i osobną pozycję katalogową dla każdej Nyży pod Szarą Turnią.
+  Geneza w TPN: jaskinia.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-23T18:10:08Z'
-updated_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:37:18Z'
+updated_by: maintenance:literature

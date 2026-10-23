@@ -20,6 +20,11 @@ i audyt C-0219. Kod i schemat bez zmian; końcowy SHA, CI i odbiór pobranej
 paczki wskazano w opisie PR. Commit danych `40bf339`: validate i preview
 completed/success, pobrana paczka odczytana bez błędów. Aktualizacja issue i naprawy dawnych par później.
 
+Po uwagach użytkownika poprawiono opisy bez odwołań do procesu PBI/PR:
+7 nazw potwierdzonych w literaturze/wykazach KKTJ, 12 referencji;
+11 nazw z bibliografią nieustaloną pozostaje opartych na TPN.
+Zachowano wszystkie wartości pomiarów i wybory Best.
+
 ## Wydanie v1.2.0
 
 Status: przygotowanie zweryfikowane lokalnie — do dostarczenia w PR #19. Użytkownik zaakceptował

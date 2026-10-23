@@ -2,20 +2,29 @@ schema_version: 1
 id: C-1044
 name: Rura w Olejarni
 system_name: null
-external_refs: []
+external_refs:
+- system: inne
+  ref_type: url
+  external_id: http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32
+  url: http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32
+  scope: cave
+  notes: Jakub Nowak, „Dwie jaskinie w Olejarni”, Jaskinie 4 (93), 2018, s. 32; opis i plan Rury w Olejarni.
+- system: inne
+  ref_type: url
+  external_id: https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=394#page=3
+  url: https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=394#page=3
+  scope: cave
+  notes: 'Załącznik „03 Dol. Chochołowska 2026.07” do zestawienia Jakuba Nowaka „Jaskinie Tatr”, KKTJ,
+    10.07.2026; s. 3, lp. 72; nazwa w wykazie: Rura w Olejarni.'
 object_ids:
 - CHZ-0036
 notes: |-
-  Dodano po przeglądzie tożsamości według PBI-113, na podstawie rekordu TPN; bez numeru inwentarzowego i bez niezależnej weryfikacji terenowej.
+  Rurę w Olejarni opisuje Jakub Nowak w „Dwóch jaskiniach w Olejarni” („Jaskinie” 93, 2018, s. 32). Nazwę wymienia także zestawienie KKTJ „03 Dol. Chochołowska 2026.07”, s. 3, lp. 72. Zgodne są nazwa i długość 6,5 m; opis dotyczy Olejarni przy Wyżniej Bramie Chochołowskiej. Artykuł i wykaz podają 2 m jako deniwelację, natomiast TPN zapisuje 2 m w polu przewyższenia i nie podaje deniwelacji. Te zapisy nie potwierdzają niezależnie znaku różnicy wysokości. Rura jest odrębna od Zbójeckiej Dziury.
 
-  Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {D96CD642-E9D3-4EB8-B9DC-D7DF3F449705}; OBJECTID 7368 w zrzucie 2026-10-22.
+  Dane TPN (stan rekordu 2026-06-16, zrzut 2026-10-22): długość 6,5 m; przewyższenie 2 m. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {D96CD642-E9D3-4EB8-B9DC-D7DF3F449705}, OBJECTID 7368.
 
-  TPN morfometria [m]: DLUGOSC=6.5; PRZEWYZSZE=2.0. Wartości źródłowe, bez ponownej interpretacji.
-
-  TPN GENEZA: jaskinia.
-
-  Nowak 2018, Jaskinie 93, s. 32–33 dokumentuje osobną jaskinię, odrębną od Zbójeckiej Dziury: http://jaskinie.org.pl/files/Jaskinie__93_2018.pdf#page=32. Rozbieżności metryk i dojścia między źródłami nie zostały rozstrzygnięte; dane TPN zachowano bez korekty XY.
+  Geneza w TPN: jaskinia.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-23T18:10:08Z'
-updated_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:37:18Z'
+updated_by: maintenance:literature

@@ -100,8 +100,8 @@ best_measurement:
   updated_by: maintenance:PBI-113
 attachments: []
 notes: |-
-  Dodano po przeglądzie tożsamości według PBI-113. Jednoznaczny rekord TPN wystarcza do wpisu nieweryfikowanego; nie jest to weryfikacja terenowa. Zachowano dwa GLOBALID i dwa pomiary jednego obiektu; interpretacja i źródła w notes jaskini.
+  Dwa rekordy punktowe TPN powiązane z jednym obiektem: 7044 pod nazwą „Korytarz pod Ciemniakiem” i 6408 pod nazwą „Korytarz w Ciemniaku”. Publikacja Jakuba Nowaka z 2014 r. i wykaz KKTJ używają pierwszej nazwy; drugi wariant jest wyłącznie nazwą źródłową TPN. Każdy rekord zachowuje własne współrzędne, odczyt NMT i referencję GLOBALID.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-23T18:10:08Z'
-updated_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:37:18Z'
+updated_by: maintenance:literature

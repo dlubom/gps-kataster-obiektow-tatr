@@ -30,6 +30,20 @@ completed/success. Pobrana paczka: 136753 porównania, 0 błędów, zgodne
 HEAD/base/merge/run i 10/10 sum kontrolnych.
 Merge, tag i wydanie wymagają odrębnego polecenia.
 
+### Opisy i bibliografia po uwagach użytkownika
+
+Opisy Jaskiń i Obiektów zawierają informacje o obiekcie i źródłach;
+odniesienia do PBI, PR i przebiegu pracy pozostają w dokumentacji AS-DLC.
+Nazwy siedmiu nowych Jaskiń potwierdzono w wykazach Jakuba Nowaka/KKTJ
+2026.07, dla pięciu także w oryginalnych artykułach. Dodano 12 referencji
+z autorem, tytułem, stroną lub pozycją wykazu. Pozostałe 11 nazw pozostaje
+opartych na TPN; po rozszerzonym przeglądzie nie ustalono niezależnej
+bibliografii. Brak wzmianki nie jest rozstrzygnięciem błędnej nazwy.
+Opisy rozdzielają dane TPN od literatury oraz wskazują różnice metryk
+Szczeliny przy Zbójeckiej Dziurze, Rury w Olejarni i Cynamonowej.
+Wszystkie pomiary, wysokości, identyfikatory i wybory Best zachowano.
+Końcowy SHA korekty i odbiór CI/paczki wskazuje opis PR #28.
+
 ## Wydanie v1.2.0 — zatwierdzone
 
 2026-10-23 użytkownik zaakceptował dokładny wpis changeloga i v1.2.0,

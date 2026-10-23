@@ -2,20 +2,30 @@ schema_version: 1
 id: C-1046
 name: Okno pod Sikawką
 system_name: null
-external_refs: []
+external_refs:
+- system: inne
+  ref_type: url
+  external_id: http://jaskinie.org.pl/files/Jaskinie__73_2013.pdf#page=27
+  url: http://jaskinie.org.pl/files/Jaskinie__73_2013.pdf#page=27
+  scope: cave
+  notes: Jakub Nowak, „Z archiwum «J» cz. VII – Sikawka”, Jaskinie 4 (73), 2013, s. 27–28; opis, plan
+    i fotografie Okna pod Sikawką.
+- system: inne
+  ref_type: url
+  external_id: https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=396#page=7
+  url: https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=396#page=7
+  scope: cave
+  notes: 'Załącznik „05 Dol. Kościeliska 2026.07” do zestawienia Jakuba Nowaka „Jaskinie Tatr”, KKTJ,
+    10.07.2026; s. 7, lp. 196; nazwa w wykazie: Okno pod Sikawką.'
 object_ids:
 - KSW-0263
 notes: |-
-  Dodano po przeglądzie tożsamości według PBI-113, na podstawie rekordu TPN; bez numeru inwentarzowego i bez niezależnej weryfikacji terenowej.
+  Okno pod Sikawką opisuje Jakub Nowak w „Z archiwum «J» cz. VII – Sikawka” („Jaskinie” 73, 2013, s. 27–28), oddzielnie od Jaskini przy Sikawce. Nazwa występuje również w zestawieniu KKTJ „05 Dol. Kościeliska 2026.07”, s. 7, lp. 196. Nazwa, długość 3,5 m i opis położenia przy wodospadzie Sikawka w Żlebie pod Wysranki odpowiadają rekordowi TPN. Literatura podaje ponadto 1 m deniwelacji, a wykaz 1 m przewyższenia; odpowiednie pola TPN są puste.
 
-  Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {EF966744-EB95-48B3-B2BA-7A031F8DF91A}; OBJECTID 7378 w zrzucie 2026-10-22.
+  Dane TPN (stan rekordu 2026-06-02, zrzut 2026-10-22): długość 3,5 m. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {EF966744-EB95-48B3-B2BA-7A031F8DF91A}, OBJECTID 7378.
 
-  TPN morfometria [m]: DLUGOSC=3.5. Wartości źródłowe, bez ponownej interpretacji.
-
-  TPN GENEZA: jaskinia.
-
-  Nowak 2013, Jaskinie 73, s. 27–28 rozdziela Okno pod Sikawką od Jaskini przy Sikawce: http://jaskinie.org.pl/files/Jaskinie__73_2013.pdf#page=27.
+  Geneza w TPN: jaskinia.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-23T18:10:08Z'
-updated_by: maintenance:PBI-113
+updated_at: '2026-10-23T18:37:18Z'
+updated_by: maintenance:literature
