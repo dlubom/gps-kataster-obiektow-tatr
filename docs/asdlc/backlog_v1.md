@@ -2,6 +2,17 @@
 
 Stan na: 2026-10-23
 
+## PBI-112: Research LiDAR do oceny otworów
+
+Status: wykonane — research i próba techniczna, do review.
+Na polecenie użytkownika zbadano dostępne dane dla Pod Wantą i Śnieżnej.
+Potwierdzono publiczne chmury GUGiK 2012/2023/2025; pobrano dwa arkusze
+2025, odczytano małe wycinki i wczytano je w CloudCompare.
+[Raport, źródła i odtworzenie](verification/PBI-112.md).
+Nie potwierdzono geometrii progu ani wysokości otworów. Bez zmian katalogu,
+kodu i wdrożenia skilla. Szczegółowy pilotaż i implementacja są kolejnym,
+osobnym zakresem; zakończyć po researchu.
+
 ## Wydanie v1.2.0
 
 Status: przygotowanie zweryfikowane lokalnie — do dostarczenia w PR #19. Użytkownik zaakceptował
