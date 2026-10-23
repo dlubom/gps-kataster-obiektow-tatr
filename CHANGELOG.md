@@ -8,6 +8,40 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [v1.2.0] - 2026-10-23
+
+### Dodano
+
+- Narzędzie pobierania pełnych warstw TPN: jaskiń, lejów krasowych
+  oraz sztolni i kopalń, z czytelnymi plikami JSON i opcjonalnymi
+  wysokościami gruntu z NMT TPN.
+- Metodę `siec_pomiarowa` dla pozycji wyznaczonych z sieci
+  pomiarowej jaskini.
+
+### Zmieniono
+
+- Dodano 31 nowych pomiarów dla istniejących obiektów, których
+  współrzędne zmieniły się w źródle TPN, zachowując poprzednie pomiary.
+  Nowym punktom przypisano wysokości gruntu z NMT TPN;
+  nie stanowią one potwierdzenia wysokości otworów.
+- Uzupełniono informacje TPN w trzech istniejących pomiarach
+  oraz dopisano aktualne długości Śnieżnej Studni, Ptasiej Studni
+  i Piwnicy Miętusiej według TPN, zachowując wcześniejsze dane PIG.
+- Ustawiono ręczny wybór najlepszych pomiarów Czarnej, Czarnej III
+  i dolnego otworu Bańdziocha Kominiarskiego.
+
+### Naprawiono
+
+- Skorygowano błędne oznaczenia GNSS: pozycje Raptawickiej,
+  Obłazkowej i górnego otworu Bańdziocha pochodzą z sieci pomiarowej.
+  Punkt Mylnej oznaczono jako historyczny punkt dowiązania
+  o niepotwierdzonej pierwotnej metodzie.
+  Zachowano ich współrzędne, wysokości i ręczny wybór best.
+
+Nowa metoda rozszerza listę dopuszczalnych wartości `method`
+przy zachowaniu `schema_version: 1`. Odbiorcy korzystający
+z zamkniętej listy metod muszą uwzględnić `siec_pomiarowa`.
+
 ## [v1.1.2] - 2026-10-22
 
 ### Naprawiono

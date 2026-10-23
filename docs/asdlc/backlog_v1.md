@@ -2,6 +2,15 @@
 
 Stan na: 2026-10-23
 
+## Wydanie v1.2.0
+
+Status: przygotowanie zweryfikowane lokalnie — do dostarczenia w PR #19. Użytkownik zaakceptował
+treść changeloga i wersję v1.2.0 oraz polecił commit, merge z chwilową
+zmianą wymogu review i przywróceniem ochrony, CI i publikację wydania.
+Zakres wydania: PR #18 (PBI-108/109) oraz PR #19 (PBI-111).
+Projekt PBI-110 pozostaje niewdrożony. Lokalnie: 951 testów, Ruff,
+walidacja i odczyt 10/10 artefaktów PASS. [Odbiór](verification/v1.2.0.md).
+
 ## PBI-111: Odświeżenie istniejących rekordów po GLOBALID TPN
 
 Status: draft [PR #19](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/19) do review.

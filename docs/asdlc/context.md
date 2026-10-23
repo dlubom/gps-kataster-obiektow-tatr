@@ -2,6 +2,20 @@
 
 Last updated: 2026-10-23
 
+## Wydanie v1.2.0 — zatwierdzone
+
+2026-10-23 użytkownik zaakceptował dokładny wpis changeloga i v1.2.0,
+commit w istniejącym PR #19, merge, chwilową zmianę wymogu review
+z natychmiastowym przywróceniem ochrony oraz publikację po weryfikacji CI.
+Baza main: `835b47a4493ed4337c3d9799e91d701c18a7d335` (PR #18),
+HEAD PR #19 przed przygotowaniem: `18ab873536b3ba6e8698c69191e1f76b1f543375`.
+Wydanie obejmuje PBI-108/109 i PBI-111; PBI-110 nadal wymaga osobnej
+akceptacji projektu i implementacji. Historyczne ograniczenie „bez merge,
+taga i wydania” poniższych etapów zastępuje to polecenie wyłącznie dla
+wydania v1.2.0 i PR #19. Przygotowanie zweryfikowane lokalnie: 951 testów,
+Ruff, walidacja i odczyt 10/10 artefaktów PASS; do dostarczenia w PR #19.
+[Procedura i wyniki](verification/v1.2.0.md).
+
 ## Istniejące rekordy TPN — PBI-111
 
 [Draft PR #19](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/19),
