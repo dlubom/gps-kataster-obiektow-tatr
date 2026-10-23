@@ -2,6 +2,27 @@
 
 Last updated: 2026-10-23
 
+## LiDAR do oceny otworów — PBI-112
+
+2026-10-23: [research i próba techniczna](verification/PBI-112.md) od main
+`caf7bae69b28eb037810215889cb87f763b2c6bd`, na `codex/lidar-research`.
+WFS GUGiK potwierdza dane 2012/2023/2025 dla Pod Wantą i Śnieżnej.
+Deklarowane błędy 2025 to 0,05 m H i 0,06 m XY przy 12 pkt/m²;
+nie są potwierdzeniem dokładności progu otworu. Dwa LAZ pobrano, wycinki
+odczytano i wczytano w CloudCompare. Nagłówki nie zawierają pionowego CRS;
+PL-EVRF2007-NH pochodzi ze skorowidza, zachowanego w dowodach.
+Pod Wantą ma rozbieżność punktów PIG–TPN ok. 106 m; wycinek obejmuje oba.
+Nie rozstrzygnięto lokalizacji ani wysokości progu. Katalog i kod bez zmian,
+skill pozostaje propozycją; brak automatycznej decyzji o weryfikacji/best.
+Na dalsze polecenie użytkownika oceniono oba wycinki 2025: osobne znaczniki
+TPN/PIG, XYZ z nieznanym datum i umowny XY@Z*, CloudCompare, QGIS,
+przekroje oraz indeksy rzeczywistych odbić. [Ocena 2025](verification/PBI-112/2025-assessment/README.md)
+wskazuje dwie potencjalne struktury przy TPN (PW-C1: 53 dolne odbicia,
+SN-C1: 26), lecz nie potwierdza otworu ani progu. Nie wyznaczono korekty
+XY/Z i nie zmieniono katalogu. PR #29 sprawdzono jako otwarty draft;
+końcowy SHA i CI wskazuje opis PR. Nie rozpoczynać porównania 2012/2023,
+testu Śnieżnej Studni ani implementacji skilla w ramach tego zakresu.
+
 ## Wydanie v1.2.0 — zatwierdzone
 
 2026-10-23 użytkownik zaakceptował dokładny wpis changeloga i v1.2.0,

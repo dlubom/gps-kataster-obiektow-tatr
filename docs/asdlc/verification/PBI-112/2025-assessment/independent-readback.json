@@ -1,0 +1,136 @@
+{
+  "status": "PASS",
+  "utc": "2026-10-23T19:18:37.018354+00:00",
+  "python": "3.12.13",
+  "pyyaml": "6.0.3",
+  "method": "independent struct reader, scalar arithmetic, integer-centimetre grid; analysis.py not imported",
+  "limitations": [
+    "Does not validate visual interpretation, entrance identity or threshold location.",
+    "Does not resolve unknown catalogue vertical datums or prove distinct flight directions.",
+    "CSV/JSON numbers are checked; PNG pixels and GUI state are not checked by this script."
+  ],
+  "input_sha256": {
+    "docs/asdlc/verification/PBI-112/2025-assessment/analysis.json": "c83fcd6bc7ff3c540ef1be53f03c5fb494e6c5b30af9ee709f6dfb5d195bd29d",
+    "docs/asdlc/verification/PBI-112/inspection.json": "429fd1b90625a4c52f12152b9dec1c3493ff1490aaa3a88136cebe9810f5c21f",
+    "docs/asdlc/verification/PBI-112/2025-assessment/independent-readback.py": "4629343e631f9b35bbd2528df26de17e140cdabb0f96eee51b133a8259365e33",
+    "docs/asdlc/verification/PBI-112/2025-assessment/candidate-near-vertical-pairs.csv": "2a4f947bf71403f11c4fac71cf726186dd0eb418d411332b04584acaec8aa6c2",
+    "docs/asdlc/verification/PBI-112/2025-assessment/candidate-stacked-cells-05m.csv": "a00128003347141990f3ba9f8bbaa20639d5888c56eb47b56d86f5d4b4320ece",
+    "docs/asdlc/verification/PBI-112/2025-assessment/markers.csv": "e858c914039e9ef52eda3dd74b003ca45ea15bb7781f0c6b8eeec7a7f4c329de",
+    "docs/asdlc/verification/PBI-112/2025-assessment/pod-wanta-candidate-points.csv": "aeb109cb77900dbcc5c397fbbc9702c7864d6d8f23c3bf952c75372a31ec1604",
+    "docs/asdlc/verification/PBI-112/2025-assessment/pod-wanta-pig-sections-1m.csv": "69f58b33cbc212ac47935b1491aa784b87e53217078628d55252b3779a30620d",
+    "docs/asdlc/verification/PBI-112/2025-assessment/pod-wanta-tpn-sections-1m.csv": "62627e83381b7ccd764a19c7cf6c10fcfc67eee69c631c2c4b3c753ca0eca236",
+    "docs/asdlc/verification/PBI-112/2025-assessment/sniezna-candidate-points.csv": "0d9e6bca816c5d7a51811a5de13afdf4fcfa69861cd44a90398f92faaa97657a",
+    "docs/asdlc/verification/PBI-112/2025-assessment/sniezna-pig-sections-1m.csv": "b2cd366390e3a768ad605c49f0181ed7c30ff8afc744896388d5e52c047b2b67",
+    "docs/asdlc/verification/PBI-112/2025-assessment/sniezna-tpn-sections-1m.csv": "1914b078281e745f3a46495ee81169120fff4b8de537a0a44abda9f2b4a1d571",
+    "docs/asdlc/verification/PBI-112/2025-assessment/support-points.csv": "ac81adb30083f263ba14f99162e348a66074201a9175c2939ce8a99eaa3554d8",
+    "docs/asdlc/verification/PBI-112/2025-assessment/vertical-spread-diagnostic.csv": "44d6b3675a9a8f2b70edd3f103b4700aeea348c6b9aab712dc618ff6d8fcc87f",
+    "data/objects/MTW/MTW-0054.yml": "6a9df8f8ae9b6019a9cd3b09811bfb56bf0ba9d56f91edfdcc4f1e10ddfda1f1",
+    "data/objects/MLZ/MLZ-0068.yml": "72418bb1ff6d7a4195ae0560006bfd8a2755e5b90621dda48e8281e66856f244"
+  },
+  "source_files": {
+    "pod-wanta-2025-both-positions.las": {
+      "sha256": "1191a08a5431d853dbed4178b55c179d1302ddbc55e6516e402f8ca558434cbf",
+      "bytes": 19792239
+    },
+    "pod-wanta-2025-source.laz": {
+      "sha256": "68cd64575b1347a8b517847bc7457121674e2b8ef7b2917bb0ed80f0afd4226a",
+      "bytes": 78110868
+    },
+    "sniezna-2025-100m.las": {
+      "sha256": "62deee44273b39bab805ae01498c045fc68d4b6aecbe7bb7812f1f47b3e6dfab",
+      "bytes": 8986529
+    },
+    "sniezna-2025-source.laz": {
+      "sha256": "2b3575cc76968f94f249cf6703000f68dcc0768290eb940d32908626fa973a04",
+      "bytes": 84241618
+    }
+  },
+  "sites": [
+    {
+      "clip": "pod-wanta-2025-both-positions.las",
+      "all_records": 582112,
+      "measurements": [
+        {
+          "id": "m-001",
+          "source": "PIG",
+          "nearest_record_index": 46137,
+          "nearest_dxy_m": 0.060827625359632334,
+          "nearest_xyz": [
+            566324.55,
+            152969.09,
+            1746.57
+          ],
+          "radial_ranges_checked": 6
+        },
+        {
+          "id": "m-002",
+          "source": "TPN",
+          "nearest_record_index": 466740,
+          "nearest_dxy_m": 0.12041594577922196,
+          "nearest_xyz": [
+            566319.86,
+            153075.11000000002,
+            1791.47
+          ],
+          "radial_ranges_checked": 6
+        }
+      ],
+      "section_csv_rows": 2683
+    },
+    {
+      "clip": "sniezna-2025-100m.las",
+      "all_records": 264297,
+      "measurements": [
+        {
+          "id": "m-001",
+          "source": "PIG",
+          "nearest_record_index": 144073,
+          "nearest_dxy_m": 0.059999999997671694,
+          "nearest_xyz": [
+            567417.26,
+            152928.29,
+            1700.0
+          ],
+          "radial_ranges_checked": 6
+        },
+        {
+          "id": "m-002",
+          "source": "TPN",
+          "nearest_record_index": 23920,
+          "nearest_dxy_m": 0.044721359578630174,
+          "nearest_xyz": [
+            567414.28,
+            152932.56,
+            1697.51
+          ],
+          "radial_ranges_checked": 6
+        }
+      ],
+      "section_csv_rows": 2785
+    }
+  ],
+  "candidates": [
+    {
+      "candidate_id": "PW-C1",
+      "roi_records": 516,
+      "lower_records": 53,
+      "near_vertical_pairs": 81,
+      "stacked_cells": {
+        "accepted": 14,
+        "class2": 0
+      }
+    },
+    {
+      "candidate_id": "SN-C1",
+      "roi_records": 532,
+      "lower_records": 26,
+      "near_vertical_pairs": 52,
+      "stacked_cells": {
+        "accepted": 5,
+        "class2": 0
+      }
+    }
+  ],
+  "support_rows_checked": 12,
+  "assertions": 146332
+}

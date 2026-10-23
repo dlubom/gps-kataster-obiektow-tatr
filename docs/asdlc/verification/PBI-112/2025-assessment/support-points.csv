@@ -1,0 +1,13 @@
+role,clip,record_index,X_easting,Y_northing,Z,classification,PointSourceId,return_number,number_of_returns,scan_direction_flag,edge_of_flight_line,synthetic,keypoint,withheld,scan_angle_rank,gps_time,intensity,red,green,blue
+MTW-0054 PIG actual nearest XY record,pod-wanta-2025-both-positions.las,46137,566324.55,152969.09,1746.57,2,80,1,1,1,0,0,0,0,-7,439108460.53738236,2317,19784,24963,10024
+MTW-0054 TPN actual nearest XY record,pod-wanta-2025-both-positions.las,466740,566319.86,153075.11,1791.47,4,81,1,1,0,0,0,0,0,-6,439109125.3508562,2714,47631,46434,43236
+MLZ-0068 PIG actual nearest XY record,sniezna-2025-100m.las,144073,567417.26,152928.29,1700.0,2,81,1,1,0,0,0,0,0,1,439109107.02720463,3188,46767,46145,44664
+MLZ-0068 TPN actual nearest XY record,sniezna-2025-100m.las,23920,567414.28,152932.56,1697.51,12,80,3,3,1,0,0,0,0,-9,439108481.78314716,1675,39532,38742,34528
+"PW-C1 pair1 lower; actual return, interpretation unconfirmed",pod-wanta-2025-both-positions.las,239962,566320.09,153075.36,1789.53,2,80,2,2,0,0,0,0,0,-2,439108466.09193075,1410,48656,48005,45926
+"PW-C1 pair1 upper; actual return, interpretation unconfirmed",pod-wanta-2025-both-positions.las,466382,566320.1,153075.38,1791.79,12,81,1,2,0,0,0,0,0,-6,439109125.3414869,2487,23817,21191,12158
+"PW-C1 pair2 lower; actual return, interpretation unconfirmed",pod-wanta-2025-both-positions.las,241882,566322.37,153075.92,1788.21,2,80,2,2,0,0,0,0,0,-2,439108466.1387853,757,23817,23758,16620
+"PW-C1 pair2 upper; actual return, interpretation unconfirmed",pod-wanta-2025-both-positions.las,395366,566322.38,153075.9,1793.56,12,81,1,4,1,0,0,0,0,-5,439109120.152029,541,26940,28371,21150
+"SN-C1 pair1 lower; actual return, interpretation unconfirmed",sniezna-2025-100m.las,88032,567414.15,152932.93,1697.31,2,81,1,1,1,0,0,0,0,1,439109100.0877585,1667,47749,47164,45050
+"SN-C1 pair1 upper; actual return, interpretation unconfirmed",sniezna-2025-100m.las,241271,567414.13,152932.95,1700.64,12,82,1,2,0,0,0,0,0,6,439109485.4517118,1732,38200,37624,33189
+"SN-C1 pair2 lower; actual return, interpretation unconfirmed",sniezna-2025-100m.las,88034,567414.27,152932.59,1697.45,2,81,2,2,1,0,0,0,0,1,439109100.087761,1233,39532,38742,34528
+"SN-C1 pair2 upper; actual return, interpretation unconfirmed",sniezna-2025-100m.las,24060,567414.24,152932.63,1699.41,12,80,2,3,1,0,0,0,0,-9,439108481.80188394,2600,39532,38742,34528

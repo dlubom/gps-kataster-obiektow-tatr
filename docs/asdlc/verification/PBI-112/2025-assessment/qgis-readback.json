@@ -1,0 +1,232 @@
+{
+  "sniezna": {
+    "original": {
+      "filename": "sniezna-2025-100m.las",
+      "sha256": "62deee44273b39bab805ae01498c045fc68d4b6aecbe7bb7812f1f47b3e6dfab",
+      "version": "1.2",
+      "format": 3,
+      "count": 264297,
+      "scale": [
+        0.01,
+        0.01,
+        0.01
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "xyz_min": [
+        567364.24,
+        152882.54,
+        1661.3700000000001
+      ],
+      "xyz_max": [
+        567464.24,
+        152982.54,
+        1773.04
+      ],
+      "classification_counts": {
+        "2": 232775,
+        "3": 5115,
+        "4": 14335,
+        "5": 3982,
+        "7": 20,
+        "12": 8070
+      },
+      "source_id_counts": {
+        "80": 62630,
+        "81": 104159,
+        "82": 97508
+      },
+      "overlap_counts_normalized": {
+        "0": 256227,
+        "1": 8070
+      },
+      "normalized_multiset_sha256_without_scan_angle": "2a173b9f6679bb1151802474651de8ad7e378a9cab90027bacb2a057cc745c59"
+    },
+    "copc_decompressed": {
+      "filename": "qgis-sniezna-readback.las",
+      "sha256": "f7013d67602a078cf9e9f89655d6b7e25eb8591714508ad3b4bd1cafc514676f",
+      "version": "1.4",
+      "format": 7,
+      "count": 264297,
+      "scale": [
+        0.01,
+        0.01,
+        0.01
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "xyz_min": [
+        567364.24,
+        152882.54,
+        1661.3700000000001
+      ],
+      "xyz_max": [
+        567464.24,
+        152982.54,
+        1773.04
+      ],
+      "classification_counts": {
+        "0": 8070,
+        "2": 232775,
+        "3": 5115,
+        "4": 14335,
+        "5": 3982,
+        "7": 20
+      },
+      "source_id_counts": {
+        "80": 62630,
+        "81": 104159,
+        "82": 97508
+      },
+      "overlap_counts_normalized": {
+        "0": 256227,
+        "1": 8070
+      },
+      "normalized_multiset_sha256_without_scan_angle": "2a173b9f6679bb1151802474651de8ad7e378a9cab90027bacb2a057cc745c59"
+    },
+    "normalized_multiset_mismatches": 0,
+    "max_scan_angle_difference_degrees": 0.0020000000000000018,
+    "exact_fields": [
+      "XYZ integer coordinates, scale and offset",
+      "Intensity",
+      "ReturnNumber",
+      "NumberOfReturns",
+      "ScanDirectionFlag",
+      "EdgeOfFlightLine",
+      "Classification after overlap normalization",
+      "Synthetic",
+      "KeyPoint",
+      "Withheld",
+      "UserData",
+      "PointSourceId",
+      "GpsTime",
+      "Red",
+      "Green",
+      "Blue"
+    ],
+    "normalization": "LAS 1.2 class 12 == LAS 1.4 class 0 with Overlap=1; new ScanChannel=0",
+    "scan_angle_note": "LAS 1.4 stores angle at 0.006 degree steps; source stores integer degrees"
+  },
+  "pod-wanta": {
+    "original": {
+      "filename": "pod-wanta-2025-both-positions.las",
+      "sha256": "1191a08a5431d853dbed4178b55c179d1302ddbc55e6516e402f8ca558434cbf",
+      "version": "1.2",
+      "format": 3,
+      "count": 582112,
+      "scale": [
+        0.01,
+        0.01,
+        0.01
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "xyz_min": [
+        566269.78,
+        152919.1,
+        1696.6200000000001
+      ],
+      "xyz_max": [
+        566374.49,
+        153125.02,
+        1842.5
+      ],
+      "classification_counts": {
+        "2": 412996,
+        "3": 33843,
+        "4": 112978,
+        "5": 5939,
+        "7": 55,
+        "12": 16301
+      },
+      "source_id_counts": {
+        "79": 26777,
+        "80": 244252,
+        "81": 236860,
+        "82": 74223
+      },
+      "overlap_counts_normalized": {
+        "0": 565811,
+        "1": 16301
+      },
+      "normalized_multiset_sha256_without_scan_angle": "afdcbe2f54c348d43b379f6c5c40ec7072f2e78568b1bdd8b09e2594ee5ea593"
+    },
+    "copc_decompressed": {
+      "filename": "qgis-pod-wanta-readback.las",
+      "sha256": "0e8f6f10ef36e6b237763dc7c701b2ac77f5ebbdc9cfe0407cf4910d35baa95a",
+      "version": "1.4",
+      "format": 7,
+      "count": 582112,
+      "scale": [
+        0.01,
+        0.01,
+        0.01
+      ],
+      "offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "xyz_min": [
+        566269.78,
+        152919.1,
+        1696.6200000000001
+      ],
+      "xyz_max": [
+        566374.49,
+        153125.02,
+        1842.5
+      ],
+      "classification_counts": {
+        "0": 16301,
+        "2": 412996,
+        "3": 33843,
+        "4": 112978,
+        "5": 5939,
+        "7": 55
+      },
+      "source_id_counts": {
+        "79": 26777,
+        "80": 244252,
+        "81": 236860,
+        "82": 74223
+      },
+      "overlap_counts_normalized": {
+        "0": 565811,
+        "1": 16301
+      },
+      "normalized_multiset_sha256_without_scan_angle": "afdcbe2f54c348d43b379f6c5c40ec7072f2e78568b1bdd8b09e2594ee5ea593"
+    },
+    "normalized_multiset_mismatches": 0,
+    "max_scan_angle_difference_degrees": 0.0020000000000000018,
+    "exact_fields": [
+      "XYZ integer coordinates, scale and offset",
+      "Intensity",
+      "ReturnNumber",
+      "NumberOfReturns",
+      "ScanDirectionFlag",
+      "EdgeOfFlightLine",
+      "Classification after overlap normalization",
+      "Synthetic",
+      "KeyPoint",
+      "Withheld",
+      "UserData",
+      "PointSourceId",
+      "GpsTime",
+      "Red",
+      "Green",
+      "Blue"
+    ],
+    "normalization": "LAS 1.2 class 12 == LAS 1.4 class 0 with Overlap=1; new ScanChannel=0",
+    "scan_angle_note": "LAS 1.4 stores angle at 0.006 degree steps; source stores integer degrees"
+  }
+}

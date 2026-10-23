@@ -1,0 +1,275 @@
+{
+  "bin_sha256": "63db7cde46572ea97651df374a9094f7c4fbe12385502a2b7558b8f6a35fe4b1",
+  "clouds": [
+    {
+      "site": "sniezna",
+      "name": "PointSourceId 80 (no flight direction inference)",
+      "points": 62628,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "sniezna",
+      "name": "PointSourceId 81 (no flight direction inference)",
+      "points": 104144,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "sniezna",
+      "name": "PointSourceId 82 (no flight direction inference)",
+      "points": 97505,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "sniezna",
+      "name": "PointSourceId 80 (no flight direction inference)",
+      "points": 6260,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "sniezna",
+      "name": "PointSourceId 81 (no flight direction inference)",
+      "points": 9485,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "sniezna",
+      "name": "PointSourceId 82 (no flight direction inference)",
+      "points": 9091,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "sniezna",
+      "name": "PointSourceId 80 (no flight direction inference)",
+      "points": 1101,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "sniezna",
+      "name": "PointSourceId 81 (no flight direction inference)",
+      "points": 1010,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "sniezna",
+      "name": "PointSourceId 82 (no flight direction inference)",
+      "points": 974,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "pod-wanta",
+      "name": "PointSourceId 79 (no flight direction inference)",
+      "points": 26775,
+      "max_coordinate_error_m": 5.8593752328306437e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "pod-wanta",
+      "name": "PointSourceId 80 (no flight direction inference)",
+      "points": 244225,
+      "max_coordinate_error_m": 5.8593752328306437e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "pod-wanta",
+      "name": "PointSourceId 81 (no flight direction inference)",
+      "points": 236839,
+      "max_coordinate_error_m": 5.8593752328306437e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "pod-wanta",
+      "name": "PointSourceId 82 (no flight direction inference)",
+      "points": 74218,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "pod-wanta",
+      "name": "PointSourceId 80 (no flight direction inference)",
+      "points": 9604,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "pod-wanta",
+      "name": "PointSourceId 81 (no flight direction inference)",
+      "points": 9398,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "pod-wanta",
+      "name": "PointSourceId 82 (no flight direction inference)",
+      "points": 9733,
+      "max_coordinate_error_m": 5.859375005456968e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "pod-wanta",
+      "name": "PointSourceId 80 (no flight direction inference)",
+      "points": 10881,
+      "max_coordinate_error_m": 5.8593752328306437e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "pod-wanta",
+      "name": "PointSourceId 81 (no flight direction inference)",
+      "points": 10606,
+      "max_coordinate_error_m": 5.8593752328306437e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "pod-wanta",
+      "name": "PointSourceId 80 (no flight direction inference)",
+      "points": 1251,
+      "max_coordinate_error_m": 5.8593752328306437e-05,
+      "record_index_and_psid_match": true
+    },
+    {
+      "site": "pod-wanta",
+      "name": "PointSourceId 81 (no flight direction inference)",
+      "points": 1239,
+      "max_coordinate_error_m": 5.8593752328306437e-05,
+      "record_index_and_psid_match": true
+    }
+  ],
+  "markers": [
+    {
+      "name": "MLZ-0068 PIG m-001 XYZ datum unknown",
+      "max_coordinate_error_m": 4.8828125045474735e-05
+    },
+    {
+      "name": "MLZ-0068 PIG m-001 XY / nearest-Z proxy",
+      "max_coordinate_error_m": 2.441406832076609e-05
+    },
+    {
+      "name": "MLZ-0068 TPN m-002 XYZ datum unknown",
+      "max_coordinate_error_m": 2.1972664399072528e-05
+    },
+    {
+      "name": "MLZ-0068 TPN m-002 XY / nearest-Z proxy",
+      "max_coordinate_error_m": 2.1972664399072528e-05
+    },
+    {
+      "name": "MLZ-0068 PIG m-001 XYZ datum unknown",
+      "max_coordinate_error_m": 4.8828125045474735e-05
+    },
+    {
+      "name": "MLZ-0068 PIG m-001 XY / nearest-Z proxy",
+      "max_coordinate_error_m": 2.441406832076609e-05
+    },
+    {
+      "name": "MLZ-0068 TPN m-002 XYZ datum unknown",
+      "max_coordinate_error_m": 2.1972664399072528e-05
+    },
+    {
+      "name": "MLZ-0068 TPN m-002 XY / nearest-Z proxy",
+      "max_coordinate_error_m": 2.1972664399072528e-05
+    },
+    {
+      "name": "MLZ-0068 PIG m-001 XYZ datum unknown",
+      "max_coordinate_error_m": 4.8828125045474735e-05
+    },
+    {
+      "name": "MLZ-0068 PIG m-001 XY / nearest-Z proxy",
+      "max_coordinate_error_m": 2.441406832076609e-05
+    },
+    {
+      "name": "MLZ-0068 TPN m-002 XYZ datum unknown",
+      "max_coordinate_error_m": 2.1972664399072528e-05
+    },
+    {
+      "name": "MLZ-0068 TPN m-002 XY / nearest-Z proxy",
+      "max_coordinate_error_m": 2.1972664399072528e-05
+    },
+    {
+      "name": "MTW-0054 PIG m-001 XYZ datum unknown",
+      "max_coordinate_error_m": 4.8828125045474735e-05
+    },
+    {
+      "name": "MTW-0054 PIG m-001 XY / nearest-Z proxy",
+      "max_coordinate_error_m": 5.371093743633537e-05
+    },
+    {
+      "name": "MTW-0054 TPN m-002 XYZ datum unknown",
+      "max_coordinate_error_m": 4.330468755142647e-05
+    },
+    {
+      "name": "MTW-0054 TPN m-002 XY / nearest-Z proxy",
+      "max_coordinate_error_m": 2.929687502728484e-05
+    },
+    {
+      "name": "MTW-0054 PIG m-001 XYZ datum unknown",
+      "max_coordinate_error_m": 4.8828125045474735e-05
+    },
+    {
+      "name": "MTW-0054 PIG m-001 XY / nearest-Z proxy",
+      "max_coordinate_error_m": 5.371093743633537e-05
+    },
+    {
+      "name": "MTW-0054 TPN m-002 XYZ datum unknown",
+      "max_coordinate_error_m": 4.330468755142647e-05
+    },
+    {
+      "name": "MTW-0054 TPN m-002 XY / nearest-Z proxy",
+      "max_coordinate_error_m": 2.929687502728484e-05
+    },
+    {
+      "name": "MTW-0054 TPN m-002 XYZ datum unknown",
+      "max_coordinate_error_m": 4.330468755142647e-05
+    },
+    {
+      "name": "MTW-0054 TPN m-002 XY / nearest-Z proxy",
+      "max_coordinate_error_m": 2.929687502728484e-05
+    }
+  ],
+  "labels": [
+    "MLZ-0068 PIG m-001 XYZ datum unknown",
+    "MLZ-0068 PIG m-001 XY / nearest-Z proxy",
+    "MLZ-0068 TPN m-002 XYZ datum unknown",
+    "MLZ-0068 TPN m-002 XY / nearest-Z proxy",
+    "MLZ-0068 PIG m-001 XYZ datum unknown",
+    "MLZ-0068 PIG m-001 XY / nearest-Z proxy",
+    "MLZ-0068 TPN m-002 XYZ datum unknown",
+    "MLZ-0068 TPN m-002 XY / nearest-Z proxy",
+    "MLZ-0068 PIG m-001 XYZ datum unknown",
+    "MLZ-0068 PIG m-001 XY / nearest-Z proxy",
+    "MLZ-0068 TPN m-002 XYZ datum unknown",
+    "MLZ-0068 TPN m-002 XY / nearest-Z proxy",
+    "MTW-0054 PIG m-001 XYZ datum unknown",
+    "MTW-0054 PIG m-001 XY / nearest-Z proxy",
+    "MTW-0054 TPN m-002 XYZ datum unknown",
+    "MTW-0054 TPN m-002 XY / nearest-Z proxy",
+    "MTW-0054 PIG m-001 XYZ datum unknown",
+    "MTW-0054 PIG m-001 XY / nearest-Z proxy",
+    "MTW-0054 TPN m-002 XYZ datum unknown",
+    "MTW-0054 TPN m-002 XY / nearest-Z proxy",
+    "MTW-0054 TPN m-002 XYZ datum unknown",
+    "MTW-0054 TPN m-002 XY / nearest-Z proxy"
+  ],
+  "viewports": [
+    "sniezna-full top",
+    "sniezna-detail top",
+    "sniezna-detail exposure",
+    "sniezna-detail underside",
+    "pod-wanta-full top",
+    "pod-wanta-pig top",
+    "pod-wanta-pig exposure",
+    "pod-wanta-pig underside",
+    "pod-wanta-tpn top",
+    "pod-wanta-tpn exposure",
+    "pod-wanta-tpn underside"
+  ],
+  "status": "PASS",
+  "point_total_including_duplicate_crops": 926967,
+  "limits": "Coordinate tolerance covers native float32 storage only, not geodetic accuracy. Marker label identities/counts checked; this does not identify a cave threshold."
+}
