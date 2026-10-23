@@ -9,7 +9,11 @@ Zasada po korekcie użytkownika: nowy pomiar tylko przy rzeczywistej zmianie
 współrzędnych tego samego `TPN/source_globalid`; pozostałe informacje
 uzupełniamy w istniejącym pomiarze lub jaskini. Różnice samej konwersji
 zgodne do precyzji PL-1992 0,01 m nie tworzą pomiaru. Nowszy TPN zastępuje
-poprzedni TPN w auto; chronione GNSS/manual pozostają bez zmian.
+poprzedni TPN w auto; pomiary GNSS/manual pozostają zachowane.
+Na polecenie użytkownika 2026-10-23 best KSW-0201/m-003, KSW-0240/m-002
+i KSZ-0112/m-001 zmieniono z auto na manual z uzasadnieniem i audytem.
+ID best i całe pomiary bez zmian. Wszystkie 9 punktów GNSS/GNSS+LIDAR
+ma manual best; Wysoka KSW-0189/m-003 już miała manual.
 
 1004 dopasowane GLOBALID w 1002 obiektach: 31 nowych pomiarów XY,
 3 rozszerzenia uwag istniejącego m-002 (PL-0005/0024/0031, bez zmiany

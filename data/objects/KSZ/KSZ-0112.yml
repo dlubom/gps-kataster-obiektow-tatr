@@ -38,10 +38,12 @@ measurements:
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
 best_measurement:
-  mode: auto
+  mode: manual
   measurement_id: m-001
-  reason: null
-  updated_at: '2026-05-16T19:30:00Z'
+  reason: Operator retains the supplied GNSS point for the lower opening; future TPN
+    records must not replace this selection automatically. Source provenance and
+    verification status remain unchanged.
+  updated_at: '2026-10-23T13:20:59Z'
   updated_by: dl
 attachments: []
 notes: 'Created during multi-opening review from a supplied unknown-GNSS point.
@@ -49,5 +51,5 @@ notes: 'Created during multi-opening review from a supplied unknown-GNSS point.
   records the lower opening.'
 created_at: '2026-05-16T19:30:00Z'
 created_by: dl
-updated_at: '2026-05-16T19:30:00Z'
+updated_at: '2026-10-23T13:20:59Z'
 updated_by: dl

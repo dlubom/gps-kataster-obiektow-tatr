@@ -23,8 +23,15 @@ Wartości pochodzą z dowodów per punkt w lokalnym `simple-20261022-final/nmt-e
 notes zachowują model, URL i czas odczytu. To grunt, bez potwierdzenia
 wysokości otworu w ścianie; stare pomiary i trzy dopiski WER_LOK bez zmian.
 `LAST_EDITED_DATE` to data stanu źródła, nie pomiaru w terenie.
-Wszystkie 10 chronionych obiektów pozostają bajtowo bez zmian; własne
-zweryfikowane punkty Czarnej mają priorytet ponad TPN w auto.
+Aktualizacja TPN zachowuje pomiary wszystkich 10 chronionych obiektów.
+2026-10-23, na polecenie użytkownika, KSW-0201/m-003 (Czarna),
+KSW-0240/m-002 (Czarna III) i KSZ-0112/m-001 (Bańdzioch dolny)
+otrzymują `mode: manual`, aby przyszły TPN nie zastąpił ich automatycznie.
+Zmieniono wyłącznie tryb, uzasadnienie i audyt best oraz audyt obiektów.
+Pomiary, ID best i statusy weryfikacji zachowane. Pełny przegląd katalogu:
+7 pomiarów GNSS i 2 punkty LIDAR zakotwiczone GNSS, wszystkie jako manual best.
+Wysoka KSW-0189/m-003 już była manual, podobnie KSW-0257/m-002,
+KSZ-0047/m-003, KSZ-0064/m-003, KSZ-0090/m-003 i LEJ-0002/m-003.
 Odbiór dokładnego końcowego SHA, CI i paczki wskazuje opis PR #19.
 Bez merge, taga i wydania. PR #12/#13 oraz projekt PBI-110 są niezależne.
 
