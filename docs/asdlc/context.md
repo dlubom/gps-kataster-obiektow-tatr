@@ -2,6 +2,21 @@
 
 Last updated: 2026-10-23
 
+## Audyt eksportów v1.2.0 — PBI-112
+
+Metoda zatwierdzona przez użytkownika 2026-10-23; audyt dziewięciu publicznych
+plików v1.2.0, przypięty do caf7bae69b28eb037810215889cb87f763b2c6bd.
+Status: zweryfikowane lokalnie — do dostarczenia przez draft PR.
+[Plan](plans/PBI-112.md), [wyniki i odtworzenie](verification/PBI-112.md).
+16 par ≤ 1 m obejmuje 29 obiektów; 11 grup identycznych współrzędnych.
+Jedyny duplikat nazwy: BYW-0041/BYW-0043, Koleba w Zawracie Kasprowym.
+TPN/PIG: bez braków wymaganych tagów/referencji/numerów i bez kolizji
+GLOBALID pomiędzy obiektami. MLZ-0087/0089 mają po dwa GUID, do oceny.
+Deklaracja CRS Shapefile wymaga wyjaśnienia; zgodność danych między formatami
+potwierdzona. 49 kontroli, 962 testy PASS; katalog, best i eksporter bez zmian.
+Wszystkie 1007 punktów mają nieznaną dokładność poziomą, 34 wysokości to DEM.
+Naprawy i oceny źródłowe poszczególnych przypadków wymagają osobnego zakresu.
+
 ## Wydanie v1.2.0 — zatwierdzone
 
 2026-10-23 użytkownik zaakceptował dokładny wpis changeloga i v1.2.0,

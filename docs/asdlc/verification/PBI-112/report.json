@@ -1,0 +1,2675 @@
+{
+  "audit_schema_version": 1,
+  "checks": [
+    {
+      "checked": 9,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "SOURCE_DIGESTS",
+      "status": "passed"
+    },
+    {
+      "checked": 1,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "SQLITE_INTEGRITY",
+      "status": "passed"
+    },
+    {
+      "checked": 5830,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "SQLITE_GEOMETRY",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "OBJECT_ID_DUPLICATE",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "CAVE_ID_DUPLICATE",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "MEASUREMENT_KEY_DUPLICATE",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "OBJECT_NAME_EMPTY",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "CAVE_NAME_EMPTY",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 1,
+      "rule": "OBJECT_NAME_DUPLICATE",
+      "status": "violated"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 1,
+      "rule": "OBJECT_NAME_NORMALIZED_DUPLICATE",
+      "status": "violated"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "OBJECT_CAVE_LINK",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "CAVE_OBJECT_LINK",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "TPN_GUID_INVALID",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "TPN_GUID_COLLISION",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 2,
+      "rule": "TPN_MULTIPLE_GUIDS",
+      "status": "review"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "TPN_TAG_MISSING",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "TPN_OBJECT_REF_MISSING",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "TPN_MEASUREMENT_REF_MISMATCH",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "PIG_INVENTORY_MISSING",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "PIG_CATALOG_COLLISION",
+      "status": "passed"
+    },
+    {
+      "checked": {
+        "artifact_layout": {
+          "Best_first_data_row": 7,
+          "Full_first_data_row": 7
+        },
+        "caves": 1001,
+        "history_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "map": 1,
+          "other": 3,
+          "source_record": 1867
+        },
+        "measurements": 1908,
+        "objects": 1007,
+        "pig_caves": 860,
+        "pig_objects": 866,
+        "selected_elevation_datum": {
+          "Kronstadt86": 2,
+          "unknown": 1005
+        },
+        "selected_elevation_source": {
+          "dem": 34,
+          "gnss": 3,
+          "other": 3,
+          "source_record": 967
+        },
+        "selected_horizontal_accuracy": {
+          "known": 0,
+          "unknown": 1007
+        },
+        "tpn_distinct_guids": 1004,
+        "tpn_objects": 1002
+      },
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "INVENTORY_CAVE_COLLISION",
+      "status": "passed"
+    },
+    {
+      "checked": 1007,
+      "evidence": {
+        "absolute_tolerances": {
+          "lat": 5.1e-11,
+          "lon": 5.1e-11
+        },
+        "default_numeric_tolerance": 1e-08,
+        "fields": [
+          "object_id",
+          "category",
+          "name_local",
+          "cave_id",
+          "measurement_id",
+          "best_mode",
+          "computed_best_measurement_id",
+          "best_reason",
+          "lat",
+          "lon",
+          "x_1992",
+          "y_1992",
+          "elevation_m",
+          "source",
+          "source_ref",
+          "nr_inwent",
+          "pig_id",
+          "pig_url",
+          "tpn_globalid",
+          "observed_at",
+          "observed_date",
+          "method",
+          "verification_status",
+          "horizontal_accuracy_m",
+          "vertical_accuracy_m",
+          "object_notes",
+          "cave_notes",
+          "measurement_notes"
+        ],
+        "keys": [
+          "object_id"
+        ]
+      },
+      "finding_count": 0,
+      "rule": "CSV_SQLITE",
+      "status": "passed"
+    },
+    {
+      "checked": 1007,
+      "evidence": {
+        "absolute_tolerances": {
+          "lat": 0,
+          "lon": 0
+        },
+        "default_numeric_tolerance": 1e-08,
+        "fields": [
+          "object_id",
+          "category",
+          "name_local",
+          "cave_id",
+          "measurement_id",
+          "best_mode",
+          "computed_best_measurement_id",
+          "best_reason",
+          "lat",
+          "lon",
+          "x_1992",
+          "y_1992",
+          "elevation_m",
+          "source",
+          "source_ref",
+          "nr_inwent",
+          "pig_id",
+          "pig_url",
+          "tpn_globalid",
+          "observed_at",
+          "observed_date",
+          "method",
+          "verification_status",
+          "horizontal_accuracy_m",
+          "vertical_accuracy_m",
+          "object_notes",
+          "cave_notes",
+          "measurement_notes",
+          "geometry_lon",
+          "geometry_lat"
+        ],
+        "keys": [
+          "object_id"
+        ]
+      },
+      "finding_count": 0,
+      "rule": "GEOJSON_SQLITE",
+      "status": "passed"
+    },
+    {
+      "checked": 1007,
+      "evidence": {
+        "absolute_tolerances": {
+          "lat": 5.1e-11,
+          "lon": 5.1e-11
+        },
+        "default_numeric_tolerance": 1e-08,
+        "fields": [
+          "object_id",
+          "measurement_id",
+          "lat",
+          "lon",
+          "name_local",
+          "category",
+          "elevation_m",
+          "observed_at",
+          "desc"
+        ],
+        "keys": [
+          "object_id"
+        ]
+      },
+      "finding_count": 0,
+      "rule": "GPX_SQLITE",
+      "status": "passed"
+    },
+    {
+      "checked": 1007,
+      "evidence": {
+        "absolute_tolerances": {
+          "elevation_m": 0.00501,
+          "lat": 5.1e-09,
+          "lon": 5.1e-09,
+          "x_1992": 0.00051,
+          "y_1992": 0.00051
+        },
+        "default_numeric_tolerance": 1e-08,
+        "fields": [
+          "object_id",
+          "name_local",
+          "category",
+          "cave_id",
+          "measurement_id",
+          "lat",
+          "lon",
+          "x_1992",
+          "y_1992",
+          "elevation_m",
+          "source",
+          "nr_inwent",
+          "pig_id",
+          "pig_url",
+          "tpn_globalid",
+          "observed_date",
+          "verification_status",
+          "object_notes",
+          "cave_notes",
+          "measurement_notes",
+          "geometry_x",
+          "geometry_y"
+        ],
+        "keys": [
+          "object_id"
+        ]
+      },
+      "finding_count": 0,
+      "rule": "SHAPEFILE_SQLITE",
+      "status": "passed"
+    },
+    {
+      "checked": 1,
+      "evidence": {},
+      "finding_count": 1,
+      "rule": "SHAPEFILE_CRS",
+      "status": "review"
+    },
+    {
+      "checked": 1,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "XLSX_METADATA",
+      "status": "passed"
+    },
+    {
+      "checked": 1007,
+      "evidence": {
+        "absolute_tolerances": {
+          "lat": 5.1e-11,
+          "lon": 5.1e-11
+        },
+        "default_numeric_tolerance": 1e-08,
+        "fields": [
+          "object_id",
+          "name_local",
+          "category",
+          "lat",
+          "lon",
+          "elevation_m",
+          "source",
+          "verification_status",
+          "horizontal_accuracy_m",
+          "observed_date",
+          "nr_inwent",
+          "measurement_id",
+          "source_ref"
+        ],
+        "keys": [
+          "object_id"
+        ]
+      },
+      "finding_count": 0,
+      "rule": "XLSX_BEST_SQLITE",
+      "status": "passed"
+    },
+    {
+      "checked": 1908,
+      "evidence": {
+        "absolute_tolerances": {
+          "lat": 5.1e-11,
+          "lon": 5.1e-11
+        },
+        "default_numeric_tolerance": 1e-08,
+        "fields": [
+          "object_id",
+          "name_local",
+          "selected",
+          "category",
+          "lat",
+          "lon",
+          "elevation_m",
+          "source",
+          "verification_status",
+          "horizontal_accuracy_m",
+          "observed_date",
+          "nr_inwent",
+          "measurement_id",
+          "source_ref",
+          "cave_id",
+          "cave_name",
+          "cave_system_name",
+          "x_1992",
+          "y_1992",
+          "vertical_accuracy_m",
+          "elevation_datum",
+          "elevation_source",
+          "source_date",
+          "observed_at",
+          "method",
+          "device",
+          "tags_json",
+          "verified_by",
+          "verified_at",
+          "measurement_notes",
+          "object_notes",
+          "cave_notes",
+          "pig_id",
+          "pig_url",
+          "tpn_globalid",
+          "attachments",
+          "relations",
+          "schema_version",
+          "id_assignment_method",
+          "assigned_from_measurement_id",
+          "assigned_prefix",
+          "prefix_override_reason",
+          "best_mode",
+          "best_measurement_id",
+          "computed_best_measurement_id",
+          "best_reason",
+          "best_updated_at",
+          "best_updated_by",
+          "object_created_at",
+          "object_created_by",
+          "object_updated_at",
+          "object_updated_by",
+          "measurement_created_at",
+          "measurement_created_by"
+        ],
+        "keys": [
+          "object_id",
+          "measurement_id"
+        ]
+      },
+      "finding_count": 0,
+      "rule": "XLSX_FULL_SQLITE",
+      "status": "passed"
+    },
+    {
+      "checked": 3816,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "XLSX_REFERENCES_SQLITE",
+      "status": "passed"
+    },
+    {
+      "checked": 1908,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "COORDINATES_VALID",
+      "status": "passed"
+    },
+    {
+      "checked": 1908,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "WGS84_PL1992_CONSISTENCY",
+      "status": "passed"
+    },
+    {
+      "checked": 1908,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "ACCURACY_VALUES",
+      "status": "passed"
+    },
+    {
+      "checked": 1908,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "DEM_PROVENANCE",
+      "status": "passed"
+    },
+    {
+      "checked": 506521,
+      "evidence": {},
+      "finding_count": 16,
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violated"
+    },
+    {
+      "checked": 1007,
+      "evidence": {},
+      "finding_count": 11,
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violated"
+    },
+    {
+      "checked": 1007,
+      "evidence": {},
+      "finding_count": 11,
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violated"
+    },
+    {
+      "checked": 1007,
+      "evidence": {
+        "absolute_tolerances": {},
+        "default_numeric_tolerance": 1e-08,
+        "fields": [
+          "measurement_id",
+          "lat",
+          "lon",
+          "x_1992",
+          "y_1992"
+        ],
+        "keys": [
+          "object_id"
+        ]
+      },
+      "finding_count": 0,
+      "rule": "SQLITE_BEST_CACHE",
+      "status": "passed"
+    },
+    {
+      "checked": 4,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "ARTIFACT_COUNTS",
+      "status": "passed"
+    },
+    {
+      "checked": 5,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "ARTIFACT_METADATA",
+      "status": "passed"
+    },
+    {
+      "checked": 1007,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "STATISTICS_SELECTED_BY_SOURCE",
+      "status": "passed"
+    },
+    {
+      "checked": 1007,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "STATISTICS_SELECTED_BY_CATEGORY",
+      "status": "passed"
+    },
+    {
+      "checked": 1007,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "STATISTICS_SELECTED_BY_VERIFICATION_STATUS",
+      "status": "passed"
+    },
+    {
+      "checked": 1908,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "STATISTICS_HISTORY_BY_SOURCE",
+      "status": "passed"
+    },
+    {
+      "checked": 1908,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "STATISTICS_HISTORY_BY_VERIFICATION_STATUS",
+      "status": "passed"
+    },
+    {
+      "checked": 1007,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "STATISTICS_ACCURACY",
+      "status": "passed"
+    },
+    {
+      "checked": 3,
+      "evidence": {},
+      "finding_count": 0,
+      "rule": "STATISTICS_MARKDOWN",
+      "status": "passed"
+    },
+    {
+      "checked": 1007,
+      "evidence": {
+        "reason": "No independent surveyed reference points were supplied; declared accuracy is not measured accuracy.",
+        "unknown": 1007
+      },
+      "finding_count": 0,
+      "rule": "FIELD_POSITION_ACCURACY",
+      "status": "unverifiable"
+    },
+    {
+      "checked": 34,
+      "evidence": {
+        "reason": "DEM represents terrain, not verified entrance altitude."
+      },
+      "finding_count": 0,
+      "rule": "DEM_ENTRANCE_ALTITUDE",
+      "status": "unverifiable"
+    }
+  ],
+  "findings": [
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          152523.99,
+          563479.63
+        ],
+        "fields": [
+          "x_1992",
+          "y_1992"
+        ]
+      },
+      "finding_id": "A0001",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0040",
+        "katalog.sqlite:objects.id=KSW-0132"
+      ],
+      "names": {
+        "KSW-0040": "Szczelina na Zakręcie II",
+        "KSW-0132": "Szczelina na Zakręcie I"
+      },
+      "object_ids": [
+        "KSW-0040",
+        "KSW-0132"
+      ],
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          151843.7,
+          565369.12
+        ],
+        "fields": [
+          "x_1992",
+          "y_1992"
+        ]
+      },
+      "finding_id": "A0002",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0062",
+        "katalog.sqlite:objects.id=KSW-0197"
+      ],
+      "names": {
+        "KSW-0062": "Szczelina przy Tomanowym Okapie",
+        "KSW-0197": "Tomanowy Okap"
+      },
+      "object_ids": [
+        "KSW-0062",
+        "KSW-0197"
+      ],
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          151896.31,
+          565118.98
+        ],
+        "fields": [
+          "x_1992",
+          "y_1992"
+        ]
+      },
+      "finding_id": "A0003",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0063",
+        "katalog.sqlite:objects.id=KSW-0103"
+      ],
+      "names": {
+        "KSW-0063": "Dziura nad Zawaliskiem",
+        "KSW-0103": "Dziura pod Zawaliskiem"
+      },
+      "object_ids": [
+        "KSW-0063",
+        "KSW-0103"
+      ],
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          151759.45,
+          565579.8
+        ],
+        "fields": [
+          "x_1992",
+          "y_1992"
+        ]
+      },
+      "finding_id": "A0004",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0142",
+        "katalog.sqlite:objects.id=KSW-0159",
+        "katalog.sqlite:objects.id=KSW-0195"
+      ],
+      "names": {
+        "KSW-0142": "Niski Schron nad Tomanową",
+        "KSW-0159": "Niżni Okap nad Tomanową",
+        "KSW-0195": "Wyżni Okap nad Tomanową"
+      },
+      "object_ids": [
+        "KSW-0142",
+        "KSW-0159",
+        "KSW-0195"
+      ],
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          152462.56,
+          562969.45
+        ],
+        "fields": [
+          "x_1992",
+          "y_1992"
+        ]
+      },
+      "finding_id": "A0005",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0181",
+        "katalog.sqlite:objects.id=KSW-0215"
+      ],
+      "names": {
+        "KSW-0181": "Jaskinia w Zbójnickiej Turni",
+        "KSW-0215": "Zbójnicka Piwnica"
+      },
+      "object_ids": [
+        "KSW-0181",
+        "KSW-0215"
+      ],
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          153024.4,
+          562136.85
+        ],
+        "fields": [
+          "x_1992",
+          "y_1992"
+        ]
+      },
+      "finding_id": "A0006",
+      "locations": [
+        "katalog.sqlite:objects.id=KSZ-0013",
+        "katalog.sqlite:objects.id=KSZ-0022"
+      ],
+      "names": {
+        "KSZ-0013": "Jaskinia nad Prożkiem w Żlebie Na Spady",
+        "KSZ-0022": "Nyża nad Prożkiem w Żlebie Na Spady"
+      },
+      "object_ids": [
+        "KSZ-0013",
+        "KSZ-0022"
+      ],
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          153047.68,
+          562261.18
+        ],
+        "fields": [
+          "x_1992",
+          "y_1992"
+        ]
+      },
+      "finding_id": "A0007",
+      "locations": [
+        "katalog.sqlite:objects.id=KSZ-0061",
+        "katalog.sqlite:objects.id=KSZ-0086"
+      ],
+      "names": {
+        "KSZ-0061": "Schronisko nad Bramką",
+        "KSZ-0086": "Schronisko nad Bramą"
+      },
+      "object_ids": [
+        "KSZ-0061",
+        "KSZ-0086"
+      ],
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          152980.27,
+          562357.93
+        ],
+        "fields": [
+          "x_1992",
+          "y_1992"
+        ]
+      },
+      "finding_id": "A0008",
+      "locations": [
+        "katalog.sqlite:objects.id=KSZ-0080",
+        "katalog.sqlite:objects.id=KSZ-0104"
+      ],
+      "names": {
+        "KSZ-0080": "Płaska Komórka w Żeleźniaku",
+        "KSZ-0104": "Żeleźniakowa Brama"
+      },
+      "object_ids": [
+        "KSZ-0080",
+        "KSZ-0104"
+      ],
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          153928.21,
+          561937.84
+        ],
+        "fields": [
+          "x_1992",
+          "y_1992"
+        ]
+      },
+      "finding_id": "A0009",
+      "locations": [
+        "katalog.sqlite:objects.id=LEJ-0003",
+        "katalog.sqlite:objects.id=LEJ-0013"
+      ],
+      "names": {
+        "LEJ-0003": "Dziura nad Zabijakiem I",
+        "LEJ-0013": "Dziura nad Zabijakiem II"
+      },
+      "object_ids": [
+        "LEJ-0003",
+        "LEJ-0013"
+      ],
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          152949.99,
+          565450.19
+        ],
+        "fields": [
+          "x_1992",
+          "y_1992"
+        ]
+      },
+      "finding_id": "A0010",
+      "locations": [
+        "katalog.sqlite:objects.id=MTZ-0026",
+        "katalog.sqlite:objects.id=MTZ-0035"
+      ],
+      "names": {
+        "MTZ-0026": "Jaskinia Niespodzianka",
+        "MTZ-0035": "Jaskinia Zapylna"
+      },
+      "object_ids": [
+        "MTZ-0026",
+        "MTZ-0035"
+      ],
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          149891.25,
+          579383.12
+        ],
+        "fields": [
+          "x_1992",
+          "y_1992"
+        ]
+      },
+      "finding_id": "A0011",
+      "locations": [
+        "katalog.sqlite:objects.id=PL-0002",
+        "katalog.sqlite:objects.id=PL-0027"
+      ],
+      "names": {
+        "PL-0002": "Wielka Żabia Szpara",
+        "PL-0027": "Jaskinia Żabia Lodowa"
+      },
+      "object_ids": [
+        "PL-0002",
+        "PL-0027"
+      ],
+      "rule": "EXACT_PL1992_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          49.23693054842501,
+          19.872300024012613
+        ],
+        "fields": [
+          "lat",
+          "lon"
+        ]
+      },
+      "finding_id": "A0012",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0040",
+        "katalog.sqlite:objects.id=KSW-0132"
+      ],
+      "names": {
+        "KSW-0040": "Szczelina na Zakręcie II",
+        "KSW-0132": "Szczelina na Zakręcie I"
+      },
+      "object_ids": [
+        "KSW-0040",
+        "KSW-0132"
+      ],
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          49.2306111267046,
+          19.898150011424224
+        ],
+        "fields": [
+          "lat",
+          "lon"
+        ]
+      },
+      "finding_id": "A0013",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0062",
+        "katalog.sqlite:objects.id=KSW-0197"
+      ],
+      "names": {
+        "KSW-0062": "Szczelina przy Tomanowym Okapie",
+        "KSW-0197": "Tomanowy Okap"
+      },
+      "object_ids": [
+        "KSW-0062",
+        "KSW-0197"
+      ],
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          49.23111111977086,
+          19.894722160026827
+        ],
+        "fields": [
+          "lat",
+          "lon"
+        ]
+      },
+      "finding_id": "A0014",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0063",
+        "katalog.sqlite:objects.id=KSW-0103"
+      ],
+      "names": {
+        "KSW-0063": "Dziura nad Zawaliskiem",
+        "KSW-0103": "Dziura pod Zawaliskiem"
+      },
+      "object_ids": [
+        "KSW-0063",
+        "KSW-0103"
+      ],
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          49.229830601996696,
+          19.901030523677736
+        ],
+        "fields": [
+          "lat",
+          "lon"
+        ]
+      },
+      "finding_id": "A0015",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0142",
+        "katalog.sqlite:objects.id=KSW-0159",
+        "katalog.sqlite:objects.id=KSW-0195"
+      ],
+      "names": {
+        "KSW-0142": "Niski Schron nad Tomanową",
+        "KSW-0159": "Niżni Okap nad Tomanową",
+        "KSW-0195": "Wyżni Okap nad Tomanową"
+      },
+      "object_ids": [
+        "KSW-0142",
+        "KSW-0159",
+        "KSW-0195"
+      ],
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          49.23643058821188,
+          19.865280615823107
+        ],
+        "fields": [
+          "lat",
+          "lon"
+        ]
+      },
+      "finding_id": "A0016",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0181",
+        "katalog.sqlite:objects.id=KSW-0215"
+      ],
+      "names": {
+        "KSW-0181": "Jaskinia w Zbójnickiej Turni",
+        "KSW-0215": "Zbójnicka Piwnica"
+      },
+      "object_ids": [
+        "KSW-0181",
+        "KSW-0215"
+      ],
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          49.24157055362969,
+          19.853928122199527
+        ],
+        "fields": [
+          "lat",
+          "lon"
+        ]
+      },
+      "finding_id": "A0017",
+      "locations": [
+        "katalog.sqlite:objects.id=KSZ-0013",
+        "katalog.sqlite:objects.id=KSZ-0022"
+      ],
+      "names": {
+        "KSZ-0013": "Jaskinia nad Prożkiem w Żlebie Na Spady",
+        "KSZ-0022": "Nyża nad Prożkiem w Żlebie Na Spady"
+      },
+      "object_ids": [
+        "KSZ-0013",
+        "KSZ-0022"
+      ],
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          49.24176736069423,
+          19.85564017116024
+        ],
+        "fields": [
+          "lat",
+          "lon"
+        ]
+      },
+      "finding_id": "A0018",
+      "locations": [
+        "katalog.sqlite:objects.id=KSZ-0061",
+        "katalog.sqlite:objects.id=KSZ-0086"
+      ],
+      "names": {
+        "KSZ-0061": "Schronisko nad Bramką",
+        "KSZ-0086": "Schronisko nad Bramą"
+      },
+      "object_ids": [
+        "KSZ-0061",
+        "KSZ-0086"
+      ],
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          49.241151022719556,
+          19.856959131747058
+        ],
+        "fields": [
+          "lat",
+          "lon"
+        ]
+      },
+      "finding_id": "A0019",
+      "locations": [
+        "katalog.sqlite:objects.id=KSZ-0080",
+        "katalog.sqlite:objects.id=KSZ-0104"
+      ],
+      "names": {
+        "KSZ-0080": "Płaska Komórka w Żeleźniaku",
+        "KSZ-0104": "Żeleźniakowa Brama"
+      },
+      "object_ids": [
+        "KSZ-0080",
+        "KSZ-0104"
+      ],
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          49.24972225837734,
+          19.851333302338933
+        ],
+        "fields": [
+          "lat",
+          "lon"
+        ]
+      },
+      "finding_id": "A0020",
+      "locations": [
+        "katalog.sqlite:objects.id=LEJ-0003",
+        "katalog.sqlite:objects.id=LEJ-0013"
+      ],
+      "names": {
+        "LEJ-0003": "Dziura nad Zabijakiem I",
+        "LEJ-0013": "Dziura nad Zabijakiem II"
+      },
+      "object_ids": [
+        "LEJ-0003",
+        "LEJ-0013"
+      ],
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          49.24055557373398,
+          19.899444460693054
+        ],
+        "fields": [
+          "lat",
+          "lon"
+        ]
+      },
+      "finding_id": "A0021",
+      "locations": [
+        "katalog.sqlite:objects.id=MTZ-0026",
+        "katalog.sqlite:objects.id=MTZ-0035"
+      ],
+      "names": {
+        "MTZ-0026": "Jaskinia Niespodzianka",
+        "MTZ-0035": "Jaskinia Zapylna"
+      },
+      "object_ids": [
+        "MTZ-0026",
+        "MTZ-0035"
+      ],
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "coordinates": [
+          49.211388871849636,
+          20.0902778253603
+        ],
+        "fields": [
+          "lat",
+          "lon"
+        ]
+      },
+      "finding_id": "A0022",
+      "locations": [
+        "katalog.sqlite:objects.id=PL-0002",
+        "katalog.sqlite:objects.id=PL-0027"
+      ],
+      "names": {
+        "PL-0002": "Wielka Żabia Szpara",
+        "PL-0027": "Jaskinia Żabia Lodowa"
+      },
+      "object_ids": [
+        "PL-0002",
+        "PL-0027"
+      ],
+      "rule": "EXACT_WGS84_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "name": "Koleba w Zawracie Kasprowym"
+      },
+      "finding_id": "A0023",
+      "locations": [
+        "katalog.sqlite:objects.id=BYW-0041",
+        "katalog.sqlite:objects.id=BYW-0043"
+      ],
+      "names": {
+        "BYW-0041": "Koleba w Zawracie Kasprowym",
+        "BYW-0043": "Koleba w Zawracie Kasprowym"
+      },
+      "object_ids": [
+        "BYW-0041",
+        "BYW-0043"
+      ],
+      "rule": "OBJECT_NAME_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "name": "koleba w zawracie kasprowym"
+      },
+      "finding_id": "A0024",
+      "locations": [
+        "katalog.sqlite:objects.id=BYW-0041",
+        "katalog.sqlite:objects.id=BYW-0043"
+      ],
+      "names": {
+        "BYW-0041": "Koleba w Zawracie Kasprowym",
+        "BYW-0043": "Koleba w Zawracie Kasprowym"
+      },
+      "object_ids": [
+        "BYW-0041",
+        "BYW-0043"
+      ],
+      "rule": "OBJECT_NAME_NORMALIZED_DUPLICATE",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.6133341413712377,
+        "points": [
+          {
+            "cave_id": "C-0911",
+            "lat": 49.25047079129676,
+            "lon": 19.987629871715807,
+            "measurement_id": "m-001",
+            "name_local": "Koleba w Zawracie Kasprowym",
+            "object_id": "BYW-0041",
+            "x_1992": 154131.96,
+            "y_1992": 571852.73
+          },
+          {
+            "cave_id": "C-0977",
+            "lat": 49.25046616308969,
+            "lon": 19.98763445281721,
+            "measurement_id": "m-001",
+            "name_local": "Koleba w Zawracie Kasprowym",
+            "object_id": "BYW-0043",
+            "x_1992": 154131.45,
+            "y_1992": 571853.07
+          }
+        ]
+      },
+      "finding_id": "A0025",
+      "locations": [
+        "katalog.sqlite:objects.id=BYW-0041",
+        "katalog.sqlite:objects.id=BYW-0043"
+      ],
+      "names": {
+        "BYW-0041": "Koleba w Zawracie Kasprowym",
+        "BYW-0043": "Koleba w Zawracie Kasprowym"
+      },
+      "object_ids": [
+        "BYW-0041",
+        "BYW-0043"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0141",
+            "lat": 49.23693054842501,
+            "lon": 19.872300024012613,
+            "measurement_id": "m-002",
+            "name_local": "Szczelina na Zakręcie II",
+            "object_id": "KSW-0040",
+            "x_1992": 152523.99,
+            "y_1992": 563479.63
+          },
+          {
+            "cave_id": "C-0429",
+            "lat": 49.23693054842501,
+            "lon": 19.872300024012613,
+            "measurement_id": "m-002",
+            "name_local": "Szczelina na Zakręcie I",
+            "object_id": "KSW-0132",
+            "x_1992": 152523.99,
+            "y_1992": 563479.63
+          }
+        ]
+      },
+      "finding_id": "A0026",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0040",
+        "katalog.sqlite:objects.id=KSW-0132"
+      ],
+      "names": {
+        "KSW-0040": "Szczelina na Zakręcie II",
+        "KSW-0132": "Szczelina na Zakręcie I"
+      },
+      "object_ids": [
+        "KSW-0040",
+        "KSW-0132"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 1.6939625563612636e-10,
+        "points": [
+          {
+            "cave_id": "C-0211",
+            "lat": 49.2306111267046,
+            "lon": 19.898150011424224,
+            "measurement_id": "m-002",
+            "name_local": "Szczelina przy Tomanowym Okapie",
+            "object_id": "KSW-0062",
+            "x_1992": 151843.7,
+            "y_1992": 565369.12
+          },
+          {
+            "cave_id": "C-0688",
+            "lat": 49.2306111267046,
+            "lon": 19.898150011424224,
+            "measurement_id": "m-002",
+            "name_local": "Tomanowy Okap",
+            "object_id": "KSW-0197",
+            "x_1992": 151843.7,
+            "y_1992": 565369.12
+          }
+        ]
+      },
+      "finding_id": "A0027",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0062",
+        "katalog.sqlite:objects.id=KSW-0197"
+      ],
+      "names": {
+        "KSW-0062": "Szczelina przy Tomanowym Okapie",
+        "KSW-0197": "Tomanowy Okap"
+      },
+      "object_ids": [
+        "KSW-0062",
+        "KSW-0197"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0216",
+            "lat": 49.23111111977086,
+            "lon": 19.894722160026827,
+            "measurement_id": "m-002",
+            "name_local": "Dziura nad Zawaliskiem",
+            "object_id": "KSW-0063",
+            "x_1992": 151896.31,
+            "y_1992": 565118.98
+          },
+          {
+            "cave_id": "C-0335",
+            "lat": 49.23111111977086,
+            "lon": 19.894722160026827,
+            "measurement_id": "m-002",
+            "name_local": "Dziura pod Zawaliskiem",
+            "object_id": "KSW-0103",
+            "x_1992": 151896.31,
+            "y_1992": 565118.98
+          }
+        ]
+      },
+      "finding_id": "A0028",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0063",
+        "katalog.sqlite:objects.id=KSW-0103"
+      ],
+      "names": {
+        "KSW-0063": "Dziura nad Zawaliskiem",
+        "KSW-0103": "Dziura pod Zawaliskiem"
+      },
+      "object_ids": [
+        "KSW-0063",
+        "KSW-0103"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.010006517800928661,
+        "points": [
+          {
+            "cave_id": "C-0298",
+            "lat": 49.23765791358464,
+            "lon": 19.864729850008224,
+            "measurement_id": "m-002",
+            "name_local": "Jaskinia Mała pod Zamkiem",
+            "object_id": "KSW-0091",
+            "x_1992": 152598.5,
+            "y_1992": 562927.81
+          },
+          {
+            "cave_id": "C-0526",
+            "lat": 49.2376579125561,
+            "lon": 19.864729987407962,
+            "measurement_id": "m-002",
+            "name_local": "Jaskinia pod Zamkiem",
+            "object_id": "KSW-0158",
+            "x_1992": 152598.5,
+            "y_1992": 562927.82
+          }
+        ]
+      },
+      "finding_id": "A0029",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0091",
+        "katalog.sqlite:objects.id=KSW-0158"
+      ],
+      "names": {
+        "KSW-0091": "Jaskinia Mała pod Zamkiem",
+        "KSW-0158": "Jaskinia pod Zamkiem"
+      },
+      "object_ids": [
+        "KSW-0091",
+        "KSW-0158"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0463",
+            "lat": 49.229830601996696,
+            "lon": 19.901030523677736,
+            "measurement_id": "m-002",
+            "name_local": "Niski Schron nad Tomanową",
+            "object_id": "KSW-0142",
+            "x_1992": 151759.45,
+            "y_1992": 565579.8
+          },
+          {
+            "cave_id": "C-0529",
+            "lat": 49.229830601996696,
+            "lon": 19.901030523677736,
+            "measurement_id": "m-002",
+            "name_local": "Niżni Okap nad Tomanową",
+            "object_id": "KSW-0159",
+            "x_1992": 151759.45,
+            "y_1992": 565579.8
+          }
+        ]
+      },
+      "finding_id": "A0030",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0142",
+        "katalog.sqlite:objects.id=KSW-0159"
+      ],
+      "names": {
+        "KSW-0142": "Niski Schron nad Tomanową",
+        "KSW-0159": "Niżni Okap nad Tomanową"
+      },
+      "object_ids": [
+        "KSW-0142",
+        "KSW-0159"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0463",
+            "lat": 49.229830601996696,
+            "lon": 19.901030523677736,
+            "measurement_id": "m-002",
+            "name_local": "Niski Schron nad Tomanową",
+            "object_id": "KSW-0142",
+            "x_1992": 151759.45,
+            "y_1992": 565579.8
+          },
+          {
+            "cave_id": "C-0683",
+            "lat": 49.229830601996696,
+            "lon": 19.901030523677736,
+            "measurement_id": "m-002",
+            "name_local": "Wyżni Okap nad Tomanową",
+            "object_id": "KSW-0195",
+            "x_1992": 151759.45,
+            "y_1992": 565579.8
+          }
+        ]
+      },
+      "finding_id": "A0031",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0142",
+        "katalog.sqlite:objects.id=KSW-0195"
+      ],
+      "names": {
+        "KSW-0142": "Niski Schron nad Tomanową",
+        "KSW-0195": "Wyżni Okap nad Tomanową"
+      },
+      "object_ids": [
+        "KSW-0142",
+        "KSW-0195"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.010006518487038332,
+        "points": [
+          {
+            "cave_id": "C-0475",
+            "lat": 49.23831724980024,
+            "lon": 19.86411046862414,
+            "measurement_id": "m-002",
+            "name_local": "Szczelina pod Niżnią Zbójnicką Turnią",
+            "object_id": "KSW-0146",
+            "x_1992": 152671.26,
+            "y_1992": 562881.9
+          },
+          {
+            "cave_id": "C-0623",
+            "lat": 49.23831724877242,
+            "lon": 19.86411060602573,
+            "measurement_id": "m-002",
+            "name_local": "Jaskinia pod Niżnią Zbójnicką Turnią",
+            "object_id": "KSW-0177",
+            "x_1992": 152671.26,
+            "y_1992": 562881.91
+          }
+        ]
+      },
+      "finding_id": "A0032",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0146",
+        "katalog.sqlite:objects.id=KSW-0177"
+      ],
+      "names": {
+        "KSW-0146": "Szczelina pod Niżnią Zbójnicką Turnią",
+        "KSW-0177": "Jaskinia pod Niżnią Zbójnicką Turnią"
+      },
+      "object_ids": [
+        "KSW-0146",
+        "KSW-0177"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0529",
+            "lat": 49.229830601996696,
+            "lon": 19.901030523677736,
+            "measurement_id": "m-002",
+            "name_local": "Niżni Okap nad Tomanową",
+            "object_id": "KSW-0159",
+            "x_1992": 151759.45,
+            "y_1992": 565579.8
+          },
+          {
+            "cave_id": "C-0683",
+            "lat": 49.229830601996696,
+            "lon": 19.901030523677736,
+            "measurement_id": "m-002",
+            "name_local": "Wyżni Okap nad Tomanową",
+            "object_id": "KSW-0195",
+            "x_1992": 151759.45,
+            "y_1992": 565579.8
+          }
+        ]
+      },
+      "finding_id": "A0033",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0159",
+        "katalog.sqlite:objects.id=KSW-0195"
+      ],
+      "names": {
+        "KSW-0159": "Niżni Okap nad Tomanową",
+        "KSW-0195": "Wyżni Okap nad Tomanową"
+      },
+      "object_ids": [
+        "KSW-0159",
+        "KSW-0195"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0632",
+            "lat": 49.23643058821188,
+            "lon": 19.865280615823107,
+            "measurement_id": "m-002",
+            "name_local": "Jaskinia w Zbójnickiej Turni",
+            "object_id": "KSW-0181",
+            "x_1992": 152462.56,
+            "y_1992": 562969.45
+          },
+          {
+            "cave_id": "C-0765",
+            "lat": 49.23643058821188,
+            "lon": 19.865280615823107,
+            "measurement_id": "m-002",
+            "name_local": "Zbójnicka Piwnica",
+            "object_id": "KSW-0215",
+            "x_1992": 152462.56,
+            "y_1992": 562969.45
+          }
+        ]
+      },
+      "finding_id": "A0034",
+      "locations": [
+        "katalog.sqlite:objects.id=KSW-0181",
+        "katalog.sqlite:objects.id=KSW-0215"
+      ],
+      "names": {
+        "KSW-0181": "Jaskinia w Zbójnickiej Turni",
+        "KSW-0215": "Zbójnicka Piwnica"
+      },
+      "object_ids": [
+        "KSW-0181",
+        "KSW-0215"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0132",
+            "lat": 49.24157055362969,
+            "lon": 19.853928122199527,
+            "measurement_id": "m-002",
+            "name_local": "Jaskinia nad Prożkiem w Żlebie Na Spady",
+            "object_id": "KSZ-0013",
+            "x_1992": 153024.4,
+            "y_1992": 562136.85
+          },
+          {
+            "cave_id": "C-0202",
+            "lat": 49.24157055362969,
+            "lon": 19.853928122199527,
+            "measurement_id": "m-002",
+            "name_local": "Nyża nad Prożkiem w Żlebie Na Spady",
+            "object_id": "KSZ-0022",
+            "x_1992": 153024.4,
+            "y_1992": 562136.85
+          }
+        ]
+      },
+      "finding_id": "A0035",
+      "locations": [
+        "katalog.sqlite:objects.id=KSZ-0013",
+        "katalog.sqlite:objects.id=KSZ-0022"
+      ],
+      "names": {
+        "KSZ-0013": "Jaskinia nad Prożkiem w Żlebie Na Spady",
+        "KSZ-0022": "Nyża nad Prożkiem w Żlebie Na Spady"
+      },
+      "object_ids": [
+        "KSZ-0013",
+        "KSZ-0022"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0519",
+            "lat": 49.24176736069423,
+            "lon": 19.85564017116024,
+            "measurement_id": "m-002",
+            "name_local": "Schronisko nad Bramką",
+            "object_id": "KSZ-0061",
+            "x_1992": 153047.68,
+            "y_1992": 562261.18
+          },
+          {
+            "cave_id": "C-0730",
+            "lat": 49.24176736069423,
+            "lon": 19.85564017116024,
+            "measurement_id": "m-002",
+            "name_local": "Schronisko nad Bramą",
+            "object_id": "KSZ-0086",
+            "x_1992": 153047.68,
+            "y_1992": 562261.18
+          }
+        ]
+      },
+      "finding_id": "A0036",
+      "locations": [
+        "katalog.sqlite:objects.id=KSZ-0061",
+        "katalog.sqlite:objects.id=KSZ-0086"
+      ],
+      "names": {
+        "KSZ-0061": "Schronisko nad Bramką",
+        "KSZ-0086": "Schronisko nad Bramą"
+      },
+      "object_ids": [
+        "KSZ-0061",
+        "KSZ-0086"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0700",
+            "lat": 49.241151022719556,
+            "lon": 19.856959131747058,
+            "measurement_id": "m-002",
+            "name_local": "Płaska Komórka w Żeleźniaku",
+            "object_id": "KSZ-0080",
+            "x_1992": 152980.27,
+            "y_1992": 562357.93
+          },
+          {
+            "cave_id": "C-0838",
+            "lat": 49.241151022719556,
+            "lon": 19.856959131747058,
+            "measurement_id": "m-002",
+            "name_local": "Żeleźniakowa Brama",
+            "object_id": "KSZ-0104",
+            "x_1992": 152980.27,
+            "y_1992": 562357.93
+          }
+        ]
+      },
+      "finding_id": "A0037",
+      "locations": [
+        "katalog.sqlite:objects.id=KSZ-0080",
+        "katalog.sqlite:objects.id=KSZ-0104"
+      ],
+      "names": {
+        "KSZ-0080": "Płaska Komórka w Żeleźniaku",
+        "KSZ-0104": "Żeleźniakowa Brama"
+      },
+      "object_ids": [
+        "KSZ-0080",
+        "KSZ-0104"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0114",
+            "lat": 49.24972225837734,
+            "lon": 19.851333302338933,
+            "measurement_id": "m-002",
+            "name_local": "Dziura nad Zabijakiem I",
+            "object_id": "LEJ-0003",
+            "x_1992": 153928.21,
+            "y_1992": 561937.84
+          },
+          {
+            "cave_id": "C-0359",
+            "lat": 49.24972225837734,
+            "lon": 19.851333302338933,
+            "measurement_id": "m-002",
+            "name_local": "Dziura nad Zabijakiem II",
+            "object_id": "LEJ-0013",
+            "x_1992": 153928.21,
+            "y_1992": 561937.84
+          }
+        ]
+      },
+      "finding_id": "A0038",
+      "locations": [
+        "katalog.sqlite:objects.id=LEJ-0003",
+        "katalog.sqlite:objects.id=LEJ-0013"
+      ],
+      "names": {
+        "LEJ-0003": "Dziura nad Zabijakiem I",
+        "LEJ-0013": "Dziura nad Zabijakiem II"
+      },
+      "object_ids": [
+        "LEJ-0003",
+        "LEJ-0013"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0326",
+            "lat": 49.24055557373398,
+            "lon": 19.899444460693054,
+            "measurement_id": "m-002",
+            "name_local": "Jaskinia Niespodzianka",
+            "object_id": "MTZ-0026",
+            "x_1992": 152949.99,
+            "y_1992": 565450.19
+          },
+          {
+            "cave_id": "C-0493",
+            "lat": 49.24055557373398,
+            "lon": 19.899444460693054,
+            "measurement_id": "m-002",
+            "name_local": "Jaskinia Zapylna",
+            "object_id": "MTZ-0035",
+            "x_1992": 152949.99,
+            "y_1992": 565450.19
+          }
+        ]
+      },
+      "finding_id": "A0039",
+      "locations": [
+        "katalog.sqlite:objects.id=MTZ-0026",
+        "katalog.sqlite:objects.id=MTZ-0035"
+      ],
+      "names": {
+        "MTZ-0026": "Jaskinia Niespodzianka",
+        "MTZ-0035": "Jaskinia Zapylna"
+      },
+      "object_ids": [
+        "MTZ-0026",
+        "MTZ-0035"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "distance_m": 0.0,
+        "points": [
+          {
+            "cave_id": "C-0007",
+            "lat": 49.211388871849636,
+            "lon": 20.0902778253603,
+            "measurement_id": "m-002",
+            "name_local": "Wielka Żabia Szpara",
+            "object_id": "PL-0002",
+            "x_1992": 149891.25,
+            "y_1992": 579383.12
+          },
+          {
+            "cave_id": "C-0482",
+            "lat": 49.211388871849636,
+            "lon": 20.0902778253603,
+            "measurement_id": "m-002",
+            "name_local": "Jaskinia Żabia Lodowa",
+            "object_id": "PL-0027",
+            "x_1992": 149891.25,
+            "y_1992": 579383.12
+          }
+        ]
+      },
+      "finding_id": "A0040",
+      "locations": [
+        "katalog.sqlite:objects.id=PL-0002",
+        "katalog.sqlite:objects.id=PL-0027"
+      ],
+      "names": {
+        "PL-0002": "Wielka Żabia Szpara",
+        "PL-0027": "Jaskinia Żabia Lodowa"
+      },
+      "object_ids": [
+        "PL-0002",
+        "PL-0027"
+      ],
+      "rule": "POINTS_WITHIN_1M",
+      "status": "violation"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "actual_authority": null,
+        "actual_datum": "European Terrestrial Reference System 1989",
+        "actual_wkt": "PROJCRS[\"ETRF2000-PL / CS92\",BASEGEOGCRS[\"ETRS89\",DATUM[\"European Terrestrial Reference System 1989\",ELLIPSOID[\"GRS 1980\",6378137,298.257222101,LENGTHUNIT[\"metre\",1]],ID[\"EPSG\",6258]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"Degree\",0.0174532925199433]]],CONVERSION[\"unnamed\",METHOD[\"Transverse Mercator\",ID[\"EPSG\",9807]],PARAMETER[\"Latitude of natural origin\",0,ANGLEUNIT[\"Degree\",0.0174532925199433],ID[\"EPSG\",8801]],PARAMETER[\"Longitude of natural origin\",19,ANGLEUNIT[\"Degree\",0.0174532925199433],ID[\"EPSG\",8802]],PARAMETER[\"Scale factor at natural origin\",0.9993,SCALEUNIT[\"unity\",1],ID[\"EPSG\",8805]],PARAMETER[\"False easting\",500000,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8806]],PARAMETER[\"False northing\",-5300000,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8807]]],CS[Cartesian,2],AXIS[\"(E)\",east,ORDER[1],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]],AXIS[\"(N)\",north,ORDER[2],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]]]",
+        "expected_datum": "ETRF2000 Poland",
+        "expected_epsg": 2180,
+        "note": "PROJ does not equate the declared CRS to EPSG:2180; no displacement inferred."
+      },
+      "finding_id": "A0041",
+      "locations": [],
+      "object_ids": [],
+      "rule": "SHAPEFILE_CRS",
+      "status": "review"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "guids": [
+          "32002bf4-19e5-4bdc-8ef1-93d2e7b54909",
+          "42d3f366-f55c-48cf-a5bc-1eaabe01cc7f"
+        ]
+      },
+      "finding_id": "A0042",
+      "locations": [
+        "katalog.sqlite:objects.id=MLZ-0087"
+      ],
+      "names": {
+        "MLZ-0087": "Szczelina nad Okapami"
+      },
+      "object_ids": [
+        "MLZ-0087"
+      ],
+      "rule": "TPN_MULTIPLE_GUIDS",
+      "status": "review"
+    },
+    {
+      "cave_ids": [],
+      "evidence": {
+        "guids": [
+          "72c1a44a-0423-4c26-a336-2b5cb36b3fda",
+          "86e6e8c9-8495-4e9b-8e89-bc4bc2adec06"
+        ]
+      },
+      "finding_id": "A0043",
+      "locations": [
+        "katalog.sqlite:objects.id=MLZ-0089"
+      ],
+      "names": {
+        "MLZ-0089": "Rura nad Okapami"
+      },
+      "object_ids": [
+        "MLZ-0089"
+      ],
+      "rule": "TPN_MULTIPLE_GUIDS",
+      "status": "review"
+    }
+  ],
+  "integrity": {
+    "foreign_key_check": [],
+    "integrity_check": [
+      "ok"
+    ],
+    "sqlite_sha256": "980d527d55007be6edb8c876f85d760d2e844ccca8794db867005507d807d60e"
+  },
+  "manifest_source_commit": "caf7bae69b28eb037810215889cb87f763b2c6bd",
+  "precision": {
+    "coordinate_consistency_m": 0.5,
+    "csv_gpx_degree_tolerance": 5.1e-11,
+    "distance": "WGS84 ellipsoid, unrounded SQLite selected coordinates, <= 1.0 m",
+    "shapefile_degree_tolerance": 5.1e-09,
+    "shapefile_elevation_m_tolerance": 0.00501,
+    "shapefile_xy_m_tolerance": 0.00051
+  },
+  "profile": {
+    "artifact_layout": {
+      "Best_first_data_row": 7,
+      "Full_first_data_row": 7
+    },
+    "caves": 1001,
+    "history_elevation_source": {
+      "dem": 34,
+      "gnss": 3,
+      "map": 1,
+      "other": 3,
+      "source_record": 1867
+    },
+    "measurements": 1908,
+    "objects": 1007,
+    "pig_caves": 860,
+    "pig_objects": 866,
+    "selected_elevation_datum": {
+      "Kronstadt86": 2,
+      "unknown": 1005
+    },
+    "selected_elevation_source": {
+      "dem": 34,
+      "gnss": 3,
+      "other": 3,
+      "source_record": 967
+    },
+    "selected_horizontal_accuracy": {
+      "known": 0,
+      "unknown": 1007
+    },
+    "tpn_distinct_guids": 1004,
+    "tpn_objects": 1002
+  },
+  "runtime": {
+    "openpyxl": "3.1.5",
+    "proj": "9.5.1",
+    "pyproj": "3.7.2",
+    "pyshp": "3.0.3"
+  },
+  "summary": {
+    "by_check_status": {
+      "passed": 40,
+      "review": 2,
+      "unverifiable": 2,
+      "violated": 5
+    },
+    "by_finding_rule": {
+      "EXACT_PL1992_DUPLICATE": 11,
+      "EXACT_WGS84_DUPLICATE": 11,
+      "OBJECT_NAME_DUPLICATE": 1,
+      "OBJECT_NAME_NORMALIZED_DUPLICATE": 1,
+      "POINTS_WITHIN_1M": 16,
+      "SHAPEFILE_CRS": 1,
+      "TPN_MULTIPLE_GUIDS": 2
+    },
+    "by_finding_status": {
+      "review": 3,
+      "violation": 40
+    }
+  }
+}
