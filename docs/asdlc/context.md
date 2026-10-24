@@ -2,6 +2,19 @@
 
 Last updated: 2026-10-24
 
+## Wydanie v1.3.1 — przygotowanie
+
+Użytkownik zlecił wydanie zakresu PR #35 / PBI-115 i zatwierdził changelog
+v1.3.1. Numer wersji projektu, pakietu i locka jest zgodny z changelogiem.
+Końcowy SHA, CI, merge, tag i odbiór publicznych plików wskazuje opis
+[PR #35](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/35).
+[Odbiór wydania](verification/v1.3.1.md).
+
+Trzy warianty położenia głównego otworu Mylnej wymagają osobnego
+porównania z chmurą LiDAR: [issue #36](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/36).
+Historyczny fix istnieje już w JKTZ `70fa06a` z 2013-11-13. Do rozstrzygnięcia
+pozostają trzy pomiary i obecny ręczny Best KSZ-0064/m-003; wydanie ich nie zmienia.
+
 ## Punkty systemów i statystyki — PBI-115
 
 Po potwierdzeniu w źródłach PIG i `/grill me` użytkownik polecił usunąć
@@ -26,12 +39,15 @@ wycofanych numerów. Mechanizm rezerwacji nie został wdrożony: na polecenie
 użytkownika ocena ryzyka, wariantów i konsekwencji jest w
 [issue #33](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/33).
 Georeferencer używał obu wycofywanych ID; [jego PR #5](https://github.com/dlubom/Georeferencer/pull/5)
-przepina plany na KSZ-0064/MLZ-0068 i dopuszcza sztolnie. Tę poprawkę trzeba
-przyjąć przed wydaniem GPS bez dwóch dawnych punktów. JKTZ nie używa tych ID.
+przepina plany na KSZ-0064/MLZ-0068 i dopuszcza sztolnie. Wydanie GPS może
+poprzedzać scalenie tej poprawki. Następne wydanie Georeferencera musi ją
+zawierać; jego workflow pobiera wydany CSV GPS i przelicza wszystkie plany.
+Sama publikacja GPS nie uruchamia Georeferencera. JKTZ nie używa tych ID.
 Status GPS: implementacja wykonana; odbiór zdalnego SHA, CI i pobranej
 paczki wskazuje opis PR gałęzi `codex/system-points-statistics`.
 [Plan](plans/PBI-115-system-points-statistics.md), [odbiór](verification/PBI-115.md).
-Bez merge, taga i wydania.
+Polecenie wydania v1.3.1 i zatwierdzony changelog odnotowano powyżej;
+Georeferencer pozostaje osobnym wydaniem.
 
 ## Stała ochrona main — PR i CI, bez obowiązkowego approval
 

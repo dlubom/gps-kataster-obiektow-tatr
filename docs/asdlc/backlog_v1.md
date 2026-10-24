@@ -2,6 +2,19 @@
 
 Stan na: 2026-10-24
 
+## Wydanie v1.3.1
+
+Status: użytkownik zlecił publikację zakresu PR #35 / PBI-115 i zatwierdził
+changelog v1.3.1. Przygotowanie obejmuje zgodne wersje projektu, pakietu
+i locka; nie rozszerza zmian danych. Końcowy SHA, CI, merge, tag i odbiór
+publicznych plików wskazuje opis [PR #35](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/35).
+[Odbiór](verification/v1.3.1.md).
+
+Wybór pozycji Mylnej odłożono do porównania trzech pomiarów z LiDAR
+w [issue #36](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/36);
+obecny ręczny Best pozostaje bez zmian. GPS można wydać przed Georeferencerem;
+jego następne wydanie ma zawierać poprawkę PR #5 i skorzystać z wydanego CSV GPS.
+
 ## PBI-115: Błędne punkty systemów i sposoby wyznaczenia pozycji
 
 Status: implementacja wykonana; końcowy odbiór dostarczenia wskazuje opis
@@ -18,8 +31,8 @@ docelowy model historycznych systemów: [issue #34](https://github.com/dlubom/gp
 Oba tematy odłożono do analizy, bez przesądzenia rozwiązania.
 [Plan](plans/PBI-115-system-points-statistics.md), [odbiór](verification/PBI-115.md).
 Powiązana poprawka dwóch kotwic i obsługi sztolni jest w istniejącym
-[draft PR Georeferencera #5](https://github.com/dlubom/Georeferencer/pull/5).
-Merge, tag i wydanie nie należą do tego polecenia.
+[PR Georeferencera #5](https://github.com/dlubom/Georeferencer/pull/5).
+Użytkownik następnie zlecił merge i wydanie v1.3.1; zakres i odbiór powyżej.
 
 ## PBI-114: Dodatkowe GPX według grup dolin
 
