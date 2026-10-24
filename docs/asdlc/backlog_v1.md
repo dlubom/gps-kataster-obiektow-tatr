@@ -14,7 +14,10 @@ polygonach, z pełnym zachowaniem waypointów. Pliki w CLI, release i preview.
 Pełny GPX bajtowo zgodny z bazą, 2077 wejść data/config/schema bez zmian.
 Review: stare liczniki artefaktów poprawione i potwierdzone pełną bramką.
 [Projekt i plan](plans/PBI-114-gpx-groups.md), [odbiór](verification/PBI-114.md).
-Bez merge, taga i publikacji; końcowy SHA/CI i odbiór paczki w opisie PR.
+Po review: brak błędów funkcjonalnych; poprawiono opis liczby plików preview
+z 9 na 12. Użytkownik 2026-10-24 polecił merge PR #32, wydanie v1.3.0
+i zamknięcie issue #20 po potwierdzeniu weryfikacji.
+Końcowy SHA/CI, odbiór paczki i wynik wydania wskazuje opis PR.
 
 2026-10-24 na polecenie użytkownika do PR #32 dodano changelog v1.3.0
 oraz zgodny numer wersji projektu, locka i pakietu. Przygotowanie wydania

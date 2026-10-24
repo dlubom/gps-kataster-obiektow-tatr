@@ -19,14 +19,22 @@ walidacja bez błędów, build/odczyt wszystkich formatów oraz 7/7 mutacji PASS
 2077 wejść data/config/schema zachowano; kod i dane innych PR poza zakresem.
 [Projekt](plans/PBI-114-gpx-groups.md), [odbiór](verification/PBI-114.md).
 Odbiór CI końcowego SHA i pobranej paczki jest wskazywany w opisie PR #32.
-Następny krok po odbiorze: review PR #32.
+Review PR #32 dla `0feab5a`: Standards bez uwag, Spec jedna drobna uwaga
+dokumentacyjna — liczba plików w opisie preview poprawiona z 9 na 12.
+56 testów obszaru PASS; CI dokładnego SHA i odczyt wszystkich formatów
+paczki potwierdzone. Następny krok: CI końcowego commitu dokumentacji.
 
 2026-10-24 użytkownik polecił dodać changelog do PR #32, aby można było
 wydać wersję po jego przyjęciu. Przygotowano wpis v1.3.0 dla dodatkowych
 GPX oraz zgodne wersje projektu, locka i pakietu. Minor odpowiada nowej
 funkcji eksportu; dane i logika wykonawcza zachowane względem `ca4da8e`.
 Weryfikacja przygotowania i dostarczenie: [odbiór PBI-114](verification/PBI-114.md).
-Merge, tag i publikacja wymagają osobnego polecenia.
+2026-10-24 po review użytkownik polecił poprawić dokumentację, scalić PR #32,
+wydać v1.3.0 i zamknąć issue #20. To polecenie zastępuje wcześniejsze
+ograniczenie „bez merge, taga i publikacji” wyłącznie dla PR #32/PBI-114.
+Scalenie wymaga spełnienia bieżących reguł ochrony main; po nim potwierdzić
+CI main, annotated tag v1.3.0, workflow wydania i odczyt 12 publicznych plików.
+Końcowe SHA, CI, wydanie i zamknięcie issue wskazuje opis PR #32.
 
 ## Wydanie v1.2.1 — zatwierdzone
 

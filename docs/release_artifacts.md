@@ -7,7 +7,7 @@ uruchamia `PR export preview`. Po udanym buildzie komentarz bota
 **Paczka testowa eksportów** zawiera link **Pobierz ZIP eksportów**.
 Pobierz po zalogowaniu do GitHub i rozpakuj paczkę, aby obejrzeć np.
 Excel Best/Full, GPX w GPS lub GeoJSON/Shapefile w QGIS.
-ZIP obejmuje wszystkie dziewięć plików wydania wymienionych poniżej,
+ZIP obejmuje wszystkie dwanaście plików wydania wymienionych poniżej,
 `preview.json` i `SHA256SUMS` (`sha256sum -c SHA256SUMS` po rozpakowaniu).
 SQLite i Shapefile zachowują własne wewnętrzne ZIP-y jak w wydaniu.
 
