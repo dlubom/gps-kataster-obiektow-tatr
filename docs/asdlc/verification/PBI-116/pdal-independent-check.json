@@ -1,0 +1,68 @@
+{
+  "status": "PASS",
+  "decoder": "PDAL 2.9.3 via pdal_wrench1.4.0 versus laspy2.7.0/lazrs",
+  "tiles": [
+    {
+      "side": "north",
+      "point_count": 639824,
+      "all_equal_dimensions": [
+        "X",
+        "Y",
+        "Z",
+        "intensity",
+        "return_number",
+        "number_of_returns",
+        "scan_direction_flag",
+        "edge_of_flight_line",
+        "classification",
+        "synthetic",
+        "key_point",
+        "withheld",
+        "scan_angle_rank",
+        "user_data",
+        "point_source_id",
+        "gps_time",
+        "red",
+        "green",
+        "blue",
+        "x",
+        "y",
+        "z"
+      ],
+      "different_dimensions": [],
+      "pdal_point_format": 3,
+      "pdal_version": "1.2"
+    },
+    {
+      "side": "south",
+      "point_count": 326004,
+      "all_equal_dimensions": [
+        "X",
+        "Y",
+        "Z",
+        "intensity",
+        "return_number",
+        "number_of_returns",
+        "scan_direction_flag",
+        "edge_of_flight_line",
+        "classification",
+        "synthetic",
+        "key_point",
+        "withheld",
+        "scan_angle_rank",
+        "user_data",
+        "point_source_id",
+        "gps_time",
+        "red",
+        "green",
+        "blue",
+        "x",
+        "y",
+        "z"
+      ],
+      "different_dimensions": [],
+      "pdal_point_format": 3,
+      "pdal_version": "1.2"
+    }
+  ]
+}

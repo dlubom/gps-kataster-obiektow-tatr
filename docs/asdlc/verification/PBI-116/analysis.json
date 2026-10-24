@@ -1,0 +1,1023 @@
+{
+  "input": "build/research/mylna-2026-10-24/pawlikowskiego-2012.las",
+  "sha256": "681c68b54dd7514db72958071cf6d6b07eb8ebfae74b50565792aa8b22cbef6e",
+  "count": 965828,
+  "accepted": 965825,
+  "ground": 137686,
+  "classes": {
+    "0": 5366,
+    "2": 137686,
+    "3": 103938,
+    "4": 115867,
+    "5": 602595,
+    "6": 373,
+    "7": 3
+  },
+  "source_ids": {
+    "16": 56408,
+    "17": 143403,
+    "18": 181084,
+    "19": 173566,
+    "20": 172697,
+    "21": 217858,
+    "23": 20812
+  },
+  "header_crs": "Unreadable header CRS: CRSError: Invalid WKT string: ''; use matched source index",
+  "scales": [
+    0.01,
+    0.01,
+    0.01
+  ],
+  "catalogue": {
+    "KSZ-0064": {
+      "sha256": "a85bab4c70a66f9f3dc7ff88b63e76f6951dee806c31970804bbe129c76b0a3c",
+      "best": {
+        "mode": "manual",
+        "measurement_id": "m-003",
+        "reason": "Ręcznie zachowany punkt dowiązania sieci Mylna:0 zapisany w JKTZ; pierwotna metoda wyznaczenia nieznana, automatyczny TPN nie zastępuje tego wskazania.",
+        "updated_at": "2026-10-23T13:45:51Z",
+        "updated_by": "dl"
+      }
+    },
+    "KSZ-0090": {
+      "sha256": "77ebad4b666edf38670298de1cd2e6ca1b236a756ae2aaed2b03759f67eb83db",
+      "best": {
+        "mode": "manual",
+        "measurement_id": "m-003",
+        "reason": "Ręcznie zachowana pozycja stacji Oblazkowa:0.0 z sieci pomiarowej JKTZ; automatyczny TPN nie zastępuje tego wskazania.",
+        "updated_at": "2026-10-23T13:45:51Z",
+        "updated_by": "dl"
+      }
+    },
+    "KSZ-0047": {
+      "sha256": "90c80db5d16c420114f99a7dbdbfaa613c4557bb5df6d023e6926f6c43cb226a",
+      "best": {
+        "mode": "manual",
+        "measurement_id": "m-003",
+        "reason": "Ręcznie zachowana pozycja stacji Raptawicka:1.0 z sieci pomiarowej JKTZ; automatyczny TPN nie zastępuje tego wskazania.",
+        "updated_at": "2026-10-23T13:45:51Z",
+        "updated_by": "dl"
+      }
+    },
+    "KSZ-0113": {
+      "sha256": "495cbaa0e5dfb6456bdd25727c692d0810e9e26be536fd7b45e77a4dbf190f24",
+      "best": {
+        "mode": "auto",
+        "measurement_id": "m-001",
+        "reason": null,
+        "updated_at": "2026-05-16T19:30:00Z",
+        "updated_by": "dl"
+      }
+    }
+  },
+  "markers": [
+    {
+      "object": "KSZ-0064",
+      "name": "Mylna S",
+      "measurement": "m-001",
+      "source": "PIG",
+      "E": 562693.59,
+      "N": 152789.77,
+      "Z": 1098.0,
+      "datum": "unknown",
+      "accepted_nearest": {
+        "record_index": 769448,
+        "xyz": [
+          562693.5,
+          152790.07,
+          1217.91
+        ],
+        "dXY": 0.3132091952746759,
+        "class": 2,
+        "source_id": 19
+      },
+      "accepted_radii": {
+        "0.5": {
+          "n": 7,
+          "z_min": 1217.17,
+          "z_max": 1218.1000000000001
+        },
+        "1": {
+          "n": 26,
+          "z_min": 1216.28,
+          "z_max": 1218.49
+        },
+        "2": {
+          "n": 93,
+          "z_min": 1212.91,
+          "z_max": 1219.55
+        },
+        "5": {
+          "n": 645,
+          "z_min": 1199.06,
+          "z_max": 1224.15
+        }
+      },
+      "ground_nearest": {
+        "record_index": 769448,
+        "xyz": [
+          562693.5,
+          152790.07,
+          1217.91
+        ],
+        "dXY": 0.3132091952746759,
+        "class": 2,
+        "source_id": 19
+      },
+      "ground_radii": {
+        "0.5": {
+          "n": 6,
+          "z_min": 1217.17,
+          "z_max": 1217.91
+        },
+        "1": {
+          "n": 20,
+          "z_min": 1216.28,
+          "z_max": 1218.49
+        },
+        "2": {
+          "n": 69,
+          "z_min": 1212.91,
+          "z_max": 1219.2
+        },
+        "5": {
+          "n": 398,
+          "z_min": 1199.06,
+          "z_max": 1223.1200000000001
+        }
+      }
+    },
+    {
+      "object": "KSZ-0064",
+      "name": "Mylna S",
+      "measurement": "m-002",
+      "source": "TPN",
+      "E": 562728.48,
+      "N": 152786.53,
+      "Z": 1098.924832,
+      "datum": "unknown",
+      "accepted_nearest": {
+        "record_index": 644448,
+        "xyz": [
+          562728.4500000001,
+          152786.78,
+          1100.39
+        ],
+        "dXY": 0.25179356622974197,
+        "class": 4,
+        "source_id": 17
+      },
+      "accepted_radii": {
+        "0.5": {
+          "n": 5,
+          "z_min": 1098.65,
+          "z_max": 1103.14
+        },
+        "1": {
+          "n": 26,
+          "z_min": 1097.48,
+          "z_max": 1103.99
+        },
+        "2": {
+          "n": 109,
+          "z_min": 1097.1200000000001,
+          "z_max": 1107.05
+        },
+        "5": {
+          "n": 696,
+          "z_min": 1094.74,
+          "z_max": 1114.1000000000001
+        }
+      },
+      "ground_nearest": {
+        "record_index": 691602,
+        "xyz": [
+          562728.54,
+          152785.72,
+          1097.52
+        ],
+        "dXY": 0.812219182242659,
+        "class": 2,
+        "source_id": 18
+      },
+      "ground_radii": {
+        "0.5": {
+          "n": 0,
+          "z_min": null,
+          "z_max": null
+        },
+        "1": {
+          "n": 4,
+          "z_min": 1097.48,
+          "z_max": 1100.31
+        },
+        "2": {
+          "n": 21,
+          "z_min": 1097.1200000000001,
+          "z_max": 1101.51
+        },
+        "5": {
+          "n": 144,
+          "z_min": 1094.8600000000001,
+          "z_max": 1105.27
+        }
+      }
+    },
+    {
+      "object": "KSZ-0064",
+      "name": "Mylna S",
+      "measurement": "m-003",
+      "source": "inne",
+      "E": 562741.86,
+      "N": 152788.47,
+      "Z": 1098.0,
+      "datum": "unknown",
+      "accepted_nearest": {
+        "record_index": 825762,
+        "xyz": [
+          562741.85,
+          152788.57,
+          1096.63
+        ],
+        "dXY": 0.10049875621792749,
+        "class": 3,
+        "source_id": 21
+      },
+      "accepted_radii": {
+        "0.5": {
+          "n": 7,
+          "z_min": 1096.38,
+          "z_max": 1096.65
+        },
+        "1": {
+          "n": 26,
+          "z_min": 1095.73,
+          "z_max": 1099.33
+        },
+        "2": {
+          "n": 115,
+          "z_min": 1095.1200000000001,
+          "z_max": 1101.28
+        },
+        "5": {
+          "n": 710,
+          "z_min": 1093.23,
+          "z_max": 1109.93
+        }
+      },
+      "ground_nearest": {
+        "record_index": 749917,
+        "xyz": [
+          562741.51,
+          152788.32,
+          1096.38
+        ],
+        "dXY": 0.380788655269502,
+        "class": 2,
+        "source_id": 19
+      },
+      "ground_radii": {
+        "0.5": {
+          "n": 2,
+          "z_min": 1096.38,
+          "z_max": 1096.38
+        },
+        "1": {
+          "n": 10,
+          "z_min": 1095.73,
+          "z_max": 1096.63
+        },
+        "2": {
+          "n": 61,
+          "z_min": 1095.1200000000001,
+          "z_max": 1097.2
+        },
+        "5": {
+          "n": 196,
+          "z_min": 1093.23,
+          "z_max": 1098.52
+        }
+      }
+    },
+    {
+      "object": "KSZ-0090",
+      "name": "Obłazkowa",
+      "measurement": "m-001",
+      "source": "PIG",
+      "E": 562718.17,
+      "N": 152815.67,
+      "Z": 1096.0,
+      "datum": "unknown",
+      "accepted_nearest": {
+        "record_index": 282623,
+        "xyz": [
+          562718.0700000001,
+          152815.44,
+          1140.3500000000001
+        ],
+        "dXY": 0.25079872408001397,
+        "class": 3,
+        "source_id": 19
+      },
+      "accepted_radii": {
+        "0.5": {
+          "n": 7,
+          "z_min": 1139.17,
+          "z_max": 1140.63
+        },
+        "1": {
+          "n": 21,
+          "z_min": 1138.78,
+          "z_max": 1142.04
+        },
+        "2": {
+          "n": 89,
+          "z_min": 1136.94,
+          "z_max": 1143.68
+        },
+        "5": {
+          "n": 528,
+          "z_min": 1132.52,
+          "z_max": 1146.44
+        }
+      },
+      "ground_nearest": {
+        "record_index": 282588,
+        "xyz": [
+          562718.52,
+          152815.54,
+          1139.25
+        ],
+        "dXY": 0.3733630940316846,
+        "class": 2,
+        "source_id": 19
+      },
+      "ground_radii": {
+        "0.5": {
+          "n": 1,
+          "z_min": 1139.25,
+          "z_max": 1139.25
+        },
+        "1": {
+          "n": 6,
+          "z_min": 1139.22,
+          "z_max": 1142.04
+        },
+        "2": {
+          "n": 33,
+          "z_min": 1137.16,
+          "z_max": 1143.67
+        },
+        "5": {
+          "n": 191,
+          "z_min": 1132.52,
+          "z_max": 1146.44
+        }
+      }
+    },
+    {
+      "object": "KSZ-0090",
+      "name": "Obłazkowa",
+      "measurement": "m-002",
+      "source": "TPN",
+      "E": 562735.51,
+      "N": 152789.25,
+      "Z": 1098.389054,
+      "datum": "unknown",
+      "accepted_nearest": {
+        "record_index": 830278,
+        "xyz": [
+          562735.56,
+          152789.11000000002,
+          1097.83
+        ],
+        "dXY": 0.14866068747459463,
+        "class": 3,
+        "source_id": 21
+      },
+      "accepted_radii": {
+        "0.5": {
+          "n": 9,
+          "z_min": 1097.83,
+          "z_max": 1106.15
+        },
+        "1": {
+          "n": 31,
+          "z_min": 1097.63,
+          "z_max": 1108.46
+        },
+        "2": {
+          "n": 106,
+          "z_min": 1096.88,
+          "z_max": 1111.09
+        },
+        "5": {
+          "n": 640,
+          "z_min": 1094.6100000000001,
+          "z_max": 1111.8
+        }
+      },
+      "ground_nearest": {
+        "record_index": 942259,
+        "xyz": [
+          562735.61,
+          152789.59,
+          1097.89
+        ],
+        "dXY": 0.35440090292346677,
+        "class": 2,
+        "source_id": 21
+      },
+      "ground_radii": {
+        "0.5": {
+          "n": 1,
+          "z_min": 1097.89,
+          "z_max": 1097.89
+        },
+        "1": {
+          "n": 7,
+          "z_min": 1097.67,
+          "z_max": 1098.02
+        },
+        "2": {
+          "n": 23,
+          "z_min": 1097.01,
+          "z_max": 1098.04
+        },
+        "5": {
+          "n": 158,
+          "z_min": 1094.6100000000001,
+          "z_max": 1100.31
+        }
+      }
+    },
+    {
+      "object": "KSZ-0090",
+      "name": "Obłazkowa",
+      "measurement": "m-003",
+      "source": "inne",
+      "E": 562768.93,
+      "N": 152808.28,
+      "Z": 1096.62,
+      "datum": "unknown",
+      "accepted_nearest": {
+        "record_index": 964626,
+        "xyz": [
+          562768.81,
+          152808.22,
+          1095.96
+        ],
+        "dXY": 0.13416407864478114,
+        "class": 2,
+        "source_id": 21
+      },
+      "accepted_radii": {
+        "0.5": {
+          "n": 8,
+          "z_min": 1095.4,
+          "z_max": 1096.21
+        },
+        "1": {
+          "n": 29,
+          "z_min": 1094.89,
+          "z_max": 1096.41
+        },
+        "2": {
+          "n": 110,
+          "z_min": 1093.78,
+          "z_max": 1098.24
+        },
+        "5": {
+          "n": 677,
+          "z_min": 1087.98,
+          "z_max": 1099.8500000000001
+        }
+      },
+      "ground_nearest": {
+        "record_index": 964626,
+        "xyz": [
+          562768.81,
+          152808.22,
+          1095.96
+        ],
+        "dXY": 0.13416407864478114,
+        "class": 2,
+        "source_id": 21
+      },
+      "ground_radii": {
+        "0.5": {
+          "n": 3,
+          "z_min": 1095.48,
+          "z_max": 1096.1200000000001
+        },
+        "1": {
+          "n": 8,
+          "z_min": 1094.89,
+          "z_max": 1096.29
+        },
+        "2": {
+          "n": 28,
+          "z_min": 1093.89,
+          "z_max": 1096.53
+        },
+        "5": {
+          "n": 193,
+          "z_min": 1088.05,
+          "z_max": 1097.53
+        }
+      }
+    },
+    {
+      "object": "KSZ-0047",
+      "name": "Raptawicka",
+      "measurement": "m-001",
+      "source": "PIG",
+      "E": 562744.57,
+      "N": 152840.37,
+      "Z": 1146.0,
+      "datum": "unknown",
+      "accepted_nearest": {
+        "record_index": 382293,
+        "xyz": [
+          562744.28,
+          152840.36000000002,
+          1131.0
+        ],
+        "dXY": 0.29017236249114076,
+        "class": 0,
+        "source_id": 21
+      },
+      "accepted_radii": {
+        "0.5": {
+          "n": 9,
+          "z_min": 1130.8600000000001,
+          "z_max": 1133.8700000000001
+        },
+        "1": {
+          "n": 21,
+          "z_min": 1130.77,
+          "z_max": 1135.01
+        },
+        "2": {
+          "n": 97,
+          "z_min": 1129.8500000000001,
+          "z_max": 1145.42
+        },
+        "5": {
+          "n": 744,
+          "z_min": 1127.1000000000001,
+          "z_max": 1161.7
+        }
+      },
+      "ground_nearest": {
+        "record_index": 284814,
+        "xyz": [
+          562744.4,
+          152840.75,
+          1132.52
+        ],
+        "dXY": 0.41629316590379795,
+        "class": 2,
+        "source_id": 19
+      },
+      "ground_radii": {
+        "0.5": {
+          "n": 1,
+          "z_min": 1132.52,
+          "z_max": 1132.52
+        },
+        "1": {
+          "n": 1,
+          "z_min": 1132.52,
+          "z_max": 1132.52
+        },
+        "2": {
+          "n": 42,
+          "z_min": 1129.96,
+          "z_max": 1143.49
+        },
+        "5": {
+          "n": 349,
+          "z_min": 1127.1000000000001,
+          "z_max": 1161.7
+        }
+      }
+    },
+    {
+      "object": "KSZ-0047",
+      "name": "Raptawicka",
+      "measurement": "m-002",
+      "source": "TPN",
+      "E": 562730.81,
+      "N": 152838.92,
+      "Z": 1140.427999,
+      "datum": "unknown",
+      "accepted_nearest": {
+        "record_index": 620485,
+        "xyz": [
+          562731.05,
+          152838.69,
+          1140.32
+        ],
+        "dXY": 0.33241540277241854,
+        "class": 0,
+        "source_id": 21
+      },
+      "accepted_radii": {
+        "0.5": {
+          "n": 4,
+          "z_min": 1139.99,
+          "z_max": 1140.8
+        },
+        "1": {
+          "n": 24,
+          "z_min": 1139.69,
+          "z_max": 1179.48
+        },
+        "2": {
+          "n": 127,
+          "z_min": 1137.8700000000001,
+          "z_max": 1185.03
+        },
+        "5": {
+          "n": 794,
+          "z_min": 1134.89,
+          "z_max": 1189.03
+        }
+      },
+      "ground_nearest": {
+        "record_index": 621906,
+        "xyz": [
+          562730.38,
+          152839.72,
+          1179.48
+        ],
+        "dXY": 0.9082400563867601,
+        "class": 2,
+        "source_id": 21
+      },
+      "ground_radii": {
+        "0.5": {
+          "n": 0,
+          "z_min": null,
+          "z_max": null
+        },
+        "1": {
+          "n": 1,
+          "z_min": 1179.48,
+          "z_max": 1179.48
+        },
+        "2": {
+          "n": 15,
+          "z_min": 1178.1000000000001,
+          "z_max": 1183.49
+        },
+        "5": {
+          "n": 102,
+          "z_min": 1134.89,
+          "z_max": 1187.92
+        }
+      }
+    },
+    {
+      "object": "KSZ-0047",
+      "name": "Raptawicka",
+      "measurement": "m-003",
+      "source": "inne",
+      "E": 562742.35,
+      "N": 152841.98,
+      "Z": 1141.31,
+      "datum": "unknown",
+      "accepted_nearest": {
+        "record_index": 415777,
+        "xyz": [
+          562742.29,
+          152842.17,
+          1151.13
+        ],
+        "dXY": 0.1992485884357037,
+        "class": 2,
+        "source_id": 21
+      },
+      "accepted_radii": {
+        "0.5": {
+          "n": 10,
+          "z_min": 1147.0,
+          "z_max": 1151.19
+        },
+        "1": {
+          "n": 32,
+          "z_min": 1142.56,
+          "z_max": 1156.88
+        },
+        "2": {
+          "n": 122,
+          "z_min": 1134.83,
+          "z_max": 1160.89
+        },
+        "5": {
+          "n": 713,
+          "z_min": 1128.93,
+          "z_max": 1167.38
+        }
+      },
+      "ground_nearest": {
+        "record_index": 415777,
+        "xyz": [
+          562742.29,
+          152842.17,
+          1151.13
+        ],
+        "dXY": 0.1992485884357037,
+        "class": 2,
+        "source_id": 21
+      },
+      "ground_radii": {
+        "0.5": {
+          "n": 5,
+          "z_min": 1147.0,
+          "z_max": 1151.19
+        },
+        "1": {
+          "n": 21,
+          "z_min": 1142.56,
+          "z_max": 1156.88
+        },
+        "2": {
+          "n": 83,
+          "z_min": 1135.71,
+          "z_max": 1160.89
+        },
+        "5": {
+          "n": 390,
+          "z_min": 1128.93,
+          "z_max": 1167.31
+        }
+      }
+    },
+    {
+      "object": "KSZ-0113",
+      "name": "Mylna N",
+      "measurement": "m-001",
+      "source": "TPN",
+      "E": 562797.66,
+      "N": 152920.16,
+      "Z": 1095.805132,
+      "datum": "unknown",
+      "accepted_nearest": {
+        "record_index": 185158,
+        "xyz": [
+          562797.65,
+          152920.17,
+          1104.52
+        ],
+        "dXY": 0.01414213563690184,
+        "class": 5,
+        "source_id": 18
+      },
+      "accepted_radii": {
+        "0.5": {
+          "n": 12,
+          "z_min": 1101.23,
+          "z_max": 1105.44
+        },
+        "1": {
+          "n": 54,
+          "z_min": 1095.48,
+          "z_max": 1105.54
+        },
+        "2": {
+          "n": 162,
+          "z_min": 1095.48,
+          "z_max": 1107.53
+        },
+        "5": {
+          "n": 898,
+          "z_min": 1095.04,
+          "z_max": 1113.14
+        }
+      },
+      "ground_nearest": {
+        "record_index": 484364,
+        "xyz": [
+          562798.29,
+          152919.94,
+          1095.53
+        ],
+        "dXY": 0.667308024832895,
+        "class": 2,
+        "source_id": 20
+      },
+      "ground_radii": {
+        "0.5": {
+          "n": 0,
+          "z_min": null,
+          "z_max": null
+        },
+        "1": {
+          "n": 5,
+          "z_min": 1095.48,
+          "z_max": 1095.63
+        },
+        "2": {
+          "n": 18,
+          "z_min": 1095.48,
+          "z_max": 1095.65
+        },
+        "5": {
+          "n": 72,
+          "z_min": 1095.04,
+          "z_max": 1100.81
+        }
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "anchor": "m-001",
+      "shift": [
+        -48.27496418065857,
+        1.303169591788901
+      ],
+      "predicted": [
+        {
+          "station": "Pawlikowskiego:Mylna:0",
+          "E": 562693.59,
+          "N": 152789.77,
+          "Z": 1098.0
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:39",
+          "E": 562760.5157273791,
+          "N": 152921.17178530197,
+          "Z": 1093.67
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:52",
+          "E": 562691.3393735568,
+          "N": 152776.1802940522,
+          "Z": 1097.62
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:53",
+          "E": 562683.3534340688,
+          "N": 152770.7290181373,
+          "Z": 1098.72
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:333",
+          "E": 562674.4708193983,
+          "N": 152766.66404709636,
+          "Z": 1096.75
+        },
+        {
+          "station": "Pawlikowskiego:Oblazkowa:0.0",
+          "E": 562720.6562952029,
+          "N": 152809.58608763522,
+          "Z": 1096.62
+        },
+        {
+          "station": "Pawlikowskiego:Raptawicka:1.0",
+          "E": 562694.0747388662,
+          "N": 152843.28354536506,
+          "Z": 1141.31
+        },
+        {
+          "station": "Pawlikowskiego:Raptawicka:5.1",
+          "E": 562694.6756280409,
+          "N": 152847.40949305097,
+          "Z": 1147.3
+        }
+      ]
+    },
+    {
+      "anchor": "m-002",
+      "shift": [
+        -13.384964180644602,
+        -1.9368304082017858
+      ],
+      "predicted": [
+        {
+          "station": "Pawlikowskiego:Mylna:0",
+          "E": 562728.48,
+          "N": 152786.53,
+          "Z": 1098.0
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:39",
+          "E": 562795.4057273791,
+          "N": 152917.93178530197,
+          "Z": 1093.67
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:52",
+          "E": 562726.2293735568,
+          "N": 152772.9402940522,
+          "Z": 1097.62
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:53",
+          "E": 562718.2434340689,
+          "N": 152767.4890181373,
+          "Z": 1098.72
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:333",
+          "E": 562709.3608193983,
+          "N": 152763.42404709637,
+          "Z": 1096.75
+        },
+        {
+          "station": "Pawlikowskiego:Oblazkowa:0.0",
+          "E": 562755.5462952029,
+          "N": 152806.34608763523,
+          "Z": 1096.62
+        },
+        {
+          "station": "Pawlikowskiego:Raptawicka:1.0",
+          "E": 562728.9647388662,
+          "N": 152840.04354536507,
+          "Z": 1141.31
+        },
+        {
+          "station": "Pawlikowskiego:Raptawicka:5.1",
+          "E": 562729.5656280409,
+          "N": 152844.16949305098,
+          "Z": 1147.3
+        }
+      ]
+    },
+    {
+      "anchor": "m-003",
+      "shift": [
+        -0.004964180639944971,
+        0.0031695918005425483
+      ],
+      "predicted": [
+        {
+          "station": "Pawlikowskiego:Mylna:0",
+          "E": 562741.86,
+          "N": 152788.47,
+          "Z": 1098.0
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:39",
+          "E": 562808.7857273791,
+          "N": 152919.87178530198,
+          "Z": 1093.67
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:52",
+          "E": 562739.6093735568,
+          "N": 152774.88029405221,
+          "Z": 1097.62
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:53",
+          "E": 562731.6234340689,
+          "N": 152769.4290181373,
+          "Z": 1098.72
+        },
+        {
+          "station": "Pawlikowskiego:Mylna:333",
+          "E": 562722.7408193983,
+          "N": 152765.36404709637,
+          "Z": 1096.75
+        },
+        {
+          "station": "Pawlikowskiego:Oblazkowa:0.0",
+          "E": 562768.9262952029,
+          "N": 152808.28608763524,
+          "Z": 1096.62
+        },
+        {
+          "station": "Pawlikowskiego:Raptawicka:1.0",
+          "E": 562742.3447388662,
+          "N": 152841.98354536507,
+          "Z": 1141.31
+        },
+        {
+          "station": "Pawlikowskiego:Raptawicka:5.1",
+          "E": 562742.9456280409,
+          "N": 152846.109493051,
+          "Z": 1147.3
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "excluded_classes": [
+      7,
+      18
+    ],
+    "withheld": false,
+    "section_lengths": 30,
+    "section_widths": [
+      0.5,
+      1,
+      2
+    ],
+    "boundary_tolerance_m": 1e-09,
+    "interpolation": false
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "date": "2026-10-24",
+  "source_year": 2012,
+  "bbox_E_N": [
+    562545.0,
+    562871.0,
+    152694.0,
+    152982.0
+  ],
+  "axis_note": "LAS X=E=y_1992; LAS Y=N=x_1992",
+  "selection": "all classes and flags, no interpolation, no filtering, no thinning, no reprojection",
+  "vertical_crs": "PL-KRON86-NH from linked WFS metadata, not assigned to unknown catalogue elevations",
+  "inputs": [
+    {
+      "file": "mylna-2012-north-source.laz",
+      "bytes": 136993746,
+      "sha256": "a8383147903a2d9c0f36979619b4c78032ccd541f892b43dca74d0ff856cfbed",
+      "metadata": {
+        "godlo": "M-34-100-B-c-2-2-2",
+        "akt_rok": "2012",
+        "asortyment": "chmura punktow",
+        "format": "LAS",
+        "char_przestrz": "4 p/m2",
+        "blad_sr_wys": "0.15",
+        "uklad_xy": "PL-1992",
+        "modul_archiwizacji": "1:2500",
+        "uklad_h": "PL-KRON86-NH",
+        "nr_zglosz": "NM-34-011/11",
+        "akt_data": "2012-08-19",
+        "czy_ark_wypelniony": "TAK",
+        "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/4979/4979_281506_M-34-100-B-c-2-2-2.laz",
+        "zrodlo_danych": "Skaning laserowy",
+        "dt_pzgik": "2013-05-27",
+        "blad_sr_syt": "0.50"
+      },
+      "point_count": 15605936,
+      "version": "1.2",
+      "point_format": 3,
+      "scales": [
+        0.01,
+        0.01,
+        0.01
+      ],
+      "offsets": [
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "crs_vlrs": [
+        {
+          "type": "WktCoordinateSystemVlr",
+          "error": "Invalid WKT string: ''"
+        }
+      ],
+      "crop_file": "mylna-2012-north-crop.las",
+      "crop_point_count": 639824,
+      "crop_sha256": "1e70446e5a551ecbe436d08857f9422cdfe3e6103a00d7f32765a4233f1942d8"
+    },
+    {
+      "file": "mylna-2012-south-source.laz",
+      "bytes": 112391451,
+      "sha256": "6dce8d3293e6da5d7e67ec82a9ab31b9afd090bb59272de0c4e1acf719bfaf2e",
+      "metadata": {
+        "godlo": "M-34-100-B-c-2-2-4",
+        "akt_rok": "2012",
+        "asortyment": "chmura punktow",
+        "format": "LAS",
+        "char_przestrz": "4 p/m2",
+        "blad_sr_wys": "0.15",
+        "uklad_xy": "PL-1992",
+        "modul_archiwizacji": "1:2500",
+        "uklad_h": "PL-KRON86-NH",
+        "nr_zglosz": "NM-34-011/11",
+        "akt_data": "2012-08-19",
+        "czy_ark_wypelniony": "TAK",
+        "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/4979/4979_281508_M-34-100-B-c-2-2-4.laz",
+        "zrodlo_danych": "Skaning laserowy",
+        "dt_pzgik": "2013-05-27",
+        "blad_sr_syt": "0.50"
+      },
+      "point_count": 12565207,
+      "version": "1.2",
+      "point_format": 3,
+      "scales": [
+        0.01,
+        0.01,
+        0.01
+      ],
+      "offsets": [
+        -0.0,
+        -0.0,
+        -0.0
+      ],
+      "crs_vlrs": [
+        {
+          "type": "WktCoordinateSystemVlr",
+          "error": "Invalid WKT string: ''"
+        }
+      ],
+      "crop_file": "mylna-2012-south-crop.las",
+      "crop_point_count": 326004,
+      "crop_sha256": "8647b82e722b9e97af022da051d485bd64fe16ce46f0b382327505a46db76fbc"
+    }
+  ],
+  "software": {
+    "laspy": "2.7.0",
+    "numpy": "2.5.4"
+  },
+  "output": {
+    "file": "pawlikowskiego-2012.las",
+    "bytes": 32838438,
+    "sha256": "681c68b54dd7514db72958071cf6d6b07eb8ebfae74b50565792aa8b22cbef6e",
+    "point_count": 965828,
+    "classes": {
+      "0": 5366,
+      "2": 137686,
+      "3": 103938,
+      "4": 115867,
+      "5": 602595,
+      "6": 373,
+      "7": 3
+    },
+    "point_source_ids": {
+      "16": 56408,
+      "17": 143403,
+      "18": 181084,
+      "19": 173566,
+      "20": 172697,
+      "21": 217858,
+      "23": 20812
+    },
+    "min": [
+      562545.0,
+      152694.0,
+      1025.07
+    ],
+    "max": [
+      562871.0,
+      152982.0,
+      1334.48
+    ],
+    "readback_all_records_equal": true,
+    "mapping_file": "pawlikowskiego-2012-source-records.npz"
+  },
+  "xml": [
+    {
+      "file": "lidar-2025-index.xml",
+      "sha256": "e2bfb99c559b3a6b8b91d926a9cf54e2bbbaa3b95ec8aa7ce215b20e3ac61aff",
+      "numberMatched": "0"
+    },
+    {
+      "file": "lidar-all-years-index.xml",
+      "sha256": "62f8195afbe3eed8f0c73a23ea6e84ba567fbc96df5eb1a2849a076516ee54a0",
+      "numberMatched": "0"
+    },
+    {
+      "file": "lidar-broad-index.xml",
+      "sha256": "6552cc58863e7aec43841b868271d5a98bf9b53562b125ed972acf1ae73eba7b",
+      "numberMatched": "48"
+    },
+    {
+      "file": "lidar-kron-index.xml",
+      "sha256": "987a3e9974a6bc5ad56b5390eb6c1abb1324c734e35fb50467e7787bf4725ff0",
+      "numberMatched": "2"
+    }
+  ],
+  "queries": [
+    {
+      "file": "lidar-2025-index.xml",
+      "url": "https://mapy.geoportal.gov.pl/wss/service/PZGIK/DanePomiaroweLidarEVRF2007/WFS/Skorowidze?service=WFS&version=2.0.0&request=GetFeature&typenames=gugik%3ASkorowidzDanychPomiarowychLIDAR2025&srsname=EPSG%3A4326&bbox=49.2387%2C19.8605%2C49.2412%2C19.8640%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A4326",
+      "response_timestamp": "2026-10-24T20:27:00"
+    },
+    {
+      "file": "lidar-all-years-index.xml",
+      "url": "https://mapy.geoportal.gov.pl/wss/service/PZGIK/DanePomiaroweLidarEVRF2007/WFS/Skorowidze?service=WFS&version=2.0.0&request=GetFeature&typenames=gugik%3ASkorowidzDanychPomiarowychLIDAR2018%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2019%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2020%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2021%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2022%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2023%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2024%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2025%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2026&srsname=EPSG%3A4326&bbox=49.2387%2C19.8605%2C49.2412%2C19.8640%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A4326",
+      "response_timestamp": "2026-10-24T20:27:14"
+    },
+    {
+      "file": "lidar-broad-index.xml",
+      "url": "https://mapy.geoportal.gov.pl/wss/service/PZGIK/DanePomiaroweLidarEVRF2007/WFS/Skorowidze?service=WFS&version=2.0.0&request=GetFeature&typenames=gugik%3ASkorowidzDanychPomiarowychLIDAR2023%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2025&srsname=EPSG%3A4326&bbox=49.230%2C19.850%2C49.250%2C19.930%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A4326",
+      "response_timestamp": "2026-10-24T20:27:37"
+    },
+    {
+      "file": "lidar-kron-index.xml",
+      "url": "https://mapy.geoportal.gov.pl/wss/service/PZGIK/DanePomiaroweLidarKRON86/WFS/Skorowidze?service=WFS&version=2.0.0&request=GetFeature&typenames=gugik%3ASkorowidzDanychPomiarowychLIDAR2010%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2011%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2012%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2013%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2014%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2015%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2016%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2017%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2018%2Cgugik%3ASkorowidzDanychPomiarowychLIDAR2019&srsname=EPSG%3A4326&bbox=49.2387%2C19.8605%2C49.2412%2C19.8640%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A4326",
+      "response_timestamp": "2026-10-24T20:27:37"
+    }
+  ],
+  "coverage_interpretation": "No indexed EVRF2018-2026 footprint in the local query; broader EVRF query returns 48 footprints. KRON query returns two 2012 footprints covering the local query. This is service/index evidence, not proof no other LiDAR acquisition exists.",
+  "source_extent_note": "Crop covers the full 705-station JKTZ network and its translated variants, including PIG anchor ~48m west, plus approximately60m margin. Exact complete historical network bbox E562653.817…562810.557,N152755.946…152919.869 provided by system-source reconstruction."
+}

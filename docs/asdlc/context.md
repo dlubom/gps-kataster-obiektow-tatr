@@ -2,6 +2,23 @@
 
 Last updated: 2026-10-24
 
+## Mylna — ocena całego systemu w LiDAR / PBI-116
+
+Badanie issue #36 używa metody PR #29, ale lokalny skorowidz GUGiK udostępnia
+tylko ALS 2012, PL-1992 / PL-KRON86-NH. Pozyskano 965 828 pełnych odbić,
+porównano trzy pozycje Mylnej i 705 stacji historycznej sieci Pawlikowskiego.
+TPN m-002 jest najlepiej uzasadnioną hipotezą głównego wejścia, nie potwierdzonym
+progiem. Pozostaje dotychczasowy ręczny Best m-003 i pełna historia.
+Oryginalna lokalna geometria Filara różni się od kompilacji JKTZ użytej w GPS;
+nieustalona orientacja RAW może odwrócić ranking dopasowania do TPN.
+TPN Raptawickiej ma OTWÓR=górny, Obłazkowej brak opisu; te punkty nie są
+niezależnymi pewnymi kotwicami głównych wejść. W planie i tabelach PIG
+występują też konflikty wysokości N Mylnej i Raptawickiej.
+Dzisiejszy JKTZ używa trzech osobnych fixów, więc zmiana tylko Mylnej nie
+przesuwa całego systemu sztywno. Katalog, JKTZ i Georeferencer niezmienione.
+[Wnioski, ilustracje i odtworzenie](verification/PBI-116.md); issue #36
+pozostaje otwarte. Końcowy SHA/CI w draft PR `codex/mylna-lidar-system`.
+
 ## Wydanie v1.3.1 — przygotowanie
 
 Użytkownik zlecił wydanie zakresu PR #35 / PBI-115 i zatwierdził changelog

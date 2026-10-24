@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "assertions": 56046,
+  "point_count": 965828,
+  "csv_rows": 5548,
+  "markers": 10,
+  "sections": 20,
+  "scenarios": 3,
+  "method": "Independent LAS1.2/type3 struct decoding; explicit raw dtype; full CSV readback; integer-centimetre completeness; exhaustive nearest search/radius statistics; YAML and network input comparison",
+  "files": {
+    "build/research/mylna-2026-10-24/pawlikowskiego-2012.las": "681c68b54dd7514db72958071cf6d6b07eb8ebfae74b50565792aa8b22cbef6e",
+    "docs/asdlc/verification/PBI-116/analysis.json": "77484ebd8596315cb66110aca3d22321fe7023066fcbcbf5de89c0f57668327d",
+    "docs/asdlc/verification/PBI-116/sections-1m.csv": "d8f8e02ef98a896d047e28306b15bd58bfa12901d3a729141829226c2ae384b7",
+    "docs/asdlc/verification/PBI-116/analyze.py": "b0720e5f6bf4c45abe85f961640283bfe85e9c04877ed36282f962a6bd3aa076",
+    "docs/asdlc/verification/PBI-116/network.json": "a7c6df3e24f9a08b9aca27402aeabe5c7de385fe883e1e04d1e0c1c21db4b7d5"
+  },
+  "limits": [
+    "Does not identify cave entrances or prove the field meaning of a station.",
+    "Does not compare unknown catalogue height datum with PL-KRON86-NH.",
+    "Network topology/source compilation is checked by separate reconstruction evidence; this readback checks scenario translations."
+  ]
+}
