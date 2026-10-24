@@ -92,6 +92,21 @@ techniczne pochodzenie XY/NMT w referencjach Obiektu z ID pomiaru.
 Źródłowe WER_LOK/UWAGI i zastrzeżenia NMT pozostają przy Pomiarze;
 morfometria i bibliografia zachowane. Bez zmiany kodu, schematu i eksportera.
 
+## PBI-112: Research LiDAR do oceny otworów
+
+Status: wykonane — research, próba techniczna i ocena dwóch wycinków 2025, do review w PR #29.
+Na polecenie użytkownika zbadano dostępne dane dla Pod Wantą i Śnieżnej.
+Potwierdzono publiczne chmury GUGiK 2012/2023/2025; pobrano dwa arkusze
+2025, odczytano małe wycinki i wczytano je w CloudCompare.
+[Raport, źródła i odtworzenie](verification/PBI-112.md).
+Na dalsze polecenie użytkownika wykonano [ocenę 2025](verification/PBI-112/2025-assessment/README.md):
+osobne znaczniki TPN/PIG, kontrola datum, widoki CloudCompare/QGIS,
+przekroje i odtwarzalna analiza rzeczywistych odbić. PW-C1 i SN-C1 są
+potencjalnymi strukturami; nie potwierdzono geometrii progu ani wysokości
+otworów i nie wyznaczono korekty katalogowej. Bez zmian katalogu i kodu
+produkcyjnego. Zakończyć po ocenie tych dwóch wycinków 2025; porównanie
+roczników, test Śnieżnej Studni i implementacja skilla pozostają poza zakresem.
+
 ## Wydanie v1.2.0
 
 Status: przygotowanie zweryfikowane lokalnie — do dostarczenia w PR #19. Użytkownik zaakceptował

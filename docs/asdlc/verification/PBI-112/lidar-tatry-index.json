@@ -1,0 +1,418 @@
+[
+  {
+    "godlo": "M-34-100-B-d-1-2-1",
+    "akt_rok": "2012",
+    "asortyment": "chmura punktow",
+    "format": "LAS",
+    "char_przestrz": "4 p/m2",
+    "blad_sr_wys": "0.15",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:2500",
+    "uklad_h": "PL-KRON86-NH",
+    "nr_zglosz": "NM-34-011/11",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/4979/4979_281537_M-34-100-B-d-1-2-1.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.50",
+    "source_snapshot": "lidar-kron-tatry.xml",
+    "akt_data": "2012-08-19",
+    "lower_corner": [
+      49.239584,
+      19.90625
+    ],
+    "upper_corner": [
+      49.25,
+      19.921875
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-2",
+    "akt_rok": "2012",
+    "asortyment": "chmura punktow",
+    "format": "LAS",
+    "char_przestrz": "4 p/m2",
+    "blad_sr_wys": "0.15",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:2500",
+    "uklad_h": "PL-KRON86-NH",
+    "nr_zglosz": "NM-34-011/11",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/4979/4979_281538_M-34-100-B-d-1-2-2.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.50",
+    "source_snapshot": "lidar-kron-tatry.xml",
+    "akt_data": "2012-08-19",
+    "lower_corner": [
+      49.239584,
+      19.921875
+    ],
+    "upper_corner": [
+      49.25,
+      19.9375
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-3",
+    "akt_rok": "2012",
+    "asortyment": "chmura punktow",
+    "format": "LAS",
+    "char_przestrz": "4 p/m2",
+    "blad_sr_wys": "0.15",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:2500",
+    "uklad_h": "PL-KRON86-NH",
+    "nr_zglosz": "NM-34-011/11",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/4979/4979_281539_M-34-100-B-d-1-2-3.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.50",
+    "source_snapshot": "lidar-kron-tatry.xml",
+    "akt_data": "2012-08-19",
+    "lower_corner": [
+      49.229166,
+      19.90625
+    ],
+    "upper_corner": [
+      49.239584,
+      19.921875
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-4",
+    "akt_rok": "2012",
+    "asortyment": "chmura punktow",
+    "format": "LAS",
+    "char_przestrz": "4 p/m2",
+    "blad_sr_wys": "0.15",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:2500",
+    "uklad_h": "PL-KRON86-NH",
+    "nr_zglosz": "NM-34-011/11",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/4979/4979_281540_M-34-100-B-d-1-2-4.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.50",
+    "source_snapshot": "lidar-kron-tatry.xml",
+    "akt_data": "2012-08-19",
+    "lower_corner": [
+      49.229166,
+      19.921875
+    ],
+    "upper_corner": [
+      49.239584,
+      19.9375
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-3-1",
+    "akt_rok": "2023",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.10",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GI-FOTO.6201.11.2023",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/78164/78164_1414501_M-34-100-B-d-1-2-3-1.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.25",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2023-09-06",
+    "lower_corner": [
+      49.234375,
+      19.90625
+    ],
+    "upper_corner": [
+      49.239584,
+      19.914063
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-2-3",
+    "akt_rok": "2023",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.10",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GI-FOTO.6201.11.2023",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/78164/78164_1414499_M-34-100-B-d-1-2-2-3.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.25",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2023-09-06",
+    "lower_corner": [
+      49.239584,
+      19.921875
+    ],
+    "upper_corner": [
+      49.244791,
+      19.929688
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-4-1",
+    "akt_rok": "2023",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.10",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GI-FOTO.6201.11.2023",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/78164/78164_1414505_M-34-100-B-d-1-2-4-1.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.25",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2023-09-06",
+    "lower_corner": [
+      49.234375,
+      19.921875
+    ],
+    "upper_corner": [
+      49.239584,
+      19.929688
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-3-2",
+    "akt_rok": "2023",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.10",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GI-FOTO.6201.11.2023",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/78164/78164_1414502_M-34-100-B-d-1-2-3-2.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.25",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2023-09-06",
+    "lower_corner": [
+      49.234375,
+      19.914062
+    ],
+    "upper_corner": [
+      49.239584,
+      19.921875
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-1-4",
+    "akt_rok": "2023",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.10",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GI-FOTO.6201.11.2023",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/78164/78164_1414496_M-34-100-B-d-1-2-1-4.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.25",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2023-09-06",
+    "lower_corner": [
+      49.239584,
+      19.914062
+    ],
+    "upper_corner": [
+      49.244791,
+      19.921875
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-1-3",
+    "akt_rok": "2023",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.10",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GI-FOTO.6201.11.2023",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/78164/78164_1414495_M-34-100-B-d-1-2-1-3.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.25",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2023-09-06",
+    "lower_corner": [
+      49.239584,
+      19.90625
+    ],
+    "upper_corner": [
+      49.244791,
+      19.914063
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-4-1",
+    "akt_rok": "2025",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.05",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GK-FOTO.6201.14.2025",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/83768/83768_1784527_M-34-100-B-d-1-2-4-1.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.06",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2025-08-13",
+    "lower_corner": [
+      49.234375,
+      19.921875
+    ],
+    "upper_corner": [
+      49.239584,
+      19.929688
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-3-1",
+    "akt_rok": "2025",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.05",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GK-FOTO.6201.14.2025",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/83768/83768_1784523_M-34-100-B-d-1-2-3-1.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.06",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2025-08-13",
+    "lower_corner": [
+      49.234375,
+      19.90625
+    ],
+    "upper_corner": [
+      49.239584,
+      19.914063
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-3-2",
+    "akt_rok": "2025",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.05",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GK-FOTO.6201.14.2025",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/83768/83768_1784524_M-34-100-B-d-1-2-3-2.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.06",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2025-08-13",
+    "lower_corner": [
+      49.234375,
+      19.914062
+    ],
+    "upper_corner": [
+      49.239584,
+      19.921875
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-2-3",
+    "akt_rok": "2025",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.05",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GK-FOTO.6201.14.2025",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/83768/83768_1784521_M-34-100-B-d-1-2-2-3.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.06",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2025-08-13",
+    "lower_corner": [
+      49.239584,
+      19.921875
+    ],
+    "upper_corner": [
+      49.244791,
+      19.929688
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-1-3",
+    "akt_rok": "2025",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.05",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GK-FOTO.6201.14.2025",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/83768/83768_1784517_M-34-100-B-d-1-2-1-3.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.06",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2025-08-13",
+    "lower_corner": [
+      49.239584,
+      19.90625
+    ],
+    "upper_corner": [
+      49.244791,
+      19.914063
+    ]
+  },
+  {
+    "godlo": "M-34-100-B-d-1-2-1-4",
+    "akt_rok": "2025",
+    "asortyment": "chmura punktow",
+    "format": "LAZ",
+    "char_przestrz": "12 p/m2",
+    "blad_sr_wys": "0.05",
+    "uklad_xy": "PL-1992",
+    "modul_archiwizacji": "1:1250",
+    "uklad_h": "PL-EVRF2007-NH",
+    "nr_zglosz": "GK-FOTO.6201.14.2025",
+    "czy_ark_wypelniony": "TAK",
+    "url_do_pobrania": "https://opendata.geoportal.gov.pl/NumDaneWys/DanePomiaroweLAZ/83768/83768_1784518_M-34-100-B-d-1-2-1-4.laz",
+    "zrodlo_danych": "Skaning laserowy",
+    "blad_sr_syt": "0.06",
+    "source_snapshot": "lidar-evrf-tatry.xml",
+    "akt_data": "2025-08-13",
+    "lower_corner": [
+      49.239584,
+      19.914062
+    ],
+    "upper_corner": [
+      49.244791,
+      19.921875
+    ]
+  }
+]

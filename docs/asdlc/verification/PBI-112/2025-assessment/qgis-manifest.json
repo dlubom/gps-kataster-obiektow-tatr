@@ -1,0 +1,117 @@
+{
+  "qgis": "4.0.1-Norrköping",
+  "python": "3.12.11 (main, Apr  1 2026, 00:50:59) [Clang 17.0.0 (clang-1700.6.4.2)]",
+  "project": "build/research/lidar-2026-10-23/qgis-2025-assessment.qgz",
+  "map_crs": "EPSG:2180",
+  "vertical_geometry": "none; markers are 2D XY only",
+  "las_z_datum": "PL-EVRF2007-NH from index, absent in LAS header",
+  "catalogue_hashes": {
+    "data/objects/MLZ/MLZ-0068.yml": "72418bb1ff6d7a4195ae0560006bfd8a2755e5b90621dda48e8281e66856f244",
+    "data/objects/MTW/MTW-0054.yml": "6a9df8f8ae9b6019a9cd3b09811bfb56bf0ba9d56f91edfdcc4f1e10ddfda1f1"
+  },
+  "pointclouds": {
+    "sniezna-2025-100m.las": {
+      "sha256": "62deee44273b39bab805ae01498c045fc68d4b6aecbe7bb7812f1f47b3e6dfab",
+      "copc_file": "build/research/lidar-2026-10-23/qgis-sniezna.copc.laz",
+      "copc_sha256": "40e979d4dd439dcff7616532b04c962d3ffab2be750a299669b96913ce961a65",
+      "point_count": 264297,
+      "crs": "EPSG:2180",
+      "point_source_ids": [
+        "80",
+        "81",
+        "82"
+      ]
+    },
+    "pod-wanta-2025-both-positions.las": {
+      "sha256": "1191a08a5431d853dbed4178b55c179d1302ddbc55e6516e402f8ca558434cbf",
+      "copc_file": "build/research/lidar-2026-10-23/qgis-pod-wanta.copc.laz",
+      "copc_sha256": "24a43c34d4f9dca92797c192dc256b9a269ca23b880b05d0b41316bbb311a876",
+      "point_count": 582112,
+      "crs": "EPSG:2180",
+      "point_source_ids": [
+        "79",
+        "80",
+        "81",
+        "82"
+      ]
+    }
+  },
+  "views": [
+    {
+      "name": "sniezna-overview",
+      "extent": [
+        567359.24,
+        152877.54,
+        567469.24,
+        152987.54
+      ],
+      "rotation_degrees": 0,
+      "scale_bar_m": 20,
+      "png": "qgis-sniezna-overview.png",
+      "sha256": "624c3194a56ee91053bfda7ca40600ce8d702e0f7ed1863213cc01c63b1070cf"
+    },
+    {
+      "name": "sniezna-detail",
+      "extent": [
+        567400.74,
+        152915.54,
+        567430.74,
+        152945.54
+      ],
+      "rotation_degrees": 0,
+      "scale_bar_m": 5,
+      "png": "qgis-sniezna-detail.png",
+      "sha256": "ce572e42aaabdf5d5235e1319f88d962462cf7935128523c42fb6152a4a085ef"
+    },
+    {
+      "name": "pod-wanta-overview",
+      "extent": [
+        566212.135,
+        152912.06,
+        566432.135,
+        153132.06
+      ],
+      "rotation_degrees": 0,
+      "scale_bar_m": 40,
+      "png": "qgis-pod-wanta-overview.png",
+      "sha256": "b8f08108f71e603f94b96b8ca08ab34a1b7c7ff803556d231094813d469dc134"
+    },
+    {
+      "name": "pod-wanta-tpn-detail",
+      "extent": [
+        566304.78,
+        153060.02,
+        566334.78,
+        153090.02
+      ],
+      "rotation_degrees": 0,
+      "scale_bar_m": 5,
+      "png": "qgis-pod-wanta-tpn-detail.png",
+      "sha256": "e6ac31ae075ddb2b8eac4e235cc688215309afeb413e4c79a4cf70756d03c9c3"
+    },
+    {
+      "name": "pod-wanta-pig-detail",
+      "extent": [
+        566309.49,
+        152954.1,
+        566339.49,
+        152984.1
+      ],
+      "rotation_degrees": 0,
+      "scale_bar_m": 5,
+      "png": "qgis-pod-wanta-pig-detail.png",
+      "sha256": "4626a75416ce93e3899cd8cd324b693c74c3a758f865d2c04bc0d2eeb8f88f8f"
+    }
+  ],
+  "marker_count": 4,
+  "rendering": {
+    "point_size_px": 3.0,
+    "maximum_screen_error_px": 0.1,
+    "rgb_range": [
+      0,
+      65535
+    ],
+    "draw_order": "BottomToTop",
+    "interpolation": false
+  }
+}

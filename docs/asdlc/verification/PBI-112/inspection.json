@@ -1,0 +1,173 @@
+{
+  "pod-wanta-2025-both-positions.las": {
+    "bytes": 19792239,
+    "sha256": "1191a08a5431d853dbed4178b55c179d1302ddbc55e6516e402f8ca558434cbf",
+    "version": "1.2",
+    "point_format": 3,
+    "count": 582112,
+    "scale": [
+      0.01,
+      0.01,
+      0.01
+    ],
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "generating_software": "las2las (version 241210)",
+    "header_creation_day_year": [
+      230,
+      2025
+    ],
+    "global_encoding": 1,
+    "class_counts": {
+      "2": 412996,
+      "3": 33843,
+      "4": 112978,
+      "12": 16301,
+      "5": 5939,
+      "7": 55
+    },
+    "source_id_counts": {
+      "79": 26777,
+      "80": 244252,
+      "81": 236860,
+      "82": 74223
+    },
+    "flags": {
+      "withheld": 0,
+      "synthetic": 0
+    },
+    "gps_time_range": [
+      439108100.6810047,
+      439109466.7451101
+    ],
+    "scan_angle_rank_range": [
+      -9,
+      9
+    ],
+    "actual_xyz_bounds": [
+      [
+        566269.78,
+        566374.49
+      ],
+      [
+        152919.1,
+        153125.02
+      ],
+      [
+        1696.6200000000001,
+        1842.5
+      ]
+    ]
+  },
+  "pod-wanta-2025-source.laz": {
+    "bytes": 78110868,
+    "sha256": "68cd64575b1347a8b517847bc7457121674e2b8ef7b2917bb0ed80f0afd4226a",
+    "version": "1.2",
+    "point_format": 3,
+    "count": 8378466,
+    "scale": [
+      0.01,
+      0.01,
+      0.01
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "generating_software": "las2las (version 241210)",
+    "header_creation_day_year": [
+      230,
+      2025
+    ],
+    "global_encoding": 1
+  },
+  "sniezna-2025-100m.las": {
+    "bytes": 8986529,
+    "sha256": "62deee44273b39bab805ae01498c045fc68d4b6aecbe7bb7812f1f47b3e6dfab",
+    "version": "1.2",
+    "point_format": 3,
+    "count": 264297,
+    "scale": [
+      0.01,
+      0.01,
+      0.01
+    ],
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "generating_software": "las2las (version 241210)",
+    "header_creation_day_year": [
+      230,
+      2025
+    ],
+    "global_encoding": 1,
+    "class_counts": {
+      "2": 232775,
+      "3": 5115,
+      "4": 14335,
+      "12": 8070,
+      "5": 3982,
+      "7": 20
+    },
+    "source_id_counts": {
+      "80": 62630,
+      "81": 104159,
+      "82": 97508
+    },
+    "flags": {
+      "withheld": 0,
+      "synthetic": 0
+    },
+    "gps_time_range": [
+      439108479.49705917,
+      439109486.87667745
+    ],
+    "scan_angle_rank_range": [
+      -9,
+      8
+    ],
+    "actual_xyz_bounds": [
+      [
+        567364.24,
+        567464.24
+      ],
+      [
+        152882.54,
+        152982.54
+      ],
+      [
+        1661.3700000000001,
+        1773.04
+      ]
+    ]
+  },
+  "sniezna-2025-source.laz": {
+    "bytes": 84241618,
+    "sha256": "2b3575cc76968f94f249cf6703000f68dcc0768290eb940d32908626fa973a04",
+    "version": "1.2",
+    "point_format": 3,
+    "count": 8751453,
+    "scale": [
+      0.01,
+      0.01,
+      0.01
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "generating_software": "las2las (version 241210)",
+    "header_creation_day_year": [
+      230,
+      2025
+    ],
+    "global_encoding": 1
+  }
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "site": "sniezna",
+    "object_id": "MLZ-0068",
+    "measurement_id": "m-001",
+    "source": "PIG",
+    "E": 567417.26,
+    "N": 152928.35,
+    "Z": 1700.7,
+    "elevation_datum": "unknown",
+    "source_file": "data/objects/MLZ/MLZ-0068.yml"
+  },
+  {
+    "site": "sniezna",
+    "object_id": "MLZ-0068",
+    "measurement_id": "m-002",
+    "source": "TPN",
+    "E": 567414.24,
+    "N": 152932.54,
+    "Z": 1699.800044,
+    "elevation_datum": "unknown",
+    "source_file": "data/objects/MLZ/MLZ-0068.yml"
+  },
+  {
+    "site": "pod-wanta",
+    "object_id": "MTW-0054",
+    "measurement_id": "m-001",
+    "source": "PIG",
+    "E": 566324.49,
+    "N": 152969.1,
+    "Z": 1793.3,
+    "elevation_datum": "unknown",
+    "source_file": "data/objects/MTW/MTW-0054.yml"
+  },
+  {
+    "site": "pod-wanta",
+    "object_id": "MTW-0054",
+    "measurement_id": "m-002",
+    "source": "TPN",
+    "E": 566319.78,
+    "N": 153075.02,
+    "Z": 1790.525556,
+    "elevation_datum": "unknown",
+    "source_file": "data/objects/MTW/MTW-0054.yml"
+  }
+]

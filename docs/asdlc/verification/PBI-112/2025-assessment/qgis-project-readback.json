@@ -1,0 +1,111 @@
+{
+  "crs": "EPSG:2180",
+  "layouts": [
+    "sniezna-overview",
+    "sniezna-detail",
+    "pod-wanta-overview",
+    "pod-wanta-tpn-detail",
+    "pod-wanta-pig-detail"
+  ],
+  "bookmarks": [
+    "Jaskinia Śnieżna · MLZ-0068",
+    "Śnieżna · TPN i PIG · XY",
+    "Jaskinia pod Wantą · MTW-0054",
+    "Pod Wantą · otoczenie pozycji TPN",
+    "Pod Wantą · otoczenie pozycji PIG"
+  ],
+  "layers": [
+    {
+      "name": "Jaskinia Śnieżna · ALS 2025 · COPC copy",
+      "valid": true,
+      "source": "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/research/lidar-2026-10-23/qgis-sniezna.copc.laz",
+      "crs": "EPSG:2180",
+      "point_count": 264297,
+      "styles": [
+        "PointSourceId · grupy nie azymuty",
+        "RGB · punkty",
+        "default"
+      ]
+    },
+    {
+      "name": "Jaskinia pod Wantą · ALS 2025 · COPC copy",
+      "valid": true,
+      "source": "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/research/lidar-2026-10-23/qgis-pod-wanta.copc.laz",
+      "crs": "EPSG:2180",
+      "point_count": 582112,
+      "styles": [
+        "PointSourceId · grupy nie azymuty",
+        "RGB · punkty",
+        "default"
+      ]
+    },
+    {
+      "name": "Pozycje YAML — XY bez wysokości",
+      "valid": true,
+      "source": "/Users/dariuszlubomski/proj/gps-kataster-obiektow-tatr/build/research/lidar-2026-10-23/qgis-2025-markers.gpkg|layername=yaml_xy",
+      "crs": "EPSG:2180",
+      "markers": [
+        {
+          "attributes": [
+            1,
+            "MLZ-0068",
+            "PIG",
+            "m-001",
+            "MLZ-0068 · PIG\nm-001 · XY",
+            567417.26,
+            152928.35,
+            1700.7,
+            "unknown",
+            "PIG:496"
+          ],
+          "wkt": "Point (567417.26000000000931323 152928.35000000000582077)"
+        },
+        {
+          "attributes": [
+            2,
+            "MLZ-0068",
+            "TPN",
+            "m-002",
+            "MLZ-0068 · TPN\nm-002 · XY",
+            567414.24,
+            152932.54,
+            1699.800044,
+            "unknown",
+            "TPN:{4F3D8007-20EB-412A-A46E-FE1721713639}"
+          ],
+          "wkt": "Point (567414.23999999999068677 152932.54000000000814907)"
+        },
+        {
+          "attributes": [
+            3,
+            "MTW-0054",
+            "PIG",
+            "m-001",
+            "MTW-0054 · PIG\nm-001 · XY",
+            566324.49,
+            152969.1,
+            1793.3,
+            "unknown",
+            "PIG:1535"
+          ],
+          "wkt": "Point (566324.48999999999068677 152969.10000000000582077)"
+        },
+        {
+          "attributes": [
+            4,
+            "MTW-0054",
+            "TPN",
+            "m-002",
+            "MTW-0054 · TPN\nm-002 · XY",
+            566319.78,
+            153075.02,
+            1790.525556,
+            "unknown",
+            "TPN:{9306F8A3-B212-4456-B121-7B821EE13B60}"
+          ],
+          "wkt": "Point (566319.78000000002793968 153075.01999999998952262)"
+        }
+      ]
+    }
+  ]
+}
