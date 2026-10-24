@@ -13,7 +13,24 @@ external_refs:
   ref_type: source_globalid
   external_id: '{28BD775C-1B67-4AEA-9FFB-49C32EEF6BED}'
   scope: object
-  notes: 'Rekord punktowy TPN, OBJECTID 7377 w zrzucie 2026-10-22; TPN NAZWA: Schron pod Gawrą w Bobrowcu.'
+  notes: |-
+    Pomiar m-001. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 7377, GLOBALID {28BD775C-1B67-4AEA-9FFB-49C32EEF6BED}; TPN NAZWA: Schron pod Gawrą w Bobrowcu. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
+
+    Stan rekordu: 2026-06-17; data edycji LAST_EDITED_DATE (UTC), nie data pomiaru terenowego.
+    TPN GENEZA: jaskinia.
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu).
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6
+- system: TPN
+  ref_type: url
+  external_id: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.800939863529027%2C49.24042794387105&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.800929863529028%2C49.240417943871044%2C19.800949863529027%2C49.24043794387105&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.800939863529027%2C49.24042794387105&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.800929863529028%2C49.240417943871044%2C19.800949863529027%2C49.24043794387105&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  scope: object
+  notes: |-
+    Pochodzenie wysokości pomiaru m-001; source_ref TPN:{28BD775C-1B67-4AEA-9FFB-49C32EEF6BED}.
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:50.158199Z w dokładnych współrzędnych tego pomiaru: 1181.569946 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
+
+    SHA-256 odpowiedzi NMT: 08f8cf93fa6b49cc9096c619b1a9407e12bdc9891cb3875d8cdeac2b72ed060e.
 measurements:
 - id: m-001
   lat: 49.24042794387105
@@ -37,18 +54,9 @@ measurements:
   verified_by: null
   verified_at: null
   notes: |-
-    Stan rekordu API TPN z 2026-06-17, odczytany 2026-10-22. observed_date i source_date oznaczają datę edycji LAST_EDITED_DATE (UTC), nie datę pomiaru w terenie; observed_at pozostaje nieznane.
-
-    Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 7377, GLOBALID {28BD775C-1B67-4AEA-9FFB-49C32EEF6BED}; TPN NAZWA: Schron pod Gawrą w Bobrowcu. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
-
-    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:50.158199Z w dokładnych współrzędnych tego pomiaru: 1181.569946 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
-
-    Odczyt per punkt: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.800939863529027%2C49.24042794387105&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.800929863529028%2C49.240417943871044%2C19.800949863529027%2C49.24043794387105&imageDisplay=1000%2C1000%2C96&returnGeometry=false
-    SHA-256 odpowiedzi NMT: 08f8cf93fa6b49cc9096c619b1a9407e12bdc9891cb3875d8cdeac2b72ed060e.
-
+    Wysokość gruntu z NMT TPN; wysokość otworu niepotwierdzona.
+    Data dotyczy aktualizacji TPN; data pomiaru terenowego nieznana.
     TPN WER_LOK: FF 27052026
-
-    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu). Wpis nieweryfikowany, bez niezależnej weryfikacji terenowej.
   created_at: '2026-10-23T18:10:08Z'
   created_by: maintenance:PBI-113
 best_measurement:
@@ -61,5 +69,5 @@ attachments: []
 notes: null
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-23T18:37:18Z'
-updated_by: maintenance:literature
+updated_at: '2026-10-24T08:42:28Z'
+updated_by: maintenance:descriptions

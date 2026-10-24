@@ -20,12 +20,12 @@ external_refs:
 object_ids:
 - CHZ-0033
 notes: |-
-  Szczelinę przy Zbójeckiej Dziurze opisuje Jakub Nowak w „Dwóch jaskiniach w Olejarni” („Jaskinie” 93, 2018, s. 32–33). Nazwę powtarza zestawienie KKTJ „03 Dol. Chochołowska 2026.07”, s. 3, lp. 73. Nazwa, długość 15,5 m i położenie w Olejarni w Dolinie Chochołowskiej odpowiadają rekordowi TPN. Artykuł i wykaz podają przewyższenie 5,3 m, a TPN 5,5 m; różnica pozostaje nierozstrzygnięta. Jest to odrębna jaskinia od Zbójeckiej Dziury.
+  Jaskinia w Olejarni, w Dolinie Chochołowskiej, odrębna od Zbójeckiej Dziury. Długość 15,5 m. Przewyższenie według Nowaka (2018, 2026) wynosi 5,3 m, według TPN — 5,5 m; rozbieżność nierozstrzygnięta.
 
-  Dane TPN (stan rekordu 2026-06-16, zrzut 2026-10-22): długość 15,5 m; przewyższenie 5,5 m. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {00A63F59-3D03-4703-A18E-27A0A75A7DA1}, OBJECTID 7045.
-
-  Geneza w TPN: jaskinia.
+  Literatura:
+  Nowak J., 2018, „Dwie jaskinie w Olejarni”, „Jaskinie”, nr 4 (93), s. 32–33.
+  Nowak J., 2026, „Jaskinie Tatr”, KKTJ, zestawienie z 10.07.2026, załącznik „03 Dol. Chochołowska 2026.07”, s. 3, lp. 73.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-23T18:37:18Z'
-updated_by: maintenance:literature
+updated_at: '2026-10-24T08:42:28Z'
+updated_by: maintenance:descriptions

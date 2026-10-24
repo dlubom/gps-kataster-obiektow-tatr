@@ -6,12 +6,8 @@ external_refs: []
 object_ids:
 - STR-0041
 notes: |-
-  Nazwa i dane morfometryczne według rekordu TPN. Odrębne źródło bibliograficzne nieustalone.
-
-  Dane TPN (stan rekordu 2026-06-14, zrzut 2026-10-22): długość 4 m. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; GLOBALID {B51C01E8-271E-4AEF-802D-C87025A09845}, OBJECTID 7042.
-
-  Geneza w TPN: jaskinia.
+  Długość 4 m (TPN). Publikacji opisowej nie ustalono.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-23T18:37:18Z'
-updated_by: maintenance:literature
+updated_at: '2026-10-24T08:42:28Z'
+updated_by: maintenance:descriptions

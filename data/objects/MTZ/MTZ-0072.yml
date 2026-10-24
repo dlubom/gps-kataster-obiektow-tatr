@@ -13,12 +13,46 @@ external_refs:
   ref_type: source_globalid
   external_id: '{8E246480-F366-4D0F-BA7E-A601E865FD03}'
   scope: object
-  notes: 'Rekord punktowy TPN, OBJECTID 7044 w zrzucie 2026-10-22; TPN NAZWA: Korytarz pod Ciemniakiem.'
+  notes: |-
+    Pomiar m-001. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 7044, GLOBALID {8E246480-F366-4D0F-BA7E-A601E865FD03}; TPN NAZWA: Korytarz pod Ciemniakiem. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
+
+    Stan rekordu: 2026-06-16; data edycji LAST_EDITED_DATE (UTC), nie data pomiaru terenowego.
+    TPN GENEZA: jaskinia.
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu).
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6
 - system: TPN
   ref_type: source_globalid
   external_id: '{0BFC7731-A83A-40E6-B773-766798366ADD}'
   scope: object
-  notes: 'Rekord punktowy TPN, OBJECTID 6408 w zrzucie 2026-10-22; TPN NAZWA: Korytarz w Ciemniaku.'
+  notes: |-
+    Pomiar m-002. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 6408, GLOBALID {0BFC7731-A83A-40E6-B773-766798366ADD}; TPN NAZWA: Korytarz w Ciemniaku. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
+
+    Stan rekordu: 2026-06-16; data edycji LAST_EDITED_DATE (UTC), nie data pomiaru terenowego.
+    TPN GENEZA: None.
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu).
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6
+- system: TPN
+  ref_type: url
+  external_id: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.903130591561503%2C49.232111943661685&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.903120591561503%2C49.23210194366168%2C19.903140591561503%2C49.23212194366169&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.903130591561503%2C49.232111943661685&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.903120591561503%2C49.23210194366168%2C19.903140591561503%2C49.23212194366169&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  scope: object
+  notes: |-
+    Pochodzenie wysokości pomiaru m-001; source_ref TPN:{8E246480-F366-4D0F-BA7E-A601E865FD03}.
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:47.941552Z w dokładnych współrzędnych tego pomiaru: 2021.319946 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
+
+    SHA-256 odpowiedzi NMT: ce445fd5209b4b3a8edda718ca0bcadd70d5f630f375a2bb9c4627c1702928ea.
+- system: TPN
+  ref_type: url
+  external_id: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.90313059173134%2C49.2321110675022&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.90312059173134%2C49.2321010675022%2C19.90314059173134%2C49.232121067502206&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.90313059173134%2C49.2321110675022&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.90312059173134%2C49.2321010675022%2C19.90314059173134%2C49.232121067502206&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  scope: object
+  notes: |-
+    Pochodzenie wysokości pomiaru m-002; source_ref TPN:{0BFC7731-A83A-40E6-B773-766798366ADD}.
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:46.001008Z w dokładnych współrzędnych tego pomiaru: 2021.319946 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
+
+    SHA-256 odpowiedzi NMT: ce445fd5209b4b3a8edda718ca0bcadd70d5f630f375a2bb9c4627c1702928ea.
 measurements:
 - id: m-001
   lat: 49.232111943661685
@@ -42,18 +76,9 @@ measurements:
   verified_by: null
   verified_at: null
   notes: |-
-    Stan rekordu API TPN z 2026-06-16, odczytany 2026-10-22. observed_date i source_date oznaczają datę edycji LAST_EDITED_DATE (UTC), nie datę pomiaru w terenie; observed_at pozostaje nieznane.
-
-    Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 7044, GLOBALID {8E246480-F366-4D0F-BA7E-A601E865FD03}; TPN NAZWA: Korytarz pod Ciemniakiem. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
-
-    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:47.941552Z w dokładnych współrzędnych tego pomiaru: 2021.319946 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
-
-    Odczyt per punkt: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.903130591561503%2C49.232111943661685&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.903120591561503%2C49.23210194366168%2C19.903140591561503%2C49.23212194366169&imageDisplay=1000%2C1000%2C96&returnGeometry=false
-    SHA-256 odpowiedzi NMT: ce445fd5209b4b3a8edda718ca0bcadd70d5f630f375a2bb9c4627c1702928ea.
-
+    Wysokość gruntu z NMT TPN; wysokość otworu niepotwierdzona.
+    Data dotyczy aktualizacji TPN; data pomiaru terenowego nieznana.
     TPN WER_LOK: FF 16062026
-
-    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu). Wpis nieweryfikowany, bez niezależnej weryfikacji terenowej.
   created_at: '2026-10-23T18:10:08Z'
   created_by: maintenance:PBI-113
 - id: m-002
@@ -78,16 +103,8 @@ measurements:
   verified_by: null
   verified_at: null
   notes: |-
-    Stan rekordu API TPN z 2026-06-16, odczytany 2026-10-22. observed_date i source_date oznaczają datę edycji LAST_EDITED_DATE (UTC), nie datę pomiaru w terenie; observed_at pozostaje nieznane.
-
-    Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 6408, GLOBALID {0BFC7731-A83A-40E6-B773-766798366ADD}; TPN NAZWA: Korytarz w Ciemniaku. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
-
-    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:46.001008Z w dokładnych współrzędnych tego pomiaru: 2021.319946 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
-
-    Odczyt per punkt: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.90313059173134%2C49.2321110675022&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.90312059173134%2C49.2321010675022%2C19.90314059173134%2C49.232121067502206&imageDisplay=1000%2C1000%2C96&returnGeometry=false
-    SHA-256 odpowiedzi NMT: ce445fd5209b4b3a8edda718ca0bcadd70d5f630f375a2bb9c4627c1702928ea.
-
-    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu). Wpis nieweryfikowany, bez niezależnej weryfikacji terenowej.
+    Wysokość gruntu z NMT TPN; wysokość otworu niepotwierdzona.
+    Data dotyczy aktualizacji TPN; data pomiaru terenowego nieznana.
   created_at: '2026-10-23T18:10:08Z'
   created_by: maintenance:PBI-113
 best_measurement:
@@ -100,8 +117,8 @@ best_measurement:
   updated_by: maintenance:PBI-113
 attachments: []
 notes: |-
-  Dwa rekordy punktowe TPN powiązane z jednym obiektem: 7044 pod nazwą „Korytarz pod Ciemniakiem” i 6408 pod nazwą „Korytarz w Ciemniaku”. Publikacja Jakuba Nowaka z 2014 r. i wykaz KKTJ używają pierwszej nazwy; drugi wariant jest wyłącznie nazwą źródłową TPN. Każdy rekord zachowuje własne współrzędne, odczyt NMT i referencję GLOBALID.
+  Dwa rekordy TPN przypisano do tego samego otworu; ich utożsamienie jest interpretacją danych źródłowych.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-23T18:37:18Z'
-updated_by: maintenance:literature
+updated_at: '2026-10-24T08:42:28Z'
+updated_by: maintenance:descriptions

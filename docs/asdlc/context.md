@@ -1,6 +1,6 @@
 # AS-DLC project context
 
-Last updated: 2026-10-23
+Last updated: 2026-10-24
 
 ## Nowe obiekty TPN — realizacja PBI-113
 
@@ -41,8 +41,20 @@ opartych na TPN; po rozszerzonym przeglądzie nie ustalono niezależnej
 bibliografii. Brak wzmianki nie jest rozstrzygnięciem błędnej nazwy.
 Opisy rozdzielają dane TPN od literatury oraz wskazują różnice metryk
 Szczeliny przy Zbójeckiej Dziurze, Rury w Olejarni i Cynamonowej.
-Wszystkie pomiary, wysokości, identyfikatory i wybory Best zachowano.
+Wszystkie wartości pomiarów, wysokości, identyfikatory i wybory Best zachowano.
 Końcowy SHA korekty i odbiór CI/paczki wskazuje opis PR #28.
+
+2026-10-24 zaakceptowano krótkie opisy i jeden blok Literatura z pełnymi
+cytowaniami. URL-e i techniczne dowody pozostają w referencjach; referencje
+NMT jawnie wskazują ID i source_ref pomiaru. Uwagi pomiarów zachowują
+ograniczenie wysokości gruntu, znaczenie daty oraz źródłowe WER_LOK/UWAGI.
+Morfometria, 12 referencji bibliograficznych i rozbieżności źródeł zachowane.
+Weryfikacja tej korekty i końcowego SHA jest wskazywana w opisie PR #28.
+Lokalnie: 951 testów, Ruff i build PASS, walidacja bez błędów; 136918
+porównań eksportów bez ustaleń. Uwagi 20 pomiarów mają do 159 bajtów UTF-8,
+a 19 wybranych uwag odczytano z DBF bez obcięcia. Pozostałe pola wszystkich
+1928 pomiarów i całe Best zachowano; 1007 starych Obiektów i 1001 Jaskiń
+są bajtowo identyczne z poprzednim HEAD PR `a709238`.
 
 ## Wydanie v1.2.0 — zatwierdzone
 

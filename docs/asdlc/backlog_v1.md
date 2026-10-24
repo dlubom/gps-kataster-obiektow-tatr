@@ -1,6 +1,6 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-10-23
+Stan na: 2026-10-24
 
 ## PBI-113: Nowe obiekty z lokalnego zrzutu TPN
 
@@ -24,6 +24,11 @@ Po uwagach użytkownika poprawiono opisy bez odwołań do procesu PBI/PR:
 7 nazw potwierdzonych w literaturze/wykazach KKTJ, 12 referencji;
 11 nazw z bibliografią nieustaloną pozostaje opartych na TPN.
 Zachowano wszystkie wartości pomiarów i wybory Best.
+
+Korekta zaakceptowana 2026-10-24: zwięzłe uwagi i blok Literatura;
+techniczne pochodzenie XY/NMT w referencjach Obiektu z ID pomiaru.
+Źródłowe WER_LOK/UWAGI i zastrzeżenia NMT pozostają przy Pomiarze;
+morfometria i bibliografia zachowane. Bez zmiany kodu, schematu i eksportera.
 
 ## Wydanie v1.2.0
 

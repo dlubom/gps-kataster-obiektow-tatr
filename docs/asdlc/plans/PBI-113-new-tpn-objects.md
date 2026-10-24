@@ -159,8 +159,9 @@ pozostają poza zakresem naprawy.
 - Zachować pełne lat/lon; PL-1992 obliczyć obecnymi narzędziami. Wysokość
   z niezaokrąglonego dowodu NMT w dokładnym XY każdego pomiaru:
   `elevation_source: dem`, datum `unknown`, dokładności `null`.
-  Notes wskazują model, URL i czas odczytu oraz grunt; wysokość otworu
-  w ścianie nie jest tym potwierdzona.
+  Po zaakceptowanej korekcie opisów z 2026-10-24 referencja NMT wskazuje
+  ID i source_ref pomiaru, model, dokładny URL, czas odczytu i hash odpowiedzi.
+  Notes pomiaru zachowują zastrzeżenie: grunt, wysokość otworu niepotwierdzona.
 - Zachować całe istniejące dane i ręczne Best. Jedyną modyfikacją istniejącej
   encji będzie członkostwo nowego otworu i audyt aktualizacji C-0219.
 - Poza zakresem: leje, pozostała warstwa sztolni/kopalń, wywierzyska,
@@ -232,3 +233,20 @@ od przewyższenia TPN dla Rury; 11,3 m listy KKTJ od 11,9 m artykułu i TPN
 dla Cynamonowej. Nie zmieniono pomiarów, współrzędnych, wysokości ani Best.
 Dowody merytoryczne są w opisach/referencjach YAML; końcowy SHA, CI oraz
 odczyt paczki korekty wskazuje opis PR #28. Bez merge, taga i wydania.
+
+2026-10-24 użytkownik zaakceptował dalsze uporządkowanie: krótkie opisy
+z jednym blokiem Literatura (autor, tytuł, rok, numer i strony), bez URL-i,
+GUID i opisu przebiegu sprawdzania. Zachowujemy morfometrię i rozbieżności;
+11 wpisów TPN jawnie ma nieustaloną publikację opisową. Techniczne pochodzenie
+przenosimy do external_refs Obiektu: istniejąca referencja GLOBALID zachowuje
+źródło XY, datę edycji, hash zrzutu i kod WERYF; osobna referencja NMT z ID
+pomiaru i jego source_ref zachowuje model, nalot, dokładny odczyt, czas, URL
+i hash odpowiedzi. WER_LOK/UWAGI pozostają przy Pomiarze. Odbiór obejmuje
+niezmienność wszystkich pozostałych pól pomiarów i pełnego Best oraz pełne
+uwagi nowych pomiarów w limicie 254 bajtów DBF. Kod i schema bez zmian.
+Lokalny odbiór korekty: 951 testów, Ruff, walidacja (0 błędów) i build PASS;
+136918 porównań wszystkich eksportów bez błędów. Notes mają do 159 bajtów
+UTF-8; wszystkie 19 nowych uwag Best odczytano z DBF w całości. Zachowane
+pozostałe pola 1928 pomiarów, całe Best i 12 referencji bibliograficznych;
+1007 starych Obiektów i 1001 Jaskiń identyczne bajtowo z `a709238`.
+Końcowy SHA, jego CI i odbiór pobranej paczki wskazuje opis PR #28.
