@@ -2,6 +2,18 @@
 
 Last updated: 2026-10-24
 
+## Stała ochrona main — PR i CI, bez obowiązkowego approval
+
+2026-10-24 użytkownik polecił trwale znieść wymóg akceptacji drugiej osoby,
+ponieważ sam utrzymuje projekt. Aktywny ruleset `protect main` (20437353)
+wymaga nadal PR i zielonego `Validate code and data` (GitHub Actions 15368),
+rozwiązania wątków review oraz zachowuje blokady usunięcia i force-push.
+`required_approving_review_count` zmieniono z 1 na 0; lista bypass pozostaje
+pusta. Niezależny odczyt potwierdził, że to jedyna zmiana ustawień.
+To stała polityka, zastępująca wcześniejsze procedury chwilowego obniżania
+wymogu approval i przywracania go do 1. Wszystkie zmiany kodu, danych
+i dokumentacji nadal przechodzą przez PR oraz CI przed scaleniem do main.
+
 ## Dodatkowe GPX — PBI-114 / issue #20
 
 Zatwierdzony przez użytkownika podział na trzy dodatkowe pliki łączy całe

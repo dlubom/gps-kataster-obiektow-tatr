@@ -26,7 +26,10 @@ Read these files before making changes:
 - Start each new session from current `main`: inspect status, fetch origin,
   and on a clean checkout use `git switch main` and `git pull --ff-only`.
   Compare HEAD with `origin/main`; use the live tip, not the release SHA.
-  New changes go on a branch from main and through PR; main requires review.
+  New changes go on a branch from main and reach main only through a PR
+  with a successful `Validate code and data` check. The permanent
+  single-maintainer policy requires 0 approving GitHub reviews; retain
+  the PR rule, required CI, and empty bypass list.
 - No ready PBI remains in this series. New work requires a user instruction;
   implement exactly one ready PBI per session unless explicitly asked for more.
 - For simple data corrections (no code/schema changes), explanations in YAML,
