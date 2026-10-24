@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "checks": 345584,
+  "source_revision": "5209496c1be1b1ec86d1cff67e6f691ac2bebe95",
+  "nodes": 692,
+  "named_nodes": 589,
+  "anonymous_nodes": 103,
+  "legs": 726,
+  "translation_xy_m": [
+    -12.849703046842478,
+    -3.4803757732734084
+  ],
+  "all_node_and_leg_elevations_unchanged": true,
+  "pairwise_checks": 239086,
+  "max_pairwise_distance_change_m": 0,
+  "max_leg_length_change_m": 0,
+  "max_wgs_difference_deg": 0,
+  "max_projection_roundtrip_error_m": 1.877140660839749e-09,
+  "catalogue": [
+    {
+      "object": "KSZ-0047",
+      "new_measurement": "m-004",
+      "history_count": 3,
+      "wgs_to_rounded_xy_distance_m": 1.5084244971571467e-06,
+      "best_elevation_m": 1141.31,
+      "previous_best_elevation_m": 1141.31
+    },
+    {
+      "object": "KSZ-0064",
+      "new_measurement": "m-004",
+      "history_count": 3,
+      "wgs_to_rounded_xy_distance_m": 0.005919458369020311,
+      "best_elevation_m": 1098.0,
+      "previous_best_elevation_m": 1098.0
+    },
+    {
+      "object": "KSZ-0090",
+      "new_measurement": "m-004",
+      "history_count": 3,
+      "wgs_to_rounded_xy_distance_m": 0.002979910482015311,
+      "best_elevation_m": 1096.62,
+      "previous_best_elevation_m": 1096.62
+    },
+    {
+      "object": "KSZ-0113",
+      "new_measurement": "m-002",
+      "history_count": 1,
+      "wgs_to_rounded_xy_distance_m": 0.001904787751329008,
+      "best_elevation_m": 1093.68,
+      "previous_best_elevation_m": 1095.805132
+    }
+  ],
+  "las_decoder": "independent Python struct; no laspy/recalculate imports",
+  "las_records": 965828,
+  "all_window_rows_verified": 19975,
+  "complete_window_selection": true,
+  "floor_records_all_fields_verified": 15,
+  "radius_selection_sets_verified": 9,
+  "source_before_sha256": "9308dfc91564445bd70ed2be9cfd95d4e063b9cff5f10d6a7bdfa8d7a985dc7d",
+  "source_after_sha256": "420bb4a65a6fabeeb52417ccc681c4e35a31aec6394dcb6dc8ec3e2faccd8d92"
+}

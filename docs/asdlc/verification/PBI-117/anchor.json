@@ -1,0 +1,17 @@
+{
+  "object_id": "KSZ-0047",
+  "measurement_id": "m-004",
+  "station": "Pawlikowskiego:Raptawicka:1.0",
+  "crs": "EPSG:2180",
+  "easting": 562729.5,
+  "northing": 152838.5,
+  "image_pick_region_E_N": [562729.0, 562730.0, 152838.0, 152839.0],
+  "selection": "Midpoint of the interpreted eastern entrance rim region; the plan places level 0.00 on this side. The physical station mark was not identified.",
+  "method": "Remote interpretation of orthophoto corroborated by ALS shaft morphology; not GNSS.",
+  "horizontal_accuracy_m": null,
+  "vertical_adjustment_m": 0.0,
+  "orientation_adjustment_deg": 0.0,
+  "scale": 1.0,
+  "observed_date": "2026-10-24",
+  "limitations": "The image-pick region and half-metre coordinate step are not absolute accuracy. The WMS date 2021-09-09 is inferred from the covering WFS product. All network elevations and their unknown datum are retained."
+}

@@ -1,0 +1,16 @@
+{
+  "nodes": 692,
+  "named_stations": 589,
+  "drawing_legs": 726,
+  "pairwise_checks": 239086,
+  "max_pairwise_distance_difference_m": 0.0,
+  "all_elevations_unchanged": true,
+  "translation": {
+    "delta_e": -12.849703046842478,
+    "delta_n": -3.4803757732734084,
+    "delta_z": 0.0,
+    "distance_xy": 13.31269634278576,
+    "rotation_deg": 0.0,
+    "scale": 1.0
+  }
+}
