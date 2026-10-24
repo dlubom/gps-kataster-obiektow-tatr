@@ -16,6 +16,10 @@ Review: stare liczniki artefaktów poprawione i potwierdzone pełną bramką.
 [Projekt i plan](plans/PBI-114-gpx-groups.md), [odbiór](verification/PBI-114.md).
 Bez merge, taga i publikacji; końcowy SHA/CI i odbiór paczki w opisie PR.
 
+2026-10-24 na polecenie użytkownika do PR #32 dodano changelog v1.3.0
+oraz zgodny numer wersji projektu, locka i pakietu. Przygotowanie wydania
+obejmuje wyłącznie dodatkowe GPX z PBI-114; odbiór w powyższym logu.
+
 ## Wydanie v1.2.1
 
 Status: changelog i wersja w PR #28 zatwierdzone przez użytkownika

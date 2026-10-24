@@ -20,7 +20,13 @@ walidacja bez błędów, build/odczyt wszystkich formatów oraz 7/7 mutacji PASS
 [Projekt](plans/PBI-114-gpx-groups.md), [odbiór](verification/PBI-114.md).
 Odbiór CI końcowego SHA i pobranej paczki jest wskazywany w opisie PR #32.
 Następny krok po odbiorze: review PR #32.
-Bez merge, taga, nowej wersji i wydania.
+
+2026-10-24 użytkownik polecił dodać changelog do PR #32, aby można było
+wydać wersję po jego przyjęciu. Przygotowano wpis v1.3.0 dla dodatkowych
+GPX oraz zgodne wersje projektu, locka i pakietu. Minor odpowiada nowej
+funkcji eksportu; dane i logika wykonawcza zachowane względem `ca4da8e`.
+Weryfikacja przygotowania i dostarczenie: [odbiór PBI-114](verification/PBI-114.md).
+Merge, tag i publikacja wymagają osobnego polecenia.
 
 ## Wydanie v1.2.1 — zatwierdzone
 
