@@ -71,5 +71,6 @@ eksportu i buildera pozostaje kompatybilne w użyciu.
 - [x] Ruff, pełne pytest, walidacja YAML, pełny build i niezależny odczyt wszystkich
   artefaktów; pełny GPX bajtowo zgodny z bazą przy tym samym czasie.
 - [x] Mutacje grupowania/limitu/dystrybucji, review, identyczny manifest danych.
-- [ ] Commit/push, draft PR powiązany z #20; terminalne CI końcowego SHA i odczyt
-  pobranej paczki podglądu; log odbioru w repozytorium.
+- [x] Commit/push, draft PR [#32](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/32)
+  powiązany z #20 i log odbioru w repozytorium. Odbiór terminalnego CI końcowego
+  SHA i pobranej paczki podglądu wskazuje opis PR #32.

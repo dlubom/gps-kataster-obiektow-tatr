@@ -4,7 +4,7 @@ Stan na: 2026-10-24
 
 ## PBI-114: Dodatkowe GPX według grup dolin
 
-Status: zweryfikowane — do dostarczenia w draft PR, realizacja issue #20.
+Status: implementacja wykonana i dostarczona w [draft PR #32](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/32), realizacja issue #20.
 Użytkownik zatwierdził trzy dodatkowe pliki: Chochołowska–Lejowa–Kościeliska,
 Miętusia–Sucha Woda oraz pozostałe PL/SK. Pełny `best-measurements.gpx`
 pozostaje bez zmian. Grupy liczą 488/481/57 punktów, każda do 500; dolin

@@ -14,11 +14,12 @@ każdej doliny razem. Przekroczenie 500 blokuje zapis eksportów i publikację;
 nie obcinamy punktów ani nie dzielimy dolin automatycznie.
 
 Gałąź `codex/gpx-valley-groups`, baza main `26850e6a82220ad4a11e446b177512a274ed82fe`.
-Status: zweryfikowane — do dostarczenia w draft PR. 962 testy, Ruff,
+Status: implementacja wykonana i dostarczona w [draft PR #32](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/32). 962 testy, Ruff,
 walidacja bez błędów, build/odczyt wszystkich formatów oraz 7/7 mutacji PASS.
 2077 wejść data/config/schema zachowano; kod i dane innych PR poza zakresem.
 [Projekt](plans/PBI-114-gpx-groups.md), [odbiór](verification/PBI-114.md).
-Następny krok: push, draft PR, CI końcowego SHA i odczyt pobranego preview.
+Odbiór CI końcowego SHA i pobranej paczki jest wskazywany w opisie PR #32.
+Następny krok po odbiorze: review PR #32.
 Bez merge, taga, nowej wersji i wydania.
 
 ## Wydanie v1.2.1 — zatwierdzone
