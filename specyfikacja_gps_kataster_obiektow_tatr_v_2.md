@@ -1071,6 +1071,18 @@ jako tekst ISO `YYYY-MM-DD`, bez zmiany wartości źródłowej.
 
 Statystyki liczą punkty z wygenerowanego CSV, a pozycje katalogowe i całą
 historię z pakowanej bazy SQLite. Nie wybierają pomiarów ponownie.
+Tabela sposobu wyznaczenia pozycji jest niezależna od tabeli źródeł.
+Wybrane rekordy CSV łączymy z pomiarami SQLite po `object_id` i
+`measurement_id`; brak pasującego rekordu przerywa generowanie statystyk.
+Zapisana `method` ma pierwszeństwo. Dla `ustalenie` oba tagi `lidar`
+i `gnss_anchor` oznaczają prezentację „LiDAR dowiązany GNSS”; dla
+`source_record` tag `survey_anchor` oznacza punkt dowiązania o nieznanej
+metodzie pierwotnej. Pozostałe metody są prezentowane zgodnie z zapisem.
+Sam tag `gnss_anchor` nie oznacza bezpośredniego GNSS. Etykieta GNSS nie
+potwierdza geodezyjnego rodzaju pomiaru ani jego dokładności. Rozbicie
+`by_position_method` jest addytywnym polem JSON statystyk w wersji 1;
+nie zmienia schematu ani priorytetów pomiarów. `wlasne` jest prezentowane
+jako „Opracowania własne”, bez zmiany wartości źródłowej.
 Markdown zawiera tabele PL/EN/SK i jest dodawany do opisu wydania.
 Brak deklarowanej dokładności oznacza wartość nieznaną, nie zero.
 Lokalny build bez wersji/commitu jest oznaczany jako podgląd lokalny.

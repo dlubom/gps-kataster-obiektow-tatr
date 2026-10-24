@@ -15,6 +15,7 @@ from openpyxl import load_workbook
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
 from gps_kataster_obiektow_tatr.excel_export import write_excel_export
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
+from gps_kataster_obiektow_tatr.release_statistics import write_release_statistics
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 BUILD_RELEASE_SCRIPT = REPO_ROOT / "scripts" / "build_release_artifacts.py"
@@ -158,11 +159,13 @@ def test_statistics_count_selected_points_separately_from_history(tmp_path: Path
     assert statistics["selected_points"] == {
         "by_category": {"jaskinia_otwor": 1, "sztolnia": 1},
         "by_source": {"PIG": 1, "TPN": 1},
+        "by_position_method": {"source_record": 2},
         "by_verification_status": {"nieweryfikowany": 1, "zweryfikowany": 1},
         "horizontal_accuracy": {"known": 1, "unknown": 1},
     }
     assert statistics["measurement_history"] == {
         "by_source": {"PIG": 2, "TPN": 2},
+        "by_position_method": {"source_record": 4},
         "by_verification_status": {
             "nieweryfikowany": 2,
             "odrzucony": 1,
@@ -175,6 +178,101 @@ def test_statistics_count_selected_points_separately_from_history(tmp_path: Path
     assert "| Jaskynné vchody | 1 |" in report
     assert "| PIG | 1 | 2 |" in report
     assert "| Odrzucone | 0 | 1 |" in report
+
+
+def test_statistics_use_packaged_method_and_tags_for_each_selected_measurement(
+    tmp_path: Path,
+) -> None:
+    data_dir = tmp_path / "data"
+    _write_sample_data(data_dir)
+    cave = _valid_cave()
+    cave["object_ids"] = []
+    cases = [
+        ("ustalenie", ["lidar", "gnss_anchor"]),
+        ("source_record", ["survey_anchor"]),
+        ("siec_pomiarowa", ["gnss_anchor", "survey_anchor"]),
+        ("gnss", []),
+        ("ustalenie", ["gnss_anchor"]),
+        ("ustalenie", ["lidar"]),
+        ("source_record", ["lidar", "gnss_anchor"]),
+    ]
+    for number, (method, tags) in enumerate(cases, start=1):
+        obj = _valid_object()
+        obj["id"] = f"KSW-{number:04d}"
+        obj["external_refs"] = []
+        obj["measurements"][0].update(method=method, tags=tags, source="wlasne")
+        obj["best_measurement"].update(
+            mode="manual", measurement_id="m-001", reason="Retain the older reviewed point"
+        )
+        _write_yaml(data_dir / "objects/KSW" / f"{obj['id']}.yml", obj)
+        cave["object_ids"].append(obj["id"])
+    _write_yaml(data_dir / "caves/C-0001.yml", cave)
+
+    result = build_release_artifacts(
+        data_dir=data_dir,
+        sqlite_path=tmp_path / "db.sqlite",
+        output_dir=tmp_path / "exports",
+        generated_at=GENERATED_AT,
+    )
+    statistics = json.loads((result.export_result.output_dir / "statistics.json").read_text())
+    assert statistics["selected_points"]["by_position_method"] == {
+        "lidar_gnss": 1,
+        "survey_anchor": 1,
+        "siec_pomiarowa": 1,
+        "gnss": 1,
+        "ustalenie": 2,
+        "source_record": 1,
+    }
+    assert statistics["measurement_history"]["by_position_method"] == {
+        "lidar_gnss": 1,
+        "survey_anchor": 1,
+        "siec_pomiarowa": 1,
+        "gnss": 1,
+        "ustalenie": 2,
+        "source_record": 8,
+    }
+    report = (result.export_result.output_dir / "statistics.md").read_text()
+    assert "| LiDAR dowiązany GNSS | 1 | 1 |" in report
+    assert "| GNSS (rodzaj nieudokumentowany) | 1 | 1 |" in report
+    assert "| Sieć pomiarowa | 1 | 1 |" in report
+    assert "| Punkt dowiązania — pierwotna metoda nieznana | 1 | 1 |" in report
+    assert "| GNSS-anchored LiDAR | 1 | 1 |" in report
+    assert "| LiDAR naviazaný na GNSS | 1 | 1 |" in report
+    assert "| Opracowania własne | 7 | 7 |" in report
+
+
+def test_statistics_reject_selected_measurement_missing_from_packaged_history(
+    tmp_path: Path,
+) -> None:
+    data_dir = tmp_path / "data"
+    _write_sample_data(data_dir)
+    sqlite_path = tmp_path / "db.sqlite"
+    output_dir = tmp_path / "exports"
+    build_release_artifacts(
+        data_dir=data_dir,
+        sqlite_path=sqlite_path,
+        output_dir=output_dir,
+        generated_at=GENERATED_AT,
+    )
+    csv_path = output_dir / "best-measurements.csv"
+    with csv_path.open(newline="") as stream:
+        reader = csv.DictReader(stream)
+        rows = list(reader)
+        fieldnames = reader.fieldnames
+    rows[0]["measurement_id"] = "m-999"
+    with csv_path.open("w", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+    with pytest.raises(ValueError, match="KSW-0001/m-999"):
+        write_release_statistics(
+            csv_path=csv_path,
+            sqlite_path=sqlite_path,
+            output_dir=output_dir,
+            generated_at=GENERATED_AT,
+            release_version=None,
+            source_commit=None,
+        )
 
 
 def test_statistics_are_deterministic_and_support_an_empty_catalog(tmp_path: Path) -> None:
@@ -198,6 +296,8 @@ def test_statistics_are_deterministic_and_support_an_empty_catalog(tmp_path: Pat
     assert statistics["counts"] == {"objects": 0, "caves": 0, "measurements": 0}
     assert statistics["selected_points"]["horizontal_accuracy"] == {"known": 0, "unknown": 0}
     assert statistics["selected_points"]["by_source"] == {}
+    assert statistics["selected_points"]["by_position_method"] == {}
+    assert statistics["measurement_history"]["by_position_method"] == {}
 
 
 def test_excel_preserves_best_and_full_history_with_local_measurement_ids(tmp_path: Path) -> None:

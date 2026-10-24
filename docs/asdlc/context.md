@@ -2,6 +2,37 @@
 
 Last updated: 2026-10-24
 
+## Punkty systemów i statystyki — PBI-115
+
+Po potwierdzeniu w źródłach PIG i `/grill me` użytkownik polecił usunąć
+`KSZ-0009` (dodatkowy rekord głównego otworu Mylnej) i `MLZ-0029`
+(geometryczny środek systemu Wielkiej Śnieżnej), wraz z oboma pomiarami.
+Odrzucił dodatkowe archiwum i przenoszenie pomiaru do Mylnej. Katalogowe
+pozycje systemów `C-0095` i `C-0295` pozostają z pustym `object_ids` i
+wyjaśnieniem źródłowym. Pozostałe obiekty, pomiary i wskazania Best zachowane.
+Stan po zmianie: 1024 Obiekty, 1019 pozycji katalogowych, 1926 pomiarów.
+Docelowe modelowanie systemów/historycznych części odłożono do
+[issue #34](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/34).
+Nie utożsamiać 1019 pozycji katalogowych z liczbą niezależnych jaskiń.
+
+Nowe `by_position_method` w statystykach liczy zapisane metody i tagi
+konkretnego pomiaru z pakowanej SQLite, dla par CSV object_id/measurement_id.
+Źródło „Opracowania własne” jest oddzielne od metod GNSS, LiDAR i sieci.
+Trzy rekordy GNSS nie mają potwierdzenia geodezyjnego rodzaju pomiaru.
+Metody źródłowe, schema_version, dokładności, statusy i algorytm Best bez zmian.
+
+Przydzielacz ID korzysta z obecnych plików i nie gwarantuje nieużywania
+wycofanych numerów. Mechanizm rezerwacji nie został wdrożony: na polecenie
+użytkownika ocena ryzyka, wariantów i konsekwencji jest w
+[issue #33](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/33).
+Georeferencer używał obu wycofywanych ID; [jego PR #5](https://github.com/dlubom/Georeferencer/pull/5)
+przepina plany na KSZ-0064/MLZ-0068 i dopuszcza sztolnie. Tę poprawkę trzeba
+przyjąć przed wydaniem GPS bez dwóch dawnych punktów. JKTZ nie używa tych ID.
+Status GPS: implementacja wykonana; odbiór zdalnego SHA, CI i pobranej
+paczki wskazuje opis PR gałęzi `codex/system-points-statistics`.
+[Plan](plans/PBI-115-system-points-statistics.md), [odbiór](verification/PBI-115.md).
+Bez merge, taga i wydania.
+
 ## Stała ochrona main — PR i CI, bez obowiązkowego approval
 
 2026-10-24 użytkownik polecił trwale znieść wymóg akceptacji drugiej osoby,

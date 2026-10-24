@@ -77,7 +77,10 @@ also in Polish and Slovak, on the [latest release page](https://github.com/dlubo
 are generated automatically from the same data package. They count objects,
 caves and measurements, object types, sources, verification statuses and
 points with declared or unknown accuracy. Downloadable points and the full
-measurement history are counted separately. Version v1.0.4 and earlier do not
+measurement history are counted separately. In releases after v1.3.0, a position-method table distinguishes
+GNSS, GNSS-anchored LiDAR and survey networks; “Project work” identifies
+the source. GNSS does not automatically mean a geodetic survey.
+Version v1.0.4 and earlier do not
 include these tables.
 
 ## Points on the map

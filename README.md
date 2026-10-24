@@ -76,7 +76,10 @@ zawierały rozwijane **Statystyki wydania (PL)**, także po angielsku i słowack
 Tabele powstają automatycznie z tej samej paczki danych: pokazują liczbę
 obiektów, jaskiń i pomiarów, rodzaje obiektów, źródła, statusy weryfikacji oraz
 liczbę punktów z podaną i nieznaną dokładnością. Punkty do pobrania i pełna
-historia pomiarów są liczone osobno. Wydanie v1.0.4 i starsze nie mają tych tabel.
+historia pomiarów są liczone osobno. W wydaniach po v1.3.0 tabela sposobu wyznaczenia pozycji
+rozróżnia m.in. GNSS, LiDAR dowiązany GNSS i sieć pomiarową; źródło
+„Opracowania własne” opisuje pochodzenie danych. GNSS nie oznacza
+automatycznie pomiaru geodezyjnego. Wydanie v1.0.4 i starsze nie mają tych tabel.
 
 ## Punkty na mapie
 
