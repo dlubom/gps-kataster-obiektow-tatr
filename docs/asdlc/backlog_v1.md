@@ -2,6 +2,27 @@
 
 Stan na: 2026-10-24
 
+## PBI-114: Dodatkowe GPX według grup dolin
+
+Status: implementacja wykonana i dostarczona w [draft PR #32](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/32), realizacja issue #20.
+Użytkownik zatwierdził trzy dodatkowe pliki: Chochołowska–Lejowa–Kościeliska,
+Miętusia–Sucha Woda oraz pozostałe PL/SK. Pełny `best-measurements.gpx`
+pozostaje bez zmian. Grupy liczą 488/481/57 punktów, każda do 500; dolin
+nie rozcinamy. Przypisanie według położenia wskazanego Best w obecnych
+polygonach, z pełnym zachowaniem waypointów. Pliki w CLI, release i preview.
+962 testy, Ruff, walidacja, build, odczyt wszystkich formatów i 7/7 mutacji PASS.
+Pełny GPX bajtowo zgodny z bazą, 2077 wejść data/config/schema bez zmian.
+Review: stare liczniki artefaktów poprawione i potwierdzone pełną bramką.
+[Projekt i plan](plans/PBI-114-gpx-groups.md), [odbiór](verification/PBI-114.md).
+Po review: brak błędów funkcjonalnych; poprawiono opis liczby plików preview
+z 9 na 12. Użytkownik 2026-10-24 polecił merge PR #32, wydanie v1.3.0
+i zamknięcie issue #20 po potwierdzeniu weryfikacji.
+Końcowy SHA/CI, odbiór paczki i wynik wydania wskazuje opis PR.
+
+2026-10-24 na polecenie użytkownika do PR #32 dodano changelog v1.3.0
+oraz zgodny numer wersji projektu, locka i pakietu. Przygotowanie wydania
+obejmuje wyłącznie dodatkowe GPX z PBI-114; odbiór w powyższym logu.
+
 ## Wydanie v1.2.1
 
 Status: changelog i wersja w PR #28 zatwierdzone przez użytkownika

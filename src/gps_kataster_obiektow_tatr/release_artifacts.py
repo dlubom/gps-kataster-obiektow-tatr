@@ -43,6 +43,7 @@ class ReleaseArtifactsResult:
             self.export_result.geojson_path,
             self.export_result.csv_path,
             self.export_result.gpx_path,
+            *self.export_result.grouped_gpx_paths,
             self.export_result.shapefile_zip_path,
             self.sqlite_zip_path,
             self.export_result.metadata_path,

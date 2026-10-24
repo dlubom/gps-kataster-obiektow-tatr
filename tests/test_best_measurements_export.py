@@ -36,7 +36,7 @@ def test_duplicate_local_measurement_id_blocks_exports_and_release(tmp_path, mod
         data_dir=data_dir, sqlite_path=output / "katalog.sqlite", output_dir=output / "exports"
     )
     before = {str(p.relative_to(output)): p.read_bytes() for p in output.rglob("*") if p.is_file()}
-    assert len(before) == 10
+    assert len(before) == 13
     source = data_dir / "objects/KSW/KSW-0001.yml"
     obj = yaml.safe_load(source.read_text())
     duplicate = deepcopy(obj["measurements"][1])

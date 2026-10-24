@@ -60,6 +60,9 @@ jobs:
             build/exports/best-measurements.geojson \
             build/exports/best-measurements.csv \
             build/exports/best-measurements.gpx \
+            build/exports/chocholowska-lejowa-koscieliska.gpx \
+            build/exports/mietusia-sucha-woda.gpx \
+            build/exports/pozostale-pl-sk.gpx \
             build/exports/best-measurements.shp.zip \
             build/exports/katalog.sqlite.zip \
             build/exports/metadata.json \

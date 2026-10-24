@@ -21,6 +21,7 @@ from gps_kataster_obiektow_tatr.data_loader import (
     LoadedYamlRecord,
     load_dataset,
 )
+from gps_kataster_obiektow_tatr.prefix_resolver import resolve_prefix
 from gps_kataster_obiektow_tatr.validator import (
     ValidationIssue,
     format_issue,
@@ -33,6 +34,36 @@ DEFAULT_EXPORT_DIR = REPO_ROOT / "build" / "exports"
 GEOJSON_FILENAME = "best-measurements.geojson"
 CSV_FILENAME = "best-measurements.csv"
 GPX_FILENAME = "best-measurements.gpx"
+GPX_GROUP_LIMIT = 500
+GPX_GROUPS = (
+    (
+        "chocholowska-lejowa-koscieliska.gpx",
+        "Chochołowska — Lejowa — Kościeliska",
+        frozenset({"CHZ", "CHW", "LEJ", "KSZ", "KSW"}),
+    ),
+    (
+        "mietusia-sucha-woda.gpx",
+        "Od Miętusiej po Suchą Wodę",
+        frozenset(
+            {
+                "MTZ",
+                "MTW",
+                "STN",
+                "MLZ",
+                "MLW",
+                "BRA",
+                "STR",
+                "DZI",
+                "BIA",
+                "BYZ",
+                "BYW",
+                "OLC",
+                "SUW",
+            }
+        ),
+    ),
+    ("pozostale-pl-sk.gpx", "Pozostałe PL/SK poza regionami dolin", frozenset({"PL", "SK"})),
+)
 SHAPEFILE_ZIP_FILENAME = "best-measurements.shp.zip"
 METADATA_FILENAME = "metadata.json"
 RELEASE_METADATA_SCHEMA_VERSION = 1
@@ -95,6 +126,7 @@ class BestMeasurementsExportResult:
     geojson_path: Path
     csv_path: Path
     gpx_path: Path
+    grouped_gpx_paths: tuple[Path, ...]
     shapefile_zip_path: Path
     metadata_path: Path
     metadata: dict[str, Any]
@@ -111,6 +143,10 @@ class BestMeasurementsExportValidationError(ValueError):
         super().__init__(f"Cannot export best measurements from invalid YAML:\n{details}")
 
 
+class GpxGroupingError(ValueError):
+    """Raised before export writes when a regional GPX cannot meet its contract."""
+
+
 def export_best_measurements(
     *,
     data_dir: Path = DEFAULT_DATA_DIR,
@@ -125,12 +161,14 @@ def export_best_measurements(
         raise BestMeasurementsExportValidationError(validation_issues)
 
     rows = _collect_best_measurement_rows(dataset)
+    groups = _group_gpx_rows(rows)
     timestamp = generated_at or _utc_timestamp()
 
     output_dir.mkdir(parents=True, exist_ok=True)
     geojson_path = output_dir / GEOJSON_FILENAME
     csv_path = output_dir / CSV_FILENAME
     gpx_path = output_dir / GPX_FILENAME
+    grouped_gpx_paths = tuple(output_dir / filename for filename, _, _ in GPX_GROUPS)
     shapefile_zip_path = output_dir / SHAPEFILE_ZIP_FILENAME
     metadata_path = output_dir / METADATA_FILENAME
     metadata = _build_release_metadata(
@@ -142,6 +180,8 @@ def export_best_measurements(
     _write_geojson(rows, geojson_path, generated_at=timestamp)
     _write_csv(rows, csv_path)
     _write_gpx(rows, gpx_path, generated_at=timestamp)
+    for path, (_, name, _), group_rows in zip(grouped_gpx_paths, GPX_GROUPS, groups, strict=True):
+        _write_gpx(group_rows, path, generated_at=timestamp, name=name)
     _write_shapefile_zip(rows, shapefile_zip_path)
     _write_metadata(metadata, metadata_path)
 
@@ -150,12 +190,38 @@ def export_best_measurements(
         geojson_path=geojson_path,
         csv_path=csv_path,
         gpx_path=gpx_path,
+        grouped_gpx_paths=grouped_gpx_paths,
         shapefile_zip_path=shapefile_zip_path,
         metadata_path=metadata_path,
         metadata=metadata,
         feature_count=len(rows),
         validation_issues=validation_issues,
     )
+
+
+def _group_gpx_rows(
+    rows: tuple[BestMeasurementExportRow, ...],
+) -> tuple[tuple[BestMeasurementExportRow, ...], ...]:
+    """Keep whole configured valleys together, using each selected measurement."""
+
+    groups: list[list[BestMeasurementExportRow]] = [[] for _ in GPX_GROUPS]
+    group_by_region = {
+        region: index for index, (_, _, regions) in enumerate(GPX_GROUPS) for region in regions
+    }
+    for row in rows:
+        region = resolve_prefix(lat=row.lat, lon=row.lon).prefix
+        if region not in group_by_region:
+            raise GpxGroupingError(
+                f"GPX group missing for object {row.object_id}: region {region!r}"
+            )
+        groups[group_by_region[region]].append(row)
+    for (filename, _, _), group in zip(GPX_GROUPS, groups, strict=True):
+        if len(group) > GPX_GROUP_LIMIT:
+            raise GpxGroupingError(
+                f"GPX group {filename}: {len(group)} waypoints exceeds limit {GPX_GROUP_LIMIT}; "
+                "revise the valley groups before exporting."
+            )
+    return tuple(tuple(group) for group in groups)
 
 
 def _collect_best_measurement_rows(dataset: LoadedDataset) -> tuple[BestMeasurementExportRow, ...]:
@@ -255,11 +321,12 @@ def _write_gpx(
     path: Path,
     *,
     generated_at: str,
+    name: str = "gps-kataster-obiektow-tatr best measurements",
 ) -> None:
     ET.register_namespace("", GPX_NS)
     gpx = ET.Element(_gpx_tag("gpx"), {"version": "1.1", "creator": "gps-kataster-obiektow-tatr"})
     metadata = ET.SubElement(gpx, _gpx_tag("metadata"))
-    ET.SubElement(metadata, _gpx_tag("name")).text = "gps-kataster-obiektow-tatr best measurements"
+    ET.SubElement(metadata, _gpx_tag("name")).text = name
     ET.SubElement(metadata, _gpx_tag("time")).text = generated_at
 
     for row in rows:

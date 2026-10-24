@@ -66,7 +66,13 @@ def test_preview_contains_exact_release_exports_with_provenance_and_checksums(tm
     )
     expected = {p.name: p for p in release.artifact_paths if p != release.sqlite_result.sqlite_path}
     assert set(p.name for p in output.iterdir()) == set(expected) | {"preview.json", "SHA256SUMS"}
-    assert len(expected) == 9
+    assert len(expected) == 12
+    assert {
+        "best-measurements.gpx",
+        "chocholowska-lejowa-koscieliska.gpx",
+        "mietusia-sucha-woda.gpx",
+        "pozostale-pl-sk.gpx",
+    } <= set(expected)
     for name, path in expected.items():
         if name.endswith((".zip", ".xlsx")):
             with zipfile.ZipFile(path) as left, zipfile.ZipFile(output / name) as right:
@@ -92,7 +98,7 @@ def test_preview_contains_exact_release_exports_with_provenance_and_checksums(tm
         "kind": "pr-preview",
     }
     checksums = (output / "SHA256SUMS").read_text().splitlines()
-    assert len(checksums) == 10
+    assert len(checksums) == 13
     assert {line.split("  ")[1] for line in checksums} == set(expected) | {"preview.json"}
     for line in checksums:
         digest, name = line.split("  ")

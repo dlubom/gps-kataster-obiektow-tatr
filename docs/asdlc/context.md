@@ -2,6 +2,52 @@
 
 Last updated: 2026-10-24
 
+## Stała ochrona main — PR i CI, bez obowiązkowego approval
+
+2026-10-24 użytkownik polecił trwale znieść wymóg akceptacji drugiej osoby,
+ponieważ sam utrzymuje projekt. Aktywny ruleset `protect main` (20437353)
+wymaga nadal PR i zielonego `Validate code and data` (GitHub Actions 15368),
+rozwiązania wątków review oraz zachowuje blokady usunięcia i force-push.
+`required_approving_review_count` zmieniono z 1 na 0; lista bypass pozostaje
+pusta. Niezależny odczyt potwierdził, że to jedyna zmiana ustawień.
+To stała polityka, zastępująca wcześniejsze procedury chwilowego obniżania
+wymogu approval i przywracania go do 1. Wszystkie zmiany kodu, danych
+i dokumentacji nadal przechodzą przez PR oraz CI przed scaleniem do main.
+
+## Dodatkowe GPX — PBI-114 / issue #20
+
+Zatwierdzony przez użytkownika podział na trzy dodatkowe pliki łączy całe
+sąsiednie doliny: Chochołowska–Lejowa–Kościeliska (488), Miętusia–Sucha Woda
+(481), pozostałe PL/SK poza polygonami (57). **Pełny `best-measurements.gpx`
+pozostaje** i jest bajtowo identyczny z bazą przy tym samym czasie generowania.
+Każdy punkt trafia raz do zestawu dodatkowych GPX; aktualne położenie Best
+decyduje o grupie, z zachowaniem wszystkich pól waypointu. Wschód/zachód
+każdej doliny razem. Przekroczenie 500 blokuje zapis eksportów i publikację;
+nie obcinamy punktów ani nie dzielimy dolin automatycznie.
+
+Gałąź `codex/gpx-valley-groups`, baza main `26850e6a82220ad4a11e446b177512a274ed82fe`.
+Status: implementacja wykonana i dostarczona w [draft PR #32](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/32). 962 testy, Ruff,
+walidacja bez błędów, build/odczyt wszystkich formatów oraz 7/7 mutacji PASS.
+2077 wejść data/config/schema zachowano; kod i dane innych PR poza zakresem.
+[Projekt](plans/PBI-114-gpx-groups.md), [odbiór](verification/PBI-114.md).
+Odbiór CI końcowego SHA i pobranej paczki jest wskazywany w opisie PR #32.
+Review PR #32 dla `0feab5a`: Standards bez uwag, Spec jedna drobna uwaga
+dokumentacyjna — liczba plików w opisie preview poprawiona z 9 na 12.
+56 testów obszaru PASS; CI dokładnego SHA i odczyt wszystkich formatów
+paczki potwierdzone. Następny krok: CI końcowego commitu dokumentacji.
+
+2026-10-24 użytkownik polecił dodać changelog do PR #32, aby można było
+wydać wersję po jego przyjęciu. Przygotowano wpis v1.3.0 dla dodatkowych
+GPX oraz zgodne wersje projektu, locka i pakietu. Minor odpowiada nowej
+funkcji eksportu; dane i logika wykonawcza zachowane względem `ca4da8e`.
+Weryfikacja przygotowania i dostarczenie: [odbiór PBI-114](verification/PBI-114.md).
+2026-10-24 po review użytkownik polecił poprawić dokumentację, scalić PR #32,
+wydać v1.3.0 i zamknąć issue #20. To polecenie zastępuje wcześniejsze
+ograniczenie „bez merge, taga i publikacji” wyłącznie dla PR #32/PBI-114.
+Scalenie wymaga spełnienia bieżących reguł ochrony main; po nim potwierdzić
+CI main, annotated tag v1.3.0, workflow wydania i odczyt 12 publicznych plików.
+Końcowe SHA, CI, wydanie i zamknięcie issue wskazuje opis PR #32.
+
 ## Wydanie v1.2.1 — zatwierdzone
 
 2026-10-24 użytkownik polecił dodać changelog do PR #28 i pokazać go

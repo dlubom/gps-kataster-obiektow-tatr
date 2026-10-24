@@ -144,7 +144,7 @@ def test_duplicate_measurements_block_validation_and_release(tmp_path, replaceme
     release = build_release_artifacts(**kwargs, generated_at="2026-10-15T00:00:00Z")
     assert release.export_result.metadata["counts"]["measurements"] == 2
     before = {p.relative_to(output): p.read_bytes() for p in output.rglob("*") if p.is_file()}
-    assert len(before) == 10
+    assert len(before) == 13
     history = obj["measurements"] if replacement == "same" else obj["measurements"][:1]
     content = path.read_text(encoding="utf-8") + yaml.safe_dump({"measurements": history})
     path.write_text(content, encoding="utf-8")

@@ -8,6 +8,23 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [v1.3.0] - 2026-10-24
+
+### Dodano
+
+- Trzy dodatkowe pliki GPX do importu w aplikacjach z limitem punktów:
+  `chocholowska-lejowa-koscieliska.gpx` (488 punktów),
+  `mietusia-sucha-woda.gpx` (481 punktów) i `pozostale-pl-sk.gpx`
+  (57 punktów poza regionami dolin).
+- Podział według położenia wybranego pomiaru, z zachowaniem całych dolin.
+  Każdy punkt trafia do jednej grupy i zachowuje wszystkie swoje dane.
+- Kontrolę limitu 500 punktów w każdym dodatkowym GPX.
+  Przekroczenie limitu zatrzymuje eksport bez obcinania punktów.
+
+Pełny `best-measurements.gpx` nadal zawiera wszystkie 1026 punktów.
+Dodatkowe pliki są dostępne w podglądzie PR i paczkach nowych wydań.
+Dane katalogu i wybór najlepszych pomiarów pozostają bez zmian.
+
 ## [v1.2.1] - 2026-10-24
 
 ### Dodano
