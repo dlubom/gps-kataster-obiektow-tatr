@@ -1,6 +1,43 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-10-23
+Stan na: 2026-10-24
+
+## Wydanie v1.2.1
+
+Status: changelog i wersja w PR #28 zatwierdzone przez użytkownika
+w rozmowie 2026-10-24; merge i publikacja do wykonania według odbioru.
+Zakres: PBI-113, bez dalszych zmian danych, kodu wykonawczego i schematu.
+Po zatwierdzeniu: merge z chwilowym obniżeniem wymogu approval i
+natychmiastowym przywróceniem ochrony, CI main, tag i odbiór wydania.
+[Odbiór](verification/v1.2.1.md).
+
+## PBI-113: Nowe obiekty z lokalnego zrzutu TPN
+
+Status: wykonane — zatwierdzone do merge w PR #28 przez użytkownika 2026-10-24.
+Zakres: 19 nowych Obiektów, 18 Jaskiń, 20 pomiarów i 20 GLOBALID; 11 rekordów
+odroczono. Jednoznaczny TPN wystarcza do wpisu nieweryfikowanego.
+Smocza Jama N trafia do C-0219; Korytarz 6408/7044 tworzy jeden Obiekt
+z dwoma źródłami, Best 7044. Schron nad Wielką Równią pozostaje odroczony.
+Po review użytkownik odroczył również Jaskinię w Kozim Grzbiecie (6410)
+do ustalenia, któremu otwarciu z opisu Nowaka odpowiada punkt TPN.
+NMT oznacza grunt, z zachowaniem dokładnego XY i pochodzenia.
+[Projekt, pełna lista i odbiór](plans/PBI-113-new-tpn-objects.md).
+Katalog po materializacji: 1026 Obiektów, 1019 Jaskiń i 1928 pomiarów.
+951 testów, Ruff, walidacja i niezależny odczyt wszystkich eksportów PASS.
+Dawne Obiekty zachowane bajtowo; jedyna zmiana dawnej Jaskini to członkostwo
+i audyt C-0219. Kod i schemat bez zmian; końcowy SHA, CI i odbiór pobranej
+paczki wskazano w opisie PR. Commit danych `40bf339`: validate i preview
+completed/success, pobrana paczka odczytana bez błędów. Aktualizacja issue i naprawy dawnych par później.
+
+Po uwagach użytkownika poprawiono opisy bez odwołań do procesu PBI/PR:
+7 nazw potwierdzonych w literaturze/wykazach KKTJ, 12 referencji;
+11 nazw z bibliografią nieustaloną pozostaje opartych na TPN.
+Zachowano wszystkie wartości pomiarów i wybory Best.
+
+Korekta zaakceptowana 2026-10-24: zwięzłe uwagi i blok Literatura;
+techniczne pochodzenie XY/NMT w referencjach Obiektu z ID pomiaru.
+Źródłowe WER_LOK/UWAGI i zastrzeżenia NMT pozostają przy Pomiarze;
+morfometria i bibliografia zachowane. Bez zmiany kodu, schematu i eksportera.
 
 ## Wydanie v1.2.0
 

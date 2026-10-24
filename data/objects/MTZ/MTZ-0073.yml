@@ -1,0 +1,73 @@
+schema_version: 1
+id: MTZ-0073
+category: jaskinia_otwor
+name_local: Jaskinia Lodowa Ponorowa
+cave_id: C-1042
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MTZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{F27FA875-821F-45F6-8F02-C5A9FFC579E4}'
+  scope: object
+  notes: |-
+    Pomiar m-001. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 7366, GLOBALID {F27FA875-821F-45F6-8F02-C5A9FFC579E4}; TPN NAZWA: Jaskinia Lodowa Ponorowa. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
+
+    Stan rekordu: 2026-06-16; data edycji LAST_EDITED_DATE (UTC), nie data pomiaru terenowego.
+    TPN GENEZA: jaskinia.
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu).
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6
+- system: TPN
+  ref_type: url
+  external_id: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.9063092182706%2C49.234277473653904&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.9062992182706%2C49.2342674736539%2C19.9063192182706%2C49.23428747365391&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.9063092182706%2C49.234277473653904&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.9062992182706%2C49.2342674736539%2C19.9063192182706%2C49.23428747365391&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  scope: object
+  notes: |-
+    Pochodzenie wysokości pomiaru m-001; source_ref TPN:{F27FA875-821F-45F6-8F02-C5A9FFC579E4}.
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:49.422988Z w dokładnych współrzędnych tego pomiaru: 1799.390015 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
+
+    SHA-256 odpowiedzi NMT: 8c873d926a47e3b990f769fc64375b468ee2579a4e4433311dc70d1832e4d586.
+measurements:
+- id: m-001
+  lat: 49.234277473653904
+  lon: 19.9063092182706
+  x_1992: 152258.24
+  y_1992: 565958.07
+  elevation_m: 1799.390015
+  elevation_datum: unknown
+  elevation_source: dem
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{F27FA875-821F-45F6-8F02-C5A9FFC579E4}
+  observed_date: '2026-06-16'
+  source_date: '2026-06-16'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: |-
+    Wysokość gruntu z NMT TPN; wysokość otworu niepotwierdzona.
+    Data dotyczy aktualizacji TPN; data pomiaru terenowego nieznana.
+    TPN WER_LOK: FF16062026
+  created_at: '2026-10-23T18:10:08Z'
+  created_by: maintenance:PBI-113
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: Jedyny pomiar TPN; bez niezależnej weryfikacji terenowej.
+  updated_at: '2026-10-23T18:10:08Z'
+  updated_by: maintenance:PBI-113
+attachments: []
+notes: null
+created_at: '2026-10-23T18:10:08Z'
+created_by: maintenance:PBI-113
+updated_at: '2026-10-24T08:42:28Z'
+updated_by: maintenance:descriptions

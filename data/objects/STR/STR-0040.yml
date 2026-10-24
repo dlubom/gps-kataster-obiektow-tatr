@@ -1,0 +1,73 @@
+schema_version: 1
+id: STR-0040
+category: jaskinia_otwor
+name_local: Nyża pod Szarą Turnią I
+cave_id: C-1033
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: STR
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{55ED69A3-9228-452B-87CE-8133710292B1}'
+  scope: object
+  notes: |-
+    Pomiar m-001. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 6405, GLOBALID {55ED69A3-9228-452B-87CE-8133710292B1}; TPN NAZWA: Nyża pod Szarą Turnią I. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
+
+    Stan rekordu: 2026-06-14; data edycji LAST_EDITED_DATE (UTC), nie data pomiaru terenowego.
+    TPN GENEZA: jaskinia.
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu).
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6
+- system: TPN
+  ref_type: url
+  external_id: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.928103567508114%2C49.25319985046087&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.928093567508114%2C49.25318985046086%2C19.928113567508113%2C49.25320985046087&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.928103567508114%2C49.25319985046087&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.928093567508114%2C49.25318985046086%2C19.928113567508113%2C49.25320985046087&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  scope: object
+  notes: |-
+    Pochodzenie wysokości pomiaru m-001; source_ref TPN:{55ED69A3-9228-452B-87CE-8133710292B1}.
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:45.301689Z w dokładnych współrzędnych tego pomiaru: 1467.869995 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
+
+    SHA-256 odpowiedzi NMT: 175c9d65db355a245d26691a8b3e18cd2e4e13cc88d4baea6746413caae824a1.
+measurements:
+- id: m-001
+  lat: 49.25319985046087
+  lon: 19.928103567508114
+  x_1992: 154380.4
+  y_1992: 567518.37
+  elevation_m: 1467.869995
+  elevation_datum: unknown
+  elevation_source: dem
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{55ED69A3-9228-452B-87CE-8133710292B1}
+  observed_date: '2026-06-14'
+  source_date: '2026-06-14'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: |-
+    Wysokość gruntu z NMT TPN; wysokość otworu niepotwierdzona.
+    Data dotyczy aktualizacji TPN; data pomiaru terenowego nieznana.
+    TPN WER_LOK: FF 27052026
+  created_at: '2026-10-23T18:10:08Z'
+  created_by: maintenance:PBI-113
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: Jedyny pomiar TPN; bez niezależnej weryfikacji terenowej.
+  updated_at: '2026-10-23T18:10:08Z'
+  updated_by: maintenance:PBI-113
+attachments: []
+notes: null
+created_at: '2026-10-23T18:10:08Z'
+created_by: maintenance:PBI-113
+updated_at: '2026-10-24T08:42:28Z'
+updated_by: maintenance:descriptions

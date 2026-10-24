@@ -8,6 +8,23 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [v1.2.1] - 2026-10-24
+
+### Dodano
+
+- 19 nowych obiektów terenowych, 18 jaskiń i 20 pomiarów z TPN,
+  w tym północny otwór Smoczej Jamy przypisany do istniejącej jaskini.
+- Dwa pomiary Korytarza pod Ciemniakiem przypisane do jednego obiektu,
+  z zachowaniem obu rekordów źródłowych TPN.
+- Wysokości gruntu z NMT TPN dla wszystkich nowych pomiarów,
+  wraz z informacją o pochodzeniu odczytów.
+- Opisy i bibliografię nowych jaskiń, z zaznaczeniem rozbieżności
+  między TPN a literaturą oraz braku ustalonej publikacji opisowej.
+
+Nowe pomiary pozostają nieweryfikowane. Wysokości NMT opisują grunt
+i nie potwierdzają wysokości otworów.
+Katalog zawiera 1026 obiektów, 1019 jaskiń i 1928 pomiarów.
+
 ## [v1.2.0] - 2026-10-23
 
 ### Dodano

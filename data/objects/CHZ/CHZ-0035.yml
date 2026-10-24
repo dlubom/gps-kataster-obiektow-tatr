@@ -1,0 +1,73 @@
+schema_version: 1
+id: CHZ-0035
+category: jaskinia_otwor
+name_local: Jaskinia Cynamonowa
+cave_id: C-1043
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: CHZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{A876A547-7912-4033-BB3F-8ED2F589C5F0}'
+  scope: object
+  notes: |-
+    Pomiar m-001. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 7367, GLOBALID {A876A547-7912-4033-BB3F-8ED2F589C5F0}; TPN NAZWA: Jaskinia Cynamonowa. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
+
+    Stan rekordu: 2026-06-16; data edycji LAST_EDITED_DATE (UTC), nie data pomiaru terenowego.
+    TPN GENEZA: jaskinia.
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu).
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6
+- system: TPN
+  ref_type: url
+  external_id: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.803833000273805%2C49.24315800000112&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.803823000273805%2C49.24314800000111%2C19.803843000273805%2C49.24316800000112&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.803833000273805%2C49.24315800000112&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.803823000273805%2C49.24314800000111%2C19.803843000273805%2C49.24316800000112&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  scope: object
+  notes: |-
+    Pochodzenie wysokości pomiaru m-001; source_ref TPN:{A876A547-7912-4033-BB3F-8ED2F589C5F0}.
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:49.659247Z w dokładnych współrzędnych tego pomiaru: 1275.109985 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
+
+    SHA-256 odpowiedzi NMT: f4e41d62a7a39e81f5caf86d5b20d48f57b46a12ac49a757fe95b72c84757bae.
+measurements:
+- id: m-001
+  lat: 49.24315800000112
+  lon: 19.803833000273805
+  x_1992: 153160.87
+  y_1992: 558489.79
+  elevation_m: 1275.109985
+  elevation_datum: unknown
+  elevation_source: dem
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{A876A547-7912-4033-BB3F-8ED2F589C5F0}
+  observed_date: '2026-06-16'
+  source_date: '2026-06-16'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: |-
+    Wysokość gruntu z NMT TPN; wysokość otworu niepotwierdzona.
+    Data dotyczy aktualizacji TPN; data pomiaru terenowego nieznana.
+    TPN WER_LOK: FF16062026
+  created_at: '2026-10-23T18:10:08Z'
+  created_by: maintenance:PBI-113
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: Jedyny pomiar TPN; bez niezależnej weryfikacji terenowej.
+  updated_at: '2026-10-23T18:10:08Z'
+  updated_by: maintenance:PBI-113
+attachments: []
+notes: null
+created_at: '2026-10-23T18:10:08Z'
+created_by: maintenance:PBI-113
+updated_at: '2026-10-24T08:42:28Z'
+updated_by: maintenance:descriptions

@@ -1,6 +1,80 @@
 # AS-DLC project context
 
-Last updated: 2026-10-23
+Last updated: 2026-10-24
+
+## Wydanie v1.2.1 — zatwierdzone
+
+2026-10-24 użytkownik polecił dodać changelog do PR #28 i pokazać go
+w rozmowie do zatwierdzenia przed merge i wydaniem. Przygotowanie obejmuje
+wpis v1.2.1 oraz zgodną wersję projektu, locka, pakietu i istniejącego testu.
+Baza main: `caf7bae69b28eb037810215889cb87f763b2c6bd`; HEAD PR przed
+przygotowaniem: `ea6da8c1889b39fa99d186dff851290424545d94`.
+Zakres wydania to PBI-113: 19 nowych Obiektów, 18 Jaskiń, 20 pomiarów.
+Po zatwierdzeniu wpisu: merge PR #28 z chwilową zmianą wymogu approval,
+natychmiastowe przywrócenie pełnej ochrony main, CI końcowego main,
+tag i publikacja oraz odczyt publicznych artefaktów.
+2026-10-24 użytkownik zatwierdził pokazany wpis i wersję v1.2.1 oraz
+powyższą kolejność merge, przywrócenia ochrony, CI i publikacji.
+Treść changeloga i dane pozostają identyczne z zatwierdzonym `64c33a1`.
+Końcowe SHA, CI, merge i odbiór publikacji wskazuje opis PR #28 oraz
+[wydanie v1.2.1](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/tag/v1.2.1).
+Przygotowanie lokalne: 951 testów, Ruff, walidacja i build PASS;
+niezależny odczyt eksportów: 136917 porównań bez błędów.
+[Odbiór przygotowania](verification/v1.2.1.md).
+
+## Nowe obiekty TPN — realizacja PBI-113
+
+Po wywiadzie i review projekt obejmuje 19 nowych Obiektów, 18 Jaskiń i 20 pomiarów
+z 31 niedopasowanych GLOBALID warstwy jaskiń zrzutu z 22.10.2026.
+Sam jednoznaczny TPN wystarcza do wpisu `nieweryfikowany`; konkretne
+konflikty odkładamy. Użytkownik zaakceptował jeden Korytarz 6408/7044,
+oba źródła i Best 7044 oraz odroczenie Schronu nad Wielką Równią.
+Po review 23.10.2026 użytkownik odroczył również Jaskinię w Kozim Grzbiecie
+(6410): opis Nowaka rozróżnia wejście główne i okno nad nim, a TPN nie
+wskazuje, któremu otwarciu odpowiada punkt.
+Smocza Jama N jest nowym otworem istniejącej C-0219. Jedenaście rekordów
+pozostaje odroczonych; issue i istniejące pary nie są teraz zmieniane.
+2026-10-23 użytkownik polecił realizację [projektu z pełną listą](plans/PBI-113-new-tpn-objects.md)
+w istniejącym PR #28, na gałęzi `codex/tpn-new-objects-proposal`.
+Bieżący main potwierdzony: `caf7bae69b28eb037810215889cb87f763b2c6bd`.
+ID przydzielono ponad maksimum całej historii Git, aby nie użyć ponownie
+numerów z niezależnych PR #12/#13. Nowe Obiekty: KSW-0261–0263, STR-0039–0043, BIA-0010, MTW-0074–0075,
+MTZ-0072–0073, CHZ-0033–0037 i DZI-0012; nowe Jaskinie C-1031–C-1048.
+Status: wykonane — zatwierdzone do merge w PR #28. Katalog: 1026 Obiektów,
+1019 Jaskiń, 1928 pomiarów. 951 testów, Ruff, walidacja i niezależny odczyt
+wszystkich eksportów PASS. Wszystkie 1007 wcześniejszych Obiektów i 1000
+Jaskiń zachowano bajtowo; C-0219 otrzymuje KSW-0261 i audyt aktualizacji.
+Kod i schemat bez zmian. Końcowy SHA, CI i odbiór pobranej paczki wskazuje
+opis PR #28. Commit danych `40bf339` dostarczony; validate i preview
+completed/success. Pobrana paczka: 136753 porównania, 0 błędów, zgodne
+HEAD/base/merge/run i 10/10 sum kontrolnych.
+Merge, tag i wydanie wymagają odrębnego polecenia.
+
+### Opisy i bibliografia po uwagach użytkownika
+
+Opisy Jaskiń i Obiektów zawierają informacje o obiekcie i źródłach;
+odniesienia do PBI, PR i przebiegu pracy pozostają w dokumentacji AS-DLC.
+Nazwy siedmiu nowych Jaskiń potwierdzono w wykazach Jakuba Nowaka/KKTJ
+2026.07, dla pięciu także w oryginalnych artykułach. Dodano 12 referencji
+z autorem, tytułem, stroną lub pozycją wykazu. Pozostałe 11 nazw pozostaje
+opartych na TPN; po rozszerzonym przeglądzie nie ustalono niezależnej
+bibliografii. Brak wzmianki nie jest rozstrzygnięciem błędnej nazwy.
+Opisy rozdzielają dane TPN od literatury oraz wskazują różnice metryk
+Szczeliny przy Zbójeckiej Dziurze, Rury w Olejarni i Cynamonowej.
+Wszystkie wartości pomiarów, wysokości, identyfikatory i wybory Best zachowano.
+Końcowy SHA korekty i odbiór CI/paczki wskazuje opis PR #28.
+
+2026-10-24 zaakceptowano krótkie opisy i jeden blok Literatura z pełnymi
+cytowaniami. URL-e i techniczne dowody pozostają w referencjach; referencje
+NMT jawnie wskazują ID i source_ref pomiaru. Uwagi pomiarów zachowują
+ograniczenie wysokości gruntu, znaczenie daty oraz źródłowe WER_LOK/UWAGI.
+Morfometria, 12 referencji bibliograficznych i rozbieżności źródeł zachowane.
+Weryfikacja tej korekty i końcowego SHA jest wskazywana w opisie PR #28.
+Lokalnie: 951 testów, Ruff i build PASS, walidacja bez błędów; 136918
+porównań eksportów bez ustaleń. Uwagi 20 pomiarów mają do 159 bajtów UTF-8,
+a 19 wybranych uwag odczytano z DBF bez obcięcia. Pozostałe pola wszystkich
+1928 pomiarów i całe Best zachowano; 1007 starych Obiektów i 1001 Jaskiń
+są bajtowo identyczne z poprzednim HEAD PR `a709238`.
 
 ## Wydanie v1.2.0 — zatwierdzone
 

@@ -1,0 +1,30 @@
+schema_version: 1
+id: C-1037
+name: Korytarz pod Ciemniakiem
+system_name: null
+external_refs:
+- system: inne
+  ref_type: url
+  external_id: http://jaskinie.org.pl/files/Jaskinie__77_2014.pdf#page=29
+  url: http://jaskinie.org.pl/files/Jaskinie__77_2014.pdf#page=29
+  scope: cave
+  notes: Jakub Nowak, „Korytarz pod Ciemniakiem”, Jaskinie 4 (77), 2014, s. 29; opis, plan i metryka.
+- system: inne
+  ref_type: url
+  external_id: https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=399#page=2
+  url: https://kktj.pl/DesktopModules/EasyDNNNews/DocumentDownload.ashx?portalid=0&moduleid=387&articleid=283&documentid=399#page=2
+  scope: cave
+  notes: 'Załącznik „08 Dol. Miętusia 2026.07” do zestawienia Jakuba Nowaka „Jaskinie Tatr”, KKTJ, 10.07.2026;
+    s. 2, lp. 62; nazwa w wykazie: Korytarz pod Ciemniakiem.'
+object_ids:
+- MTZ-0072
+notes: |-
+  Jednootworowe, ślepe schronisko w ścianie Ciemniaka, w Dolinie Mułowej. Długość 8 m, przewyższenie 1,3 m (Nowak 2014; TPN). Inna nazwa w TPN: „Korytarz w Ciemniaku”; nie jest potwierdzonym w literaturze synonimem.
+
+  Literatura:
+  Nowak J., 2014, „Korytarz pod Ciemniakiem”, „Jaskinie”, nr 4 (77), s. 29.
+  Nowak J., 2026, „Jaskinie Tatr”, KKTJ, zestawienie z 10.07.2026, załącznik „08 Dol. Miętusia 2026.07”, s. 2, lp. 62.
+created_at: '2026-10-23T18:10:08Z'
+created_by: maintenance:PBI-113
+updated_at: '2026-10-24T08:42:28Z'
+updated_by: maintenance:descriptions

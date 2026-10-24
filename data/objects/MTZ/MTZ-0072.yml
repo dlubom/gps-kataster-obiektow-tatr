@@ -1,0 +1,124 @@
+schema_version: 1
+id: MTZ-0072
+category: jaskinia_otwor
+name_local: Korytarz pod Ciemniakiem
+cave_id: C-1037
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MTZ
+  prefix_override_reason: null
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{8E246480-F366-4D0F-BA7E-A601E865FD03}'
+  scope: object
+  notes: |-
+    Pomiar m-001. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 7044, GLOBALID {8E246480-F366-4D0F-BA7E-A601E865FD03}; TPN NAZWA: Korytarz pod Ciemniakiem. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
+
+    Stan rekordu: 2026-06-16; data edycji LAST_EDITED_DATE (UTC), nie data pomiaru terenowego.
+    TPN GENEZA: jaskinia.
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu).
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{0BFC7731-A83A-40E6-B773-766798366ADD}'
+  scope: object
+  notes: |-
+    Pomiar m-002. Źródło: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6; OBJECTID 6408, GLOBALID {0BFC7731-A83A-40E6-B773-766798366ADD}; TPN NAZWA: Korytarz w Ciemniaku. Zrzut 2026-10-22, SHA-256 9c626235253c41ed992be27a177ed3f17c8491d60b02eb306c5de0814129314f.
+
+    Stan rekordu: 2026-06-16; data edycji LAST_EDITED_DATE (UTC), nie data pomiaru terenowego.
+    TPN GENEZA: None.
+    TPN WERYF: 1 (kod źródłowy; nie status weryfikacji projektu).
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6
+- system: TPN
+  ref_type: url
+  external_id: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.903130591561503%2C49.232111943661685&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.903120591561503%2C49.23210194366168%2C19.903140591561503%2C49.23212194366169&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.903130591561503%2C49.232111943661685&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.903120591561503%2C49.23210194366168%2C19.903140591561503%2C49.23212194366169&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  scope: object
+  notes: |-
+    Pochodzenie wysokości pomiaru m-001; source_ref TPN:{8E246480-F366-4D0F-BA7E-A601E865FD03}.
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:47.941552Z w dokładnych współrzędnych tego pomiaru: 2021.319946 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
+
+    SHA-256 odpowiedzi NMT: ce445fd5209b4b3a8edda718ca0bcadd70d5f630f375a2bb9c4627c1702928ea.
+- system: TPN
+  ref_type: url
+  external_id: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.90313059173134%2C49.2321110675022&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.90312059173134%2C49.2321010675022%2C19.90314059173134%2C49.232121067502206&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.90313059173134%2C49.2321110675022&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.90312059173134%2C49.2321010675022%2C19.90314059173134%2C49.232121067502206&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  scope: object
+  notes: |-
+    Pochodzenie wysokości pomiaru m-002; source_ref TPN:{0BFC7731-A83A-40E6-B773-766798366ADD}.
+
+    Wysokość gruntu z NMT TPN nmt_05m_mggp_2019, warstwa 0, piksel 0,5 m; nalot 14-15.10.2019. Odczyt 2026-10-22T19:18:46.001008Z w dokładnych współrzędnych tego pomiaru: 2021.319946 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane, najnowszość niepotwierdzona. To wysokość gruntu; otwór w ścianie może leżeć na innej wysokości. Źródło wysokości: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer
+
+    SHA-256 odpowiedzi NMT: ce445fd5209b4b3a8edda718ca0bcadd70d5f630f375a2bb9c4627c1702928ea.
+measurements:
+- id: m-001
+  lat: 49.232111943661685
+  lon: 19.903130591561503
+  x_1992: 152014.81
+  y_1992: 565729.62
+  elevation_m: 2021.319946
+  elevation_datum: unknown
+  elevation_source: dem
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{8E246480-F366-4D0F-BA7E-A601E865FD03}
+  observed_date: '2026-06-16'
+  source_date: '2026-06-16'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: |-
+    Wysokość gruntu z NMT TPN; wysokość otworu niepotwierdzona.
+    Data dotyczy aktualizacji TPN; data pomiaru terenowego nieznana.
+    TPN WER_LOK: FF 16062026
+  created_at: '2026-10-23T18:10:08Z'
+  created_by: maintenance:PBI-113
+- id: m-002
+  lat: 49.2321110675022
+  lon: 19.90313059173134
+  x_1992: 152014.71
+  y_1992: 565729.62
+  elevation_m: 2021.319946
+  elevation_datum: unknown
+  elevation_source: dem
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: TPN
+  source_ref: TPN:{0BFC7731-A83A-40E6-B773-766798366ADD}
+  observed_date: '2026-06-16'
+  source_date: '2026-06-16'
+  method: source_record
+  device: null
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: |-
+    Wysokość gruntu z NMT TPN; wysokość otworu niepotwierdzona.
+    Data dotyczy aktualizacji TPN; data pomiaru terenowego nieznana.
+  created_at: '2026-10-23T18:10:08Z'
+  created_by: maintenance:PBI-113
+best_measurement:
+  mode: auto
+  measurement_id: m-001
+  reason: Zaakceptowano punkt TPN 7044 (m-001). Oba pomiary mają tę samą datę stanu źródła i nieznaną
+    dokładność; auto wybiera m-001 według stabilnego porządku ID. Pełniejszy zapis 7044 nie dowodzi większej
+    dokładności XY; pomiar 6408 pozostaje nieodrzucony w historii.
+  updated_at: '2026-10-23T18:10:08Z'
+  updated_by: maintenance:PBI-113
+attachments: []
+notes: |-
+  Dwa rekordy TPN przypisano do tego samego otworu; ich utożsamienie jest interpretacją danych źródłowych.
+created_at: '2026-10-23T18:10:08Z'
+created_by: maintenance:PBI-113
+updated_at: '2026-10-24T08:42:28Z'
+updated_by: maintenance:descriptions
