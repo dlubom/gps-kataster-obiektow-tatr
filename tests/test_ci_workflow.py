@@ -1,3 +1,6 @@
+import json
+import os
+import subprocess
 from pathlib import Path
 
 import yaml
@@ -83,3 +86,35 @@ def test_release_workflow_publishes_expected_files_from_changelog() -> None:
     assert "build/exports/katalog.sqlite.zip" in release_step["run"]
     assert "build/exports/metadata.json" in release_step["run"]
     assert "build/exports/katalog.xlsx" in release_step["run"]
+
+
+def test_release_upload_includes_full_gpx_and_all_three_groups(tmp_path):
+    workflow = yaml.safe_load(RELEASE_WORKFLOW.read_text(encoding="utf-8"))
+    command = workflow["jobs"]["release"]["steps"][-1]["run"].replace(
+        "${{ steps.version.outputs.VERSION }}", "v0.0.0-test"
+    )
+    # Exercise the actual shell argument list; the local gh stub records it and
+    # never contacts GitHub or creates a release.
+    binary = tmp_path / "bin"
+    binary.mkdir()
+    stub = binary / "gh"
+    stub.write_text("#!/usr/bin/env python3\nimport json,sys\nprint(json.dumps(sys.argv[1:]))\n")
+    stub.chmod(0o755)
+    result = subprocess.run(
+        ["sh", "-c", command],
+        cwd=tmp_path,
+        env={**os.environ, "PATH": str(binary) + os.pathsep + os.environ["PATH"]},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    args = json.loads(result.stdout)
+    assert args[:3] == ["release", "create", "v0.0.0-test"]
+    for filename in (
+        "best-measurements.gpx",
+        "chocholowska-lejowa-koscieliska.gpx",
+        "mietusia-sucha-woda.gpx",
+        "pozostale-pl-sk.gpx",
+    ):
+        assert args.count("build/exports/" + filename) == 1

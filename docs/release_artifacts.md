@@ -75,6 +75,9 @@ sekcji `CHANGELOG.md` o tym samym numerze wersji.
 | `build/exports/best-measurements.geojson` | Ten sam plaski eksport jako warstwa punktowa. | GeoJSON `FeatureCollection`, geometria WGS84 lon/lat. |
 | `build/exports/best-measurements.shp.zip` | Warstwa punktowa do QGIS/desktop GIS. | ZIP Shapefile, geometria EPSG:2180. |
 | `build/exports/best-measurements.gpx` | Lekki eksport terenowy/nawigacyjny. | GPX waypointy WGS84. |
+| `build/exports/chocholowska-lejowa-koscieliska.gpx` | Dodatkowy GPX: Chochołowska, Lejowa i Kościeliska. | Do 500 waypointów WGS84. |
+| `build/exports/mietusia-sucha-woda.gpx` | Dodatkowy GPX: od Miętusiej po Suchą Wodę. | Do 500 waypointów WGS84. |
+| `build/exports/pozostale-pl-sk.gpx` | Dodatkowy GPX: PL/SK poza regionami dolin. | Do 500 waypointów WGS84. |
 | `build/exports/metadata.json` | Metadane paczki i liczniki walidacji. | JSON bez geometrii. |
 | `build/exports/statistics.md` | Tabele PL/EN/SK dodawane do opisu wydania. | Markdown, rozwijane sekcje językowe. |
 | `build/exports/statistics.json` | Te same statystyki do dalszego przetwarzania. | JSON, `statistics_schema_version: 1`. |
@@ -172,6 +175,32 @@ GPX nie ma kolumn. Kazdy waypoint zawiera:
 
 Nazwy w etykietach GPX pojawią się w wydaniach po v1.0.4. Powtarzające się
 nazwy są dozwolone; trwałe ID w opisie pozwala wskazać konkretny punkt w CSV/Excelu.
+
+### Dodatkowe GPX według grup dolin
+
+`best-measurements.gpx` pozostaje pełnym eksportem, bez limitu 500 punktów.
+Trzy dodatkowe pliki mają identyczne waypointy jak pełny GPX, z tym samym
+Best, ID, nazwą, współrzędnymi, wysokością, datą i opisem. Zmienia się nazwa
+zbioru w metadanych GPX. Każdy punkt trafia do dokładnie jednej grupy:
+
+| Plik | Regiony |
+|---|---|
+| `chocholowska-lejowa-koscieliska.gpx` | CHZ, CHW, LEJ, KSZ, KSW |
+| `mietusia-sucha-woda.gpx` | MTZ, MTW, STN, MLZ, MLW, BRA, STR, DZI, BIA, BYZ, BYW, OLC, SUW |
+| `pozostale-pl-sk.gpx` | PL, SK poza polygonami dolin |
+
+Przypisanie wynika ze współrzędnych wskazanego Best oraz istniejących
+polygonów i `config/prefixes.yml`, nie z historycznego prefiksu trwałego ID.
+Wschód/zachód danej doliny pozostają w jednej grupie. Kolejność punktów
+pozostaje zgodna z pełnym GPX, według ID. Powstają też puste pliki grup.
+
+Każdy dodatkowy plik ma najwyżej 500 punktów. Przekroczenie limitu albo
+nierozpoznany region przerywa eksport czytelnym błędem przed zapisem jego
+plików, bez nadpisania wcześniejszych eksportów. Builder mógł już wcześniej
+zbudować SQLite; nie oznacza to gotowej paczki do publikacji. Nie obcinamy
+punktów ani nie rozcinamy dolin automatycznie. Wzrost liczby punktów wymaga
+ponownego uzgodnienia grup. `metadata.json` zachowuje dotychczasowy kontrakt.
+Pliki są w lokalnym buildzie, podglądzie PR i wydaniach po v1.2.1.
 
 ## `metadata.json`
 

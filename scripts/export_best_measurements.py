@@ -17,6 +17,7 @@ if str(SRC_DIR) not in sys.path:
 from gps_kataster_obiektow_tatr.best_measurements_export import (  # noqa: E402
     DEFAULT_EXPORT_DIR,
     BestMeasurementsExportValidationError,
+    GpxGroupingError,
     export_best_measurements,
 )
 from gps_kataster_obiektow_tatr.data_loader import (  # noqa: E402
@@ -64,7 +65,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             output_dir=args.output_dir,
             generated_at=generated_at,
         )
-    except DataDirectoryError as exc:
+    except (DataDirectoryError, GpxGroupingError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
     except BestMeasurementsExportValidationError as exc:
@@ -75,6 +76,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     print(f"wrote: {result.geojson_path}")
     print(f"wrote: {result.csv_path}")
     print(f"wrote: {result.gpx_path}")
+    for path in result.grouped_gpx_paths:
+        print(f"wrote: {path}")
     print(f"wrote: {result.shapefile_zip_path}")
     print(f"wrote: {result.metadata_path}")
     print(f"best-measurements export: {result.feature_count} features")

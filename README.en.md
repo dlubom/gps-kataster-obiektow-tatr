@@ -35,6 +35,21 @@ selected points; **Full** contains detailed records and measurement history,
 including older and rejected measurements. Filters and frozen headers are
 included. Column names are in Polish.
 
+### Smaller GPX files
+
+The complete `best-measurements.gpx` contains the entire dataset. For apps
+with an import limit, three additional files contain up to **500 points each**:
+
+| File | Area |
+|---|---|
+| `chocholowska-lejowa-koscieliska.gpx` | The complete Chochołowska, Lejowa and Kościeliska valleys. |
+| `mietusia-sucha-woda.gpx` | From Miętusia through Małej Łąki and the foothill valleys to Bystrej, Olczyska and Suchej Wody. |
+| `pozostale-pl-sk.gpx` | Points in Poland and Slovakia outside our defined valley regions. |
+
+Together these three files cover the entire dataset, with each point in exactly
+one file. Both sides of each valley stay together. Assignment uses the selected
+measurement's location. These files will be available in releases after v1.2.1.
+
 ## Accuracy and verification
 
 Many locations come from catalogues and have not been confirmed in the field.

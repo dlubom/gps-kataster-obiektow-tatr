@@ -34,6 +34,21 @@ Excel będzie dostępny w wydaniach po v1.0.4. **Best** zawiera wybrane punkty,
 a **Full** pełne dane i historię pomiarów, również starszych i odrzuconych.
 Plik ma filtry, zamrożone nagłówki i polskie nazwy kolumn.
 
+### GPX w mniejszych plikach
+
+Pełny `best-measurements.gpx` zawiera cały zbiór. Dla aplikacji z limitem
+importowanych punktów powstają także trzy dodatkowe pliki, każdy do **500 punktów**:
+
+| Plik | Obszar |
+|---|---|
+| `chocholowska-lejowa-koscieliska.gpx` | Całe doliny Chochołowska, Lejowa i Kościeliska. |
+| `mietusia-sucha-woda.gpx` | Od Miętusiej, przez Małej Łąki i doliny reglowe, po Bystrej, Olczyską i Suchej Wody. |
+| `pozostale-pl-sk.gpx` | Punkty w Polsce i na Słowacji poza granicami naszych regionów dolin. |
+
+Te trzy pliki razem obejmują cały zbiór, bez powtarzania punktów między nimi.
+Części wschodnia i zachodnia każdej doliny są w jednym pliku. Podział
+wynika z położenia wybranego pomiaru. Pliki będą dostępne w wydaniach po v1.2.1.
+
 ## Dokładność i weryfikacja
 
 Wiele lokalizacji pochodzi z katalogów i nie zostało potwierdzonych w terenie.

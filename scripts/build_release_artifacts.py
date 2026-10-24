@@ -17,6 +17,7 @@ if str(SRC_DIR) not in sys.path:
 from gps_kataster_obiektow_tatr.best_measurements_export import (  # noqa: E402
     DEFAULT_EXPORT_DIR,
     BestMeasurementsExportValidationError,
+    GpxGroupingError,
 )
 from gps_kataster_obiektow_tatr.build_db import (  # noqa: E402
     DEFAULT_SQLITE_PATH,
@@ -79,7 +80,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             release_version=args.release_version,
             source_commit=args.source_commit,
         )
-    except DataDirectoryError as exc:
+    except (DataDirectoryError, GpxGroupingError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
     except (BuildDatabaseValidationError, BestMeasurementsExportValidationError) as exc:

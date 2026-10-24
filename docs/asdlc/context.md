@@ -2,6 +2,25 @@
 
 Last updated: 2026-10-24
 
+## Dodatkowe GPX — PBI-114 / issue #20
+
+Zatwierdzony przez użytkownika podział na trzy dodatkowe pliki łączy całe
+sąsiednie doliny: Chochołowska–Lejowa–Kościeliska (488), Miętusia–Sucha Woda
+(481), pozostałe PL/SK poza polygonami (57). **Pełny `best-measurements.gpx`
+pozostaje** i jest bajtowo identyczny z bazą przy tym samym czasie generowania.
+Każdy punkt trafia raz do zestawu dodatkowych GPX; aktualne położenie Best
+decyduje o grupie, z zachowaniem wszystkich pól waypointu. Wschód/zachód
+każdej doliny razem. Przekroczenie 500 blokuje zapis eksportów i publikację;
+nie obcinamy punktów ani nie dzielimy dolin automatycznie.
+
+Gałąź `codex/gpx-valley-groups`, baza main `26850e6a82220ad4a11e446b177512a274ed82fe`.
+Status: zweryfikowane — do dostarczenia w draft PR. 962 testy, Ruff,
+walidacja bez błędów, build/odczyt wszystkich formatów oraz 7/7 mutacji PASS.
+2077 wejść data/config/schema zachowano; kod i dane innych PR poza zakresem.
+[Projekt](plans/PBI-114-gpx-groups.md), [odbiór](verification/PBI-114.md).
+Następny krok: push, draft PR, CI końcowego SHA i odczyt pobranego preview.
+Bez merge, taga, nowej wersji i wydania.
+
 ## Wydanie v1.2.1 — zatwierdzone
 
 2026-10-24 użytkownik polecił dodać changelog do PR #28 i pokazać go

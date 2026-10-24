@@ -34,6 +34,21 @@ Excel bude dostupný vo vydaniach po v1.0.4. **Best** obsahuje vybrané body,
 **Full** podrobné údaje a históriu meraní vrátane starších a zamietnutých.
 Súbor má filtre a ukotvené hlavičky. Názvy stĺpcov sú po poľsky.
 
+### Menšie súbory GPX
+
+Úplný `best-measurements.gpx` obsahuje celý súbor údajov. Pre aplikácie
+s limitom importu vznikajú aj tri ďalšie súbory, každý najviac s **500 bodmi**:
+
+| Súbor | Oblasť |
+|---|---|
+| `chocholowska-lejowa-koscieliska.gpx` | Celé doliny Chochołowska, Lejowa a Kościeliska. |
+| `mietusia-sucha-woda.gpx` | Od Miętusiej cez Małej Łąki a podhorské doliny po Bystrej, Olczyskú a Suchej Wody. |
+| `pozostale-pl-sk.gpx` | Body v Poľsku a na Slovensku mimo hraníc našich regiónov dolín. |
+
+Tieto tri súbory spolu obsahujú všetky body, každý práve raz. Východná
+a západná časť každej doliny zostávajú spolu. Zaradenie vychádza z polohy
+vybraného merania. Súbory budú dostupné vo vydaniach po v1.2.1.
+
 ## Presnosť a overenie
 
 Mnohé polohy pochádzajú z katalógov a neboli potvrdené v teréne.

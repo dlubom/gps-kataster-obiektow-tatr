@@ -1056,6 +1056,9 @@ Każdy release zawiera:
 |---|---|---|
 | `best-measurements.geojson` | GeoJSON | WGS84, z PL-1992 w `properties`. |
 | `best-measurements.gpx` | GPX | WGS84, do GPS receiverów. |
+| `chocholowska-lejowa-koscieliska.gpx` | GPX | Dodatkowy podzbiór: całe doliny Chochołowska, Lejowa i Kościeliska; do 500 punktów. |
+| `mietusia-sucha-woda.gpx` | GPX | Dodatkowy podzbiór: całe doliny od Miętusiej po Suchą Wodę; do 500 punktów. |
+| `pozostale-pl-sk.gpx` | GPX | Dodatkowy podzbiór: PL/SK poza granicami regionów dolin; do 500 punktów. |
 | `best-measurements.csv` | CSV | Oba układy współrzędnych. |
 | `katalog.xlsx` | Excel | Best: podstawowe pola wybranych punktów z CSV; Full: wszystkie pomiary z danymi obiektu z SQLite, także starsze/odrzucone, z oznaczeniem wyboru. Filtry, typowane liczby i daty, polskie nagłówki. |
 | `best-measurements.shp.zip` | ESRI Shapefile | EPSG:2180, QGIS / TPN. |
@@ -1077,6 +1080,18 @@ konkretnego otworu. Brak, `null`, pusta nazwa lub same białe znaki oznaczają
 użycie `Obiekt.id`.
 Opis (`wpt/desc`) zawsze zawiera jawne `object <ID>`, ID wybranego pomiaru,
 źródło, datę i dostępne uwagi. Nazwy nie zastępują trwałych identyfikatorów.
+
+Pełny `best-measurements.gpx` pozostaje bez limitu 500. Trzy dodatkowe pliki
+razem zawierają dokładnie te same punkty, każdy w jednej grupie. Przypisanie
+wynika z położenia wskazanego Best w obecnych polygonach, nie z trwałego ID.
+Wschód/zachód każdej doliny pozostają razem. Mapowanie grup opisuje
+`docs/release_artifacts.md`. Waypointy zachowują wszystkie pola pełnego GPX;
+nazwa zbioru w metadanych wskazuje grupę. Powstają także puste pliki grup.
+Przekroczenie 500 lub nieznany region blokuje zapis eksportów przed ich
+nadpisaniem i zatrzymuje publikację; nie obcinamy punktów ani nie dzielimy
+dolin automatycznie. Ponowne grupowanie wymaga decyzji. `metadata.json`
+zachowuje dotychczasowy kontrakt. Wszystkie GPX są w buildzie, podglądzie PR
+i nowych wydaniach; dane YAML i wybór Best pozostają bez zmian.
 
 Repo i eksporty są publiczne. Dane projektu, dokumentacja repozytorium oraz generowane eksporty są licencjonowane jako **Creative Commons Attribution 4.0 International (CC BY 4.0)**. Atrybucję źródeł zachowujemy przez referencje zapisane w YAML i eksportach.
 

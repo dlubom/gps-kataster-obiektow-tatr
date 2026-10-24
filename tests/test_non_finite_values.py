@@ -80,7 +80,7 @@ def test_non_finite_measurement_blocks_validation_and_all_artifacts(
     )
     json.loads(result.export_result.geojson_path.read_text(), parse_constant=_reject_json_constant)
     before_output = _snapshot(output)
-    assert len(before_output) == 10
+    assert len(before_output) == 13
     # Corrupt a historical, rejected, non-best measurement: the entire history is checked.
     other = deepcopy(obj["measurements"][0])
     other.update(id="m-002", verification_status="odrzucony")
