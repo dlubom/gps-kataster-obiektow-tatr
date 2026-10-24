@@ -2,6 +2,15 @@
 
 Stan na: 2026-10-24
 
+## Wydanie v1.2.1
+
+Status: changelog i wersja zweryfikowane lokalnie w PR #28 — do zatwierdzenia
+przez użytkownika w rozmowie przed merge i publikacją.
+Zakres: PBI-113, bez dalszych zmian danych, kodu wykonawczego i schematu.
+Po zatwierdzeniu: merge z chwilowym obniżeniem wymogu approval i
+natychmiastowym przywróceniem ochrony, CI main, tag i odbiór wydania.
+[Odbiór](verification/v1.2.1.md).
+
 ## PBI-113: Nowe obiekty z lokalnego zrzutu TPN
 
 Status: wykonane — do review w draft PR #28, na polecenie użytkownika 2026-10-23.

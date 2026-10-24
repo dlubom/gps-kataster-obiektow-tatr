@@ -2,6 +2,22 @@
 
 Last updated: 2026-10-24
 
+## Wydanie v1.2.1 — do zatwierdzenia
+
+2026-10-24 użytkownik polecił dodać changelog do PR #28 i pokazać go
+w rozmowie do zatwierdzenia przed merge i wydaniem. Przygotowanie obejmuje
+wpis v1.2.1 oraz zgodną wersję projektu, locka, pakietu i istniejącego testu.
+Baza main: `caf7bae69b28eb037810215889cb87f763b2c6bd`; HEAD PR przed
+przygotowaniem: `ea6da8c1889b39fa99d186dff851290424545d94`.
+Zakres wydania to PBI-113: 19 nowych Obiektów, 18 Jaskiń, 20 pomiarów.
+Po zatwierdzeniu wpisu: merge PR #28 z chwilową zmianą wymogu approval,
+natychmiastowe przywrócenie pełnej ochrony main, CI końcowego main,
+tag i publikacja oraz odczyt publicznych artefaktów.
+Do zatwierdzenia nie wykonywać merge, zmiany ochrony ani publikacji.
+Przygotowanie lokalne: 951 testów, Ruff, walidacja i build PASS;
+niezależny odczyt eksportów: 136917 porównań bez błędów.
+[Odbiór przygotowania](verification/v1.2.1.md).
+
 ## Nowe obiekty TPN — realizacja PBI-113
 
 Po wywiadzie i review projekt obejmuje 19 nowych Obiektów, 18 Jaskiń i 20 pomiarów
