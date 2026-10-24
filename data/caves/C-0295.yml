@@ -20,9 +20,13 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/490
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MLZ-0029
-notes: 'PIG aliases: Wielka Jaskinia Śnieżna, SYSTEM Jaskiniowy Nad Kotlinami - Śnieżna
+object_ids: []
+notes: 'Pozycja katalogowa systemu Jaskinia Wielka Śnieżna: Wielka Litworowa (C-0120), nad Kotlinami
+  (C-0331), Śnieżna (C-0648), Wilcza (C-0812) i Jasny Awen (C-0858). Współrzędne PIG 490 określają
+  geometryczny środek systemu, a nie otwór ani dodatkowy obiekt terenowy.
+
+
+  PIG aliases: Wielka Jaskinia Śnieżna, SYSTEM Jaskiniowy Nad Kotlinami - Śnieżna
 
   PIG sector: D. Małej Łąki - Zach.
 
@@ -31,5 +35,5 @@ notes: 'PIG aliases: Wielka Jaskinia Śnieżna, SYSTEM Jaskiniowy Nad Kotlinami 
   PIG source state year: 2014'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:22:49Z'
-updated_by: importer:pig
+updated_at: '2026-10-24T16:59:47Z'
+updated_by: maintenance:PBI-115

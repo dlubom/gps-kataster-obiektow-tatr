@@ -8,6 +8,25 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [v1.3.1] - 2026-10-24
+
+### Poprawiono
+
+- Usunięto dwa błędne punkty terenowe: dodatkowy wpis głównego otworu
+  Mylnej oraz geometryczny środek systemu Wielkiej Śnieżnej. Obie pozycje
+  katalogowe systemów pozostają w bazie.
+
+### Zmieniono
+
+- Statystyki wydań pokazują osobno źródło danych i sposób wyznaczenia
+  pozycji, m.in. GNSS, LiDAR dowiązany GNSS i sieć pomiarową.
+- Źródło „Własne pomiary” otrzymało nazwę „Opracowania własne”.
+
+Katalog zawiera 1024 obiekty, 1019 pozycji katalogowych i 1926 pomiarów.
+Pozostałe pomiary i wskazania Best pozostają bez zmian. Porównanie trzech
+pozycji Mylnej z LiDAR i wybór najlepszego pomiaru odłożono do
+[issue #36](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/36).
+
 ## [v1.3.0] - 2026-10-24
 
 ### Dodano

@@ -2,6 +2,38 @@
 
 Stan na: 2026-10-24
 
+## Wydanie v1.3.1
+
+Status: użytkownik zlecił publikację zakresu PR #35 / PBI-115 i zatwierdził
+changelog v1.3.1. Przygotowanie obejmuje zgodne wersje projektu, pakietu
+i locka; nie rozszerza zmian danych. Końcowy SHA, CI, merge, tag i odbiór
+publicznych plików wskazuje opis [PR #35](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/35).
+[Odbiór](verification/v1.3.1.md).
+
+Wybór pozycji Mylnej odłożono do porównania trzech pomiarów z LiDAR
+w [issue #36](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/36);
+obecny ręczny Best pozostaje bez zmian. GPS można wydać przed Georeferencerem;
+jego następne wydanie ma zawierać poprawkę PR #5 i skorzystać z wydanego CSV GPS.
+
+## PBI-115: Błędne punkty systemów i sposoby wyznaczenia pozycji
+
+Status: implementacja wykonana; końcowy odbiór dostarczenia wskazuje opis
+PR gałęzi `codex/system-points-statistics` (SHA, CI, pobrana paczka).
+Użytkownik po `/grill me` zatwierdził usunięcie `KSZ-0009` i `MLZ-0029`
+wraz z ich pomiarami, bez archiwum i przenoszenia do Mylnej. Katalogowe
+`C-0095` i `C-0295` zachowano bez własnych punktów. Bilans: 1024 Obiekty,
+1019 pozycji katalogowych, 1926 pomiarów. Pozostałe pomiary i Best zachowane.
+Statystyki PL/EN/SK rozdzielają źródło od sposobu wyznaczenia pozycji,
+w tym GNSS, LiDAR dowiązany GNSS, sieć i punkt dowiązania. Własne źródło
+ma etykietę „Opracowania własne”. Bez nowego schematu i zmian priorytetów.
+Ochrona wycofanych ID: [issue #33](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/33);
+docelowy model historycznych systemów: [issue #34](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/34).
+Oba tematy odłożono do analizy, bez przesądzenia rozwiązania.
+[Plan](plans/PBI-115-system-points-statistics.md), [odbiór](verification/PBI-115.md).
+Powiązana poprawka dwóch kotwic i obsługi sztolni jest w istniejącym
+[PR Georeferencera #5](https://github.com/dlubom/Georeferencer/pull/5).
+Użytkownik następnie zlecił merge i wydanie v1.3.1; zakres i odbiór powyżej.
+
 ## PBI-114: Dodatkowe GPX według grup dolin
 
 Status: implementacja wykonana i dostarczona w [draft PR #32](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/32), realizacja issue #20.

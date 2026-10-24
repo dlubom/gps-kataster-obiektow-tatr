@@ -76,7 +76,9 @@ rozbaľovacie **Štatistiky vydania (SK)**, aj po poľsky a anglicky. Tabuľky
 sa vytvárajú automaticky z toho istého balíka údajov. Uvádzajú počty objektov,
 jaskýň a meraní, druhy objektov, zdroje, stavy overenia a počty bodov s uvedenou
 a neznámou presnosťou. Body na stiahnutie a celá história meraní sa počítajú
-oddelene. Vydanie v1.0.4 a staršie tieto tabuľky neobsahujú.
+oddelene. Vo vydaniach po v1.3.0 tabuľka spôsobu určenia polohy rozlišuje GNSS, LiDAR naviazaný
+na GNSS a meračskú sieť; „Vlastné spracovanie“ označuje zdroj údajov.
+GNSS automaticky neznamená geodetické meranie. Vydanie v1.0.4 a staršie tieto tabuľky neobsahujú.
 
 ## Body na mape
 

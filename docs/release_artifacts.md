@@ -83,6 +83,15 @@ sekcji `CHANGELOG.md` o tym samym numerze wersji.
 | `build/exports/statistics.json` | Te same statystyki do dalszego przetwarzania. | JSON, `statistics_schema_version: 1`. |
 | `build/exports/katalog.xlsx` | Czytelny Excel: wybrane punkty oraz pełne dane z historią. | XLSX, arkusze Best i Full. |
 
+Statystyki pokazują osobno źródło i sposób wyznaczenia pozycji, dla punktów
+Best oraz pełnej historii. `selected_points.by_position_method` i
+`measurement_history.by_position_method` zawierają zapisane metody oraz
+dwie klasy wynikające z udokumentowanych tagów: `lidar_gnss` (`ustalenie`
+z `lidar` i `gnss_anchor`) oraz `survey_anchor` (`source_record` z
+`survey_anchor`). Jawna metoda ma pierwszeństwo; dowiązanie do GNSS nie
+jest bezpośrednim pomiarem GNSS. Rozbicie nie deklaruje dokładności ani
+geodezyjnego rodzaju GNSS. Źródłowe `wlasne` ma etykietę „Opracowania własne”.
+
 ## `katalog.xlsx`
 
 Generowany przy każdym buildzie wydania, bez osobnego ręcznego kroku.
