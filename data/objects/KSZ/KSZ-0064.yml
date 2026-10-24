@@ -14,6 +14,13 @@ external_refs:
   external_id: '{CECF8620-A1C8-4941-A5B1-6C2226DC1F88}'
   scope: object
   notes: TPN GLOBALID belongs to the object/source feature.
+- system: inne
+  ref_type: url
+  external_id: Pawlikowskiego:2026-10-24:m-004
+  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/595da2c044b4299638e4a45b4d380624ab481e14/docs/asdlc/verification/PBI-117.md
+  scope: object
+  notes: 'm-004: kotwica E562729.5/N152838.5 EPSG:2180, JKTZ 5209496c1be1b1ec86d1cff67e6f691ac2bebe95;
+    delta E=-12.849703046842478 m, N=-3.4803757732734084 m, Z=0. Źródła, daty, sumy i obliczenia w raporcie.'
 measurements:
 - id: m-001
   lat: 49.2394028
@@ -103,18 +110,45 @@ measurements:
     wysokości i dokładności pozostają nieznane; status weryfikacji bez zmian. Źródła: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/773c8e2e6aa910c8ba78192ae6741d107c6598e2/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/MYLNA_M.SRV.'
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
+- id: m-004
+  lat: 49.2393561327
+  lon: 19.8620276158
+  x_1992: 152784.99
+  y_1992: 562729.02
+  elevation_m: 1098.0
+  elevation_datum: unknown
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: JKTZ:5209496c1be1b1ec86d1cff67e6f691ac2bebe95:Mylna:0:KSZ-0047/m-004
+  observed_date: '2026-10-24'
+  source_date: null
+  method: siec_pomiarowa
+  device: null
+  tags:
+  - jktz
+  - survey_network
+  - rigid_translation
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: Stacja Mylna:0 z sieci JKTZ, dowiązanej do wschodniego brzegu głównego otworu Raptawickiej (KSZ-0047/m-004).
+    Wspólna translacja XY bez obrotu, skali i korekty Z. Pozycja dziedziczy niepewność kotwicy i sieci;
+    nie jest niezależnym pomiarem GNSS.
+  created_at: '2026-10-24T20:25:49Z'
+  created_by: codex
 best_measurement:
   mode: manual
-  measurement_id: m-003
-  reason: Ręcznie zachowany punkt dowiązania sieci Mylna:0 zapisany w JKTZ; pierwotna metoda
-    wyznaczenia nieznana, automatyczny TPN nie zastępuje tego wskazania.
-  updated_at: '2026-10-23T13:45:51Z'
-  updated_by: dl
+  measurement_id: m-004
+  reason: Pozycja z zachowanej geometrii sieci JKTZ, przesuniętej wspólnie do kotwicy Raptawickiej KSZ-0047/m-004.
+  updated_at: '2026-10-24T20:25:49Z'
+  updated_by: codex
 attachments: []
 notes: Imported from PIG source record after operator review. Multi-opening review
   2026-05-16 links TPN row 225 to the main/southern Mylna opening and KSZ-0113 to
   the northern opening.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-23T13:45:51Z'
-updated_by: dl
+updated_at: '2026-10-24T20:25:49Z'
+updated_by: codex

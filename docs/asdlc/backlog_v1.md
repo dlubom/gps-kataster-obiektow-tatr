@@ -2,6 +2,20 @@
 
 Stan na: 2026-10-24
 
+## PBI-117: Kotwica Raptawickiej i wspólna translacja systemu Pawlikowskiego
+
+Status: wykonane lokalnie; odbiór zdalnego SHA, CI i paczki wskazuje opis
+PR gałęzi `codex/raptawicka-anchor`. Użytkownik zlecił wybór jednej kotwicy
+ze zdjęć i LiDAR oraz przeliczenie pozostałych otworów bez zmiany geometrii.
+Raptawicka 1.0: E562729,5/N152838,5, estymata wschodniego brzegu studni;
+nie rozpoznano znaku, dokładność nieznana, status nieweryfikowany.
+692 węzły sieci JKTZ `5209496` przesunięto o E−12,849703/N−3,480376 m,
+bez obrotu, skali i zmiany Z sieci. Cztery nowe pomiary i ręczne Best;
+wcześniejsze pomiary zachowane. Mylna N otrzymuje sieciowe Z1093,68 m.
+964 testy, Ruff, walidacja i build PASS; niezależna kontrola wszystkich
+239086 par węzłów i próba odbioru trzech fixów przez JKTZ poprawne.
+[Uzasadnienie, źródła i odtwarzalne wyniki](verification/PBI-117.md).
+
 ## Wydanie v1.3.1
 
 Status: użytkownik zlecił publikację zakresu PR #35 / PBI-115 i zatwierdził

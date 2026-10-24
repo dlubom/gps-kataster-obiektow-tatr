@@ -2,6 +2,23 @@
 
 Last updated: 2026-10-24
 
+## Raptawicka jako kotwica systemu Pawlikowskiego — PBI-117
+
+Użytkownik ograniczył zakres do jednej kotwicy ze zdjęć/LiDAR i wspólnego
+przeniesienia sieci. Przyjęta estymata głównej Raptawickiej: E562729,5,
+N152838,5 w EPSG:2180, na wschodnim brzegu studni. Nie rozpoznano znaku
+stacji; to `ustalenie`, bez deklarowanej dokładności, status nieweryfikowany.
+Pozostałe pozycje wyprowadzono z bieżącej sieci JKTZ `5209496` (PR #143):
+692 węzły, translacja E−12,849703/N−3,480376 m, bez obrotu/skali/zmiany Z.
+Cztery nowe ręczne Best: KSZ-0047/m-004, KSZ-0064/m-004, KSZ-0090/m-004,
+KSZ-0113/m-002. Stare pomiary zachowano; Mylna N ma teraz sieciowe Z1093,68 m.
+Bilans: 1024 obiekty, 1019 pozycji katalogowych, 1930 pomiarów.
+JKTZ powinien pobrać razem trzy nowe fixy otworów; izolowana kompilacja
+potwierdziła zgodność na poziomie centymetrowego zapisu. Repo JKTZ niezmienione.
+Implementacja lokalna i bramka PASS; SHA, CI oraz paczka w opisie PR gałęzi
+`codex/raptawicka-anchor`. [Dowody i odtworzenie](verification/PBI-117.md).
+Poniższy opis odłożenia wyboru Mylnej dotyczy wcześniejszego wydania v1.3.1.
+
 ## Wydanie v1.3.1 — przygotowanie
 
 Użytkownik zlecił wydanie zakresu PR #35 / PBI-115 i zatwierdził changelog
