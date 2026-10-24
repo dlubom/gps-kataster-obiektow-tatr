@@ -4,8 +4,8 @@ Stan na: 2026-10-24
 
 ## Wydanie v1.2.1
 
-Status: changelog i wersja zweryfikowane lokalnie w PR #28 — do zatwierdzenia
-przez użytkownika w rozmowie przed merge i publikacją.
+Status: changelog i wersja w PR #28 zatwierdzone przez użytkownika
+w rozmowie 2026-10-24; merge i publikacja do wykonania według odbioru.
 Zakres: PBI-113, bez dalszych zmian danych, kodu wykonawczego i schematu.
 Po zatwierdzeniu: merge z chwilowym obniżeniem wymogu approval i
 natychmiastowym przywróceniem ochrony, CI main, tag i odbiór wydania.
@@ -13,7 +13,7 @@ natychmiastowym przywróceniem ochrony, CI main, tag i odbiór wydania.
 
 ## PBI-113: Nowe obiekty z lokalnego zrzutu TPN
 
-Status: wykonane — do review w draft PR #28, na polecenie użytkownika 2026-10-23.
+Status: wykonane — zatwierdzone do merge w PR #28 przez użytkownika 2026-10-24.
 Zakres: 19 nowych Obiektów, 18 Jaskiń, 20 pomiarów i 20 GLOBALID; 11 rekordów
 odroczono. Jednoznaczny TPN wystarcza do wpisu nieweryfikowanego.
 Smocza Jama N trafia do C-0219; Korytarz 6408/7044 tworzy jeden Obiekt

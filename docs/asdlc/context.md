@@ -2,7 +2,7 @@
 
 Last updated: 2026-10-24
 
-## Wydanie v1.2.1 — do zatwierdzenia
+## Wydanie v1.2.1 — zatwierdzone
 
 2026-10-24 użytkownik polecił dodać changelog do PR #28 i pokazać go
 w rozmowie do zatwierdzenia przed merge i wydaniem. Przygotowanie obejmuje
@@ -13,7 +13,11 @@ Zakres wydania to PBI-113: 19 nowych Obiektów, 18 Jaskiń, 20 pomiarów.
 Po zatwierdzeniu wpisu: merge PR #28 z chwilową zmianą wymogu approval,
 natychmiastowe przywrócenie pełnej ochrony main, CI końcowego main,
 tag i publikacja oraz odczyt publicznych artefaktów.
-Do zatwierdzenia nie wykonywać merge, zmiany ochrony ani publikacji.
+2026-10-24 użytkownik zatwierdził pokazany wpis i wersję v1.2.1 oraz
+powyższą kolejność merge, przywrócenia ochrony, CI i publikacji.
+Treść changeloga i dane pozostają identyczne z zatwierdzonym `64c33a1`.
+Końcowe SHA, CI, merge i odbiór publikacji wskazuje opis PR #28 oraz
+[wydanie v1.2.1](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/tag/v1.2.1).
 Przygotowanie lokalne: 951 testów, Ruff, walidacja i build PASS;
 niezależny odczyt eksportów: 136917 porównań bez błędów.
 [Odbiór przygotowania](verification/v1.2.1.md).
@@ -36,7 +40,7 @@ Bieżący main potwierdzony: `caf7bae69b28eb037810215889cb87f763b2c6bd`.
 ID przydzielono ponad maksimum całej historii Git, aby nie użyć ponownie
 numerów z niezależnych PR #12/#13. Nowe Obiekty: KSW-0261–0263, STR-0039–0043, BIA-0010, MTW-0074–0075,
 MTZ-0072–0073, CHZ-0033–0037 i DZI-0012; nowe Jaskinie C-1031–C-1048.
-Status: wykonane — do review w draft PR #28. Katalog: 1026 Obiektów,
+Status: wykonane — zatwierdzone do merge w PR #28. Katalog: 1026 Obiektów,
 1019 Jaskiń, 1928 pomiarów. 951 testów, Ruff, walidacja i niezależny odczyt
 wszystkich eksportów PASS. Wszystkie 1007 wcześniejszych Obiektów i 1000
 Jaskiń zachowano bajtowo; C-0219 otrzymuje KSW-0261 i audyt aktualizacji.
