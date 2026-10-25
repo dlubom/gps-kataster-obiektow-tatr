@@ -1,17 +1,21 @@
 # AS-DLC project context
 
-Last updated: 2026-10-24
+Last updated: 2026-10-25
 
 ## Raptawicka jako kotwica systemu Pawlikowskiego — PBI-117
 
 Użytkownik ograniczył zakres do jednej kotwicy ze zdjęć/LiDAR i wspólnego
 przeniesienia sieci. Przyjęta estymata głównej Raptawickiej: E562729,5,
-N152838,5 w EPSG:2180, na wschodnim brzegu studni. Nie rozpoznano znaku
+N152838,5 w EPSG:2180, H1140,8 m PL-KRON86-NH, na wschodnim brzegu studni.
+H wyznaczono z lokalnej powierzchni ALS 2012. Nie rozpoznano znaku
 stacji; to `ustalenie`, bez deklarowanej dokładności, status nieweryfikowany.
 Pozostałe pozycje wyprowadzono z bieżącej sieci JKTZ `5209496` (PR #143):
-692 węzły, translacja E−12,849703/N−3,480376 m, bez obrotu/skali/zmiany Z.
+692 węzły, translacja E−12,849703/N−3,480376/Z−0,51 m, bez obrotu i zmiany skali.
+Korekta użytkownika 2026-10-25: dawna wysokość bezwzględna pochodziła
+z niepewnej kotwicy GPS i nie może być podstawą nowej. Przyjęto H progu
+z ALS; sieć dostarcza różnice Z do Raptawickiej, zachowane w całości.
 Cztery nowe ręczne Best: KSZ-0047/m-004, KSZ-0064/m-004, KSZ-0090/m-004,
-KSZ-0113/m-002. Stare pomiary zachowano; Mylna N ma teraz sieciowe Z1093,68 m.
+KSZ-0113/m-002. Stare pomiary zachowano; Mylna N ma teraz H1093,17 m.
 Bilans: 1024 obiekty, 1019 pozycji katalogowych, 1930 pomiarów.
 JKTZ powinien pobrać razem trzy nowe fixy otworów; izolowana kompilacja
 potwierdziła zgodność na poziomie centymetrowego zapisu. Repo JKTZ niezmienione.

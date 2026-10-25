@@ -17,18 +17,19 @@ external_refs:
 - system: inne
   ref_type: url
   external_id: Pawlikowskiego:2026-10-24:m-004
-  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/595da2c044b4299638e4a45b4d380624ab481e14/docs/asdlc/verification/PBI-117.md
+  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/ab5b010b105020851808b7b69f940ebeec55a7ab/docs/asdlc/verification/PBI-117.md
   scope: object
-  notes: 'm-004: kotwica E562729.5/N152838.5 EPSG:2180, JKTZ 5209496c1be1b1ec86d1cff67e6f691ac2bebe95;
-    delta E=-12.849703046842478 m, N=-3.4803757732734084 m, Z=0. Źródła, daty, sumy i obliczenia w raporcie.'
+  notes: 'm-004: kotwica E562729.5/N152838.5, H1140.8 m PL-KRON86-NH z ALS 2012. JKTZ 5209496c1be1b1ec86d1cff67e6f691ac2bebe95;
+    delta E=-12.849703046842478, N=-3.4803757732734084, Z=-0.51 m. Z sieci wykorzystano jako różnice do
+    stacji 1.0.'
 - system: geoportal
   ref_type: url
   external_id: ORTO-WMS-HighResolution:2026-10-24
   url: https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/HighResolution?service=WMS&version=1.3.0&layers=Raster&styles=&crs=EPSG%3A2180&bbox=152810%2C562707%2C152870%2C562765&width=1160&height=1200&format=image%2Fpng&transparent=false&request=GetMap
   scope: object
-  notes: 'm-004: obraz 5 cm/piksel. Datowanie 2021-09-09 wnioskowane z indeksu; obrys brzegu E562729–562730/N152838–152839
-    nie wyznacza dokładności bezwzględnej. ALS 2012 potwierdza morfologię, bez korekty Z; punkt TPN opisany
-    jako górny nie jest kotwicą.'
+  notes: 'm-004: obraz 5 cm/piksel; datowanie 2021-09-09 wnioskowane z indeksu. XY to estymata brzegu;
+    H1140.8 m z lokalnej powierzchni ALS 2012. Nie zidentyfikowano znaku, dokładność nieznana. Punkt TPN
+    opisany jako górny nie jest kotwicą.'
 measurements:
 - id: m-001
   lat: 49.23985282
@@ -123,14 +124,14 @@ measurements:
   lon: 19.8620426566
   x_1992: 152838.5
   y_1992: 562729.5
-  elevation_m: 1141.31
-  elevation_datum: unknown
+  elevation_m: 1140.8
+  elevation_datum: Kronstadt86
   elevation_source: other
   horizontal_accuracy_m: null
   vertical_accuracy_m: null
   source: wlasne
-  source_ref: Raptawicka:1.0:ortofoto-ALS:2026-10-24
-  observed_date: '2026-10-24'
+  source_ref: Raptawicka:1.0:ortofoto-ALS:2026-10-24:height-ALS2012:2026-10-25
+  observed_date: '2026-10-25'
   source_date: null
   method: ustalenie
   device: null
@@ -139,24 +140,24 @@ measurements:
   - lidar
   - survey_anchor
   - remote_interpretation
+  - lidar_height_anchor
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: Wschodni brzeg głównej studni, estymata stacji 1.0 z ortofotomapy wsparta ALS. Znaku pomiarowego
-    nie rozpoznano; dokładność bezwzględna nieustalona. To ustalenie zdalne, nie GNSS. Wysokość zachowana
-    z sieci JKTZ, nie z progu w LiDAR.
+  notes: Wschodni brzeg studni, estymata stacji 1.0 ze zdjęcia. H progu 1140,8 m z lokalnej powierzchni
+    ALS 2012, PL-KRON86-NH; nie ze starej kotwicy GPS. Znaku nie rozpoznano, dokładność nieustalona.
   created_at: '2026-10-24T20:25:49Z'
   created_by: codex
 best_measurement:
   mode: manual
   measurement_id: m-004
-  reason: Wybrano zdalną estymatę głównego otworu rozpoznanego na ortofotomapie i w ALS; dokładność i
-    położenie znaku stacji niepotwierdzone.
-  updated_at: '2026-10-24T20:25:49Z'
+  reason: Estymata brzegu głównej studni ze zdjęcia; wysokość progu z ALS 2012. Znak stacji i dokładność
+    niepotwierdzone.
+  updated_at: '2026-10-25T10:04:31Z'
   updated_by: codex
 attachments: []
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-24T20:25:49Z'
+updated_at: '2026-10-25T10:04:31Z'
 updated_by: codex
