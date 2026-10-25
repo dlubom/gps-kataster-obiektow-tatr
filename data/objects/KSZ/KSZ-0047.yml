@@ -24,8 +24,8 @@ external_refs:
     opisany jako górny nie jest kotwicą.'
 - system: inne
   ref_type: url
-  external_id: JKTZ:880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce:Raptawicka:1.0
-  url: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/tree/880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/
+  external_id: JKTZ:88f3dda221205c80ae659f0797ff5a7da2c296d8:Raptawicka:1.0
+  url: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/tree/88f3dda221205c80ae659f0797ff5a7da2c296d8/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/
   scope: object
   notes: 'm-004: stacja Raptawicka:1.0; pomiary jaskiń F. Filar i M. Parczewski, powierzchnia F. Filar
     i B. Chlipała. Jedna kotwica Raptawickiej; pozostałe otwory są wynikami sieci, nie niezależnymi fixami.'

@@ -14,12 +14,12 @@
     "https://github.com/wallscavesurvey/walls/blob/v2.3.0-beta.1/Walls32/compile.cpp#L276-L383": "Each vector is appended; duplicate audit does not average it",
     "https://github.com/wallscavesurvey/walls/blob/v2.3.0-beta.1/Walls32/wallmag.cpp#L898-L920": "Historical declination interpolation"
   },
-  "manual": "https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce/doc/Walls_manual.md",
+  "manual": "https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/88f3dda221205c80ae659f0797ff5a7da2c296d8/doc/Walls_manual.md",
   "manual_sections": [
     "3.8 Coordinate reports",
     "4.12 Variance assignments",
     "9.2 Error model"
   ],
   "survex_walls_compatibility": "https://survex.com/docs/manual/walls.htm",
-  "native_reproduction_skill": "https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce/.agents/skills/walls-validate/SKILL.md"
+  "native_reproduction_skill": "https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/88f3dda221205c80ae659f0797ff5a7da2c296d8/.agents/skills/walls-validate/SKILL.md"
 }

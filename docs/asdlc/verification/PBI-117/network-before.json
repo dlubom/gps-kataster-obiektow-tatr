@@ -1,6 +1,6 @@
 {
   "source_repository": "https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich",
-  "revision": "880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce",
+  "revision": "88f3dda221205c80ae659f0797ff5a7da2c296d8",
   "compiler": "cavern - Survex 1.4.24",
   "crs": "EPSG:2180",
   "vertical_datum": "unknown",

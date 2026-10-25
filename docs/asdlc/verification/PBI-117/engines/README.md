@@ -4,7 +4,7 @@
 wag i walidację natywną. `walls-source.lst` używa snapshotu GPS v1.3.1;
 `walls-new-anchor.lst` nowej kotwicy Raptawickiej. To rzeczywiste raporty Walls.
 16 SRV, WPJ i OTWORY są bajtowo identyczne między sprawdzonym `2c82f5d`
-a publikowanym `880cbde`; hashe są w podsumowaniu. Zmienił się tylko README.
+a scalonym `88f3dda`; hashe są w podsumowaniu. Zmienił się tylko README.
 
 Po [odbudowaniu sieci](../rebuild_network.py) z nową kotwicą, z katalogu repo:
 
