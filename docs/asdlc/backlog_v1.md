@@ -2,22 +2,22 @@
 
 Stan na: 2026-10-25
 
-## PBI-117: Kotwica Raptawickiej i wspólna translacja systemu Pawlikowskiego
+## PBI-117: Kotwica Raptawickiej i osiem otworów systemu Pawlikowskiego
 
-Status: wykonane lokalnie; odbiór zdalnego SHA, CI i paczki wskazuje opis
-PR gałęzi `codex/raptawicka-anchor`. Użytkownik zlecił wybór jednej kotwicy
-ze zdjęć i LiDAR oraz przeliczenie pozostałych otworów bez zmiany geometrii.
-Raptawicka 1.0: E562729,5/N152838,5, H1140,8 m PL-KRON86-NH,
-estymata wschodniego brzegu studni z orto i lokalnej powierzchni ALS;
-nie rozpoznano znaku, dokładność nieznana, status nieweryfikowany.
-692 węzły sieci JKTZ `5209496` przesunięto o E−12,849703/N−3,480376/Z−0,51 m,
-bez obrotu i zmiany skali, z zachowaniem różnic Z. Korekta użytkownika
-2026-10-25 zastępuje niepewną absolutną wysokość starej kotwicy GPS odczytem
-progu z ALS. Cztery nowe pomiary i ręczne Best; wcześniejsze pomiary zachowane.
-Mylna N otrzymuje H1093,17 m. Dostarczenie: draft PR #38.
-964 testy, Ruff, walidacja i build PASS; niezależna kontrola wszystkich
-239086 par węzłów i próba odbioru trzech fixów przez JKTZ poprawne.
-[Uzasadnienie, źródła i odtwarzalne wyniki](verification/PBI-117.md).
+Status: przygotowane w draft PR #38; końcowy SHA i CI w opisie PR.
+Przyjęto jedną kotwicę Raptawickiej: E562729,5/N152838,5 (EPSG:2180),
+H1140,8 m PL-KRON86-NH z ALS 2012. Znaku nie rozpoznano, dokładność nieznana.
+Zakres rozszerzono do ośmiu otworów: cztery dotychczasowe oraz KSZ-0114–0117.
+JKTZ `880cbde`: jeden fix Raptawickiej, 66 przywróconych odczytów powierzchni,
+deklinacja 4,83° jako jawne założenie, nieznana data. Survex 1.4.24 jest
+wzorcem Best i eksportu JKTZ; różnica Walls do około 0,7 m wynika z powtórzeń
+i modelu wag. Geometria po wyrównaniu jest przeniesiona do kotwicy ALS.
+Osiem ręcznych Best pozostaje nieweryfikowanych; dziesięć starych pomiarów
+zachowano. Bilans: 1028 obiektów, 1019 pozycji katalogowych, 1934 pomiary.
+Dostarczenie po odrębnej zgodzie: źródła JKTZ #143 bez wydania → przypięcie
+utrwalonej rewizji, przeliczenie i wydanie GPS #38 → aktualizacja snapshotu
+z opublikowanego GPS i wydanie JKTZ. Obecny snapshot JKTZ nadal używa v1.3.1.
+[Metoda, ograniczenia i odtworzenie](verification/PBI-117.md).
 
 ## Wydanie v1.3.1
 

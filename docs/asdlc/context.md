@@ -4,24 +4,19 @@ Last updated: 2026-10-25
 
 ## Raptawicka jako kotwica systemu Pawlikowskiego — PBI-117
 
-Użytkownik ograniczył zakres do jednej kotwicy ze zdjęć/LiDAR i wspólnego
-przeniesienia sieci. Przyjęta estymata głównej Raptawickiej: E562729,5,
-N152838,5 w EPSG:2180, H1140,8 m PL-KRON86-NH, na wschodnim brzegu studni.
-H wyznaczono z lokalnej powierzchni ALS 2012. Nie rozpoznano znaku
-stacji; to `ustalenie`, bez deklarowanej dokładności, status nieweryfikowany.
-Pozostałe pozycje wyprowadzono z bieżącej sieci JKTZ `5209496` (PR #143):
-692 węzły, translacja E−12,849703/N−3,480376/Z−0,51 m, bez obrotu i zmiany skali.
-Korekta użytkownika 2026-10-25: dawna wysokość bezwzględna pochodziła
-z niepewnej kotwicy GPS i nie może być podstawą nowej. Przyjęto H progu
-z ALS; sieć dostarcza różnice Z do Raptawickiej, zachowane w całości.
-Cztery nowe ręczne Best: KSZ-0047/m-004, KSZ-0064/m-004, KSZ-0090/m-004,
-KSZ-0113/m-002. Stare pomiary zachowano; Mylna N ma teraz H1093,17 m.
-Bilans: 1024 obiekty, 1019 pozycji katalogowych, 1930 pomiarów.
-JKTZ powinien pobrać razem trzy nowe fixy otworów; izolowana kompilacja
-potwierdziła zgodność na poziomie centymetrowego zapisu. Repo JKTZ niezmienione.
-Implementacja lokalna i bramka PASS; SHA, CI oraz paczka w opisie PR gałęzi
-`codex/raptawicka-anchor`. [Dowody i odtworzenie](verification/PBI-117.md).
-Poniższy opis odłożenia wyboru Mylnej dotyczy wcześniejszego wydania v1.3.1.
+Przyjęto jedną kotwicę Raptawickiej: E562729,5/N152838,5 (EPSG:2180),
+H1140,8 m PL-KRON86-NH z ALS 2012. Znaku nie rozpoznano, dokładność nieznana.
+Zakres rozszerzono do ośmiu otworów: cztery dotychczasowe oraz KSZ-0114–0117.
+JKTZ `880cbde`: jeden fix Raptawickiej, 66 przywróconych odczytów powierzchni,
+deklinacja 4,83° jako jawne założenie, nieznana data. Survex 1.4.24 jest
+wzorcem Best i eksportu JKTZ; różnica Walls do około 0,7 m wynika z powtórzeń
+i modelu wag. Geometria po wyrównaniu jest przeniesiona do kotwicy ALS.
+Osiem ręcznych Best pozostaje nieweryfikowanych; dziesięć starych pomiarów
+zachowano. Bilans: 1028 obiektów, 1019 pozycji katalogowych, 1934 pomiary.
+Dostarczenie po odrębnej zgodzie: źródła JKTZ #143 bez wydania → przypięcie
+utrwalonej rewizji, przeliczenie i wydanie GPS #38 → aktualizacja snapshotu
+z opublikowanego GPS i wydanie JKTZ. Obecny snapshot JKTZ nadal używa v1.3.1.
+[Metoda, ograniczenia i odtworzenie](verification/PBI-117.md).
 
 ## Wydanie v1.3.1 — przygotowanie
 

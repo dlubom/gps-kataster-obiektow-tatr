@@ -1,127 +1,13 @@
 {
-  "scope": "Consumer simulation in isolated copy only; current JKTZ source inputs unchanged except 3 generated absolute fixes",
+  "source_revision": "880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce",
   "compiler": "cavern - Survex 1.4.24",
-  "jktz_revision": "5209496c1be1b1ec86d1cff67e6f691ac2bebe95",
-  "changed_input_files": [
-    "OTWORY.SRV"
-  ],
-  "changed_fix_count": 3,
-  "fixes": [
-    {
-      "station": "Pawlikowskiego:Mylna:0",
-      "object_id": "KSZ-0064",
-      "measurement_id": "m-004",
-      "lon": 19.8620276158,
-      "lat": 49.2393561327,
-      "elevation": 1097.49
-    },
-    {
-      "station": "Pawlikowskiego:Oblazkowa:0.0",
-      "object_id": "KSZ-0090",
-      "measurement_id": "m-004",
-      "lon": 19.8624026235,
-      "lat": 49.2395316406,
-      "elevation": 1096.11
-    },
-    {
-      "station": "Pawlikowskiego:Raptawicka:1.0",
-      "object_id": "KSZ-0047",
-      "measurement_id": "m-004",
-      "lon": 19.8620426566,
-      "lat": 49.2398375402,
-      "elevation": 1140.8
-    }
-  ],
-  "node_count_before": 692,
-  "node_count_after": 692,
-  "named_station_count": 589,
-  "all_named_stations_preserved": true,
-  "pairwise_checks": 173166,
-  "max_expected_translation_residual_xy_m": 0.012700542141661938,
-  "max_pairwise_vector_change_3d_m": 0.014143958723871463,
-  "max_pairwise_distance_change_3d_m": 0.014140389622525618,
-  "max_elevation_change_m": 0.5100000000002183,
-  "worst_stations": [
-    {
-      "station": "Pawlikowskiego:Raptawicka:1.28",
-      "expected_translation_residual_m": 0.012700542141661938,
-      "delta_E": -12.857871985295787,
-      "delta_N": -3.490100597962737,
-      "delta_Z": -0.5099999999999909
-    },
-    {
-      "station": "Pawlikowskiego:Mylna:602",
-      "expected_translation_residual_m": 0.012700241709282356,
-      "delta_E": -12.857871859683655,
-      "delta_N": -3.490100311115384,
-      "delta_Z": -0.5099999999999909
-    },
-    {
-      "station": "Pawlikowskiego:Mylna:640",
-      "expected_translation_residual_m": 0.012699838122301644,
-      "delta_E": -12.857871937332675,
-      "delta_N": -3.4900997187942266,
-      "delta_Z": -0.5099999999999909
-    },
-    {
-      "station": "Pawlikowskiego:Raptawicka:1.79",
-      "expected_translation_residual_m": 0.012697882728697124,
-      "delta_E": -12.857868854887784,
-      "delta_N": -3.4900997541844845,
-      "delta_Z": -0.5099999999999909
-    },
-    {
-      "station": "Pawlikowskiego:Mylna:33",
-      "expected_translation_residual_m": 0.009636932736874906,
-      "delta_E": -12.847879465087317,
-      "delta_N": -3.489838596433401,
-      "delta_Z": -0.5099999999999909
-    },
-    {
-      "station": "Pawlikowskiego:Mylna:510",
-      "expected_translation_residual_m": 0.009636764774434668,
-      "delta_E": -12.8478793958202,
-      "delta_N": -3.4898384120315313,
-      "delta_Z": -0.5099999999999909
-    },
-    {
-      "station": "Pawlikowskiego:Mylna:107",
-      "expected_translation_residual_m": 0.009635947431125601,
-      "delta_E": -12.847877829801291,
-      "delta_N": -3.4898372776806355,
-      "delta_Z": -0.5099999999999909
-    },
-    {
-      "station": "Pawlikowskiego:Mylna:526",
-      "expected_translation_residual_m": 0.009635911013008782,
-      "delta_E": -12.847879649954848,
-      "delta_N": -3.489837591536343,
-      "delta_Z": -0.5099999999999909
-    }
-  ],
-  "limitation": "Compilation/dump3d exports UTM coordinates rounded to 1 cm. Conversion between UTM and EPSG:2180 and input coordinate rounding prevent exact identity with a rigid translation in EPSG:2180. This consumer simulation is separate from the strictly rigid translated network artifact.",
-  "translation_requested_E_N_Z": [
-    -12.849703046842478,
-    -3.4803757732734084,
-    -0.51
-  ],
-  "new_vertical_anchor": {
-    "station": "Pawlikowskiego:Raptawicka:1.0",
-    "elevation_m": 1140.8,
-    "datum": "Kronstadt86",
-    "note": "Assigned from independent ALS interpretation by parent task. Consumer compile verifies numerical propagation; it does not independently prove physical entrance identity or absolute vertical datum."
-  },
-  "all_nodes_including_anonymous": {
-    "matching": "identical NODE label sequence, matched by dump order and every expected-translated XY within0.02m",
-    "node_count": 692,
-    "anonymous_node_count": 103,
-    "pairwise_checks": 239086,
-    "max_expected_translation_residual_xy_m": 0.012700542141661938,
-    "max_expected_translation_residual_z_m": 2.1826984664130578e-13,
-    "max_pairwise_vector_change_3d_m": 0.014143958723871463,
-    "max_pairwise_distance_change_3d_m": 0.014140389622525618,
-    "max_pairwise_relative_height_change_m": 2.2737367544323206e-13,
-    "all_vertical_differences_preserved_to_1e_9_m": true
-  },
-  "note": "Summary of isolated consumer compile; catalogue notes/provenance formatting can change without changing the fix coordinates."
+  "changed_fix_count": 1,
+  "fix": "Pawlikowskiego:Raptawicka:1.0",
+  "nodes": 704,
+  "named_nodes": 601,
+  "entrance_markers": 8,
+  "max_translation_residual_xy_m": 0.012702777467850927,
+  "max_translation_residual_z_m": 0.0,
+  "max_pairwise_distance_change_m": 0.014142222497724788,
+  "limitation": "Survex .3d coordinates are rounded to 1 cm in UTM34N. Recompilation at a new fix differs from strict EPSG:2180 translation by rounding and CRS effects; this is not survey accuracy."
 }

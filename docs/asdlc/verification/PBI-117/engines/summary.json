@@ -1,0 +1,567 @@
+{
+  "date": "2026-10-25",
+  "reference_engine": "Survex 1.4.24",
+  "native_engine": "Walls v2.3.0-beta.1 build 2025-09-13",
+  "crs": "EPSG:32634",
+  "survex_coordinate_quantization_m": 0.01,
+  "source_repository": "https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich",
+  "source_identity": {
+    "native_compiled_revision": "2c82f5d1cf0adb9db477519a4cbe1069f121dc31",
+    "publication_revision": "880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce",
+    "identical_files": 18,
+    "identical_active_srv": 16,
+    "same_wpj_and_otwory": true,
+    "changed_paths": [
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/_RAW/01/README.md"
+    ],
+    "identical_sha256": {
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/BCDCHCG.SRV": "e29b41feb3edbe139f56280dc92c2b902e8ae9560992a06ffa489b6bc11b0419",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/BCWOKWYJ.SRV": "fcc9a29334e402d66180b7d90d4f3b9b31858af12728dfd671e6626830803d96",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/BOKI_CG.SRV": "762e904109225afbed8a2834a31def36a1393a44f1eebaac9792f0205ea5cf23",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/CG.SRV": "cc2fbbc2164e2f9775bce9e334119c340880f0ff220f5daba79030db741dddce",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/CPBUL.SRV": "7cc02f46fa9d905f51a9d90d6328e93d8c066dc7dd09d947eac8c42fcf4cd8c9",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/SKIOKOL.SRV": "8d23753604ab66e02eb06569781c3a8199b4284e7396861127faf91e094d30d9",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/ULPAWLCB.SRV": "1e7f1ea3a4f903a78d846188d9ed59796f88815db0bbf87d06ab1d79f1c3039c",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/ULPAWLCG.SRV": "78d166e2d3a2b68f80d302bdd042aaeba30ca1636c4098b028769e2157f34ef6",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/WIIOKOL.SRV": "9993805463a010836e0e32e48571cf262d5a698a086a1985cf64e5a342a9c599",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/WSZCZCB.SRV": "0182206575873536832f82efbff0cb26ddcdc756047eba4a5d9e2c64bf591b98",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/WSZCZCG.SRV": "34c52ebc0b03ababe6aea9ef55e13992ab29f3fe5603afd9328c3e27b418b852",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Oblazkowa/OBLAZK_S.SRV": "70d93d57d70a4b87da06874a28f0b0e092fcf5d35bd018f580bda5b3f4724124",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Oblazkowa/OBL_MYL.SRV": "6d60626a33377343b2480b3854fb986b29667509e9ef278adeccd0f3619db323",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Powierzchnia/POW_ORM.SRV": "e93c826840f90e82644bd4aa1f8d6a97104577bdd1df460d6c6d4995b80d9d4f",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Raptawicka/RAPTAW_S.SRV": "c5b9a7b0bcfdc991993d633f585677adbc1e738fc3fa62ba61dd054a1259b01d",
+      "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Raptawicka/RAPT_MYL.SRV": "bfaca28767e07ba040cc131e10183a4f9a7a36a4849b0574f70d7127d2522989",
+      "KATASTER.wpj": "0b92937986eff2b160e6c5f7209a6646c6a29ab2c28360f89bad3a2b35516f29",
+      "Poligony/OTWORY.SRV": "e10b70557da568fe2eaf209794310e385cbba5b802dd0457ca6b9331f26c3024"
+    }
+  },
+  "native_validation": {
+    "whole_catalogue": {
+      "status": "PASS",
+      "reason": [],
+      "inputs_unchanged": true,
+      "walls_build": "v2.3.0-beta.1 2025-09-13",
+      "walls_sha256": "ee11c4cf908d200176c96528e702846ef3e2caba7e356fc0e4c03bde17ae782f",
+      "driver_sha256": "e535c3b8bd7f33c586817665ef129593b1864cff4669f5f5d9e4a85c31496f97",
+      "duplicates": false,
+      "input_files": 211,
+      "fresh_artifacts": 5,
+      "artifact_sha256": {
+        "KATASTER/KATASTER.NTA": "5c1d6f9071f1e79e03f8092b98f8de2faf4ed7818795d19a41290a1e6e334643",
+        "KATASTER/KATASTER.NTN": "bb30238ff9553065a8ff10f5f2874eb40122a2699569120ed9ec2e1fd75f2b2d",
+        "KATASTER/KATASTER.NTP": "21769e29cbbbd72d249c9298575184dc76b51e0e2f607a9083d520a93fbb010e",
+        "KATASTER/KATASTER.NTS": "987fe1e3655e6a68e730785973ae86cfdb5b2f31c8ef56a7158302c0a97aadf3",
+        "KATASTER/KATASTER.NTV": "40bfd917d303222ad99f04c57b922a7621f793dcc98cef0a8e945d17968aae03"
+      }
+    },
+    "isolated_source": {
+      "status": "PASS",
+      "reason": [],
+      "inputs_unchanged": true,
+      "walls_build": "v2.3.0-beta.1 2025-09-13",
+      "walls_sha256": "ee11c4cf908d200176c96528e702846ef3e2caba7e356fc0e4c03bde17ae782f",
+      "driver_sha256": "8ccc9cd4d787b1652bd2d6e0a4575249b4d34c21ec28abec7677197e75ba7e51",
+      "duplicates": false,
+      "input_files": 18,
+      "fresh_artifacts": 5,
+      "artifact_sha256": {
+        "KATASTER/KATASTER.NTA": "ff35c5da0b347832bf777f5f367346f91fbb91cf6ccc88ea163926b276868927",
+        "KATASTER/KATASTER.NTN": "3e725f88b3712c12b1d2ad83744e7f4e30265b94769cc65083c2a97ca286c7e3",
+        "KATASTER/KATASTER.NTP": "82a5ab9ec73baa86b17979fc6d6409ad23a7d7dbf2b37346618633eff79b513e",
+        "KATASTER/KATASTER.NTS": "b307ce7db54fa2a555abc726b51617773c83624124ed5a88b784ca04aada41bc",
+        "KATASTER/KATASTER.NTV": "297eccf2ccda84a4b8006923018d8d594f5fea0efccb166c66e7401817344847"
+      }
+    },
+    "isolated_new_anchor": {
+      "status": "PASS",
+      "reason": [],
+      "inputs_unchanged": true,
+      "walls_build": "v2.3.0-beta.1 2025-09-13",
+      "walls_sha256": "ee11c4cf908d200176c96528e702846ef3e2caba7e356fc0e4c03bde17ae782f",
+      "driver_sha256": "8ccc9cd4d787b1652bd2d6e0a4575249b4d34c21ec28abec7677197e75ba7e51",
+      "duplicates": false,
+      "input_files": 18,
+      "fresh_artifacts": 5,
+      "artifact_sha256": {
+        "KATASTER/KATASTER.NTA": "ff35c5da0b347832bf777f5f367346f91fbb91cf6ccc88ea163926b276868927",
+        "KATASTER/KATASTER.NTN": "411527a1e50c4f8a81a513a10e20ac5664183791d77458089db6f94c4e62c96e",
+        "KATASTER/KATASTER.NTP": "59976a57b790bb080d4efe7ef938694d7a07bb9500eeaf6a26d05a1cbeec5086",
+        "KATASTER/KATASTER.NTS": "b307ce7db54fa2a555abc726b51617773c83624124ed5a88b784ca04aada41bc",
+        "KATASTER/KATASTER.NTV": "3cdb444481fd243c38126c1eaa2c9357394c41e88dfdb50ce191ad7ccb2db577"
+      }
+    }
+  },
+  "comparison": {
+    "source_snapshot": {
+      "count": 601,
+      "rms_horizontal_m": 0.440967759588801,
+      "max_horizontal_m": 0.6943164076335128,
+      "max_horizontal_station": "Pawlikowskiego:Mylna:146",
+      "rms_3d_m": 0.44804600485018564,
+      "max_3d_m": 0.6982786617340375,
+      "max_3d_station": "Pawlikowskiego:Mylna:146",
+      "entrances": {
+        "Pawlikowskiego:Raptawicka:1.0": {
+          "walls_minus_survex_m": [
+            0.0,
+            0.00036399997770786285,
+            0.0
+          ],
+          "horizontal_m": 0.00036399997770786285,
+          "distance_3d_m": 0.00036399997770786285
+        },
+        "Pawlikowskiego:Raptawicka:5.1": {
+          "walls_minus_survex_m": [
+            -0.004932000010740012,
+            0.002678999677300453,
+            -0.0039249999999810825
+          ],
+          "horizontal_m": 0.005612634263598102,
+          "distance_3d_m": 0.006848889572534142
+        },
+        "Pawlikowskiego:Mylna:0": {
+          "walls_minus_survex_m": [
+            0.05389199999626726,
+            0.35091499984264374,
+            -0.05096000000003187
+          ],
+          "horizontal_m": 0.35502913229502775,
+          "distance_3d_m": 0.3586678217768686
+        },
+        "Pawlikowskiego:Mylna:39": {
+          "walls_minus_survex_m": [
+            0.11442699999315664,
+            0.6483320007100701,
+            -0.0379480000001422
+          ],
+          "horizontal_m": 0.6583524295331159,
+          "distance_3d_m": 0.6594452002829099
+        },
+        "Pawlikowskiego:Oblazkowa:0.0": {
+          "walls_minus_survex_m": [
+            0.14444399997591972,
+            0.5848829997703433,
+            -0.14948099999992337
+          ],
+          "horizontal_m": 0.6024551373748911,
+          "distance_3d_m": 0.6207227737971083
+        },
+        "Pawlikowskiego:Mylna:52": {
+          "walls_minus_survex_m": [
+            0.14972500002477318,
+            0.4237519996240735,
+            -0.09717699999987417
+          ],
+          "horizontal_m": 0.44942555870557593,
+          "distance_3d_m": 0.45981159418482986
+        },
+        "Pawlikowskiego:Mylna:53": {
+          "walls_minus_survex_m": [
+            0.14512599998852238,
+            0.42410000041127205,
+            -0.09966499999995904
+          ],
+          "horizontal_m": 0.44824364604700145,
+          "distance_3d_m": 0.45919002433252115
+        },
+        "Pawlikowskiego:Mylna:333": {
+          "walls_minus_survex_m": [
+            0.08560599997872487,
+            0.4151929998770356,
+            -0.08848600000010265
+          ],
+          "horizontal_m": 0.423926425667532,
+          "distance_3d_m": 0.43306279749623805
+        }
+      },
+      "sha256": {
+        "walls_lst": "ab0ef04810a6c40f6f50ea7c12d268f16948969cfdd1144dfaee1a3afe3199e8",
+        "survex_dump": "2da5028f628c5d908440b1411540d7b411005f91afe20044891a2555ae010d68"
+      }
+    },
+    "new_anchor": {
+      "count": 601,
+      "rms_horizontal_m": 0.44093159909243235,
+      "max_horizontal_m": 0.6946355920795989,
+      "max_horizontal_station": "Pawlikowskiego:Mylna:146",
+      "rms_3d_m": 0.44801041566425154,
+      "max_3d_m": 0.6985960358517267,
+      "max_3d_station": "Pawlikowskiego:Mylna:146",
+      "entrances": {
+        "Pawlikowskiego:Raptawicka:1.0": {
+          "walls_minus_survex_m": [
+            -0.001572999986819923,
+            -0.00012400001287460327,
+            0.0
+          ],
+          "horizontal_m": 0.0015778798945827212,
+          "distance_3d_m": 0.0015778798945827212
+        },
+        "Pawlikowskiego:Raptawicka:5.1": {
+          "walls_minus_survex_m": [
+            0.0034940000041387975,
+            0.0021910006180405617,
+            -0.0039249999999810825
+          ],
+          "horizontal_m": 0.004124138666094538,
+          "distance_3d_m": 0.005693342141223162
+        },
+        "Pawlikowskiego:Mylna:0": {
+          "walls_minus_survex_m": [
+            0.05231800000183284,
+            0.35042699985206127,
+            -0.05096000000003187
+          ],
+          "horizontal_m": 0.3543109585512539,
+          "distance_3d_m": 0.35795694845820714
+        },
+        "Pawlikowskiego:Mylna:39": {
+          "walls_minus_survex_m": [
+            0.11285299999872223,
+            0.6478450000286102,
+            -0.0379480000001422
+          ],
+          "horizontal_m": 0.657600899992375,
+          "distance_3d_m": 0.6586949175261583
+        },
+        "Pawlikowskiego:Oblazkowa:0.0": {
+          "walls_minus_survex_m": [
+            0.15286999999079853,
+            0.584396000020206,
+            -0.14948099999992337
+          ],
+          "horizontal_m": 0.6040595349274799,
+          "distance_3d_m": 0.6222800744823671
+        },
+        "Pawlikowskiego:Mylna:52": {
+          "walls_minus_survex_m": [
+            0.14815100003033876,
+            0.42326399963349104,
+            -0.09717699999987417
+          ],
+          "horizontal_m": 0.44844300886035604,
+          "distance_3d_m": 0.45885128475869486
+        },
+        "Pawlikowskiego:Mylna:53": {
+          "walls_minus_survex_m": [
+            0.14355199999408796,
+            0.423611999489367,
+            -0.09966499999995904
+          ],
+          "horizontal_m": 0.44727430377083155,
+          "distance_3d_m": 0.4582438379713075
+        },
+        "Pawlikowskiego:Mylna:333": {
+          "walls_minus_survex_m": [
+            0.09403199999360368,
+            0.4147060001268983,
+            -0.08848600000010265
+          ],
+          "horizontal_m": 0.4252329756310628,
+          "distance_3d_m": 0.43434186507872596
+        }
+      },
+      "sha256": {
+        "walls_lst": "cf7869763fe62260fff70b595148121782cc01266edae7946f91c9a0a04c063b",
+        "survex_dump": "cdcf11573ee5f236e2e24aa8ac14fc3e094909b10478b6447c274788bc8c97c6"
+      }
+    }
+  },
+  "new_anchor": {
+    "station": "Pawlikowskiego:Raptawicka:1.0",
+    "longitude": 19.8620426566,
+    "latitude": 49.2398375402,
+    "elevation_m": 1140.8
+  },
+  "weight_controls": {
+    "compiler": "cavern - Survex 1.4.24",
+    "changed_variance_rows": 792,
+    "alternating_walls_minus_survex": {
+      "count": 601,
+      "rms_horizontal_m": 0.22501815640018677,
+      "max_horizontal_m": 0.39304509398487236,
+      "max_horizontal_station": "Pawlikowskiego:Mylna:146",
+      "rms_3d_m": 0.22721738794929344,
+      "max_3d_m": 0.3930866843707358,
+      "max_3d_station": "Pawlikowskiego:Mylna:146",
+      "entrances": {
+        "Pawlikowskiego:Raptawicka:1.0": {
+          "walls_minus_survex_m": [
+            -0.001572999986819923,
+            -0.00012400001287460327,
+            0.0
+          ],
+          "horizontal_m": 0.0015778798945827212,
+          "distance_3d_m": 0.0015778798945827212
+        },
+        "Pawlikowskiego:Raptawicka:5.1": {
+          "walls_minus_survex_m": [
+            0.0034940000041387975,
+            0.0021910006180405617,
+            -0.0039249999999810825
+          ],
+          "horizontal_m": 0.004124138666094538,
+          "distance_3d_m": 0.005693342141223162
+        },
+        "Pawlikowskiego:Mylna:0": {
+          "walls_minus_survex_m": [
+            0.01231799996457994,
+            0.23042699974030256,
+            -0.020960000000059154
+          ],
+          "horizontal_m": 0.23075600822610184,
+          "distance_3d_m": 0.23170597086058717
+        },
+        "Pawlikowskiego:Mylna:39": {
+          "walls_minus_survex_m": [
+            0.012852999963797629,
+            0.34784500021487474,
+            0.04205200000001241
+          ],
+          "horizontal_m": 0.3480823807413348,
+          "distance_3d_m": 0.3506133404286788
+        },
+        "Pawlikowskiego:Oblazkowa:0.0": {
+          "walls_minus_survex_m": [
+            -0.007130000041797757,
+            0.054395999759435654,
+            -0.02948100000003251
+          ],
+          "horizontal_m": 0.05486129501228129,
+          "distance_3d_m": 0.062280743825250486
+        },
+        "Pawlikowskiego:Mylna:52": {
+          "walls_minus_survex_m": [
+            0.10815100005129352,
+            0.3032640004530549,
+            -0.06717699999990145
+          ],
+          "horizontal_m": 0.3219715713892849,
+          "distance_3d_m": 0.3289049134808906
+        },
+        "Pawlikowskiego:Mylna:53": {
+          "walls_minus_survex_m": [
+            0.10355200001504272,
+            0.3036119993776083,
+            -0.059664999999995416
+          ],
+          "horizontal_m": 0.3207853844444666,
+          "distance_3d_m": 0.32628695208080827
+        },
+        "Pawlikowskiego:Mylna:333": {
+          "walls_minus_survex_m": [
+            0.054032000014558434,
+            0.284706000238657,
+            -0.04848600000013903
+          ],
+          "horizontal_m": 0.2897877906287072,
+          "distance_3d_m": 0.2938160237180418
+        }
+      }
+    },
+    "emulated_walls_minus_survex": {
+      "count": 601,
+      "rms_horizontal_m": 0.004156457805163107,
+      "max_horizontal_m": 0.007300877975241467,
+      "max_horizontal_station": "Pawlikowskiego:Mylna:473",
+      "rms_3d_m": 0.0051058248303512575,
+      "max_3d_m": 0.00782718550431324,
+      "max_3d_station": "Pawlikowskiego:Mylna:506",
+      "entrances": {
+        "Pawlikowskiego:Raptawicka:1.0": {
+          "walls_minus_survex_m": [
+            -0.001572999986819923,
+            -0.00012400001287460327,
+            0.0
+          ],
+          "horizontal_m": 0.0015778798945827212,
+          "distance_3d_m": 0.0015778798945827212
+        },
+        "Pawlikowskiego:Raptawicka:5.1": {
+          "walls_minus_survex_m": [
+            0.0034940000041387975,
+            0.0021910006180405617,
+            -0.0039249999999810825
+          ],
+          "horizontal_m": 0.004124138666094538,
+          "distance_3d_m": 0.005693342141223162
+        },
+        "Pawlikowskiego:Mylna:0": {
+          "walls_minus_survex_m": [
+            0.002318000013474375,
+            0.0004269992932677269,
+            -0.0009600000000773434
+          ],
+          "horizontal_m": 0.002357000733754307,
+          "distance_3d_m": 0.0025450053947028953
+        },
+        "Pawlikowskiego:Mylna:39": {
+          "walls_minus_survex_m": [
+            0.002852999954484403,
+            -0.0021550003439188004,
+            0.002051999999821419
+          ],
+          "horizontal_m": 0.003575420985363563,
+          "distance_3d_m": 0.004122419098277765
+        },
+        "Pawlikowskiego:Oblazkowa:0.0": {
+          "walls_minus_survex_m": [
+            0.0028699999675154686,
+            0.004395999945700169,
+            0.0005189999999402062
+          ],
+          "horizontal_m": 0.005249925269576194,
+          "distance_3d_m": 0.005275516689014699
+        },
+        "Pawlikowskiego:Mylna:52": {
+          "walls_minus_survex_m": [
+            -0.0018489999929443002,
+            0.0032639997079968452,
+            0.002823000000034881
+          ],
+          "horizontal_m": 0.0037513324389757186,
+          "distance_3d_m": 0.004694872103466552
+        },
+        "Pawlikowskiego:Mylna:53": {
+          "walls_minus_survex_m": [
+            0.0035519999801181257,
+            0.003611999563872814,
+            0.00033500000017738785
+          ],
+          "horizontal_m": 0.005065890317424626,
+          "distance_3d_m": 0.005076954767209908
+        },
+        "Pawlikowskiego:Mylna:333": {
+          "walls_minus_survex_m": [
+            0.004031999967992306,
+            0.004705999977886677,
+            0.0015139999998154963
+          ],
+          "horizontal_m": 0.006197052487574989,
+          "distance_3d_m": 0.0063793146601496846
+        }
+      }
+    }
+  },
+  "controls": {
+    "cartesian": {
+      "native_status": "PASS",
+      "input": "#units meters order=DAV decl=0\n#fix a 0 0 0\na b 10 90 0\nb c 5 0 0\n",
+      "native_coordinates": {
+        "a": [
+          0,
+          0,
+          0
+        ],
+        "b": [
+          10,
+          0,
+          0
+        ],
+        "c": [
+          10,
+          5,
+          0
+        ]
+      }
+    },
+    "declination": {
+      "native_status": "PASS",
+      "method": "Four independent 100 m horizontal legs at azimuth 0; separate SRV for dates 2009-01-01, 2013-12-01, 2014-01-01 and explicit DECL=4.83; original project REF",
+      "max_horizontal_m": 0.005191815055526028,
+      "results": {
+        "explicit": {
+          "walls": [
+            417177.941826,
+            5454840.544234,
+            1140.8
+          ],
+          "survex": [
+            417177.94,
+            5454840.54,
+            1140.8
+          ],
+          "delta": [
+            0.0018259999924339354,
+            0.004234000109136105,
+            0.0
+          ],
+          "horizontal": 0.004610968759006427
+        },
+        "d2014": {
+          "walls": [
+            417177.605839,
+            5454840.576895,
+            1140.8
+          ],
+          "survex": [
+            417177.61,
+            5454840.58,
+            1140.8
+          ],
+          "delta": [
+            -0.004160999960731715,
+            -0.0031049996614456177,
+            0.0
+          ],
+          "horizontal": 0.005191815055526028
+        },
+        "d2013": {
+          "walls": [
+            417177.587232,
+            5454840.578671,
+            1140.8
+          ],
+          "survex": [
+            417177.59,
+            5454840.58,
+            1140.8
+          ],
+          "delta": [
+            -0.0027680000057443976,
+            -0.0013290001079440117,
+            0.0
+          ],
+          "horizontal": 0.0030705154809439047
+        },
+        "d2009": {
+          "walls": [
+            417176.541502,
+            5454840.672811,
+            1140.8
+          ],
+          "survex": [
+            417176.54,
+            5454840.67,
+            1140.8
+          ],
+          "delta": [
+            0.0015020000282675028,
+            0.0028109997510910034,
+            0.0
+          ],
+          "horizontal": 0.003187118398420313
+        },
+        "a": {
+          "walls": [
+            417168.098427,
+            5454741.029876,
+            1140.8
+          ],
+          "survex": [
+            417168.1,
+            5454741.03,
+            1140.8
+          ],
+          "delta": [
+            -0.001572999986819923,
+            -0.00012400001287460327,
+            0.0
+          ],
+          "horizontal": 0.0015778798945827212
+        }
+      }
+    }
+  },
+  "conclusion": "Differences are explained by consecutive repeated-vector aggregation and variance models. Emulating Walls weights in a research copy reproduces native coordinates within Survex .3d quantization. Production readings and weights remain unchanged."
+}

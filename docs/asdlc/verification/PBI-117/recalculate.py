@@ -19,13 +19,13 @@ from pyproj import Transformer
 HERE = Path(__file__).resolve().parent
 ENTRANCES = {
     "Pawlikowskiego:Raptawicka:1.0": ("Raptawicka główna", "KSZ-0047"),
-    "Pawlikowskiego:Raptawicka:5.1": ("Raptawicka górna", None),
+    "Pawlikowskiego:Raptawicka:5.1": ("Raptawicka górna", "KSZ-0114"),
     "Pawlikowskiego:Mylna:0": ("Mylna główna", "KSZ-0064"),
     "Pawlikowskiego:Mylna:39": ("Mylna północna", "KSZ-0113"),
     "Pawlikowskiego:Oblazkowa:0.0": ("Obłazkowa", "KSZ-0090"),
-    "Pawlikowskiego:Mylna:52": ("Mylna — stacja przy I Oknie", None),
-    "Pawlikowskiego:Mylna:53": ("Mylna — stacja przy II Oknie", None),
-    "Pawlikowskiego:Mylna:333": ("Mylna — stacja 333 w rejonie okien", None),
+    "Pawlikowskiego:Mylna:52": ("Mylna — I Okno Pawlikowskiego", "KSZ-0115"),
+    "Pawlikowskiego:Mylna:53": ("Mylna — II Okno Pawlikowskiego", "KSZ-0116"),
+    "Pawlikowskiego:Mylna:333": ("Mylna — III Okno Pawlikowskiego", "KSZ-0117"),
 }
 
 
@@ -35,7 +35,7 @@ def main():
     source = json.loads((HERE / "network-before.json").read_text())
     anchor = json.loads((HERE / "anchor.json").read_text())
     nodes = {n["station"]: n for n in source["nodes"] if n["station"]}
-    assert len(source["nodes"]) == 692
+    assert len(source["nodes"]) == 704
     assert len(nodes) == sum(bool(n["station"]) for n in source["nodes"])
     old_anchor = nodes[anchor["station"]]
     de = anchor["easting"] - old_anchor["easting"]

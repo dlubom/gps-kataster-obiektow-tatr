@@ -1,0 +1,25 @@
+{
+  "walls_version": "v2.3.0-beta.1",
+  "walls_executable_sha256": "ee11c4cf908d200176c96528e702846ef3e2caba7e356fc0e4c03bde17ae782f",
+  "native_export_driver_executable_sha256": "8ccc9cd4d787b1652bd2d6e0a4575249b4d34c21ec28abec7677197e75ba7e51",
+  "native_export_driver_source_sha256": "739de285bff05b0ca3dd28f27117fbac5e524ef38ac14e9ebbe568eb41e65087",
+  "native_adapter_sources": {
+    "https://github.com/wallscavesurvey/walls/blob/v2.3.0-beta.1/Walls32/resource.h": "ID_LAUNCHLST=32857 and dialog control IDs",
+    "https://github.com/wallscavesurvey/walls/blob/v2.3.0-beta.1/Walls32/Mainfrm.cpp": "OnLaunchLst",
+    "https://github.com/wallscavesurvey/walls/blob/v2.3.0-beta.1/Walls32/Walls.rc": "IDD_LISTDLG",
+    "https://github.com/wallscavesurvey/walls/blob/v2.3.0-beta.1/Walls32/ListDlg.cpp": "Alphabetical coordinates and six decimal places"
+  },
+  "walls_model_sources": {
+    "https://github.com/wallscavesurvey/walls/blob/v2.3.0-beta.1/Walls32/wall-srv.cpp#L2580-L2585": "Variance per Cartesian component is 0.003048 * distance_m, not SD proportional to distance",
+    "https://github.com/wallscavesurvey/walls/blob/v2.3.0-beta.1/Walls32/compile.cpp#L276-L383": "Each vector is appended; duplicate audit does not average it",
+    "https://github.com/wallscavesurvey/walls/blob/v2.3.0-beta.1/Walls32/wallmag.cpp#L898-L920": "Historical declination interpolation"
+  },
+  "manual": "https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce/doc/Walls_manual.md",
+  "manual_sections": [
+    "3.8 Coordinate reports",
+    "4.12 Variance assignments",
+    "9.2 Error model"
+  ],
+  "survex_walls_compatibility": "https://survex.com/docs/manual/walls.htm",
+  "native_reproduction_skill": "https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce/.agents/skills/walls-validate/SKILL.md"
+}

@@ -16,12 +16,18 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 - system: inne
   ref_type: url
-  external_id: Pawlikowskiego:2026-10-24:m-004
+  external_id: JKTZ:880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce:Oblazkowa:0.0
+  url: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/tree/880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/
+  scope: object
+  notes: 'm-004: stacja Oblazkowa:0.0; pomiary jaskiń F. Filar i M. Parczewski, powierzchnia F. Filar
+    i B. Chlipała. Jedna kotwica Raptawickiej; pozostałe otwory są wynikami sieci, nie niezależnymi fixami.'
+- system: inne
+  ref_type: url
+  external_id: Raptawicka:ALS-anchor:2026-10-25
   url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/ab5b010b105020851808b7b69f940ebeec55a7ab/docs/asdlc/verification/PBI-117.md
   scope: object
-  notes: 'm-004: kotwica E562729.5/N152838.5, H1140.8 m PL-KRON86-NH z ALS 2012. JKTZ 5209496c1be1b1ec86d1cff67e6f691ac2bebe95;
-    delta E=-12.849703046842478, N=-3.4803757732734084, Z=-0.51 m. Z sieci wykorzystano jako różnice do
-    stacji 1.0.'
+  notes: 'Źródło kotwicy KSZ-0047/m-004: E562729,5/N152838,5, H1140,8 m PL-KRON86-NH. Dokładność nieznana;
+    historyczny opis sieci na tej stronie zastępuje podana wyżej rewizja JKTZ.'
 measurements:
 - id: m-001
   lat: 49.2396333
@@ -111,17 +117,17 @@ measurements:
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
 - id: m-004
-  lat: 49.2395316406
-  lon: 19.8624026235
-  x_1992: 152804.8
-  y_1992: 562756.08
+  lat: 49.2395309076
+  lon: 19.8624012665
+  x_1992: 152804.72
+  y_1992: 562755.98
   elevation_m: 1096.11
   elevation_datum: Kronstadt86
   elevation_source: other
   horizontal_accuracy_m: null
   vertical_accuracy_m: null
   source: wlasne
-  source_ref: JKTZ:5209496c1be1b1ec86d1cff67e6f691ac2bebe95:Oblazkowa:0.0:KSZ-0047/m-004
+  source_ref: JKTZ:880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce:Oblazkowa:0.0:KSZ-0047/m-004
   observed_date: '2026-10-25'
   source_date: null
   method: siec_pomiarowa
@@ -129,25 +135,26 @@ measurements:
   tags:
   - jktz
   - survey_network
-  - rigid_translation
-  - lidar_height_anchor
+  - raptawicka_anchor
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: Stacja Oblazkowa:0.0 z sieci JKTZ. H=1140,8 m progu Raptawickiej z ALS + różnica Z z sieci; PL-KRON86-NH.
-    Wspólna translacja XYZ, geometria zachowana. Dokładność kotwicy i sieci nieustalona.
+  notes: Stacja Oblazkowa:0.0; wyrównanie Survex 1.4.24 z jednym fixem Raptawickiej i ciągiem powierzchniowym
+    Obłazkowa–Raptawicka (66 odczytów, deklinacja 4,83° przyjęta, data nieznana). H=1140,8 m ALS + różnica
+    Z z sieci, PL-KRON86-NH. To wysokość stacji, nie potwierdzonego progu; dokładność i położenie znaku
+    nieustalone.
   created_at: '2026-10-24T20:25:49Z'
   created_by: codex
 best_measurement:
   mode: manual
   measurement_id: m-004
-  reason: Pozycja z zachowanej geometrii sieci JKTZ, dowiązanej w XYZ do estymaty progu Raptawickiej KSZ-0047/m-004
-    ze zdjęć i ALS.
-  updated_at: '2026-10-25T10:04:31Z'
+  reason: Wynik sieci JKTZ z jedną kotwicą Raptawickiej KSZ-0047/m-004; przyjęty mimo nieznanej dokładności
+    kotwicy i sieci.
+  updated_at: '2026-10-25T11:37:09Z'
   updated_by: codex
 attachments: []
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-25T10:04:31Z'
+updated_at: '2026-10-25T11:37:09Z'
 updated_by: codex

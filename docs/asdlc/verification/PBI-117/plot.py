@@ -106,8 +106,8 @@ plt.close(fig)
 
 fig, ax = plt.subplots(figsize=(8, 8), layout="constrained")
 for data, color, label in [
-    (before, "#aaaaaa", "Sieć przed zmianą"),
-    (after, "#217850", "Wspólna translacja"),
+    (before, "#aaaaaa", "Wyrównana sieć, dawna kotwica"),
+    (after, "#217850", "Nowa kotwica ALS"),
 ]:
     segments = [[leg["start"][:2], leg["end"][:2]] for leg in data["legs"]]
     ax.add_collection(LineCollection(segments, colors=color, linewidths=0.6, label=label))
@@ -136,7 +136,7 @@ ax.tick_params(axis="x", rotation=35)
 ax.set(
     xlabel="E [m], EPSG:2180",
     ylabel="N [m]",
-    title="692 węzły: ΔE −12,849703 m, ΔN −3,480376 m, ΔZ −0,51 m\n"
+    title=f"{len(after['nodes'])} węzły: ΔE −12,849703 m, ΔN −3,480376 m, ΔZ −0,51 m\n"
     "Bez obrotu i zmiany skali; różnice wysokości zachowane",
 )
 fig.savefig(HERE / "network-translation.png", dpi=150)

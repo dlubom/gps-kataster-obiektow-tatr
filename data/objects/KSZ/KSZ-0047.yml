@@ -14,14 +14,6 @@ external_refs:
   external_id: '{F4DE5D37-5D76-4315-8BCC-4C57A5B68F1C}'
   scope: object
   notes: TPN GLOBALID belongs to the object/source feature.
-- system: inne
-  ref_type: url
-  external_id: Pawlikowskiego:2026-10-24:m-004
-  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/ab5b010b105020851808b7b69f940ebeec55a7ab/docs/asdlc/verification/PBI-117.md
-  scope: object
-  notes: 'm-004: kotwica E562729.5/N152838.5, H1140.8 m PL-KRON86-NH z ALS 2012. JKTZ 5209496c1be1b1ec86d1cff67e6f691ac2bebe95;
-    delta E=-12.849703046842478, N=-3.4803757732734084, Z=-0.51 m. Z sieci wykorzystano jako różnice do
-    stacji 1.0.'
 - system: geoportal
   ref_type: url
   external_id: ORTO-WMS-HighResolution:2026-10-24
@@ -30,6 +22,20 @@ external_refs:
   notes: 'm-004: obraz 5 cm/piksel; datowanie 2021-09-09 wnioskowane z indeksu. XY to estymata brzegu;
     H1140.8 m z lokalnej powierzchni ALS 2012. Nie zidentyfikowano znaku, dokładność nieznana. Punkt TPN
     opisany jako górny nie jest kotwicą.'
+- system: inne
+  ref_type: url
+  external_id: JKTZ:880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce:Raptawicka:1.0
+  url: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/tree/880cbde93a5f5d99dedbfcb0933e9a6ad45f92ce/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/
+  scope: object
+  notes: 'm-004: stacja Raptawicka:1.0; pomiary jaskiń F. Filar i M. Parczewski, powierzchnia F. Filar
+    i B. Chlipała. Jedna kotwica Raptawickiej; pozostałe otwory są wynikami sieci, nie niezależnymi fixami.'
+- system: inne
+  ref_type: url
+  external_id: Raptawicka:ALS-anchor:2026-10-25
+  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/ab5b010b105020851808b7b69f940ebeec55a7ab/docs/asdlc/verification/PBI-117.md
+  scope: object
+  notes: 'Źródło kotwicy KSZ-0047/m-004: E562729,5/N152838,5, H1140,8 m PL-KRON86-NH. Dokładność nieznana;
+    historyczny opis sieci na tej stronie zastępuje podana wyżej rewizja JKTZ.'
 measurements:
 - id: m-001
   lat: 49.23985282
@@ -153,11 +159,12 @@ best_measurement:
   measurement_id: m-004
   reason: Estymata brzegu głównej studni ze zdjęcia; wysokość progu z ALS 2012. Znak stacji i dokładność
     niepotwierdzone.
-  updated_at: '2026-10-25T10:04:31Z'
+  updated_at: '2026-10-25T11:37:09Z'
   updated_by: codex
 attachments: []
-notes: Imported from PIG source record after operator review.
+notes: Historyczny punkt TPN opisano jako górny, lecz jego przypisania do stacji 5.1 nie potwierdzono.
+  Pozostaje przy tym obiekcie; otwór górny to KSZ-0114.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-25T10:04:31Z'
+updated_at: '2026-10-25T11:37:09Z'
 updated_by: codex
