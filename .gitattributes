@@ -1,2 +1,5 @@
 # Preserve the public source response byte-for-byte, including its whitespace.
 tests/fixtures/tpn_elevation/metadata.xml -text -whitespace
+
+# Keep native Walls reports byte-for-byte, including their Windows line endings.
+docs/asdlc/verification/PBI-117/engines/walls-*.lst -text whitespace=cr-at-eol

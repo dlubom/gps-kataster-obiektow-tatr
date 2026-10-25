@@ -1,0 +1,90 @@
+[
+  {
+    "station": "Pawlikowskiego:Raptawicka:1.0",
+    "name": "Raptawicka główna",
+    "object_id": "KSZ-0047",
+    "node_index": 703,
+    "easting": 562729.5,
+    "northing": 152838.5,
+    "elevation": 1140.8,
+    "lon": 19.86204265658168,
+    "lat": 49.23983754019365
+  },
+  {
+    "station": "Pawlikowskiego:Raptawicka:5.1",
+    "name": "Raptawicka górna",
+    "object_id": "KSZ-0114",
+    "node_index": 32,
+    "easting": 562730.1008891747,
+    "northing": 152842.6259476859,
+    "elevation": 1146.79,
+    "lon": 19.862051559291547,
+    "lat": 49.239874599407315
+  },
+  {
+    "station": "Pawlikowskiego:Mylna:0",
+    "name": "Mylna główna",
+    "object_id": "KSZ-0064",
+    "node_index": 463,
+    "easting": 562728.9858102769,
+    "northing": 152784.96567547228,
+    "elevation": 1097.49,
+    "lon": 19.86202720790048,
+    "lat": 49.239355948768406
+  },
+  {
+    "station": "Pawlikowskiego:Mylna:39",
+    "name": "Mylna północna",
+    "object_id": "KSZ-0113",
+    "node_index": 464,
+    "easting": 562795.8818225097,
+    "northing": 152916.35667472053,
+    "elevation": 1093.17,
+    "lon": 19.86296698734184,
+    "lat": 49.24053120010587
+  },
+  {
+    "station": "Pawlikowskiego:Oblazkowa:0.0",
+    "name": "Obłazkowa",
+    "object_id": "KSZ-0090",
+    "node_index": 286,
+    "easting": 562755.9837391984,
+    "northing": 152804.71995418333,
+    "elevation": 1096.11,
+    "lon": 19.862401266485566,
+    "lat": 49.239530907613236
+  },
+  {
+    "station": "Pawlikowskiego:Mylna:52",
+    "name": "Mylna — I Okno Pawlikowskiego",
+    "object_id": "KSZ-0115",
+    "node_index": 456,
+    "easting": 562726.735183833,
+    "northing": 152771.37596952636,
+    "elevation": 1097.11,
+    "lon": 19.86199415525021,
+    "lat": 49.2392339140003
+  },
+  {
+    "station": "Pawlikowskiego:Mylna:53",
+    "name": "Mylna — II Okno Pawlikowskiego",
+    "object_id": "KSZ-0116",
+    "node_index": 455,
+    "easting": 562718.7492443458,
+    "northing": 152765.92469361145,
+    "elevation": 1098.22,
+    "lon": 19.86188357157374,
+    "lat": 49.23918568804998
+  },
+  {
+    "station": "Pawlikowskiego:Mylna:333",
+    "name": "Mylna — III Okno Pawlikowskiego",
+    "object_id": "KSZ-0117",
+    "node_index": 349,
+    "easting": 562709.8666296758,
+    "northing": 152761.85972257145,
+    "elevation": 1096.24,
+    "lon": 19.86176088446297,
+    "lat": 49.23915002638432
+  }
+]

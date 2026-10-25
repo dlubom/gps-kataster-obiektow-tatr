@@ -1,0 +1,275 @@
+{
+  "n": 15,
+  "min": [
+    562726.9400000001,
+    152839.03,
+    1135.76
+  ],
+  "max": [
+    562729.03,
+    152841.72,
+    1136.09
+  ],
+  "centroid": [
+    562728.1233333334,
+    152840.27066666668,
+    1135.9259999999997
+  ],
+  "records": [
+    {
+      "index": 383411,
+      "xyz": [
+        562728.77,
+        152841.39,
+        1135.8
+      ],
+      "point_source_id": 21,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 1,
+      "number_of_returns": 2,
+      "scan_angle_rank": -12,
+      "gps_time": 29400351.618176
+    },
+    {
+      "index": 383414,
+      "xyz": [
+        562729.03,
+        152839.88,
+        1136.07
+      ],
+      "point_source_id": 21,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 3,
+      "number_of_returns": 3,
+      "scan_angle_rank": -12,
+      "gps_time": 29400351.618182
+    },
+    {
+      "index": 383451,
+      "xyz": [
+        562727.12,
+        152841.21,
+        1135.76
+      ],
+      "point_source_id": 21,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 2,
+      "number_of_returns": 2,
+      "scan_angle_rank": -12,
+      "gps_time": 29400351.582881
+    },
+    {
+      "index": 383458,
+      "xyz": [
+        562727.53,
+        152841.72,
+        1135.8600000000001
+      ],
+      "point_source_id": 21,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 3,
+      "number_of_returns": 4,
+      "scan_angle_rank": -12,
+      "gps_time": 29400351.594644
+    },
+    {
+      "index": 383487,
+      "xyz": [
+        562728.35,
+        152840.84,
+        1135.92
+      ],
+      "point_source_id": 21,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 1,
+      "number_of_returns": 1,
+      "scan_angle_rank": -12,
+      "gps_time": 29400351.606413
+    },
+    {
+      "index": 383489,
+      "xyz": [
+        562728.61,
+        152839.30000000002,
+        1136.08
+      ],
+      "point_source_id": 21,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 2,
+      "number_of_returns": 2,
+      "scan_angle_rank": -12,
+      "gps_time": 29400351.60642
+    },
+    {
+      "index": 469632,
+      "xyz": [
+        562727.36,
+        152839.03,
+        1135.9
+      ],
+      "point_source_id": 20,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 1,
+      "number_of_returns": 3,
+      "scan_angle_rank": 5,
+      "gps_time": 29401304.701862
+    },
+    {
+      "index": 469635,
+      "xyz": [
+        562727.5700000001,
+        152840.36000000002,
+        1135.8700000000001
+      ],
+      "point_source_id": 20,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 1,
+      "number_of_returns": 1,
+      "scan_angle_rank": 5,
+      "gps_time": 29401304.701869
+    },
+    {
+      "index": 469679,
+      "xyz": [
+        562726.9400000001,
+        152840.2,
+        1135.8
+      ],
+      "point_source_id": 20,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 1,
+      "number_of_returns": 1,
+      "scan_angle_rank": 5,
+      "gps_time": 29401304.713631
+    },
+    {
+      "index": 469728,
+      "xyz": [
+        562728.03,
+        152839.22,
+        1135.97
+      ],
+      "point_source_id": 20,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 1,
+      "number_of_returns": 2,
+      "scan_angle_rank": 5,
+      "gps_time": 29401304.690099
+    },
+    {
+      "index": 469730,
+      "xyz": [
+        562728.24,
+        152840.6,
+        1135.92
+      ],
+      "point_source_id": 20,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 1,
+      "number_of_returns": 1,
+      "scan_angle_rank": 5,
+      "gps_time": 29401304.690106
+    },
+    {
+      "index": 469821,
+      "xyz": [
+        562728.6900000001,
+        152839.47,
+        1136.09
+      ],
+      "point_source_id": 20,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 3,
+      "number_of_returns": 3,
+      "scan_angle_rank": 5,
+      "gps_time": 29401304.678337
+    },
+    {
+      "index": 619958,
+      "xyz": [
+        562728.28,
+        152839.51,
+        1136.05
+      ],
+      "point_source_id": 21,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 2,
+      "number_of_returns": 2,
+      "scan_angle_rank": -13,
+      "gps_time": 30261189.9249
+    },
+    {
+      "index": 619960,
+      "xyz": [
+        562728.6,
+        152841.1,
+        1135.79
+      ],
+      "point_source_id": 21,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 2,
+      "number_of_returns": 2,
+      "scan_angle_rank": -13,
+      "gps_time": 30261189.924907
+    },
+    {
+      "index": 620093,
+      "xyz": [
+        562728.73,
+        152840.23,
+        1136.01
+      ],
+      "point_source_id": 21,
+      "classification": 0,
+      "synthetic": 0,
+      "key_point": 0,
+      "withheld": 0,
+      "return_number": 2,
+      "number_of_returns": 2,
+      "scan_angle_rank": -13,
+      "gps_time": 30261189.936431
+    }
+  ]
+}

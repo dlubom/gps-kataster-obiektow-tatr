@@ -1,0 +1,69 @@
+schema_version: 1
+id: KSZ-0114
+category: jaskinia_otwor
+name_local: Jaskinia Raptawicka - otwór górny
+cave_id: C-0403
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSZ
+  prefix_override_reason: null
+external_refs:
+- system: inne
+  ref_type: url
+  external_id: JKTZ:88f3dda221205c80ae659f0797ff5a7da2c296d8:Raptawicka:5.1
+  url: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/tree/88f3dda221205c80ae659f0797ff5a7da2c296d8/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/
+  scope: object
+  notes: 'm-001: stacja Raptawicka:5.1; pomiary jaskiń F. Filar i M. Parczewski, powierzchnia F. Filar
+    i B. Chlipała. Jedna kotwica Raptawickiej; pozostałe otwory są wynikami sieci, nie niezależnymi fixami.'
+- system: inne
+  ref_type: url
+  external_id: Raptawicka:ALS-anchor:2026-10-25
+  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/ab5b010b105020851808b7b69f940ebeec55a7ab/docs/asdlc/verification/PBI-117.md
+  scope: object
+  notes: 'Źródło kotwicy KSZ-0047/m-004: E562729,5/N152838,5, H1140,8 m PL-KRON86-NH. Dokładność nieznana;
+    historyczny opis sieci na tej stronie zastępuje podana wyżej rewizja JKTZ.'
+measurements:
+- id: m-001
+  lat: 49.2398745994
+  lon: 19.8620515593
+  x_1992: 152842.63
+  y_1992: 562730.1
+  elevation_m: 1146.79
+  elevation_datum: Kronstadt86
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: JKTZ:88f3dda221205c80ae659f0797ff5a7da2c296d8:Raptawicka:5.1:KSZ-0047/m-004
+  observed_date: '2026-10-25'
+  source_date: null
+  method: siec_pomiarowa
+  device: null
+  tags:
+  - jktz
+  - survey_network
+  - raptawicka_anchor
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: Stacja Raptawicka:5.1; wyrównanie Survex 1.4.24 z jednym fixem Raptawickiej i ciągiem powierzchniowym
+    Obłazkowa–Raptawicka (66 odczytów, deklinacja 4,83° przyjęta, data nieznana). H=1140,8 m ALS + różnica
+    Z z sieci, PL-KRON86-NH. To wysokość stacji, nie potwierdzonego progu; dokładność i położenie znaku
+    nieustalone.
+  created_at: '2026-10-25T11:37:09Z'
+  created_by: codex
+best_measurement:
+  mode: manual
+  measurement_id: m-001
+  reason: Wynik sieci JKTZ z jedną kotwicą Raptawickiej KSZ-0047/m-004; przyjęty mimo nieznanej dokładności
+    kotwicy i sieci.
+  updated_at: '2026-10-25T11:37:09Z'
+  updated_by: codex
+attachments: []
+notes: Otwór oznaczony flagą w autorskim CG.SRV. Stacja 5.1 w RAPTAW.SRV; odrębny otwór górny, bez przypisania
+  niejednoznacznego punktu TPN.
+created_at: '2026-10-25T11:37:09Z'
+created_by: codex
+updated_at: '2026-10-25T11:37:09Z'
+updated_by: codex

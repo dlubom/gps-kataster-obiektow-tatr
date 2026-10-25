@@ -1,0 +1,63 @@
+{
+  "source": "TPN nmt_05m_mggp_2019",
+  "data_date": "2019-10-14/2019-10-15",
+  "surface": "ground",
+  "elevation_reference": "sea_level",
+  "elevation_reference_label": "m n.p.m. według legendy TPN",
+  "elevation_datum": "unknown",
+  "vertical_accuracy_m": "unknown",
+  "grid_resolution_m": 0.5,
+  "resampling": "unknown",
+  "method": "Unmodified repository scripts/tpn_elevation.py --lat ... --lon ... --json for five separate points. Invoked with existing .venv Python after uv cache/build resolution failed. No source code or dependency installation performed.",
+  "script_sha256": "0577cc1f0006a5b65b7e60dc77b8d40c0e60844fcc25fd9e348725ea9c124f3f",
+  "library_sha256": "dbe6f6c58ce7081e0a9e8fd2cca450ebf1cdecaf4e193f0cd524fc3cfd4ea9b0",
+  "points": [
+    {
+      "name": "anchor",
+      "easting": 562729.500001325,
+      "northing": 152838.50000072084,
+      "elevation_m": 1140.959961,
+      "raw_elevation": "1140.959961",
+      "json_file": "anchor.json",
+      "json_sha256": "9c0b119eaa057afe4a1ee8937f7c0adc47d1193e473a0634db8d6e6a5b2a27b8"
+    },
+    {
+      "name": "SW",
+      "easting": 562728.9999999999,
+      "northing": 152838.0,
+      "elevation_m": 1141.030029,
+      "raw_elevation": "1141.030029",
+      "json_file": "SW.json",
+      "json_sha256": "8f5e38e8524d86ebd7c10e1a78d8ba524b4c50cb6dc16861a4f30bc42e8763f2"
+    },
+    {
+      "name": "SE",
+      "easting": 562730.0,
+      "northing": 152837.99999999907,
+      "elevation_m": 1140.859985,
+      "raw_elevation": "1140.859985",
+      "json_file": "SE.json",
+      "json_sha256": "fb5a5f8f9b011f49cfeff8909c511e7e3394fc3e4c61c7f437de686cadd04f1b"
+    },
+    {
+      "name": "NW",
+      "easting": 562729.0000000001,
+      "northing": 152838.99999999907,
+      "elevation_m": 1178.079956,
+      "raw_elevation": "1178.079956",
+      "json_file": "NW.json",
+      "json_sha256": "0d0329187e65db5e9950ae9cb6fd0f041d1f9f6b67c3427cc93e0490b0048cb9"
+    },
+    {
+      "name": "NE",
+      "easting": 562729.9999999999,
+      "northing": 152839.0,
+      "elevation_m": 1143.22998,
+      "raw_elevation": "1143.229980",
+      "json_file": "NE.json",
+      "json_sha256": "6b21180463991ddab5e19bfe406ccb9aa309eb6d329ff59db4c42a255e859f5b"
+    }
+  ],
+  "max_minus_min_m": 37.21997099999999,
+  "interpretation": "Raster over entrance/rock boundary is highly discontinuous within the 1 m image-picked region; center cannot alone prove cave-rim height. No vertical datum conversion or replacement of missing values was performed."
+}

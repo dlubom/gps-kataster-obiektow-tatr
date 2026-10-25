@@ -1,0 +1,42 @@
+{
+  "raw_LAS_decoder": "Python struct, independently decoded; no laspy or project-script import",
+  "all_six_raw_fields_verified": true,
+  "six_point_selection_complete": true,
+  "independent_fit_height_m": 1140.8153542926461,
+  "independent_fit_RMSE_m_not_accuracy": 0.09349476253036193,
+  "datum_verified_from_original_WFS_XML": true,
+  "raw_source_records": [
+    {
+      "merged_record": 283106,
+      "source_tile_index": 0,
+      "original_source_record": 4382108
+    },
+    {
+      "merged_record": 383331,
+      "source_tile_index": 0,
+      "original_source_record": 5626124
+    },
+    {
+      "merged_record": 383359,
+      "source_tile_index": 0,
+      "original_source_record": 5626152
+    },
+    {
+      "merged_record": 383412,
+      "source_tile_index": 0,
+      "original_source_record": 5626205
+    },
+    {
+      "merged_record": 469861,
+      "source_tile_index": 0,
+      "original_source_record": 6100296
+    },
+    {
+      "merged_record": 469915,
+      "source_tile_index": 0,
+      "original_source_record": 6100350
+    }
+  ],
+  "verification_revision": "fb7efd47792fab368e3a0d9b85bfdba3bdac819f",
+  "note": "Preserved prior independent check of unchanged ALS input, separate from the current network recalculation."
+}

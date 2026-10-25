@@ -14,6 +14,20 @@ external_refs:
   external_id: '{CECF8620-A1C8-4941-A5B1-6C2226DC1F88}'
   scope: object
   notes: TPN GLOBALID belongs to the object/source feature.
+- system: inne
+  ref_type: url
+  external_id: JKTZ:88f3dda221205c80ae659f0797ff5a7da2c296d8:Mylna:0
+  url: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/tree/88f3dda221205c80ae659f0797ff5a7da2c296d8/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/
+  scope: object
+  notes: 'm-004: stacja Mylna:0; pomiary jaskiń F. Filar i M. Parczewski, powierzchnia F. Filar i B. Chlipała.
+    Jedna kotwica Raptawickiej; pozostałe otwory są wynikami sieci, nie niezależnymi fixami.'
+- system: inne
+  ref_type: url
+  external_id: Raptawicka:ALS-anchor:2026-10-25
+  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/ab5b010b105020851808b7b69f940ebeec55a7ab/docs/asdlc/verification/PBI-117.md
+  scope: object
+  notes: 'Źródło kotwicy KSZ-0047/m-004: E562729,5/N152838,5, H1140,8 m PL-KRON86-NH. Dokładność nieznana;
+    historyczny opis sieci na tej stronie zastępuje podana wyżej rewizja JKTZ.'
 measurements:
 - id: m-001
   lat: 49.2394028
@@ -103,18 +117,47 @@ measurements:
     wysokości i dokładności pozostają nieznane; status weryfikacji bez zmian. Źródła: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/773c8e2e6aa910c8ba78192ae6741d107c6598e2/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Mylna/MYLNA_M.SRV.'
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
+- id: m-004
+  lat: 49.2393559488
+  lon: 19.8620272079
+  x_1992: 152784.97
+  y_1992: 562728.99
+  elevation_m: 1097.49
+  elevation_datum: Kronstadt86
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: JKTZ:88f3dda221205c80ae659f0797ff5a7da2c296d8:Mylna:0:KSZ-0047/m-004
+  observed_date: '2026-10-25'
+  source_date: null
+  method: siec_pomiarowa
+  device: null
+  tags:
+  - jktz
+  - survey_network
+  - raptawicka_anchor
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: Stacja Mylna:0; wyrównanie Survex 1.4.24 z jednym fixem Raptawickiej i ciągiem powierzchniowym
+    Obłazkowa–Raptawicka (66 odczytów, deklinacja 4,83° przyjęta, data nieznana). H=1140,8 m ALS + różnica
+    Z z sieci, PL-KRON86-NH. To wysokość stacji, nie potwierdzonego progu; dokładność i położenie znaku
+    nieustalone.
+  created_at: '2026-10-24T20:25:49Z'
+  created_by: codex
 best_measurement:
   mode: manual
-  measurement_id: m-003
-  reason: Ręcznie zachowany punkt dowiązania sieci Mylna:0 zapisany w JKTZ; pierwotna metoda
-    wyznaczenia nieznana, automatyczny TPN nie zastępuje tego wskazania.
-  updated_at: '2026-10-23T13:45:51Z'
-  updated_by: dl
+  measurement_id: m-004
+  reason: Wynik sieci JKTZ z jedną kotwicą Raptawickiej KSZ-0047/m-004; przyjęty mimo nieznanej dokładności
+    kotwicy i sieci.
+  updated_at: '2026-10-25T11:37:09Z'
+  updated_by: codex
 attachments: []
 notes: Imported from PIG source record after operator review. Multi-opening review
   2026-05-16 links TPN row 225 to the main/southern Mylna opening and KSZ-0113 to
   the northern opening.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-23T13:45:51Z'
-updated_by: dl
+updated_at: '2026-10-25T11:37:09Z'
+updated_by: codex

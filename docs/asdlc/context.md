@@ -1,6 +1,23 @@
 # AS-DLC project context
 
-Last updated: 2026-10-24
+Last updated: 2026-10-25
+
+## Raptawicka jako kotwica systemu Pawlikowskiego — PBI-117
+
+Przyjęto jedną kotwicę Raptawickiej: E562729,5/N152838,5 (EPSG:2180),
+H1140,8 m PL-KRON86-NH z ALS 2012. Znaku nie rozpoznano, dokładność nieznana.
+Zakres rozszerzono do ośmiu otworów: cztery dotychczasowe oraz KSZ-0114–0117.
+JKTZ `88f3dda`: jeden fix Raptawickiej, 66 przywróconych odczytów powierzchni,
+deklinacja 4,83° jako jawne założenie, nieznana data. Survex 1.4.24 jest
+wzorcem Best i eksportu JKTZ; różnica Walls do około 0,7 m wynika z powtórzeń
+i modelu wag. Geometria po wyrównaniu jest przeniesiona do kotwicy ALS.
+Osiem ręcznych Best pozostaje nieweryfikowanych; dziesięć starych pomiarów
+zachowano. Bilans: 1028 obiektów, 1019 pozycji katalogowych, 1934 pomiary.
+Użytkownik zlecił całą sekwencję wydań 2026-10-25. JKTZ #143 scalono
+bez wydania jako `88f3dda`; ponowne przeliczenie zachowało wszystkie współrzędne.
+GPS #38 przygotowuje v1.3.2. Następnie JKTZ odświeży snapshot z publicznego
+CSV GPS i wyda v1.4.10. Końcowe SHA, CI i odbiór wydań wskazują opisy PR-ów.
+[Metoda, ograniczenia i odtworzenie](verification/PBI-117.md).
 
 ## Wydanie v1.3.1 — przygotowanie
 

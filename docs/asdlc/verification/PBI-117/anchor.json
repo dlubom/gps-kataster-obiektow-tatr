@@ -1,0 +1,28 @@
+{
+  "object_id": "KSZ-0047",
+  "measurement_id": "m-004",
+  "station": "Pawlikowskiego:Raptawicka:1.0",
+  "crs": "EPSG:2180",
+  "easting": 562729.5,
+  "northing": 152838.5,
+  "image_pick_region_E_N": [
+    562729.0,
+    562730.0,
+    152838.0,
+    152839.0
+  ],
+  "selection": "Midpoint of the interpreted eastern entrance rim region; the plan places level 0.00 on this side. The physical station mark was not identified.",
+  "method": "Remote interpretation of orthophoto corroborated by ALS shaft morphology; not GNSS.",
+  "horizontal_accuracy_m": null,
+  "vertical_adjustment_m": -0.51,
+  "orientation_adjustment_deg": 0.0,
+  "scale": 1.0,
+  "observed_date": "2026-10-25",
+  "limitations": "The image pick and decimal precision do not determine accuracy. The physical station mark is unidentified. Absolute H is estimated from ALS 2012 in PL-KRON86-NH according to source metadata; relative heights alone are retained from the network. TPN NMT is only a cross-check with unknown vertical datum; no datum conversion was performed.",
+  "elevation_m": 1140.8,
+  "elevation_datum": "Kronstadt86",
+  "vertical_accuracy_m": null,
+  "xy_observed_date": "2026-10-24",
+  "height_selection": "Local plane through six nearest lower-surface ALS returns within 0.75 m; 1140.815 m rounded to one decimal. Surface identity interpreted at the eastern shaft rim; not a directly identified survey mark.",
+  "height_evidence": "height/threshold-height.json"
+}

@@ -1,0 +1,22 @@
+{
+  "objects": 1028,
+  "caves": 1019,
+  "measurements": 1934,
+  "historical_measurements_preserved": 10,
+  "manual_best": 8,
+  "new_objects": [
+    "KSZ-0114",
+    "KSZ-0115",
+    "KSZ-0116",
+    "KSZ-0117"
+  ],
+  "source_revision": "88f3dda221205c80ae659f0797ff5a7da2c296d8",
+  "nodes": 704,
+  "named_nodes": 601,
+  "drawing_legs": 748,
+  "max_translation_error_m": 0.0,
+  "source_surface_records": 66,
+  "surface_file": "Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Powierzchnia/POW_ORM.SRV",
+  "status": "PASS",
+  "old_heights_plus_1000_m_produce_identical_nodes_and_legs": true
+}

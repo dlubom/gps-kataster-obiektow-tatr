@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-24",
+  "bbox_E_N": [
+    562707,
+    152810,
+    562765,
+    152870
+  ],
+  "crs": "EPSG:2180",
+  "wms": {
+    "url": "https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/HighResolution?service=WMS&version=1.3.0&layers=Raster&styles=&crs=EPSG%3A2180&bbox=152810%2C562707%2C152870%2C562765&width=1160&height=1200&format=image%2Fpng&transparent=false&request=GetMap",
+    "pixels": [
+      1160,
+      1200
+    ],
+    "render_pixel_m": 0.05,
+    "date_assertion": "2021-09-09 inferred from WFS unique covering highresolution source, not encoded in WMS response. Native TIFF range access unavailable."
+  },
+  "2024": {
+    "url": "https://opendata.geoportal.gov.pl/ortofotomapa/81435/81435_1418498_M-34-100-B-c-2-2.tif",
+    "date": "2024-08-14",
+    "native_pixel_m": 0.25,
+    "window_pixels": [
+      232,
+      240
+    ],
+    "crop_command": "gdal_translate -of GTiff -projwin 562707 152870 562765 152810 SOURCE CROP",
+    "resampled": false
+  },
+  "range_request_2021": {
+    "range": "bytes=0-65535",
+    "status": 200,
+    "content_length": 1069363545,
+    "download_aborted_by_max_filesize": true
+  },
+  "hashes": {
+    "ortho-hires-5cm.tif": "cce7cd8f5586715c98861e0480e0d8fc860c3808299f983d71853e709d172c8b",
+    "ortho-hires-5cm.png": "c289347c0d16240db62f50696be8bce453916ade4aa63b98a11c55d121eb107a",
+    "ortho2024-source.tif": "e2984ceb180951cb0c779a47a415b823a76dd3fd9f7101330b5a812732133161",
+    "ortho2024-crop.png": "d026f4a0c18e950d0e303181e28b3a15701a905fb0aa3c3ed4ed840f14c2dabe",
+    "ortho-hires-5cm.pgw": "dc8c16326c90b84266f63f839335107090ec0bed3172ac983ce419e953533c0a",
+    "ortho2024-crop.tif": "9214f373d5ba9ca2f4bc84a344ef83ac244bb344568b200fde561701f72c6e57"
+  },
+  "wfs_source_index": {
+    "file": "ortho-index.xml.gz",
+    "url": "https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WFS/Skorowidze?service=WFS&version=2.0.0&request=GetFeature&typenames=gugik%3ASkorowidzOrtofomapy1957%2Cgugik%3ASkorowidzOrtofomapy1958%2Cgugik%3ASkorowidzOrtofomapy1961%2Cgugik%3ASkorowidzOrtofomapy1965%2Cgugik%3ASkorowidzOrtofomapy1967%2Cgugik%3ASkorowidzOrtofomapy1969%2Cgugik%3ASkorowidzOrtofomapy1971%2Cgugik%3ASkorowidzOrtofomapy1972%2Cgugik%3ASkorowidzOrtofomapy1973%2Cgugik%3ASkorowidzOrtofomapy1976%2Cgugik%3ASkorowidzOrtofomapy1979%2Cgugik%3ASkorowidzOrtofomapy1980%2Cgugik%3ASkorowidzOrtofomapy1982%2Cgugik%3ASkorowidzOrtofomapy1984%2Cgugik%3ASkorowidzOrtofomapy1987%2Cgugik%3ASkorowidzOrtofomapy1990%2Cgugik%3ASkorowidzOrtofomapy1992%2Cgugik%3ASkorowidzOrtofomapy1995%2Cgugik%3ASkorowidzOrtofomapy1996%2Cgugik%3ASkorowidzOrtofomapy1997%2Cgugik%3ASkorowidzOrtofomapy1998%2Cgugik%3ASkorowidzOrtofomapy1999%2Cgugik%3ASkorowidzOrtofomapy2000%2Cgugik%3ASkorowidzOrtofomapy2001%2Cgugik%3ASkorowidzOrtofomapy2002%2Cgugik%3ASkorowidzOrtofomapy2003%2Cgugik%3ASkorowidzOrtofomapy2004%2Cgugik%3ASkorowidzOrtofomapy2005%2Cgugik%3ASkorowidzOrtofomapy2006%2Cgugik%3ASkorowidzOrtofomapy2007%2Cgugik%3ASkorowidzOrtofomapy2008%2Cgugik%3ASkorowidzOrtofomapy2009%2Cgugik%3ASkorowidzOrtofomapy2010%2Cgugik%3ASkorowidzOrtofomapy2011%2Cgugik%3ASkorowidzOrtofomapy2012%2Cgugik%3ASkorowidzOrtofomapy2013%2Cgugik%3ASkorowidzOrtofomapy2014%2Cgugik%3ASkorowidzOrtofomapy2015%2Cgugik%3ASkorowidzOrtofomapy2016%2Cgugik%3ASkorowidzOrtofomapy2017%2Cgugik%3ASkorowidzOrtofomapy2018%2Cgugik%3ASkorowidzOrtofomapy2019%2Cgugik%3ASkorowidzOrtofomapy2020%2Cgugik%3ASkorowidzOrtofomapy2021%2Cgugik%3ASkorowidzOrtofomapy2022%2Cgugik%3ASkorowidzOrtofomapy2023%2Cgugik%3ASkorowidzOrtofomapy2024%2Cgugik%3ASkorowidzOrtofomapy2025%2Cgugik%3ASkorowidzOrtofomapy2026&srsname=EPSG%3A4326&bbox=49.23850%2C19.85948%2C49.24116%2C19.86402%2Curn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A4326",
+    "raw_xml_sha256": "1ad1c8faee53928e6e79764703637d228069c9a10e21d729df0705cda4fed342",
+    "gzip_sha256": "5105da930a3882eb7996f5f05b4480268667eacf9cd8dafeaf618c180bd6d648"
+  },
+  "2021_indexed_product": {
+    "date": "2021-09-09",
+    "native_pixel_m": 0.05,
+    "url": "https://opendata.geoportal.gov.pl/ortofotomapa/74870/74870_1014925_M-34-100-B-c-2-2.tif",
+    "nr_zglosz": "GI-FOTO.6201.13.2021",
+    "tiff_read": false
+  }
+}

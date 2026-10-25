@@ -8,6 +8,23 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [v1.3.2] - 2026-10-25
+
+### Dodano
+
+- Górny otwór Raptawickiej i trzy Okna Pawlikowskiego jako odrębne obiekty.
+
+### Zmieniono
+
+- Wybrano osiem pozycji Best z jedną kotwicą Raptawickiej, ustaloną z ortofoto
+  i ALS (H1140,8 m PL-KRON86-NH). Pozostałe otwory wyznacza sieć JKTZ
+  po przywróceniu ciągu powierzchniowego Obłazkowa–Raptawicka.
+- Wzorcem obliczeń jest Survex 1.4.24. Różnicę względem Walls oraz przyjętą
+  deklinację powierzchni 4,83° opisano w źródłach.
+
+Nowe Best pozostają nieweryfikowane, z nieznaną dokładnością. Dotychczasowe
+pomiary zachowano. Katalog zawiera 1028 obiektów i 1934 pomiary.
+
 ## [v1.3.1] - 2026-10-24
 
 ### Poprawiono

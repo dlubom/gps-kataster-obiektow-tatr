@@ -1,0 +1,13 @@
+{
+  "source_revision": "88f3dda221205c80ae659f0797ff5a7da2c296d8",
+  "compiler": "cavern - Survex 1.4.24",
+  "changed_fix_count": 1,
+  "fix": "Pawlikowskiego:Raptawicka:1.0",
+  "nodes": 704,
+  "named_nodes": 601,
+  "entrance_markers": 8,
+  "max_translation_residual_xy_m": 0.012702777467850927,
+  "max_translation_residual_z_m": 0.0,
+  "max_pairwise_distance_change_m": 0.014142222497724788,
+  "limitation": "Survex .3d coordinates are rounded to 1 cm in UTM34N. Recompilation at a new fix differs from strict EPSG:2180 translation by rounding and CRS effects; this is not survey accuracy."
+}

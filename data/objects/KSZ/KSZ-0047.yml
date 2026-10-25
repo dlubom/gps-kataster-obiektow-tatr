@@ -14,6 +14,28 @@ external_refs:
   external_id: '{F4DE5D37-5D76-4315-8BCC-4C57A5B68F1C}'
   scope: object
   notes: TPN GLOBALID belongs to the object/source feature.
+- system: geoportal
+  ref_type: url
+  external_id: ORTO-WMS-HighResolution:2026-10-24
+  url: https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/HighResolution?service=WMS&version=1.3.0&layers=Raster&styles=&crs=EPSG%3A2180&bbox=152810%2C562707%2C152870%2C562765&width=1160&height=1200&format=image%2Fpng&transparent=false&request=GetMap
+  scope: object
+  notes: 'm-004: obraz 5 cm/piksel; datowanie 2021-09-09 wnioskowane z indeksu. XY to estymata brzegu;
+    H1140.8 m z lokalnej powierzchni ALS 2012. Nie zidentyfikowano znaku, dokładność nieznana. Punkt TPN
+    opisany jako górny nie jest kotwicą.'
+- system: inne
+  ref_type: url
+  external_id: JKTZ:88f3dda221205c80ae659f0797ff5a7da2c296d8:Raptawicka:1.0
+  url: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/tree/88f3dda221205c80ae659f0797ff5a7da2c296d8/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/
+  scope: object
+  notes: 'm-004: stacja Raptawicka:1.0; pomiary jaskiń F. Filar i M. Parczewski, powierzchnia F. Filar
+    i B. Chlipała. Jedna kotwica Raptawickiej; pozostałe otwory są wynikami sieci, nie niezależnymi fixami.'
+- system: inne
+  ref_type: url
+  external_id: Raptawicka:ALS-anchor:2026-10-25
+  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/ab5b010b105020851808b7b69f940ebeec55a7ab/docs/asdlc/verification/PBI-117.md
+  scope: object
+  notes: 'Źródło kotwicy KSZ-0047/m-004: E562729,5/N152838,5, H1140,8 m PL-KRON86-NH. Dokładność nieznana;
+    historyczny opis sieci na tej stronie zastępuje podana wyżej rewizja JKTZ.'
 measurements:
 - id: m-001
   lat: 49.23985282
@@ -103,16 +125,46 @@ measurements:
     https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/773c8e2e6aa910c8ba78192ae6741d107c6598e2/Poligony/D_Koscieliska/Kom_Wierch/Rapt_Turnia/Syst_Pawlikowskiego/Raptawicka/RAPTAW_S.SRV.'
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
+- id: m-004
+  lat: 49.2398375402
+  lon: 19.8620426566
+  x_1992: 152838.5
+  y_1992: 562729.5
+  elevation_m: 1140.8
+  elevation_datum: Kronstadt86
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: Raptawicka:1.0:ortofoto-ALS:2026-10-24:height-ALS2012:2026-10-25
+  observed_date: '2026-10-25'
+  source_date: null
+  method: ustalenie
+  device: null
+  tags:
+  - ortofoto
+  - lidar
+  - survey_anchor
+  - remote_interpretation
+  - lidar_height_anchor
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: Wschodni brzeg studni, estymata stacji 1.0 ze zdjęcia. H progu 1140,8 m z lokalnej powierzchni
+    ALS 2012, PL-KRON86-NH; nie ze starej kotwicy GPS. Znaku nie rozpoznano, dokładność nieustalona.
+  created_at: '2026-10-24T20:25:49Z'
+  created_by: codex
 best_measurement:
   mode: manual
-  measurement_id: m-003
-  reason: Ręcznie zachowana pozycja stacji Raptawicka:1.0 z sieci pomiarowej JKTZ; automatyczny
-    TPN nie zastępuje tego wskazania.
-  updated_at: '2026-10-23T13:45:51Z'
-  updated_by: dl
+  measurement_id: m-004
+  reason: Estymata brzegu głównej studni ze zdjęcia; wysokość progu z ALS 2012. Znak stacji i dokładność
+    niepotwierdzone.
+  updated_at: '2026-10-25T11:37:09Z'
+  updated_by: codex
 attachments: []
-notes: Imported from PIG source record after operator review.
+notes: Historyczny punkt TPN opisano jako górny, lecz jego przypisania do stacji 5.1 nie potwierdzono.
+  Pozostaje przy tym obiekcie; otwór górny to KSZ-0114.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-23T13:45:51Z'
-updated_by: dl
+updated_at: '2026-10-25T11:37:09Z'
+updated_by: codex
