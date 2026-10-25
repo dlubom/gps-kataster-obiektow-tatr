@@ -11,6 +11,7 @@ import itertools
 import json
 import math
 import sys
+from decimal import Decimal
 from pathlib import Path
 
 from pyproj import Transformer
@@ -39,6 +40,14 @@ def main():
     old_anchor = nodes[anchor["station"]]
     de = anchor["easting"] - old_anchor["easting"]
     dn = anchor["northing"] - old_anchor["northing"]
+    anchor_height = Decimal(str(anchor["elevation_m"]))
+    old_anchor_height = Decimal(str(old_anchor["elevation"]))
+    dz = float(anchor_height - old_anchor_height)
+
+    def height(old_height):
+        # Only a relative network height is used; the old absolute GPS anchor cancels.
+        return float(anchor_height + Decimal(str(old_height)) - old_anchor_height)
+
     geo = Transformer.from_crs(2180, 4326, always_xy=True)
     translated = []
     for index, old in enumerate(source["nodes"]):
@@ -50,7 +59,7 @@ def main():
                 station=old["station"],
                 easting=e,
                 northing=n,
-                elevation=old["elevation"],
+                elevation=height(old["elevation"]),
                 lon=lon,
                 lat=lat,
             )
@@ -66,7 +75,8 @@ def main():
         assert max(abs(x - y) for x, y in zip(before, after, strict=True)) < 1e-8
         errors.append(abs(math.dist(before, (0, 0, 0)) - math.dist(after, (0, 0, 0))))
     assert all(
-        n["elevation"] == old["elevation"]
+        Decimal(str(n["elevation"])) - anchor_height
+        == Decimal(str(old["elevation"])) - old_anchor_height
         for old, n in zip(source["nodes"], translated, strict=True)
     )
     legs = []
@@ -74,8 +84,8 @@ def main():
         legs.append(
             {
                 **leg,
-                "start": [leg["start"][0] + de, leg["start"][1] + dn, leg["start"][2]],
-                "end": [leg["end"][0] + de, leg["end"][1] + dn, leg["end"][2]],
+                "start": [leg["start"][0] + de, leg["start"][1] + dn, height(leg["start"][2])],
+                "end": [leg["end"][0] + de, leg["end"][1] + dn, height(leg["end"][2])],
             }
         )
     result = {
@@ -85,11 +95,11 @@ def main():
         ).hexdigest(),
         "anchor_sha256": hashlib.sha256((HERE / "anchor.json").read_bytes()).hexdigest(),
         "crs": "EPSG:2180",
-        "vertical_datum": "unknown",
+        "vertical_datum": anchor["elevation_datum"],
         "translation": {
             "delta_e": de,
             "delta_n": dn,
-            "delta_z": 0.0,
+            "delta_z": dz,
             "distance_xy": math.hypot(de, dn),
             "rotation_deg": 0.0,
             "scale": 1.0,
@@ -115,7 +125,8 @@ def main():
         "drawing_legs": len(legs),
         "pairwise_checks": len(errors),
         "max_pairwise_distance_difference_m": max(errors),
-        "all_elevations_unchanged": True,
+        "all_relative_elevations_unchanged": True,
+        "vertical_anchor_replaced": True,
         "translation": result["translation"],
     }
     (output / "geometry-check.json").write_text(json.dumps(check, indent=2) + "\n")

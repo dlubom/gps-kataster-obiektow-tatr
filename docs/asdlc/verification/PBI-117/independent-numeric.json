@@ -1,61 +1,108 @@
 {
   "status": "PASS",
-  "checks": 345584,
+  "checks": 728138,
+  "baseline_revision": "2a40b8e224ce248296e1d82742728bd9b8b6d8d1",
+  "prior_XY_draft_revision": "7aef39b1bfbc5b3daf88fdeb94b65969ac2d7435",
   "source_revision": "5209496c1be1b1ec86d1cff67e6f691ac2bebe95",
   "nodes": 692,
-  "named_nodes": 589,
   "anonymous_nodes": 103,
+  "named_nodes": 589,
   "legs": 726,
-  "translation_xy_m": [
-    -12.849703046842478,
-    -3.4803757732734084
-  ],
-  "all_node_and_leg_elevations_unchanged": true,
-  "pairwise_checks": 239086,
-  "max_pairwise_distance_change_m": 0,
-  "max_leg_length_change_m": 0,
-  "max_wgs_difference_deg": 0,
-  "max_projection_roundtrip_error_m": 1.877140660839749e-09,
+  "translation_m": {
+    "E": -12.849703046842478,
+    "N": -3.4803757732734084,
+    "Z": -0.51
+  },
+  "adopted_height_m": 1140.8,
+  "datum": "Kronstadt86 / source PL-KRON86-NH",
+  "all_XY_and_WGS_unchanged_from_prior_draft": true,
+  "all_ten_history_measurements_preserved": true,
+  "pairwise_3D_distance_checks": 239086,
+  "pairwise_relative_XY_checks": 239086,
+  "pairwise_exact_decimal_relative_Z_checks": 239086,
+  "max_3D_distance_difference_m": 2.2737367544323206e-13,
+  "max_leg_length_difference_m": 2.2737367544323206e-13,
+  "max_WGS_difference_deg": 0.0,
+  "max_projection_roundtrip_m": 1.877140660839749e-09,
+  "metamorphic_plus_1000": {
+    "production_CLI_run_in_build_copy": true,
+    "old_nodes_and_leg_Z_plus_m": 1000,
+    "new_ALS_anchor_H_unchanged": true,
+    "all_new_nodes_legs_and_entrances_identical": true,
+    "result_delta_Z_m": -1000.51
+  },
   "catalogue": [
     {
       "object": "KSZ-0047",
-      "new_measurement": "m-004",
-      "history_count": 3,
-      "wgs_to_rounded_xy_distance_m": 1.5084244971571467e-06,
-      "best_elevation_m": 1141.31,
-      "previous_best_elevation_m": 1141.31
+      "measurement_id": "m-004",
+      "height_m": 1140.8,
+      "datum": "Kronstadt86",
+      "preserved_history_count": 3
     },
     {
       "object": "KSZ-0064",
-      "new_measurement": "m-004",
-      "history_count": 3,
-      "wgs_to_rounded_xy_distance_m": 0.005919458369020311,
-      "best_elevation_m": 1098.0,
-      "previous_best_elevation_m": 1098.0
+      "measurement_id": "m-004",
+      "height_m": 1097.49,
+      "datum": "Kronstadt86",
+      "preserved_history_count": 3
     },
     {
       "object": "KSZ-0090",
-      "new_measurement": "m-004",
-      "history_count": 3,
-      "wgs_to_rounded_xy_distance_m": 0.002979910482015311,
-      "best_elevation_m": 1096.62,
-      "previous_best_elevation_m": 1096.62
+      "measurement_id": "m-004",
+      "height_m": 1096.11,
+      "datum": "Kronstadt86",
+      "preserved_history_count": 3
     },
     {
       "object": "KSZ-0113",
-      "new_measurement": "m-002",
-      "history_count": 1,
-      "wgs_to_rounded_xy_distance_m": 0.001904787751329008,
-      "best_elevation_m": 1093.68,
-      "previous_best_elevation_m": 1095.805132
+      "measurement_id": "m-002",
+      "height_m": 1093.17,
+      "datum": "Kronstadt86",
+      "preserved_history_count": 1
     }
   ],
-  "las_decoder": "independent Python struct; no laspy/recalculate imports",
-  "las_records": 965828,
-  "all_window_rows_verified": 19975,
-  "complete_window_selection": true,
-  "floor_records_all_fields_verified": 15,
-  "radius_selection_sets_verified": 9,
-  "source_before_sha256": "9308dfc91564445bd70ed2be9cfd95d4e063b9cff5f10d6a7bdfa8d7a985dc7d",
-  "source_after_sha256": "420bb4a65a6fabeeb52417ccc681c4e35a31aec6394dcb6dc8ec3e2faccd8d92"
+  "raw_LAS_decoder": "Python struct, independently decoded; no laspy or project-script import",
+  "all_six_raw_fields_verified": true,
+  "six_point_selection_complete": true,
+  "independent_fit_height_m": 1140.8153542926461,
+  "independent_fit_RMSE_m_not_accuracy": 0.09349476253036193,
+  "datum_verified_from_original_WFS_XML": true,
+  "raw_source_records": [
+    {
+      "merged_record": 283106,
+      "source_tile_index": 0,
+      "original_source_record": 4382108
+    },
+    {
+      "merged_record": 383331,
+      "source_tile_index": 0,
+      "original_source_record": 5626124
+    },
+    {
+      "merged_record": 383359,
+      "source_tile_index": 0,
+      "original_source_record": 5626152
+    },
+    {
+      "merged_record": 383412,
+      "source_tile_index": 0,
+      "original_source_record": 5626205
+    },
+    {
+      "merged_record": 469861,
+      "source_tile_index": 0,
+      "original_source_record": 6100296
+    },
+    {
+      "merged_record": 469915,
+      "source_tile_index": 0,
+      "original_source_record": 6100350
+    }
+  ],
+  "source_hashes": {
+    "docs/asdlc/verification/PBI-117/network-before.json": "9308dfc91564445bd70ed2be9cfd95d4e063b9cff5f10d6a7bdfa8d7a985dc7d",
+    "docs/asdlc/verification/PBI-117/anchor.json": "b85804d407187039df56dfa2a3fad3a94836f88796d80c14bbaf73b69a334e9d",
+    "docs/asdlc/verification/PBI-117/results/network-after.json": "5353fd3b0d6fe30982529ab887605e08f0a3104169037695fa1786522df2a718",
+    "docs/asdlc/verification/PBI-117/height/threshold-height.json": "1afcc1f68844d73ad09b60e55be1a2cd8a6b1718ca2ef58cc45c60a14bf07db8"
+  }
 }

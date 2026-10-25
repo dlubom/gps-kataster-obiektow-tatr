@@ -136,6 +136,7 @@ ax.tick_params(axis="x", rotation=35)
 ax.set(
     xlabel="E [m], EPSG:2180",
     ylabel="N [m]",
-    title="692 węzły: ΔE −12,849703 m, ΔN −3,480376 m\nBez obrotu, zmiany skali i wysokości",
+    title="692 węzły: ΔE −12,849703 m, ΔN −3,480376 m, ΔZ −0,51 m\n"
+    "Bez obrotu i zmiany skali; różnice wysokości zachowane",
 )
 fig.savefig(HERE / "network-translation.png", dpi=150)
