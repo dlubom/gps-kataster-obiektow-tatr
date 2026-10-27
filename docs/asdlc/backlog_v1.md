@@ -20,6 +20,21 @@ GPS #38 przygotowuje v1.3.2. Następnie JKTZ odświeży snapshot z publicznego
 CSV GPS i wyda v1.4.10. Końcowe SHA, CI i odbiór wydań wskazują opisy PR-ów.
 [Metoda, ograniczenia i odtworzenie](verification/PBI-117.md).
 
+## PBI-116: Mylna i system Pawlikowskiego — ocena LiDAR / issue #36
+
+Status: badanie wykonane; identyfikacja progu i wybór Best pozostają otwarte.
+Na polecenie użytkownika zastosowano metodę testowego PR #29 do wszystkich
+trzech pozycji Mylnej, północnego wyjścia, Obłazkowej i obu otworów
+Raptawickiej, z porównaniem całej historycznej sieci i lokalnych danych RAW.
+Publiczny skorowidz ujawnił tu tylko ALS 2012; pozyskano i sprawdzono
+965 828 odbić. TPN m-002 jest najlepiej uzasadnioną hipotezą Mylnej S,
+ale nie rozpoznano jednoznacznie portalu/progu. PIG m-001 jest silnie
+niespójny z lokalizacją wejścia. Ranking zależy od geometrii źródłowej;
+TPN Raptawickiej opisuje otwór jako górny, a Obłazkowa wymaga identyfikacji.
+Zachowano cały katalog i wszystkie Best. Nie zmieniono JKTZ/Georeferencera.
+[Raport i odtworzenie](verification/PBI-116.md). Końcowy SHA oraz CI wskazuje
+opis draft PR gałęzi `codex/mylna-lidar-system`. Issue #36 nie jest zamykane.
+
 ## Wydanie v1.3.1
 
 Status: użytkownik zlecił publikację zakresu PR #35 / PBI-115 i zatwierdził

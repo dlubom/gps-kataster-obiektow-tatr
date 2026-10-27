@@ -1,0 +1,6 @@
+numpy==2.5.4
+matplotlib==3.11.2
+laspy==2.7.0
+lazrs==0.8.2
+PyYAML==6.0.3
+pyproj==3.7.2
