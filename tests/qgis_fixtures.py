@@ -40,7 +40,9 @@ def write_jktz_source(
     archive = path / "JKTZ.zip"
     with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as zipped:
         for name, content in (members if members is not None else jktz_members()).items():
-            zipped.writestr(name, content)
+            info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            zipped.writestr(info, content)
     metadata = {
         "schema_version": 1,
         "repository": JKTZ_REPOSITORY,

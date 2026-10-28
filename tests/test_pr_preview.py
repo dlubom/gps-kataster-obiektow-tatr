@@ -6,6 +6,7 @@ import zipfile
 from pathlib import Path
 
 import yaml
+from qgis_fixtures import write_jktz_source
 from test_release_artifacts import _write_sample_data
 
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
@@ -21,6 +22,8 @@ def _build(data_dir: Path, output: Path) -> subprocess.CompletedProcess[str]:
         [
             sys.executable,
             str(SCRIPT),
+            "--jktz-source-dir",
+            str(write_jktz_source(output.parent / "jktz")),
             "--data-dir",
             str(data_dir),
             "--output-dir",
@@ -58,6 +61,7 @@ def test_preview_contains_exact_release_exports_with_provenance_and_checksums(tm
     assert result.returncode == 0, result.stdout + result.stderr
 
     release = build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
         data_dir=data,
         sqlite_path=tmp_path / "release.sqlite",
         output_dir=tmp_path / "release",
@@ -66,7 +70,7 @@ def test_preview_contains_exact_release_exports_with_provenance_and_checksums(tm
     )
     expected = {p.name: p for p in release.artifact_paths if p != release.sqlite_result.sqlite_path}
     assert set(p.name for p in output.iterdir()) == set(expected) | {"preview.json", "SHA256SUMS"}
-    assert len(expected) == 12
+    assert len(expected) == 13
     assert {
         "best-measurements.gpx",
         "chocholowska-lejowa-koscieliska.gpx",
@@ -98,7 +102,7 @@ def test_preview_contains_exact_release_exports_with_provenance_and_checksums(tm
         "kind": "pr-preview",
     }
     checksums = (output / "SHA256SUMS").read_text().splitlines()
-    assert len(checksums) == 13
+    assert len(checksums) == 14
     assert {line.split("  ")[1] for line in checksums} == set(expected) | {"preview.json"}
     for line in checksums:
         digest, name = line.split("  ")

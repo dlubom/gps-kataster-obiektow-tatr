@@ -18,6 +18,8 @@ from gps_kataster_obiektow_tatr.build_db import (
 )
 from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR
 from gps_kataster_obiektow_tatr.excel_export import write_excel_export
+from gps_kataster_obiektow_tatr.jktz_snapshot import DEFAULT_JKTZ_SOURCE_DIR
+from gps_kataster_obiektow_tatr.qgis_export import QGIS_ZIP_FILENAME, write_qgis_export
 from gps_kataster_obiektow_tatr.release_statistics import write_release_statistics
 from gps_kataster_obiektow_tatr.validator import ValidationIssue
 
@@ -33,6 +35,7 @@ class ReleaseArtifactsResult:
     sqlite_zip_path: Path
     statistics_paths: tuple[Path, Path]
     excel_path: Path
+    qgis_path: Path
 
     @property
     def artifact_paths(self) -> tuple[Path, ...]:
@@ -49,6 +52,7 @@ class ReleaseArtifactsResult:
             self.export_result.metadata_path,
             *self.statistics_paths,
             self.excel_path,
+            self.qgis_path,
         )
 
     @property
@@ -66,6 +70,7 @@ def build_release_artifacts(
     generated_at: str | None = None,
     release_version: str | None = None,
     source_commit: str | None = None,
+    jktz_source_dir: Path = DEFAULT_JKTZ_SOURCE_DIR,
 ) -> ReleaseArtifactsResult:
     """Build SQLite, export best measurements and zip the SQLite snapshot."""
 
@@ -97,6 +102,15 @@ def build_release_artifacts(
         release_version=release_version,
         source_commit=source_commit,
     )
+    qgis_path = write_qgis_export(
+        sqlite_path=sqlite_result.sqlite_path,
+        best_geojson_path=export_result.geojson_path,
+        jktz_source_dir=jktz_source_dir,
+        output_path=output_dir / QGIS_ZIP_FILENAME,
+        generated_at=export_result.metadata["generated_at"],
+        release_version=release_version,
+        source_commit=source_commit,
+    )
 
     return ReleaseArtifactsResult(
         sqlite_result=sqlite_result,
@@ -104,6 +118,7 @@ def build_release_artifacts(
         sqlite_zip_path=sqlite_zip_path,
         statistics_paths=statistics_paths,
         excel_path=excel_path,
+        qgis_path=qgis_path,
     )
 
 

@@ -6,6 +6,7 @@ from typing import Any
 
 import pytest
 import yaml
+from qgis_fixtures import write_jktz_source
 
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
 from gps_kataster_obiektow_tatr.data_loader import (
@@ -141,10 +142,14 @@ def test_duplicate_measurements_block_validation_and_release(tmp_path, replaceme
         "output_dir": output / "exports",
     }
     # A valid two-measurement release is the independent positive control.
-    release = build_release_artifacts(**kwargs, generated_at="2026-10-15T00:00:00Z")
+    release = build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
+        **kwargs,
+        generated_at="2026-10-15T00:00:00Z",
+    )
     assert release.export_result.metadata["counts"]["measurements"] == 2
     before = {p.relative_to(output): p.read_bytes() for p in output.rglob("*") if p.is_file()}
-    assert len(before) == 13
+    assert len(before) == 14
     history = obj["measurements"] if replacement == "same" else obj["measurements"][:1]
     content = path.read_text(encoding="utf-8") + yaml.safe_dump({"measurements": history})
     path.write_text(content, encoding="utf-8")
@@ -168,6 +173,7 @@ def test_duplicate_measurements_block_validation_and_release(tmp_path, replaceme
     for target in (output, tmp_path / "new-output"):
         with pytest.raises(ValueError, match="duplicate key.*measurements"):
             build_release_artifacts(
+                jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
                 data_dir=data_dir,
                 sqlite_path=target / "katalog.sqlite",
                 output_dir=target / "exports",

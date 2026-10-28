@@ -11,6 +11,7 @@ from typing import Any
 import pytest
 import yaml
 from openpyxl import load_workbook
+from qgis_fixtures import write_jktz_source
 
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
 from gps_kataster_obiektow_tatr.excel_export import write_excel_export
@@ -31,6 +32,7 @@ def test_build_release_artifacts_writes_full_expected_set(tmp_path: Path) -> Non
     _write_sample_data(data_dir)
 
     result = build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
         data_dir=data_dir,
         sqlite_path=sqlite_path,
         output_dir=output_dir,
@@ -51,6 +53,7 @@ def test_build_release_artifacts_writes_full_expected_set(tmp_path: Path) -> Non
         output_dir / "statistics.json",
         output_dir / "statistics.md",
         output_dir / "katalog.xlsx",
+        output_dir / "katalog-qgis.zip",
     )
     for artifact_path in result.artifact_paths:
         assert artifact_path.exists()
@@ -80,6 +83,8 @@ def test_build_release_artifacts_cli_is_local_dry_run(tmp_path: Path) -> None:
         [
             sys.executable,
             str(BUILD_RELEASE_SCRIPT),
+            "--jktz-source-dir",
+            str(write_jktz_source(tmp_path / "jktz")),
             "--data-dir",
             str(data_dir),
             "--sqlite-output",
@@ -113,6 +118,7 @@ def test_build_release_artifacts_cli_is_local_dry_run(tmp_path: Path) -> None:
         "statistics.json",
         "statistics.md",
         "katalog.xlsx",
+        "katalog-qgis.zip",
     ):
         assert (output_dir / filename).exists()
     assert sqlite_path.exists()
@@ -148,6 +154,7 @@ def test_statistics_count_selected_points_separately_from_history(tmp_path: Path
     _write_yaml(data_dir / "caves/C-0001.yml", cave)
 
     result = build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
         data_dir=data_dir,
         sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",
@@ -209,6 +216,7 @@ def test_statistics_use_packaged_method_and_tags_for_each_selected_measurement(
     _write_yaml(data_dir / "caves/C-0001.yml", cave)
 
     result = build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
         data_dir=data_dir,
         sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",
@@ -249,6 +257,7 @@ def test_statistics_reject_selected_measurement_missing_from_packaged_history(
     sqlite_path = tmp_path / "db.sqlite"
     output_dir = tmp_path / "exports"
     build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
         data_dir=data_dir,
         sqlite_path=sqlite_path,
         output_dir=output_dir,
@@ -283,6 +292,7 @@ def test_statistics_are_deterministic_and_support_an_empty_catalog(tmp_path: Pat
     for name in ("first", "second"):
         output_dir = tmp_path / name
         build_release_artifacts(
+            jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
             data_dir=data_dir,
             sqlite_path=output_dir / "db.sqlite",
             output_dir=output_dir,
@@ -319,6 +329,7 @@ def test_excel_preserves_best_and_full_history_with_local_measurement_ids(tmp_pa
     cave["object_ids"].append("KSW-0002")
     _write_yaml(data_dir / "caves/C-0001.yml", cave)
     result = build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
         data_dir=data_dir,
         sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",
@@ -395,6 +406,7 @@ def test_excel_preserves_dates_across_1900_boundary(
     _write_yaml(data_dir / "objects/KSW/KSW-0001.yml", obj)
 
     result = build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
         data_dir=data_dir,
         sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",
@@ -417,6 +429,7 @@ def test_excel_empty_catalog_has_headers_without_fake_records(tmp_path: Path) ->
     for name in ("objects", "caves", "relations"):
         (data_dir / name).mkdir(parents=True)
     build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
         data_dir=data_dir,
         sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",
@@ -435,6 +448,7 @@ def test_excel_rejects_text_truncation_without_replacing_existing_workbook(tmp_p
     data_dir = tmp_path / "data"
     _write_sample_data(data_dir)
     result = build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
         data_dir=data_dir,
         sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",

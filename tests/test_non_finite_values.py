@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from qgis_fixtures import write_jktz_source
 
 from gps_kataster_obiektow_tatr.best_measurement import select_default_best_measurement_id
 from gps_kataster_obiektow_tatr.best_measurements_export import (
@@ -73,6 +74,7 @@ def test_non_finite_measurement_blocks_validation_and_all_artifacts(
     data_dir, path, obj = finite_dataset
     output = tmp_path / "output"
     result = build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
         data_dir=data_dir,
         sqlite_path=output / "katalog.sqlite",
         output_dir=output / "exports",
@@ -80,7 +82,7 @@ def test_non_finite_measurement_blocks_validation_and_all_artifacts(
     )
     json.loads(result.export_result.geojson_path.read_text(), parse_constant=_reject_json_constant)
     before_output = _snapshot(output)
-    assert len(before_output) == 13
+    assert len(before_output) == 14
     # Corrupt a historical, rejected, non-best measurement: the entire history is checked.
     other = deepcopy(obj["measurements"][0])
     other.update(id="m-002", verification_status="odrzucony")
@@ -105,6 +107,7 @@ def test_non_finite_measurement_blocks_validation_and_all_artifacts(
             export_best_measurements(data_dir=data_dir, output_dir=target / "exports")
         with pytest.raises(BuildDatabaseValidationError, match="MEASUREMENT_NON_FINITE"):
             build_release_artifacts(
+                jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
                 data_dir=data_dir,
                 sqlite_path=target / "katalog.sqlite",
                 output_dir=target / "exports",
@@ -150,6 +153,7 @@ def test_optional_numbers_preserve_null_zero_and_finite_values(finite_dataset, t
     path.write_text(yaml.safe_dump(obj), encoding="utf-8")
     assert not any(i.severity == ValidationSeverity.ERROR for i in validate_data_dir(data_dir))
     result = build_release_artifacts(
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
         data_dir=data_dir,
         sqlite_path=tmp_path / "katalog.sqlite",
         output_dir=tmp_path / "exports",
