@@ -156,6 +156,12 @@ def test_qgis_project_opens_with_best_only_and_a_single_selected_tpn_basemap(qgi
         assert native.attrib["hasScaleBasedVisibilityFlag"] == "1"
         assert float(native.attrib["minScale"]) == 25000
     assert len(project.findall(".//Bookmarks/Bookmark")) >= 2
+    assert {n.attrib["name"] for n in project.findall(".//text-style/families/family")} >= {
+        "Arial",
+        "DejaVu Sans",
+        "Noto Sans",
+        "Liberation Sans",
+    }
     assert not project.findall(".//pythonCode")
     assert not project.findall(".//actionsetting/action")
 

@@ -7,7 +7,7 @@ uruchamia `PR export preview`. Po udanym buildzie komentarz bota
 **Paczka testowa eksportów** zawiera link **Pobierz ZIP eksportów**.
 Pobierz po zalogowaniu do GitHub i rozpakuj paczkę, aby obejrzeć np.
 Excel Best/Full, GPX w GPS lub GeoJSON/Shapefile w QGIS.
-ZIP obejmuje wszystkie dwanaście plików wydania wymienionych poniżej,
+ZIP obejmuje wszystkie trzynaście plików wydania wymienionych poniżej,
 `preview.json` i `SHA256SUMS` (`sha256sum -c SHA256SUMS` po rozpakowaniu).
 SQLite i Shapefile zachowują własne wewnętrzne ZIP-y jak w wydaniu.
 
@@ -39,6 +39,7 @@ i pobraniu ZIP-a. Odbiór tego wyjątku jest opisany w PR.
 Lokalny odpowiednik buildu (wyjściowy katalog musi jeszcze nie istnieć):
 
 ```bash
+uv run --frozen python scripts/fetch_jktz_release.py --output-dir build/inputs/jktz
 uv run --frozen python scripts/build_pr_preview.py \
   --output-dir build/local-pr-preview --repository dlubom/gps-kataster-obiektow-tatr \
   --pr-number 1 --head-sha HEAD_SHA --base-sha BASE_SHA --merge-sha MERGE_SHA \
@@ -53,6 +54,7 @@ wobec checkoutu i rodziców commitu. Paczki nie zmieniają tagowego procesu wyda
 Ten dokument opisuje lokalna paczke generowana przez:
 
 ```bash
+uv run python scripts/fetch_jktz_release.py --output-dir build/inputs/jktz
 uv run python scripts/build_release_artifacts.py
 ```
 
@@ -82,6 +84,7 @@ sekcji `CHANGELOG.md` o tym samym numerze wersji.
 | `build/exports/statistics.md` | Tabele PL/EN/SK dodawane do opisu wydania. | Markdown, rozwijane sekcje językowe. |
 | `build/exports/statistics.json` | Te same statystyki do dalszego przetwarzania. | JSON, `statistics_schema_version: 1`. |
 | `build/exports/katalog.xlsx` | Czytelny Excel: wybrane punkty oraz pełne dane z historią. | XLSX, arkusze Best i Full. |
+| `build/exports/katalog-qgis.zip` | Przenośny projekt QGIS, historia GPS, podkłady i modele JKTZ. | QGS, GeoJSON WGS84 i oryginalne Shapefile XYZ EPSG:32634. |
 
 Statystyki pokazują osobno źródło i sposób wyznaczenia pozycji, dla punktów
 Best oraz pełnej historii. `selected_points.by_position_method` i
@@ -91,6 +94,59 @@ z `lidar` i `gnss_anchor`) oraz `survey_anchor` (`source_record` z
 `survey_anchor`). Jawna metoda ma pierwszeństwo; dowiązanie do GNSS nie
 jest bezpośrednim pomiarem GNSS. Rozbicie nie deklaruje dokładności ani
 geodezyjnego rodzaju GNSS. Źródłowe `wlasne` ma etykietę „Opracowania własne”.
+
+## `katalog-qgis.zip`
+
+Rozpakuj **cały ZIP** i otwórz `kataster.qgs` w QGIS 3.44 LTR lub 4.0.1.
+Nie przenoś samego projektu bez katalogów `points/` i `jktz/`. Projekt ma
+ścieżki względne i widok 2D w EPSG:2180, bez pluginów, makr i akcji.
+
+| Warstwa | Domyślnie | Zawartość |
+|---|---|---|
+| ★ Best | włączona | Zapisany wybór każdego obiektu, bez ponownego rankingu. |
+| ○ Pozostałe | wyłączona | Pozostałe pomiary poza odrzuconymi. |
+| × Odrzucone | wyłączona | Odrzucone pomiary poza Best. |
+| Linie do Best | wyłączona | Dodatnia różnica XY w metrach PL-1992 do wybranego punktu. |
+| Full | wyłączona | Pełna historia do tabeli atrybutów, także pomiary odrzucone. |
+| JKTZ / osobny model | wyłączona | Opublikowane ciągi pomiarowe, zachowane XYZ i EPSG:32634. |
+
+Odrzucony Best pozostaje w Best. Koincydentne pomiary pozostają w tabeli,
+bez linii o zerowej długości. Wybierz warstwę, otwórz tabelę atrybutów lub
+użyj Identify Features. Show Map Tips pokazuje nazwę, ID, źródło, status,
+różnicę XY, dokładność i uwagi. Etykiety pojawiają się po przybliżeniu.
+Zakładki regionalne są grupowane według prefiksów ID.
+
+Podkłady **online**: TPN RGB 2020 (wybrany), RGB 2018, NMT, NMPT oraz OSM.
+W grupie TPN wybiera się jeden podkład. Przy skali 1:25000 i większym
+oddaleniu TPN jest ukryte, a OSM służy do przeglądu całego zbioru.
+Kafelki TPN mają poziomy 15–20. NMT/NMPT to obrazy JPG, **nie numeryczne
+rastry wysokości**; nie określono ich daty, datum pionowego ani dokładności.
+Usługi mogą być niedostępne; punkty i JKTZ pozostają lokalne.
+Źródła: [TPN](https://tpn.obliview.com/),
+[OpenStreetMap i autorzy](https://www.openstreetmap.org/copyright).
+
+Osobny krok pobrania ustala **najnowsze stabilne wydanie JKTZ raz na build**.
+Builder i odbiór nie łączą się z serwerami map ani GitHub. `manifest.json`
+zapisuje GPS version/commit/czas i hashe SQLite/Best oraz tag JKTZ, URL wydania
+i assetu, SHA-256 archiwum, warstwy, liczniki i hashe plików. Licencja GPS
+to CC BY 4.0. JKTZ zachowuje CC BY-SA 4.0 i oryginalne pliki atrybucji
+w `jktz/`. Podkłady są odwołaniami do usług, bez kopiowania ich kafelków.
+
+Nazwy modeli JKTZ są prefiksami eksportów, nie automatycznym powiązaniem
+z obiektami GPS. Linie są ciągami pomiarowymi, nie obrysem ścian jaskiń.
+Nie przesuwamy ich do GPS Best. GPS i JKTZ są osobnymi migawkami;
+zachowanie Z nie potwierdza jego datum ani dokładności.
+
+Te same lokalne wejścia, czas i pochodzenie dają identyczny bajtowo ZIP.
+Kolejny build może pobrać nowsze JKTZ. Do odtworzenia zachowaj `JKTZ.zip`
+i `source.json` z katalogu wejściowego; sam ZIP QGIS zawiera wybrane modele
+i ich pochodzenie, a nie całe źródłowe archiwum wydania JKTZ.
+
+Release i preview blokuje niezależny odbiór przeniesionej paczki w natywnych
+QGIS **3.44.15 i 4.0.1**, w kontenerach bez sieci: porównanie z SQLite/JKTZ,
+CRS, dostawcy warstw, domyślna widoczność, skale, etykiety, map tips i render
+lokalnych wektorów. Nie jest to test dostępności usług online.
+[Lokalne odtwarzanie i odbiór](operations.md#paczka-qgis-i-wejście-jktz).
 
 ## `katalog.xlsx`
 

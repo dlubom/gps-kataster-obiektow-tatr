@@ -67,7 +67,8 @@ def test_release_workflow_publishes_expected_files_from_changelog() -> None:
     assert "uv run python scripts/validate.py" in run_commands
     assert (
         "uv run python scripts/build_release_artifacts.py "
-        '--release-version "$GITHUB_REF_NAME" --source-commit "$GITHUB_SHA"'
+        '--release-version "$GITHUB_REF_NAME" --source-commit "$GITHUB_SHA" '
+        "--jktz-source-dir build/inputs/jktz"
     ) in run_commands
 
     notes_step = next(
@@ -116,5 +117,6 @@ def test_release_upload_includes_full_gpx_and_all_three_groups(tmp_path):
         "chocholowska-lejowa-koscieliska.gpx",
         "mietusia-sucha-woda.gpx",
         "pozostale-pl-sk.gpx",
+        "katalog-qgis.zip",
     ):
         assert args.count("build/exports/" + filename) == 1

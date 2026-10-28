@@ -8,6 +8,14 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Dodano
+
+- `katalog-qgis.zip` w wydaniach i podglądach PR: Best domyślnie włączone,
+  pozostałe/odrzucone pomiary, Full i linie różnic, przełączane podkłady TPN
+  i OSM oraz per-model ciągi najnowszego stabilnego wydania JKTZ.
+- Jawne pochodzenie i osobna atrybucja JKTZ; odbiór przeniesionej paczki
+  offline w QGIS 3.44.15 i 4.0.1 przed uploadem.
+
 ## [v1.3.2] - 2026-10-25
 
 ### Dodano

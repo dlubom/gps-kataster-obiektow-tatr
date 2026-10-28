@@ -299,6 +299,9 @@ def _vector_layer(parent: ET.Element, spec: dict) -> None:
                 "allowHtml": "0",
             },
         )
+        families = ET.SubElement(style, "families")
+        for family in ("Arial", "DejaVu Sans", "Noto Sans", "Liberation Sans"):
+            ET.SubElement(families, "family", {"name": family})
         ET.SubElement(
             style,
             "text-buffer",
