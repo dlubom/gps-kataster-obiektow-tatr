@@ -1,6 +1,22 @@
 # AS-DLC project context
 
-Last updated: 2026-10-25
+Last updated: 2026-10-28
+
+## Projekt QGIS — PBI-118
+
+Po wywiadzie użytkownik zatwierdził nową paczkę `katalog-qgis.zip` w release
+i preview PR oraz zlecił wdrożenie jako jeden PBI i PR. Best włączone;
+pozostałe, odrzucone, linie i per-model ciągi JKTZ wyłączone. Punkty są
+lokalną migawką tego samego buildu, JKTZ osobną migawką najnowszego stabilnego
+wydania ustalonego raz przy budowaniu; nie przesuwamy jego geometrii.
+Mapa 2D ma podkłady TPN RGB 2020/2018, obrazy NMT/NMPT i OSM. Przy oddaleniu
+pokazujemy OSM, aby ograniczyć pobieranie szczegółowych kafelków TPN.
+Weryfikacja rozpakowanego ZIP w QGIS 3.44.15/4.0.1 odbywa się offline
+przed publikacją; pobranie JKTZ jest osobnym krokiem online.
+Status: w toku na `codex/qgis-release`, baza main `13d7342`.
+[Plan i kryteria](plans/PBI-118-qgis-release.md). Merge, tag i wydanie
+wymagają odrębnego polecenia.
+
 
 ## Raptawicka jako kotwica systemu Pawlikowskiego — PBI-117
 
