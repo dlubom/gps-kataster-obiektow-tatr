@@ -146,6 +146,8 @@ Release i preview blokuje niezależny odbiór przeniesionej paczki w natywnych
 QGIS **3.44.15 i 4.0.1**, w kontenerach bez sieci: porównanie z SQLite/JKTZ,
 CRS, dostawcy warstw, domyślna widoczność, skale, etykiety, map tips i render
 lokalnych wektorów. Nie jest to test dostępności usług online.
+Obie wersje sprawdzają również scenariusze pustego katalogu GPS i pustych
+warstw alternatywnych; puste GeoJSON mają jawnie określony typ geometrii.
 [Lokalne odtwarzanie i odbiór](operations.md#paczka-qgis-i-wejście-jktz).
 
 ## `katalog.xlsx`

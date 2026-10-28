@@ -9,6 +9,7 @@ import html
 import json
 import math
 import os
+import shutil
 import sqlite3
 import tempfile
 import xml.etree.ElementTree as ET
@@ -206,9 +207,13 @@ def verify_sources(package, sqlite_zip, jktz_source_dir, destination):
     require(len(native) == len(manifest["layers"]) + 5, "Project layer count")
     for layer in manifest["layers"]:
         node = native[layer["id"]]
+        source_uri = "./" + layer["path"]
+        if layer["role"] != "jktz" and layer["count"] == 0:
+            source_uri += "|geometrytype=" + (
+                "LineString" if layer["role"] == "differences" else "Point"
+            )
         require(
-            node.findtext("provider") == "ogr"
-            and node.findtext("datasource") == "./" + layer["path"],
+            node.findtext("provider") == "ogr" and node.findtext("datasource") == source_uri,
             "Relative local provider",
         )
     allowed = {
@@ -241,10 +246,23 @@ def verify_sources(package, sqlite_zip, jktz_source_dir, destination):
     return manifest
 
 
+def init_native():
+    from qgis.core import QgsApplication
+
+    app = QgsApplication([], False)
+    prefix = os.environ.get("QGIS_PREFIX_PATH")
+    if prefix:
+        app.setPrefixPath(prefix, True)
+        if (Path(prefix) / "Resources/qgis").is_dir():
+            app.setPkgDataPath(str(Path(prefix) / "Resources/qgis"))
+            app.setPluginPath(str(Path(prefix) / "PlugIns/qgis"))
+    app.initQgis()
+    return app
+
+
 def verify_native(destination, manifest):
     from qgis.core import (
         Qgis,
-        QgsApplication,
         QgsExpression,
         QgsExpressionContext,
         QgsExpressionContextScope,
@@ -257,14 +275,6 @@ def verify_native(destination, manifest):
     from qgis.PyQt.QtCore import QSize
     from qgis.PyQt.QtGui import QColor
 
-    app = QgsApplication([], False)
-    prefix = os.environ.get("QGIS_PREFIX_PATH")
-    if prefix:
-        app.setPrefixPath(prefix, True)
-        if (Path(prefix) / "Resources/qgis").is_dir():
-            app.setPkgDataPath(str(Path(prefix) / "Resources/qgis"))
-            app.setPluginPath(str(Path(prefix) / "PlugIns/qgis"))
-    app.initQgis()
     project = QgsProject.instance()
     require(project.read(str(destination / "kataster.qgs")), "Native project read")
     require(project.crs().authid() == "EPSG:2180", "Native project CRS")
@@ -377,6 +387,7 @@ def verify_native(destination, manifest):
         json.dumps(
             {
                 "qgis": Qgis.QGIS_VERSION,
+                "scenario": manifest.get("scenario", "actual-package"),
                 "layers": len(project.mapLayers()),
                 "counts": manifest["counts"],
                 "offline_render": "PASS",
@@ -384,7 +395,30 @@ def verify_native(destination, manifest):
             sort_keys=True,
         )
     )
-    # Let Python destroy Qt wrappers before the process releases the QGIS runtime.
+
+
+def verify_empty_scenarios(destination, manifest):
+    """Exercise both empty GPS and empty partitions in every pinned native runtime."""
+    for scenario, roles in (
+        ("empty-gps", {"best", "full", "other", "rejected", "differences"}),
+        ("empty-alternatives", {"other", "rejected", "differences"}),
+    ):
+        probe = destination.parent / scenario
+        shutil.copytree(destination, probe)
+        modified = json.loads(json.dumps(manifest))
+        modified["scenario"] = scenario
+        xml = ET.parse(probe / "kataster.qgs")
+        nodes = {n.findtext("id"): n for n in xml.findall("./projectlayers/maplayer")}
+        for spec in modified["layers"]:
+            if spec["role"] in roles:
+                (probe / spec["path"]).write_text('{"type":"FeatureCollection","features":[]}')
+                spec["count"] = modified["counts"][spec["role"]] = 0
+                geometry = "LineString" if spec["role"] == "differences" else "Point"
+                nodes[spec["id"]].find("datasource").text = (
+                    "./" + spec["path"] + "|geometrytype=" + geometry
+                )
+        xml.write(probe / "kataster.qgs", encoding="utf-8", xml_declaration=True)
+        verify_native(probe, modified)
 
 
 def main():
@@ -396,7 +430,11 @@ def main():
     with tempfile.TemporaryDirectory(prefix="qgis-relocated-") as temporary:
         destination = Path(temporary) / "package"
         manifest = verify_sources(args.package, args.sqlite_zip, args.jktz_source_dir, destination)
+        app = init_native()
         verify_native(destination, manifest)
+        verify_empty_scenarios(destination, manifest)
+        # Keep the runtime alive until all Python/Qt wrappers have gone out of scope.
+        del app
 
 
 if __name__ == "__main__":

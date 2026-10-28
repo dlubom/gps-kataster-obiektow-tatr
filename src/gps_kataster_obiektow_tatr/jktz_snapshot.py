@@ -153,10 +153,12 @@ def fetch_latest_jktz(output_dir: Path, *, token: str | None = None) -> Path:
         raise ValueError(f"JKTZ input directory already exists: {output_dir}")
     output_dir.parent.mkdir(parents=True, exist_ok=True)
     headers = {"Accept": "application/vnd.github+json", "User-Agent": "gps-kataster-qgis"}
-    if token:
-        headers["Authorization"] = f"Bearer {token}"
     try:
         request = urllib.request.Request(LATEST_URL, headers=headers)
+        if token:
+            # urllib copies ordinary headers to redirected requests. This
+            # header is sent only to the initial, fixed api.github.com URL.
+            request.add_unredirected_header("Authorization", f"Bearer {token}")
         with urllib.request.urlopen(request, timeout=60) as response:
             payload = response.read(1024 * 1024 + 1)
         if len(payload) > 1024 * 1024:

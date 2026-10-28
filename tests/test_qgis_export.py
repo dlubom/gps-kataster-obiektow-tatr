@@ -249,3 +249,23 @@ def test_qgis_supports_a_legal_empty_catalog(tmp_path, make_data_dir):
     )
     for role in ("full", "best", "other", "rejected", "differences"):
         assert features(members, role) == []
+    project = ET.fromstring(members["kataster.qgs"])
+    for layer in project.findall("./projectlayers/maplayer"):
+        if layer.findtext("id").startswith("gps_"):
+            geometry = "LineString" if "differences" in layer.findtext("id") else "Point"
+            assert layer.findtext("datasource").endswith("|geometrytype=" + geometry)
+
+
+def test_qgis_keeps_empty_partition_typed_in_a_populated_catalog(qgis_inputs, tmp_path):
+    with sqlite3.connect(qgis_inputs["sqlite_path"]) as db:
+        db.execute("UPDATE measurements SET verification_status='nieweryfikowany'")
+    members = build(qgis_inputs, tmp_path / "qgis.zip")
+    assert len(features(members, "best")) == 2
+    assert features(members, "rejected") == []
+    project = ET.fromstring(members["kataster.qgs"])
+    node = next(
+        n
+        for n in project.findall("./projectlayers/maplayer")
+        if n.findtext("id") == "gps_rejected_layer"
+    )
+    assert node.findtext("datasource") == "./points/rejected.geojson|geometrytype=Point"

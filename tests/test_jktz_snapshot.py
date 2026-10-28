@@ -133,6 +133,27 @@ def test_acquisition_does_not_publish_partial_or_overwrite_existing_input(tmp_pa
     assert sentinel.read_bytes() == b"keep"
 
 
+def test_api_redirect_cannot_forward_authorization(tmp_path, monkeypatch):
+    from urllib.request import HTTPRedirectHandler
+
+    fixture = write_jktz_source(tmp_path / "fixture")
+    data = (fixture / "JKTZ.zip").read_bytes()
+    release = release_response(data)
+
+    def open_url(request, **kwargs):
+        if request.full_url.startswith("https://api.github.com/"):
+            assert request.get_header("Authorization") == "Bearer dummy-token"
+            redirected = HTTPRedirectHandler().redirect_request(
+                request, None, 302, "Found", {}, "https://example.invalid/redirect"
+            )
+            assert redirected.get_header("Authorization") is None
+            return io.BytesIO(json.dumps(release).encode())
+        return io.BytesIO(data)
+
+    monkeypatch.setattr("urllib.request.urlopen", open_url)
+    module().fetch_latest_jktz(tmp_path / "resolved", token="dummy-token")
+
+
 @pytest.mark.parametrize("case", ["draft", "prerelease", "wrong-url", "wrong-digest", "wrong-size"])
 def test_acquisition_rejects_unstable_or_mismatched_release_before_publication(
     tmp_path, monkeypatch, case

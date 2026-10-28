@@ -208,7 +208,12 @@ def _vector_layer(parent: ET.Element, spec: dict) -> None:
     )
     ET.SubElement(node, "id").text = spec["id"]
     ET.SubElement(node, "layername").text = spec["name"]
-    ET.SubElement(node, "datasource").text = "./" + spec["path"]
+    datasource = "./" + spec["path"]
+    if spec["role"] != "jktz" and spec["count"] == 0:
+        # Empty GeoJSON has no native geometry metadata. Preserve its intended
+        # type so QGIS retains the symbol and accepts a legal empty partition.
+        datasource += "|geometrytype=" + ("LineString" if line else "Point")
+    ET.SubElement(node, "datasource").text = datasource
     ET.SubElement(node, "provider", {"encoding": "UTF-8"}).text = "ogr"
     _crs(ET.SubElement(node, "srs"), 32634 if spec["role"] == "jktz" else 4326)
     ET.SubElement(node, "previewExpression").text = (
