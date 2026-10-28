@@ -13,12 +13,15 @@ Mapa 2D ma podkłady TPN RGB 2020/2018, obrazy NMT/NMPT i OSM. Przy oddaleniu
 pokazujemy OSM, aby ograniczyć pobieranie szczegółowych kafelków TPN.
 Weryfikacja rozpakowanego ZIP w QGIS 3.44.15/4.0.1 odbywa się offline
 przed publikacją; pobranie JKTZ jest osobnym krokiem online.
-Status: zaimplementowane na `codex/qgis-release`, baza main `13d7342`;
+Status: wykonane na `codex/qgis-release`, baza main `13d7342`;
 [draft PR #39](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/39).
 1006 testów, Ruff i walidacja PASS. Pierwszy preview przeszedł oba natywne
 kontenery; po review poprawiono typowanie pustych warstw i ograniczenie
 tokenu API do pierwszego żądania. Odbiór CI obejmuje też puste scenariusze.
-Aktualne SHA i wyniki końcowego CI/paczka znajdują się w PR.
+Commit implementacji `b93b8f0`: wymagane validate i preview PASS,
+6 natywnych scenariuszy PASS; pobrana paczka i 14 sum SHA-256 PASS.
+Aktualne SHA i wyniki CI/paczka znajdują się w PR. Brak kolejnego
+zatwierdzonego PBI; następna praca wymaga instrukcji użytkownika.
 [Dowody PBI-118](verification/PBI-118.md).
 [Plan i kryteria](plans/PBI-118-qgis-release.md). Merge, tag i wydanie
 wymagają odrębnego polecenia.

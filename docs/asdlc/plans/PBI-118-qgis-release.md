@@ -1,6 +1,6 @@
 # QGIS release package Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Add a portable QGIS 2D package to every release and PR preview, with authoritative GPS Best/Full data, online TPN basemaps and the latest stable released JKTZ traverses.
 
@@ -50,10 +50,10 @@ The user approved the complete design after the `grilling` interview on 2026-10-
 
 **Interfaces:** `fetch_latest_jktz(output_dir: Path, *, token: str | None = None) -> Path` publishes one fresh input directory; `load_jktz_snapshot(source_dir: Path) -> JktzSnapshot` verifies metadata, SHA-256 and complete per-model Shapefile sets without networking. The immutable snapshot exposes version/provenance and selected source member bytes for Task 2.
 
-- [ ] Write tests for a real synthetic PolyLineZ archive, byte-preserved geometry/attribution, checksum mismatch, missing sidecars, duplicate/unsafe members and interrupted acquisition preserving previous output.
-- [ ] Run the tests and observe failures because the snapshot API does not exist.
-- [ ] Implement bounded latest-release acquisition, explicit provenance, local validation and safe selected-member handling. Read an optional token only for the exact GitHub API host; never forward it to asset redirects.
-- [ ] Run targeted tests, then the suite; commit the verified source-boundary step.
+- [x] Write tests for a real synthetic PolyLineZ archive, byte-preserved geometry/attribution, checksum mismatch, missing sidecars, duplicate/unsafe members and interrupted acquisition preserving previous output.
+- [x] Run the tests and observe failures because the snapshot API does not exist.
+- [x] Implement bounded latest-release acquisition, explicit provenance, local validation and safe selected-member handling. Read an optional token only for the exact GitHub API host; never forward it to asset redirects.
+- [x] Run targeted tests, then the suite; commit the verified source-boundary step.
 
 ### Task 2: Generate the portable QGIS package offline
 
@@ -61,12 +61,12 @@ The user approved the complete design after the `grilling` interview on 2026-10-
 
 **Interfaces:** `write_qgis_export(*, sqlite_path: Path, best_geojson_path: Path, jktz_source_dir: Path, output_path: Path, generated_at: str, release_version: str | None, source_commit: str | None) -> Path`. The package manifest describes GPS and JKTZ inputs, local layer roles/counts/checksums and basemaps. Existing builder receives an explicit local `jktz_source_dir` and includes the new ZIP in `artifact_paths`.
 
-- [ ] Write independently derived fixture assertions for selected/manual/rejected-only Best, full history and source attributes, correct geometry axes, positive-distance lines, empty/coincident cases, defaults, overview scale, model groups, relative paths and exact provenance.
-- [ ] Run and observe the missing-exporter failures.
-- [ ] Implement deterministic RFC 7946 point/line GeoJSON, conservative QGIS XML and atomic ZIP writing; retain original JKTZ Shapefile bytes and licensing files.
-- [ ] Verify byte-identical QGIS ZIPs for identical inputs in two directories, and preservation of an existing asset on invalid input. Add invalid/missing Best and malformed-source mutations that tests reject.
-- [ ] Integrate builder/CLI with an explicit local input directory and update existing integration fixtures to provide that real synthetic snapshot. Verify all previous data exports remain unchanged.
-- [ ] Run targeted tests, then the suite; commit the verified generator step.
+- [x] Write independently derived fixture assertions for selected/manual/rejected-only Best, full history and source attributes, correct geometry axes, positive-distance lines, empty/coincident cases, defaults, overview scale, model groups, relative paths and exact provenance.
+- [x] Run and observe the missing-exporter failures.
+- [x] Implement deterministic RFC 7946 point/line GeoJSON, conservative QGIS XML and atomic ZIP writing; retain original JKTZ Shapefile bytes and licensing files.
+- [x] Verify byte-identical QGIS ZIPs for identical inputs in two directories, and preservation of an existing asset on invalid input. Add invalid/missing Best and malformed-source mutations that tests reject.
+- [x] Integrate builder/CLI with an explicit local input directory and update existing integration fixtures to provide that real synthetic snapshot. Verify all previous data exports remain unchanged.
+- [x] Run targeted tests, then the suite; commit the verified generator step.
 
 ### Task 3: Native acceptance gates, CI delivery and documentation
 
@@ -74,12 +74,12 @@ The user approved the complete design after the `grilling` interview on 2026-10-
 
 **Interfaces:** Native verifier takes `--package`, `--sqlite-zip` and `--jktz-source-dir`; it unpacks into a fresh directory, resolves actual providers, compares points against SQLite and model bytes against JKTZ, and renders local vectors without networking. The container wrapper runs both pinned images with `--network none`, read-only repository mount and writable temporary workspace.
 
-- [ ] Write failing integration assertions for the 13th release asset, preview parity/checksum coverage and acquisition/native-check ordering before upload. Exercise actual upload arguments through the existing local `gh` stub.
-- [ ] Implement common input acquisition in release and PR preview; run both native checks before upload. Raise preview timeout only to accommodate measured/native image pulls and checks.
-- [ ] Validate the real latest JKTZ v1.4.12 input, all GPS records, relocated package and both native QGIS versions. Open the final project in the user's desktop QGIS for visual acceptance. Verify offline rendering, layer defaults and source attributes.
-- [ ] Run full Ruff format/lint, pytest, YAML validation, real artifact build, independent artifact/source checks and targeted corruption/mutation checks; record evidence and limitations in PBI-118.
-- [ ] Request one fresh whole-branch review; fix actionable findings with regression tests; commit and push verified changes.
-- [ ] Create/attach the draft PR, confirm remote SHA and exact-SHA CI plus downloaded preview package; mark PBI status appropriately. Do not merge/tag/publish.
+- [x] Write failing integration assertions for the 13th release asset, preview parity/checksum coverage and acquisition/native-check ordering before upload. Exercise actual upload arguments through the existing local `gh` stub.
+- [x] Implement common input acquisition in release and PR preview; run both native checks before upload. Raise preview timeout only to accommodate measured/native image pulls and checks.
+- [x] Validate the real latest JKTZ v1.4.12 input, all GPS records, relocated package and both native QGIS versions. Open the final project in the user's desktop QGIS for visual acceptance. Verify offline rendering, layer defaults and source attributes.
+- [x] Run full Ruff format/lint, pytest, YAML validation, real artifact build, independent artifact/source checks and targeted corruption/mutation checks; record evidence and limitations in PBI-118.
+- [x] Request one fresh whole-branch review; fix actionable findings with regression tests; commit and push verified changes.
+- [x] Create/attach the draft PR, confirm remote SHA and exact-SHA CI plus downloaded preview package; mark PBI status appropriately. Do not merge/tag/publish.
 
 ## Self-review and execution
 

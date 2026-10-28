@@ -4,7 +4,7 @@ Stan na: 2026-10-28
 
 ## PBI-118: Przenośny projekt QGIS w wydaniach i podglądach PR
 
-Status: zaimplementowane i zweryfikowane lokalnie; otwarty
+Status: wykonane; otwarty
 [draft PR #39](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/39).
 Użytkownik zatwierdził pełny zakres i realizację jako jeden PBI oraz PR.
 Nowy `katalog-qgis.zip` zawiera Best/Full, alternatywne i odrzucone pomiary,
