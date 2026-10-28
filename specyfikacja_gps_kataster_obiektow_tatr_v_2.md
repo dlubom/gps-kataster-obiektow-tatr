@@ -1061,10 +1061,38 @@ Każdy release zawiera:
 | `pozostale-pl-sk.gpx` | GPX | Dodatkowy podzbiór: PL/SK poza granicami regionów dolin; do 500 punktów. |
 | `best-measurements.csv` | CSV | Oba układy współrzędnych. |
 | `katalog.xlsx` | Excel | Best: podstawowe pola wybranych punktów z CSV; Full: wszystkie pomiary z danymi obiektu z SQLite, także starsze/odrzucone, z oznaczeniem wyboru. Filtry, typowane liczby i daty, polskie nagłówki. |
+| `katalog-qgis.zip` | QGIS 2D | Przenośny projekt z lokalnymi punktami Best/Full, historią, liniami różnic, modelami JKTZ i podkładami online. |
 | `best-measurements.shp.zip` | ESRI Shapefile | EPSG:2180, QGIS / TPN. |
 | `katalog.sqlite.zip` | SQLite + SpatiaLite | Pełny snapshot. |
 | `metadata.json` | JSON | Liczby obiektów, pomiarów, jaskiń, data buildu, wersja schematu. |
 | `statistics.md`, `statistics.json` | Markdown, JSON | Automatyczne statystyki tej samej paczki: obiekty, pozycje katalogowe, historia pomiarów, rodzaje, źródła, weryfikacja i dostępność dokładności. Wersja wydania, commit źródeł i czas generowania. |
+
+Projekt QGIS ma względne ścieżki, projekt EPSG:2180 i GeoJSON lon/lat WGS84.
+Best pochodzi z autorytatywnego wyboru tego samego buildu; tylko ta warstwa
+punktów jest włączona. Pozostałe, odrzucone, Full i linie do Best są
+wyłączone. Odrzucony Best pozostaje w Best, a koincydentne pomiary w tabeli.
+Linie mierzą dodatnią różnicę XY w PL-1992, nie dokładność pomiaru.
+
+Wydanie JKTZ jest ustalane raz jako latest stable w osobnym kroku online CI.
+Checksum-verified lokalne archiwum jest wejściem buildera i odbioru offline.
+Per-model ciągi zachowują bajty źródła, XYZ i EPSG:32634; grupa i wszystkie
+modele początkowo są wyłączone. Nie przesuwamy ich do GPS ani nie zgadujemy
+powiązania z Obiekt/Jaskinia. Manifest zachowuje GPS version/commit/czas,
+hash SQLite/Best, tag JKTZ, URL-e i SHA-256 archiwum. Atrybucja i licencja
+JKTZ CC BY-SA 4.0 są odrębne od GPS CC BY 4.0.
+
+Podkłady online: TPN RGB 2020 (wybrany), RGB 2018, obrazy NMT/NMPT i OSM.
+TPN działa w wyłączającej się grupie, z poziomami 15–20; jest ukryte przy
+skali 1:25000 i większym oddaleniu, gdzie przegląd zapewnia OSM.
+NMT/NMPT nie są numerycznymi DEM; rok, datum i dokładność są niepotwierdzone.
+Projekt ma regionalne zakładki, etykiety i bezpieczne map tips; bez makr,
+pluginów i akcji. Zmiana wejścia latest może zmienić kolejny build;
+identyczne lokalne wejścia i pochodzenie dają identyczne bajty ZIP.
+
+Przed uploadem wydania i preview wymagany jest natywny odbiór rozpakowanej
+i przeniesionej paczki w QGIS 3.44.15 LTR i 4.0.1, w kontenerach bez sieci:
+porównanie SQLite/JKTZ, warstwy, CRS, widoczność, skale i render lokalny.
+Pobranie JKTZ jest obsługą CI, poza aplikacyjną integracją API z §14.
 
 Excel zachowuje daty dzienne od `1900-01-01` jako daty, a wcześniejsze
 jako tekst ISO `YYYY-MM-DD`, bez zmiany wartości źródłowej.

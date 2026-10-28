@@ -13,6 +13,7 @@ from tempfile import TemporaryDirectory
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from gps_kataster_obiektow_tatr.jktz_snapshot import DEFAULT_JKTZ_SOURCE_DIR  # noqa: E402
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts  # noqa: E402
 
 
@@ -28,6 +29,7 @@ def main() -> int:
     parser.add_argument("--run-id", type=int, required=True)
     parser.add_argument("--run-attempt", type=int, required=True)
     parser.add_argument("--generated-at")
+    parser.add_argument("--jktz-source-dir", type=Path, default=DEFAULT_JKTZ_SOURCE_DIR)
     args = parser.parse_args()
     output = args.output_dir
     if output.exists():
@@ -46,6 +48,7 @@ def main() -> int:
             output_dir=package,
             generated_at=stamp,
             source_commit=args.merge_sha,
+            jktz_source_dir=args.jktz_source_dir,
         )
         assets = [p for p in result.artifact_paths if p != result.sqlite_result.sqlite_path]
         if set(package.iterdir()) != set(assets):

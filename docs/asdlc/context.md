@@ -1,6 +1,31 @@
 # AS-DLC project context
 
-Last updated: 2026-10-25
+Last updated: 2026-10-28
+
+## Projekt QGIS — PBI-118
+
+Po wywiadzie użytkownik zatwierdził nową paczkę `katalog-qgis.zip` w release
+i preview PR oraz zlecił wdrożenie jako jeden PBI i PR. Best włączone;
+pozostałe, odrzucone, linie i per-model ciągi JKTZ wyłączone. Punkty są
+lokalną migawką tego samego buildu, JKTZ osobną migawką najnowszego stabilnego
+wydania ustalonego raz przy budowaniu; nie przesuwamy jego geometrii.
+Mapa 2D ma podkłady TPN RGB 2020/2018, obrazy NMT/NMPT i OSM. Przy oddaleniu
+pokazujemy OSM, aby ograniczyć pobieranie szczegółowych kafelków TPN.
+Weryfikacja rozpakowanego ZIP w QGIS 3.44.15/4.0.1 odbywa się offline
+przed publikacją; pobranie JKTZ jest osobnym krokiem online.
+Status: wykonane na `codex/qgis-release`, baza main `13d7342`;
+[draft PR #39](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/39).
+1006 testów, Ruff i walidacja PASS. Pierwszy preview przeszedł oba natywne
+kontenery; po review poprawiono typowanie pustych warstw i ograniczenie
+tokenu API do pierwszego żądania. Odbiór CI obejmuje też puste scenariusze.
+Commit implementacji `b93b8f0`: wymagane validate i preview PASS,
+6 natywnych scenariuszy PASS; pobrana paczka i 14 sum SHA-256 PASS.
+Aktualne SHA i wyniki CI/paczka znajdują się w PR. Brak kolejnego
+zatwierdzonego PBI; następna praca wymaga instrukcji użytkownika.
+[Dowody PBI-118](verification/PBI-118.md).
+[Plan i kryteria](plans/PBI-118-qgis-release.md). Merge, tag i wydanie
+wymagają odrębnego polecenia.
+
 
 ## Raptawicka jako kotwica systemu Pawlikowskiego — PBI-117
 

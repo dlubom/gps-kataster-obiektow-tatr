@@ -26,6 +26,7 @@ Na tej stronie rozwiń listę **Assets** (pliki do pobrania) i wybierz nazwę z 
 |---|---|
 | Wgrać punkty do GPS | [GPX — `best-measurements.gpx`](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest/download/best-measurements.gpx) |
 | Otworzyć czytelną tabelę w Excelu | `katalog.xlsx` — arkusze **Best** i **Full** |
+| Porównać punkty na ortofotomapie z ciągami jaskiń | `katalog-qgis.zip` — gotowy projekt QGIS |
 | Pobrać tabelę CSV | [CSV — `best-measurements.csv`](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest/download/best-measurements.csv) |
 | Pracować z warstwą punktów w QGIS lub innym programie mapowym | `best-measurements.geojson` lub `best-measurements.shp.zip` |
 | Analizować pełną historię pomiarów | `katalog.sqlite.zip` — baza dla zaawansowanych użytkowników |
@@ -33,6 +34,14 @@ Na tej stronie rozwiń listę **Assets** (pliki do pobrania) i wybierz nazwę z 
 Excel będzie dostępny w wydaniach po v1.0.4. **Best** zawiera wybrane punkty,
 a **Full** pełne dane i historię pomiarów, również starszych i odrzuconych.
 Plik ma filtry, zamrożone nagłówki i polskie nazwy kolumn.
+
+Projekt QGIS będzie dostępny w wydaniach po v1.3.2 oraz w podglądach PR.
+Rozpakuj cały `katalog-qgis.zip` i otwórz `kataster.qgs` w QGIS 3.44 LTR
+lub 4.0.1. Best jest włączone; historia, odrzucone pomiary, linie różnic
+i modele JKTZ są wyłączone. Podkłady TPN RGB 2020/2018, NMT/NMPT i OSM
+wymagają internetu; lokalne punkty i ciągi działają offline.
+Przybliż mapę, aby zobaczyć TPN. NMT/NMPT to obrazy modeli terenu.
+[Warstwy, obsługa i pochodzenie](docs/release_artifacts.md#katalog-qgiszip).
 
 ### GPX w mniejszych plikach
 
@@ -148,6 +157,7 @@ historię pomiarów i wskazanie najlepszego aktualnego pomiaru.
 uv sync
 uv run pytest
 uv run python scripts/validate.py
+uv run python scripts/fetch_jktz_release.py --output-dir build/inputs/jktz
 uv run python scripts/build_release_artifacts.py
 ```
 
@@ -164,3 +174,4 @@ Publiczne wydania są wersjonowane semantycznie tagami `vX.Y.Z` i publikowane
 ręcznie. Repozytorium, dokumentacja i generowane eksporty danych są
 licencjonowane na warunkach Creative Commons Attribution 4.0 International,
 zgodnie z plikiem [LICENSE](LICENSE).
+Dołączone modele JKTZ zachowują odrębną licencję CC BY-SA 4.0 i atrybucję.

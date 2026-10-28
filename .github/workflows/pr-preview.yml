@@ -16,7 +16,7 @@ jobs:
   preview:
     name: Build PR export ZIP
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     env:
       PR_NUMBER: ${{ github.event.pull_request.number }}
       PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
@@ -48,7 +48,12 @@ jobs:
       - name: Sync dependencies
         run: uv sync --frozen
 
-      - name: Build complete release exports and provenance
+      - name: Resolve latest stable JKTZ once
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: uv run --frozen python scripts/fetch_jktz_release.py --output-dir build/inputs/jktz
+
+      - name: Build complete release exports from local inputs
         run: >-
           uv run --frozen python scripts/build_pr_preview.py
           --output-dir build/pr-preview
@@ -56,6 +61,12 @@ jobs:
           --head-sha "$PR_HEAD_SHA" --base-sha "$PR_BASE_SHA"
           --merge-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID"
           --run-attempt "$GITHUB_RUN_ATTEMPT"
+          --jktz-source-dir build/inputs/jktz
+
+      - name: Check relocated package in QGIS 3.44 LTR and 4.0.1 offline
+        run: >-
+          bash scripts/check_qgis_containers.sh
+          build/pr-preview/katalog-qgis.zip build/pr-preview/katalog.sqlite.zip build/inputs/jktz
 
       - name: Upload downloadable ZIP
         uses: actions/upload-artifact@v4

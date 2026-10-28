@@ -37,10 +37,22 @@ jobs:
       - name: Validate YAML data
         run: uv run python scripts/validate.py
 
-      - name: Build release artifacts
+      - name: Resolve latest stable JKTZ once
+        # Resolve the external input once; builders and native checks then stay offline.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: uv run python scripts/fetch_jktz_release.py --output-dir build/inputs/jktz
+
+      - name: Build release artifacts from local inputs
         run: >-
           uv run python scripts/build_release_artifacts.py
           --release-version "$GITHUB_REF_NAME" --source-commit "$GITHUB_SHA"
+          --jktz-source-dir build/inputs/jktz
+
+      - name: Check relocated package in QGIS 3.44 LTR and 4.0.1 offline
+        run: >-
+          bash scripts/check_qgis_containers.sh
+          build/exports/katalog-qgis.zip build/exports/katalog.sqlite.zip build/inputs/jktz
 
       - name: Extract release notes from CHANGELOG.md
         run: |
@@ -69,5 +81,6 @@ jobs:
             build/exports/statistics.json \
             build/exports/statistics.md \
             build/exports/katalog.xlsx \
+            build/exports/katalog-qgis.zip \
             --title "${{ steps.version.outputs.VERSION }}" \
             --notes-file release_notes.md

@@ -26,6 +26,7 @@ and choose a filename from this table.
 |---|---|
 | Load points onto a GPS receiver | [GPX — `best-measurements.gpx`](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest/download/best-measurements.gpx) |
 | Open a formatted Excel workbook | `katalog.xlsx` — **Best** and **Full** sheets |
+| Compare points and cave traverses on orthophotos | `katalog-qgis.zip` — ready-to-open QGIS project |
 | Download a CSV table | [CSV — `best-measurements.csv`](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest/download/best-measurements.csv) |
 | Use a point layer in QGIS or other mapping software | `best-measurements.geojson` or `best-measurements.shp.zip` |
 | Analyse the full measurement history | `katalog.sqlite.zip` — a database for advanced users |
@@ -34,6 +35,14 @@ The Excel workbook will be available in releases after v1.0.4. **Best** contains
 selected points; **Full** contains detailed records and measurement history,
 including older and rejected measurements. Filters and frozen headers are
 included. Column names are in Polish.
+
+The QGIS project will be available in releases after v1.3.2 and in PR previews.
+Extract all of `katalog-qgis.zip` and open `kataster.qgs` in QGIS 3.44 LTR
+or 4.0.1. Best is visible; history, rejected points, difference lines and
+JKTZ models are initially hidden. TPN RGB 2020/2018, NMT/NMPT and OSM need
+internet access; local points and traverses work offline. Zoom in to see TPN.
+NMT/NMPT are rendered terrain images, not numerical elevation rasters.
+[Layers, controls and provenance](docs/release_artifacts.md#katalog-qgiszip).
 
 ### Smaller GPX files
 
@@ -151,6 +160,7 @@ measurement.
 uv sync
 uv run pytest
 uv run python scripts/validate.py
+uv run python scripts/fetch_jktz_release.py --output-dir build/inputs/jktz
 uv run python scripts/build_release_artifacts.py
 ```
 
@@ -167,3 +177,4 @@ Public releases follow Semantic Versioning with `vX.Y.Z` tags and are
 published manually. The repository, documentation and generated data exports
 are licensed under Creative Commons Attribution 4.0 International, as stated
 in [LICENSE](LICENSE).
+Included JKTZ models retain their separate CC BY-SA 4.0 licence and attribution.

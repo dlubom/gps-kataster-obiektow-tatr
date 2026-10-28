@@ -11,6 +11,7 @@ from xml.etree import ElementTree as ET
 import pytest
 import shapefile
 import yaml
+from qgis_fixtures import write_jktz_source
 
 from gps_kataster_obiektow_tatr.best_measurements_export import (
     BestMeasurementsExportValidationError,
@@ -33,10 +34,13 @@ def test_duplicate_local_measurement_id_blocks_exports_and_release(tmp_path, mod
     _write_sample_data(data_dir)
     output = tmp_path / "output"
     build_release_artifacts(
-        data_dir=data_dir, sqlite_path=output / "katalog.sqlite", output_dir=output / "exports"
+        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
+        data_dir=data_dir,
+        sqlite_path=output / "katalog.sqlite",
+        output_dir=output / "exports",
     )
     before = {str(p.relative_to(output)): p.read_bytes() for p in output.rglob("*") if p.is_file()}
-    assert len(before) == 13
+    assert len(before) == 14
     source = data_dir / "objects/KSW/KSW-0001.yml"
     obj = yaml.safe_load(source.read_text())
     duplicate = deepcopy(obj["measurements"][1])
@@ -51,6 +55,7 @@ def test_duplicate_local_measurement_id_blocks_exports_and_release(tmp_path, mod
             export_best_measurements(data_dir=data_dir, output_dir=target / "exports")
         with pytest.raises(BuildDatabaseValidationError, match="DUPLICATE_MEASUREMENT_ID"):
             build_release_artifacts(
+                jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
                 data_dir=data_dir,
                 sqlite_path=target / "katalog.sqlite",
                 output_dir=target / "exports",

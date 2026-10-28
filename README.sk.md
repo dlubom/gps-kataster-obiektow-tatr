@@ -26,6 +26,7 @@ a vyberte názov z tabuľky.
 |---|---|
 | Nahrať body do GPS prijímača | [GPX — `best-measurements.gpx`](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest/download/best-measurements.gpx) |
 | Otvoriť prehľadnú tabuľku v Exceli | `katalog.xlsx` — hárky **Best** a **Full** |
+| Porovnať body a jaskynné polygónové ťahy na ortofotomape | `katalog-qgis.zip` — hotový projekt QGIS |
 | Stiahnuť tabuľku CSV | [CSV — `best-measurements.csv`](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest/download/best-measurements.csv) |
 | Pracovať s bodovou vrstvou v QGIS alebo inom mapovom programe | `best-measurements.geojson` alebo `best-measurements.shp.zip` |
 | Analyzovať celú históriu meraní | `katalog.sqlite.zip` — databáza pre pokročilých používateľov |
@@ -33,6 +34,14 @@ a vyberte názov z tabuľky.
 Excel bude dostupný vo vydaniach po v1.0.4. **Best** obsahuje vybrané body,
 **Full** podrobné údaje a históriu meraní vrátane starších a zamietnutých.
 Súbor má filtre a ukotvené hlavičky. Názvy stĺpcov sú po poľsky.
+
+Projekt QGIS bude dostupný vo vydaniach po v1.3.2 a v náhľadoch PR.
+Rozbaľ celý `katalog-qgis.zip` a otvor `kataster.qgs` v QGIS 3.44 LTR
+alebo 4.0.1. Best je zapnuté; história, zamietnuté merania, spojnice rozdielov
+a modely JKTZ sú vypnuté. Podklady TPN RGB 2020/2018, NMT/NMPT a OSM
+vyžadujú internet; lokálne body a ťahy fungujú offline. Priblíž mapu pre TPN.
+NMT/NMPT sú obrazy modelov terénu, nie numerické výškové rastre.
+[Vrstvy, ovládanie a pôvod](docs/release_artifacts.md#katalog-qgiszip).
 
 ### Menšie súbory GPX
 
@@ -148,6 +157,7 @@ meraní a určenie najlepšieho aktuálneho merania.
 uv sync
 uv run pytest
 uv run python scripts/validate.py
+uv run python scripts/fetch_jktz_release.py --output-dir build/inputs/jktz
 uv run python scripts/build_release_artifacts.py
 ```
 
@@ -164,3 +174,4 @@ Verejné vydania používajú sémantické verzovanie a tagy v tvare `vX.Y.Z`;
 publikujú sa ručne. Repozitár, dokumentácia a generované exporty údajov sú
 licencované za podmienok Creative Commons Attribution 4.0 International podľa
 súboru [LICENSE](LICENSE).
+Priložené modely JKTZ zachovávajú samostatnú licenciu CC BY-SA 4.0 a atribúciu.

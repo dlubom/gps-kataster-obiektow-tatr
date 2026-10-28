@@ -1,6 +1,24 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-10-25
+Stan na: 2026-10-28
+
+## PBI-118: Przenośny projekt QGIS w wydaniach i podglądach PR
+
+Status: wykonane; otwarty
+[draft PR #39](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/39).
+Użytkownik zatwierdził pełny zakres i realizację jako jeden PBI oraz PR.
+Nowy `katalog-qgis.zip` zawiera Best/Full, alternatywne i odrzucone pomiary,
+linie rozbieżności oraz opublikowane ciągi JKTZ z najnowszego stabilnego wydania
+ustalonego raz przy budowaniu. Tylko Best jest domyślnie widoczne.
+Podkłady online: TPN RGB 2020/2018, obrazy NMT/NMPT i OSM; przegląd całego
+zbioru używa OSM, TPN jest widoczne po przybliżeniu. Dane źródłowe i Best
+pozostają bez zmian. Paczka ma ścieżki względne, pochodzenie GPS/JKTZ
+i oddzielną atrybucję. Kontrole offline w QGIS 3.44.15 oraz 4.0.1 blokują
+publikację wadliwego artefaktu. Baza: `13d734213328e5491c1a5c3171e2cb0fdcef705c`.
+[Uzgodnienia i plan](plans/PBI-118-qgis-release.md).
+[Odbiór, review i kontrole CI](verification/PBI-118.md). Do scalenia wymagany
+jest udany `Validate code and data`; merge/tag/release nie były zlecone.
+
 
 ## PBI-117: Kotwica Raptawickiej i osiem otworów systemu Pawlikowskiego
 

@@ -3,6 +3,44 @@
 Ten dokument opisuje codzienna prace na danych YAML w V1. Zrodlem prawdy sa
 pliki w `data/`; katalog `build/` zawiera tylko artefakty wygenerowane lokalnie.
 
+## Paczka QGIS i wejście JKTZ
+
+Pełny builder wymaga lokalnej, zweryfikowanej migawki JKTZ. Przygotuj ją
+przed pierwszym buildem (wskazany katalog nie może jeszcze istnieć):
+
+```bash
+uv run --frozen python scripts/fetch_jktz_release.py --output-dir build/inputs/jktz
+uv run --frozen python scripts/build_release_artifacts.py --jktz-source-dir build/inputs/jktz
+bash scripts/check_qgis_containers.sh \
+  build/exports/katalog-qgis.zip build/exports/katalog.sqlite.zip build/inputs/jktz
+```
+
+Tylko pierwsze polecenie pobiera dane: publiczne najnowsze stabilne wydanie
+JKTZ, dokładnie jeden asset `JKTZ-vX.Y.Z.zip`. Weryfikuje deklarowane SHA-256
+i rozmiar oraz lokalny komplet Shapefile XYZ i atrybucję. Powstają
+`JKTZ.zip` i `source.json`. Opcjonalny `GH_TOKEN` dotyczy tylko żądania API;
+nie jest przekazywany do assetu. Brak digestu, niekompletny lub zmieniony
+format blokują build. Nie nadpisuje istniejącego katalogu wejściowego.
+
+Do nowego pobrania użyj nowego katalogu i przekaż `--jktz-source-dir` również
+do `build_pr_preview.py`. Do odtworzenia wcześniejszej paczki użyj zachowanych
+`JKTZ.zip` i `source.json`, identycznego SQLite/Best i parametrów
+`--generated-at`, `--release-version`, `--source-commit`. Nie pobieraj wtedy
+`latest` ponownie. `build/inputs/` jest ignorowane przez Git.
+
+Kontrola kontenerowa pobiera dwie przypięte digestem oficjalne wersje QGIS,
+następnie uruchamia je z `--network none`. Montuje tylko skrypt odbioru,
+dwie paczki i wejście JKTZ, wyłącznie do odczytu, bez checkoutu i poświadczeń.
+Każdy verifier rozpakowuje ZIP w nowym katalogu, ładuje rzeczywiste warstwy,
+porównuje dane źródłowe i renderuje lokalne wektory. Błąd jednej wersji
+zwraca niezerowy exit i blokuje upload. Wymagany jest działający Docker.
+Można też uruchomić `scripts/verify_qgis_package.py` z trzema analogicznymi
+argumentami `--package`, `--sqlite-zip`, `--jktz-source-dir` w Pythonie QGIS;
+`QT_QPA_PLATFORM=offscreen` umożliwia pracę bez pulpitu.
+
+Punkty GPS zachowują CC BY 4.0, a modele JKTZ odrębne CC BY-SA 4.0.
+[Format, warstwy i ograniczenia](release_artifacts.md#katalog-qgiszip).
+
 ## Pobieranie jaskiń, lejów i sztolni z API TPN
 
 ```bash
@@ -381,7 +419,10 @@ czystego checkoutu po review zmian w YAML:
 4. Zbuduj artefakty release lokalnie jako dry-run:
 
    ```bash
+   uv run python scripts/fetch_jktz_release.py --output-dir build/inputs/jktz
    uv run python scripts/build_release_artifacts.py
+   bash scripts/check_qgis_containers.sh \
+     build/exports/katalog-qgis.zip build/exports/katalog.sqlite.zip build/inputs/jktz
    ```
 
 5. Sprawdz `build/exports/metadata.json`, zwlaszcza liczniki:
@@ -400,6 +441,9 @@ czystego checkoutu po review zmian w YAML:
    - `best-measurements.shp.zip`,
    - `metadata.json`,
    - `katalog.sqlite.zip`.
+
+   Dodatkowo: trzy regionalne GPX, `katalog.xlsx`, `statistics.json`,
+   `statistics.md` i `katalog-qgis.zip` (łącznie 13 publicznych plików).
 
    Dokladny przeglad kolumn i pol tych plikow jest w
    `docs/release_artifacts.md`.
@@ -424,6 +468,7 @@ Repozytorium, dokumentacja i generowane eksporty danych sa licencjonowane jako
 Creative Commons Attribution 4.0 International, zgodnie z plikiem `LICENSE`.
 Referencje zrodlowe zapisane w YAML i eksportach trzeba zachowywac jako
 atrybucje danych.
+Dołączone modele JKTZ mają odrębną licencję CC BY-SA 4.0.
 
 W poczatkowych paczkach danych duzy udzial statusu
 `verification_status: nieweryfikowany` jest oczekiwany. Import z PIG/TPN tworzy

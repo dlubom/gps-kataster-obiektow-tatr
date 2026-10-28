@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from qgis_fixtures import write_jktz_source
 
 from gps_kataster_obiektow_tatr import data_loader
 from gps_kataster_obiektow_tatr.best_measurements_export import export_best_measurements
@@ -82,6 +83,7 @@ def test_invalid_input_preserves_outputs(
         cave["object_ids"] = ["KSW-0001"]
         (good_data / "caves" / "C-0002.yml").write_text(yaml.safe_dump(cave), encoding="utf-8")
         release = build_release_artifacts(
+            jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
             data_dir=good_data,
             sqlite_path=sqlite_path,
             output_dir=output_dir,
@@ -90,7 +92,7 @@ def test_invalid_input_preserves_outputs(
         assert release.export_result.feature_count == 1
         assert release.export_result.metadata["counts"]["measurements"] == 2
     before = _snapshot(output_root)
-    assert len(before) == (13 if existing else 0)
+    assert len(before) == (14 if existing else 0)
     if interface == "api":
         if operation == "validate":
             assert any(issue.severity == "error" for issue in validate_data_dir(data_dir))
@@ -102,7 +104,10 @@ def test_invalid_input_preserves_outputs(
                     export_best_measurements(data_dir=data_dir, output_dir=output_dir)
                 else:
                     build_release_artifacts(
-                        data_dir=data_dir, sqlite_path=sqlite_path, output_dir=output_dir
+                        jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
+                        data_dir=data_dir,
+                        sqlite_path=sqlite_path,
+                        output_dir=output_dir,
                     )
             assert type(error.value).__name__ == "DataDirectoryError"
             assert str(bad_path) in str(error.value)
@@ -173,10 +178,13 @@ def test_explicit_empty_dataset_is_valid(tmp_path, make_data_dir, interface):
     output_dir = tmp_path / "output" / "exports"
     if interface == "api":
         result = build_release_artifacts(
-            data_dir=data_dir, sqlite_path=sqlite_path, output_dir=output_dir
+            jktz_source_dir=write_jktz_source(tmp_path / "jktz"),
+            data_dir=data_dir,
+            sqlite_path=sqlite_path,
+            output_dir=output_dir,
         )
         assert result.export_result.feature_count == 0
-        assert len(result.artifact_paths) == 13
+        assert len(result.artifact_paths) == 14
     else:
         for operation in ("validate", "sqlite", "export", "release"):
             result = subprocess.run(
@@ -187,7 +195,7 @@ def test_explicit_empty_dataset_is_valid(tmp_path, make_data_dir, interface):
             )
             assert result.returncode == 0, result.stdout + result.stderr
     assert sqlite_path.is_file()
-    assert len(tuple(output_dir.iterdir())) == 12
+    assert len(tuple(output_dir.iterdir())) == 13
 
 
 def _snapshot(root):
@@ -201,7 +209,14 @@ def _command(operation, data_dir, sqlite_path, output_dir):
         "export": ("export_best_measurements.py", ["--output-dir", str(output_dir)]),
         "release": (
             "build_release_artifacts.py",
-            ["--sqlite-output", str(sqlite_path), "--output-dir", str(output_dir)],
+            [
+                "--sqlite-output",
+                str(sqlite_path),
+                "--output-dir",
+                str(output_dir),
+                "--jktz-source-dir",
+                str(write_jktz_source(output_dir.parent.parent / "jktz")),
+            ],
         ),
     }
     name, options = scripts[operation]

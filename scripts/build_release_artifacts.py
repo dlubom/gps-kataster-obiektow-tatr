@@ -27,6 +27,7 @@ from gps_kataster_obiektow_tatr.data_loader import (  # noqa: E402
     DEFAULT_DATA_DIR,
     DataDirectoryError,
 )
+from gps_kataster_obiektow_tatr.jktz_snapshot import DEFAULT_JKTZ_SOURCE_DIR  # noqa: E402
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts  # noqa: E402
 from gps_kataster_obiektow_tatr.validator import format_issue  # noqa: E402
 
@@ -62,6 +63,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--release-version", help="Release tag; omitted for a local preview.")
     parser.add_argument("--source-commit", help="Exact source commit recorded in statistics.")
+    parser.add_argument(
+        "--jktz-source-dir",
+        type=Path,
+        default=DEFAULT_JKTZ_SOURCE_DIR,
+        help="Verified local JKTZ input directory; prepare with scripts/fetch_jktz_release.py.",
+    )
     return parser
 
 
@@ -79,6 +86,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             generated_at=generated_at,
             release_version=args.release_version,
             source_commit=args.source_commit,
+            jktz_source_dir=args.jktz_source_dir,
         )
     except (DataDirectoryError, GpxGroupingError) as exc:
         print(f"error: {exc}", file=sys.stderr)
@@ -86,6 +94,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     except (BuildDatabaseValidationError, BestMeasurementsExportValidationError) as exc:
         for issue in exc.issues:
             print(format_issue(issue))
+        return 1
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
         return 1
 
     for artifact_path in result.artifact_paths:
