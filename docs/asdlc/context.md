@@ -1,6 +1,15 @@
 # AS-DLC project context
 
-Last updated: 2026-10-25
+Last updated: 2026-11-02
+
+## Materiały Marka Jędrzejczaka — issue #41
+
+Na polecenie użytkownika zarchiwizowano dwa oryginały z Downloads w
+`data/sources/marek-jedrzejczak/2026-10-17/`: XLS z raportem GNSS/domiarami
+i PDF z zestawieniem 12 otworów. Pochodzenie, sumy SHA-256 i otwory opisuje
+[issue #41](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/41).
+Materiały oczekują na weryfikację użytkownika; pomiary w YAML i Best
+pozostają bez zmian. Ten krok obejmuje tylko archiwizację źródeł.
 
 ## Raptawicka jako kotwica systemu Pawlikowskiego — PBI-117
 
