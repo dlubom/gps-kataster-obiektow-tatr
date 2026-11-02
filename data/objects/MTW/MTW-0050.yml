@@ -14,6 +14,18 @@ external_refs:
   external_id: '{F6542EAD-9776-4622-A7F3-EB6446DEC297}'
   scope: object
   notes: TPN GLOBALID belongs to the object/source feature.
+- system: inne
+  ref_type: url
+  external_id: MJ:20261017:Zestawienie!B10:D10
+  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/50bf32768edc0912d4768a068b73328d7a46ca61/data/sources/marek-jedrzejczak/2026-10-17/20261017%20Tatry.xls
+  scope: object
+  notes: 'm-003: Marek Jędrzejczak, 20261017 Tatry.xls; Zestawienie!A10:N10, Report!A256:N256. Nazwa w
+    źródle: Dziura w Grzędzie I (otwór). Obserwacje GNSS 2026-10-17; obliczył Marek Jędrzejczak (Speleoclub
+    Wrocław). Układ 1992, geoid PL-EVRF2007-NHv2021artgeo,GGF. Weryfikację Marka potwierdził Dariusz Lubomski
+    2026-11-02; jej data nie została podana. Dokładność końcowego punktu otworu nie jest określona; parametrów
+    mp/mh i rozrzutu powtórzeń punktu GNSS nie przyjęto jako dokładności całego domiaru. Data nagłówka
+    raportu 2026-10-19; data odczytu katalogu do porównania 2026-10-27; data publikacji/aktualności całego
+    pliku nieznana.'
 measurements:
 - id: m-001
   lat: 49.23893142
@@ -66,15 +78,64 @@ measurements:
     TPN WER_LOK: 16-12-2020 FF'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-003
+  lat: 49.23931686849114
+  lon: 19.915285516079464
+  x_1992: 152826.15548009542
+  y_1992: 566604.5532718045
+  elevation_m: 1923.066414741488
+  elevation_datum: PL-EVRF2007-NH
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: MJ:20261017:Zestawienie!B10:D10
+  observed_at: null
+  observed_date: '2026-10-17'
+  source_date: null
+  method: siec_pomiarowa
+  device: GEO / E600 + BRIC4 SN 0143
+  tags:
+  - gnss_anchor
+  - bric4
+  verification_status: zweryfikowany
+  verified_by: Marek Jędrzejczak
+  verified_at: null
+  notes: 'Otwór domierzony BRIC4 od punktu GNSS. Obliczenia i weryfikacja: Marek Jędrzejczak; potwierdzenie
+    D. Lubomskiego z 2026-11-02.'
+  created_at: '2026-11-02T16:50:39Z'
+  created_by: dl
 best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T14:00:00Z'
+  mode: manual
+  measurement_id: m-003
+  reason: Zweryfikowany przez Marka Jędrzejczaka pomiar z 2026-10-17; przyjęty jako obowiązujący na polecenie
+    Dariusza Lubomskiego z 2026-11-02.
+  updated_at: '2026-11-02T16:50:39Z'
   updated_by: dl
-attachments: []
-notes: Imported from PIG source record after operator review.
+attachments:
+- id: a-001
+  kind: raport_gnss
+  measurement_id: m-003
+  path: data/sources/marek-jedrzejczak/2026-10-17/20261017 Tatry.xls
+  caption: 'Marek Jędrzejczak: raport GNSS/domiarów, Zestawienie wiersz 10.'
+  created_at: '2026-11-02T16:50:39Z'
+  created_by: dl
+- id: a-002
+  kind: inne
+  measurement_id: m-003
+  path: data/sources/marek-jedrzejczak/2026-10-17/20261017 Tatry.pdf
+  caption: 'Marek Jędrzejczak: zestawienie 12 otworów, strona 1.'
+  created_at: '2026-11-02T16:50:39Z'
+  created_by: dl
+notes: 'Imported from PIG source record after operator review.
+
+
+  Nazwy według PIG: Dziura w Grzędzie I (T.E-12.14, PIG:1549) i II (T.E-12.13, PIG:1548). Raport Marka
+  Jędrzejczaka przypisuje punkt I do MTW-0050, a II do MTW-0016; te przypisania zachowano. Nowy punkt
+  I leży około 4,40 m na północ od II, podczas gdy opisy PIG umieszczają I około 3 m na południe od II.
+  Rozbieżność przypisania wymaga wyjaśnienia na podstawie morfologii otworów; nie zamieniano pomiarów
+  wyłącznie z powodu bliskości. PIG: https://jaskiniepolski.pgi.gov.pl/Details/Information/1549 oraz https://jaskiniepolski.pgi.gov.pl/Details/Information/1548.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-11-02T16:50:39Z'
+updated_by: dl

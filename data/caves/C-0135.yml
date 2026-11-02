@@ -22,14 +22,20 @@ external_refs:
   notes: PIG catalog record link.
 object_ids:
 - MTW-0013
+- MTW-0076
 notes: 'PIG aliases: Szczelina w Kozim Grzbiecie, Jaskinia Nova, Jaskinia Machajowa
 
   PIG sector: D. Miętusia - Wsch.
 
   PIG morphometry: length_m=3470, depth_m=376, denivelation_m=389
 
-  PIG source state year: 2013'
+  PIG source state year: 2013
+
+
+  Dwa otwory według inwentarza PIG T.E-11.11: I (zachodni) i II (wschodni), plan S. Kotarby 1998. Pomiary
+  Marka Jędrzejczaka z 2026-10-17 przypisano zgodnie z jego raportem. Ich różnica wysokości (II wyżej
+  o około 2,48 m) jest sprzeczna z opisem i przekrojem PIG (II niżej o 2,8 m); nie przyjęto określeń górny/dolny.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
+updated_at: '2026-11-02T16:50:39Z'
 updated_by: dl

@@ -14,6 +14,18 @@ external_refs:
   external_id: '{89420AE8-EB72-4145-B5F7-A9ABC06D6828}'
   scope: object
   notes: TPN GLOBALID belongs to the object/source feature.
+- system: inne
+  ref_type: url
+  external_id: MJ:20261017:Zestawienie!B13:D13
+  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/50bf32768edc0912d4768a068b73328d7a46ca61/data/sources/marek-jedrzejczak/2026-10-17/20261017%20Tatry.xls
+  scope: object
+  notes: 'm-003: Marek Jędrzejczak, 20261017 Tatry.xls; Zestawienie!A13:N13, Report!A315:N315. Nazwa w
+    źródle: Niebieska Studnia (otwór). Obserwacje GNSS 2026-10-17; obliczył Marek Jędrzejczak (Speleoclub
+    Wrocław). Układ 1992, geoid PL-EVRF2007-NHv2021artgeo,GGF. Weryfikację Marka potwierdził Dariusz Lubomski
+    2026-11-02; jej data nie została podana. Dokładność końcowego punktu otworu nie jest określona; parametrów
+    mp/mh i rozrzutu powtórzeń punktu GNSS nie przyjęto jako dokładności całego domiaru. Data nagłówka
+    raportu 2026-10-19; data odczytu katalogu do porównania 2026-10-27; data publikacji/aktualności całego
+    pliku nieznana.'
 measurements:
 - id: m-001
   lat: 49.24269104
@@ -66,15 +78,56 @@ measurements:
     TPN WER_LOK: 2020-01-11 TZK ortofoto'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-003
+  lat: 49.24316463968209
+  lon: 19.91359689448067
+  x_1992: 153252.29
+  y_1992: 566476.51
+  elevation_m: 1853.2333333333333
+  elevation_datum: PL-EVRF2007-NH
+  elevation_source: gnss
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: MJ:20261017:Zestawienie!B13:D13
+  observed_at: null
+  observed_date: '2026-10-17'
+  source_date: null
+  method: gnss
+  device: GEO / E600
+  tags:
+  - gnss
+  verification_status: zweryfikowany
+  verified_by: Marek Jędrzejczak
+  verified_at: null
+  notes: 'GNSS w otworze. Obliczenia i weryfikacja: Marek Jędrzejczak; potwierdzenie D. Lubomskiego z
+    2026-11-02.'
+  created_at: '2026-11-02T16:50:39Z'
+  created_by: dl
 best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T14:00:00Z'
+  mode: manual
+  measurement_id: m-003
+  reason: Zweryfikowany przez Marka Jędrzejczaka pomiar z 2026-10-17; przyjęty jako obowiązujący na polecenie
+    Dariusza Lubomskiego z 2026-11-02.
+  updated_at: '2026-11-02T16:50:39Z'
   updated_by: dl
-attachments: []
+attachments:
+- id: a-001
+  kind: raport_gnss
+  measurement_id: m-003
+  path: data/sources/marek-jedrzejczak/2026-10-17/20261017 Tatry.xls
+  caption: 'Marek Jędrzejczak: raport GNSS/domiarów, Zestawienie wiersz 13.'
+  created_at: '2026-11-02T16:50:39Z'
+  created_by: dl
+- id: a-002
+  kind: inne
+  measurement_id: m-003
+  path: data/sources/marek-jedrzejczak/2026-10-17/20261017 Tatry.pdf
+  caption: 'Marek Jędrzejczak: zestawienie 12 otworów, strona 1.'
+  created_at: '2026-11-02T16:50:39Z'
+  created_by: dl
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-11-02T16:50:39Z'
+updated_by: dl

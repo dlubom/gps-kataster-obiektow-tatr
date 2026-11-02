@@ -57,5 +57,17 @@ do porównania. Źródło podaje układ 1992 i wysokości EVRF2007.
 
 Pochodzenie, lista otworów, źródłowe przypisania ID i dalsza weryfikacja:
 [issue #41](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/41).
-Kozia II nie ma ID w zestawieniu. Archiwizacja nie dodaje pomiarów do YAML
-ani nie zmienia współrzędnych, Best i statusów weryfikacji katalogu.
+Kozia II nie ma ID w oryginalnym zestawieniu; w katalogu otrzymuje `MTW-0076`
+w istniejącej jaskini `C-0135`. Dwanaście wynikowych punktów otworów z XLS
+dodano jako pomiary zweryfikowane przez Marka i ręczne Best na polecenie
+Dariusza Lubomskiego z 2026-11-02. Data weryfikacji i dokładność końcowych
+punktów nie zostały podane. Zachowano pełne wartości XYZ z XLS oraz
+wcześniejsze pomiary; WGS84 obliczono z końcowych punktów PL-1992.
+
+Nazwy katalogowe pozostają zgodne z PIG. Dwa obiekty Koziej to otwór I
+(zachodni, `MTW-0013`) i II (wschodni, `MTW-0076`) według planu S. Kotarby
+1998 w PIG. Raport Marka daje II wyżej o około 2,48 m; opis i przekrój PIG
+podają II niżej o 2,8 m. Nie używamy określeń górny/dolny.
+Raport umieszcza też Dziurę w Grzędzie I na północ od II, przeciwnie do
+opisów PIG. Przypisania autora zachowano i opisano rozbieżności w YAML
+oraz issue; nie zamieniano punktów na podstawie samej bliskości.
