@@ -1,0 +1,216 @@
+{
+  "georeferencer_commit": "a47c390955db88d7bdbb4eada4a9315884e9ccbe",
+  "gps_proposal_commit": "2c6274db14f2de04ccf4ccbd50a27ebe776116ac",
+  "coordinate_pin": {
+    "schema_version": 1,
+    "repository": "dlubom/gps-kataster-obiektow-tatr",
+    "release": "v1.3.2",
+    "asset": "best-measurements.csv",
+    "sha256": "6ef2607dacc02933240e820c42a0bab544790a38b5594a730fc4130b105c9ec0",
+    "snapshot": "best-measurements-v1.3.2.csv"
+  },
+  "georeferencer_inputs_sha256": {
+    "data/coordinate-source/best-measurements-v1.3.2.csv": "6ef2607dacc02933240e820c42a0bab544790a38b5594a730fc4130b105c9ec0",
+    "data/caves/001478/meta.yaml": "1dcb8d3b7310103b29f84e38eddeee6d378678b4eb133e3fba1b70f832b6e534",
+    "data/caves/001478/image.tif": "a5bfd7bd2d401f3b618f088661c7fb26844a714c392a0e3ff1c4961bdb00c9e8",
+    "data/caves/001478/image_original.jpg": "ff773013d2e45a194216b0f0a03ffe2a5b5017862f0f6632f70a8f20a85e4e18",
+    "data/caves/001548/meta.yaml": "20676cd69f86b721ef7ba069b4b0dc6e628ce388dd61516124dc43777996ae6b",
+    "data/caves/001548/image.tif": "b9b7f4daf693043544d222d2ec5373fdadc3a9d0f3fc3c701c19d478cdd52aa5",
+    "data/caves/001548/image_original.jpg": "f2d77d819772f2905c24a2e5706ab3e3ae16683b90bc2388309a7d9241d5fa0b",
+    "data/caves/001549/meta.yaml": "81c6a684f06b1fc5b361b0703052de957518fa3f11460f368eb3e124632d18b2",
+    "data/caves/001549/image.tif": "c7298118ac2a1017b52b199a5d36829b8a2f61c9dd69fbf0af6f61bdad6c086f",
+    "data/caves/001549/image_original.jpg": "bb009d5c25a0ee70d50b5a04ed4d0d4e5fbe44e0e2d3c3e17756033d59f48c76",
+    "data/baseline/2026-10-24/catalogue.json": "b9031ff93f9ca9a1930f3574cd2eddddfd8690235be4bee2610b993858df3541"
+  },
+  "source_measurements": {
+    "MTW-0013": {
+      "E": 566086.3795280812,
+      "N": 152762.70111043475,
+      "H": 1836.9920722623917,
+      "name": "Jaskinia Kozia - otwór I",
+      "source_ref": "MJ:20261017:Zestawienie!B7:D7"
+    },
+    "MTW-0076": {
+      "E": 566179.2691446381,
+      "N": 152763.62849716467,
+      "H": 1839.468682246115,
+      "name": "Jaskinia Kozia - otwór II",
+      "source_ref": "MJ:20261017:Zestawienie!B8:D8"
+    },
+    "MTW-0050": {
+      "E": 566604.5532718045,
+      "N": 152826.15548009542,
+      "H": 1923.066414741488,
+      "name": "Dziura w Grzędzie I",
+      "source_ref": "MJ:20261017:Zestawienie!B10:D10"
+    },
+    "MTW-0016": {
+      "E": 566606.3001782902,
+      "N": 152821.75773975198,
+      "H": 1924.9890695162003,
+      "name": "Dziura w Grzędzie II",
+      "source_ref": "MJ:20261017:Zestawienie!B11:D11"
+    }
+  },
+  "kozia": {
+    "entrance_I_ui_px": [
+      1817.16,
+      1012.22
+    ],
+    "entrance_II_ui_px": [
+      3994.0,
+      952.0
+    ],
+    "entrance_II_pick_tolerance_px": 10,
+    "entrance_II_pick_tolerance_m": 0.42319085907744397,
+    "plan_vector_E_N_m": [
+      92.14563106747825,
+      1.4552952797315923
+    ],
+    "survey_vector_E_N_m": [
+      92.88961655693129,
+      0.9273867299198173
+    ],
+    "plan_length_m": 92.157122400686,
+    "survey_length_m": 92.89424584031325,
+    "same_names_vector_residual_m": 0.9122509772431315,
+    "swapped_names_vector_residual_m": 185.05058777800645,
+    "plan_to_proposed_I_translation_E_N_m": [
+      6.669526813435368,
+      -3.9888880653015804
+    ],
+    "survey_H_II_minus_I_m": 2.476609983723165,
+    "PIG_H_II_minus_I_m": -2.8,
+    "relative_height_disagreement_m": 5.276609983723165,
+    "orientation_status": "unverified; historical_tfw, unchanged",
+    "note": "Reanchoring is a diagnostic translation, not independent validation of the anchored point or an approved plan correction."
+  },
+  "grzeda": {
+    "distance_matrix_new_to_previous_TPN_m": {
+      "MTW-0050": {
+        "MTW-0050": 5.386103998501318,
+        "MTW-0016": 0.3892823128261049
+      },
+      "MTW-0016": {
+        "MTW-0050": 1.3783381371783325,
+        "MTW-0016": 4.6458326586974446
+      }
+    },
+    "same_names_sum_distance_m": 10.031936657198763,
+    "swapped_names_sum_distance_m": 1.7676204500044375,
+    "survey_N_I_minus_II_m": 4.397740343440091,
+    "survey_H_I_minus_II_m": -1.9226547747123277,
+    "PIG_H_I_minus_II_m": 1.7000000000000455,
+    "swapped_labels_H_I_minus_II_m": 1.9226547747123277,
+    "PIG_N_I_minus_II_description_m": -3.0,
+    "morphology_discriminator": "PIG I: entrance shaft ~7 m; PIG II: entrance pit ~1.5 m.",
+    "note": "Plan anchors use the same TPN points shown in the matrix; this is not a second independent positional measurement."
+  },
+  "transforms": {
+    "001478": {
+      "TFW": {
+        "A": 0.04231610724744232,
+        "D": -0.0005020951005629194,
+        "B": -0.0005020951005629194,
+        "E": -0.04231610724744232,
+        "C": 566003.3440015308,
+        "F": 152810.41418660982,
+        "total_rotation_deg": -0.6798021396039501
+      },
+      "UI_corner_E_N": [
+        566003.3230945247,
+        152810.435595711
+      ],
+      "anchor_E_N": [
+        566079.7100012677,
+        152766.68999850005
+      ],
+      "entrance_UI": [
+        1817.16,
+        1012.22
+      ],
+      "orientation": {
+        "mode": "historical_tfw",
+        "status": "unverified",
+        "uncertainty_reason": "Nie ustalono rodzaju północy ani podstawy deklinacji; zachowano orientację historycznego TFW T02.",
+        "image_sha256": "a5bfd7bd2d401f3b618f088661c7fb26844a714c392a0e3ff1c4961bdb00c9e8",
+        "historical": {
+          "catalogue_sha256": "b9031ff93f9ca9a1930f3574cd2eddddfd8690235be4bee2610b993858df3541",
+          "plan_id": "001478",
+          "tfw_sha256": "8d176492a1758889c748c286851309df548a53ef4b8b1166989868a6266cb58c"
+        },
+        "decisions": []
+      }
+    },
+    "001548": {
+      "TFW": {
+        "A": 0.00510766100757867,
+        "D": -6.180590009170665e-05,
+        "B": -6.180590009170665e-05,
+        "E": -0.00510766100757867,
+        "C": 566602.2874807451,
+        "F": 152830.03939156825,
+        "total_rotation_deg": -0.6932810131836858
+      },
+      "UI_corner_E_N": [
+        566602.2849578175,
+        152830.0419763017
+      ],
+      "anchor_E_N": [
+        566604.9399984245,
+        152826.19999729004
+      ],
+      "entrance_UI": [
+        528.84,
+        745.8
+      ],
+      "orientation": {
+        "mode": "historical_tfw",
+        "status": "unverified",
+        "uncertainty_reason": "Nie ustalono rodzaju północy ani podstawy deklinacji; zachowano orientację historycznego TFW T02.",
+        "image_sha256": "b9b7f4daf693043544d222d2ec5373fdadc3a9d0f3fc3c701c19d478cdd52aa5",
+        "historical": {
+          "catalogue_sha256": "b9031ff93f9ca9a1930f3574cd2eddddfd8690235be4bee2610b993858df3541",
+          "plan_id": "001548",
+          "tfw_sha256": "1234bd9b388cef551237faa7058fd57419a1ecec57dc918429e324a973559dc6"
+        },
+        "decisions": []
+      }
+    },
+    "001549": {
+      "TFW": {
+        "A": 0.005109744738133269,
+        "D": -6.218810046410059e-05,
+        "B": -6.218810046410059e-05,
+        "E": -0.005109744738133269,
+        "C": 566603.5320566983,
+        "F": 152823.3197356797,
+        "total_rotation_deg": -0.6972833217426467
+      },
+      "UI_corner_E_N": [
+        566603.52953292,
+        152823.32232164612
+      ],
+      "anchor_E_N": [
+        566605.2900026527,
+        152820.82000286505
+      ],
+      "entrance_UI": [
+        350.44,
+        485.45
+      ],
+      "orientation": {
+        "mode": "historical_tfw",
+        "status": "unverified",
+        "uncertainty_reason": "Nie ustalono rodzaju północy ani podstawy deklinacji; zachowano orientację historycznego TFW T02.",
+        "image_sha256": "c7298118ac2a1017b52b199a5d36829b8a2f61c9dd69fbf0af6f61bdad6c086f",
+        "historical": {
+          "catalogue_sha256": "b9031ff93f9ca9a1930f3574cd2eddddfd8690235be4bee2610b993858df3541",
+          "plan_id": "001549",
+          "tfw_sha256": "87f239f3ce3e8abe0604e4a3d8dab892ac5b9369715a8964bcaa3e2edbc0a314"
+        },
+        "decisions": []
+      }
+    }
+  }
+}

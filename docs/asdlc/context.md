@@ -18,6 +18,13 @@ relację północ/południe z opisów PIG. Przypisania Marka zachowano,
 rozbieżności wymagają oceny przed scaleniem. Data jego weryfikacji
 i dokładność końcowych punktów nie są znane; pola pozostają puste.
 Propozycja do przeglądu w [draft PR #42](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/42).
+Na dalsze polecenie użytkownika porównano nowe punkty z planami
+Georeferencera: Kozia zachowuje kolejność I zachodni / II wschodni;
+pozostaje konflikt względnej wysokości około 5,28 m. W Grzędzie geometria,
+opisy i relacja wysokości wskazują na prawdopodobną zamianę oznaczeń w XLS.
+Do potwierdzenia służy morfologia: I ma studnię 7 m, II studzienkę 1,5 m.
+Nie zamieniono pomiarów na podstawie samych kotwic GPS/TPN.
+[Nałożenia, wnioski i odtworzenie](verification/issue-41/README.md).
 
 ## Raptawicka jako kotwica systemu Pawlikowskiego — PBI-117
 
