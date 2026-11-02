@@ -2,7 +2,7 @@
 
 Last updated: 2026-11-02
 
-## Pomiary Marka Jędrzejczaka — issue #41 / draft PR #42
+## Pomiary Marka Jędrzejczaka — v1.3.3 / PR #42
 
 Na polecenie użytkownika zarchiwizowano dwa oryginały z Downloads w
 `data/sources/marek-jedrzejczak/2026-10-17/`: XLS z raportem GNSS/domiarami
@@ -12,19 +12,19 @@ Użytkownik rozszerzył zakres 2026-11-02: dodać pomiary jako zweryfikowane
 przez Marka i obowiązujące oraz drugi otwór Koziej. Dodano 12 pomiarów
 z ręcznym Best, zachowując pełne wartości XLS i stare pomiary. Nowy
 `MTW-0076` to otwór II istniejącej `C-0135`; `MTW-0013` nazwano otworem I.
-Nazwy I/II potwierdza plan PIG, ale raport daje II wyżej, a PIG niżej;
-nie użyto określeń górny/dolny. W Dziurach w Grzędzie raport odwraca
-relację północ/południe z opisów PIG. Przypisania Marka zachowano,
-rozbieżności wymagają oceny przed scaleniem. Data jego weryfikacji
-i dokładność końcowych punktów nie są znane; pola pozostają puste.
-Propozycja do przeglądu w [draft PR #42](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/42).
-Na dalsze polecenie użytkownika porównano nowe punkty z planami
-Georeferencera: Kozia zachowuje kolejność I zachodni / II wschodni;
-pozostaje konflikt względnej wysokości około 5,28 m. W Grzędzie geometria,
-opisy i relacja wysokości wskazują na prawdopodobną zamianę oznaczeń w XLS.
-Do potwierdzenia służy morfologia: I ma studnię 7 m, II studzienkę 1,5 m.
-Nie zamieniono pomiarów na podstawie samych kotwic GPS/TPN.
-[Nałożenia, wnioski i odtworzenie](verification/issue-41/README.md).
+Po nałożeniu na plany Georeferencera użytkownik rozstrzygnął obie sprawy
+2026-11-02. Kozia zachowuje numerację I zachodni / II wschodni; jako
+obowiązujące przyjęto wysokości profesjonalnego pomiaru Marka, mimo
+historycznej relacji wysokości w PIG. W Grzędzie przyjęto błąd oznaczeń
+w dokumencie Marka i zamieniono przypisania: wiersz 10 XLS → MTW-0016 / II,
+wiersz 11 → MTW-0050 / I. Wartości pomiarów i oryginalne pliki zachowano.
+Decyzja o przypisaniu pochodzi od Dariusza Lubomskiego; nie dopisano
+potwierdzenia autora ani dodatkowej weryfikacji terenowej.
+Data weryfikacji Marka i dokładność końcowych punktów nie są znane;
+pola pozostają puste. Przygotowano wersję i changelog v1.3.3 w
+[PR #42](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/42).
+[Nałożenia, wnioski, decyzja i odtworzenie](verification/issue-41/README.md).
+Merge, tag i publikacja wydania wymagają osobnego polecenia.
 
 ## Raptawicka jako kotwica systemu Pawlikowskiego — PBI-117
 

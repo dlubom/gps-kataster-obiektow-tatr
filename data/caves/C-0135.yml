@@ -32,10 +32,13 @@ notes: 'PIG aliases: Szczelina w Kozim Grzbiecie, Jaskinia Nova, Jaskinia Machaj
   PIG source state year: 2013
 
 
-  Dwa otwory według inwentarza PIG T.E-11.11: I (zachodni) i II (wschodni), plan S. Kotarby 1998. Pomiary
-  Marka Jędrzejczaka z 2026-10-17 przypisano zgodnie z jego raportem. Ich różnica wysokości (II wyżej
-  o około 2,48 m) jest sprzeczna z opisem i przekrojem PIG (II niżej o 2,8 m); nie przyjęto określeń górny/dolny.'
+  Numeracja I (zachodni, MTW-0013) i II (wschodni, MTW-0076) według planu S. Kotarby 1998 w PIG T.E-11.11
+  oraz raportu Marka Jędrzejczaka. Obowiązujące wysokości z profesjonalnego pomiaru Marka z 2026-10-17:
+  I 1836,9920722623917 m, II 1839,468682246115 m PL-EVRF2007-NH. II jest wyżej o około 2,48 m; historyczny
+  opis i przekrój PIG podają II niżej o 2,8 m. Dariusz Lubomski 2026-11-02 rozstrzygnął rozbieżność na
+  rzecz dokładniejszego pomiaru Marka; numerację zachowano. Nazwy nie używają określeń górny/dolny. PIG:
+  https://jaskiniepolski.pgi.gov.pl/Details/Information/1478.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-11-02T16:50:39Z'
+updated_at: '2026-11-02T19:56:18Z'
 updated_by: dl

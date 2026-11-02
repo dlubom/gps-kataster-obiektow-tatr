@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import xlrd
 import yaml
 from PIL import Image
 from pyproj import Transformer
@@ -39,10 +40,19 @@ old = {r['object_id']:r for r in csv.DictReader(snapshot.open())}
 crs = Transformer.from_crs(4326,2180,always_xy=True)
 ids = ['MTW-0013','MTW-0076','MTW-0050','MTW-0016']
 new = {}
-for i in ids:
-    d=yaml.safe_load((root/f'data/objects/{i[:3]}/{i}.yml').read_text())
-    m=next(m for m in d['measurements'] if m['id']==d['best_measurement']['measurement_id'])
-    new[i]={'E':m['y_1992'],'N':m['x_1992'],'H':m['elevation_m'],'name':d['name_local'],'source_ref':m['source_ref']}
+# Preserve the original document labels used in the pre-decision analysis.
+# Production YAML corrects the Grzeda assignments; reading it would reverse
+# the meaning of the diagnostic figures and no longer reproduce that analysis.
+source_xls = root/'data/sources/marek-jedrzejczak/2026-10-17/20261017 Tatry.xls'
+assert sha(source_xls) == '7effcf02dd157ddf74b625958683243b602e8346a2272b61978ba6580f376b22'
+sheet = xlrd.open_workbook(source_xls).sheet_by_name('Zestawienie')
+for i, row, name in [('MTW-0013',7,'Jaskinia Kozia - otwór I'),
+                     ('MTW-0076',8,'Jaskinia Kozia - otwór II'),
+                     ('MTW-0050',10,'Dziura w Grzędzie I'),
+                     ('MTW-0016',11,'Dziura w Grzędzie II')]:
+    cells = sheet.row_values(row-1)
+    new[i]={'E':cells[2],'N':cells[1],'H':cells[3],'name':name,
+            'source_ref':f'MJ:20261017:Zestawienie!B{row}:D{row}'}
 
 plans={}
 fingerprints={str(snapshot.relative_to(geo)):sha(snapshot)}
@@ -85,7 +95,7 @@ anchors={i:np.array([float(old[i]['y_1992']),float(old[i]['x_1992'])]) for i in 
 distances={i:{j:float(np.linalg.norm(en(i)-anchors[j])) for j in grzeda_ids} for i in grzeda_ids}
 metrics={
  'georeferencer_commit':subprocess.check_output(['git','-C',str(geo),'rev-parse','HEAD'],text=True).strip(),
- 'gps_proposal_commit':subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip(),
+ 'gps_proposal_commit':'2c6274db14f2de04ccf4ccbd50a27ebe776116ac',
  'coordinate_pin':pin,'georeferencer_inputs_sha256':fingerprints,
  'source_measurements':new,
  'kozia':{

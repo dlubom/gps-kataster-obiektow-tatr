@@ -68,6 +68,18 @@ Nazwy katalogowe pozostają zgodne z PIG. Dwa obiekty Koziej to otwór I
 (zachodni, `MTW-0013`) i II (wschodni, `MTW-0076`) według planu S. Kotarby
 1998 w PIG. Raport Marka daje II wyżej o około 2,48 m; opis i przekrój PIG
 podają II niżej o 2,8 m. Nie używamy określeń górny/dolny.
-Raport umieszcza też Dziurę w Grzędzie I na północ od II, przeciwnie do
-opisów PIG. Przypisania autora zachowano i opisano rozbieżności w YAML
-oraz issue; nie zamieniano punktów na podstawie samej bliskości.
+Decyzją Dariusza Lubomskiego z 2026-11-02 przyjęto wysokości Marka jako
+wiarygodniejsze od historycznego opisu i przekroju; numerację zachowano.
+
+W Grzędzie przyjęto pomyłkę oznaczeń I/II w dokumencie źródłowym i poprawiono
+przypisania decyzją Dariusza Lubomskiego z 2026-11-02, po porównaniu z planami
+Georeferencera oraz relacjami położenia i wysokości w opisach PIG:
+
+| Wiersz XLS `Zestawienie` | Nazwa i ID w oryginalnym dokumencie | Przyjęty obiekt katalogu |
+| --- | --- | --- |
+| 10 | Dziura w Grzędzie I, MTW-0050 | Dziura w Grzędzie II, MTW-0016 |
+| 11 | Dziura w Grzędzie II, MTW-0016 | Dziura w Grzędzie I, MTW-0050 |
+
+Wartości XYH nie zmieniły się; poprawiono nazwy/ID przypisane do wyników.
+Oryginalne nazwy i wiersze źródła zachowano w referencjach i załącznikach.
+[Nałożenia i zapis decyzji](../../docs/asdlc/verification/issue-41/README.md).

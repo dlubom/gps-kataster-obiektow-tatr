@@ -8,6 +8,31 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [v1.3.3] - 2026-11-02
+
+### Dodano
+
+- Dwanaście zweryfikowanych pomiarów otworów z 17.10.2026, opracowanych
+  przez Marka Jędrzejczaka, oraz oryginalne raporty XLS i PDF.
+- Drugi otwór Jaskini Koziej jako osobny obiekt `MTW-0076`, należący do
+  istniejącej jaskini `C-0135`.
+
+### Zmieniono
+
+- Nowe pomiary przyjęto jako obowiązujące, z ręcznym wskazaniem Best
+  i zachowaniem wcześniejszych pomiarów w historii.
+- Wysokości obu otworów Koziej przyjęto z profesjonalnego pomiaru Marka,
+  rozstrzygając rozbieżność z historycznym opisem i przekrojem PIG.
+  Numeracja I/II pozostaje bez zmian.
+
+### Poprawiono
+
+- Przypisanie nowych pomiarów Dziur w Grzędzie I i II: oznaczenia otworów
+  w dokumencie źródłowym były zamienione miejscami. Zachowano wartości
+  pomiarów i oryginalne pliki, a korektę opisano w referencjach.
+
+Katalog zawiera 1029 obiektów, 1019 pozycji katalogowych i 1946 pomiarów.
+
 ## [v1.3.2] - 2026-10-25
 
 ### Dodano

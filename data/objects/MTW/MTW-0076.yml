@@ -52,9 +52,10 @@ measurements:
 best_measurement:
   mode: manual
   measurement_id: m-001
-  reason: Zweryfikowany przez Marka Jędrzejczaka pomiar z 2026-10-17; przyjęty jako obowiązujący na polecenie
-    Dariusza Lubomskiego z 2026-11-02.
-  updated_at: '2026-11-02T16:50:39Z'
+  reason: Profesjonalny pomiar Marka Jędrzejczaka z 2026-10-17, zweryfikowany i przyjęty jako obowiązujący
+    decyzją Dariusza Lubomskiego z 2026-11-02; wysokości tego pomiaru mają pierwszeństwo przed historycznym
+    opisem i przekrojem PIG.
+  updated_at: '2026-11-02T19:56:18Z'
   updated_by: dl
 attachments:
 - id: a-001
@@ -71,11 +72,13 @@ attachments:
   caption: 'Marek Jędrzejczak: zestawienie 12 otworów, strona 1.'
   created_at: '2026-11-02T16:50:39Z'
   created_by: dl
-notes: 'Numeracja otworów I (zachodni) i II (wschodni) według planu S. Kotarby 1998 w inwentarzu PIG T.E-11.11
-  oraz nazw w raporcie Marka Jędrzejczaka. Raport podaje H(I)=1836,9920722623917 m i H(II)=1839,468682246115
-  m EVRF2007, czyli II wyżej o około 2,48 m. Opis i przekrój PIG podają II niżej o 2,8 m. Zachowano przypisania
-  autora; rozbieżność wysokości wymaga wyjaśnienia, nie stosuje się określeń górny/dolny. PIG: https://jaskiniepolski.pgi.gov.pl/Details/Information/1478.'
+notes: 'Numeracja I (zachodni, MTW-0013) i II (wschodni, MTW-0076) według planu S. Kotarby 1998 w PIG
+  T.E-11.11 oraz raportu Marka Jędrzejczaka. Obowiązujące wysokości z profesjonalnego pomiaru Marka z
+  2026-10-17: I 1836,9920722623917 m, II 1839,468682246115 m PL-EVRF2007-NH. II jest wyżej o około 2,48
+  m; historyczny opis i przekrój PIG podają II niżej o 2,8 m. Dariusz Lubomski 2026-11-02 rozstrzygnął
+  rozbieżność na rzecz dokładniejszego pomiaru Marka; numerację zachowano. Nazwy nie używają określeń
+  górny/dolny. PIG: https://jaskiniepolski.pgi.gov.pl/Details/Information/1478.'
 created_at: '2026-11-02T16:50:39Z'
 created_by: dl
-updated_at: '2026-11-02T16:50:39Z'
+updated_at: '2026-11-02T19:56:18Z'
 updated_by: dl
