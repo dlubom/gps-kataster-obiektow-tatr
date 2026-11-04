@@ -981,7 +981,7 @@ updated_by: dl
 
 Uruchamiany na PR i push.
 
-Workflow CI używa tego samego toolingu co środowisko lokalne: `uv`, `ruff`, `pytest` i skrypty z repo.
+Workflow CI używa tego samego toolingu co środowisko lokalne: `uv`, `ruff`, `mypy`, `pytest` i skrypty z repo.
 
 Kroki techniczne:
 
@@ -989,6 +989,8 @@ Kroki techniczne:
 - `scripts/generate_schemas.py --check`,
 - `ruff check .`,
 - `ruff format --check .`,
+- `mypy` w trybie strict dla `models.py`, `best_measurement.py` i
+  `measurement_values.py`, z pluginem Pydantic; zakres w `pyproject.toml`,
 - `pytest`,
 - testy mutacyjne dla krytycznych modułów, jeśli czas wykonania jest akceptowalny dla PR,
 - `scripts/validate.py`.
@@ -1303,6 +1305,7 @@ Przykładowe komendy:
 uv sync
 uv run ruff check .
 uv run ruff format --check .
+uv run mypy
 uv run pytest
 uv run python scripts/validate.py
 uv run python scripts/build_db.py

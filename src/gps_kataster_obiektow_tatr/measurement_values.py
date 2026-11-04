@@ -1,7 +1,7 @@
 """Numeric measurement fields shared by validation and best selection."""
 
+from collections.abc import Mapping
 from math import isfinite
-from typing import Any
 
 MEASUREMENT_NUMERIC_FIELDS = (
     "lat",
@@ -14,7 +14,7 @@ MEASUREMENT_NUMERIC_FIELDS = (
 )
 
 
-def non_finite_measurement_fields(measurement: dict[str, Any]) -> tuple[str, ...]:
+def non_finite_measurement_fields(measurement: Mapping[str, object]) -> tuple[str, ...]:
     """Find numbers without a finite float representation; schema owns other types."""
 
     return tuple(

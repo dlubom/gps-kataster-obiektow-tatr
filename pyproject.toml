@@ -17,9 +17,11 @@ dependencies = [
 [dependency-groups]
 dev = [
     "mutmut>=3.5,<4",
+    "mypy>=1.19,<3",
     "openpyxl>=3.1,<4",
     "pytest>=8.3.0",
     "ruff>=0.8.0",
+    "types-jsonschema>=4.23,<5",
 ]
 
 [build-system]
@@ -32,6 +34,21 @@ packages = ["src/gps_kataster_obiektow_tatr"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+
+[tool.mypy]
+python_version = "3.12"
+files = [
+    "src/gps_kataster_obiektow_tatr/models.py",
+    "src/gps_kataster_obiektow_tatr/best_measurement.py",
+    "src/gps_kataster_obiektow_tatr/measurement_values.py",
+]
+strict = true
+plugins = ["pydantic.mypy"]
+
+[tool.pydantic-mypy]
+init_typed = true
+init_forbid_extra = true
+warn_required_dynamic_aliases = true
 
 [tool.mutmut]
 paths_to_mutate = [

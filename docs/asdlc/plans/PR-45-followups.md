@@ -1,11 +1,12 @@
 # Propozycje po PR #45
 
-Status: propozycje do decyzji użytkownika, nie zlecenie implementacji.
+Status: użytkownik zlecił propozycję 1 w PR #45 (2026-11-04).
+Propozycje 2 i 3 pozostają do decyzji, bez zlecenia implementacji.
 Stan odniesienia: PBI-120 / PR #45, 2026-11-04.
 
-W PR #45 realizujemy tylko dwie poprawki review: odtwarzanie zaakceptowanego
+PR #45 zawiera dwie poprawki review: odtwarzanie zaakceptowanego
 wydania po przesunięciu main i uczciwy opis rozbieżnego auto Best na kartach.
-Poniższe trzy kierunki proponuję jako osobne małe prace w kolejności 1 → 2 → 3.
+Uzupełnia je wyłącznie propozycja 1 z poniższej kolejności 1 → 2 → 3.
 Każdy wymaga osobnego zakresu i odbioru. YAML, surowe wartości, obecność pól,
 historia i publiczne formaty pozostają zgodne z bieżącą specyfikacją §9–12.
 
@@ -36,6 +37,31 @@ i granic walidacji. Nie obiecuje to usunięcia błędów logicznych.
 
 Podstawa: [stopniowe wdrażanie mypy](https://mypy.readthedocs.io/en/stable/existing_code.html)
 oraz [integracja Pydantic](https://docs.pydantic.dev/latest/integrations/mypy/).
+
+### Plan realizacji propozycji 1
+
+Cel i architektura: trzy moduły sprawdzane w trybie strict, plugin Pydantic,
+mały `BestMeasurementInput` (TypedDict pól czytanych przez selektor),
+`Mapping[str, object]` dla surowych wejść kontroli skończoności.
+Stos: Python 3.12, mypy, types-jsonschema; wersje ustala `uv.lock`.
+Specyfikacja: §9–11; zakres powyżej zaakceptowany poleceniem użytkownika.
+Pełna migracja słowników oraz propozycje 2/3 pozostają poza zakresem.
+
+- [x] Dodać próby poprawnych i błędnych wywołań mypy oraz uzupełnić istniejący
+  test workflow; potwierdzić brak bramki przed implementacją.
+- [x] W `pyproject.toml`/`uv.lock` dodać zależności i konfigurację; w trzech
+  modułach doprecyzować typy bez zmiany wartości, schematów ani reguł Best.
+  Dodać `uv run --frozen mypy` do `Validate code and data`.
+- [x] Potwierdzić odrzucanie złego argumentu, literówki w polu selektora i pola
+  modelu; wykonać regresje, pełną bramkę, build i niezależny odczyt eksportów.
+  Porównać zawartość z bazą `8a710f87`, przy identycznym czasie i source SHA.
+- [ ] Przejrzeć diff, uzupełnić specyfikację, komendy, backlog/kontekst i dowody
+  PBI-120; commit, push do PR #45, potwierdzenie SHA i końcowych statusów CI.
+
+Punkty przeglądu: zachowanie int/float i bool, brak/null, niepoprawne wejścia
+Best, zachowanie dat/stref i remisów, rzeczywiste wykrywanie błędów przez
+bramkę (bez globalnych wyłączeń). Istniejące regresje i próby mypy pokrywają
+te granice; źródła i generowane schematy muszą pozostać niezmienione.
 
 ## 2. Generowane przypadki brzegowe z Hypothesis
 

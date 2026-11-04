@@ -423,9 +423,16 @@ uv sync --frozen
 uv run --frozen python scripts/generate_schemas.py --check
 uv run --frozen ruff format --check src tests scripts
 uv run --frozen ruff check src tests scripts
+uv run --frozen mypy
 uv run --frozen pytest
 uv run --frozen python scripts/validate.py
 ```
+
+`mypy` sprawdza w trybie strict `models.py`, `best_measurement.py` i
+`measurement_values.py`, z pluginem Pydantic i typami jsonschema. Zakres jest
+wspólny dla tej komendy i CI, zapisany w `pyproject.toml`. `BestMeasurementInput`
+opisuje wyłącznie pola selektora, nie zastępuje walidacji pełnego rekordu.
+Pozostałe moduły i surowe mapy loadera nie są jeszcze objęte tą bramką.
 
 `scripts/validate.py` zwraca kod niezerowy tylko dla `error`. Ostrzezenia trzeba
 przeczytac i zrozumiec; obecny import PIG/TPN ma znane ostrzezenia

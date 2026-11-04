@@ -6,7 +6,7 @@ import re
 from collections.abc import Iterable, Sequence
 from datetime import date, datetime, timedelta
 from math import inf
-from typing import Any
+from typing import NotRequired, TypedDict
 
 from gps_kataster_obiektow_tatr.measurement_values import non_finite_measurement_fields
 
@@ -19,7 +19,24 @@ _RFC3339_SUBMICROSECOND = re.compile(
 )
 
 
-def select_default_best_measurement_id(measurements: Iterable[dict[str, Any]]) -> str | None:
+class BestMeasurementInput(TypedDict):
+    """Fields read by Best, not a second catalog schema or a raw YAML validator.
+
+    Optional fields preserve the selector's support for partial records. Full
+    catalog validation belongs to models.py; runtime defensive checks stay here.
+    """
+
+    id: str
+    source: NotRequired[str]
+    verification_status: NotRequired[str]
+    observed_at: NotRequired[str | None]
+    observed_date: NotRequired[str | None]
+    horizontal_accuracy_m: NotRequired[int | float | None]
+
+
+def select_default_best_measurement_id(
+    measurements: Iterable[BestMeasurementInput],
+) -> str | None:
     """Return the measurement id selected by the V1 default ``auto`` algorithm."""
 
     candidates = []
@@ -54,7 +71,7 @@ def select_default_best_measurement_id(measurements: Iterable[dict[str, Any]]) -
     return None
 
 
-def selected_default_uses_rejected_fallback(measurements: Iterable[dict[str, Any]]) -> bool:
+def selected_default_uses_rejected_fallback(measurements: Iterable[BestMeasurementInput]) -> bool:
     """Return whether the default selection can only choose from rejected measurements."""
 
     candidates = [
@@ -65,7 +82,7 @@ def selected_default_uses_rejected_fallback(measurements: Iterable[dict[str, Any
     )
 
 
-def measurement_priority(measurement: dict[str, Any]) -> int:
+def measurement_priority(measurement: BestMeasurementInput) -> int:
     """Return source/status priority for the default best-measurement algorithm."""
 
     source = measurement.get("source")
@@ -85,7 +102,9 @@ def measurement_priority(measurement: dict[str, Any]) -> int:
     return 5
 
 
-def _best_measurement_within_priority(measurements: Sequence[dict[str, Any]]) -> dict[str, Any]:
+def _best_measurement_within_priority(
+    measurements: Sequence[BestMeasurementInput],
+) -> BestMeasurementInput:
     latest_observed = max(
         _measurement_observed_sort_value(measurement) for measurement in measurements
     )
@@ -103,7 +122,7 @@ def _best_measurement_within_priority(measurements: Sequence[dict[str, Any]]) ->
     )
 
 
-def _measurement_observed_sort_value(measurement: dict[str, Any]) -> tuple[int, str]:
+def _measurement_observed_sort_value(measurement: BestMeasurementInput) -> tuple[int, str]:
     observed_at = measurement.get("observed_at")
     if isinstance(observed_at, str):
         return _parse_observed_at(observed_at)
@@ -147,7 +166,7 @@ def _parse_observed_date(value: str) -> tuple[int, str]:
     return (parsed.toordinal() * _SECONDS_PER_DAY, "")
 
 
-def _measurement_accuracy_sort_value(measurement: dict[str, Any]) -> float:
+def _measurement_accuracy_sort_value(measurement: BestMeasurementInput) -> float:
     accuracy = measurement.get("horizontal_accuracy_m")
     if isinstance(accuracy, int | float):
         return float(accuracy)

@@ -13,10 +13,15 @@ Historia wymaga istniejącego zaakceptowanego baseline Git; żadnego fallbacku H
 Status: lokalny odbiór PASS (1088 testów po poprawkach review, odczyt wszystkich eksportów); dostarczono [draft PR #45](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/45). Dokładny zdalny SHA i wyniki workflow wskazuje opis PR. [Kontrakt](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md#102-kontrakt-wykonawczy-i-projekcja-json-schema),
 [komendy](../operations.md), [dowody](verification/PBI-120.md).
 
-Review PR #45: użytkownik zlecił dwie poprawki — baseline wydania odporny
-na przesunięcie main oraz jawne rozbieżności auto Best na kartach — i propozycje
-dalszych prac 1–3. [Zakres propozycji](plans/PR-45-followups.md) pozostaje do
-decyzji, bez wdrażania mypy, Hypothesis ani wersjonowanych paczek w tym PR.
+Review PR #45: poprawiono baseline wydania po przesunięciu main oraz jawność
+rozbieżności auto Best na kartach. Następnie użytkownik zlecił
+[propozycję 1](plans/PR-45-followups.md): strict mypy dla `models.py`,
+`best_measurement.py` i `measurement_values.py`, z pluginem Pydantic i bramką
+w `Validate code and data`. Pozostałe moduły nie są jeszcze objęte kontrolą.
+Typowany kontrakt Best obejmuje tylko pola odczytywane przez selektor;
+źródła, schematy i reguły wyboru pozostają bez zmian. Hypothesis i wersjonowane
+paczki pozostają propozycjami 2/3 do decyzji. Odbiór i dostarczenie tego
+uzupełnienia: [PBI-120](verification/PBI-120.md#propozycja-1--mypy-w-pr-45).
 
 ## Pomiary Marka Jędrzejczaka — issue #43 / v1.3.3
 

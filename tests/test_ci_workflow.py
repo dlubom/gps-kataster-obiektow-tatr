@@ -23,6 +23,7 @@ def test_validate_workflow_uses_local_validation_gate() -> None:
         "uv run --frozen python scripts/generate_schemas.py --check",
         "uv run --frozen ruff format --check src tests scripts",
         "uv run --frozen ruff check src tests scripts",
+        "uv run --frozen mypy",
         "uv run --frozen pytest",
         "uv run --frozen python scripts/validate.py",
     ]

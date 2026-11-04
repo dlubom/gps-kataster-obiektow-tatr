@@ -51,7 +51,7 @@ def _version_one(value: object, _handler: ValidatorFunctionWrapHandler) -> int |
 
 
 def _finite_number(value: object, handler: ValidatorFunctionWrapHandler) -> int | float:
-    if type(value) not in (int, float):
+    if not (type(value) is int or type(value) is float):
         raise PydanticCustomError("float_type", "Expected a number")
     # Check before Pydantic converts integers to float. This also rejects NaN.
     if not -float_info.max <= value <= float_info.max:
@@ -60,11 +60,12 @@ def _finite_number(value: object, handler: ValidatorFunctionWrapHandler) -> int 
     return value
 
 
-def _unique_items[T: (str, BaseModel)](items: list[T]) -> list[T]:
+def _unique_items[T: str | BaseModel](items: list[T]) -> list[T]:
     seen = set()
     for item in items:
         # Sorted properties ignore source key order. Keeping explicitly supplied
         # null fields distinguishes them from omissions, as JSON Schema does.
+        key: str | tuple[tuple[str, object], ...]
         if isinstance(item, BaseModel):
             key = tuple(sorted(item.model_dump(exclude_unset=True).items()))
         else:
@@ -111,7 +112,7 @@ type NonNegativeNumber = Annotated[
 type Latitude = Annotated[float, Field(ge=-90, le=90), WrapValidator(_finite_number)]
 type Longitude = Annotated[float, Field(ge=-180, le=180), WrapValidator(_finite_number)]
 
-type UniqueList[T: (str, BaseModel)] = Annotated[
+type UniqueList[T: str | BaseModel] = Annotated[
     list[T], AfterValidator(_unique_items), Field(json_schema_extra={"uniqueItems": True})
 ]
 
@@ -121,7 +122,7 @@ class ContractModel(BaseModel):
 
     @field_validator("*")
     @classmethod
-    def exportable_text(cls, value):
+    def exportable_text[T](cls, value: T) -> T:
         """XML 1.0 exports cannot represent NUL, surrogates or forbidden controls.
 
         Reject rather than silently strip source text. Nested models apply this

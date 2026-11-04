@@ -35,8 +35,12 @@ Merge, tag, witryna i release wymagają odrębnego polecenia.
 Uzupełnienie review PR #45: naprawiono odtwarzanie zaakceptowanego taga po
 przesunięciu main oraz ujawnianie rozbieżności zapisanego/wyliczonego auto Best
 na kartach. Lokalny odbiór: 1088 testów i 4/4 mutacje PASS; dowody w PBI-120.
-[Propozycje 1–3](plans/PR-45-followups.md) dotyczą typowania, testów generowanych
-i publikacji wersjonowanych paczek; nie są zleceniem ich implementacji.
+[Propozycję 1](plans/PR-45-followups.md) użytkownik zlecił jako uzupełnienie
+tego PR: strict mypy dla trzech modułów, plugin Pydantic, zależności/lock,
+bramka CI i typowany kontrakt wejść selektora Best. Przed zmianą próba wykazała
+akceptowanie błędnego ID i literówki w polu; po zmianie oba błędy są wykrywane.
+Propozycje 2/3 (Hypothesis i wersjonowane paczki) pozostają do decyzji.
+Odbiór i dostarczenie: [PBI-120](verification/PBI-120.md#propozycja-1--mypy-w-pr-45).
 
 ## Issue #43: Pomiary Marka Jędrzejczaka z poprawionego XLS
 

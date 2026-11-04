@@ -49,6 +49,9 @@ jobs:
       - name: Lint
         run: uv run --frozen ruff check src tests scripts
 
+      - name: Check types
+        run: uv run --frozen mypy
+
       - name: Test
         run: uv run --frozen pytest
 
