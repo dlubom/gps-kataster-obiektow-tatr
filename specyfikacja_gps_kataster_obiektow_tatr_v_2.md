@@ -229,7 +229,7 @@ best_measurement:
   mode: auto
   measurement_id: m-001
   reason: null
-  updated_at: 2026-05-15T10:00:00Z
+  updated_at: "2026-05-15T10:00:00Z"
   updated_by: dl
 ```
 
@@ -614,7 +614,7 @@ lon: 19.8145
 x_1992: 558123.45
 y_1992: 150456.78
 source: wlasne
-observed_date: 2024-07-15
+observed_date: "2024-07-15"
 method: gps_receiver
 verification_status: nieweryfikowany
 ```
@@ -900,8 +900,8 @@ measurements:
     vertical_accuracy_m: null
     source: TPN
     source_ref: "TPN:{71432220-CA17-4420-ACC8-394596EDF79F}"
-    observed_date: 2022-05-25
-    source_date: 2022-05-25
+    observed_date: "2022-05-25"
+    source_date: "2022-05-25"
     method: source_record
     device: null
     tags: []
@@ -909,21 +909,21 @@ measurements:
     verified_by: null
     verified_at: null
     notes: "Import z rekordu punktowego TPN."
-    created_at: 2026-05-15T10:00:00Z
+    created_at: "2026-05-15T10:00:00Z"
     created_by: dl
 
 best_measurement:
   mode: auto
   measurement_id: m-001
   reason: null
-  updated_at: 2026-05-15T10:00:00Z
+  updated_at: "2026-05-15T10:00:00Z"
   updated_by: dl
 
 attachments: []
 notes: null
-created_at: 2026-05-15T10:00:00Z
+created_at: "2026-05-15T10:00:00Z"
 created_by: dl
-updated_at: 2026-05-15T10:00:00Z
+updated_at: "2026-05-15T10:00:00Z"
 updated_by: dl
 ```
 
@@ -954,9 +954,9 @@ object_ids:
   - KSW-0002
 
 notes: null
-created_at: 2026-05-15T10:00:00Z
+created_at: "2026-05-15T10:00:00Z"
 created_by: dl
-updated_at: 2026-05-15T10:00:00Z
+updated_at: "2026-05-15T10:00:00Z"
 updated_by: dl
 ```
 
