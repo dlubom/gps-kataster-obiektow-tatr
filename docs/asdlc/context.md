@@ -2,7 +2,7 @@
 
 Last updated: 2026-11-04
 
-## Pomiary Marka Jędrzejczaka — issue #43
+## Pomiary Marka Jędrzejczaka — issue #43 / v1.3.3
 
 Dwanaście pomiarów z 2026-10-17 zapisano jako zweryfikowane przez Marka
 i wskazano jako ręczny Best. Źródłem jest poprawiony XLS z 2026-11-04.

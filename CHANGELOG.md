@@ -8,6 +8,8 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [v1.3.3] - 2026-11-04
+
 ### Dodano
 
 - Dwanaście zweryfikowanych pomiarów otworów z 17.10.2026 opracowanych
