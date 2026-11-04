@@ -47,6 +47,12 @@ albo `KATASTER_HISTORY_BASE_REF` do walidacji/buildów. Musi istnieć i być
 przodkiem HEAD. Nie podawaj commitu kandydata jako jego własnego baseline;
 brak historii blokuje operację, nie powoduje przełączenia na HEAD. Zaufanie
 do przekazanego SHA zapewnia operator lub metadane CI, nie sam algorytm Git.
+Wyjątkiem jest odtwarzanie zaakceptowanego snapshotu: SHA równe HEAD jest
+dozwolone po udowodnieniu, że commit należy do historii pobranego `origin/main`.
+Workflow release przekazuje jawne `github.sha`, więc kolejne commity na main
+nie blokują ponowienia starszego wydania. Niescalona gałąź, brak main lub
+nieudowodnione pokrewieństwo nadal blokują operację. Kontrola snapshotu
+wykrywa też zmiany chronionych pól w lokalnym checkoutcie wydania.
 Oddzielny `--data-dir` poza katalogiem checkoutu służy fixture/staging i jest
 walidowany strukturalnie/domenowo; sprawdź jego historię jawnie skryptem z
 `--data-dir`, przed użyciem jako zamiennika katalogu.
@@ -68,6 +74,9 @@ pokazują zapisane Best i uzasadnienie, historię w kolejności YAML, referencje
 uwagi oraz jawnie nieznane dokładności i datum. Ścieżka YAML wskazuje źródło
 w repozytorium; wszystkie odsyłacze między kartami działają też po rozpakowaniu.
 Karty są generowanym widokiem, nigdy drugim źródłem prawdy.
+Gdy zapisane Best w trybie `auto` różni się od wyniku bieżącej reguły, karta
+pokazuje oba ID i ostrzeżenie. Nie zmienia zapisanego wyboru ani uzasadnienia
+operatora i nie przypisuje rozbieżnego wyboru algorytmowi.
 
 Workflow `PR export preview` dołącza osobny artefakt `catalog-cards-<PR>-<SHA>`
 z retencją 14 dni. Pobierz go z runu Actions po zalogowaniu do GitHub.

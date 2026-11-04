@@ -720,6 +720,14 @@ operatora, a CI bierze go z zaufanych metadanych zdarzenia. Osobne katalogi
 fixture/staging mają walidację modelu i domeny; porównanie ich historii
 trzeba zażądać przez `scripts/check_measurement_history.py --data-dir …`.
 
+Wydanie przekazuje przez tę samą zmienną SHA wydawanego commitu z `github.sha`.
+Jeżeli jawny baseline jest równy HEAD, wymagamy dowodu, że commit należy
+do historii pobranego `origin/main` (jest jego przodkiem lub bieżącym tipem).
+To pozwala odtworzyć zaakceptowane wydanie po dalszych zmianach main, bez
+uznawania niescalonego kandydata za jego własną zaakceptowaną historię.
+Snapshot wydania nadal wykrywa lokalne zmiany chronionych pól. Brak main
+lub dowodu przynależności blokuje operację; nie ma fallbacku na HEAD.
+
 ### 9.2 Weryfikacja pomiarów
 
 Statusy:
@@ -864,6 +872,11 @@ geometrii ani wyboru Best. Diagnostyka zachowuje error/warning i kody domeny;
 liczba poza zakresem modelu daje `SCHEMA_VALIDATION` przed transformacją.
 ID Jaskini/Relacji i lokalne ID załączników są jednoznaczne; przydzielenie
 ID musi wskazywać istniejący pomiar.
+
+Karty Markdown pokazują zapisane Best. Przy rozbieżności auto Best z wynikiem
+bieżącej reguły pokazują oba ID i ostrzeżenie, bez zmiany źródłowego wyboru.
+Zachowują uzasadnienie operatora; brak uzasadnienia przy rozbieżności nie
+jest zastępowany twierdzeniem, że zapisany wybór wynika z algorytmu.
 
 ### 10.3 Przykład obiektu YAML
 
@@ -1039,6 +1052,10 @@ Zadania:
 - zapakowanie SQLite,
 - wygenerowanie `metadata.json`,
 - opublikowanie GitHub Release.
+
+Walidacja i build używają niezmiennego SHA wydawanego commitu jako baseline
+historii, z kontrolą przyjęcia do main opisaną w §9.1. Ponowienie wydania nie
+porównuje starszego katalogu z pomiarami dopisanymi na main już po tym wydaniu.
 
 ---
 

@@ -110,6 +110,8 @@ def test_cards_show_sources_and_saved_best_with_source_order_history(
     best, history = card.split("## Historia pomiarów")
     assert "m-001" in best and "manual" in best
     assert "Pomiar m-001 ma wyraznie lepsza dokladnosc" in best
+    assert "Wynik reguły automatycznej" not in best
+    assert "Ostrzeżenie" not in best
     assert [
         line.split(" | ", 1)[0].removeprefix("| ")
         for line in history.splitlines()
@@ -136,6 +138,46 @@ def test_cards_show_sources_and_saved_best_with_source_order_history(
     assert result.returncode == 0, result.stderr
     assert _contents(output) == first_build
     assert _contents(data_dir) == source
+
+
+@pytest.mark.parametrize("reason", [None, "Opis zapisany przez operatora."])
+def test_auto_card_discloses_mismatch_without_changing_saved_best(
+    data_dir: Path, tmp_path: Path, reason: str | None
+) -> None:
+    source_path = data_dir / "objects/KSW/KSW-0003.yml"
+    record = yaml.safe_load(source_path.read_text())
+    record["best_measurement"].update(mode="auto", reason=reason)
+    source_path.write_text(yaml.safe_dump(record, sort_keys=False))
+    source = _contents(data_dir)
+    output = tmp_path / "catalog"
+
+    result = _run(data_dir, output)
+    assert result.returncode == 0, result.stderr
+    best = (output / "objects/KSW-0003.md").read_text().split("## Historia pomiarów")[0]
+    assert "- Pomiar — m-001" in best
+    assert "- Wynik reguły automatycznej — m-002" in best
+    assert "Ostrzeżenie" in best
+    assert "Reguła automatyczna uwzględnia" not in best
+    if reason:
+        assert reason in best
+    assert _contents(data_dir) == source
+
+
+def test_auto_card_explains_matching_selection_without_mismatch_warning(
+    data_dir: Path, tmp_path: Path
+) -> None:
+    source_path = data_dir / "objects/KSW/KSW-0003.yml"
+    record = yaml.safe_load(source_path.read_text())
+    record["best_measurement"].update(mode="auto", measurement_id="m-002", reason=None)
+    source_path.write_text(yaml.safe_dump(record, sort_keys=False))
+    output = tmp_path / "catalog"
+
+    result = _run(data_dir, output)
+    assert result.returncode == 0, result.stderr
+    best = (output / "objects/KSW-0003.md").read_text().split("## Historia pomiarów")[0]
+    assert "- Pomiar — m-002" in best
+    assert "Reguła automatyczna uwzględnia" in best
+    assert "Ostrzeżenie" not in best
 
 
 def test_catalog_links_work_after_artifact_is_extracted(data_dir: Path, tmp_path: Path) -> None:

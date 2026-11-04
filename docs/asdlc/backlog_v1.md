@@ -32,6 +32,12 @@ schematów, pełna bramka lokalna i CI dla zdalnego SHA. Zachowane źródła,
 Dowody oraz jawne różnice kontraktu: [odbiór PBI-120](verification/PBI-120.md).
 Merge, tag, witryna i release wymagają odrębnego polecenia.
 
+Uzupełnienie review PR #45: naprawiono odtwarzanie zaakceptowanego taga po
+przesunięciu main oraz ujawnianie rozbieżności zapisanego/wyliczonego auto Best
+na kartach. Lokalny odbiór: 1088 testów i 4/4 mutacje PASS; dowody w PBI-120.
+[Propozycje 1–3](plans/PR-45-followups.md) dotyczą typowania, testów generowanych
+i publikacji wersjonowanych paczek; nie są zleceniem ich implementacji.
+
 ## Issue #43: Pomiary Marka Jędrzejczaka z poprawionego XLS
 
 Status: przygotowano do wydania v1.3.3 w [PR #44](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/44).

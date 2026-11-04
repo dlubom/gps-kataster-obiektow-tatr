@@ -126,9 +126,12 @@ def _accepted_commit(repo_root: Path, base_ref: str) -> str:
     )
     head = _git(repo_root, "rev-parse", "--verify", "HEAD").decode("ascii").strip()
     if base_ref != DEFAULT_BASE_REF and head == commit:
-        accepted_main = _git(repo_root, "rev-parse", "--verify", "refs/remotes/origin/main")
-        if accepted_main.decode("ascii").strip() != commit:
-            raise ValueError("the candidate HEAD is not the accepted main commit")
+        # A release can rebuild an older accepted snapshot after main advances.
+        # Never let an unmerged candidate declare itself its own baseline.
+        try:
+            _git(repo_root, "merge-base", "--is-ancestor", commit, "refs/remotes/origin/main")
+        except ValueError as exc:
+            raise ValueError("the candidate HEAD is not an accepted main commit") from exc
     try:
         _git(repo_root, "merge-base", "--is-ancestor", commit, head)
     except ValueError as exc:

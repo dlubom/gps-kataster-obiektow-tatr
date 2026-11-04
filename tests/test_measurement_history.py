@@ -149,6 +149,57 @@ def test_accepts_explicit_sha_at_accepted_main_tip(repo: Path) -> None:
     assert check(repo, base_ref=git(repo, "rev-parse", "HEAD")) == ()
 
 
+@pytest.fixture
+def released_repo(repo: Path) -> Path:
+    git(repo, "tag", "-a", "v1.0.0", "-m", "Accepted release")
+    write_object(repo, [measurement("m-001"), measurement("m-002"), measurement("m-003")])
+    git(repo, "commit", "-am", "Accept another measurement after release")
+    git(repo, "update-ref", "refs/remotes/origin/main", "HEAD")
+    git(repo, "checkout", "--detach", "v1.0.0")
+    return repo
+
+
+def test_accepts_explicit_released_commit_after_main_advances(released_repo: Path) -> None:
+    release_sha = git(released_repo, "rev-parse", "HEAD")
+    assert check(released_repo, base_ref=release_sha) == ()
+
+
+def test_release_workflow_checks_tag_history_after_main_advances(released_repo: Path) -> None:
+    workflow = yaml.safe_load((REPO_ROOT / ".github/workflows/release.yml").read_text())
+    release_sha = git(released_repo, "rev-parse", "HEAD")
+    # Resolve the job's event SHA as Actions would, then exercise the real CLI.
+    base_ref = (
+        workflow["jobs"]["release"].get("env", {}).get("KATASTER_HISTORY_BASE_REF", "origin/main")
+    )
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(REPO_ROOT / "scripts/check_measurement_history.py"),
+            "--repo-root",
+            str(released_repo),
+            "--base-ref",
+            base_ref.replace("${{ github.sha }}", release_sha),
+        ],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_released_snapshot_still_detects_local_measurement_rewrite(released_repo: Path) -> None:
+    release_sha = git(released_repo, "rev-parse", "HEAD")
+    first = measurement("m-001")
+    first["lat"] = 50.1
+    write_object(released_repo, [first, measurement("m-002")])
+    assert check(released_repo, base_ref=release_sha)[0].code == "MEASUREMENT_HISTORY_CHANGED"
+
+
+def test_explicit_checkout_sha_requires_available_accepted_main(repo: Path) -> None:
+    accepted_sha = git(repo, "rev-parse", "HEAD")
+    git(repo, "update-ref", "-d", "refs/remotes/origin/main")
+    assert check(repo, base_ref=accepted_sha)[0].code == "HISTORY_BASELINE_UNAVAILABLE"
+
+
 def test_rejects_default_ref_that_is_not_an_ancestor(repo: Path) -> None:
     old_tip = git(repo, "rev-parse", "HEAD")
     git(repo, "commit", "--allow-empty", "-m", "Advanced main")

@@ -12,6 +12,8 @@ jobs:
   release:
     name: Publish GitHub Release
     runs-on: ubuntu-latest
+    env:
+      KATASTER_HISTORY_BASE_REF: ${{ github.sha }}
 
     steps:
       - name: Checkout

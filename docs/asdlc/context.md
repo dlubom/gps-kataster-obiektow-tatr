@@ -10,8 +10,13 @@ modele Pydantic generują JSON Schema, reguły domenowe pozostają Pythonem.
 PR #40/PostgreSQL nie jest architekturą tego zadania i pozostaje bez zmian.
 Karty Markdown są widokiem w build i artefaktem PR, bez publikacji witryny.
 Historia wymaga istniejącego zaakceptowanego baseline Git; żadnego fallbacku HEAD.
-Status: lokalny odbiór PASS (1081 testów, pełne porównanie eksportów); dostarczono [draft PR #45](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/45). Dokładny zdalny SHA i wyniki workflow wskazuje opis PR. [Kontrakt](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md#102-kontrakt-wykonawczy-i-projekcja-json-schema),
+Status: lokalny odbiór PASS (1088 testów po poprawkach review, odczyt wszystkich eksportów); dostarczono [draft PR #45](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/45). Dokładny zdalny SHA i wyniki workflow wskazuje opis PR. [Kontrakt](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md#102-kontrakt-wykonawczy-i-projekcja-json-schema),
 [komendy](../operations.md), [dowody](verification/PBI-120.md).
+
+Review PR #45: użytkownik zlecił dwie poprawki — baseline wydania odporny
+na przesunięcie main oraz jawne rozbieżności auto Best na kartach — i propozycje
+dalszych prac 1–3. [Zakres propozycji](plans/PR-45-followups.md) pozostaje do
+decyzji, bez wdrażania mypy, Hypothesis ani wersjonowanych paczek w tym PR.
 
 ## Pomiary Marka Jędrzejczaka — issue #43 / v1.3.3
 

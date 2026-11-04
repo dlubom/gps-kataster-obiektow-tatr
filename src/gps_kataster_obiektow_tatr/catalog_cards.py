@@ -10,6 +10,7 @@ from tempfile import mkdtemp
 from typing import Any
 from urllib.parse import quote, urlsplit
 
+from gps_kataster_obiektow_tatr.best_measurement import select_default_best_measurement_id
 from gps_kataster_obiektow_tatr.data_loader import (
     CAVES_DIR_NAME,
     DEFAULT_DATA_DIR,
@@ -220,10 +221,17 @@ def _render_object(
 
     best = obj["best_measurement"]
     selected = next(m for m in obj["measurements"] if m["id"] == best["measurement_id"])
-    reason = best.get("reason") or (
-        "Reguła automatyczna uwzględnia kolejno priorytet źródła i statusu, "
+    automatic_id = (
+        select_default_best_measurement_id(obj["measurements"]) if best["mode"] == "auto" else None
+    )
+    mismatch = best["mode"] == "auto" and automatic_id != selected["id"]
+    default_reason = (
+        "Zapisane wskazanie w YAML; różni się od wyniku bieżącej reguły automatycznej."
+        if mismatch
+        else "Reguła automatyczna uwzględnia kolejno priorytet źródła i statusu, "
         "datę obserwacji, dokładność poziomą oraz identyfikator pomiaru."
     )
+    reason = best.get("reason") or default_reason
     lines.extend(
         [
             "",
@@ -235,6 +243,15 @@ def _render_object(
             "",
         ]
     )
+    if mismatch:
+        lines.extend(
+            [
+                f"- Wynik reguły automatycznej — {_text(automatic_id, unknown='brak')}",
+                "- Ostrzeżenie — Zapisany wybór różni się od wyniku reguły automatycznej. "
+                "Karta zachowuje zapisany pomiar; rozbieżność wymaga review.",
+                "",
+            ]
+        )
     lines.extend(
         _table(
             ("Pole", "Wartość"),
