@@ -4,7 +4,7 @@ Stan na: 2026-11-04
 
 ## PBI-120: Kontrakt Pydantic, ochrona historii i karty katalogowe
 
-Status: zweryfikowane lokalnie — do dostarczenia draft PR na `codex/pydantic-catalog-contract`, baza `ad5fa191a36d5a5f45f0b2de523bd39125827573`.
+Status: implementacja zweryfikowana i dostarczona w [draft PR #45](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/45); dokładny SHA i wyniki CI w opisie PR. Gałąź `codex/pydantic-catalog-contract`, baza `ad5fa191a36d5a5f45f0b2de523bd39125827573`.
 Numery 118 i 119 są zajęte przez otwarte PR #39 i #40; ten PBI nie zmienia ich zakresu.
 
 Decyzja: YAML pozostaje źródłem prawdy. Modele Pydantic definiują rekordy
