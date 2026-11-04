@@ -2,6 +2,17 @@
 
 Last updated: 2026-11-04
 
+## PBI-120 — YAML i kontrakt Pydantic
+
+Nowa gałąź `codex/pydantic-catalog-contract` powstała z aktualnego main
+`ad5fa191a36d5a5f45f0b2de523bd39125827573`. Źródłem pozostaje YAML;
+modele Pydantic generują JSON Schema, reguły domenowe pozostają Pythonem.
+PR #40/PostgreSQL nie jest architekturą tego zadania i pozostaje bez zmian.
+Karty Markdown są widokiem w build i artefaktem PR, bez publikacji witryny.
+Historia wymaga istniejącego zaakceptowanego baseline Git; żadnego fallbacku HEAD.
+Status: lokalny odbiór PASS (1081 testów, pełne porównanie eksportów); do dostarczenia draft PR i CI. [Kontrakt](../../specyfikacja_gps_kataster_obiektow_tatr_v_2.md#102-kontrakt-wykonawczy-i-projekcja-json-schema),
+[komendy](../operations.md), [dowody](verification/PBI-120.md).
+
 ## Pomiary Marka Jędrzejczaka — issue #43 / v1.3.3
 
 Dwanaście pomiarów z 2026-10-17 zapisano jako zweryfikowane przez Marka

@@ -53,3 +53,8 @@ def load_unique_yaml(path: Path) -> Any:
 
     with path.open(encoding="utf-8") as stream:
         return yaml.load(stream, Loader=_UniqueKeySafeLoader)
+
+
+def load_unique_yaml_text(text: str) -> Any:
+    """Parse an immutable Git blob using the same collision rules as files."""
+    return yaml.load(text, Loader=_UniqueKeySafeLoader)

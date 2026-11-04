@@ -2,12 +2,21 @@
 
 from __future__ import annotations
 
+import re
 from collections.abc import Iterable, Sequence
-from datetime import UTC, date, datetime, time
+from datetime import date, datetime, timedelta
 from math import inf
 from typing import Any
 
 from gps_kataster_obiektow_tatr.measurement_values import non_finite_measurement_fields
+
+_SECONDS_PER_DAY = 86_400
+_MICROSECONDS_PER_SECOND = 1_000_000
+_MIN_OBSERVED = (date.min.toordinal() * _SECONDS_PER_DAY, "")
+_RFC3339_SUBMICROSECOND = re.compile(
+    r"[0-9]{4}-[0-9]{2}-[0-9]{2}[Tt][0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{6}"
+    r"([0-9]+)(?:[Zz]|[+-][0-9]{2}:[0-9]{2})"
+)
 
 
 def select_default_best_measurement_id(measurements: Iterable[dict[str, Any]]) -> str | None:
@@ -94,32 +103,48 @@ def _best_measurement_within_priority(measurements: Sequence[dict[str, Any]]) ->
     )
 
 
-def _measurement_observed_sort_value(measurement: dict[str, Any]) -> datetime:
+def _measurement_observed_sort_value(measurement: dict[str, Any]) -> tuple[int, str]:
     observed_at = measurement.get("observed_at")
     if isinstance(observed_at, str):
         return _parse_observed_at(observed_at)
     observed_date = measurement.get("observed_date")
     if isinstance(observed_date, str):
         return _parse_observed_date(observed_date)
-    return datetime.min.replace(tzinfo=UTC)
+    return _MIN_OBSERVED
 
 
-def _parse_observed_at(value: str) -> datetime:
+def _parse_observed_at(value: str) -> tuple[int, str]:
     try:
-        parsed = datetime.fromisoformat(value)
+        parsed = datetime.fromisoformat(value[:-1] + "Z" if value.endswith("z") else value)
     except ValueError:
-        return datetime.min.replace(tzinfo=UTC)
-    if parsed.tzinfo is None:
-        return parsed.replace(tzinfo=UTC)
-    return parsed.astimezone(UTC)
+        return _MIN_OBSERVED
+
+    # Compute UTC as an ordinal-based number so offsets at the calendar bounds
+    # do not need to construct a datetime in year 0 or 10000.
+    local_seconds = (
+        parsed.toordinal() * _SECONDS_PER_DAY
+        + parsed.hour * 3600
+        + parsed.minute * 60
+        + parsed.second
+    )
+    offset = parsed.utcoffset() or timedelta()
+    offset_seconds = offset.days * _SECONDS_PER_DAY + offset.seconds
+    carry, microseconds = divmod(parsed.microsecond - offset.microseconds, _MICROSECONDS_PER_SECOND)
+
+    # Python's parser truncates fractional seconds to six digits. Recover the
+    # remaining digits for RFC 3339 timestamps, whose offsets have minute precision.
+    match = _RFC3339_SUBMICROSECOND.fullmatch(value)
+    tail = match[1] if match else ""
+    # Trailing zeroes are immaterial; canonical digit strings sort like fractions.
+    return (local_seconds - offset_seconds + carry, f"{microseconds:06d}{tail}".rstrip("0"))
 
 
-def _parse_observed_date(value: str) -> datetime:
+def _parse_observed_date(value: str) -> tuple[int, str]:
     try:
         parsed = date.fromisoformat(value)
     except ValueError:
-        return datetime.min.replace(tzinfo=UTC)
-    return datetime.combine(parsed, time.min, tzinfo=UTC)
+        return _MIN_OBSERVED
+    return (parsed.toordinal() * _SECONDS_PER_DAY, "")
 
 
 def _measurement_accuracy_sort_value(measurement: dict[str, Any]) -> float:

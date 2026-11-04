@@ -1,29 +1,32 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/gps-kataster-obiektow-tatr/schema/relation.schema.json",
-  "title": "Relacja",
-  "type": "object",
+  "$defs": {
+    "ObjectId": {
+      "pattern": "^[A-Z]{2,3}-[0-9]{4,}$",
+      "type": "string"
+    },
+    "RelationId": {
+      "pattern": "^R-[0-9]{4,}$",
+      "type": "string"
+    },
+    "SchemaVersion": {
+      "const": 1
+    }
+  },
   "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "id",
-    "from_object_id",
-    "to_object_id",
-    "relation_type"
-  ],
   "properties": {
     "schema_version": {
-      "const": 1
+      "$ref": "#/$defs/SchemaVersion"
     },
     "id": {
-      "type": "string",
-      "pattern": "^R-[0-9]{4,}$"
+      "$ref": "#/$defs/RelationId"
     },
     "from_object_id": {
-      "$ref": "#/$defs/objectId"
+      "$ref": "#/$defs/ObjectId"
     },
     "to_object_id": {
-      "$ref": "#/$defs/objectId"
+      "$ref": "#/$defs/ObjectId"
     },
     "relation_type": {
       "enum": [
@@ -31,22 +34,30 @@
         "czesc_systemu",
         "mozliwy_duplikat",
         "inne"
-      ]
+      ],
+      "title": "Relation Type",
+      "type": "string"
     },
     "notes": {
-      "$ref": "#/$defs/nullableString"
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
     }
   },
-  "$defs": {
-    "nullableString": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-    "objectId": {
-      "type": "string",
-      "pattern": "^[A-Z]{2,3}-[0-9]{4,}$"
-    }
-  }
+  "required": [
+    "schema_version",
+    "id",
+    "from_object_id",
+    "to_object_id",
+    "relation_type"
+  ],
+  "title": "Relacja",
+  "type": "object"
 }

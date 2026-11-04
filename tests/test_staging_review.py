@@ -627,7 +627,7 @@ def test_review_snapshot_keeps_all_paths_for_shared_cave_id(tmp_path, make_data_
     extra["name"] = "Separate source file"
     extra_path = data_dir / "caves/C-0001.yaml"
     _write_yaml(extra_path, extra)
-    assert not has_errors(validate_data_dir(data_dir))
+    assert "DUPLICATE_CAVE_ID" in {i.code for i in validate_data_dir(data_dir)}
     dataset = load_dataset(data_dir)
     objects = {r.data["id"]: deepcopy(r.raw_data) for r in dataset.objects}
     caves = {r.data["id"]: deepcopy(r.raw_data) for r in dataset.caves}
@@ -646,10 +646,12 @@ def test_review_snapshot_keeps_all_paths_for_shared_cave_id(tmp_path, make_data_
         staging_reports=StagingReports(tpn=_tpn_staging()),
         data_dir=data_dir,
     )
-    assert not result.has_errors
-    assert extra_path not in result.written_paths
+    assert result.has_errors
+    assert any("DUPLICATE_CAVE_ID" in i.description for i in result.issues)
+    assert result.written_paths == ()
+    assert _tree_snapshot(data_dir) == before
     assert _tree_snapshot(data_dir)[Path("caves/C-0001.yaml")] == before[Path("caves/C-0001.yaml")]
-    assert not has_errors(validate_data_dir(data_dir))
+    assert "DUPLICATE_CAVE_ID" in {i.code for i in validate_data_dir(data_dir)}
 
 
 def test_apply_review_directly_materializes_pig_and_tpn_decisions(

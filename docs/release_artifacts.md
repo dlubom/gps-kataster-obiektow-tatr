@@ -205,8 +205,8 @@ pozostaje zgodna z pełnym GPX, według ID. Powstają też puste pliki grup.
 
 Każdy dodatkowy plik ma najwyżej 500 punktów. Przekroczenie limitu albo
 nierozpoznany region przerywa eksport czytelnym błędem przed zapisem jego
-plików, bez nadpisania wcześniejszych eksportów. Builder mógł już wcześniej
-zbudować SQLite; nie oznacza to gotowej paczki do publikacji. Nie obcinamy
+plików, bez nadpisania wcześniejszych eksportów. Pełny builder przygotowuje SQLite i wszystkie eksporty przed publikacją;
+błąd generowania pozostawia wcześniejszą paczkę bez zmian. Nie obcinamy
 punktów ani nie rozcinamy dolin automatycznie. Wzrost liczby punktów wymaga
 ponownego uzgodnienia grup. `metadata.json` zachowuje dotychczasowy kontrakt.
 Pliki są w lokalnym buildzie, podglądzie PR i wydaniach po v1.2.1.
@@ -261,3 +261,15 @@ długi kontekst może być skrócony w `meas_notes` DBF zgodnie z limitem wyżej
 Nie dodajemy na razie notatek z `external_refs` do plaskiego eksportu, bo to
 potrafiloby dublowac `source_ref`, `pig_url`, `tpn_globalid` i szybko robic
 nieczytelny CSV. Pelne notatki referencji zostaja w `katalog.sqlite`.
+
+## Ochrona publikacji artefaktów (PBI-120)
+
+SQLite, samodzielne eksporty Best i pełna paczka powstają w unikalnych
+katalogach roboczych. Publikacja sprawdza kolizje docelowych ścieżek,
+przygotowuje kopie zastępowanych plików i cofa wykonane podmiany po błędzie.
+Nie usuwa innych plików w katalogu wyjściowym. Każda podmiana jest atomowa,
+lecz zestaw plików nie jest transakcją odporną na utratę zasilania lub
+SIGKILL. Równoczesne publikacje do tych samych ścieżek nie są obsługiwane.
+Jeśli także rollback zawiedzie, wyjątek podaje zachowane kopie do odzyskania.
+Karty Markdown są osobnym artefaktem workflow PR, poza publiczną paczką wydania;
+[obsługa](operations.md#karty-do-czytania).

@@ -193,13 +193,20 @@ def test_non_finite_cli_returns_controlled_error_without_writes(finite_dataset, 
     assert not output.exists()
 
 
-def test_validator_handles_non_finite_projection_result(finite_dataset):
+def test_validator_rejects_out_of_range_before_projection(finite_dataset, monkeypatch):
     data_dir, path, obj = finite_dataset
+
+    def forbidden_projection(**kwargs):
+        pytest.fail("Invalid shape reached coordinate transformation")
+
+    monkeypatch.setattr(
+        "gps_kataster_obiektow_tatr.validator.coordinate_consistency_error_m", forbidden_projection
+    )
     obj["measurements"][0]["lat"] = 100
     path.write_text(yaml.safe_dump(obj), encoding="utf-8")
     issues = validate_data_dir(data_dir)
     assert any(
-        i.code == "COORDINATE_TRANSFORM_INVALID" and "m-001" in i.description for i in issues
+        i.code == "SCHEMA_VALIDATION" and "measurements.0.lat" in i.description for i in issues
     )
 
 

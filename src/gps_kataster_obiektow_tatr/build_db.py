@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from contextlib import closing
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Any
 
 from gps_kataster_obiektow_tatr.best_measurement import select_default_best_measurement_id
@@ -20,7 +22,7 @@ from gps_kataster_obiektow_tatr.validator import (
     ValidationIssue,
     format_issue,
     has_errors,
-    validate_dataset,
+    validate_loaded_dataset,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -55,7 +57,9 @@ def build_sqlite_database(
     """Validate YAML and build ``output_path`` as a SQLite snapshot."""
 
     dataset = load_dataset(data_dir)
-    validation_issues = validate_dataset(dataset, data_dir=data_dir, repo_root=REPO_ROOT)
+    dataset, validation_issues = validate_loaded_dataset(
+        dataset, data_dir=data_dir, repo_root=REPO_ROOT
+    )
     if has_errors(validation_issues):
         raise BuildDatabaseValidationError(validation_issues)
 
@@ -82,30 +86,21 @@ def _write_sqlite_snapshot(
     issues: tuple[ValidationIssue, ...],
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    tmp_path = output_path.with_name(f"{output_path.name}.tmp")
-    if tmp_path.exists():
-        tmp_path.unlink()
-
-    connection = sqlite3.connect(tmp_path)
-    try:
-        connection.execute("PRAGMA foreign_keys = ON")
-        _create_schema(connection)
-        _insert_metadata(connection, metadata)
-        _insert_caves(connection, dataset.caves)
-        _insert_objects(connection, dataset.objects)
-        _insert_measurements(connection, dataset.objects)
-        _insert_external_refs(connection, dataset.objects, dataset.caves)
-        _insert_attachments(connection, dataset.objects)
-        _insert_relations(connection, dataset.relations)
-        _insert_best_measurements(connection, dataset.objects)
-        _insert_validation_flags(connection, issues)
-        connection.commit()
-    except Exception:
-        connection.close()
-        tmp_path.unlink(missing_ok=True)
-        raise
-    else:
-        connection.close()
+    with TemporaryDirectory(prefix=".kataster-sqlite-", dir=output_path.parent) as staging:
+        tmp_path = Path(staging) / output_path.name
+        with closing(sqlite3.connect(tmp_path)) as connection:
+            connection.execute("PRAGMA foreign_keys = ON")
+            _create_schema(connection)
+            _insert_metadata(connection, metadata)
+            _insert_caves(connection, dataset.caves)
+            _insert_objects(connection, dataset.objects)
+            _insert_measurements(connection, dataset.objects)
+            _insert_external_refs(connection, dataset.objects, dataset.caves)
+            _insert_attachments(connection, dataset.objects)
+            _insert_relations(connection, dataset.relations)
+            _insert_best_measurements(connection, dataset.objects)
+            _insert_validation_flags(connection, issues)
+            connection.commit()
         tmp_path.replace(output_path)
 
 
@@ -305,9 +300,7 @@ def _insert_objects(
         data = object_record.data
         best_measurement = _best_measurement_data(data)
         best_measurement_id = best_measurement.get("measurement_id")
-        computed_best_measurement_id = select_default_best_measurement_id(
-            _measurement_dicts(data.get("measurements"))
-        )
+        computed_best_measurement_id = select_default_best_measurement_id(data["measurements"])
         best = _measurement_by_id(data, str(best_measurement_id))
         id_assignment = data["id_assignment"]
         rows.append(
@@ -359,22 +352,22 @@ def _insert_measurements(
     rows = []
     for object_record in object_records:
         object_id = object_record.data["id"]
-        for measurement in _measurement_dicts(object_record.data.get("measurements")):
+        for measurement in object_record.data["measurements"]:
             rows.append(
                 (
                     object_id,
                     measurement["id"],
-                    measurement["lat"],
-                    measurement["lon"],
-                    measurement["x_1992"],
-                    measurement["y_1992"],
+                    _number_or_none(measurement, "lat"),
+                    _number_or_none(measurement, "lon"),
+                    _number_or_none(measurement, "x_1992"),
+                    _number_or_none(measurement, "y_1992"),
                     _geom_wgs84(measurement),
                     _geom_1992(measurement),
-                    measurement.get("elevation_m"),
+                    _number_or_none(measurement, "elevation_m"),
                     measurement.get("elevation_datum"),
                     measurement.get("elevation_source"),
-                    measurement.get("horizontal_accuracy_m"),
-                    measurement.get("vertical_accuracy_m"),
+                    _number_or_none(measurement, "horizontal_accuracy_m"),
+                    _number_or_none(measurement, "vertical_accuracy_m"),
                     measurement["source"],
                     measurement.get("source_ref"),
                     measurement.get("observed_at"),
@@ -432,7 +425,7 @@ def _insert_external_refs(
                 ref.get("notes"),
             )
             for object_record in object_records
-            for ref in _dicts(object_record.data.get("external_refs"))
+            for ref in object_record.data["external_refs"]
         ),
     )
     connection.executemany(
@@ -451,7 +444,7 @@ def _insert_external_refs(
                 ref.get("notes"),
             )
             for cave_record in cave_records
-            for ref in _dicts(cave_record.data.get("external_refs"))
+            for ref in cave_record.data["external_refs"]
         ),
     )
 
@@ -480,7 +473,7 @@ def _insert_attachments(
                 attachment["created_by"],
             )
             for object_record in object_records
-            for attachment in _dicts(object_record.data.get("attachments"))
+            for attachment in object_record.data["attachments"]
         ),
     )
 
@@ -527,9 +520,7 @@ def _insert_best_measurements(
                 object_record.data["id"],
                 best["mode"],
                 best["measurement_id"],
-                select_default_best_measurement_id(
-                    _measurement_dicts(object_record.data.get("measurements"))
-                ),
+                select_default_best_measurement_id(object_record.data["measurements"]),
                 best.get("reason"),
                 best["updated_at"],
                 best["updated_by"],
@@ -569,9 +560,7 @@ def _build_metadata(
 ) -> dict[str, str]:
     warning_count = sum(1 for issue in validation_issues if issue.severity == "warning")
     error_count = sum(1 for issue in validation_issues if issue.severity == "error")
-    measurement_count = sum(
-        len(_measurement_dicts(record.data.get("measurements"))) for record in dataset.objects
-    )
+    measurement_count = sum(len(record.data["measurements"]) for record in dataset.objects)
     return {
         "generated_at": generated_at,
         "schema_version": str(SQLITE_SCHEMA_VERSION),
@@ -585,28 +574,17 @@ def _build_metadata(
 
 
 def _best_measurement_data(object_data: dict[str, Any]) -> dict[str, Any]:
-    best_measurement = object_data.get("best_measurement")
-    return best_measurement if isinstance(best_measurement, dict) else {}
+    return object_data["best_measurement"]
 
 
 def _measurement_by_id(
     object_data: dict[str, Any],
     measurement_id: str,
 ) -> dict[str, Any] | None:
-    for measurement in _measurement_dicts(object_data.get("measurements")):
+    for measurement in object_data["measurements"]:
         if measurement.get("id") == measurement_id:
             return measurement
     return None
-
-
-def _measurement_dicts(value: object) -> tuple[dict[str, Any], ...]:
-    return _dicts(value)
-
-
-def _dicts(value: object) -> tuple[dict[str, Any], ...]:
-    if not isinstance(value, list):
-        return ()
-    return tuple(item for item in value if isinstance(item, dict))
 
 
 def _number_or_none(data: dict[str, Any] | None, key: str) -> float | None:

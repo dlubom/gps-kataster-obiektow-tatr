@@ -1,81 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/gps-kataster-obiektow-tatr/schema/cave.schema.json",
-  "title": "Jaskinia",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "id",
-    "name",
-    "external_refs",
-    "object_ids",
-    "created_at",
-    "created_by",
-    "updated_at",
-    "updated_by"
-  ],
-  "properties": {
-    "schema_version": {
-      "const": 1
-    },
-    "id": {
-      "$ref": "#/$defs/caveId"
-    },
-    "name": {
-      "type": "string",
-      "minLength": 1
-    },
-    "system_name": {
-      "$ref": "#/$defs/nullableString"
-    },
-    "external_refs": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/externalReference"
-      },
-      "uniqueItems": true
-    },
-    "object_ids": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/objectId"
-      },
-      "uniqueItems": true
-    },
-    "notes": {
-      "$ref": "#/$defs/nullableString"
-    },
-    "created_at": {
-      "$ref": "#/$defs/dateTime"
-    },
-    "created_by": {
-      "$ref": "#/$defs/personId"
-    },
-    "updated_at": {
-      "$ref": "#/$defs/dateTime"
-    },
-    "updated_by": {
-      "$ref": "#/$defs/personId"
-    }
-  },
   "$defs": {
-    "caveId": {
-      "type": "string",
-      "pattern": "^C-[0-9]{4,}$"
+    "CaveId": {
+      "pattern": "^C-[0-9]{4,}$",
+      "type": "string"
     },
-    "dateTime": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "externalReference": {
-      "type": "object",
+    "ExternalReference": {
       "additionalProperties": false,
-      "required": [
-        "system",
-        "ref_type",
-        "external_id"
-      ],
       "properties": {
         "system": {
           "enum": [
@@ -84,7 +16,9 @@
             "geoportal",
             "NR_INWENT",
             "inne"
-          ]
+          ],
+          "title": "System",
+          "type": "string"
         },
         "ref_type": {
           "enum": [
@@ -94,51 +28,165 @@
             "url",
             "source_row",
             "other"
-          ]
+          ],
+          "title": "Ref Type",
+          "type": "string"
         },
         "external_id": {
-          "type": "string",
-          "minLength": 1
+          "$ref": "#/$defs/NonEmptyString"
         },
         "url": {
           "anyOf": [
             {
-              "type": "string",
-              "format": "uri"
+              "$ref": "#/$defs/UriString"
             },
             {
               "type": "null"
             }
-          ]
+          ],
+          "default": null
         },
         "scope": {
-          "enum": [
-            "object",
-            "cave",
-            "cave_system",
-            "inventory_entry",
-            "unknown",
-            null
-          ]
+          "anyOf": [
+            {
+              "enum": [
+                "object",
+                "cave",
+                "cave_system",
+                "inventory_entry",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scope"
         },
         "notes": {
-          "$ref": "#/$defs/nullableString"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
         }
-      }
+      },
+      "required": [
+        "system",
+        "ref_type",
+        "external_id"
+      ],
+      "title": "ExternalReference",
+      "type": "object"
     },
-    "nullableString": {
-      "type": [
-        "string",
-        "null"
-      ]
+    "NonEmptyString": {
+      "minLength": 1,
+      "type": "string"
     },
-    "objectId": {
-      "type": "string",
-      "pattern": "^[A-Z]{2,3}-[0-9]{4,}$"
+    "ObjectId": {
+      "pattern": "^[A-Z]{2,3}-[0-9]{4,}$",
+      "type": "string"
     },
-    "personId": {
-      "type": "string",
-      "minLength": 1
+    "SchemaVersion": {
+      "const": 1
+    },
+    "TimestampString": {
+      "format": "date-time",
+      "pattern": "^\\S+(?![\\s\\S])",
+      "type": "string"
+    },
+    "UniqueList_ExternalReference_": {
+      "items": {
+        "$ref": "#/$defs/ExternalReference"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "UniqueList_ObjectId_": {
+      "items": {
+        "$ref": "#/$defs/ObjectId"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "UriString": {
+      "format": "uri",
+      "pattern": "^\\S+(?![\\s\\S])",
+      "type": "string"
     }
-  }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "updated_at": {
+      "$ref": "#/$defs/TimestampString"
+    },
+    "updated_by": {
+      "$ref": "#/$defs/NonEmptyString"
+    },
+    "created_at": {
+      "$ref": "#/$defs/TimestampString"
+    },
+    "created_by": {
+      "$ref": "#/$defs/NonEmptyString"
+    },
+    "schema_version": {
+      "$ref": "#/$defs/SchemaVersion"
+    },
+    "id": {
+      "$ref": "#/$defs/CaveId"
+    },
+    "name": {
+      "$ref": "#/$defs/NonEmptyString"
+    },
+    "system_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "System Name"
+    },
+    "external_refs": {
+      "$ref": "#/$defs/UniqueList_ExternalReference_"
+    },
+    "object_ids": {
+      "$ref": "#/$defs/UniqueList_ObjectId_"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "updated_at",
+    "updated_by",
+    "created_at",
+    "created_by",
+    "schema_version",
+    "id",
+    "name",
+    "external_refs",
+    "object_ids"
+  ],
+  "title": "Jaskinia",
+  "type": "object"
 }

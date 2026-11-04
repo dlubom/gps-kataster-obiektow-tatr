@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 import zipfile
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
+from gps_kataster_obiektow_tatr.artifact_io import publish_artifacts
 from gps_kataster_obiektow_tatr.best_measurements_export import (
     DEFAULT_EXPORT_DIR,
     BestMeasurementsExportResult,
-    export_best_measurements,
+    _build_best_measurement_exports,
 )
 from gps_kataster_obiektow_tatr.build_db import (
     DEFAULT_SQLITE_PATH,
@@ -67,14 +69,48 @@ def build_release_artifacts(
     release_version: str | None = None,
     source_commit: str | None = None,
 ) -> ReleaseArtifactsResult:
-    """Build SQLite, export best measurements and zip the SQLite snapshot."""
+    """Build a complete release package before replacing prior artifacts."""
 
+    with TemporaryDirectory(prefix="kataster-release-") as staging_dir:
+        staging = Path(staging_dir)
+        staged = _build_release_artifacts(
+            data_dir=data_dir,
+            sqlite_path=staging / "database" / sqlite_path.name,
+            output_dir=staging / "exports",
+            generated_at=generated_at,
+            release_version=release_version,
+            source_commit=source_commit,
+        )
+        published = replace(
+            staged,
+            sqlite_result=replace(staged.sqlite_result, sqlite_path=sqlite_path),
+            export_result=staged.export_result.at_output_dir(output_dir),
+            sqlite_zip_path=output_dir / staged.sqlite_zip_path.name,
+            statistics_paths=(
+                output_dir / staged.statistics_paths[0].name,
+                output_dir / staged.statistics_paths[1].name,
+            ),
+            excel_path=output_dir / staged.excel_path.name,
+        )
+        publish_artifacts(staged.artifact_paths, published.artifact_paths)
+    return published
+
+
+def _build_release_artifacts(
+    *,
+    data_dir: Path,
+    sqlite_path: Path,
+    output_dir: Path,
+    generated_at: str | None,
+    release_version: str | None,
+    source_commit: str | None,
+) -> ReleaseArtifactsResult:
     sqlite_result = build_sqlite_database(
         data_dir=data_dir,
         output_path=sqlite_path,
         generated_at=generated_at,
     )
-    export_result = export_best_measurements(
+    export_result = _build_best_measurement_exports(
         data_dir=data_dir,
         output_dir=output_dir,
         generated_at=generated_at,

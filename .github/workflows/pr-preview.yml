@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
+      KATASTER_HISTORY_BASE_REF: ${{ github.event.pull_request.base.sha }}
       PR_NUMBER: ${{ github.event.pull_request.number }}
       PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
       PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
@@ -57,10 +58,26 @@ jobs:
           --merge-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID"
           --run-attempt "$GITHUB_RUN_ATTEMPT"
 
+      - name: Read back all export formats
+        run: |
+          uv run --frozen python -m zipfile -e build/pr-preview/katalog.sqlite.zip build/pr-preview-db
+          uv run --frozen python scripts/verify_catalog_artifacts.py --sqlite-path build/pr-preview-db/katalog.sqlite --exports-dir build/pr-preview
+
       - name: Upload downloadable ZIP
         uses: actions/upload-artifact@v4
         with:
           name: pr-preview-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}-${{ github.event.pull_request.base.sha }}-${{ github.sha }}-${{ github.run_attempt }}
           path: build/pr-preview/*
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Build readable catalog cards
+        run: uv run --frozen python scripts/build_catalog_cards.py
+
+      - name: Upload catalog cards
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-cards-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+          path: build/catalog/
           if-no-files-found: error
           retention-days: 14

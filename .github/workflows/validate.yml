@@ -13,10 +13,14 @@ jobs:
   validate:
     name: Validate code and data
     runs-on: ubuntu-latest
+    env:
+      KATASTER_HISTORY_BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -34,16 +38,19 @@ jobs:
           enable-cache: true
 
       - name: Sync dependencies
-        run: uv sync
+        run: uv sync --frozen
+
+      - name: Check generated schemas
+        run: uv run --frozen python scripts/generate_schemas.py --check
 
       - name: Check formatting
-        run: uv run ruff format --check src tests scripts
+        run: uv run --frozen ruff format --check src tests scripts
 
       - name: Lint
-        run: uv run ruff check src tests scripts
+        run: uv run --frozen ruff check src tests scripts
 
       - name: Test
-        run: uv run pytest
+        run: uv run --frozen pytest
 
       - name: Validate YAML data
-        run: uv run python scripts/validate.py
+        run: uv run --frozen python scripts/validate.py

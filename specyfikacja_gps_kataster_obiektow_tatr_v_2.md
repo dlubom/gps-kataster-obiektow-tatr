@@ -266,6 +266,11 @@ wlasne zweryfikowane > TPN > wlasne nieweryfikowane > PIG > geoportal/publikacja
 ```
 
 Ręczne wskazanie `mode: manual` zawsze ma pierwszeństwo przed algorytmem.
+Porównanie timestampów uwzględnia pełny ułamek sekundy i offset, również
+małe RFC 3339 `t`/`z`. Nie ogranicza precyzji do mikrosekund ani zakresu
+chwili UTC do lat reprezentowanych przez `datetime`; zapis źródłowy pozostaje
+niezmieniony. Poprawia to wcześniejsze fałszywe remisy i błędy brzegowe,
+nie zmienia priorytetów źródeł, statusów, dokładności ani tie-break po ID.
 
 ### 4.5 `ExternalReference`
 
@@ -693,6 +698,28 @@ Zasady:
 - Historia zmian YAML jest śledzona przez git.
 - Review PR jest podstawowym mechanizmem kontroli jakości.
 
+Ochrona wykonawcza porównuje surowe wartości i obecność pól z zaakceptowanym
+commitem Git. Istniejąca lista pomiarów musi pozostać prefiksem nowej listy;
+nie wolno usuwać obiektu z historią, usuwać/przestawiać pomiarów ani zmieniać
+ich ID. Korekta współrzędnych, wysokości, dokładności, daty, metody lub
+proweniencji wymaga dopisania pomiaru. Zmiana zapisu liczby z int na float
+jest również zgłaszana; nie normalizujemy historii podczas migracji.
+
+Metadane podlegające review to `verification_status`, `verified_by`,
+`verified_at`, `notes` i `tags`. Ich zmiana nie wymaga nowego pomiaru;
+pozostałe pola, w tym `source_ref`, autor i czas utworzenia, są chronione.
+Uwagi źródłowe nadal należy zachowywać zgodnie z §6–8; automatyczna bramka
+nie potrafi ocenić semantycznej poprawności redakcji notatek.
+
+Dla katalogu checkoutu walidacja, review i build sprawdzają historię wobec
+`origin/main`. CI PR przekazuje dokładny base SHA, push main poprzedni SHA,
+przez `KATASTER_HISTORY_BASE_REF`; wymagany commit musi istnieć i być
+przodkiem checkoutu. Brak refa, blobów lub dowodu pokrewieństwa blokuje
+operację. Nie zastępujemy baseline przez HEAD. Jawny SHA jest deklaracją
+operatora, a CI bierze go z zaufanych metadanych zdarzenia. Osobne katalogi
+fixture/staging mają walidację modelu i domeny; porównanie ich historii
+trzeba zażądać przez `scripts/check_measurement_history.py --data-dir …`.
+
 ### 9.2 Weryfikacja pomiarów
 
 Statusy:
@@ -797,7 +824,48 @@ i `ReviewDecisionError` dla decyzji, a walidator używa `YAML_INVALID`.
 CLI zwraca kod 1, bez zapisu SQLite/eksportów lub finalnych danych review.
 Źródłowe bajty oraz wartości i kolejność list poprawnego YAML są zachowane.
 
-### 10.2 Przykład obiektu YAML
+### 10.2 Kontrakt wykonawczy i projekcja JSON Schema
+
+`src/gps_kataster_obiektow_tatr/models.py` jest jedyną deklaracją struktur
+rekordów Obiekt, Jaskinia, Pomiar, Best, przydzielenia ID, referencji,
+załącznika i relacji. Wspólne modele odrzucają obce pola na każdym poziomie,
+ciągi zamiast liczb i bool zamiast liczby. Wszystkie liczby mają skończoną
+reprezentację float; przepełnienie jest błędem. Nie stosujemy koercji ani
+nie przepisujemy źródłowego YAML przez `model_dump`.
+
+Daty, znaczniki czasu i URI są sprawdzanymi ciągami, z zachowaniem dosłownego
+zapisu (strefy, ułamki sekund, wielkość liter i kodowanie URL). Data musi być
+kalendarzowo poprawna, timestamp ma format RFC 3339 ze strefą. Cytuj je
+w YAML: implicit date/datetime z parsera nie zastępuje wymaganego string.
+Wymagane listy nie mogą znikać ani być null; opcjonalne `tags` ma domyślną
+pustą listę, jawny null jest błędem. Listy pozostają uporządkowane.
+Pola dopuszczające null zachowują różnicę między brakiem a jawnym null.
+
+`schema_version` zachowuje numeryczny kontrakt dotychczasowego `const: 1`:
+`1` i `1.0` są poprawne, `true` i `"1"` błędne. Nie zastępujemy tego przez
+`StrictInt`, który odrzuciłby `1.0`. Auto/manual są wariantami z discriminatorem;
+manual wymaga niepustego uzasadnienia także w wygenerowanym schemacie.
+
+`scripts/generate_schemas.py` generuje trzy pliki `schema/*.schema.json`;
+`--check` porównuje je bajtowo i blokuje CI przy rozbieżności. Zachowane
+ścieżki, `$id` i Draft 2020-12 umożliwiają dotychczasowe mapowanie edytora.
+Schematy nie wykonują reguł między rekordami, geografii, wyboru Best,
+kontroli istnienia załączników, tekstu niedopuszczalnego w XML 1.0 ani historii Git. Pełnym kontraktem są
+modele **i** funkcje domenowe w walidatorze. `jsonschema` oraz jawnie
+zablokowane w locku `rfc3339-validator`/`rfc3986-validator` zapewniają
+kontrolę formatów; testy sprawdzają rzeczywistą rejestrację i błędne wartości.
+[Format checking](https://python-jsonschema.readthedocs.io/en/stable/validate/#validating-formats)
+nie może zależeć od przypadkowo zainstalowanych dodatków.
+
+Po walidacji SQLite, eksporty i karty otrzymują kontrolowaną reprezentację
+z modelu, z zachowaniem źródłowych wartości i obecności pól. Surowe mapy są
+oddzielnie zachowane dla historii. Nieprawidłowe struktury nie docierają do
+geometrii ani wyboru Best. Diagnostyka zachowuje error/warning i kody domeny;
+liczba poza zakresem modelu daje `SCHEMA_VALIDATION` przed transformacją.
+ID Jaskini/Relacji i lokalne ID załączników są jednoznaczne; przydzielenie
+ID musi wskazywać istniejący pomiar.
+
+### 10.3 Przykład obiektu YAML
 
 ```yaml
 schema_version: 1
@@ -904,7 +972,8 @@ Workflow CI używa tego samego toolingu co środowisko lokalne: `uv`, `ruff`, `p
 
 Kroki techniczne:
 
-- instalacja zależności przez `uv sync`,
+- instalacja zależności przez `uv sync --frozen`,
+- `scripts/generate_schemas.py --check`,
 - `ruff check .`,
 - `ruff format --check .`,
 - `pytest`,
@@ -914,7 +983,7 @@ Kroki techniczne:
 Walidacje typu error:
 
 - poprawność YAML,
-- zgodność z JSON Schema,
+- zgodność z modelami Pydantic i aktualność wygenerowanego JSON Schema,
 - obecność `schema_version: 1`,
 - unikalność `Obiekt.id` globalnie,
 - unikalność `Pomiar.id` w obrębie obiektu (`DUPLICATE_MEASUREMENT_ID`),

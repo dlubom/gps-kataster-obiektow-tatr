@@ -1,4 +1,4 @@
-from datetime import UTC, date, datetime, time
+from datetime import date
 from math import inf
 
 import pytest
@@ -143,6 +143,24 @@ def test_observed_at_is_normalized_to_utc_for_latest_selection() -> None:
     assert selected_id == "m-naive"
 
 
+@pytest.mark.parametrize(
+    ("second_timestamp", "expected_id"),
+    [
+        ("2026-05-16T10:00:00.123455Z", "m-001"),
+        ("2026-05-16T10:00:00.123456Z", "m-002"),
+        ("2026-05-16T10:00:00.123457Z", "m-002"),
+    ],
+)
+def test_best_selection_compares_offset_timestamps_at_microsecond_precision(
+    second_timestamp, expected_id
+):
+    measurements = [
+        _measurement("m-001", source="TPN", observed_at="2026-05-16T15:30:00.123456+05:30"),
+        _measurement("m-002", source="TPN", observed_at=second_timestamp, accuracy=1.2),
+    ]
+    assert select_default_best_measurement_id(measurements) == expected_id
+
+
 def test_invalid_observed_values_sort_before_valid_dates() -> None:
     measurements = [
         _measurement("m-invalid-at", source="TPN", observed_at="not-a-date"),
@@ -158,34 +176,32 @@ def test_invalid_observed_values_sort_before_valid_dates() -> None:
 @pytest.mark.parametrize(
     ("value", "expected"),
     [
-        ("2026-05-16T12:00:00", datetime(2026, 5, 16, 12, 0, tzinfo=UTC)),
-        ("2026-05-16T13:30:00+02:00", datetime(2026, 5, 16, 11, 30, tzinfo=UTC)),
-        ("not-a-date", datetime.min.replace(tzinfo=UTC)),
+        ("2026-05-16T12:00:00", (date(2026, 5, 16).toordinal() * 86_400 + 12 * 3600, "")),
+        ("2026-05-16T13:30:00+02:00", (date(2026, 5, 16).toordinal() * 86_400 + 690 * 60, "")),
+        ("not-a-date", (date.min.toordinal() * 86_400, "")),
     ],
 )
-def test_parse_observed_at(value: str, expected: datetime) -> None:
+def test_parse_observed_at(value: str, expected: tuple[int, str]) -> None:
     assert _parse_observed_at(value) == expected
 
 
 @pytest.mark.parametrize(
     ("value", "expected"),
     [
-        ("2026-05-16", datetime.combine(date(2026, 5, 16), time.min, tzinfo=UTC)),
-        ("not-a-date", datetime.min.replace(tzinfo=UTC)),
+        ("2026-05-16", (date(2026, 5, 16).toordinal() * 86_400, "")),
+        ("not-a-date", (date.min.toordinal() * 86_400, "")),
     ],
 )
-def test_parse_observed_date(value: str, expected: datetime) -> None:
+def test_parse_observed_date(value: str, expected: tuple[int, str]) -> None:
     assert _parse_observed_date(value) == expected
 
 
 def test_measurement_observed_sort_value_uses_observed_date_and_missing_fallback() -> None:
-    assert _measurement_observed_sort_value({"observed_date": "2026-05-16"}) == datetime(
-        2026,
-        5,
-        16,
-        tzinfo=UTC,
+    assert _measurement_observed_sort_value({"observed_date": "2026-05-16"}) == (
+        date(2026, 5, 16).toordinal() * 86_400,
+        "",
     )
-    assert _measurement_observed_sort_value({}) == datetime.min.replace(tzinfo=UTC)
+    assert _measurement_observed_sort_value({}) == (date.min.toordinal() * 86_400, "")
 
 
 @pytest.mark.parametrize(

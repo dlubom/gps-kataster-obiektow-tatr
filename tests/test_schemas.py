@@ -1,9 +1,11 @@
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
 import yaml
-from jsonschema import Draft202012Validator, FormatChecker
+from jsonschema import Draft202012Validator, FormatChecker, ValidationError
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_DIR = REPO_ROOT / "schema"
@@ -42,11 +44,17 @@ def validators() -> dict[str, Draft202012Validator]:
 
 def validation_errors(validator: Draft202012Validator, fixture_name: str) -> list[str]:
     errors = validator.iter_errors(load_yaml(FIXTURE_DIR / fixture_name))
-    return sorted(format_error(error) for error in errors)
+    return sorted(format_error(detail) for error in errors for detail in iter_error_details(error))
 
 
-def format_error(error: object) -> str:
-    path = ".".join(str(path_part) for path_part in error.path)
+def iter_error_details(error: ValidationError):
+    yield error
+    for detail in error.context:
+        yield from iter_error_details(detail)
+
+
+def format_error(error: ValidationError) -> str:
+    path = ".".join(str(path_part) for path_part in error.absolute_path)
     if not path:
         path = "<root>"
     return f"{path}: {error.message}"
@@ -93,3 +101,14 @@ def test_invalid_schema_fixtures_fail_on_expected_fields(
 
     assert errors
     assert any(expected_error_fragment in error for error in errors), errors
+
+
+def test_committed_schemas_match_generated_files() -> None:
+    result = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "scripts" / "generate_schemas.py"), "--check"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr

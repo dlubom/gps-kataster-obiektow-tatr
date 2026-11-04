@@ -2,6 +2,36 @@
 
 Stan na: 2026-11-04
 
+## PBI-120: Kontrakt Pydantic, ochrona historii i karty katalogowe
+
+Status: zweryfikowane lokalnie — do dostarczenia draft PR na `codex/pydantic-catalog-contract`, baza `ad5fa191a36d5a5f45f0b2de523bd39125827573`.
+Numery 118 i 119 są zajęte przez otwarte PR #39 i #40; ten PBI nie zmienia ich zakresu.
+
+Decyzja: YAML pozostaje źródłem prawdy. Modele Pydantic definiują rekordy
+oraz typy osadzane, a JSON Schema jest deterministyczną projekcją dla edytorów.
+Reguły między rekordami, geografia, Best i historia pozostają Pythonem.
+SQLite, dotychczasowe eksporty oraz nowe karty Markdown są artefaktami.
+
+Etapy jednego PBI:
+
+1. Odtworzyć baseline aktualnego main: zależności, pełne testy, walidacja,
+   build i niezależny odczyt wszystkich formatów; zachować dane bajtowo.
+2. Zastąpić ręczne schematy modelami, zachować ścisły parser YAML, diagnostykę,
+   wartości i kolejność oraz jeden sprawdzony obraz danych dla konsumentów.
+3. Wymusić historię względem zaakceptowanego Git, blokować brak baseline,
+   generować karty i dołączyć je do artefaktów PR, dodać bramki schema/CI.
+4. Sprawdzić przypadki brzegowe i nieudane zapisy, porównać dane i eksporty,
+   wykonać osobne review zgodności i utraty danych, dostarczyć draft PR.
+
+Kryteria odbioru: całe rzeczywiste dane, obce/brakujące pola, null/absence,
+ścisłe liczby i skończoność, daty/URI, duplikaty i merge YAML, referencje,
+manual/auto, remisy i strefy Best, ochrona wartości/kolejności historii,
+brak baseline, odczyt gotowych kart i eksportów, zgodność wygenerowanych
+schematów, pełna bramka lokalna i CI dla zdalnego SHA. Zachowane źródła,
+`object_ids`, cache współrzędnych i zapisane wskazanie auto Best.
+Dowody oraz jawne różnice kontraktu: [odbiór PBI-120](verification/PBI-120.md).
+Merge, tag, witryna i release wymagają odrębnego polecenia.
+
 ## Issue #43: Pomiary Marka Jędrzejczaka z poprawionego XLS
 
 Status: przygotowano do wydania v1.3.3 w [PR #44](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/44).

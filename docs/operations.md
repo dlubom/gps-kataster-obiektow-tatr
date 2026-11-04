@@ -3,6 +3,93 @@
 Ten dokument opisuje codzienna prace na danych YAML w V1. Zrodlem prawdy sa
 pliki w `data/`; katalog `build/` zawiera tylko artefakty wygenerowane lokalnie.
 
+## Kontrakt i generowane schematy
+
+Zainstaluj dokładnie zależności z locka, bez pakietów globalnych:
+
+```bash
+uv sync --frozen
+uv run --frozen python scripts/generate_schemas.py
+uv run --frozen python scripts/generate_schemas.py --check
+```
+
+Edytuj `src/gps_kataster_obiektow_tatr/models.py`, a następnie regeneruj trzy
+`schema/*.schema.json`; nie edytuj tych JSON-ów ręcznie. Pliki mają te same
+ścieżki i `$id` co wcześniej, do mapowania plików YAML w edytorze. Schemat
+sprawdza strukturę, typy, wymagane pola i warianty manual/auto. Pełny walidator
+wykonuje ponadto reguły referencji/unikalności, geografii, Best, załączników,
+historii Git i tekstu niedopuszczalnego w XML 1.0 (GPX). Schema jest projekcją,
+nie zastępuje `scripts/validate.py`. Kontrola date-time/URI ma jawne zależności
+`rfc3339-validator` i `rfc3986-validator` w `pyproject.toml` oraz locku.
+
+Modele odrzucają nieznane pola na każdym poziomie, bool/tekst zamiast liczby,
+NaN/Infinity i przepełnienie. `schema_version: 1.0` pozostaje legalne zgodnie
+z numerycznym `const: 1`; strict int zmieniłby ten kontrakt. Daty i URI są
+walidowanym tekstem, nie są normalizowane do obiektów datetime/URL.
+Cytuj daty i timestampy w YAML. Jawne null nie zastępuje wymaganej listy;
+brak opcjonalnego pola i jawny null pozostają rozróżnialne. Walidacja nie
+przepisuje YAML, nie przestawia list ani nie poprawia wartości.
+
+### Zaakceptowana historia Git
+
+Dla `data/` checkoutu walidator, review, SQLite, eksporty i karty chronią
+historię wobec pobranego `origin/main`. W CI PR punktem odniesienia jest
+dokładne `pull_request.base.sha`, a push main — `before`. Pełny checkout
+historii jest wymagany. Przed pracą wykonaj `git fetch origin`.
+
+```bash
+uv run --frozen python scripts/check_measurement_history.py
+uv run --frozen python scripts/validate.py
+```
+
+Jawny zaakceptowany SHA można przekazać jako `--base-ref` do skryptu historii
+albo `KATASTER_HISTORY_BASE_REF` do walidacji/buildów. Musi istnieć i być
+przodkiem HEAD. Nie podawaj commitu kandydata jako jego własnego baseline;
+brak historii blokuje operację, nie powoduje przełączenia na HEAD. Zaufanie
+do przekazanego SHA zapewnia operator lub metadane CI, nie sam algorytm Git.
+Oddzielny `--data-dir` poza katalogiem checkoutu służy fixture/staging i jest
+walidowany strukturalnie/domenowo; sprawdź jego historię jawnie skryptem z
+`--data-dir`, przed użyciem jako zamiennika katalogu.
+
+Stara lista pomiarów musi pozostać prefiksem nowej. Dopisuj korekty jako nowe
+pomiary. Edytowalne metadane istniejącego pomiaru: `verification_status`,
+`verified_by`, `verified_at`, `notes`, `tags`. Wartości, daty, źródła,
+`source_ref`, autorstwo i obecność pozostałych pól są chronione. Bramka nie
+ocenia, czy redakcja uwag zachowała sens źródła; to pozostaje zadaniem review.
+
+### Karty do czytania
+
+```bash
+uv run --frozen python scripts/build_catalog_cards.py
+```
+
+Otwórz `build/catalog/index.md`. Karty `objects/<ID>.md` i `caves/<ID>.md`
+pokazują zapisane Best i uzasadnienie, historię w kolejności YAML, referencje,
+uwagi oraz jawnie nieznane dokładności i datum. Ścieżka YAML wskazuje źródło
+w repozytorium; wszystkie odsyłacze między kartami działają też po rozpakowaniu.
+Karty są generowanym widokiem, nigdy drugim źródłem prawdy.
+
+Workflow `PR export preview` dołącza osobny artefakt `catalog-cards-<PR>-<SHA>`
+z retencją 14 dni. Pobierz go z runu Actions po zalogowaniu do GitHub.
+Nie powstaje witryna ani release. Katalog docelowy jest przeznaczony tylko
+na karty generatora; dodatkowe nieoznaczone pliki blokują zastąpienie.
+Błąd walidacji/renderowania/publikacji zachowuje poprzedni katalog.
+
+### Odczyt gotowych eksportów
+
+Po buildzie wykonaj kontrolę wszystkich publicznych formatów i SQLite:
+
+```bash
+uv run --frozen python scripts/verify_catalog_artifacts.py \
+  --sqlite-path build/katalog.sqlite --exports-dir build/exports
+```
+
+`--baseline-dir` wskazuje katalog zawierający `katalog.sqlite` i `exports/`.
+Porównanie zachowuje całą treść rekordów i plików; pomija tylko nagłówki ZIP,
+czas utworzenia pakietu XLSX i lokalny prefiks ścieżek w diagnostyce SQLite.
+Dla porównania ustaw identyczne `--generated-at` i `--source-commit` obu buildów.
+Sama zgodność porównania nie potwierdza prawdziwości położenia w terenie.
+
 ## Pobieranie jaskiń, lejów i sztolni z API TPN
 
 ```bash
@@ -323,10 +410,12 @@ ale wymaga pola `reason`.
 Przed commitem uruchom lokalna bramke:
 
 ```bash
-uv run ruff format --check src tests scripts
-uv run ruff check src tests scripts
-uv run pytest
-uv run python scripts/validate.py
+uv sync --frozen
+uv run --frozen python scripts/generate_schemas.py --check
+uv run --frozen ruff format --check src tests scripts
+uv run --frozen ruff check src tests scripts
+uv run --frozen pytest
+uv run --frozen python scripts/validate.py
 ```
 
 `scripts/validate.py` zwraca kod niezerowy tylko dla `error`. Ostrzezenia trzeba

@@ -2,18 +2,17 @@
 
 from __future__ import annotations
 
-import json
+import os
 from collections import Counter
 from collections.abc import Iterable, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from enum import StrEnum
 from itertools import combinations
 from pathlib import Path
 from typing import Any, Protocol
 from urllib.parse import urlparse
 
-from jsonschema import Draft202012Validator, FormatChecker
-from jsonschema.exceptions import ValidationError
+from pydantic import ValidationError
 
 from gps_kataster_obiektow_tatr.best_measurement import (
     select_default_best_measurement_id,
@@ -34,6 +33,7 @@ from gps_kataster_obiektow_tatr.data_loader import (
     load_dataset,
 )
 from gps_kataster_obiektow_tatr.measurement_values import non_finite_measurement_fields
+from gps_kataster_obiektow_tatr.models import RECORD_MODELS
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
     PrefixResolutionStatus,
@@ -41,7 +41,6 @@ from gps_kataster_obiektow_tatr.prefix_resolver import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_SCHEMA_DIR = REPO_ROOT / "schema"
 FAR_MEASUREMENT_DISTANCE_M = 100.0
 
 
@@ -73,7 +72,6 @@ def validate_data_dir(
     data_dir: Path = DEFAULT_DATA_DIR,
     *,
     repo_root: Path = REPO_ROOT,
-    schema_dir: Path = DEFAULT_SCHEMA_DIR,
     prefix_resolver: PrefixResolverLike | None = None,
 ) -> tuple[ValidationIssue, ...]:
     """Load and validate a data directory."""
@@ -103,7 +101,6 @@ def validate_data_dir(
         dataset,
         data_dir=data_dir,
         repo_root=repo_root,
-        schema_dir=schema_dir,
         prefix_resolver=prefix_resolver,
     )
 
@@ -113,35 +110,128 @@ def validate_dataset(
     *,
     data_dir: Path = DEFAULT_DATA_DIR,
     repo_root: Path = REPO_ROOT,
-    schema_dir: Path = DEFAULT_SCHEMA_DIR,
     prefix_resolver: PrefixResolverLike | None = None,
 ) -> tuple[ValidationIssue, ...]:
     """Validate an already-loaded dataset and return all issues."""
 
-    resolver = prefix_resolver or default_prefix_resolver()
-    validators = _load_schema_validators(schema_dir)
+    return validate_loaded_dataset(
+        dataset, data_dir=data_dir, repo_root=repo_root, prefix_resolver=prefix_resolver
+    )[1]
+
+
+def validate_loaded_dataset(
+    dataset: LoadedDataset,
+    *,
+    data_dir: Path = DEFAULT_DATA_DIR,
+    repo_root: Path = REPO_ROOT,
+    prefix_resolver: PrefixResolverLike | None = None,
+) -> tuple[LoadedDataset, tuple[ValidationIssue, ...]]:
+    """Validate raw records once and provide one controlled consumer representation.
+
+    Raw mappings retain field presence for provenance/history. The in-memory dump
+    never rewrites YAML; the string/number model types preserve source values.
+    Consumers must stop if the returned issues contain errors.
+    """
     issues: list[ValidationIssue] = []
+    checked = {}
+    for record in dataset.records():
+        try:
+            model = RECORD_MODELS[record.kind].model_validate(record.raw_data)
+        except ValidationError as exc:
+            issues.extend(_model_issues(record, exc))
+        else:
+            checked[id(record)] = replace(record, data=model.model_dump(exclude_unset=True))
+    # Do not send malformed shapes/numbers to geometry, sorting, or references.
+    safe = LoadedDataset(
+        *(
+            tuple(checked[id(r)] for r in records if id(r) in checked)
+            for records in (dataset.objects, dataset.caves, dataset.relations)
+        )
+    )
+    raw = LoadedDataset(
+        *(
+            tuple(replace(record, data=record.raw_data) for record in records)
+            for records in (dataset.objects, dataset.caves, dataset.relations)
+        )
+    )
+    issues.extend(_validate_file_id_paths(raw.records(), data_dir=data_dir))
+    for records, kind in (
+        (raw.objects, "OBJECT"),
+        (raw.caves, "CAVE"),
+        (raw.relations, "RELATION"),
+    ):
+        issues.extend(_validate_duplicate_record_ids(records, kind=kind))
+    issues.extend(_validate_cross_references(safe))
+    issues.extend(
+        _validate_object_records(
+            safe.objects, resolver=prefix_resolver or default_prefix_resolver(), repo_root=repo_root
+        )
+    )
+    issues.extend(_validate_duplicate_tpn_globalids(safe.objects))
+    if not has_errors(issues) and data_dir.resolve() == (repo_root / "data").resolve():
+        # A checkout is a history-bearing catalog. Separate fixtures/staging are
+        # shape/domain-only unless explicitly checked by the history CLI.
+        from gps_kataster_obiektow_tatr.measurement_history import check_measurement_history
 
-    issues.extend(_validate_schema(dataset.records(), validators))
-    issues.extend(_validate_file_id_paths(dataset.records(), data_dir=data_dir))
-    issues.extend(_validate_duplicate_object_ids(dataset.objects))
-    issues.extend(_validate_cross_references(dataset))
-    issues.extend(_validate_object_records(dataset.objects, resolver=resolver, repo_root=repo_root))
-    issues.extend(_validate_duplicate_tpn_globalids(dataset.objects))
+        issues.extend(
+            check_measurement_history(
+                safe,
+                repo_root=repo_root,
+                base_ref=os.environ.get("KATASTER_HISTORY_BASE_REF", "origin/main"),
+            )
+        )
+    return safe, tuple(issues)
 
-    return tuple(issues)
 
-
-def validate_record_schema(
-    record: LoadedYamlRecord, *, schema_dir: Path = DEFAULT_SCHEMA_DIR
-) -> tuple[ValidationIssue, ...]:
-    """Check a proposal's shape before review actions consume its nested values."""
-
-    issues = _validate_schema((record,), _load_schema_validators(schema_dir))
+def validate_record_schema(record: LoadedYamlRecord) -> tuple[ValidationIssue, ...]:
+    """Validate a proposal before review consumes its nested values."""
+    try:
+        RECORD_MODELS[record.kind].model_validate(record.raw_data)
+    except ValidationError as exc:
+        return _model_issues(record, exc)
     if record.kind == DataKind.OBJECT:
-        issues += _validate_measurement_identity(record)
-        issues += _validate_finite_measurements(record)
-    return issues
+        return _validate_measurement_identity(record)
+    return ()
+
+
+def _model_issues(record: LoadedYamlRecord, exc: ValidationError) -> tuple[ValidationIssue, ...]:
+    issues = []
+    for error in exc.errors(include_url=False, include_input=False):
+        path = ".".join(str(part) for part in error["loc"]) or "<root>"
+        code = "SCHEMA_VALIDATION"
+        if error["type"] == "finite_number":
+            code = "MEASUREMENT_NON_FINITE"
+            loc = error["loc"]
+            if len(loc) >= 3 and loc[0] == "measurements":
+                measurement = record.raw_data["measurements"][loc[1]]
+                path = (
+                    f"Object {_record_id(record)} measurement {measurement.get('id')} "
+                    f"field {loc[-1]}"
+                )
+        elif error["loc"] == ("schema_version",):
+            issues.append(
+                ValidationIssue(
+                    "SCHEMA_VERSION_INVALID",
+                    ValidationSeverity.ERROR,
+                    record.path,
+                    "schema_version must be 1.",
+                )
+            )
+        if error["loc"] == ("best_measurement", "manual", "reason"):
+            issues.append(
+                ValidationIssue(
+                    "BEST_MEASUREMENT_MANUAL_REASON_REQUIRED",
+                    ValidationSeverity.ERROR,
+                    record.path,
+                    "Manual best_measurement requires reason.",
+                )
+            )
+        issues.append(
+            ValidationIssue(code, ValidationSeverity.ERROR, record.path, f"{path}: {error['msg']}")
+        )
+    if record.kind == DataKind.OBJECT:
+        issues.extend(_validate_measurement_identity(replace(record, data=record.raw_data)))
+    return tuple(issues)
 
 
 def format_issue(issue: ValidationIssue) -> str:
@@ -161,54 +251,6 @@ def exit_code_for_issues(issues: Iterable[ValidationIssue]) -> int:
     """Return the validator process exit code for a set of issues."""
 
     return 1 if has_errors(issues) else 0
-
-
-def _load_schema_validators(schema_dir: Path) -> dict[DataKind, Draft202012Validator]:
-    schema_paths = {
-        DataKind.OBJECT: schema_dir / "object.schema.json",
-        DataKind.CAVE: schema_dir / "cave.schema.json",
-        DataKind.RELATION: schema_dir / "relation.schema.json",
-    }
-    validators: dict[DataKind, Draft202012Validator] = {}
-
-    for kind, path in schema_paths.items():
-        with path.open(encoding="utf-8") as schema_file:
-            schema = json.load(schema_file)
-        Draft202012Validator.check_schema(schema)
-        validators[kind] = Draft202012Validator(schema, format_checker=FormatChecker())
-
-    return validators
-
-
-def _validate_schema(
-    records: Sequence[LoadedYamlRecord],
-    validators: dict[DataKind, Draft202012Validator],
-) -> tuple[ValidationIssue, ...]:
-    issues: list[ValidationIssue] = []
-
-    for record in records:
-        if record.raw_data.get("schema_version") != 1:
-            issues.append(
-                ValidationIssue(
-                    code="SCHEMA_VERSION_INVALID",
-                    severity=ValidationSeverity.ERROR,
-                    path=record.path,
-                    description="schema_version must be 1.",
-                )
-            )
-
-        validator = validators[record.kind]
-        for error in sorted(validator.iter_errors(record.raw_data), key=_schema_error_sort_key):
-            issues.append(
-                ValidationIssue(
-                    code="SCHEMA_VALIDATION",
-                    severity=ValidationSeverity.ERROR,
-                    path=record.path,
-                    description=_format_schema_error(error),
-                )
-            )
-
-    return tuple(issues)
 
 
 def _validate_file_id_paths(
@@ -236,8 +278,10 @@ def _validate_file_id_paths(
     return tuple(issues)
 
 
-def _validate_duplicate_object_ids(
+def _validate_duplicate_record_ids(
     object_records: Sequence[LoadedYamlRecord],
+    *,
+    kind: str,
 ) -> tuple[ValidationIssue, ...]:
     issues: list[ValidationIssue] = []
 
@@ -248,10 +292,10 @@ def _validate_duplicate_object_ids(
         for record in records:
             issues.append(
                 ValidationIssue(
-                    code="DUPLICATE_OBJECT_ID",
+                    code=f"DUPLICATE_{kind}_ID",
                     severity=ValidationSeverity.ERROR,
                     path=record.path,
-                    description=f"Obiekt.id {object_id} is duplicated in: {paths}.",
+                    description=f"{kind}.id {object_id} is duplicated in: {paths}.",
                 )
             )
 
@@ -314,13 +358,27 @@ def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue,
                     )
                 )
 
-            if best_measurement.get("mode") == "manual" and not best_measurement.get("reason"):
+        assignment = object_record.data["id_assignment"]
+        assigned_id = assignment["assigned_from_measurement_id"]
+        if assigned_id not in measurement_ids:
+            issues.append(
+                ValidationIssue(
+                    "ID_ASSIGNMENT_MEASUREMENT_MISSING",
+                    ValidationSeverity.ERROR,
+                    object_record.path,
+                    f"Object {object_id} id_assignment references missing "
+                    f"measurement {assigned_id}.",
+                )
+            )
+        attachment_counts = Counter(a["id"] for a in object_record.data["attachments"])
+        for attachment_id, count in attachment_counts.items():
+            if count > 1:
                 issues.append(
                     ValidationIssue(
-                        code="BEST_MEASUREMENT_MANUAL_REASON_REQUIRED",
-                        severity=ValidationSeverity.ERROR,
-                        path=object_record.path,
-                        description=f"Object {object_id} manual best_measurement requires reason.",
+                        "DUPLICATE_ATTACHMENT_ID",
+                        ValidationSeverity.ERROR,
+                        object_record.path,
+                        f"Object {object_id} attachment {attachment_id} occurs {count} times.",
                     )
                 )
 
@@ -870,15 +928,6 @@ def _measurement_coordinate_values(
     if not all(_is_number(value) for value in (lat, lon, x_1992, y_1992)):
         return None
     return (float(lat), float(lon), float(x_1992), float(y_1992))
-
-
-def _schema_error_sort_key(error: ValidationError) -> tuple[str, str]:
-    return (".".join(str(path_part) for path_part in error.path), error.message)
-
-
-def _format_schema_error(error: ValidationError) -> str:
-    path = ".".join(str(path_part) for path_part in error.path) or "<root>"
-    return f"{path}: {error.message}"
 
 
 def _record_id(record: LoadedYamlRecord) -> str:

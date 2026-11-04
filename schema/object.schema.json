@@ -1,228 +1,181 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.local/gps-kataster-obiektow-tatr/schema/object.schema.json",
-  "title": "Obiekt",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "id",
-    "category",
-    "id_assignment",
-    "external_refs",
-    "measurements",
-    "best_measurement",
-    "attachments",
-    "created_at",
-    "created_by",
-    "updated_at",
-    "updated_by"
-  ],
-  "properties": {
-    "schema_version": {
-      "const": 1
-    },
-    "id": {
-      "$ref": "#/$defs/objectId"
-    },
-    "category": {
-      "enum": [
-        "jaskinia_otwor",
-        "ponor",
-        "wywierzysko",
-        "sztolnia",
-        "inne"
-      ]
-    },
-    "name_local": {
-      "$ref": "#/$defs/nullableString"
-    },
-    "cave_id": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/caveId"
-        },
-        {
-          "type": "null"
-        }
-      ]
-    },
-    "id_assignment": {
-      "$ref": "#/$defs/idAssignment"
-    },
-    "external_refs": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/externalReference"
-      },
-      "uniqueItems": true
-    },
-    "measurements": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "$ref": "#/$defs/measurement"
-      }
-    },
-    "best_measurement": {
-      "$ref": "#/$defs/bestMeasurement"
-    },
-    "attachments": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/attachment"
-      },
-      "uniqueItems": true
-    },
-    "notes": {
-      "$ref": "#/$defs/nullableString"
-    },
-    "created_at": {
-      "$ref": "#/$defs/dateTime"
-    },
-    "created_by": {
-      "$ref": "#/$defs/personId"
-    },
-    "updated_at": {
-      "$ref": "#/$defs/dateTime"
-    },
-    "updated_by": {
-      "$ref": "#/$defs/personId"
-    }
-  },
   "$defs": {
-    "attachment": {
-      "type": "object",
+    "Attachment": {
       "additionalProperties": false,
-      "required": [
-        "id",
-        "kind",
-        "path",
-        "created_at",
-        "created_by"
-      ],
       "properties": {
+        "created_at": {
+          "$ref": "#/$defs/TimestampString"
+        },
+        "created_by": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
         "id": {
-          "type": "string",
-          "pattern": "^a-[0-9]{3,}$"
+          "$ref": "#/$defs/AttachmentId"
         },
         "kind": {
           "enum": [
             "raport_gnss",
             "zdjecie",
             "inne"
-          ]
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "$ref": "#/$defs/NonEmptyString"
         },
         "measurement_id": {
           "anyOf": [
             {
-              "$ref": "#/$defs/measurementId"
+              "$ref": "#/$defs/MeasurementId"
             },
             {
               "type": "null"
             }
-          ]
-        },
-        "path": {
-          "type": "string",
-          "minLength": 1
+          ],
+          "default": null
         },
         "caption": {
-          "$ref": "#/$defs/nullableString"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Caption"
         },
         "date": {
           "anyOf": [
             {
-              "$ref": "#/$defs/date"
+              "$ref": "#/$defs/DateString"
             },
             {
               "type": "null"
             }
-          ]
-        },
-        "created_at": {
-          "$ref": "#/$defs/dateTime"
-        },
-        "created_by": {
-          "$ref": "#/$defs/personId"
-        }
-      }
-    },
-    "bestMeasurement": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "mode",
-        "measurement_id",
-        "updated_at",
-        "updated_by"
-      ],
-      "properties": {
-        "mode": {
-          "enum": [
-            "auto",
-            "manual"
-          ]
-        },
-        "measurement_id": {
-          "$ref": "#/$defs/measurementId"
-        },
-        "reason": {
-          "$ref": "#/$defs/nullableString"
-        },
-        "updated_at": {
-          "$ref": "#/$defs/dateTime"
-        },
-        "updated_by": {
-          "$ref": "#/$defs/personId"
+          ],
+          "default": null
         }
       },
-      "allOf": [
-        {
-          "if": {
-            "properties": {
-              "mode": {
-                "const": "manual"
-              }
+      "required": [
+        "created_at",
+        "created_by",
+        "id",
+        "kind",
+        "path"
+      ],
+      "title": "Attachment",
+      "type": "object"
+    },
+    "AttachmentId": {
+      "pattern": "^a-[0-9]{3,}$",
+      "type": "string"
+    },
+    "AutoBestMeasurement": {
+      "additionalProperties": false,
+      "properties": {
+        "updated_at": {
+          "$ref": "#/$defs/TimestampString"
+        },
+        "updated_by": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "measurement_id": {
+          "$ref": "#/$defs/MeasurementId"
+        },
+        "mode": {
+          "const": "auto",
+          "title": "Mode",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
             },
-            "required": [
-              "mode"
-            ]
-          },
-          "then": {
-            "required": [
-              "reason"
-            ],
-            "properties": {
-              "reason": {
-                "type": "string",
-                "minLength": 1
-              }
+            {
+              "type": "null"
             }
-          }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "updated_at",
+        "updated_by",
+        "measurement_id",
+        "mode"
+      ],
+      "title": "AutoBestMeasurement",
+      "type": "object"
+    },
+    "AutoIdAssignment": {
+      "additionalProperties": false,
+      "properties": {
+        "assigned_from_measurement_id": {
+          "$ref": "#/$defs/MeasurementId"
+        },
+        "assigned_prefix": {
+          "$ref": "#/$defs/Prefix"
+        },
+        "method": {
+          "const": "auto",
+          "title": "Method",
+          "type": "string"
+        },
+        "prefix_override_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prefix Override Reason"
+        }
+      },
+      "required": [
+        "assigned_from_measurement_id",
+        "assigned_prefix",
+        "method"
+      ],
+      "title": "AutoIdAssignment",
+      "type": "object"
+    },
+    "BestMeasurement": {
+      "discriminator": {
+        "mapping": {
+          "auto": "#/$defs/AutoBestMeasurement",
+          "manual": "#/$defs/ManualBestMeasurement"
+        },
+        "propertyName": "mode"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/AutoBestMeasurement"
+        },
+        {
+          "$ref": "#/$defs/ManualBestMeasurement"
         }
       ]
     },
-    "caveId": {
-      "type": "string",
-      "pattern": "^C-[0-9]{4,}$"
+    "CaveId": {
+      "pattern": "^C-[0-9]{4,}$",
+      "type": "string"
     },
-    "date": {
-      "type": "string",
-      "format": "date"
+    "DateString": {
+      "format": "date",
+      "type": "string"
     },
-    "dateTime": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "externalReference": {
-      "type": "object",
+    "ExternalReference": {
       "additionalProperties": false,
-      "required": [
-        "system",
-        "ref_type",
-        "external_id"
-      ],
       "properties": {
         "system": {
           "enum": [
@@ -231,7 +184,9 @@
             "geoportal",
             "NR_INWENT",
             "inne"
-          ]
+          ],
+          "title": "System",
+          "type": "string"
         },
         "ref_type": {
           "enum": [
@@ -241,156 +196,251 @@
             "url",
             "source_row",
             "other"
-          ]
+          ],
+          "title": "Ref Type",
+          "type": "string"
         },
         "external_id": {
-          "type": "string",
-          "minLength": 1
+          "$ref": "#/$defs/NonEmptyString"
         },
         "url": {
           "anyOf": [
             {
-              "type": "string",
-              "format": "uri"
+              "$ref": "#/$defs/UriString"
             },
             {
               "type": "null"
             }
-          ]
+          ],
+          "default": null
         },
         "scope": {
-          "enum": [
-            "object",
-            "cave",
-            "cave_system",
-            "inventory_entry",
-            "unknown",
-            null
-          ]
+          "anyOf": [
+            {
+              "enum": [
+                "object",
+                "cave",
+                "cave_system",
+                "inventory_entry",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scope"
         },
         "notes": {
-          "$ref": "#/$defs/nullableString"
-        }
-      }
-    },
-    "idAssignment": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "method",
-        "assigned_from_measurement_id",
-        "assigned_prefix"
-      ],
-      "properties": {
-        "method": {
-          "enum": [
-            "auto",
-            "manual"
-          ]
-        },
-        "assigned_from_measurement_id": {
-          "$ref": "#/$defs/measurementId"
-        },
-        "assigned_prefix": {
-          "$ref": "#/$defs/prefix"
-        },
-        "prefix_override_reason": {
-          "$ref": "#/$defs/nullableString"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
         }
       },
-      "allOf": [
+      "required": [
+        "system",
+        "ref_type",
+        "external_id"
+      ],
+      "title": "ExternalReference",
+      "type": "object"
+    },
+    "FiniteNumber": {
+      "maximum": 1.7976931348623157e+308,
+      "minimum": -1.7976931348623157e+308,
+      "type": "number"
+    },
+    "IdAssignment": {
+      "discriminator": {
+        "mapping": {
+          "auto": "#/$defs/AutoIdAssignment",
+          "manual": "#/$defs/ManualIdAssignment"
+        },
+        "propertyName": "method"
+      },
+      "oneOf": [
         {
-          "if": {
-            "properties": {
-              "method": {
-                "const": "manual"
-              }
-            },
-            "required": [
-              "method"
-            ]
-          },
-          "then": {
-            "required": [
-              "prefix_override_reason"
-            ],
-            "properties": {
-              "prefix_override_reason": {
-                "type": "string",
-                "minLength": 1
-              }
-            }
-          }
+          "$ref": "#/$defs/AutoIdAssignment"
+        },
+        {
+          "$ref": "#/$defs/ManualIdAssignment"
         }
       ]
     },
-    "measurement": {
-      "type": "object",
+    "Latitude": {
+      "maximum": 90,
+      "minimum": -90,
+      "type": "number"
+    },
+    "Longitude": {
+      "maximum": 180,
+      "minimum": -180,
+      "type": "number"
+    },
+    "ManualBestMeasurement": {
       "additionalProperties": false,
-      "required": [
-        "id",
-        "lat",
-        "lon",
-        "x_1992",
-        "y_1992",
-        "source",
-        "observed_date",
-        "method",
-        "verification_status",
-        "created_at",
-        "created_by"
-      ],
       "properties": {
+        "updated_at": {
+          "$ref": "#/$defs/TimestampString"
+        },
+        "updated_by": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
+        "measurement_id": {
+          "$ref": "#/$defs/MeasurementId"
+        },
+        "mode": {
+          "const": "manual",
+          "title": "Mode",
+          "type": "string"
+        },
+        "reason": {
+          "$ref": "#/$defs/NonEmptyString"
+        }
+      },
+      "required": [
+        "updated_at",
+        "updated_by",
+        "measurement_id",
+        "mode",
+        "reason"
+      ],
+      "title": "ManualBestMeasurement",
+      "type": "object"
+    },
+    "ManualIdAssignment": {
+      "additionalProperties": false,
+      "properties": {
+        "assigned_from_measurement_id": {
+          "$ref": "#/$defs/MeasurementId"
+        },
+        "assigned_prefix": {
+          "$ref": "#/$defs/Prefix"
+        },
+        "method": {
+          "const": "manual",
+          "title": "Method",
+          "type": "string"
+        },
+        "prefix_override_reason": {
+          "$ref": "#/$defs/NonEmptyString"
+        }
+      },
+      "required": [
+        "assigned_from_measurement_id",
+        "assigned_prefix",
+        "method",
+        "prefix_override_reason"
+      ],
+      "title": "ManualIdAssignment",
+      "type": "object"
+    },
+    "Measurement": {
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "$ref": "#/$defs/TimestampString"
+        },
+        "created_by": {
+          "$ref": "#/$defs/NonEmptyString"
+        },
         "id": {
-          "$ref": "#/$defs/measurementId"
+          "$ref": "#/$defs/MeasurementId"
         },
         "lat": {
-          "type": "number",
-          "minimum": -90,
-          "maximum": 90
+          "$ref": "#/$defs/Latitude"
         },
         "lon": {
-          "type": "number",
-          "minimum": -180,
-          "maximum": 180
+          "$ref": "#/$defs/Longitude"
         },
         "x_1992": {
-          "type": "number"
+          "$ref": "#/$defs/FiniteNumber"
         },
         "y_1992": {
-          "type": "number"
+          "$ref": "#/$defs/FiniteNumber"
         },
         "elevation_m": {
-          "$ref": "#/$defs/nullableNumber"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FiniteNumber"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "elevation_datum": {
-          "enum": [
-            "unknown",
-            "ellipsoidal",
-            "PL-EVRF2007-NH",
-            "Kronstadt86",
-            "other",
-            null
-          ]
+          "anyOf": [
+            {
+              "enum": [
+                "unknown",
+                "ellipsoidal",
+                "PL-EVRF2007-NH",
+                "Kronstadt86",
+                "other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Elevation Datum"
         },
         "elevation_source": {
-          "enum": [
-            "gps",
-            "gnss",
-            "map",
-            "dem",
-            "barometric",
-            "source_record",
-            "unknown",
-            "other",
-            null
-          ]
+          "anyOf": [
+            {
+              "enum": [
+                "gps",
+                "gnss",
+                "map",
+                "dem",
+                "barometric",
+                "source_record",
+                "unknown",
+                "other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Elevation Source"
         },
         "horizontal_accuracy_m": {
-          "$ref": "#/$defs/nullableNonNegativeNumber"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NonNegativeNumber"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "vertical_accuracy_m": {
-          "$ref": "#/$defs/nullableNonNegativeNumber"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NonNegativeNumber"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "source": {
           "enum": [
@@ -400,33 +450,46 @@
             "wlasne",
             "publikacja",
             "inne"
-          ]
+          ],
+          "title": "Source",
+          "type": "string"
         },
         "source_ref": {
-          "$ref": "#/$defs/nullableString"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Ref"
         },
         "observed_at": {
           "anyOf": [
             {
-              "$ref": "#/$defs/dateTime"
+              "$ref": "#/$defs/TimestampString"
             },
             {
               "type": "null"
             }
-          ]
+          ],
+          "default": null
         },
         "observed_date": {
-          "$ref": "#/$defs/date"
+          "$ref": "#/$defs/DateString"
         },
         "source_date": {
           "anyOf": [
             {
-              "$ref": "#/$defs/date"
+              "$ref": "#/$defs/DateString"
             },
             {
               "type": "null"
             }
-          ]
+          ],
+          "default": null
         },
         "method": {
           "enum": [
@@ -438,95 +501,242 @@
             "siec_pomiarowa",
             "ustalenie",
             "inne"
-          ]
+          ],
+          "title": "Method",
+          "type": "string"
         },
         "device": {
-          "$ref": "#/$defs/nullableString"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Device"
         },
         "tags": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-          "uniqueItems": true
+          "$ref": "#/$defs/UniqueList_NonEmptyString_"
         },
         "verification_status": {
           "enum": [
             "nieweryfikowany",
             "zweryfikowany",
             "odrzucony"
-          ]
+          ],
+          "title": "Verification Status",
+          "type": "string"
         },
         "verified_by": {
           "anyOf": [
             {
-              "$ref": "#/$defs/personId"
+              "$ref": "#/$defs/NonEmptyString"
             },
             {
               "type": "null"
             }
-          ]
+          ],
+          "default": null
         },
         "verified_at": {
           "anyOf": [
             {
-              "$ref": "#/$defs/dateTime"
+              "$ref": "#/$defs/TimestampString"
             },
             {
               "type": "null"
             }
-          ]
+          ],
+          "default": null
         },
         "notes": {
-          "$ref": "#/$defs/nullableString"
-        },
-        "created_at": {
-          "$ref": "#/$defs/dateTime"
-        },
-        "created_by": {
-          "$ref": "#/$defs/personId"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
         }
-      }
+      },
+      "required": [
+        "created_at",
+        "created_by",
+        "id",
+        "lat",
+        "lon",
+        "x_1992",
+        "y_1992",
+        "source",
+        "observed_date",
+        "method",
+        "verification_status"
+      ],
+      "title": "Measurement",
+      "type": "object"
     },
-    "measurementId": {
-      "type": "string",
-      "pattern": "^m-[0-9]{3,}$"
+    "MeasurementId": {
+      "pattern": "^m-[0-9]{3,}$",
+      "type": "string"
     },
-    "nullableNonNegativeNumber": {
+    "NonEmptyString": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "NonNegativeNumber": {
+      "maximum": 1.7976931348623157e+308,
+      "minimum": 0,
+      "type": "number"
+    },
+    "ObjectId": {
+      "pattern": "^[A-Z]{2,3}-[0-9]{4,}$",
+      "type": "string"
+    },
+    "Prefix": {
+      "pattern": "^[A-Z]{2,3}$",
+      "type": "string"
+    },
+    "SchemaVersion": {
+      "const": 1
+    },
+    "TimestampString": {
+      "format": "date-time",
+      "pattern": "^\\S+(?![\\s\\S])",
+      "type": "string"
+    },
+    "UniqueList_Attachment_": {
+      "items": {
+        "$ref": "#/$defs/Attachment"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "UniqueList_ExternalReference_": {
+      "items": {
+        "$ref": "#/$defs/ExternalReference"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "UniqueList_NonEmptyString_": {
+      "items": {
+        "$ref": "#/$defs/NonEmptyString"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "UriString": {
+      "format": "uri",
+      "pattern": "^\\S+(?![\\s\\S])",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "updated_at": {
+      "$ref": "#/$defs/TimestampString"
+    },
+    "updated_by": {
+      "$ref": "#/$defs/NonEmptyString"
+    },
+    "created_at": {
+      "$ref": "#/$defs/TimestampString"
+    },
+    "created_by": {
+      "$ref": "#/$defs/NonEmptyString"
+    },
+    "schema_version": {
+      "$ref": "#/$defs/SchemaVersion"
+    },
+    "id": {
+      "$ref": "#/$defs/ObjectId"
+    },
+    "category": {
+      "enum": [
+        "jaskinia_otwor",
+        "ponor",
+        "wywierzysko",
+        "sztolnia",
+        "inne"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "name_local": {
       "anyOf": [
         {
-          "type": "number",
-          "minimum": 0
+          "type": "string"
         },
         {
           "type": "null"
         }
-      ]
+      ],
+      "default": null,
+      "title": "Name Local"
     },
-    "nullableNumber": {
-      "type": [
-        "number",
-        "null"
-      ]
+    "cave_id": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CaveId"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
-    "nullableString": {
-      "type": [
-        "string",
-        "null"
-      ]
+    "id_assignment": {
+      "$ref": "#/$defs/IdAssignment"
     },
-    "objectId": {
-      "type": "string",
-      "pattern": "^[A-Z]{2,3}-[0-9]{4,}$"
+    "external_refs": {
+      "$ref": "#/$defs/UniqueList_ExternalReference_"
     },
-    "personId": {
-      "type": "string",
-      "minLength": 1
+    "measurements": {
+      "items": {
+        "$ref": "#/$defs/Measurement"
+      },
+      "minItems": 1,
+      "title": "Measurements",
+      "type": "array"
     },
-    "prefix": {
-      "type": "string",
-      "pattern": "^[A-Z]{2,3}$"
+    "best_measurement": {
+      "$ref": "#/$defs/BestMeasurement"
+    },
+    "attachments": {
+      "$ref": "#/$defs/UniqueList_Attachment_"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Notes"
     }
-  }
+  },
+  "required": [
+    "updated_at",
+    "updated_by",
+    "created_at",
+    "created_by",
+    "schema_version",
+    "id",
+    "category",
+    "id_assignment",
+    "external_refs",
+    "measurements",
+    "best_measurement",
+    "attachments"
+  ],
+  "title": "Obiekt",
+  "type": "object"
 }

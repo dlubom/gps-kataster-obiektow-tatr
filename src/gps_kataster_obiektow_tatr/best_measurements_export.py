@@ -6,7 +6,7 @@ import csv
 import json
 import tempfile
 import zipfile
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -14,6 +14,7 @@ from xml.etree import ElementTree as ET
 
 import shapefile
 
+from gps_kataster_obiektow_tatr.artifact_io import publish_artifacts
 from gps_kataster_obiektow_tatr.best_measurement import select_default_best_measurement_id
 from gps_kataster_obiektow_tatr.data_loader import (
     DEFAULT_DATA_DIR,
@@ -26,7 +27,7 @@ from gps_kataster_obiektow_tatr.validator import (
     ValidationIssue,
     format_issue,
     has_errors,
-    validate_dataset,
+    validate_loaded_dataset,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -133,6 +134,29 @@ class BestMeasurementsExportResult:
     feature_count: int
     validation_issues: tuple[ValidationIssue, ...]
 
+    @property
+    def artifact_paths(self) -> tuple[Path, ...]:
+        return (
+            self.geojson_path,
+            self.csv_path,
+            self.gpx_path,
+            *self.grouped_gpx_paths,
+            self.shapefile_zip_path,
+            self.metadata_path,
+        )
+
+    def at_output_dir(self, output_dir: Path) -> BestMeasurementsExportResult:
+        return replace(
+            self,
+            output_dir=output_dir,
+            geojson_path=output_dir / self.geojson_path.name,
+            csv_path=output_dir / self.csv_path.name,
+            gpx_path=output_dir / self.gpx_path.name,
+            grouped_gpx_paths=tuple(output_dir / path.name for path in self.grouped_gpx_paths),
+            shapefile_zip_path=output_dir / self.shapefile_zip_path.name,
+            metadata_path=output_dir / self.metadata_path.name,
+        )
+
 
 class BestMeasurementsExportValidationError(ValueError):
     """Raised when source YAML has validation errors that block export."""
@@ -153,10 +177,24 @@ def export_best_measurements(
     output_dir: Path = DEFAULT_EXPORT_DIR,
     generated_at: str | None = None,
 ) -> BestMeasurementsExportResult:
-    """Validate YAML and export one best measurement per object."""
+    """Validate YAML and publish one best measurement per object."""
 
+    with tempfile.TemporaryDirectory(prefix="kataster-best-") as staging_dir:
+        staged = _build_best_measurement_exports(
+            data_dir=data_dir, output_dir=Path(staging_dir), generated_at=generated_at
+        )
+        published = staged.at_output_dir(output_dir)
+        publish_artifacts(staged.artifact_paths, published.artifact_paths)
+    return published
+
+
+def _build_best_measurement_exports(
+    *, data_dir: Path, output_dir: Path, generated_at: str | None
+) -> BestMeasurementsExportResult:
     dataset = load_dataset(data_dir)
-    validation_issues = validate_dataset(dataset, data_dir=data_dir, repo_root=REPO_ROOT)
+    dataset, validation_issues = validate_loaded_dataset(
+        dataset, data_dir=data_dir, repo_root=REPO_ROOT
+    )
     if has_errors(validation_issues):
         raise BestMeasurementsExportValidationError(validation_issues)
 
@@ -234,7 +272,7 @@ def _collect_best_measurement_rows(dataset: LoadedDataset) -> tuple[BestMeasurem
         measurement_id = str(best_measurement["measurement_id"])
         measurement = _measurement_by_id(object_record, measurement_id)
         computed_best_measurement_id = select_default_best_measurement_id(
-            _measurement_dicts(object_data.get("measurements"))
+            object_data["measurements"]
         )
         cave_id = _optional_str(object_data.get("cave_id"))
         cave_data = caves_by_id.get(cave_id or "")
@@ -408,9 +446,7 @@ def _build_release_metadata(
 ) -> dict[str, Any]:
     warning_count = sum(1 for issue in validation_issues if issue.severity == "warning")
     error_count = sum(1 for issue in validation_issues if issue.severity == "error")
-    measurement_count = sum(
-        len(_measurement_dicts(record.data.get("measurements"))) for record in dataset.objects
-    )
+    measurement_count = sum(len(record.data["measurements"]) for record in dataset.objects)
     return {
         "metadata_schema_version": RELEASE_METADATA_SCHEMA_VERSION,
         "data_schema_version": DATA_SCHEMA_VERSION,
@@ -523,29 +559,14 @@ def _measurement_by_id(
     object_record: LoadedYamlRecord,
     measurement_id: str,
 ) -> dict[str, Any]:
-    for measurement in _measurement_dicts(object_record.data.get("measurements")):
+    for measurement in object_record.data["measurements"]:
         if measurement.get("id") == measurement_id:
             return measurement
     raise KeyError(f"Best measurement {measurement_id} missing for {object_record.data['id']}.")
 
 
 def _best_measurement_data(object_data: dict[str, Any]) -> dict[str, Any]:
-    best_measurement = object_data.get("best_measurement")
-    if not isinstance(best_measurement, dict):
-        raise KeyError(f"best_measurement missing for {object_data['id']}.")
-    return best_measurement
-
-
-def _measurement_dicts(value: object) -> tuple[dict[str, Any], ...]:
-    if not isinstance(value, list):
-        return ()
-    return tuple(item for item in value if isinstance(item, dict))
-
-
-def _dicts(value: object) -> tuple[dict[str, Any], ...]:
-    if not isinstance(value, list):
-        return ()
-    return tuple(item for item in value if isinstance(item, dict))
+    return object_data["best_measurement"]
 
 
 def _ref_external_ids(
@@ -557,7 +578,7 @@ def _ref_external_ids(
     if data is None:
         return ()
     values: list[str] = []
-    for ref in _dicts(data.get("external_refs")):
+    for ref in data["external_refs"]:
         if ref.get("system") != system:
             continue
         if ref_type is not None and ref.get("ref_type") != ref_type:
@@ -572,7 +593,7 @@ def _pig_urls(cave_data: dict[str, Any] | None) -> tuple[str, ...]:
     if cave_data is None:
         return ()
     urls: list[str] = []
-    for ref in _dicts(cave_data.get("external_refs")):
+    for ref in cave_data["external_refs"]:
         if ref.get("system") != "PIG":
             continue
         url = _optional_str(ref.get("url"))
@@ -587,7 +608,7 @@ def _pig_urls(cave_data: dict[str, Any] | None) -> tuple[str, ...]:
 
 def _tpn_globalids(object_data: dict[str, Any]) -> tuple[str, ...]:
     values = list(_ref_external_ids(object_data, "TPN", ref_type="source_globalid"))
-    for measurement in _measurement_dicts(object_data.get("measurements")):
+    for measurement in object_data["measurements"]:
         source_ref = _optional_str(measurement.get("source_ref"))
         if source_ref and source_ref.startswith("TPN:"):
             external_id = source_ref.removeprefix("TPN:")

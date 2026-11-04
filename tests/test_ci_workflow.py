@@ -19,11 +19,12 @@ def test_validate_workflow_uses_local_validation_gate() -> None:
 
     run_commands = [step["run"] for step in workflow["jobs"]["validate"]["steps"] if "run" in step]
     assert run_commands == [
-        "uv sync",
-        "uv run ruff format --check src tests scripts",
-        "uv run ruff check src tests scripts",
-        "uv run pytest",
-        "uv run python scripts/validate.py",
+        "uv sync --frozen",
+        "uv run --frozen python scripts/generate_schemas.py --check",
+        "uv run --frozen ruff format --check src tests scripts",
+        "uv run --frozen ruff check src tests scripts",
+        "uv run --frozen pytest",
+        "uv run --frozen python scripts/validate.py",
     ]
 
 
@@ -63,10 +64,10 @@ def test_release_workflow_publishes_expected_files_from_changelog() -> None:
 
     steps = workflow["jobs"]["release"]["steps"]
     run_commands = [step["run"].strip() for step in steps if "run" in step]
-    assert "uv sync" in run_commands
-    assert "uv run python scripts/validate.py" in run_commands
+    assert "uv sync --frozen" in run_commands
+    assert "uv run --frozen python scripts/validate.py" in run_commands
     assert (
-        "uv run python scripts/build_release_artifacts.py "
+        "uv run --frozen python scripts/build_release_artifacts.py "
         '--release-version "$GITHUB_REF_NAME" --source-commit "$GITHUB_SHA"'
     ) in run_commands
 

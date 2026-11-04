@@ -20,3 +20,13 @@
 - JSON Schema obejmuje strukture i lokalne warunki pol, ale nie zastepuje
   pozniejszych walidacji cross-reference, geometrii ani algorytmu
   `best_measurement`.
+
+## PBI-120 — kontrakt Pydantic (schema_version nadal 1)
+
+Trzy JSON Schema generuje `scripts/generate_schemas.py` z `models.py`.
+Ścieżki, `$id` i Draft 2020-12 zachowane. Zmienia się układ `$defs` i
+wariantów `oneOf`/discriminator; manual Best i przydzielenie ID mają wymagane
+uzasadnienie. Skończone liczby mają jawne granice reprezentacji float.
+Format date/time/URI jest rzeczywiście sprawdzany przez zadeklarowane dodatki.
+Brak migracji danych; listy, null/absence i numeryczne `schema_version: 1.0`
+zachowane. Pełny kontrakt obejmuje dodatkowe reguły Python opisane w spec §10.2.
