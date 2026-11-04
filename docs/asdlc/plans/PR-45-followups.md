@@ -55,8 +55,10 @@ Pełna migracja słowników oraz propozycje 2/3 pozostają poza zakresem.
 - [x] Potwierdzić odrzucanie złego argumentu, literówki w polu selektora i pola
   modelu; wykonać regresje, pełną bramkę, build i niezależny odczyt eksportów.
   Porównać zawartość z bazą `8a710f87`, przy identycznym czasie i source SHA.
-- [ ] Przejrzeć diff, uzupełnić specyfikację, komendy, backlog/kontekst i dowody
+- [x] Przejrzeć diff, uzupełnić specyfikację, komendy, backlog/kontekst i dowody
   PBI-120; commit, push do PR #45, potwierdzenie SHA i końcowych statusów CI.
+  Odbiór `72fe94fd`: oba workflowy completed/success. Końcowy SHA dokumentacji
+  i jego własne CI wskazuje opis PR.
 
 Punkty przeglądu: zachowanie int/float i bool, brak/null, niepoprawne wejścia
 Best, zachowanie dat/stref i remisów, rzeczywiste wykrywanie błędów przez
