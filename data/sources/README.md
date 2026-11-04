@@ -35,3 +35,22 @@ referencje źródłowe.
 TPN `GLOBALID` jest identyfikatorem rekordu punktowego i trafia do
 `Obiekt.external_refs`. `NR_INWENT` opisuje zwykle jaskinię / pozycję
 katalogową i trafia do `Jaskinia.external_refs`.
+
+## Marek Jędrzejczak — pomiary z 2026-10-17
+
+Marek Jędrzejczak (Speleoclub Wrocław) przekazał poprawiony arkusz
+2026-11-04. Zawiera raport obserwacji GNSS i domiarów BRIC4 (`Report`)
+oraz końcowe współrzędne 12 otworów (`Zestawienie`). Układ PL-1992,
+wysokości PL-EVRF2007-NH. Wszystkie pliki zachowano bajtowo.
+
+| Plik | Rola | SHA-256 |
+| --- | --- | --- |
+| [Poprawiony XLS](marek-jedrzejczak/2026-10-17/corrected-2026-11-04/20261017%20Tatry.xls) | Źródło pomiarów w katalogu | `516c650d0559e08bbcd1422ce92942c84ba962e52c3207057c1fb32c2868e1ae` |
+| [Pierwotny XLS](marek-jedrzejczak/2026-10-17/20261017%20Tatry.xls) | Archiwum | `7effcf02dd157ddf74b625958683243b602e8346a2272b61978ba6580f376b22` |
+| [Pierwotny PDF](marek-jedrzejczak/2026-10-17/20261017%20Tatry.pdf) | Archiwum | `f760fd017c790c8be295dd0f41d0f63f2f078f3ca62660b733b7d27e9199f95f` |
+
+W poprawionym XLS wiersz 10 arkusza `Zestawienie` wskazuje Dziurę
+w Grzędzie II (`MTW-0016`), a wiersz 11 Dziurę w Grzędzie I (`MTW-0050`).
+Współrzędne wynikowe są identyczne w obu wersjach. Do katalogu wprowadzono
+pełne wartości z poprawionego arkusza. Zakres i porównanie wersji opisuje
+[issue #43](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/43).

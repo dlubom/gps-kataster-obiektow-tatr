@@ -1,0 +1,78 @@
+schema_version: 1
+id: MTW-0076
+category: jaskinia_otwor
+name_local: Jaskinia Kozia - otwór II
+cave_id: C-0135
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: MTW
+  prefix_override_reason: null
+external_refs:
+- system: inne
+  ref_type: url
+  external_id: MJ:20261017:Zestawienie!B8:D8
+  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/b7fc837b9015b5a3ea07d7c3c553b672b513453b/data/sources/marek-jedrzejczak/2026-10-17/corrected-2026-11-04/20261017%20Tatry.xls
+  scope: object
+  notes: 'm-001: Marek Jędrzejczak, 20261017 Tatry.xls; Zestawienie!A8:N8, Report!A193:N193. Nazwa w źródle:
+    Kozia II (otwór). Obserwacje GNSS 2026-10-17; obliczył Marek Jędrzejczak (Speleoclub Wrocław). Układ
+    1992, geoid PL-EVRF2007-NHv2021artgeo,GGF. Weryfikację Marka potwierdził Dariusz Lubomski 2026-11-02;
+    jej data nie została podana. Dokładność końcowego punktu otworu nie jest określona; parametrów mp/mh
+    i rozrzutu powtórzeń punktu GNSS nie przyjęto jako dokładności całego domiaru. Data nagłówka raportu
+    2026-10-19; data odczytu katalogu do porównania 2026-10-27; data publikacji/aktualności całego pliku
+    nieznana.'
+measurements:
+- id: m-001
+  lat: 49.23880047822733
+  lon: 19.909431670506475
+  x_1992: 152763.62849716467
+  y_1992: 566179.2691446381
+  elevation_m: 1839.468682246115
+  elevation_datum: PL-EVRF2007-NH
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: MJ:20261017:Zestawienie!B8:D8
+  observed_at: null
+  observed_date: '2026-10-17'
+  source_date: null
+  method: siec_pomiarowa
+  device: GEO / E600 + BRIC4 SN 0143
+  tags:
+  - gnss_anchor
+  - bric4
+  verification_status: zweryfikowany
+  verified_by: Marek Jędrzejczak
+  verified_at: null
+  notes: 'Otwór domierzony BRIC4 od punktu GNSS. Obliczenia i weryfikacja: Marek Jędrzejczak; potwierdzenie
+    D. Lubomskiego z 2026-11-02.'
+  created_at: '2026-11-04T10:47:15Z'
+  created_by: dl
+best_measurement:
+  mode: manual
+  measurement_id: m-001
+  reason: Profesjonalny pomiar Marka Jędrzejczaka z 2026-10-17, zweryfikowany i przyjęty jako obowiązujący
+    decyzją Dariusza Lubomskiego z 2026-11-02; wysokości tego pomiaru mają pierwszeństwo przed historycznym
+    opisem i przekrojem PIG.
+  updated_at: '2026-11-04T10:47:15Z'
+  updated_by: dl
+attachments:
+- id: a-001
+  kind: raport_gnss
+  measurement_id: m-001
+  path: data/sources/marek-jedrzejczak/2026-10-17/corrected-2026-11-04/20261017 Tatry.xls
+  caption: 'Marek Jędrzejczak: raport GNSS/domiarów, Zestawienie wiersz 8.'
+  created_at: '2026-11-04T10:47:15Z'
+  created_by: dl
+notes: 'Numeracja I (zachodni, MTW-0013) i II (wschodni, MTW-0076) według planu S. Kotarby 1998 w PIG
+  T.E-11.11 oraz raportu Marka Jędrzejczaka. Obowiązujące wysokości z profesjonalnego pomiaru Marka z
+  2026-10-17: I 1836,9920722623917 m, II 1839,468682246115 m PL-EVRF2007-NH. II jest wyżej o około 2,48
+  m; historyczny opis i przekrój PIG podają II niżej o 2,8 m. Dariusz Lubomski 2026-11-02 rozstrzygnął
+  rozbieżność na rzecz dokładniejszego pomiaru Marka; numerację zachowano. Dariusz Lubomski
+  2026-11-04 potwierdził poprawność Koziej w zakresie #43. Nazwy nie używają określeń
+  górny/dolny. PIG: https://jaskiniepolski.pgi.gov.pl/Details/Information/1478.'
+created_at: '2026-11-04T10:47:15Z'
+created_by: dl
+updated_at: '2026-11-04T10:47:15Z'
+updated_by: dl

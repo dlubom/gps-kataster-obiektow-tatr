@@ -14,6 +14,16 @@ external_refs:
   external_id: '{F6542EAD-9776-4622-A7F3-EB6446DEC297}'
   scope: object
   notes: TPN GLOBALID belongs to the object/source feature.
+- system: inne
+  ref_type: url
+  external_id: MJ:20261017:Zestawienie!B11:D11
+  url: https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/b7fc837b9015b5a3ea07d7c3c553b672b513453b/data/sources/marek-jedrzejczak/2026-10-17/corrected-2026-11-04/20261017%20Tatry.xls
+  scope: object
+  notes: >-
+    Marek Jędrzejczak (Speleoclub Wrocław), poprawiony arkusz 20261017 Tatry.xls
+    z 2026-11-04, Zestawienie!A11:N11 i Report!A267:N267.
+    Dziura w Grzędzie I, MTW-0050. Obserwacje GNSS 2026-10-17,
+    układ PL-1992, geoida PL-EVRF2007-NHv2021artgeo,GGF.
 measurements:
 - id: m-001
   lat: 49.23893142
@@ -66,15 +76,55 @@ measurements:
     TPN WER_LOK: 16-12-2020 FF'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-003
+  lat: 49.239277112744546
+  lon: 19.91530878776928
+  x_1992: 152821.75773975198
+  y_1992: 566606.3001782902
+  elevation_m: 1924.9890695162003
+  elevation_datum: PL-EVRF2007-NH
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: MJ:20261017:Zestawienie!B11:D11
+  observed_at: null
+  observed_date: '2026-10-17'
+  source_date: null
+  method: siec_pomiarowa
+  device: GEO / E600 + BRIC4 SN 0143
+  tags:
+  - gnss_anchor
+  - bric4
+  verification_status: zweryfikowany
+  verified_by: Marek Jędrzejczak
+  verified_at: null
+  notes: 'Otwór domierzony BRIC4 od punktu GNSS. Obliczenia i weryfikacja: Marek Jędrzejczak; potwierdzenie
+    D. Lubomskiego z 2026-11-02.'
+  created_at: '2026-11-04T10:47:15Z'
+  created_by: dl
 best_measurement:
-  mode: auto
-  measurement_id: m-002
-  reason: null
-  updated_at: '2026-05-16T14:00:00Z'
+  mode: manual
+  measurement_id: m-003
+  reason: >-
+    Zweryfikowany pomiar Marka Jędrzejczaka z 2026-10-17,
+    przyjęty jako obowiązujący. Oznaczenie I i ID MTW-0050
+    zgodne z wierszem 11 poprawionego arkusza Zestawienie.
+  updated_at: '2026-11-04T10:47:15Z'
   updated_by: dl
-attachments: []
-notes: Imported from PIG source record after operator review.
+attachments:
+- id: a-001
+  kind: raport_gnss
+  measurement_id: m-003
+  path: data/sources/marek-jedrzejczak/2026-10-17/corrected-2026-11-04/20261017 Tatry.xls
+  caption: 'Marek Jędrzejczak: raport GNSS/domiarów, Zestawienie wiersz 11.'
+  created_at: '2026-11-04T10:47:15Z'
+  created_by: dl
+notes: >-
+  Imported from PIG source record after operator review.
+  Poprawiony XLS Marka Jędrzejczaka przypisuje wiersz 11 do otworu I
+  (MTW-0050). Pierwotny XLS i PDF miały zamienione oznaczenia I i II.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-11-04T10:47:15Z'
+updated_by: dl
