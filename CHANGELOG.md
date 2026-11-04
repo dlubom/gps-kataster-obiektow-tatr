@@ -8,6 +8,16 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [v1.3.3] - 2026-11-04
+
+### Dodano
+
+- Dwanaście zweryfikowanych pomiarów otworów z 17.10.2026 opracowanych
+  przez Marka Jędrzejczaka, z ręcznym wyborem Best i zachowaniem historii.
+- Drugi otwór Jaskini Koziej (`MTW-0076`) w istniejącej jaskini `C-0135`.
+- Poprawiony arkusz źródłowy z potwierdzonymi przypisaniami Dziur
+  w Grzędzie I i II oraz wcześniejsze XLS i PDF do celów archiwalnych.
+
 ## [v1.3.2] - 2026-10-25
 
 ### Dodano

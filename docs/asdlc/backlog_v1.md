@@ -1,6 +1,14 @@
 # AS-DLC backlog V1
 
-Stan na: 2026-10-25
+Stan na: 2026-11-04
+
+## Issue #43: Pomiary Marka Jędrzejczaka z poprawionego XLS
+
+Status: przygotowano do wydania v1.3.3 w [PR #44](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/44).
+Zakres obejmuje 12 zweryfikowanych
+pomiarów z ręcznym Best, drugi otwór Koziej i archiwum źródeł.
+Weryfikacja obejmuje zgodność z arkuszem, zachowanie historii pomiarów
+i odczyt eksportów. [Zgłoszenie #43](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/43).
 
 ## PBI-117: Kotwica Raptawickiej i osiem otworów systemu Pawlikowskiego
 

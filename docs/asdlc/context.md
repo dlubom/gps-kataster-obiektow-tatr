@@ -1,6 +1,17 @@
 # AS-DLC project context
 
-Last updated: 2026-10-25
+Last updated: 2026-11-04
+
+## Pomiary Marka Jędrzejczaka — issue #43 / v1.3.3
+
+Dwanaście pomiarów z 2026-10-17 zapisano jako zweryfikowane przez Marka
+i wskazano jako ręczny Best. Źródłem jest poprawiony XLS z 2026-11-04.
+Wiersz 10 wskazuje Grzędę II (MTW-0016), wiersz 11 Grzędę I (MTW-0050).
+Dariusz Lubomski potwierdził Kozią 2026-11-04. Otwór I (MTW-0013) jest
+zachodni, otwór II (nowy MTW-0076) wschodni. Oba należą do C-0135, a ich
+wysokości z pomiarów Marka wynoszą odpowiednio 1836,99 i 1839,47 m
+PL-EVRF2007-NH. Data weryfikacji Marka i dokładności punktów są nieznane.
+[Pochodzenie i sumy kontrolne](../../data/sources/README.md#marek-jędrzejczak--pomiary-z-2026-10-17).
 
 ## Raptawicka jako kotwica systemu Pawlikowskiego — PBI-117
 
