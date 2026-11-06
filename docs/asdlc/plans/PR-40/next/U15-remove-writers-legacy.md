@@ -38,7 +38,7 @@ właścicielu tej publikacji. Nie kasuj go razem z writerem źródeł.
   pełna bramka i pełne porównanie eksportów. Hash `data/` bez zmian.
 - [x] Zaktualizuj główną spec i operations. Podaj bilans całego kodu wraz
   z ewentualnymi przeniesieniami helperów i pozostałym kosztem historii.
-- [ ] Commit `refactor: keep catalogue tools read-only (PBI-119 U15)`;
+- [x] Commit `refactor: keep catalogue tools read-only (PBI-119 U15)`;
   dostarcz, odbierz i zakończ po U15.
 
 ## Odbiór
