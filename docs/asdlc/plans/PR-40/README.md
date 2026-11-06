@@ -45,7 +45,7 @@ Zadania U03–U11 są podzadaniami PBI-119; nie zajmują numerów nowych PBI.
 Serię U01–U11 zakończono. Dalsze usprawnienia wymagają osobnego zakresu.
 
 Nowe zlecenie z 2026-11-06 rozpisano jako
-[plan czyszczenia: U12, U15–U17](next/README.md).
+[plan czyszczenia: U12, U15 i U16](next/README.md).
 Ten osobny indeks posiada ich statusy i kontrakt. U13/U14 wyłączono z zakresu;
 rejestr ID i nowe zasady usuwania pozostają odłożone.
 Przygotowanie planu nie oznacza rozpoczęcia implementacji.

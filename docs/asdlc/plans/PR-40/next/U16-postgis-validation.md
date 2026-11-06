@@ -45,4 +45,4 @@ zamiast `> 100` (1 FAIL). Po każdej próbie przywrócono oryginalny SQL.
 
 [Pełne dowody U16](../../../verification/PBI-119.md#u16--geografia-katalogu-w-postgis)
 i opis PR zawierają wyniki bramki, bilans, porównanie eksportów oraz CI.
-U17, merge, tag i wydanie pozostają poza tym zleceniem.
+Merge, tag i wydanie pozostają poza tym zleceniem.

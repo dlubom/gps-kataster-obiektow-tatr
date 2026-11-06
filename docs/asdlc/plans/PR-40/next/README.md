@@ -26,10 +26,9 @@ pomylić ich z wcześniejszą propozycją. Jej zapis pozostaje w historii Git.
 | U13 / U14 | Rejestr ID i kontrolowane wycofania | wyłączone z zakresu | nie realizować |
 | [U15](U15-remove-writers-legacy.md) | Jeden bieżący format v2, usunięte programowe zapisy katalogu | wykonane; CI w opisie PR | U12 |
 | [U16](U16-postgis-validation.md) | Jeden silnik walidacji geografii katalogu | wykonane; CI w opisie PR | U15 |
-| [U17](U17-export-read-model.md) | Decyzja o skróceniu drogi SQL → ExportData | oczekuje | U16 |
 
-To jedyny rejestr statusów tej serii. `gotowe do zlecenia` nie oznacza
-rozpoczęcia. U01–U11 pozostają zakończone; nie zmieniamy wymaganego CI
+To jedyny rejestr statusów tej serii. Serię czyszczenia zakończono na U16.
+U01–U11 pozostają zakończone; nie zmieniamy wymaganego CI
 ani polityki merge/tag/release. Issue #33 pozostaje odłożone.
 
 ## Globalne ograniczenia i odbiór
@@ -58,7 +57,6 @@ ani polityki merge/tag/release. Issue #33 pozostaje odłożone.
 - Baseline v1 i bieżący v2, brak plików i symlinki po usunięciu legacy: U15.
 - Atomowa publikacja eksportów po usunięciu writera źródeł: U15.
 - Brzegi/otwory poligonów, nakładanie i manual Best: U16.
-- Historyczny null, źródłowe EPSG i manual Best przy zmianie projekcji: U17.
 
 ## Punkt odniesienia planowania
 

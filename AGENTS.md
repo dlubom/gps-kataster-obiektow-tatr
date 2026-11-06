@@ -18,7 +18,7 @@ For a PR #40 simplification task U03–U11, start at
 execution procedure and individual task cards, and owns their statuses.
 Read the selected card before coding; implement only the requested task.
 
-For cleanup tasks U12, U15, U16 and U17,
+For cleanup tasks U12, U15 and U16,
 start at `docs/asdlc/plans/PR-40/next/README.md` and read its `spec.md`.
 U13/U14 (retired IDs and deletion exceptions) were withdrawn from scope.
 The cleanup preserves current history errors; consult the index for each task status.

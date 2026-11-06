@@ -24,8 +24,6 @@ Narzędzia API TPN/NMT, przydział ID i eksport Excela pozostają w utrzymaniu.
 - U16 usuwa alternatywną walidację geografii katalogu przez wstrzyknięty
   resolver Pythona. PostGIS pozostaje właścicielem reguł katalogu;
   resolver Pythona nadal służy do propozycji nowego ID.
-- U17 jest oceną skrócenia drogi SQL → ExportData. Wdrożenie nowego modelu
-  odczytu wymaga osobnej akceptacji na podstawie wyniku i bilansu.
 
 ## Niezmienniki
 
