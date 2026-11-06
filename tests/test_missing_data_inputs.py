@@ -115,49 +115,6 @@ def test_invalid_input_preserves_outputs(
         assert not output_root.exists()
 
 
-@pytest.mark.parametrize("operation", ["tpn", "review"])
-def test_import_cli_reports_invalid_data_directory(invalid_input, tmp_path, operation):
-    data_dir, bad_path = invalid_input
-    output_dir = tmp_path / "reports"
-    if operation == "tpn":
-        source_path = tmp_path / "source.csv"
-        source_path.write_text("GLOBALID,NAZWA\n", encoding="utf-8")
-        command = [
-            "import_tpn.py",
-            "--tpn-source",
-            str(source_path),
-            "--no-pig-staging",
-        ]
-    else:
-        decisions_path = tmp_path / "decisions.yml"
-        decisions_path.write_text("decisions: []\n", encoding="utf-8")
-        command = [
-            "apply_review.py",
-            "--decisions",
-            str(decisions_path),
-            "--no-pig-staging",
-            "--no-tpn-staging",
-        ]
-    result = subprocess.run(
-        [
-            sys.executable,
-            str(REPO_ROOT / "scripts/importers" / command[0]),
-            *command[1:],
-            "--data-dir",
-            str(data_dir),
-            "--output-dir",
-            str(output_dir),
-        ],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    assert result.returncode == 1, result.stdout + result.stderr
-    assert str(bad_path) in result.stderr
-    assert "Traceback" not in result.stderr
-    assert not output_dir.exists()
-
-
 @pytest.mark.parametrize("interface", ["api", "cli"])
 def test_explicit_empty_dataset_is_valid(tmp_path, make_canonical_data_dir, interface):
     data_dir = make_canonical_data_dir(tmp_path / "data")

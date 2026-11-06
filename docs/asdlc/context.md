@@ -24,38 +24,27 @@ i konkretnego pomiaru, bez uzupełniania braków wartościami Best.
 Nazwy i typy wspólnych pól są niezależne od formatowania Excela.
 Samodzielny eksport Best używa tego samego przygotowania.
 
-U02 oddziela odczyt YAML, propozycje legacy/staging, kontrolę istniejącego
-stanu PostgreSQL i historię zaakceptowanej rewizji Git. Build i kanoniczne CLI
-używają wspólnej bramki historii. Review sprawdza każdy odrębny stan raz:
-jedna baza dla wejścia, druga tylko dla zmienionej propozycji. Kontrole historii
-korzystają z istniejącego połączenia; sprzątanie baz poprzedza zapis.
-Pola wyliczane należą do projekcji odczytu i zewnętrznych deklaracji importu.
-Akcje review używają źródłowego `SourceDataset`, a ich końcowa propozycja
-ma osobne wejście do SQL bez schematu legacy. Deklaracje członkostwa
-i redundantnych współrzędnych są sprawdzane przed usunięciem; zapytania
-współrzędnych używają połączenia wejścia. [Odbiór U04](plans/PR-40/tasks/U04-canonical-proposals.md#odbiór)
-opisuje kontrakty i dowody; status pozostaje w indeksie.
+U02 oddziela odczyt YAML, propozycje legacy, kontrolę istniejącego stanu
+PostgreSQL i historię zaakceptowanej rewizji Git. Build i kanoniczne CLI
+używają wspólnej bramki historii. `SourceDataset` i interfejsy propozycji
+pozostają wewnętrzne do U15. Historyczne review U04 używało tych interfejsów;
+[odbiór U04](plans/PR-40/tasks/U04-canonical-proposals.md#odbiór) zachowuje
+dowody jego ówczesnego działania.
 Grupowanie GPX korzysta z regionu SQL wybranego pomiaru, przekazanego
 niezmiennymi metadanymi do `ExportData`; nie odtwarza geometrii w Pythonie.
 Granice i priorytet poligonów określa `ST_Covers` / `boundaries.ordinal`.
 [Odbiór U05](plans/PR-40/tasks/U05-spatial-read-model.md#odbiór) opisuje regresje
 i porównanie eksportów; status i następne zlecenie są wyłącznie w indeksie.
 Writer zwraca faktyczne zmiany bajtów i usunięcia przez niezmienny `WriteResult`.
-Review używa jego `written_paths`, bez pełnych skanów YAML przed/po zapisie;
+Historyczne review używało `written_paths` bez pełnych skanów YAML;
 [odbiór U06](plans/PR-40/tasks/U06-write-result.md#odbiór) opisuje kontrakt i pomiar IO.
 Testy eksportów podają kanoniczne fixtures bezpośrednio do API/CLI, z osobnym
 zaakceptowanym commitem Git sprzed mutacji; migracja legacy ma własne testy.
 [Odbiór U07](plans/PR-40/tasks/U07-production-path-tests.md#odbiór) opisuje
 pokrycie, diagnostykę baseline i porównanie formatów.
-PIG/TPN/profilowanie współdzielą parser i oczyszczanie tekstu, staging/review
-formatowanie komórek, a buildery/CLI zegar UTC. Odczyt CSV ma jawny kontrakt
-surowy i normalizowany; daty źródeł i walidacja skończoności pozostają osobne.
-[Odbiór U08](plans/PR-40/tasks/U08-shared-helpers.md#odbiór) zawiera porównanie
-raportów i bilans kodu; status jest wyłącznie w indeksie.
-Przydział ID PIG/TPN/`assign_id` ma wspólną sekwencję maksimum + 1 i adapter
-nazw plików. Rezerwacje partii są lokalne, a ID pomiarów osobne dla obiektu;
-[odbiór U09](plans/PR-40/tasks/U09-id-allocation.md#odbiór) opisuje także
-usuniętą kolizję kilku dopasowań TPN. Status pozostaje w indeksie.
+Historyczne U08/U09 opisywały współdzielone helpery importerów i rezerwacje
+partii; U12 usuwa te zakończone ścieżki, zachowując zegar builderów oraz
+przydział ID maksimum + 1 przez `assign_id`.
 Builder, CLI i paczkowanie używają jednego zestawu artefaktów; lista ścieżek
 z separatorem NUL przekazuje 13 ścieżek do workflow bez drugiego spisu. Wspólne argumenty
 CLI zachowują politykę diagnostyki; [karta U10](plans/PR-40/tasks/U10-artifacts-and-cli.md#odbiór)
@@ -70,8 +59,9 @@ i jednorazowych napraw oraz ograniczenie programu do odczytu YAML,
 walidacji i eksportów. [Plan czyszczenia](plans/PR-40/next/README.md) rozpisuje
 ten zakres. Użytkownik następnie wyłączył rejestr ID i nowe zasady wycofywania
 rekordów: U13/U14 nie są realizowane. Obecne błędy historii pozostają;
-raport ubytków/warningi są osobnym tematem do decyzji. Kod i dane nie zostały
-jeszcze zmienione. Aktywne karty to U12, U15, U16 i U17.
+raport ubytków/warningi są osobnym tematem do decyzji. U12 usuwa kod importów;
+dane pozostają bez zmian. [Odbiór U12](plans/PR-40/next/U12-remove-imports.md#odbiór)
+opisuje dowody, a statusy są w indeksie.
 API TPN/NMT, archiwalne źródła i formaty eksportów pozostają w zakresie utrzymania.
 
 Kontynuację opisuje [pakiet zleceń PR #40](plans/PR-40/README.md): specyfikacja,

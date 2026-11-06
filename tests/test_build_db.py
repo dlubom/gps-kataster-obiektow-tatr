@@ -31,7 +31,6 @@ from gps_kataster_obiektow_tatr.build_db import (
 )
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
 from gps_kataster_obiektow_tatr.postgres import restore_dump
-from gps_kataster_obiektow_tatr.staging_review import StagingReports, apply_review_decisions
 
 BUILD_DB_SCRIPT = REPO_ROOT / "scripts" / "build_db.py"
 
@@ -93,14 +92,10 @@ def test_relinked_cave_membership_matches_dump_and_yaml(tmp_path):
     cave = _valid_cave()
     cave.update(id="C-0002")
     _write_yaml(data_dir / "caves/C-0002.yml", cave)
-    result = apply_review_decisions(
-        {"decisions": [{"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0002"}]},
-        staging_reports=StagingReports(),
-        data_dir=data_dir,
-        base_ref=baseline["base_ref"],
-        repo_root=baseline["history_repo"],
-    )
-    assert not result.has_errors, result.issues
+    object_path = data_dir / "objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(object_path.read_text())
+    obj.update(cave_id="C-0002", membership_ordinal=1)
+    _write_yaml(object_path, obj)
     output = tmp_path / "katalog.dump"
     build_database(**baseline, data_dir=data_dir, output_path=output)
     with restore_dump(output) as restored:

@@ -26,7 +26,8 @@ korzysta z neutralnych deklaracji pól.
 
 U02: zaimplementowano jawne granice źródła YAML, propozycji, istniejącego
 katalogu PostgreSQL i zaakceptowanej historii Git. Wspólne kontrole obsługują
-build, CLI i review bez ponownego ładowania sprawdzonego stanu. Zachowano
+build i CLI bez ponownego ładowania sprawdzonego stanu; ówczesne review
+usunięto w U12. Zachowano
 reguły, diagnostykę i eksporty U01. Odbiór eksportów i CI w opisie PR.
 
 [U03–U11: dalsze uproszczenia](plans/PR-40/README.md) mają osobne karty Spec,
@@ -39,7 +40,7 @@ jest w [karcie U03](plans/PR-40/tasks/U03-input-completeness.md#odbiór).
 w [karcie U04](plans/PR-40/tasks/U04-canonical-proposals.md#odbiór).
 Regiony SQL dla grup GPX i odbiór eksportów opisuje
 [karta U05](plans/PR-40/tasks/U05-spatial-read-model.md#odbiór).
-Wynik atomowego writera i usunięte skany review opisuje
+Wynik atomowego writera i skany ówczesnego review opisuje
 [karta U06](plans/PR-40/tasks/U06-write-result.md#odbiór).
 Fixtures kanoniczne, bezpośrednie wejścia API/CLI i osobne testy migracji
 opisuje [karta U07](plans/PR-40/tasks/U07-production-path-tests.md#odbiór).
@@ -59,8 +60,8 @@ status jest wyłącznie w indeksie.
 Zakres po korekcie użytkownika 2026-11-06: [plan czyszczenia](plans/PR-40/next/README.md)
 usuwa zakończone importy i zbędne ścieżki. Aktywne karty to U12, U15–U17;
 U13/U14 wyłączono z zakresu. Nie wprowadzamy rejestru ID ani nowych zasad
-usuwania. Obecna ochrona historii pozostaje bez zmian. Implementacja jeszcze
-nie ruszyła; statusy i zależności są wyłącznie w nowym indeksie.
+usuwania. Obecna ochrona historii pozostaje bez zmian. [Odbiór U12](plans/PR-40/next/U12-remove-imports.md#odbiór)
+opisuje wykonane usunięcie; statusy i zależności są wyłącznie w nowym indeksie.
 
 
 ## Zadania odłożone

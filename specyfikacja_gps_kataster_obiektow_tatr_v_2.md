@@ -446,16 +446,9 @@ Zasada V1:
 - `scripts/assign_id.py lat lon` proponuje prefix i kolejny wolny numer,
 - numer to największy zajęty + 1, bez wypełniania luk; dla obiektów pliki
   są odczytywane z `data/objects/{PREFIX}/`,
-- `assign_id` i staging PIG/TPN używają wspólnego mechanizmu `IdSequence`.
-  Adapter nazw rozpoznaje pliki `.yml`, `.yaml`, `.sql`, ignorując katalogi
-  udające plik ID; nie oznacza to obsługi SQL jako wejścia loadera katalogu,
-- każda partia staging rezerwuje przydzielone ID tylko w pamięci, w kolejności
-  wierszy źródła. TPN uwzględnia też istniejących kandydatów PIG. Przestrzenie
-  obiektów (osobno dla każdego prefixu), jaskiń `C-NNNN` i pomiarów `m-NNN`
-  są oddzielne. Pomiary numeruje się lokalnie dla obiektu, także przy kilku
-  dopasowaniach w tej samej partii. Szerokość licznika może rosnąć,
-- samo proponowanie/dry-run nie zapisuje YAML ani trwałych rezerwacji.
-  Wycofane ID nie mają jeszcze osobnego rejestru (issue #33),
+- `assign_id` korzysta z `IdSequence`; adapter nazw rozpoznaje pliki `.yml`,
+  `.yaml`, `.sql`, ignorując katalogi udające plik ID. Propozycja nie zapisuje
+  YAML ani trwałych rezerwacji; wycofane ID nie mają osobnego rejestru (issue #33),
 - konflikt ID jest wykrywany przez walidator jako błąd,
 - nie wprowadzamy osobnego pliku liczników ani bota nadającego ID.
 
@@ -480,18 +473,9 @@ Zasady:
 - Shapefile referencyjne w `data/shapes/` są w EPSG:2180.
 - PL-1992 używa polskiej konwencji osi: `X = northing`, `Y = easting`.
 
-Dla importów:
-
-- jeśli źródło daje WGS84, importer wylicza EPSG:2180,
-- jeśli źródło daje EPSG:2180, importer wylicza WGS84,
-- jeśli źródło daje oba układy, importer sprawdza spójność.
-
-Pomocnicze konwersje odrzucają nieskończone wejścia i wyniki przez
-`ValueError`; walidator/importer przekłada błąd projekcji na diagnostykę.
-Staging CSV/XLSX nie proponuje punktu z NaN/±Infinity, również w wysokości
-lub po przepełnieniu liczby (np. `1e999`). PIG zachowuje propozycję jaskini
-bez obiektu; TPN odrzuca wiersz. Wadliwy istniejący kandydat katalogu albo staging JSON
-przerywa staging TPN z błędem przed dopasowaniem i zapisem raportu.
+Podczas ręcznej oceny źródeł zachowujemy oryginalny układ i wartości.
+Walidator sprawdza kompletność i spójność deklaracji; pomocnicze konwersje
+odrzucają nieskończone wejścia i wyniki przez `ValueError`.
 
 ---
 
@@ -557,29 +541,16 @@ Plik TPN zawiera rekordy punktowe. W V1 przyjmujemy:
 Zasady:
 
 - TPN `GLOBALID` jest najlepszym kandydatem na zewnętrzną referencję do konkretnego `Obiektu`.
-- Mieszana geneza `jaskinia/sztolnia` (również odwrotna kolejność) nie
-  rozstrzyga kategorii terenowej. Nowa propozycja staging zachowuje
-  `jaskinia_otwor` jako kategorię roboczą, pełne `TPN GENEZA` w notes
-  i jawny wymóg review kategorii, także gdy nazwa zawiera „sztolnia”.
-  Dopasowanie pomiaru nie zmienia kategorii istniejącego obiektu.
-  Zmiana finalnej kategorii wymaga dowodu i audytu, bez zmiany ID;
-  ocena rozbieżności punktów nie oznacza ich weryfikacji terenowej.
-- Jeśli obiekt ma wcześniejszy pomiar z PIG i później zostanie dopasowany rekord TPN, pomiar TPN powinien przejąć rolę aktualnego pomiaru w trybie `best_measurement.mode: auto`, chyba że istnieje ręczne wskazanie `manual` albo późniejszy własny zweryfikowany pomiar.
-- Import TPN służy do uaktualnienia i skorygowania szkieletu utworzonego wcześniej z PIG.
-- Teksty `WER_LOK` i `UWAGI` zachowują treść źródłową; nie podnoszą statusu
-  `verification_status`. Finalizacja review zachowuje je przy pomiarze.
-  Jednorazowe uzupełnienie z lokalnego CSV wymaga jednoznacznego powiązania
-  `Obiekt.external_refs` (`TPN/source_globalid`) i pomiaru
-  (`source: TPN`, `source_ref: TPN:{GLOBALID}`). Nie dopasowuje po nazwie
-  ani numerze wiersza. Zachowuje dotychczasowe notes, dopisuje brakujące
-  etykietowane wartości, aktualizuje audyt obiektu i jest idempotentne.
-  Nie zmienia punktów, best, kategorii ani statusów. Dry-run zapisuje
-  manifest przed/po z hashem źródła; niepewne dopasowania są raportowane
-  i pomijane. [Procedura](docs/operations.md#odtworzenie-kontekstu-tpn-pbi-082).
+- Mieszana geneza `jaskinia/sztolnia` nie rozstrzyga kategorii terenowej.
+  Zachowaj pełny kontekst źródła i rozstrzygnij kategorię na podstawie dowodów.
+- Teksty `WER_LOK` i `UWAGI` zachowują treść źródłową i nie podnoszą statusu
+  weryfikacji. Historyczne uzupełnienie opisuje [PBI-082](docs/asdlc/verification/PBI-082.md).
+- Pomiary PIG pozostają w historii po dodaniu pomiarów TPN; algorytm Best
+  respektuje ręczny wybór i priorytety źródeł.
 
 ### 7.2 PIG / Jaskinie Polski
 
-PIG jest pierwszym źródłem importu początkowego i służy przede wszystkim do zbudowania szkieletu katalogowego: `Jaskinia`, numery inwentarzowe, linki, nazwy i wstępne punkty.
+PIG był źródłem importu początkowego i pozostaje materiałem do ręcznej oceny: `Jaskinia`, numery inwentarzowe, linki, nazwy i wstępne punkty.
 
 Jakość współrzędnych PIG traktujemy jako niższą niż TPN i własne pomiary terenowe. Pomiary z PIG mają niski priorytet przy wyborze aktualnego najlepszego pomiaru.
 
@@ -600,7 +571,7 @@ Plik PIG zawiera rekordy katalogowe.
 Zasady:
 
 - PIG `ID` nie jest ID otworu. Jest referencją do rekordu katalogowego jaskini / pozycji inwentarzowej.
-- Import PIG jest wykonywany jako pierwszy, ponieważ daje bazowy katalog jaskiń i numerów inwentarzowych.
+- Początkowy import PIG utworzył bazowy katalog jaskiń i numerów inwentarzowych.
 - Współrzędne PIG mogą tymczasowo utworzyć pierwszy `Pomiar`, ale taki pomiar dostaje niski priorytet źródłowy.
 - Jeśli później pojawi się dopasowany rekord TPN dla tego samego obiektu, pomiar TPN powinien zastąpić PIG jako `best_measurement` w trybie `auto`.
 - Pomiar PIG pozostaje w historii i nie jest kasowany.
@@ -643,79 +614,16 @@ verification_status: nieweryfikowany
 
 ---
 
-## 8. Deduplikacja i import
+## 8. Ocena źródeł i deduplikacja
 
-### 8.1 Import staging
+Początkowe importy PIG/TPN zakończono. Archiwalne XLSX, CSV i JSONL służą
+ręcznej ocenie i dokumentują pochodzenie danych. Nowe rekordy i pomiary edytuje
+się w YAML oraz sprawdza w PR; nie ma automatycznej materializacji decyzji.
 
-Importy masowe nie powinny od razu tworzyć finalnych obiektów bez review.
-
-Workflow:
-
-1. Import do struktury staging albo roboczego raportu.
-2. Normalizacja współrzędnych i pól.
-3. Próba dopasowania do istniejących `Jaskinia` przez `NR_INWENT`, PIG `ID`, nazwę.
-4. Próba dopasowania do istniejących `Obiekt` przez TPN `GLOBALID`, odległość, nazwę otworu.
-5. Wygenerowanie propozycji do review; zatwierdzony zapis jako YAML.
-6. Review w PR.
-
-Parsowanie źródeł współdzieli oczyszczanie tekstu i liczb dziesiętnych.
-Parser zachowuje NaN/Infinity; ich odrzucanie i diagnostyka pozostają
-w importerach/walidatorze. Profil CSV zachowuje surowe wartości i nagłówki,
-a tabela staging przycina wartości. Odczyt CSV używa UTF-8 z opcjonalnym BOM
-i separatora przecinkowego; braki i nadmiarowe komórki zachowują dotychczasowe
-znaczenie. Rok PIG oraz daty edycji/utworzenia TPN mają osobne reguły.
-Wspólne formatowanie komórek staging/review zachowuje escaping i puste pola.
-Domyślny czas generowania to UTC z dokładnością do sekundy; jawny czas ma
-pierwszeństwo. Dzień zastępczy dla brakującej daty źródła zachowuje dzień
-podanego timestampu, bez konwersji strefy; nie zastępuje znanej daty pomiaru.
-
-### 8.2 Kandydaci na duplikat
-
-Dla nowego pomiaru szukamy kandydatów:
-
-- po identyfikatorze źródłowym, np. TPN `GLOBALID`,
-- po `NR_INWENT` / `Jaskinia`,
-- po odległości od istniejących obiektów,
-- po podobieństwie nazw,
-- po kategorii.
-
-Domyślny próg odległości:
-
-```text
-max(horizontal_accuracy_1, horizontal_accuracy_2, DEFAULT_DUPLICATE_RADIUS_M)
-```
-
-Jeśli dokładności brak, używany jest próg domyślny z konfiguracji.
-
-### 8.3 Decyzja operatora
-
-Operator decyduje:
-
-1. nowy `Obiekt`,
-2. nowy `Pomiar` istniejącego `Obiektu`,
-3. nowa `Jaskinia`,
-4. powiązanie z istniejącą `Jaskinia`,
-5. odrzucenie rekordu importu,
-6. pozostawienie jako nierozstrzygnięty przypadek.
-
-Pełny model merge/split obiektów zostaje poza V1.
-
-Przed zastosowaniem decyzji review walidujemy kompletny istniejący zbiór
-obiektów, jaskiń i relacji. Decyzje pracują na kopii w pamięci; po całej
-partii `validate_proposal(...)` sprawdza pełny przyszły stan według obecnych
-reguł schematu i domeny. Błąd wejścia, payloadu lub dowolnej decyzji blokuje
-wszystkie finalne zapisy (`has_errors=true`, `written_paths=[]`), zachowując
-ścieżkę i kod reguły w diagnostyce. Dry-run wykonuje identyczną ocenę.
-Ostrzeżenia nie blokują zapisu. Gwarancja dotyczy preflight przed zapisem;
-nie obejmuje odporności na awarię procesu ani rollbacku I/O.
-
-Akcja `{action: link_cave, object_id, cave_id}` przenosi istniejący obiekt:
-usuwa jego ID z listy starej jaskini, ustawia `cave_id` i dopisuje ID do
-nowej listy bez duplikatu. Aktualizuje audyt obiektu oraz obu jaskiń;
-zachowuje innych członków i kolejność, pomiary, best, źródła i audyt
-utworzenia. Powtórzenie do tej samej jaskini aktualizuje obiekt i tę jaskinię
-bez powielenia członkostwa. Brak celu lub błąd ostatniej decyzji blokuje
-zapis całej partii, również w dry-run. Wszystkie zmiany przechodzą preflight.
+Przy ocenie dopasowania operator uwzględnia identyfikatory źródłowe, numer
+inwentarzowy, nazwę, kategorię i położenie. Różnica współrzędnych sama nie
+potwierdza tożsamości ani weryfikacji terenowej. Pełny merge/split pozostaje
+poza V1.
 
 ---
 
@@ -767,7 +675,7 @@ config/prefixes.yml        konfiguracja regionów
  ├── relations/*.yml       relacje obiektów
  ├── attachments/          załączniki
  └── shapes/               niezmienione geometrie referencyjne
-scripts/                   walidacja, import i eksport
+scripts/                   walidacja, pobieranie źródeł i eksport
 build/                     wyłącznie wyniki generowane
 ```
 
@@ -806,43 +714,26 @@ nowe lub zmienione bajty YAML, a `removed_paths` — usunięte rekordy.
 Ścieżki wskazują opublikowany katalog, w kolejności caves, objects, relations,
 publications i posortowane wewnątrz grup. Wynik jest wyliczany przed atomową
 podmianą i zwracany dopiero po jej sukcesie; błąd sprzątania starego drzewa
-nie cofa udanego zapisu. Review korzysta z `written_paths` bez skanowania
-YAML po zapisie, także dla rekordów zmienionych podczas adopcji legacy poza
-dirty ID. Marker, `.gitkeep` i assety nie są zmianami encji.
+nie cofa udanego zapisu. Marker, `.gitkeep` i assety nie są zmianami encji.
 
 Kontrole mają odrębne granice: odczyt YAML nie zwraca projekcji PostgreSQL,
-walidacja propozycji legacy/staging sprawdza jej strukturę i deklaracje,
+walidacja propozycji legacy sprawdza jej strukturę i deklaracje,
 a walidacja istniejącego katalogu używa jego połączenia bez ponownego ładowania.
 Projekcja z polami wyliczanymi nie jest kanonicznym wejściem YAML.
 Build i kanoniczne CLI współdzielą bramkę źródła, stanu SQL oraz rzeczywistej
-zaakceptowanej rewizji Git. Review sprawdza każdy odrębny stan raz i używa
-jego połączenia także do kontroli historii. Brak zmian nie wymaga drugiej
-bazy; zmieniona propozycja nadal przechodzi pełny preflight. Wszystkie własne
-konteksty baz muszą zostać zamknięte przed zapisem danych. Błąd sprzątania
-propozycji jest błędem walidacji, a wyjątek odbiorcy pozostaje jego wyjątkiem.
-
-Wewnętrzne akcje review używają `SourceDataset`: pól źródłowych, a nie projekcji
-`Catalog.dataset()`. `source_dataset` jawnie usuwa sprawdzone deklaracje legacy
-i pola wyliczane. Wybrane rekordy staging przechodzą kontrolę struktury
-i członkostwa przed konwersją; redundantne współrzędne są sprawdzane na
-istniejącym połączeniu wejścia, bez dodatkowej bazy. Końcowy
-`validated_source_proposal` sprawdza kanoniczne pola źródłowe i SQL, bez
-ponownego JSON Schema v1 ani list `object_ids`. `validated_proposal` nadal
-obsługuje deklaracje legacy, a adapter Git zachowuje historyczne schematy.
+zaakceptowanej rewizji Git. Historyczny adapter i wewnętrzne interfejsy
+propozycji pozostają do osobnej karty U15.
 Buildery dumpa, Best i pełnego wydania stosują ten sam preflight także dla
 wejścia legacy. Każda podana para współrzędnych jest kompletna i zgodna
 z geometrią źródłową, również gdy zapisano `input_*`. Po kontroli schematu
 sprzeczna albo niepełna redundantna para daje `COORDINATE_MISMATCH`
 przed usunięciem deklaracji.
-Podane legacy/staging `best_measurement.measurement_id` w trybie auto
+Podane legacy `best_measurement.measurement_id` w trybie auto
 musi istnieć w tym samym obiekcie (`BEST_MEASUREMENT_MISSING`). Poprawny
 historyczny cache może różnić się od aktualnego wyniku algorytmu auto.
 Kontrola dotyczy bieżących propozycji; nie rozszerza wymagań wobec już
 zaakceptowanych rewizji Git. Buildery legacy zachowują blokadę dowiązań
 plików YAML oraz limity wielkości pliku i całego katalogu przed parsowaniem.
-Dodanie/przeniesienie otworu przypisuje ordinal po największym numerze
-docelowej jaskini; ponowienie linku zachowuje numer, także niższy od maksimum.
-Akcje nadal aktualizują audyt i finalizują notatki staging.
 
 ### 10.2 Edycja i historyczna zgodność
 
@@ -852,9 +743,8 @@ Dopisanie źródła, notatki lub zmiana statusu nie wymaga zmiany pozycji.
 Kopiowanie współrzędnych pochodnych do źródłowych podczas takiej edycji
 jest niedopuszczalne; natywne EPSG i wartości są zachowywane.
 
-Ochrona historii odczytuje YAML z zaakceptowanej rewizji Git. Formaty
-staging i decyzji importowych używają JSON/YAML. Walidacja propozycji
-w pamięci korzysta z tego samego mapowania wartości do PostgreSQL.
+Ochrona historii odczytuje YAML z zaakceptowanej rewizji Git. Walidacja
+propozycji w pamięci korzysta z tego samego mapowania wartości do PostgreSQL.
 
 [Diagramy ERD i przepływu](docs/architecture/schema.md) oraz
 [instrukcja pracy](docs/operations.md) uzupełniają wykonywalny schemat.
@@ -948,7 +838,7 @@ pomiarów. Zawiera jawne CRS; wysokość i datum pozostają osobnymi atrybutami.
 Jest ponownie odczytywany i porównywany z tym samym stanem PostgreSQL.
 Pełny model relacyjny, w tym bibliografia, jest dostępny w dumpie.
 
-Python pozostaje odpowiedzialny za pliki, lifecycle bazy, importy i zapis
+Python pozostaje odpowiedzialny za pliki, lifecycle bazy i zapis
 formatów konsumenckich. Walidacje, które dotyczą systemu plików lub źródła
 zewnętrznego, nie są zastępowane fikcyjnym constraints w bazie.
 
@@ -1106,7 +996,7 @@ Założenia toolingowe V1:
 - `pyproject.toml` jako centralna konfiguracja projektu,
 - `ruff` do lintingu i formatowania kodu,
 - `pytest` do testów jednostkowych,
-- testy mutacyjne dla krytycznej logiki walidacji, geometrii i importu,
+- testy mutacyjne dla krytycznej logiki walidacji i geometrii,
 - typowanie w kodzie Python, z docelową możliwością uruchamiania type checkera,
 - spójne komendy lokalne i CI.
 
@@ -1116,9 +1006,8 @@ Minimalny zestaw V1:
 scripts/assign_id.py lat lon
 scripts/validate.py
 scripts/build_db.py
-scripts/export.py --best
-scripts/importers/import_tpn.py
-scripts/importers/import_pig.py
+scripts/export_best_measurements.py
+scripts/build_release_artifacts.py
 ```
 
 ### 16.1 `assign_id.py`
@@ -1149,7 +1038,7 @@ Zadania:
 - tworzy indeksy,
 - zapisuje `katalog.dump` i weryfikuje jego odtworzenie.
 
-### 16.4 `export.py --best`
+### 16.4 `export_best_measurements.py`
 
 Zadania:
 
@@ -1184,7 +1073,7 @@ XLSX, GeoPackage, Shapefile oraz dumpa są niezależne od serializera eksportu.
 
 Wymagane testy V1:
 
-- testy odczytu katalogu YAML oraz parsowania decyzji/staging,
+- testy odczytu i walidacji katalogu YAML,
 - testy JSON Schema,
 - testy konwersji WGS84 ↔ EPSG:2180,
 - testy point-in-polygon i przydzielania prefixu,
@@ -1239,8 +1128,8 @@ Pole `verified_by` i `created_by` może używać krótkiego identyfikatora osoby
 
 Format `postgresql-yaml` ma wersję 2 i jawny znacznik w `data/`. Schemat wykonywalny
 jest w `schema/catalog.sql`, a zmiany opisuje `schema/CHANGELOG.md`.
-Reprezentacje legacy/staging wersji 1 służą wyłącznie odczytowi historycznej
-bazy oraz importom. Nie stanowią alternatywnego źródła bieżącego katalogu.
+Reprezentacje legacy wersji 1 służą odczytowi historycznej bazy i zachowanym
+wewnętrznym interfejsom propozycji. Nie stanowią alternatywnego źródła bieżącego katalogu.
 Zmiana niekompatybilna wymaga jawnej migracji, testu historii i odtworzenia.
 
 ---
@@ -1274,8 +1163,8 @@ Do doprecyzowania przy nowych kategoriach źródeł:
 ## 20. Zakres utrzymania
 
 Katalog jest aktualizowany ręcznie przez PR i wydawany przez tag semver.
-PIG i TPN są wejściami stagingu; po zatwierdzeniu decyzji powstają rekordy
-YAML. Pomiary PIG pozostają w historii po dodaniu TPN. Nie planujemy stałego
+Źródła PIG i TPN służą ręcznej ocenie; nowe pomiary i rekordy edytuje się
+bezpośrednio w YAML i poddaje review w PR. Pomiary PIG pozostają w historii po dodaniu TPN. Nie planujemy stałego
 importera Geoportal ani cyklicznych importów masowych.
 
 ---
@@ -1314,7 +1203,7 @@ Aktualne / planowane artefakty repo:
 - `config/prefixes.yml` — mapa polygonów na prefixy,
 - `data/shapes/` — shapefile referencyjne EPSG:2180,
 - `schema/catalog.sql` — model katalogu i walidacja SQL,
-- `schema/*.schema.json` — wejścia staging i legacy,
+- `schema/*.schema.json` — zachowane schematy legacy i historii,
 - `schema/CHANGELOG.md` — historia zmian schematu,
 - `data/objects/` — źródło prawdy dla obiektów terenowych,
 - `data/caves/` — źródło prawdy dla jaskiń / pozycji katalogowych,

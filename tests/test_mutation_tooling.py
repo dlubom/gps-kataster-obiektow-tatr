@@ -12,27 +12,17 @@ MUTATED_PATHS = [
     "src/gps_kataster_obiektow_tatr/coordinates.py",
     "src/gps_kataster_obiektow_tatr/prefix_resolver.py",
     "src/gps_kataster_obiektow_tatr/validator.py",
-    "src/gps_kataster_obiektow_tatr/pig_staging.py",
-    "src/gps_kataster_obiektow_tatr/tpn_staging.py",
-    "src/gps_kataster_obiektow_tatr/staging_review.py",
 ]
 
 MUTATION_TEST_SELECTION = [
     "tests/test_coordinates.py",
     "tests/test_prefix_resolver.py",
     "tests/test_validator.py",
-    "tests/test_pig_staging.py",
-    "tests/test_tpn_staging.py",
-    "tests/test_staging_review.py",
 ]
 
 MUTATION_PYTEST_SELECTION_ARGS = [
     "-k",
-    (
-        "not test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors "
-        "and not test_cli_writes_staging_artifacts_without_final_yaml "
-        "and not test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py"
-    ),
+    ("not test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors"),
 ]
 
 MUTATION_SUPPORT_PATHS = [

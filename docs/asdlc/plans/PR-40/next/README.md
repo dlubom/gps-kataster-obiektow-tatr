@@ -22,7 +22,7 @@ pomylić ich z wcześniejszą propozycją. Jej zapis pozostaje w historii Git.
 
 | Karta | Wynik | Status | Zależności |
 |---|---|---|---|
-| [U12](U12-remove-imports.md) | Usunięte zakończone importy, profiler i naprawa TPN | gotowe do zlecenia | brak |
+| [U12](U12-remove-imports.md) | Usunięte zakończone importy, profiler i naprawa TPN | wykonane; CI w opisie PR | brak |
 | U13 / U14 | Rejestr ID i kontrolowane wycofania | wyłączone z zakresu | nie realizować |
 | [U15](U15-remove-writers-legacy.md) | Jeden bieżący format v2, usunięte programowe zapisy katalogu | oczekuje | U12 |
 | [U16](U16-postgis-validation.md) | Jeden silnik walidacji geografii katalogu | oczekuje | U15 |

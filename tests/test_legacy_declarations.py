@@ -1,11 +1,10 @@
-"""Import assertions must survive long enough to be validated, before normalization."""
+"""Legacy declarations must be validated before normalization."""
 
 import pytest
-from export_test_support import source, write_yaml
+from export_test_support import write_yaml
 from test_legacy_migration import legacy_source
 
 from gps_kataster_obiektow_tatr.data_loader import load_yaml_dataset
-from gps_kataster_obiektow_tatr.staging_review import StagingReports, apply_review_decisions
 from gps_kataster_obiektow_tatr.validator import has_errors, validate_proposal, validated_proposal
 
 
@@ -68,37 +67,3 @@ def test_missing_legacy_auto_best_is_rejected_before_normalization(tmp_path):
     write_yaml(path, obj)
     issues = validate_proposal(load_yaml_dataset(data), data_dir=data)
     assert any(i.code == "BEST_MEASUREMENT_MISSING" and i.path == path for i in issues), issues
-
-
-@pytest.mark.parametrize("write", [False, True])
-@pytest.mark.parametrize("damage", ["coordinates", "partial", "best"])
-def test_selected_staging_declarations_block_before_source_write(tmp_path, write, damage):
-    data, baseline = source(tmp_path / "catalog")
-    _, obj, _ = legacy_source(tmp_path / "declarations")
-    obj["id"] = "KSW-0002"
-    m = obj["measurements"][0]
-    native(m, 4326)
-    if damage == "coordinates":
-        m["lat"] += 0.01
-    elif damage == "partial":
-        m.pop("lon")
-    else:
-        obj["best_measurement"]["measurement_id"] = "m-999"
-    before = {p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()}
-    result = apply_review_decisions(
-        {"decisions": [{"action": "create_object", "source": "PIG", "record_number": 1}]},
-        staging_reports=StagingReports(
-            pig={
-                "rows": [{"record_number": 1, "object_id": "KSW-0002"}],
-                "proposed_objects": [obj],
-            }
-        ),
-        data_dir=data,
-        write=write,
-        base_ref=baseline["base_ref"],
-        repo_root=baseline["history_repo"],
-    )
-    assert result.has_errors and not result.written_paths, result.issues
-    code = "BEST_MEASUREMENT_MISSING" if damage == "best" else "COORDINATE_MISMATCH"
-    assert any(code in i.description for i in result.issues), result.issues
-    assert {p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()} == before

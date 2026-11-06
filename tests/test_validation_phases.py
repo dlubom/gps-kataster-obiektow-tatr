@@ -11,10 +11,8 @@ import pytest
 import yaml
 from sql_test_support import history_cli_args
 
-from gps_kataster_obiektow_tatr import history as history_checks
 from gps_kataster_obiektow_tatr import postgres, validator
 from gps_kataster_obiektow_tatr.data_loader import load_yaml_dataset
-from gps_kataster_obiektow_tatr.staging_review import StagingReports, apply_review_decisions
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -40,84 +38,6 @@ def source(root, *, canonical=True):
 
 def snapshot(root):
     return {p.relative_to(root): p.read_bytes() for p in root.rglob("*") if p.is_file()}
-
-
-@pytest.mark.parametrize("canonical", [False, True], ids=["legacy", "canonical"])
-@pytest.mark.parametrize("change", [False, True], ids=["unchanged", "changed"])
-def test_review_loads_each_distinct_catalogue_state_once(tmp_path, monkeypatch, canonical, change):
-    data = source(tmp_path / "data", canonical=canonical)
-    history = history_cli_args(data)
-    opened = []
-    history_connections = []
-    original = postgres._open_rows
-    compare_history = history_checks.compare_history
-
-    @contextmanager
-    def counted(*args, **kwargs):
-        with original(*args, **kwargs) as catalog:
-            opened.append(catalog.connection)
-            yield catalog
-
-    monkeypatch.setattr(postgres, "_open_rows", counted)
-
-    def compare(*args, connection=None):
-        history_connections.append(connection)
-        return compare_history(*args, connection=connection)
-
-    monkeypatch.setattr(history_checks, "compare_history", compare)
-    result = apply_review_decisions(
-        {
-            "reviewed_at": "2026-11-05T14:00:00Z",
-            "decisions": [{"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0001"}]
-            if change
-            else [],
-        },
-        staging_reports=StagingReports(),
-        data_dir=data,
-        write=False,
-        base_ref=history[3],
-        repo_root=Path(history[1]),
-    )
-    assert not result.has_errors, result.issues
-    assert len(opened) == (2 if change else 1)
-    assert history_connections == [opened[-1], opened[-1]]
-
-
-@pytest.mark.parametrize("write", [False, True], ids=["dry-run", "write"])
-@pytest.mark.parametrize("stage", ["input", "final"])
-def test_review_invalid_state_preserves_all_existing_files(tmp_path, write, stage):
-    data = source(tmp_path / "data")
-    (data / "operator-note.txt").write_bytes(b"keep source asset\n")
-    reports = StagingReports()
-    decisions = []
-    if stage == "input":
-        path = data / "objects/KSW/KSW-0001.yml"
-        obj = yaml.safe_load(path.read_text())
-        obj["measurements"] = [42]
-        path.write_text(yaml.safe_dump(obj))
-        expected = "FINAL_DATA_INVALID"
-    else:
-        proposal = yaml.safe_load((data / "objects/KSW/KSW-0001.yml").read_text())
-        proposal["id"] = "KSW-0002"
-        proposal["cave_id"] = "C-9999"
-        proposal["best_measurement"]["measurement_id"] = "m-001"
-        reports = StagingReports(
-            pig={
-                "rows": [{"record_number": 1, "object_id": "KSW-0002"}],
-                "proposed_objects": [proposal],
-            }
-        )
-        decisions = [{"action": "create_object", "source": "PIG", "record_number": 1}]
-        expected = "REVIEW_DATA_INVALID"
-    before = snapshot(data)
-    result = apply_review_decisions(
-        {"decisions": decisions}, staging_reports=reports, data_dir=data, write=write
-    )
-    assert result.has_errors and result.written_paths == ()
-    assert expected in {i.code for i in result.issues}, result.issues
-    if stage == "final":
-        assert any("CAVE_REFERENCE_MISSING" in i.description for i in result.issues)
-    assert snapshot(data) == before
 
 
 @pytest.mark.parametrize("canonical", [False, True])
@@ -236,36 +156,6 @@ def test_proposal_cleanup_failure_retains_sql_diagnostic(tmp_path, monkeypatch):
     ]
 
 
-@pytest.mark.parametrize("write", [False, True])
-@pytest.mark.parametrize("boundary", ["input", "final"])
-def test_review_closes_catalogues_before_any_write(tmp_path, monkeypatch, write, boundary):
-    data = source(tmp_path / "data")
-    entry = "open_catalog" if boundary == "input" else "open_source_proposal"
-    original = getattr(postgres, entry)
-
-    @contextmanager
-    def broken_cleanup(*args, **kwargs):
-        with original(*args, **kwargs) as catalog:
-            yield catalog
-        raise postgres.CatalogLoadError(f"owned {boundary} cleanup failed")
-
-    monkeypatch.setattr(postgres, entry, broken_cleanup)
-    before = snapshot(data)
-    result = apply_review_decisions(
-        {"decisions": [{"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0001"}]},
-        staging_reports=StagingReports(),
-        data_dir=data,
-        write=write,
-    )
-    assert result.has_errors and result.written_paths == ()
-    assert any(
-        i.code == ("FINAL_DATA_INVALID" if boundary == "input" else "REVIEW_DATA_INVALID")
-        and f"owned {boundary} cleanup failed" in i.description
-        for i in result.issues
-    )
-    assert snapshot(data) == before
-
-
 def test_proposal_consumer_exception_is_not_reclassified(tmp_path):
     data = source(tmp_path / "data", canonical=False)
     error = ValueError("failure in the context consumer")
@@ -275,29 +165,6 @@ def test_proposal_consumer_exception_is_not_reclassified(tmp_path):
     ):
         raise error
     assert raised.value is error
-
-
-@pytest.mark.parametrize("write", [False, True])
-@pytest.mark.parametrize("ref", ["", "unavailable-accepted-ref"])
-def test_review_unavailable_git_baseline_preserves_files(tmp_path, write, ref):
-    data = source(tmp_path / "data")
-    history = history_cli_args(data)
-    before = snapshot(data)
-    result = apply_review_decisions(
-        {"decisions": [{"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0001"}]},
-        staging_reports=StagingReports(),
-        data_dir=data,
-        write=write,
-        base_ref=ref,
-        repo_root=Path(history[1]),
-    )
-    assert result.has_errors and result.written_paths == ()
-    assert any(
-        i.code == "HISTORY_INVALID"
-        and "HISTORY_BASELINE_UNAVAILABLE\terror\t<dataset>" in i.description
-        for i in result.issues
-    )
-    assert snapshot(data) == before
 
 
 @pytest.mark.parametrize("kind", ["missing", "file"])
@@ -352,7 +219,7 @@ def test_build_keeps_invalid_default_directory_contract(tmp_path, monkeypatch, k
 
 @pytest.mark.parametrize("directory", ["objects", "caves", "relations", "publications"])
 @pytest.mark.parametrize("damage", ["missing", "file"])
-@pytest.mark.parametrize("operation", ["database", "release", "best", "review", "review-dry-run"])
+@pytest.mark.parametrize("operation", ["database", "release", "best"])
 def test_incomplete_source_never_opens_database_or_changes_data_and_outputs(
     tmp_path, monkeypatch, directory, damage, operation
 ):
@@ -378,33 +245,17 @@ def test_incomplete_source_never_opens_database_or_changes_data_and_outputs(
 
     monkeypatch.setattr(postgres, "_open_rows", unexpected)
     with pytest.raises(DataDirectoryError) as raised:
-        if operation.startswith("review"):
-            apply_review_decisions(
-                {
-                    "decisions": [
-                        {"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0001"}
-                    ]
-                },
-                staging_reports=StagingReports(),
-                data_dir=data,
-                write=operation == "review",
-                base_ref=history[3],
-                repo_root=Path(history[1]),
-            )
-        else:
-            function = {
-                "database": build_database,
-                "release": build_release_artifacts,
-                "best": export_best_measurements,
-            }[operation]
-            destination = (
-                {"output_path": output / "katalog.dump"}
-                if operation == "database"
-                else {"output_dir": output}
-            )
-            function(
-                data_dir=data, base_ref=history[3], history_repo=Path(history[1]), **destination
-            )
+        function = {
+            "database": build_database,
+            "release": build_release_artifacts,
+            "best": export_best_measurements,
+        }[operation]
+        destination = (
+            {"output_path": output / "katalog.dump"}
+            if operation == "database"
+            else {"output_dir": output}
+        )
+        function(data_dir=data, base_ref=history[3], history_repo=Path(history[1]), **destination)
     assert raised.value.path == path
     assert snapshot(tmp_path) == before
 

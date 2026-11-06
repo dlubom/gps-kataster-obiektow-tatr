@@ -45,7 +45,7 @@ przypisanie, także na granicach poligonów i ich otworów. Niezmienne metadane
 odczytu nie trafiają do YAML ani publicznych kolumn. Grupowanie używa regionu
 faktycznie wybranego Best; brak/nieznany region i grupa ponad 500 punktów dają
 `GpxGroupingError` przed publikacją, zachowując wcześniejsze pliki.
-Resolver Pythona nadal obsługuje kandydatów importu przed utworzeniem katalogu.
+Resolver Pythona nadal obsługuje propozycje nowych ID.
 
 Samodzielne CLI (`validate.py`, `build_release_artifacts.py`) także uruchamiają
 zarządzany kontener, jeśli `KATASTER_DATABASE_URL` nie jest ustawiony. Do
@@ -291,12 +291,12 @@ jest obsługiwane i zachowywane przy edycji. Puste katalogi zachowują
 Brak któregokolwiek z czterech katalogów albo plik zamiast katalogu blokuje
 odczyt przed uruchomieniem bazy oraz przygotowaniem i zapisem wyjścia.
 Walidator/CLI zgłasza `DATA_DIRECTORY_INVALID` z właściwą ścieżką; build
-oraz review (także dry-run) zachowują `DataDirectoryError`. Istniejące YAML
+zachowuje `DataDirectoryError`. Istniejące YAML
 i artefakty pozostają bez zmian. Nie twórz katalogów podczas odczytu,
 aby ukryć niepełne wejście. Błędny/brakujący znacznik domyślnego źródła
 nadal ma pierwszeństwo w diagnostyce kanonicznego CLI.
 
-Legacy bez znacznika, używane przez historyczne rewizje i wejścia importu,
+Legacy bez znacznika, używane przez historyczne rewizje i wewnętrzne propozycje,
 wymaga `objects`, `caves` i `relations`. Może nie mieć `publications`;
 nieobecność oznacza pustą bibliografię, lecz istniejący plik tej nazwy jest
 błędem. Odczyt Git nie naprawia zaakceptowanej rewizji: bierze układ z jej
@@ -321,45 +321,14 @@ Kanoniczny loader odrzuca pola wyliczane, aby edycja nie była ignorowana.
 
 ### Przydzielanie ID
 
-`id_allocation.IdSequence` obsługuje `assign_id` oraz staging PIG/TPN.
-Przydziela numer po największym istniejącym/zarezerwowanym, bez wypełniania
-luk. Każdy prefix obiektu, jaskinie `C` i pomiary `m` mają oddzielną sekwencję;
-pomiary są dodatkowo lokalne dla obiektu. Kolejne dopasowania TPN do jednego
-obiektu rezerwują osobne numery, a dwa obiekty mogą mieć własne `m-001`.
-Format ma minimum cztery cyfry dla obiektu/jaskini i trzy dla pomiaru.
+`id_allocation.IdSequence` obsługuje `assign_id`: numer jest największym
+istniejącym + 1, bez wypełniania luk. `file_ids` rozpoznaje rzeczywiste pliki
+`.yml`, `.yaml` i `.sql`; loader katalogu nie przyjmuje plików SQL. Propozycja
+nie zapisuje YAML ani trwałej rezerwacji. Nie ma rejestru wycofanych ID ani
+ochrony przed równoległym przydziałem; kolizje blokuje walidacja.
 
-Adapter `file_ids` rozpoznaje nazwy rzeczywistych plików `.yml`, `.yaml`,
-`.sql`; katalog nazwany np. `KSW-9999.yml` nie zajmuje numeru. Ten odczyt nie
-uruchamia bazy ani loadera; loader nadal odrzuca katalog z plikami SQL.
-Skan nazw danego katalogu jest wykonywany najwyżej raz na partię.
-Rezerwacje propozycji PIG/TPN są wyłącznie w pamięci; ponowienie bez zapisu
-proponuje te same ID. Nie ma trwałego rejestru wycofanych ID ani ochrony
-przed równoległym przydziałem w innym procesie. Kolizje blokuje walidacja.
-[Zakres i odbiór U09](asdlc/plans/PR-40/tasks/U09-id-allocation.md#odbiór).
-
-### Parsowanie źródeł i raporty staging
-
-`source_parsing` współdzieli `clean_text`, `parse_decimal` i
-`date_part_or_today`. Pierwszy helper zamienia `None` na pusty tekst i przycina
-końce; parser usuwa zwykłe/NBSP spacje grupujące i akceptuje przecinek/kropkę.
-Nie zamienia błędnych liczb niefinitywnych na brak: kontrola skończoności
-pozostaje u odbiorcy. Profilowanie nadal liczy takie wartości jako liczby.
-
-`source_table.read_raw_csv_table` czyta raz CSV (UTF-8/BOM, przecinek),
-zachowując nagłówki i białe znaki wartości. Brakujące komórki są puste,
-nadmiarowe bez nagłówka pomijane. `source_profile` używa tego surowego wejścia;
-`read_source_table` przycina wartości CSV oraz wartości i nagłówki XLSX.
-Reguły pełności CSV i wyboru arkusza pozostają bez zmian.
-
-`report_formatting` dostarcza komórki Markdown dla PIG/TPN/review i
-`utc_timestamp` dla raportów, builderów i CLI. Komórki zachowują pionową
-kreskę jako `\|`, LF jako `<br>`, dotychczasowe backticki i CR oraz rozróżnienie
-pustej wartości od samych spacji w komórce kodu. Formatowanie surowych
-przykładów profilu pozostaje osobne. Jawny `--generated-at`/`reviewed_at` ma
-pierwszeństwo; zegar UTC domyślnie pomija mikrosekundy. Zegary pobrań TPN
-zachowują mikrosekundy. Rok PIG i cztery formaty dat TPN pozostają u importerów;
-`date_part_or_today` zachowuje dzień podanej strefy, a dla błędnego timestampu
-używa dzisiejszego dnia UTC. [Zakres i odbiór U08](asdlc/plans/PR-40/tasks/U08-shared-helpers.md#odbiór).
+Buildery i CLI używają `utc_timestamp` z dokładnością do sekundy; jawny
+`--generated-at` ma pierwszeństwo.
 
 ### Granice walidacji w Pythonie
 
@@ -367,7 +336,7 @@ używa dzisiejszego dnia UTC. [Zakres i odbiór U08](asdlc/plans/PR-40/tasks/U08
 |---|---|
 | `load_yaml_dataset` | Rekordy YAML z surowymi polami i ścieżkami; wymagane katalogi, składnia i unikalne klucze. Bez bazy i kontroli domeny/historii. |
 | `read_catalog_projection` | Zawsze projekcja PostgreSQL po kontroli wejścia przez adapter. Zawiera pola wyliczane; bez pełnej walidacji domeny i Git. |
-| `validate_proposal` / `validated_proposal` | Propozycja legacy/staging w pamięci: schemat przed odczytem zagnieżdżonych wartości, ID, członkostwo, SQL, redundantne współrzędne. Drugi wariant zachowuje połączenie do dalszych kontroli. |
+| `validate_proposal` / `validated_proposal` | Propozycja legacy w pamięci: schemat przed odczytem zagnieżdżonych wartości, ID, członkostwo, SQL, redundantne współrzędne. Drugi wariant zachowuje połączenie do dalszych kontroli. |
 | `source_dataset(LoadedDataset) → SourceDataset` | Jawna konwersja już sprawdzonych deklaracji/projekcji do pól źródłowych. Zachowuje ścieżki i ordinal; usuwa listy otworów, współrzędne pochodne i ID auto Best. Sama konwersja nie poświadcza walidacji. |
 | `validated_source_proposal(SourceDataset)` / `open_source_proposal(SourceDataset)` | Kanoniczna propozycja zmian w pamięci: kontrola pól źródłowych i mapowanie do SQL bez ponownego schematu legacy i deklaracji `object_ids`. Pierwszy wariant dodaje kontrolę ścieżek i stanu SQL; połączenie służy także historii. Zwykła projekcja nie jest przyjmowana jako `SourceDataset`. |
 | `validate_catalog` | Kontrola już załadowanego stanu SQL, ścieżek i załączników. Bez odczytu YAML, odbudowy projekcji ani kolejnej bazy. |
@@ -377,18 +346,6 @@ używa dzisiejszego dnia UTC. [Zakres i odbiór U08](asdlc/plans/PR-40/tasks/U08
 `validate_data_dir` raportuje kontrole wejścia i SQL, wybierając kanoniczny
 kontrakt źródła lub jawny kontrakt propozycji legacy; nie wykonuje kontroli Git.
 Polecenie `scripts/validate.py` zawsze dodaje rzeczywistą bazę historii.
-Review używa sprawdzonego wejścia bez ponownej walidacji jego projekcji jako
-propozycji. Otwiera następną bazę tylko dla zmienionego stanu i zamyka wszystkie
-konteksty przed zapisem. Dry-run przeprowadza te same kontrole.
-
-Akcje review zmieniają tylko źródłowe członkostwo, geometrię i politykę Best.
-Struktura wybranych deklaracji staging i ich członkostwo są sprawdzane przed
-usunięciem pól; redundantne współrzędne są porównywane zapytaniem na istniejącym
-połączeniu wejścia. Nowy/przenoszony otwór dostaje ordinal za największym
-numerem docelowej jaskini, bez wypełniania luk. Ponowienie linku do tej samej
-jaskini zachowuje numer i aktualizuje dotychczasowy audyt obiektu/jaskini.
-Finalizacja notatek i tagów staging pozostaje polityką review.
-
 Pusty katalog jest poprawny strukturalnie, ale zastąpienie nim niepustej
 zaakceptowanej bazy narusza ochronę historii. `schema/history.sql` porównuje
 źródłowe wartości i kolejność pomiarów z danymi odczytanymi z Git:
@@ -403,29 +360,18 @@ poprzedniego stanu main; nie buduje baseline z danych kandydata.
 
 ## Jednoznaczne klucze YAML
 
-YAML jest formatem katalogu, decyzji importowych i historycznych fixture'ów.
+YAML jest formatem katalogu i historycznych fixture'ów.
 Klucze każdej mapy muszą być unikalne, także
-wewnątrz pomiarów i list decyzji. Parser wskazuje plik, klucz oraz obie
+wewnątrz pomiarów. Parser wskazuje plik, klucz oraz obie
 lokalizacje duplikatu. Zwykłe aliasy i merge keys o rozłącznych kluczach są
 legalne; kolizje po rozwinięciu są błędem, także przy identycznej wartości.
 
-Błędne wejście blokuje zapis finalnych danych. Zatwierdzone decyzje kończą się
-jednym atomowym zapisem katalogu YAML; błąd ostatniego rekordu nie pozostawia
-części wcześniejszych zmian. Snapshot zachowuje pliki pomocnicze także
-wewnątrz katalogów encji. Dowiązanie katalogu będącego celem zapisu rekordu
-blokuje podmianę zamiast kierować zapis poza snapshot.
-
-Writer zwraca niezmienny `WriteResult` z `written_paths` (nowe lub zmienione
-bajty YAML) i `removed_paths` (usunięte YAML), ze ścieżkami docelowymi.
-Obie listy mają kolejność `caves`, `objects`, `relations`, `publications`,
-z sortowaniem w grupach; identyczny ponowny zapis daje puste krotki.
-Review zachowuje dotychczasowe publiczne `written_paths`, korzystając z wyniku
-writera bez pełnych skanów przed/po. Obejmuje też adopcję legacy poza dirty ID;
-nie dodaje do raportu usunięć ani assetów. `changed` nadal wskazuje rekordy
-do edycji i pozwala kopiować niezmienione pliki z zachowaniem ich bajtów.
-Odczyty autora YAML dla kolejności pól i porównania bajtów nadal są potrzebne.
-Dry-run nie wywołuje writera. Błąd serializacji/podmiany pozostawia poprzedni
-katalog; cleanup starego drzewa po udanej podmianie zachowuje wynik sukcesu.
+Wewnętrzny writer katalogu zachowano do U15. Atomowo podmienia snapshot,
+chroni pliki pomocnicze i blokuje niedozwolone dowiązania. Zwraca `WriteResult`
+z `written_paths` i `removed_paths`, w kolejności caves, objects, relations,
+publications. Błąd serializacji lub podmiany pozostawia poprzedni katalog;
+cleanup starego drzewa po udanej podmianie nie zmienia wyniku sukcesu.
+Bieżące zmiany źródeł wprowadza się ręcznie w YAML i sprawdza w PR.
 
 ## Pozycja z sieci pomiarowej jaskini
 
@@ -527,7 +473,7 @@ przeczytac i zrozumiec. Błędy constraints są mapowane na kody domenowe
 (np. `DUPLICATE_MEASUREMENT_ID`) albo `SQL_CATALOG_INVALID`. Historia raportuje
 `HISTORY_BASELINE_UNAVAILABLE`, `HISTORY_OBJECT_DELETED`,
 `HISTORY_MEASUREMENT_DELETED`, `HISTORY_MEASUREMENT_CHANGED` i
-`HISTORY_ORDER_CHANGED`. Obecny import PIG/TPN ma znane ostrzezenia
+`HISTORY_ORDER_CHANGED`. Pomiary z początkowego importu PIG/TPN mają znane ostrzezenia
 `MISSING_HORIZONTAL_ACCURACY`, bo zrodla nie podaja dokladnosci poziomej.
 
 Jesli lokalny cache `uv` nie jest dostepny w srodowisku sandboxowym, uzyj:
@@ -559,8 +505,7 @@ ktorej ciche zepsucie mogloby uszkodzic katalog danych:
 - wybor najlepszego pomiaru,
 - przeliczanie i walidacja wspolrzednych,
 - przypisanie prefixu,
-- rozroznienie `error` / `warning` w walidatorze,
-- staging importu PIG/TPN i materializacja decyzji operatora.
+- rozroznienie `error` / `warning` w walidatorze.
 
 Konfiguracja `mutmut` znajduje sie w `pyproject.toml` i ogranicza zakres do
 wybranych modulow oraz powiazanych testow jednostkowych. Testy CLI oparte o
@@ -666,52 +611,14 @@ walidator moze wskazac to jako ostrzezenie.
 
 ## Odtworzenie kontekstu TPN (PBI-082)
 
-Importer zachowuje `WER_LOK` i `UWAGI` przy pomiarach TPN, zarówno nowych,
-jak i dopasowanych. Etykiety `TPN WER_LOK:` oraz `TPN UWAGI:` opisują tekst
-źródłowy; nie oznaczają projektowej weryfikacji punktu. Review zachowuje
-ten kontekst i ręczne uwagi pomiaru.
-
-Dla istniejących danych jednorazowe narzędzie domyślnie wykonuje dry-run:
-
-```bash
-uv run --frozen python scripts/maintenance/restore_tpn_notes.py \
-  --source data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv \
-  --data-dir data --report build/tpn-notes-dry.json
-```
-
-Raport JSON zawiera hash SHA-256 źródła, GLOBALID, plik, ID obiektu/pomiaru,
-wartości źródłowe i notes/audyt przed oraz po zmianie. `record_number` służy
-tylko jako odnośnik dowodowy. Dopasowanie wymaga jednocześnie jednoznacznej
-referencji `TPN/source_globalid` na obiekcie i `source: TPN` z
-`source_ref: TPN:{GLOBALID}` na pomiarze. Niejednoznaczność w źródle,
-obiektach lub pomiarach jest raportowana bez dopasowania po nazwie.
-Nierozstrzygnięty przypadek blokuje zapis całej partii; dry-run pozwala
-przejrzeć i rozwiązać go przed ponowieniem operacji.
-
-Po przeglądzie raportu powtórz polecenie z `--apply` i osobnym `--report`.
-Opcjonalne `--generated-at 2026-10-15T13:16:44Z` ustala czas audytu dla
-odtwarzalnego przebiegu. Zapis ogranicza się do notes właściwego pomiaru
-i `updated_at`/`updated_by` obiektu (`maintenance:PBI-082`). Ręczne uwagi
-pozostają; obecne etykietowane wartości nie są dopisywane drugi raz.
-Raport przed zapisem ma stan `pending`; dopiero udana atomowa podmiana danych
-pozwala zapisać `apply`. Raport i katalog danych są publikowane oddzielnie;
-błąd końcowego zapisu raportu może pozostawić `pending` mimo zmienionych danych. Błąd zapisu daje `failed`, a przerwana operacja może
-zostawić `pending`, co wymaga sprawdzenia jej stanu. Raport musi znajdować
-się poza katalogiem danych i nie może nadpisać źródła. Po udanej podmianie
-sprzątanie starego katalogu jest wykonywane w miarę możliwości: błąd jego
-usunięcia nie zmienia wyniku zapisu na `failed`. Może pozostawić ukryty katalog
-`.data-snapshot-*` obok danych do późniejszego usunięcia. Zapis snapshotu chroni
-przed częściową podmianą plików, ale nie zastępuje izolacji równoczesnych
-edycji; używaj osobnych gałęzi/worktree i review w Git.
-
-[Manifest PBI-082](asdlc/verification/PBI-082-manifest.json) wskazuje 469
-plików i wyłącznie dozwolone pola. [Log](asdlc/verification/PBI-082.md)
-wyjaśnia wyniki przed/po i pominięty rekord Smoczej Jamy bez referencji.
+Jednorazowa naprawa została zakończona. Zachowane etykiety `TPN WER_LOK:` i
+`TPN UWAGI:` opisują źródło, a nie weryfikację terenową. [Manifest](asdlc/verification/PBI-082-manifest.json)
+i [log](asdlc/verification/PBI-082.md) dokumentują przebieg i pominięte przypadki.
+Nowe ustalenia należy wprowadzać ręcznie w YAML i oceniać w PR.
 
 ## Dopelnianie brakujacych otworow
 
-Gdy staging TPN zostawia `TPN_NR_INWENT_AMBIGUOUS`, czesto oznacza to kilka
-otworow tej samej jaskini pod jednym numerem inwentarzowym. Wtedy nie tworz
+Kilka otworow tej samej jaskini moze miec jeden numer inwentarzowy. Wtedy nie tworz
 automatycznie nowej jaskini tylko dlatego, ze jest drugi punkt.
 
 1. Znajdz rekord PIG po nazwie albo numerze inwentarzowym:
@@ -759,19 +666,9 @@ oraz obu dokładnościach, także w historycznym lub odrzuconym pomiarze.
 Adapter/SQL odrzuca je jako `SQL_CATALOG_INVALID` z plikiem i diagnostyką
 constraints; historyczna nazwa `MEASUREMENT_NON_FINITE` dotyczy pomocniczych
 kontroli modelu legacy. Kontrola poprzedza eksport i wybór Best na danych
-uznanych za poprawne. Review (dry-run
-oraz zapis), PostgreSQL i eksporty blokują całą operację przed zapisem;
+uznanych za poprawne. PostgreSQL i eksporty blokują operację przed zapisem;
 istniejące wyjścia zachowują bajty. Opcjonalne `null`, zera i skończone
 wartości zachowują dotychczasową semantykę.
-
-Importery CSV/XLSX wykrywają także przepełnienie zapisu liczby, np.
-`1e999`. `PIG_MEASUREMENT_NON_FINITE` pomija obiekt, zachowując jaskinię;
-`TPN_MEASUREMENT_NON_FINITE` odrzuca cały wiersz. Diagnostyka podaje
-źródłowe pole i numer rekordu/identyfikator. Wadliwy kandydat z istniejącego
-katalogu albo PIG staging JSON przerywa staging TPN przed dopasowaniem;
-CLI kończy się kodem 1 bez raportów. Nie poprawiać tego przez zamianę
-niepoprawnej wysokości na brak wartości. Błąd projekcji dla skończonego
-wejścia również jest raportowany, bez propagacji nieskończonego wyniku.
 
 ## Rollback formatu PostgreSQL
 
