@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1046
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- STR-0012
+bibliography_status: unknown
 notes: 'PIG aliases: Kozi Schron, Giewontowa Dziura
 
   PIG sector: D. Strążyska

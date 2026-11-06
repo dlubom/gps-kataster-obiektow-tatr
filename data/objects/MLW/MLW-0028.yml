@@ -3,6 +3,7 @@ id: MLW-0028
 category: jaskinia_otwor
 name_local: Jaskinia Świstacza
 cave_id: C-0657
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.23937779
-  lon: 19.93042784
-  x_1992: 152846.37
-  y_1992: 567706.35
+  input_srid: 4326
+  input_x: 19.93042784
+  input_y: 49.23937779
   elevation_m: 1808.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.239314307520935
-  lon: 19.93066796095015
-  x_1992: 152839.53
-  y_1992: 567723.91
+  input_srid: 4326
+  input_x: 19.93066796095015
+  input_y: 49.239314307520935
   elevation_m: 1814.340872
   elevation_datum: unknown
   elevation_source: source_record
@@ -67,10 +66,9 @@ measurements:
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-003
-  lat: 49.23930995267978
-  lon: 19.930685823312448
-  x_1992: 152839.06
-  y_1992: 567725.22
+  input_srid: 4326
+  input_x: 19.930685823312448
+  input_y: 49.23930995267978
   elevation_m: 1815.22998
   elevation_datum: unknown
   elevation_source: dem
@@ -111,11 +109,11 @@ measurements:
   created_by: maintenance:PBI-111
 best_measurement:
   mode: auto
-  measurement_id: m-003
   reason: Nowszy stan tego samego rekordu TPN; bez niezależnej weryfikacji terenowej.
   updated_at: '2026-10-23T11:59:37Z'
   updated_by: maintenance:PBI-111
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

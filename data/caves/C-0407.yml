@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1482
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MTZ-0031
+bibliography_status: unknown
 notes: 'PIG aliases: nad Murem, pod Murem
 
   PIG sector: D. Miętusia - Zach.

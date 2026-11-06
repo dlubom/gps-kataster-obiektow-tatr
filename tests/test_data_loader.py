@@ -6,7 +6,7 @@ import pytest
 from gps_kataster_obiektow_tatr.data_loader import (
     DataKind,
     YamlDataLoadError,
-    load_dataset,
+    load_yaml_dataset,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -14,7 +14,7 @@ FIXTURE_DIR = REPO_ROOT / "tests" / "fixtures"
 SCHEMA_FIXTURE_DIR = FIXTURE_DIR / "schema"
 
 
-def test_load_dataset_reads_fixture_records_and_keeps_paths(tmp_path: Path) -> None:
+def test_load_yaml_dataset_reads_fixture_records_and_keeps_paths(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
     object_path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
     cave_path = data_dir / "caves" / "C-0001.yml"
@@ -24,7 +24,7 @@ def test_load_dataset_reads_fixture_records_and_keeps_paths(tmp_path: Path) -> N
     _copy_fixture(FIXTURE_DIR / "valid-cave.yml", cave_path)
     _copy_fixture(SCHEMA_FIXTURE_DIR / "valid-relation.yml", relation_path)
 
-    dataset = load_dataset(data_dir)
+    dataset = load_yaml_dataset(data_dir)
 
     assert [record.kind for record in dataset.records()] == [
         DataKind.OBJECT,
@@ -59,7 +59,7 @@ name: Jaskinia testowa
     _write_yaml(object_path, object_yaml)
     _write_yaml(cave_path, cave_yaml)
 
-    dataset = load_dataset(data_dir)
+    dataset = load_yaml_dataset(data_dir)
     loaded_object = dataset.objects[0]
     loaded_cave = dataset.caves[0]
 
@@ -84,7 +84,7 @@ def test_yaml_error_includes_source_path(tmp_path: Path, make_data_dir) -> None:
     _write_yaml(bad_path, "id: [unterminated\n")
 
     with pytest.raises(YamlDataLoadError) as exc_info:
-        load_dataset(data_dir)
+        load_yaml_dataset(data_dir)
 
     message = str(exc_info.value)
     assert str(bad_path) in message
@@ -101,7 +101,7 @@ def test_rejects_yaml_key_collisions_before_normalization(
     before = path.read_bytes()
 
     with pytest.raises(YamlDataLoadError) as error:
-        load_dataset(data_dir)
+        load_yaml_dataset(data_dir)
 
     assert error.value.path == path
     message = str(error.value)
@@ -118,7 +118,7 @@ def test_rejects_duplicate_keys_in_every_record_kind(tmp_path, make_data_dir, di
     path = data_dir / directory / "bad.yml"
     path.write_text("id: first\nid: second\n", encoding="utf-8")
     with pytest.raises(YamlDataLoadError, match="duplicate key.*id"):
-        load_dataset(data_dir)
+        load_yaml_dataset(data_dir)
 
 
 def test_aliases_and_disjoint_merges_preserve_values_and_list_order(tmp_path, make_data_dir):
@@ -136,7 +136,7 @@ measurements:
     source: PIG
 """
     path.write_text(content, encoding="utf-8")
-    record = load_dataset(data_dir).objects[0]
+    record = load_yaml_dataset(data_dir).objects[0]
     assert record.raw_data == {
         "id": "KSW-0001",
         "measurements": [
@@ -156,7 +156,7 @@ def test_strict_loader_keeps_safe_yaml_errors(tmp_path, make_data_dir, content):
     path = data_dir / "objects" / "bad.yml"
     path.write_text(content, encoding="utf-8")
     with pytest.raises(YamlDataLoadError, match="invalid YAML") as error:
-        load_dataset(data_dir)
+        load_yaml_dataset(data_dir)
     assert error.value.path == path
 
 

@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1235
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- BYZ-0026
+bibliography_status: unknown
 notes: 'PIG aliases: Grota z Kośćmi, Dziura z Kośćmi
 
   PIG sector: D. Bystrej - Zach.

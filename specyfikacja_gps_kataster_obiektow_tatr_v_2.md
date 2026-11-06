@@ -1,10 +1,10 @@
 # gps-kataster-obiektow-tatr — specyfikacja
 
-> **Status**: _draft v2_ — wymagania, model domeny i architektura V1.
+> **Status**: _draft v3 / PBI-119_ — model domeny i migracja na PostgreSQL/PostGIS.
 > **Zakres**: domena + wymagania + model danych + propozycja stosu technologicznego.
 > **Odbiorcy**: zespół techniczny, speleolodzy, TPN, osoby weryfikujące dane terenowe.
 >
-> Propozycja stosu technologicznego jest rekomendacją. Specyfikacja jest pisana pod podejście **git-native**: źródłem prawdy są pliki YAML w repozytorium, a bazy i eksporty są artefaktami generowanymi.
+> Źródłem prawdy są pliki YAML w repozytorium. Tymczasowy PostgreSQL/PostGIS waliduje katalog i wylicza dane eksportów. [Schematy](docs/architecture/schema.md), [instrukcja operacyjna](docs/operations.md).
 
 ---
 
@@ -103,7 +103,6 @@ Zasada V1:
 
 | Pole | Typ | Uwagi |
 |---|---|---|
-| `schema_version` | int | W V1 zawsze `1`. |
 | `id` | string | Własne trwałe ID, format opisany w §5. |
 | `category` | enum | `jaskinia_otwor` \| `ponor` \| `wywierzysko` \| `sztolnia` \| `inne`. |
 | `name_local` | string, opt | Robocza nazwa lokalna obiektu terenowego. W V1 bez rozbudowanego modelu aliasów. |
@@ -114,7 +113,7 @@ Zasada V1:
 | `best_measurement` | object | Tryb i wskazanie najlepszego aktualnego pomiaru. |
 | `attachments` | lista `Attachment` | Pliki powiązane z obiektem. |
 | `notes` | string, opt | Uwagi ogólne. |
-| `created_at`, `created_by`, `updated_at`, `updated_by` | audyt | Audyt techniczny w YAML; historia zmian i tak jest w git. |
+| `created_at`, `created_by`, `updated_at`, `updated_by` | audyt | Audyt techniczny w tabelach; historia zmian i tak jest w git. |
 
 Przykład `id_assignment`:
 
@@ -141,24 +140,19 @@ Dopuszczalne wartości:
 
 | Pole | Typ | Uwagi |
 |---|---|---|
-| `schema_version` | int | W V1 zawsze `1`. |
 | `id` | string | Wewnętrzne ID, np. `C-0001`. |
 | `name` | string | Nazwa jaskini / pozycji katalogowej. |
 | `system_name` | string, opt | Nazwa systemu jaskiniowego, jeśli dotyczy. |
 | `external_refs` | lista `ExternalReference` | Numer inwentarzowy, PIG ID, PIG link, inne identyfikatory katalogowe. |
-| `object_ids` | lista FK → `Obiekt` | Otwory / obiekty terenowe powiązane z jaskinią. |
+| `object_ids` | lista wyliczana | Otwory wynikające z `Obiekt.cave_id`; brak drugiego zapisu źródłowego. |
 | `notes` | string, opt | Uwagi. |
 | `created_at`, `created_by`, `updated_at`, `updated_by` | audyt | |
 
 Jedna `Jaskinia` ma 1..N powiązanych `Obiektów`, jeśli znane są jej otwory. W V1 dopuszczamy utworzenie `Jaskinia` przed pełnym rozpoznaniem wszystkich otworów.
 
-Powiązanie jest symetryczne: obiekt z `cave_id` musi być wymieniony
-w `object_ids` tej jaskini; każdy wpis `object_ids` musi mieć zgodne
-`Obiekt.cave_id`. Obiekt nie może należeć do innej jaskini ani być wymieniony
-bez zgodnego `cave_id`. Błędy `OBJECT_CAVE_MEMBERSHIP_MISSING` (ścieżka
-obiektu) i `CAVE_OBJECT_MEMBERSHIP_MISMATCH` (ścieżka jaskini) wskazują ID
-obu stron i blokują review/SQLite/eksporty. Brak zadeklarowanego powiązania
-oraz pusta jaskinia pozostają legalne.
+Powiązanie zapisujemy raz, jako `Obiekt.cave_id`. Lista otworów jaskini jest
+wyliczana w widoku; nie można utrzymywać dwóch sprzecznych list. FK wymaga
+istniejącej jaskini. Brak przypisania obiektu oraz pusta jaskinia są legalne.
 
 ### 4.3 `Pomiar`
 
@@ -167,8 +161,9 @@ oraz pusta jaskinia pozostają legalne.
 | Pole | Typ | Uwagi |
 |---|---|---|
 | `id` | string | Lokalny identyfikator w obrębie obiektu, np. `m-001`. |
-| `lat`, `lon` | float, WGS84 deg | Obowiązkowe. WGS84 jest formatem podstawowym dla GPS i eksportów. |
-| `x_1992`, `y_1992` | float, EPSG:2180 m | Pochodne / cache przy zapisie. Walidowane względem WGS84. |
+| `input_geom` | Point z SRID | Jedyna geometria źródłowa: EPSG:4326 albo EPSG:2180. |
+| `lat`, `lon` | float, WGS84 deg | Wyliczane w widoku; dla źródła 4326 zachowują wartości źródłowe. |
+| `x_1992`, `y_1992` | float, EPSG:2180 m | Wyliczane: odpowiednio northing oraz easting. |
 | `elevation_m` | float, opt | Wysokość w metrach. |
 | `elevation_datum` | enum, opt | `unknown` \| `ellipsoidal` \| `PL-EVRF2007-NH` \| `Kronstadt86` \| `other`. |
 | `elevation_source` | enum, opt | `gps` \| `gnss` \| `map` \| `dem` \| `barometric` \| `source_record` \| `unknown` \| `other`. |
@@ -203,17 +198,19 @@ Zasady:
   lokalne ID (np. `m-001`) w różnych obiektach jest dozwolone. Kolizja daje
   błąd `DUPLICATE_MEASUREMENT_ID` z plikiem, ID obiektu i pomiaru, przed
   indeksowaniem pomiarów i rozstrzyganiem referencji best/załącznika.
-  Review, SQLite i eksporty blokują wtedy zapis. Nie wybieramy pierwszego
+  Review, baza i eksporty blokują wtedy zapis. Nie wybieramy pierwszego
   rekordu, nie usuwamy duplikatu ani nie zmieniamy jego ID automatycznie.
   Poprawna historia zachowuje wartości i kolejność. Bezpośredni selektor
   best odrzuca powtórzone ID przez `ValueError` przed wyborem pomiaru.
-- `lat` i `lon` są obowiązkowe w danych źródłowych YAML. Jeśli import daje tylko EPSG:2180, importer przelicza do WGS84.
-- `x_1992` i `y_1992` są cache’owane i walidowane.
+- Współrzędne źródłowe mają jawny EPSG:4326 lub 2180. PostGIS wylicza pozostałe reprezentacje; nie zapisujemy drugiego ręcznie edytowanego cache.
+- Migracja dotychczasowych danych zachowuje źródłowe `lon` i `lat` w 4326; różnicę względem starego cache kontroluje odbiór migracji.
 - Wszystkie pola liczbowe pomiaru (`lat`, `lon`, `x_1992`, `y_1992`,
   `elevation_m`, `horizontal_accuracy_m`, `vertical_accuracy_m`) muszą być
-  skończone. NaN i ±Infinity są błędem `MEASUREMENT_NON_FINITE` z plikiem,
-  ID obiektu/pomiaru i nazwą pola, przed geometrią, wyborem best i zapisem
-  review/SQLite/eksportów. Dotyczy to całej historii, także pomiarów
+  skończone. NaN i ±Infinity blokują zapis przez constraints lub adapter YAML
+  (`SQL_CATALOG_INVALID` z plikiem i diagnostyką). Importery dodatkowo
+  zwracają `PIG_MEASUREMENT_NON_FINITE` / `TPN_MEASUREMENT_NON_FINITE`
+  ze źródłowym polem. Geometria, wybór Best i eksport nie pracują na
+  niepoprawnym stanie. Dotyczy to całej historii, także pomiarów
   odrzuconych i niewybranych jako best. Opcjonalne `null` pozostaje legalne;
   reguła nie zmienia jednostek, zakresów ani znaczenia dokładności.
 - `horizontal_accuracy_m` dotyczy dokładności poziomej, a nie wysokości.
@@ -227,7 +224,7 @@ Każdy `Obiekt` ma wskazanie najlepszego aktualnego pomiaru.
 ```yaml
 best_measurement:
   mode: auto
-  measurement_id: m-001
+  manual_measurement_id: null
   reason: null
   updated_at: 2026-05-15T10:00:00Z
   updated_by: dl
@@ -236,17 +233,16 @@ best_measurement:
 | Pole | Typ | Uwagi |
 |---|---|---|
 | `mode` | `auto` \| `manual` | Czy wskazanie wynika z algorytmu, czy z decyzji operatora. |
-| `measurement_id` | FK → `Pomiar` | Wskazany najlepszy pomiar. |
+| `manual_measurement_id` | FK → `Pomiar`, opt | Wskazanie ręczne; NULL dla auto. |
 | `reason` | string, opt | Wymagane dla `manual`. Opcjonalne dla `auto`. |
 | `updated_at`, `updated_by` | audyt | Kto i kiedy ustawił wskazanie. |
 
 Zasady walidacji:
 
-- `measurement_id` musi wskazywać istniejący pomiar tego samego obiektu.
-- Jeśli `mode = manual`, `reason` jest wymagane.
-- Jeśli `mode = auto`, walidator może sprawdzić, czy `measurement_id` zgadza się z algorytmem default.
-- W V1 dopuszczamy ręczne wpisanie `measurement_id` także dla `auto`, aby YAML był jednoznaczny.
-- W buildzie SQLite można dodatkowo przeliczać pole `computed_best_measurement_id`.
+- W `manual` wskazanie musi dotyczyć pomiaru tego samego obiektu i mieć powód.
+- W `auto` nie zapisujemy ID wybranego pomiaru. Widok SQL wylicza go z historii.
+- Model odczytu i eksporty nadal pokazują ID wybranego oraz obliczanego Best.
+- Uzasadnienie i audyt polityki wyboru są zachowane także przy migracji.
 
 Domyślny algorytm `auto`:
 
@@ -254,10 +250,11 @@ Domyślny algorytm `auto`:
 2. Jeśli brak własnych zweryfikowanych — najlepszy nieodrzucony pomiar z TPN.
 3. Jeśli brak TPN — najlepszy nieodrzucony pomiar z własnych danych nieweryfikowanych.
 4. Jeśli brak powyższych — najlepszy nieodrzucony pomiar z PIG.
-5. Jeśli brak nieodrzuconych — najnowszy jakikolwiek, ale z ostrzeżeniem walidatora.
-6. W obrębie tego samego priorytetu źródła wybieramy najnowszy `observed_date` / `observed_at`.
-7. Przy remisie dat — niższe `horizontal_accuracy_m`.
-8. Przy dalszym remisie — stabilny porządek po `measurement.id`.
+5. Następnie nieodrzucony pomiar z pozostałych źródeł.
+6. Jeśli brak nieodrzuconych — najnowszy jakikolwiek, ale z ostrzeżeniem walidatora.
+7. W obrębie tego samego priorytetu wybieramy najnowszy czas: `observed_at`, a przy jego braku `observed_date` o północy UTC.
+8. Przy remisie czasu — niższe `horizontal_accuracy_m`, z brakiem wartości na końcu.
+9. Przy dalszym remisie — stabilny tekstowy porządek po `measurement.id`.
 
 Priorytet źródeł w trybie `auto`:
 
@@ -299,7 +296,6 @@ Typowe użycie:
 
 | Pole | Typ | Uwagi |
 |---|---|---|
-| `schema_version` | int | W V1 zawsze `1`. |
 | `id` | string | ID relacji, np. `R-0001`. |
 | `from_object_id`, `to_object_id` | FK → `Obiekt` | |
 | `relation_type` | enum | `sasiad` \| `czesc_systemu` \| `mozliwy_duplikat` \| `inne`. |
@@ -328,6 +324,26 @@ data/attachments/{PREFIX}/{PREFIX}-{NNNN}/...
 ```
 
 W V1 dopuszczamy trzymanie małych załączników w repo. Decyzja o Git LFS albo object storage zostaje na później.
+
+---
+
+### 4.8 Bibliografia
+
+`Publikacja` ma trwałe ID i niepusty pełny opis bibliograficzny. Autorzy,
+tytuł, rok, czasopismo/wydawca, numer, DOI/ISBN i URL mogą być dodatkowo
+zapisane oddzielnie. URL jest opcjonalny: opis ma pozwalać znaleźć źródło
+w literaturze również wtedy, gdy odnośnik nie działa.
+
+Przywołanie publikacji wskazuje jaskinię, konkretny obiekt lub konkretny
+pomiar oraz stronę/pozycję/fragment, znaczenie dowodu i ewentualną nazwę
+w źródle. Te trzy zakresy mają osobne tabele z FK. Jedna publikacja może
+mieć wiele przywołań. Nie dziedziczymy cytowania jaskini na wszystkie otwory.
+
+Jaskinia i obiekt deklarują `bibliography_status: known | unknown`.
+`unknown` jest dozwolone także przy utworzeniu nowego rekordu, np. z TPN;
+nie oznacza odrzucenia ani nieistnienia obiektu. `known` bez właściwego
+cytowania jest błędem. Referencje TPN/PIG zachowujemy niezależnie od tego
+statusu. Pochodzenie współrzędnych pozostaje na pomiarze.
 
 ---
 
@@ -419,7 +435,7 @@ Zasady:
 - dla nowego obiektu prefix powinien zgadzać się z pomiarem użytym do nadania ID,
 - dla istniejącego obiektu niezgodność prefixu z aktualnym najlepszym pomiarem jest ostrzeżeniem, nie twardym błędem,
 - jeśli prefix został nadany ręcznie albo świadomie pozostaje niezgodny z aktualną lokalizacją, wymagane jest `id_assignment.prefix_override_reason`,
-- build może generować flagę `prefix_location_mismatch` w SQLite i raportach walidacji.
+- build może generować flagę `prefix_location_mismatch` w bazie i raportach walidacji.
 
 ### 5.6 Przydzielanie kolejnego numeru
 
@@ -428,7 +444,18 @@ W V1 zakładamy mały zespół i praktycznie jedną osobę wprowadzającą dane.
 Zasada V1:
 
 - `scripts/assign_id.py lat lon` proponuje prefix i kolejny wolny numer,
-- numer jest wyliczany na podstawie istniejących plików w `data/objects/{PREFIX}/`,
+- numer to największy zajęty + 1, bez wypełniania luk; dla obiektów pliki
+  są odczytywane z `data/objects/{PREFIX}/`,
+- `assign_id` i staging PIG/TPN używają wspólnego mechanizmu `IdSequence`.
+  Adapter nazw rozpoznaje pliki `.yml`, `.yaml`, `.sql`, ignorując katalogi
+  udające plik ID; nie oznacza to obsługi SQL jako wejścia loadera katalogu,
+- każda partia staging rezerwuje przydzielone ID tylko w pamięci, w kolejności
+  wierszy źródła. TPN uwzględnia też istniejących kandydatów PIG. Przestrzenie
+  obiektów (osobno dla każdego prefixu), jaskiń `C-NNNN` i pomiarów `m-NNN`
+  są oddzielne. Pomiary numeruje się lokalnie dla obiektu, także przy kilku
+  dopasowaniach w tej samej partii. Szerokość licznika może rosnąć,
+- samo proponowanie/dry-run nie zapisuje YAML ani trwałych rezerwacji.
+  Wycofane ID nie mają jeszcze osobnego rejestru (issue #33),
 - konflikt ID jest wykrywany przez walidator jako błąd,
 - nie wprowadzamy osobnego pliku liczników ani bota nadającego ID.
 
@@ -447,9 +474,9 @@ System przechowuje współrzędne każdego pomiaru w dwóch układach:
 
 Zasady:
 
-- YAML przechowuje `lat`, `lon`, `x_1992`, `y_1992`.
-- WGS84 i PL-1992 muszą być spójne w granicach tolerancji walidatora.
-- Konwersja jest deterministyczna i wykonywana przez PyProj.
+- SQL przechowuje jedną geometrię źródłową z EPSG; widoki wyliczają WGS84 i PL-1992.
+- WGS84 i PL-1992 pochodzą z tego samego punktu źródłowego; nie zapisujemy dwóch niezależnie edytowanych pozycji.
+- W katalogu i eksportach przelicza je PostGIS. PyProj może być używany w adapterach wejściowych i porównaniu historycznych danych.
 - Shapefile referencyjne w `data/shapes/` są w EPSG:2180.
 - PL-1992 używa polskiej konwencji osi: `X = northing`, `Y = easting`.
 
@@ -463,7 +490,7 @@ Pomocnicze konwersje odrzucają nieskończone wejścia i wyniki przez
 `ValueError`; walidator/importer przekłada błąd projekcji na diagnostykę.
 Staging CSV/XLSX nie proponuje punktu z NaN/±Infinity, również w wysokości
 lub po przepełnieniu liczby (np. `1e999`). PIG zachowuje propozycję jaskini
-bez obiektu; TPN odrzuca wiersz. Wadliwy istniejący kandydat YAML/JSON
+bez obiektu; TPN odrzuca wiersz. Wadliwy istniejący kandydat katalogu albo staging JSON
 przerywa staging TPN z błędem przed dopasowaniem i zapisem raportu.
 
 ---
@@ -481,7 +508,7 @@ metadane JSON/XML, URL-e i przedział pobrania UTC. Licznik i komplet ID są
 sprawdzane przed i po pobraniu; każda partia musi zawierać dokładnie żądane ID.
 Gotowy plik jest publikowany atomowo bez nadpisania. Domyślny datowany zrzut
 trafia do ignorowanego `data/sources/tpn/api/` i nie jest commitowany.
-To odczyt źródła, bez importu, porównań, zmian YAML/`best` lub harmonogramu.
+To odczyt źródła, bez importu, porównań, zmian danych/`best` lub harmonogramu.
 [Kontrakt PBI-108](docs/asdlc/plans/PBI-108.md),
 [obsługa i ograniczenia](docs/operations.md#pobieranie-jaskiń-lejów-i-sztolni-z-api-tpn).
 
@@ -493,7 +520,7 @@ zamienia na opisy, nieznane pola/kody i null pozostają bez interpretacji.
 `simple-nmt.json` dodaje `wysokosc_gruntu_nmt_m` i `status_nmt`, odczytując
 dotychczasowy NMT w dokładnych punktach TPN dla wszystkich trzech warstw.
 Pochodzenie jest oddzielone do lokalnego `nmt-evidence.json`. Surowy zrzut,
-YAML i best pozostają bez zmian. Brak punktu/pokrycia daje null i jawny
+Dane katalogu i best pozostają bez zmian. Brak punktu/pokrycia daje null i jawny
 status; błąd usługi lub zmiana źródła blokują publikację pliku NMT.
 Kontrola źródła jest wspólna dla partii, wynik i dowód pozostają per punkt.
 Wszystkie wygenerowane pliki są lokalne i nie są commitowane.
@@ -628,8 +655,19 @@ Workflow:
 2. Normalizacja współrzędnych i pól.
 3. Próba dopasowania do istniejących `Jaskinia` przez `NR_INWENT`, PIG `ID`, nazwę.
 4. Próba dopasowania do istniejących `Obiekt` przez TPN `GLOBALID`, odległość, nazwę otworu.
-5. Wygenerowanie propozycji YAML.
+5. Wygenerowanie propozycji do review; zatwierdzony zapis jako YAML.
 6. Review w PR.
+
+Parsowanie źródeł współdzieli oczyszczanie tekstu i liczb dziesiętnych.
+Parser zachowuje NaN/Infinity; ich odrzucanie i diagnostyka pozostają
+w importerach/walidatorze. Profil CSV zachowuje surowe wartości i nagłówki,
+a tabela staging przycina wartości. Odczyt CSV używa UTF-8 z opcjonalnym BOM
+i separatora przecinkowego; braki i nadmiarowe komórki zachowują dotychczasowe
+znaczenie. Rok PIG oraz daty edycji/utworzenia TPN mają osobne reguły.
+Wspólne formatowanie komórek staging/review zachowuje escaping i puste pola.
+Domyślny czas generowania to UTC z dokładnością do sekundy; jawny czas ma
+pierwszeństwo. Dzień zastępczy dla brakującej daty źródła zachowuje dzień
+podanego timestampu, bez konwersji strefy; nie zastępuje znanej daty pomiaru.
 
 ### 8.2 Kandydaci na duplikat
 
@@ -664,7 +702,7 @@ Pełny model merge/split obiektów zostaje poza V1.
 
 Przed zastosowaniem decyzji review walidujemy kompletny istniejący zbiór
 obiektów, jaskiń i relacji. Decyzje pracują na kopii w pamięci; po całej
-partii `validate_dataset(...)` sprawdza pełny przyszły stan według obecnych
+partii `validate_proposal(...)` sprawdza pełny przyszły stan według obecnych
 reguł schematu i domeny. Błąd wejścia, payloadu lub dowolnej decyzji blokuje
 wszystkie finalne zapisy (`has_errors=true`, `written_paths=[]`), zachowując
 ścieżkę i kod reguły w diagnostyce. Dry-run wykonuje identyczną ocenę.
@@ -690,7 +728,7 @@ Zasady:
 - Nie kasujemy fizycznie pomiarów tylko dlatego, że są błędne.
 - Błędny pomiar dostaje `verification_status: odrzucony` i notatkę.
 - Każdy obiekt ma 1..N pomiarów.
-- Historia zmian YAML jest śledzona przez git.
+- Historia zmian YAML jest śledzona przez Git. CI porównuje pełny katalog z zaakceptowaną rewizją bazową; brak, usunięcie lub nadpisanie źródłowej pozycji albo wysokości starego pomiaru blokuje build. Zmiana notatki lub statusu jest dozwolona.
 - Review PR jest podstawowym mechanizmem kontroli jakości.
 
 ### 9.2 Weryfikacja pomiarów
@@ -713,302 +751,206 @@ Tryb `auto` jest domyślny i wystarcza dla większości obiektów. Tryb `manual`
 
 ## 10. Architektura: repo jako źródło prawdy
 
-Filozofia:
-
-> Dane źródłowe są w git jako YAML. Wszystko inne jest generowane.
-
-Konsekwencje:
-
-- brak backendu w V1,
-- brak osobnego systemu kont,
-- historia zmian = git log,
-- review = pull request,
-- walidacja = CI,
-- SQLite, GeoJSON, GPX, CSV i Shapefile są artefaktami buildu.
+Dane są rekordami YAML w Git, po jednym pliku na encję. Schemat SQL i dane odtwarzają
+bazę od zera; nie utrzymujemy serwera produkcyjnego ani sekwencji migracji
+ręcznie stosowanych do długowiecznej instancji. Edycja odbywa się przez PR.
 
 ### 10.1 Struktura repo
 
 ```text
-.
-├── config/
-│   └── prefixes.yml
-├── data/
-│   ├── shapes/
-│   │   ├── doliny.shp
-│   │   ├── granica_polski.shp
-│   │   ├── granica_slowacji.shp
-│   │   └── README.md
-│   ├── objects/
-│   │   └── {PREFIX}/
-│   │       └── {PREFIX}-{NNNN}.yml
-│   ├── caves/
-│   │   └── {CAVE-ID}.yml
-│   ├── attachments/
-│   │   └── {PREFIX}/
-│   │       └── {PREFIX}-{NNNN}/
-│   └── relations/
-│       └── {REL-ID}.yml
-├── schema/
-│   ├── object.schema.json
-│   ├── cave.schema.json
-│   ├── relation.schema.json
-│   └── CHANGELOG.md
-├── scripts/
-│   ├── assign_id.py
-│   ├── build_db.py
-│   ├── export_best_measurements.py
-│   ├── build_release_artifacts.py
-│   ├── validate.py
-│   └── importers/
-│       ├── import_tpn.py
-│       ├── import_pig.py
-│       └── apply_review.py
-├── build/
-│   ├── katalog.sqlite
-│   └── exports/
-├── tests/
-│   └── fixtures/
-├── .github/workflows/
-│   ├── validate.yml
-│   └── release.yml
-└── specyfikacja_gps_kataster_obiektow_tatr_v_2.md
+schema/catalog.sql        typy, constraints, tabele i widoki
+config/prefixes.yml        konfiguracja regionów
+ data/                    dane źródłowe
+ ├── objects/PREFIX/*.yml  obiekt i jego pełna historia
+ ├── caves/*.yml           jaskinie i referencje
+ ├── publications/*.yml    bibliografia
+ ├── relations/*.yml       relacje obiektów
+ ├── attachments/          załączniki
+ └── shapes/               niezmienione geometrie referencyjne
+scripts/                   walidacja, import i eksport
+build/                     wyłącznie wyniki generowane
 ```
 
-`build/` jest generowane i gitignored.
+Jawny znacznik formatu katalogu zapobiega potraktowaniu uszkodzonego albo
+niepełnego katalogu jako pustego legacy YAML. Kanoniczne źródło wymaga
+katalogów `objects`, `caves`, `relations` i `publications`, także gdy są puste.
+Brak lub zwykły plik zamiast katalogu daje `DataDirectoryError` z jego ścieżką
+(`DATA_DIRECTORY_INVALID` w walidatorze/CLI), przed otwarciem bazy i zapisem.
+Loader nie odtwarza braków. Wejście katalogu PostgreSQL sprawdza znacznik
+przed kontrolą układu katalogów.
 
-Wejście `data_dir` musi być istniejącym katalogiem zawierającym katalogi
-`objects`, `caves` i `relations`. Brak dowolnego z nich lub plik zamiast
-katalogu oznacza błąd wejścia (`DataDirectoryError` w API loadera),
-raportowany przez walidator jako `DATA_DIRECTORY_INVALID` i przez CLI
-niezerowym kodem wyjścia ze wskazaniem wadliwej ścieżki. Kontrola odbywa
-się przed utworzeniem lub nadpisaniem SQLite i eksportów; błędne wejście
-nie zmienia istniejących artefaktów. Pusty zbiór jest legalny wyłącznie
-po jawnym przygotowaniu wszystkich trzech katalogów, także przy pierwszym
-imporcie. Loader nie tworzy brakującej struktury automatycznie.
+Historyczny format legacy wymaga trzech pierwszych katalogów; brak
+`publications` oznacza pustą bibliografię, ale plik tej nazwy jest błędem.
+Kontrola zaakceptowanej rewizji Git zachowuje ten sam podział: odtwarza
+wyłącznie katalogi obecne w jej drzewie, również utrwalone plikami pomocniczymi.
+Nie uzupełnia niepełnego źródła kanonicznego ani nie pomija jego znacznika.
+Ścieżka katalogu w zaakceptowanym commicie musi być drzewem Git; blob w jej
+miejscu daje kontrolowane `HISTORY_BASELINE_UNAVAILABLE`.
 
-Rekordy YAML i decyzje review wymagają unikalnych kluczy w każdej mapie,
-przed normalizacją oraz po rozwinięciu merge keys (`<<`). Drugi klucz
-`measurements` nie może zastąpić historii, również przy identycznej wartości.
-Aliasy bez kolizji i merge map o rozłącznych kluczach są dozwolone;
-kolizja między mapami merge, jawne nadpisanie odziedziczonej wartości
-oraz powtórzony `<<` są błędem. Loader podaje plik, klucz i obie pozycje
-(linia/kolumna); publiczne błędy to `YamlDataLoadError` dla rekordów
-i `ReviewDecisionError` dla decyzji, a walidator używa `YAML_INVALID`.
-CLI zwraca kod 1, bez zapisu SQLite/eksportów lub finalnych danych review.
-Źródłowe bajty oraz wartości i kolejność list poprawnego YAML są zachowane.
+Loader czyta pliki YAML z kontrolą powtórzonych kluczy. Jeden adapter
+mapuje dane i obecność pól na parametry PostgreSQL. Ładowanie odbywa się
+w transakcji na ograniczonym koncie; schemat tworzy zaufany kod builda.
+Pozycja źródłowa to `input_srid`, `input_x` i `input_y` lub dotychczasowe
+`lon` i `lat` w EPSG:4326. Kolejność listy `measurements` wyznacza historię.
+Adapter sprawdza typy przed przekazaniem parametrów: bez automatycznej zamiany
+tekstu na liczbę, liczby na tekst, bool na liczbę lub zaokrąglania pól całkowitych.
+Referencje i publikacje wymagają poprawnego bezwzględnego URI bez sprawdzania
+dostępności sieciowej. W źródle nie ma pól wyliczanych: `object_ids`, cache
+współrzędnych i wybranego `measurement_id` w trybie auto. Loader zgłasza je
+jako błąd, a writer odfiltrowuje z modelu odczytu. Przy edycji zachowuje
+źródłowe EPSG i istniejący zapis 4326 (`lon`/`lat` albo `input_*`).
+Zapis zachowuje rozszerzenie pliku rekordu (`.yml` lub `.yaml`) oraz pliki
+pomocnicze w katalogu danych, także wewnątrz katalogów encji.
+`write_dataset` zwraca niezmienny `WriteResult`: `written_paths` obejmuje
+nowe lub zmienione bajty YAML, a `removed_paths` — usunięte rekordy.
+Ścieżki wskazują opublikowany katalog, w kolejności caves, objects, relations,
+publications i posortowane wewnątrz grup. Wynik jest wyliczany przed atomową
+podmianą i zwracany dopiero po jej sukcesie; błąd sprzątania starego drzewa
+nie cofa udanego zapisu. Review korzysta z `written_paths` bez skanowania
+YAML po zapisie, także dla rekordów zmienionych podczas adopcji legacy poza
+dirty ID. Marker, `.gitkeep` i assety nie są zmianami encji.
 
-### 10.2 Przykład obiektu YAML
+Kontrole mają odrębne granice: odczyt YAML nie zwraca projekcji PostgreSQL,
+walidacja propozycji legacy/staging sprawdza jej strukturę i deklaracje,
+a walidacja istniejącego katalogu używa jego połączenia bez ponownego ładowania.
+Projekcja z polami wyliczanymi nie jest kanonicznym wejściem YAML.
+Build i kanoniczne CLI współdzielą bramkę źródła, stanu SQL oraz rzeczywistej
+zaakceptowanej rewizji Git. Review sprawdza każdy odrębny stan raz i używa
+jego połączenia także do kontroli historii. Brak zmian nie wymaga drugiej
+bazy; zmieniona propozycja nadal przechodzi pełny preflight. Wszystkie własne
+konteksty baz muszą zostać zamknięte przed zapisem danych. Błąd sprzątania
+propozycji jest błędem walidacji, a wyjątek odbiorcy pozostaje jego wyjątkiem.
 
-```yaml
-schema_version: 1
-id: KSW-0001
-category: jaskinia_otwor
-name_local: "Jaskinia Mroźna — wejście na trasę turystyczną"
-cave_id: C-0001
+Wewnętrzne akcje review używają `SourceDataset`: pól źródłowych, a nie projekcji
+`Catalog.dataset()`. `source_dataset` jawnie usuwa sprawdzone deklaracje legacy
+i pola wyliczane. Wybrane rekordy staging przechodzą kontrolę struktury
+i członkostwa przed konwersją; redundantne współrzędne są sprawdzane na
+istniejącym połączeniu wejścia, bez dodatkowej bazy. Końcowy
+`validated_source_proposal` sprawdza kanoniczne pola źródłowe i SQL, bez
+ponownego JSON Schema v1 ani list `object_ids`. `validated_proposal` nadal
+obsługuje deklaracje legacy, a adapter Git zachowuje historyczne schematy.
+Buildery dumpa, Best i pełnego wydania stosują ten sam preflight także dla
+wejścia legacy. Każda podana para współrzędnych jest kompletna i zgodna
+z geometrią źródłową, również gdy zapisano `input_*`. Po kontroli schematu
+sprzeczna albo niepełna redundantna para daje `COORDINATE_MISMATCH`
+przed usunięciem deklaracji.
+Podane legacy/staging `best_measurement.measurement_id` w trybie auto
+musi istnieć w tym samym obiekcie (`BEST_MEASUREMENT_MISSING`). Poprawny
+historyczny cache może różnić się od aktualnego wyniku algorytmu auto.
+Kontrola dotyczy bieżących propozycji; nie rozszerza wymagań wobec już
+zaakceptowanych rewizji Git. Buildery legacy zachowują blokadę dowiązań
+plików YAML oraz limity wielkości pliku i całego katalogu przed parsowaniem.
+Dodanie/przeniesienie otworu przypisuje ordinal po największym numerze
+docelowej jaskini; ponowienie linku zachowuje numer, także niższy od maksimum.
+Akcje nadal aktualizują audyt i finalizują notatki staging.
 
-id_assignment:
-  method: auto
-  assigned_from_measurement_id: m-001
-  assigned_prefix: KSW
-  prefix_override_reason: null
+### 10.2 Edycja i historyczna zgodność
 
-external_refs:
-  - system: TPN
-    ref_type: source_globalid
-    external_id: "{71432220-CA17-4420-ACC8-394596EDF79F}"
-    scope: object
-    notes: "Rekord punktowy TPN dla konkretnego otworu."
+Plik obiektu zachowuje wszystkie jego pomiary, także stare i odrzucone.
+Zmiana pozycji lub wysokości wymaga dopisania pomiaru z nowym lokalnym ID.
+Dopisanie źródła, notatki lub zmiana statusu nie wymaga zmiany pozycji.
+Kopiowanie współrzędnych pochodnych do źródłowych podczas takiej edycji
+jest niedopuszczalne; natywne EPSG i wartości są zachowywane.
 
-measurements:
-  - id: m-001
-    lat: 49.2423
-    lon: 19.8145
-    x_1992: 558123.45
-    y_1992: 150456.78
-    elevation_m: 1240.0
-    elevation_datum: unknown
-    elevation_source: source_record
-    horizontal_accuracy_m: null
-    vertical_accuracy_m: null
-    source: TPN
-    source_ref: "TPN:{71432220-CA17-4420-ACC8-394596EDF79F}"
-    observed_date: 2022-05-25
-    source_date: 2022-05-25
-    method: source_record
-    device: null
-    tags: []
-    verification_status: nieweryfikowany
-    verified_by: null
-    verified_at: null
-    notes: "Import z rekordu punktowego TPN."
-    created_at: 2026-05-15T10:00:00Z
-    created_by: dl
+Ochrona historii odczytuje YAML z zaakceptowanej rewizji Git. Formaty
+staging i decyzji importowych używają JSON/YAML. Walidacja propozycji
+w pamięci korzysta z tego samego mapowania wartości do PostgreSQL.
 
-best_measurement:
-  mode: auto
-  measurement_id: m-001
-  reason: null
-  updated_at: 2026-05-15T10:00:00Z
-  updated_by: dl
-
-attachments: []
-notes: null
-created_at: 2026-05-15T10:00:00Z
-created_by: dl
-updated_at: 2026-05-15T10:00:00Z
-updated_by: dl
-```
-
-### 10.3 Przykład jaskini YAML
-
-```yaml
-schema_version: 1
-id: C-0001
-name: "Jaskinia Mroźna"
-system_name: null
-
-external_refs:
-  - system: NR_INWENT
-    ref_type: inventory_number
-    external_id: "T.D-08.07"
-    scope: cave
-    notes: "Numer inwentarzowy wspólny dla jaskini / pozycji katalogowej."
-
-  - system: PIG
-    ref_type: catalog_id
-    external_id: "1094"
-    url: "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094"
-    scope: cave
-    notes: "Rekord katalogowy PIG."
-
-object_ids:
-  - KSW-0001
-  - KSW-0002
-
-notes: null
-created_at: 2026-05-15T10:00:00Z
-created_by: dl
-updated_at: 2026-05-15T10:00:00Z
-updated_by: dl
-```
+[Diagramy ERD i przepływu](docs/architecture/schema.md) oraz
+[instrukcja pracy](docs/operations.md) uzupełniają wykonywalny schemat.
 
 ---
 
 ## 11. CI/CD
 
-### 11.1 `validate.yml`
+### 11.1 Walidacja
 
-Uruchamiany na PR i push.
+PR i push na main uruchamiają wymagane `Validate code and data`.
+Środowisko lokalne i CI używają tego samego przypiętego PostgreSQL/PostGIS
+oraz zależności z lockfile. Obowiązują formatowanie, lint, testy,
+odtworzenie katalogu i kontrola historii z rzeczywistej rewizji bazowej.
 
-Workflow CI używa tego samego toolingu co środowisko lokalne: `uv`, `ruff`, `pytest` i skrypty z repo.
+Wspólną instalację Python/uv/GDAL, konfigurację klientów serwisu PG18
+oraz zależności z `uv.lock` posiada lokalna akcja `setup-runtime`, używana
+przez validate, preview, release i mutation. Zdarzenia, uprawnienia,
+pełny checkout, serwisy, baseline i komendy kontroli pozostają jawne
+w workflow. Preview zachowuje wyłączony cache uv; Node jest instalowany
+wyłącznie dla testów publishera w validate/mutation. Zaufany publisher
+preview nie używa lokalnej akcji z head PR. Setup nie pomija żadnej kontroli.
 
-Kroki techniczne:
+Błędy blokujące obejmują:
 
-- instalacja zależności przez `uv sync`,
-- `ruff check .`,
-- `ruff format --check .`,
-- `pytest`,
-- testy mutacyjne dla krytycznych modułów, jeśli czas wykonania jest akceptowalny dla PR,
-- `scripts/validate.py`.
+- niedozwolony SQL, nieprawidłowe typy/formaty, NULL w obowiązkowym polu,
+- duplikaty ID i TPN GLOBALID, nieistniejące lub obce referencje,
+- obiekt bez pomiaru albo polityki Best, manual bez powodu,
+- `known` bibliografii bez cytowania odpowiedniego zakresu,
+- NaN/Infinity, niewłaściwy typ geometrii/EPSG/zakres współrzędnych,
+- pomiar poza granicami PL/SK i skonfigurowanymi regionami,
+- nieistniejący załącznik lub błędny URL,
+- usunięta/nadpisana pozycja historyczna oraz niedostępny baseline,
+- nieudane odtworzenie albo odczyt eksportu.
 
-Walidacje typu error:
+Ostrzeżenia zachowują istniejące znaczenie: nieznana dokładność/źródło,
+punkt poza dolinami, rozbieżny prefix, odległe pomiary, brak przypisanej
+jaskini, niewłaściwy poziom referencji PIG/NR_INWENT i odrzucony fallback.
+Jawne `unknown` bibliografii jest raportowane bez blokowania wpisu.
 
-- poprawność YAML,
-- zgodność z JSON Schema,
-- obecność `schema_version: 1`,
-- unikalność `Obiekt.id` globalnie,
-- unikalność `Pomiar.id` w obrębie obiektu (`DUPLICATE_MEASUREMENT_ID`),
-- unikalność pliku względem ID,
-- poprawny format ID,
-- `best_measurement.measurement_id` wskazuje istniejący pomiar,
-- `best_measurement.mode = manual` ma `reason`,
-- `cave_id` wskazuje istniejącą jaskinię,
-- `Jaskinia.object_ids` wskazują istniejące obiekty,
-- `Obiekt.cave_id` i `Jaskinia.object_ids` są symetryczne (reguły §4.2),
-- relacje wskazują istniejące obiekty,
-- `Attachment.measurement_id` wskazuje pomiar tego samego obiektu,
-- lokalny `Attachment.path` istnieje,
-- URL w `Attachment.path` ma poprawny format,
-- WGS84 ↔ PL-1992 są spójne w tolerancji,
-- punkt pomiaru mieści się w granicach Polski albo Słowacji według `data/shapes/granica_polski.shp` i `data/shapes/granica_slowacji.shp`,
-- brak duplikatów TPN `GLOBALID` w `Obiekt.external_refs`, chyba że jawnie dopuszczone w przyszłej regule.
+Timeout, wyjątek lub pominięta wymagana kontrola nie jest wynikiem poprawnym.
+Kod PR działa bez sekretów publikacji. Zaufany publisher nie wykonuje kodu PR.
 
-Walidacje typu warning:
+### 11.2 Build i podgląd PR
 
-- punkt pomiaru leży w Polsce albo Słowacji, ale nie trafia w żaden polygon doliny tatrzańskiej,
-- prefix istniejącego obiektu nie zgadza się z aktualnym best pomiarem,
-- brak `horizontal_accuracy_m`,
-- brak `source_ref`,
-- pomiar jest daleko od pozostałych pomiarów tego samego obiektu,
-- `category: jaskinia_otwor` bez `cave_id`,
-- `NR_INWENT` przypisany do `Obiekt.external_refs` zamiast `Jaskinia.external_refs`,
-- PIG `ID` przypisany do `Obiekt.external_refs` zamiast `Jaskinia.external_refs`,
-- `best_measurement.mode = auto`, ale wskazanie nie zgadza się z algorytmem default.
+Jedna zweryfikowana baza dostarcza Best i pełną historię do wszystkich
+formatów. `prepare_export_data` przygotowuje raz na build niezmienne Best,
+pełną historię, jej wybrane wiersze oraz wspólny czas generowania. Wiersz
+historii składa się z metadanych obiektu/jaskini i konkretnego pomiaru;
+braków nie uzupełnia pomiar Best. Excel zachowuje prezentację, a nazwy
+i typy wspólnych pól GeoPackage określa neutralny moduł `export_data`.
+Wyniki powstają w nowym katalogu roboczym; do odbiorcy trafia
+wyłącznie kompletny zestaw po restore i odczycie kontrolnym. Awaria nie
+zastępuje wcześniejszych poprawnych wyników. Tymczasowa baza jest usuwana
+również po błędzie. `build/` pozostaje ignorowany przez Git.
 
-### 11.2 Lokalny build artefaktów
+Builder, CLI i paczkowanie konsumują `ReleaseArtifactsResult.artifact_paths`:
+8 plików Best oraz 5 dodatkowych plików wydania, w stałej kolejności. Przed
+podmianą katalogu sprawdzany jest dokładny zestaw zwykłych plików, bez braków,
+nadmiaru, duplikatów, dowiązań i ścieżek poza katalogiem wynikowym. Opcjonalne
+`build_release_artifacts.py --artifact-list` zwraca po sukcesie 13 ścieżek
+rozdzielonych bajtem NUL na stdout. Workflow używa tej listy jako argumentów
+publikacji; nie utrzymuje drugiego spisu ani nie zbiera obcych plików wildcardem.
+Lista nie wchodzi do paczki. Domyślny tekst CLI oraz kody, kanały diagnostyki
+i rzeczywisty baseline historii pozostają zgodne. Samodzielne Best nadal
+odmawia zastąpienia pełnej paczki po walidacji wejścia i historii.
+Katalog wyjściowy nie może nakładać się na źródłowe dane (także przez
+dowiązanie), być repozytorium lub jego przodkiem ani leżeć w `.git`.
+Istniejący katalog może zawierać tylko zwykłe pliki należące do budowanego
+zestawu artefaktów. Obcy plik, podkatalog lub dowiązanie blokuje podmianę
+i zachowuje całą poprzednią zawartość. Dołączenie takich plików do paczki
+wymaga osobnej decyzji; eksport nie usuwa ich ani nie pakuje automatycznie.
 
-Artefakty danych buduje się deterministycznie lokalnie przez
-`scripts/build_release_artifacts.py`. Katalog `build/` pozostaje generowany i
-nie jest commitowany. Repo nie ma automatycznego workflow budującego artefakty
-po pushu na `main`.
+### 11.3 Wydanie
 
-Zadania:
-
-- rebuild `build/katalog.sqlite`,
-- eksport `best-measurements` do GeoJSON, CSV, GPX i Shapefile,
-- zapakowanie SQLite,
-- wygenerowanie `metadata.json`.
-
-### 11.3 `release.yml`
-
-Uruchamiany na tag `v*`.
-
-Zadania:
-
-- build pełnej bazy,
-- eksport najlepszych pomiarów,
-- zapakowanie SQLite,
-- wygenerowanie `metadata.json`,
-- opublikowanie GitHub Release.
+Workflow taga `v*` wykonuje tę samą walidację, build i odbiór, a następnie
+publikuje pliki. Samo otwarcie ani przejście draft PR nie tworzy wydania.
+Merge, tag i publikacja wymagają osobnego polecenia użytkownika.
 
 ---
 
-## 12. Build: SQLite + SpatiaLite
+## 12. Build: PostgreSQL/PostGIS i GeoPackage
 
-Wybór: SQLite + SpatiaLite.
+PostgreSQL/PostGIS przejmuje integralność, wybór auto Best i przeliczenia
+geometrii. [DDL](schema/catalog.sql) jest wykonywalnym modelem danych.
+Pełny snapshot jest eksportowany przez `pg_dump` w formacie custom.
+Odbiór odtwarza go w nowej bazie i porównuje zawartość oraz wynik Best.
 
-Powody:
+GeoPackage jest pochodnym plikiem do GIS z warstwami Best i pełnej historii
+pomiarów. Zawiera jawne CRS; wysokość i datum pozostają osobnymi atrybutami.
+Jest ponownie odczytywany i porównywany z tym samym stanem PostgreSQL.
+Pełny model relacyjny, w tym bibliografia, jest dostępny w dumpie.
 
-- jeden plik,
-- łatwa dystrybucja,
-- QGIS otwiera natywnie,
-- brak serwera DB,
-- indeksy przestrzenne,
-- możliwość użycia lokalnie i w CI,
-- dobre dopasowanie do modelu read-only.
-
-DB jest artefaktem. Nie jest źródłem prawdy.
-
-### 12.1 Tabele logiczne
-
-Minimalny schemat logiczny:
-
-- `objects`,
-- `caves`,
-- `measurements`,
-- `object_external_refs`,
-- `cave_external_refs`,
-- `attachments`,
-- `relations`,
-- `best_measurements`,
-- `validation_flags`.
-
-### 12.2 Geometrie
-
-- `measurements.geom_wgs84` — punkt EPSG:4326,
-- `measurements.geom_1992` — punkt EPSG:2180,
-- `objects.best_geom_wgs84` — geometria z najlepszego pomiaru,
-- `objects.best_geom_1992` — geometria z najlepszego pomiaru.
+Python pozostaje odpowiedzialny za pliki, lifecycle bazy, importy i zapis
+formatów konsumenckich. Walidacje, które dotyczą systemu plików lub źródła
+zewnętrznego, nie są zastępowane fikcyjnym constraints w bazie.
 
 ---
 
@@ -1060,20 +1002,21 @@ Każdy release zawiera:
 | `mietusia-sucha-woda.gpx` | GPX | Dodatkowy podzbiór: całe doliny od Miętusiej po Suchą Wodę; do 500 punktów. |
 | `pozostale-pl-sk.gpx` | GPX | Dodatkowy podzbiór: PL/SK poza granicami regionów dolin; do 500 punktów. |
 | `best-measurements.csv` | CSV | Oba układy współrzędnych. |
-| `katalog.xlsx` | Excel | Best: podstawowe pola wybranych punktów z CSV; Full: wszystkie pomiary z danymi obiektu z SQLite, także starsze/odrzucone, z oznaczeniem wyboru. Filtry, typowane liczby i daty, polskie nagłówki. |
+| `katalog.xlsx` | Excel | Best: podstawowe pola wybranych punktów z CSV; Full: wszystkie pomiary z danymi obiektu z PostgreSQL, także starsze/odrzucone, z oznaczeniem wyboru. Filtry, typowane liczby i daty, polskie nagłówki. |
 | `best-measurements.shp.zip` | ESRI Shapefile | EPSG:2180, QGIS / TPN. |
-| `katalog.sqlite.zip` | SQLite + SpatiaLite | Pełny snapshot. |
+| `katalog.dump` | PostgreSQL custom | Pełny snapshot relacyjny; wymagany PostgreSQL/PostGIS do odtworzenia. |
+| `katalog.gpkg` | GeoPackage | Best i pełna historia pomiarów do GIS. |
 | `metadata.json` | JSON | Liczby obiektów, pomiarów, jaskiń, data buildu, wersja schematu. |
 | `statistics.md`, `statistics.json` | Markdown, JSON | Automatyczne statystyki tej samej paczki: obiekty, pozycje katalogowe, historia pomiarów, rodzaje, źródła, weryfikacja i dostępność dokładności. Wersja wydania, commit źródeł i czas generowania. |
 
 Excel zachowuje daty dzienne od `1900-01-01` jako daty, a wcześniejsze
 jako tekst ISO `YYYY-MM-DD`, bez zmiany wartości źródłowej.
 
-Statystyki liczą punkty z wygenerowanego CSV, a pozycje katalogowe i całą
-historię z pakowanej bazy SQLite. Nie wybierają pomiarów ponownie.
-Tabela sposobu wyznaczenia pozycji jest niezależna od tabeli źródeł.
-Wybrane rekordy CSV łączymy z pomiarami SQLite po `object_id` i
-`measurement_id`; brak pasującego rekordu przerywa generowanie statystyk.
+Statystyki liczą te same wybrane wiersze, które trafiają do CSV, a pozycje
+katalogowe i historię z tego samego `ExportData`. Nie odczytują CSV, nie
+składają historii ani nie wybierają Best ponownie. Brak wskazanego pomiaru
+w historii blokuje przygotowanie danych eksportowych. Tabela sposobu
+wyznaczenia pozycji jest niezależna od tabeli źródeł.
 Zapisana `method` ma pierwszeństwo. Dla `ustalenie` oba tagi `lidar`
 i `gnss_anchor` oznaczają prezentację „LiDAR dowiązany GNSS”; dla
 `source_record` tag `survey_anchor` oznacza punkt dowiązania o nieznanej
@@ -1095,7 +1038,13 @@ Opis (`wpt/desc`) zawsze zawiera jawne `object <ID>`, ID wybranego pomiaru,
 
 Pełny `best-measurements.gpx` pozostaje bez limitu 500. Trzy dodatkowe pliki
 razem zawierają dokładnie te same punkty, każdy w jednej grupie. Przypisanie
-wynika z położenia wskazanego Best w obecnych polygonach, nie z trwałego ID.
+wynika z regionu wskazanego Best w `v_measurement_regions`: PostGIS stosuje
+`ST_Covers` do geometrii źródłowej i priorytet `boundaries.ordinal`, także
+na zewnętrznych granicach i granicach otworów w poligonach. `Catalog.dataset()`
+przenosi regiony osobno od rekordów YAML, a `ExportData` wybiera region manual
+albo auto Best. Build i standalone GPX nie uruchamiają resolvera Pythona.
+Region jest wewnętrzną daną sterującą; nie dodaje kolumn CSV, Full ani GeoPackage.
+Trwałe ID i propozycja auto nie zastępują regionu wskazanego manual Best.
 Wschód/zachód każdej doliny pozostają razem. Mapowanie grup opisuje
 `docs/release_artifacts.md`. Waypointy zachowują wszystkie pola pełnego GPX;
 nazwa zbioru w metadanych wskazuje grupę. Powstają także puste pliki grup.
@@ -1103,7 +1052,7 @@ Przekroczenie 500 lub nieznany region blokuje zapis eksportów przed ich
 nadpisaniem i zatrzymuje publikację; nie obcinamy punktów ani nie dzielimy
 dolin automatycznie. Ponowne grupowanie wymaga decyzji. `metadata.json`
 zachowuje dotychczasowy kontrakt. Wszystkie GPX są w buildzie, podglądzie PR
-i nowych wydaniach; dane YAML i wybór Best pozostają bez zmian.
+i nowych wydaniach; dane źródłowe i wybór Best pozostają bez zmian.
 
 Repo i eksporty są publiczne. Dane projektu, dokumentacja repozytorium oraz generowane eksporty są licencjonowane jako **Creative Commons Attribution 4.0 International (CC BY 4.0)**. Atrybucję źródeł zachowujemy przez referencje zapisane w YAML i eksportach.
 
@@ -1123,7 +1072,7 @@ W V1 nie budujemy:
 - edycji przez UI,
 - integracji z GitHub API.
 
-Podstawowym sposobem pracy jest repozytorium, pliki YAML, walidacja CI oraz generowane eksporty. Do przeglądania danych wystarczają QGIS, CSV, GeoJSON, GPX i SQLite.
+Podstawowym sposobem pracy jest repozytorium, pliki YAML, walidacja CI oraz generowane eksporty. Do przeglądania danych wystarczają QGIS, CSV, GeoJSON, GPX i GeoPackage.
 
 ---
 
@@ -1140,7 +1089,7 @@ Docelowy proces operacyjny:
 Nie przewidujemy w tym zakresie:
 
 - PWA do zbierania pomiarów,
-- generowania YAML w terenie,
+- generowania plików katalogu w terenie,
 - commitowania przez GitHub API,
 - automatycznej integracji z telefonem,
 - pluginu QGIS do edycji danych.
@@ -1195,10 +1144,10 @@ Zadania:
 
 Zadania:
 
-- czyta YAML,
-- buduje SQLite + SpatiaLite,
+- czyta YAML i schemat SQL,
+- buduje i weryfikuje PostgreSQL/PostGIS,
 - tworzy indeksy,
-- zapisuje `build/katalog.sqlite`.
+- zapisuje `katalog.dump` i weryfikuje jego odtworzenie.
 
 ### 16.4 `export.py --best`
 
@@ -1226,15 +1175,22 @@ Wersje zależności są utrwalane w lockfile, aby lokalne środowisko i CI dzia�
 
 ### 16.6 Testy
 
+Zwykłe testy builda, eksportów i podglądu podają bezpośrednio kanoniczny YAML
+do produkcyjnego API/CLI. Fabryki nie uruchamiają walidatora, SQL ani writera.
+Osobne repozytorium Git utrwala zaakceptowany fixture przed uszkodzeniem
+kandydata; jego SHA jest jawnym argumentem wejścia. Testy adaptera legacy
+i rzeczywistej migracji mają osobne scenariusze. Wzorce wartości i odczyty
+XLSX, GeoPackage, Shapefile oraz dumpa są niezależne od serializera eksportu.
+
 Wymagane testy V1:
 
-- testy jednostkowe dla parsowania YAML,
+- testy odczytu katalogu YAML oraz parsowania decyzji/staging,
 - testy JSON Schema,
 - testy konwersji WGS84 ↔ EPSG:2180,
 - testy point-in-polygon i przydzielania prefixu,
 - testy `best_measurement` w trybie `auto` i `manual`,
 - testy wykrywania błędów i warningów walidatora,
-- testy generowania SQLite na małych fixture’ach,
+- testy PostgreSQL/PostGIS oraz odtworzenia dumpa i GeoPackage na małych fixture’ach,
 - testy eksportów `best`.
 
 Fixture’y testowe powinny obejmować co najmniej:
@@ -1281,18 +1237,11 @@ Pole `verified_by` i `created_by` może używać krótkiego identyfikatora osoby
 
 ## 18. Wersjonowanie schematu
 
-Każdy plik YAML zawiera:
-
-```yaml
-schema_version: 1
-```
-
-Zasady:
-
-- V1 obsługuje tylko `schema_version: 1`,
-- zmiany niekompatybilne wymagają podbicia wersji schematu,
-- `schema/CHANGELOG.md` opisuje zmiany,
-- migracje danych będą dopisywane dopiero, gdy pojawi się `schema_version: 2`.
+Format `postgresql-yaml` ma wersję 2 i jawny znacznik w `data/`. Schemat wykonywalny
+jest w `schema/catalog.sql`, a zmiany opisuje `schema/CHANGELOG.md`.
+Reprezentacje legacy/staging wersji 1 służą wyłącznie odczytowi historycznej
+bazy oraz importom. Nie stanowią alternatywnego źródła bieżącego katalogu.
+Zmiana niekompatybilna wymaga jawnej migracji, testu historii i odtworzenia.
 
 ---
 
@@ -1322,55 +1271,12 @@ Do doprecyzowania przy nowych kategoriach źródeł:
 
 ---
 
-## 20. Etapy realizacji
+## 20. Zakres utrzymania
 
-### V0 — Scaffold
-
-- `SPECYFIKACJA.md`,
-- `config/prefixes.yml`,
-- `data/shapes/` z referencyjnymi polygonami,
-- wstępne pliki TPN/PIG do analizy.
-
-### V1 — MVP git-native
-
-Cel: pierwszy poprawny end-to-end flow od YAML do SQLite i eksportu.
-
-Zakres:
-
-- `git init` + push na GitHub,
-- JSON Schema dla `Obiekt`, `Jaskinia`, `Relacja`,
-- walidator lokalny i CI,
-- `scripts/assign_id.py`,
-- `scripts/build_db.py`,
-- pierwszy realny `Obiekt`,
-- pierwsza realna `Jaskinia`,
-- przykład wielu otworów jednej jaskini,
-- model referencji TPN/PIG zgodny z §4.5 i §7,
-- build SQLite po merge do `main`.
-
-### V2 — Release i regularna aktualizacja
-
-- `release.yml`,
-- eksport `best-measurements.*`,
-- GitHub Release,
-- ręczny proces aktualizacji przez PR i semver tag `vX.Y.Z`,
-- dokumentacja operacyjna: jak przygotować paczkę danych, jak dopisać pomiary, jak zrobić release.
-
-### Import początkowy — ad hoc
-
-Import TPN i PIG nie jest osobnym etapem produktu ani stałym mechanizmem.
-
-Zakładamy jednorazowe działania ad hoc w tej kolejności:
-
-1. **PIG jako pierwszy import** — buduje szkielet katalogowy: `Jaskinia`, `NR_INWENT`, PIG `ID`, linki, nazwy i wstępne pomiary o niskim priorytecie.
-2. **TPN jako drugi import** — dopasowuje rekordy punktowe do obiektów, dodaje TPN `GLOBALID` i przejmuje rolę aktualnego pomiaru tam, gdzie rekord TPN został dopasowany.
-3. Ręczne rozstrzygnięcie niejednoznaczności.
-4. Zapis wyniku jako normalne pliki `data/objects/` i `data/caves/`.
-5. Późniejsze zmiany prowadzone ręcznie przez YAML i PR.
-
-Nie planujemy stałego importera Geoportal ani cyklicznych importów masowych w aktualnym zakresie.
-
-Pomiary z PIG pozostają w historii, ale po dopasowaniu TPN nie powinny być domyślnie wskazywane jako `best_measurement`, chyba że operator ustawi ręczne `mode: manual` z powodem.
+Katalog jest aktualizowany ręcznie przez PR i wydawany przez tag semver.
+PIG i TPN są wejściami stagingu; po zatwierdzeniu decyzji powstają rekordy
+YAML. Pomiary PIG pozostają w historii po dodaniu TPN. Nie planujemy stałego
+importera Geoportal ani cyklicznych importów masowych.
 
 ---
 
@@ -1407,7 +1313,8 @@ Aktualne / planowane artefakty repo:
 - `SPECYFIKACJA.md` — ten dokument,
 - `config/prefixes.yml` — mapa polygonów na prefixy,
 - `data/shapes/` — shapefile referencyjne EPSG:2180,
-- `schema/*.schema.json` — walidacja YAML,
+- `schema/catalog.sql` — model katalogu i walidacja SQL,
+- `schema/*.schema.json` — wejścia staging i legacy,
 - `schema/CHANGELOG.md` — historia zmian schematu,
 - `data/objects/` — źródło prawdy dla obiektów terenowych,
 - `data/caves/` — źródło prawdy dla jaskiń / pozycji katalogowych,

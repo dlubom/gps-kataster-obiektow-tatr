@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import sys
 from collections.abc import Sequence
-from datetime import UTC, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -15,6 +14,7 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR  # noqa: E402
+from gps_kataster_obiektow_tatr.report_formatting import utc_timestamp  # noqa: E402
 from gps_kataster_obiektow_tatr.tpn_staging import (  # noqa: E402
     DEFAULT_PIG_STAGING_PATH,
     DEFAULT_TPN_SOURCE,
@@ -71,7 +71,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     """Run the TPN staging importer command line interface."""
 
     args = build_parser().parse_args(argv)
-    generated_at = args.generated_at or _utc_timestamp()
+    generated_at = args.generated_at or utc_timestamp()
     pig_staging_path = None if args.no_pig_staging else args.pig_staging
 
     try:
@@ -107,10 +107,6 @@ def _status_counts(report: object) -> dict[str, int]:
     for row in report.rows:
         counts[row.status] = counts.get(row.status, 0) + 1
     return counts
-
-
-def _utc_timestamp() -> str:
-    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 if __name__ == "__main__":

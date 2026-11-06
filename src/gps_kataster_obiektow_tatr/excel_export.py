@@ -2,17 +2,15 @@
 
 from __future__ import annotations
 
-import csv
-import json
-import sqlite3
-from contextlib import closing
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date, datetime
 from math import ceil
 from pathlib import Path
-from typing import Any
 
 from xlsxwriter import Workbook
+
+from gps_kataster_obiektow_tatr.export_data import ExportData, ExportRecord
 
 
 @dataclass(frozen=True)
@@ -89,18 +87,14 @@ FULL_COLUMNS = (
 
 
 def write_excel_export(
+    export_data: ExportData,
     *,
-    csv_path: Path,
-    sqlite_path: Path,
     output_path: Path,
-    generated_at: str,
     release_version: str | None,
     source_commit: str | None,
 ) -> Path:
     """Write one row per selected point in Best, one per preserved measurement in Full."""
-    with csv_path.open(encoding="utf-8", newline="") as stream:
-        selected = list(csv.DictReader(stream))
-    full = _full_records(sqlite_path, selected)
+    generated_at = export_data.generated_at
     temporary = output_path.with_name(output_path.name + ".tmp")
     try:
         with Workbook(temporary) as book:
@@ -114,8 +108,12 @@ def write_excel_export(
                 }
             )
             source = f"Paczka: {release_version or 'podgląd lokalny'}; wygenerowano {generated_at}"
-            _write_sheet(book, "Best", BEST_COLUMNS, selected, source)
-            _write_sheet(book, "Full", FULL_COLUMNS, full, source)
+            # Best historically consumed the flat CSV's 12-significant-digit numbers.
+            # Preserve that workbook contract while using the same in-memory rows.
+            _write_sheet(
+                book, "Best", BEST_COLUMNS, export_data.selected, source, csv_precision=True
+            )
+            _write_sheet(book, "Full", FULL_COLUMNS, export_data.history, source)
         temporary.replace(output_path)
     except Exception:
         temporary.unlink(missing_ok=True)
@@ -123,72 +121,14 @@ def write_excel_export(
     return output_path
 
 
-def _full_records(sqlite_path: Path, selected: list[dict[str, str]]) -> list[dict[str, Any]]:
-    best_by_id = {row["object_id"]: row for row in selected}
-    with closing(sqlite3.connect(f"{sqlite_path.resolve().as_uri()}?mode=ro", uri=True)) as db:
-        db.row_factory = sqlite3.Row
-        objects = {row["id"]: dict(row) for row in db.execute("SELECT * FROM objects ORDER BY id")}
-        caves = {row["id"]: dict(row) for row in db.execute("SELECT * FROM caves ORDER BY id")}
-        best = {
-            row["object_id"]: dict(row) for row in db.execute("SELECT * FROM best_measurements")
-        }
-        object_refs = _group_records(db, "object_external_refs", "object_id")
-        cave_refs = _group_records(db, "cave_external_refs", "cave_id")
-        attachments = _group_records(db, "attachments", "object_id")
-        relations: dict[str, list[dict[str, Any]]] = {}
-        for row in db.execute("SELECT * FROM relations ORDER BY id"):
-            for object_id in {row["from_object_id"], row["to_object_id"]}:
-                relations.setdefault(object_id, []).append(dict(row))
-        records = []
-        for measurement in db.execute("SELECT * FROM measurements ORDER BY object_id, id"):
-            object_id = measurement["object_id"]
-            obj = objects[object_id]
-            cave = caves.get(obj["cave_id"], {})
-            choice = best[object_id]
-            record = {
-                **best_by_id[object_id],
-                **obj,
-                **dict(measurement),
-                "object_id": object_id,
-                "measurement_id": measurement["id"],
-                "selected": "Tak" if measurement["id"] == choice["measurement_id"] else "Nie",
-                "cave_name": cave.get("name"),
-                "cave_system_name": cave.get("system_name"),
-                "measurement_notes": measurement["notes"],
-                "object_notes": obj["notes"],
-                "cave_notes": cave.get("notes"),
-                "object_external_refs": _json(object_refs.get(object_id, [])),
-                "cave_external_refs": _json(cave_refs.get(obj["cave_id"], [])),
-                "attachments": _json(attachments.get(object_id, [])),
-                "relations": _json(relations.get(object_id, [])),
-                "best_updated_at": choice["updated_at"],
-                "best_updated_by": choice["updated_by"],
-            }
-            for prefix, data, fields in (
-                ("object", obj, ("created_at", "created_by", "updated_at", "updated_by")),
-                ("measurement", measurement, ("created_at", "created_by")),
-            ):
-                record.update({f"{prefix}_{key}": data[key] for key in fields})
-            records.append(record)
-    return records
-
-
-def _group_records(db: sqlite3.Connection, table: str, owner: str) -> dict[str, list[dict]]:
-    grouped: dict[str, list[dict]] = {}
-    # Table/owner names are constants supplied by this module, never input data.
-    for row in db.execute(f"SELECT * FROM {table} ORDER BY {owner}, rowid"):
-        grouped.setdefault(row[owner], []).append(
-            {key: value for key, value in dict(row).items() if key not in (owner, "rowid")}
-        )
-    return grouped
-
-
-def _json(value: Any) -> str:
-    return json.dumps(value, ensure_ascii=False, sort_keys=True)
-
-
 def _write_sheet(
-    book: Workbook, name: str, columns: tuple[Column, ...], rows: list[dict], source: str
+    book: Workbook,
+    name: str,
+    columns: tuple[Column, ...],
+    rows: Sequence[ExportRecord],
+    source: str,
+    *,
+    csv_precision: bool = False,
 ) -> None:
     sheet = book.add_worksheet(name)
     sheet.hide_gridlines(2)
@@ -266,6 +206,8 @@ def _write_sheet(
                     # A date avoids XlsxWriter's time-only adjustment for 1900-01-01.
                     code = sheet.write_datetime(row_index, column_index, day, fmt)
             elif column.number_format:
+                if csv_precision and isinstance(value, float):
+                    value = float(f"{value:.12g}")
                 code = sheet.write_number(row_index, column_index, float(value), fmt)
             else:
                 code = sheet.write_string(row_index, column_index, str(value), fmt)

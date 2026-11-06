@@ -3,6 +3,7 @@ id: MTW-0033
 category: jaskinia_otwor
 name_local: Szczelina na Drodze Steckiego
 cave_id: C-0409
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24208433
-  lon: 19.90692727
-  x_1992: 153126.39
-  y_1992: 565992.65
+  input_srid: 4326
+  input_x: 19.90692727
+  input_y: 49.24208433
   elevation_m: 1480.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24208433394799
-  lon: 19.906927265078853
-  x_1992: 153126.39
-  y_1992: 565992.65
+  input_srid: 4326
+  input_x: 19.906927265078853
+  input_y: 49.24208433394799
   elevation_m: 1642.779896
   elevation_datum: unknown
   elevation_source: source_record
@@ -65,10 +64,9 @@ measurements:
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-003
-  lat: 49.24121577065699
-  lon: 19.90536621884487
-  x_1992: 153028.5
-  y_1992: 565880.22
+  input_srid: 4326
+  input_x: 19.90536621884487
+  input_y: 49.24121577065699
   elevation_m: 1480.540039
   elevation_datum: unknown
   elevation_source: dem
@@ -109,11 +107,11 @@ measurements:
   created_by: maintenance:PBI-111
 best_measurement:
   mode: auto
-  measurement_id: m-003
   reason: Nowszy stan tego samego rekordu TPN; bez niezależnej weryfikacji terenowej.
   updated_at: '2026-10-23T11:59:37Z'
   updated_by: maintenance:PBI-111
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

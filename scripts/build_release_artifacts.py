@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import subprocess
 import sys
 from collections.abc import Sequence
-from datetime import UTC, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -16,52 +16,39 @@ if str(SRC_DIR) not in sys.path:
 
 from gps_kataster_obiektow_tatr.best_measurements_export import (  # noqa: E402
     DEFAULT_EXPORT_DIR,
-    BestMeasurementsExportValidationError,
-    GpxGroupingError,
 )
-from gps_kataster_obiektow_tatr.build_db import (  # noqa: E402
-    DEFAULT_SQLITE_PATH,
-    BuildDatabaseValidationError,
-)
-from gps_kataster_obiektow_tatr.data_loader import (  # noqa: E402
-    DEFAULT_DATA_DIR,
-    DataDirectoryError,
+from gps_kataster_obiektow_tatr.catalog_cli import (  # noqa: E402
+    add_catalog_arguments,
+    add_generated_at_argument,
+    print_error,
+    print_issues,
 )
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts  # noqa: E402
-from gps_kataster_obiektow_tatr.validator import format_issue  # noqa: E402
+from gps_kataster_obiektow_tatr.report_formatting import utc_timestamp  # noqa: E402
+from gps_kataster_obiektow_tatr.validator import CatalogValidationError  # noqa: E402
 
 
 def build_parser() -> argparse.ArgumentParser:
     """Build the CLI argument parser."""
 
     parser = argparse.ArgumentParser(
-        description="Build SQLite, release exports, metadata and zipped SQLite artifacts."
+        description="Build verified PostgreSQL dump, GeoPackage and consumer release exports."
     )
-    parser.add_argument(
-        "--data-dir",
-        type=Path,
-        default=DEFAULT_DATA_DIR,
-        help="Data root directory. Defaults to data/.",
-    )
-    parser.add_argument(
-        "--sqlite-output",
-        type=Path,
-        default=DEFAULT_SQLITE_PATH,
-        help="SQLite output path. Defaults to build/katalog.sqlite.",
-    )
+    add_catalog_arguments(parser)
     parser.add_argument(
         "--output-dir",
         type=Path,
         default=DEFAULT_EXPORT_DIR,
         help="Release artifact output directory. Defaults to build/exports/.",
     )
-    parser.add_argument(
-        "--generated-at",
-        default=None,
-        help="Override generated timestamp, mainly for deterministic tests.",
-    )
+    add_generated_at_argument(parser)
     parser.add_argument("--release-version", help="Release tag; omitted for a local preview.")
     parser.add_argument("--source-commit", help="Exact source commit recorded in statistics.")
+    parser.add_argument(
+        "--artifact-list",
+        action="store_true",
+        help="Write only the built artifact paths, NUL-separated, to stdout.",
+    )
     return parser
 
 
@@ -69,24 +56,27 @@ def main(argv: Sequence[str] | None = None) -> int:
     """Run the release artifact build command line interface."""
 
     args = build_parser().parse_args(argv)
-    generated_at = args.generated_at or _utc_timestamp()
+    generated_at = args.generated_at or utc_timestamp()
 
     try:
         result = build_release_artifacts(
             data_dir=args.data_dir,
-            sqlite_path=args.sqlite_output,
+            base_ref=args.base_ref,
+            history_repo=args.history_repo,
             output_dir=args.output_dir,
             generated_at=generated_at,
             release_version=args.release_version,
             source_commit=args.source_commit,
         )
-    except (DataDirectoryError, GpxGroupingError) as exc:
-        print(f"error: {exc}", file=sys.stderr)
+    except CatalogValidationError as exc:
+        print_issues(exc.issues)
         return 1
-    except (BuildDatabaseValidationError, BestMeasurementsExportValidationError) as exc:
-        for issue in exc.issues:
-            print(format_issue(issue))
-        return 1
+    except (ValueError, OSError, subprocess.SubprocessError) as exc:
+        return print_error(exc)
+
+    if args.artifact_list:
+        sys.stdout.buffer.write(b"".join(bytes(p) + b"\0" for p in result.artifact_paths))
+        return 0
 
     for artifact_path in result.artifact_paths:
         print(f"wrote: {artifact_path}")
@@ -100,10 +90,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         f"{metadata['validation_warnings']} validation warnings"
     )
     return 0
-
-
-def _utc_timestamp() -> str:
-    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ id: BYZ-0037
 category: jaskinia_otwor
 name_local: Szczelina pod Głazem
 cave_id: C-0809
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.25094601
-  lon: 19.93925817
-  x_1992: 154139.94
-  y_1992: 568332.95
+  input_srid: 4326
+  input_x: 19.93925817
+  input_y: 49.25094601
   elevation_m: 1785.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.25186780914214
-  lon: 19.939110434943444
-  x_1992: 154242.25
-  y_1992: 568320.93
+  input_srid: 4326
+  input_x: 19.939110434943444
+  input_y: 49.25186780914214
   elevation_m: 1778.904329
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

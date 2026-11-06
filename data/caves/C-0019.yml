@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1097
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- CHW-0001
+bibliography_status: unknown
 notes: 'PIG aliases: Schronisko IV
 
   PIG sector: D. Chochołowska - Wsch.

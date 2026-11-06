@@ -3,6 +3,7 @@ id: KSZ-0062
 category: jaskinia_otwor
 name_local: Sokole Okno
 cave_id: C-0552
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.23912177
-  lon: 19.86089235
-  x_1992: 152758.0
-  y_1992: 562646.7
+  input_srid: 4326
+  input_x: 19.86089235
+  input_y: 49.23912177
   elevation_m: 1200.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.23935134821339
-  lon: 19.86158770863861
-  x_1992: 152784.09
-  y_1992: 562697.01
+  input_srid: 4326
+  input_x: 19.86158770863861
+  input_y: 49.23935134821339
   elevation_m: 1193.573326
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

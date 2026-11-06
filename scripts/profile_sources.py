@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import sys
 from collections.abc import Sequence
-from datetime import UTC, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -14,6 +13,7 @@ SRC_DIR = REPO_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
+from gps_kataster_obiektow_tatr.report_formatting import utc_timestamp  # noqa: E402
 from gps_kataster_obiektow_tatr.source_profile import (  # noqa: E402
     profile_sources,
     write_report_files,
@@ -60,7 +60,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     """Run the source profiler command line interface."""
 
     args = build_parser().parse_args(argv)
-    generated_at = args.generated_at or _utc_timestamp()
+    generated_at = args.generated_at or utc_timestamp()
 
     report = profile_sources(pig_csv=args.pig_csv, tpn_csv=args.tpn_csv)
     json_path, markdown_path = write_report_files(
@@ -79,10 +79,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
 
     return 0
-
-
-def _utc_timestamp() -> str:
-    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 if __name__ == "__main__":

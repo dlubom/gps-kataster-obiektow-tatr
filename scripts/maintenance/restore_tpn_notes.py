@@ -7,10 +7,12 @@ import argparse
 import csv
 import io
 import json
+import os
 import sys
+import tempfile
 from collections import Counter, defaultdict
 from copy import deepcopy
-from datetime import UTC, datetime
+from dataclasses import replace
 from hashlib import sha256
 from pathlib import Path
 
@@ -20,7 +22,12 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT / "src") not in sys.path:
     sys.path.insert(0, str(REPO_ROOT / "src"))
 
-from gps_kataster_obiektow_tatr.data_loader import load_dataset  # noqa: E402
+from gps_kataster_obiektow_tatr.data_loader import (  # noqa: E402
+    is_canonical_source,
+    load_yaml_dataset,
+)
+from gps_kataster_obiektow_tatr.postgres import read_catalog_projection  # noqa: E402
+from gps_kataster_obiektow_tatr.report_formatting import utc_timestamp  # noqa: E402
 from gps_kataster_obiektow_tatr.tpn_notes import (  # noqa: E402
     CONTEXT_FIELDS,
     append_tpn_context,
@@ -29,7 +36,16 @@ from gps_kataster_obiektow_tatr.tpn_notes import (  # noqa: E402
 AUTHOR = "maintenance:PBI-082"
 
 
-def restore_notes(*, source: Path, data_dir: Path, report: Path, apply: bool, generated_at: str):
+def restore_notes(
+    *,
+    source: Path,
+    data_dir: Path,
+    report: Path,
+    apply: bool,
+    generated_at: str,
+    base_ref: str | None = None,
+    history_repo: Path = REPO_ROOT,
+):
     """Write a reviewable manifest before applying only unambiguous note changes."""
 
     if report.resolve() == source.resolve() or report.resolve().is_relative_to(data_dir.resolve()):
@@ -43,7 +59,11 @@ def restore_notes(*, source: Path, data_dir: Path, report: Path, apply: bool, ge
     if any(None in row or any(v is None for v in row.values()) for row in rows):
         raise ValueError("CSV contains a row with missing or extra columns.")
     counts = Counter(row["GLOBALID"].strip() for row in rows)
-    dataset = load_dataset(data_dir)
+    dataset = (
+        read_catalog_projection(data_dir)
+        if is_canonical_source(data_dir)
+        else load_yaml_dataset(data_dir)
+    )
     owners = defaultdict(list)
     measurements = defaultdict(list)
     object_ids = Counter(
@@ -133,30 +153,70 @@ def restore_notes(*, source: Path, data_dir: Path, report: Path, apply: bool, ge
                 "reason": "Restore labelled TPN context at its uniquely identified measurement.",
             }
         )
-    # Serialize and check every input before any final write. No I/O rollback is promised.
-    payloads = {
-        p: yaml.safe_dump(obj, allow_unicode=True, sort_keys=False) for p, obj in updated.items()
-    }
+    prospective = replace(
+        dataset,
+        objects=tuple(
+            replace(
+                rec,
+                data=updated.get(rec.path, rec.data),
+                raw_data=updated.get(rec.path, rec.raw_data),
+            )
+            for rec in dataset.objects
+        ),
+    )
+    from gps_kataster_obiektow_tatr.catalog_records import write_dataset
+    from gps_kataster_obiektow_tatr.history import check_history, compare_history
+    from gps_kataster_obiektow_tatr.validator import format_issue, has_errors, validate_proposal
+
+    validation = validate_proposal(prospective, data_dir=data_dir)
+    if not has_errors(validation):
+        validation = (*validation, *compare_history(dataset, prospective))
+    if base_ref is not None and not has_errors(validation):
+        validation = (*validation, *check_history(base_ref, prospective, repo_root=history_repo))
+    issues.extend({"reason": format_issue(i)} for i in validation if i.severity == "error")
     if source.read_bytes() != source_bytes or any(
         p.read_bytes() != b for p, b in before_bytes.items()
     ):
         raise ValueError("Input changed during restoration; no final writes attempted.")
     result = {
-        "mode": "apply" if apply else "dry-run",
+        "mode": "blocked" if apply and issues else "pending" if apply else "dry-run",
         "generated_at": generated_at,
         "source_path": str(source),
         "source_sha256": sha256(source_bytes).hexdigest(),
         "source_rows": len(rows),
-        "changed_files": len(payloads),
+        "changed_files": len(updated),
         "missing_context_fields": {field: missing[field] for field in CONTEXT_FIELDS},
         "changes": changes,
         "issues": issues,
     }
     report.parent.mkdir(parents=True, exist_ok=True)
-    report.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    if apply:
-        for path, payload in payloads.items():
-            path.write_text(payload, encoding="utf-8")
+
+    def persist_report():
+        # Readers keep a complete pending/failed manifest until success is durable.
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=report.parent, delete=False
+        ) as stream:
+            temporary = Path(stream.name)
+            try:
+                stream.write(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
+                stream.flush()
+                os.fsync(stream.fileno())
+                os.replace(temporary, report)
+            finally:
+                temporary.unlink(missing_ok=True)
+
+    persist_report()
+    if apply and not issues:
+        try:
+            if updated:
+                write_dataset(prospective, data_dir, changed={("object", p.stem) for p in updated})
+        except Exception as exc:
+            result["mode"] = "failed"
+            result["issues"].append({"reason": f"Catalogue write failed: {exc}"})
+            persist_report()
+            raise
+        result["mode"] = "apply"
+        persist_report()
     return result
 
 
@@ -169,10 +229,19 @@ def main(argv=None):
         "--apply", action="store_true", help="Apply the manifest; default is dry-run."
     )
     parser.add_argument("--generated-at", help="Override audit timestamp for reproducible runs.")
-    args = parser.parse_args(argv)
-    timestamp = args.generated_at or datetime.now(UTC).replace(microsecond=0).isoformat().replace(
-        "+00:00", "Z"
+    parser.add_argument(
+        "--history-repo",
+        type=Path,
+        default=REPO_ROOT,
+        help="Git repository containing the accepted baseline.",
     )
+    parser.add_argument(
+        "--base-ref",
+        default="origin/main",
+        help="Accepted Git baseline for immutable source history.",
+    )
+    args = parser.parse_args(argv)
+    timestamp = args.generated_at or utc_timestamp()
     try:
         result = restore_notes(
             source=args.source,
@@ -180,6 +249,8 @@ def main(argv=None):
             report=args.report,
             apply=args.apply,
             generated_at=timestamp,
+            base_ref=args.base_ref,
+            history_repo=args.history_repo,
         )
     except (OSError, ValueError, yaml.YAMLError) as exc:
         print(f"error: {exc}", file=sys.stderr)
@@ -189,7 +260,7 @@ def main(argv=None):
         f"{result['changed_files']} files, {len(result['issues'])} unresolved; "
         f"report: {args.report}"
     )
-    return 0
+    return 1 if args.apply and result["issues"] else 0
 
 
 if __name__ == "__main__":

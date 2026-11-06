@@ -20,9 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1095
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSW-0090
-- KSW-0257
+bibliography_status: unknown
 notes: 'PIG aliases: Duda, Jaskinia Biała, Biała nad Łukami
 
   PIG sector: D. Kościeliska - Wsch.

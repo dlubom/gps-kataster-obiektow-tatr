@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1274
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- BYW-0007
+bibliography_status: unknown
 notes: 'PIG sector: D. Bystrej - Wsch.
 
   PIG morphometry: length_m=1200, depth_m=58,2, denivelation_m=59

@@ -137,8 +137,6 @@ Na tym etapie nie zmieniono kodu i nie wykonano jego testów ani nowego
 zrzutu. Projekt wymaga akceptacji oraz rozstrzygnięcia Bystrej przed
 przygotowaniem planu wykonania.
 
-Sprawdzenie dokumentacji projektu: `git diff --check`, odczyt wszystkich
-70 lokalnych odnośników w trzech zmienianych dokumentach oraz
-`uv run --frozen --no-sync --offline pytest tests/test_operational_docs.py
-tests/test_release_docs.py -q` — 5 istniejących testów dokumentacji przeszło.
-Nie są to testy przyszłej funkcji ani dowód odbioru PDF PIG.
+Historyczna kontrola dokumentacji obejmowała `git diff --check`, odczyt
+70 lokalnych odnośników i 5 ówczesnych testów dokumentacji. Nie są to testy
+przyszłej funkcji ani dowód odbioru PDF PIG.

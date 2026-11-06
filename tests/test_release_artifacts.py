@@ -1,44 +1,59 @@
-import csv
 import json
 import subprocess
 import sys
-import zipfile
-from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
-from typing import Any
 
 import pytest
-import yaml
+from export_test_support import (
+    GENERATED_AT,
+    KSW_LAT,
+    REPO_ROOT,
+    accept_source,
+    cli_args,
+    initialize_source,
+)
+from export_test_support import (
+    excel_records as _excel_records,
+)
+from export_test_support import (
+    valid_cave as _valid_cave,
+)
+from export_test_support import (
+    valid_object as _valid_object,
+)
+from export_test_support import (
+    write_sample_data as _write_sample_data,
+)
+from export_test_support import (
+    write_yaml as _write_yaml,
+)
 from openpyxl import load_workbook
 
-from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
 from gps_kataster_obiektow_tatr.excel_export import write_excel_export
+from gps_kataster_obiektow_tatr.export_data import prepare_export_data
+from gps_kataster_obiektow_tatr.postgres import read_catalog_projection
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
-from gps_kataster_obiektow_tatr.release_statistics import write_release_statistics
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
 BUILD_RELEASE_SCRIPT = REPO_ROOT / "scripts" / "build_release_artifacts.py"
-KSW_LAT = 49.23459299
-KSW_LON = 19.87589498
-GENERATED_AT = "2026-05-16T12:00:00Z"
 
 
 def test_build_release_artifacts_writes_full_expected_set(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
-    sqlite_path = tmp_path / "build" / "katalog.sqlite"
     output_dir = tmp_path / "build" / "exports"
     _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
 
     result = build_release_artifacts(
+        **baseline,
         data_dir=data_dir,
-        sqlite_path=sqlite_path,
         output_dir=output_dir,
         generated_at=GENERATED_AT,
     )
 
     assert result.artifact_paths == (
-        sqlite_path,
+        output_dir / "katalog.dump",
+        output_dir / "katalog.gpkg",
         output_dir / "best-measurements.geojson",
         output_dir / "best-measurements.csv",
         output_dir / "best-measurements.gpx",
@@ -46,7 +61,6 @@ def test_build_release_artifacts_writes_full_expected_set(tmp_path: Path) -> Non
         output_dir / "mietusia-sucha-woda.gpx",
         output_dir / "pozostale-pl-sk.gpx",
         output_dir / "best-measurements.shp.zip",
-        output_dir / "katalog.sqlite.zip",
         output_dir / "metadata.json",
         output_dir / "statistics.json",
         output_dir / "statistics.md",
@@ -55,15 +69,13 @@ def test_build_release_artifacts_writes_full_expected_set(tmp_path: Path) -> Non
     for artifact_path in result.artifact_paths:
         assert artifact_path.exists()
 
-    with zipfile.ZipFile(output_dir / "katalog.sqlite.zip") as archive:
-        assert archive.namelist() == ["katalog.sqlite"]
-
+    assert (output_dir / "katalog.dump").read_bytes().startswith(b"PGDMP")
     assert result.export_result.metadata["counts"] == {
         "objects": 1,
         "caves": 1,
         "relations": 0,
         "measurements": 2,
-        "validation_warnings": 0,
+        "validation_warnings": 2,
         "validation_errors": 0,
     }
     statistics = json.loads((output_dir / "statistics.json").read_text())
@@ -72,9 +84,10 @@ def test_build_release_artifacts_writes_full_expected_set(tmp_path: Path) -> Non
 
 def test_build_release_artifacts_cli_is_local_dry_run(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
-    sqlite_path = tmp_path / "build" / "katalog.sqlite"
+    dump_path = tmp_path / "build" / "katalog.dump"
     output_dir = tmp_path / "build" / "exports"
     _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
 
     result = subprocess.run(
         [
@@ -82,8 +95,6 @@ def test_build_release_artifacts_cli_is_local_dry_run(tmp_path: Path) -> None:
             str(BUILD_RELEASE_SCRIPT),
             "--data-dir",
             str(data_dir),
-            "--sqlite-output",
-            str(sqlite_path),
             "--output-dir",
             str(output_dir),
             "--generated-at",
@@ -92,6 +103,7 @@ def test_build_release_artifacts_cli_is_local_dry_run(tmp_path: Path) -> None:
             "v1.2.3",
             "--source-commit",
             "a" * 40,
+            *cli_args(baseline),
         ],
         cwd=REPO_ROOT,
         check=False,
@@ -108,14 +120,15 @@ def test_build_release_artifacts_cli_is_local_dry_run(tmp_path: Path) -> None:
         "mietusia-sucha-woda.gpx",
         "pozostale-pl-sk.gpx",
         "best-measurements.shp.zip",
-        "katalog.sqlite.zip",
+        "katalog.dump",
+        "katalog.gpkg",
         "metadata.json",
         "statistics.json",
         "statistics.md",
         "katalog.xlsx",
     ):
         assert (output_dir / filename).exists()
-    assert sqlite_path.exists()
+    assert not dump_path.exists()
     assert "release artifacts: 1 objects, 1 caves, 2 measurements" in result.stdout
     statistics = json.loads((output_dir / "statistics.json").read_text())
     assert statistics["release"] == {"version": "v1.2.3", "source_commit": "a" * 40}
@@ -125,6 +138,7 @@ def test_build_release_artifacts_cli_is_local_dry_run(tmp_path: Path) -> None:
 def test_statistics_count_selected_points_separately_from_history(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
     _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
     first = _valid_object()
     first["best_measurement"].update(
         mode="manual", measurement_id="m-001", reason="Confirmed older measurement"
@@ -139,17 +153,17 @@ def test_statistics_count_selected_points_separately_from_history(tmp_path: Path
     _write_yaml(data_dir / "objects/KSW/KSW-0001.yml", first)
     second = _valid_object()
     second["id"] = "KSW-0002"
+    second["membership_ordinal"] = 2
     second["external_refs"] = []
     second["category"] = "sztolnia"
     second["measurements"][1]["horizontal_accuracy_m"] = None
     _write_yaml(data_dir / "objects/KSW/KSW-0002.yml", second)
     cave = _valid_cave()
-    cave["object_ids"].append("KSW-0002")
     _write_yaml(data_dir / "caves/C-0001.yml", cave)
 
     result = build_release_artifacts(
+        **baseline,
         data_dir=data_dir,
-        sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",
         generated_at=GENERATED_AT,
     )
@@ -185,8 +199,8 @@ def test_statistics_use_packaged_method_and_tags_for_each_selected_measurement(
 ) -> None:
     data_dir = tmp_path / "data"
     _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
     cave = _valid_cave()
-    cave["object_ids"] = []
     cases = [
         ("ustalenie", ["lidar", "gnss_anchor"]),
         ("source_record", ["survey_anchor"]),
@@ -199,18 +213,18 @@ def test_statistics_use_packaged_method_and_tags_for_each_selected_measurement(
     for number, (method, tags) in enumerate(cases, start=1):
         obj = _valid_object()
         obj["id"] = f"KSW-{number:04d}"
+        obj["membership_ordinal"] = number
         obj["external_refs"] = []
         obj["measurements"][0].update(method=method, tags=tags, source="wlasne")
         obj["best_measurement"].update(
             mode="manual", measurement_id="m-001", reason="Retain the older reviewed point"
         )
         _write_yaml(data_dir / "objects/KSW" / f"{obj['id']}.yml", obj)
-        cave["object_ids"].append(obj["id"])
     _write_yaml(data_dir / "caves/C-0001.yml", cave)
 
     result = build_release_artifacts(
+        **baseline,
         data_dir=data_dir,
-        sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",
         generated_at=GENERATED_AT,
     )
@@ -241,50 +255,27 @@ def test_statistics_use_packaged_method_and_tags_for_each_selected_measurement(
     assert "| Opracowania własne | 7 | 7 |" in report
 
 
-def test_statistics_reject_selected_measurement_missing_from_packaged_history(
+def test_export_preparation_rejects_selected_measurement_missing_from_history(
     tmp_path: Path,
 ) -> None:
     data_dir = tmp_path / "data"
     _write_sample_data(data_dir)
-    sqlite_path = tmp_path / "db.sqlite"
-    output_dir = tmp_path / "exports"
-    build_release_artifacts(
-        data_dir=data_dir,
-        sqlite_path=sqlite_path,
-        output_dir=output_dir,
-        generated_at=GENERATED_AT,
-    )
-    csv_path = output_dir / "best-measurements.csv"
-    with csv_path.open(newline="") as stream:
-        reader = csv.DictReader(stream)
-        rows = list(reader)
-        fieldnames = reader.fieldnames
-    rows[0]["measurement_id"] = "m-999"
-    with csv_path.open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
+    dataset = read_catalog_projection(data_dir)
+    dataset.objects[0].data["best_measurement"]["measurement_id"] = "m-999"
     with pytest.raises(ValueError, match="KSW-0001/m-999"):
-        write_release_statistics(
-            csv_path=csv_path,
-            sqlite_path=sqlite_path,
-            output_dir=output_dir,
-            generated_at=GENERATED_AT,
-            release_version=None,
-            source_commit=None,
-        )
+        prepare_export_data(dataset, generated_at=GENERATED_AT)
 
 
 def test_statistics_are_deterministic_and_support_an_empty_catalog(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
-    for name in ("objects", "caves", "relations"):
-        (data_dir / name).mkdir(parents=True)
+    initialize_source(data_dir)
+    baseline = accept_source(data_dir)
     reports = []
     for name in ("first", "second"):
         output_dir = tmp_path / name
         build_release_artifacts(
+            **baseline,
             data_dir=data_dir,
-            sqlite_path=output_dir / "db.sqlite",
             output_dir=output_dir,
             generated_at=GENERATED_AT,
         )
@@ -303,6 +294,7 @@ def test_statistics_are_deterministic_and_support_an_empty_catalog(tmp_path: Pat
 def test_excel_preserves_best_and_full_history_with_local_measurement_ids(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
     _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
     first = _valid_object()
     first["name_local"] = '=HYPERLINK("https://example.invalid", "name")'
     first["notes"] = "Original object notes"
@@ -312,15 +304,15 @@ def test_excel_preserves_best_and_full_history_with_local_measurement_ids(tmp_pa
     _write_yaml(data_dir / "objects/KSW/KSW-0001.yml", first)
     second = _valid_object()
     second["id"] = "KSW-0002"
+    second["membership_ordinal"] = 2
     second["external_refs"] = []
     second["measurements"][1]["horizontal_accuracy_m"] = None
     _write_yaml(data_dir / "objects/KSW/KSW-0002.yml", second)
     cave = _valid_cave()
-    cave["object_ids"].append("KSW-0002")
     _write_yaml(data_dir / "caves/C-0001.yml", cave)
     result = build_release_artifacts(
+        **baseline,
         data_dir=data_dir,
-        sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",
         generated_at=GENERATED_AT,
         release_version="v1.2.3",
@@ -389,14 +381,15 @@ def test_excel_preserves_dates_across_1900_boundary(
 ) -> None:
     data_dir = tmp_path / "data"
     _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
     obj = _valid_object()
     for measurement in obj["measurements"]:
         measurement.update(observed_date=source_date, source_date=source_date)
     _write_yaml(data_dir / "objects/KSW/KSW-0001.yml", obj)
 
     result = build_release_artifacts(
+        **baseline,
         data_dir=data_dir,
-        sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",
         generated_at=GENERATED_AT,
     )
@@ -414,11 +407,11 @@ def test_excel_preserves_dates_across_1900_boundary(
 
 def test_excel_empty_catalog_has_headers_without_fake_records(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
-    for name in ("objects", "caves", "relations"):
-        (data_dir / name).mkdir(parents=True)
+    initialize_source(data_dir)
+    baseline = accept_source(data_dir)
     build_release_artifacts(
+        **baseline,
         data_dir=data_dir,
-        sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",
         generated_at=GENERATED_AT,
     )
@@ -434,26 +427,20 @@ def test_excel_empty_catalog_has_headers_without_fake_records(tmp_path: Path) ->
 def test_excel_rejects_text_truncation_without_replacing_existing_workbook(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
     _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
     result = build_release_artifacts(
+        **baseline,
         data_dir=data_dir,
-        sqlite_path=tmp_path / "db.sqlite",
         output_dir=tmp_path / "exports",
         generated_at=GENERATED_AT,
     )
     before = result.excel_path.read_bytes()
-    with result.export_result.csv_path.open(newline="", encoding="utf-8") as stream:
-        rows = list(csv.DictReader(stream))
-    rows[0]["name_local"] = "x" * 32768
-    with result.export_result.csv_path.open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
+    dataset = read_catalog_projection(data_dir)
+    dataset.objects[0].data["name_local"] = "x" * 32768
     with pytest.raises(ValueError, match="Cannot export Excel cell: Best"):
         write_excel_export(
-            csv_path=result.export_result.csv_path,
-            sqlite_path=result.sqlite_result.sqlite_path,
+            prepare_export_data(dataset, generated_at=GENERATED_AT),
             output_path=result.excel_path,
-            generated_at=GENERATED_AT,
             release_version=None,
             source_commit=None,
         )
@@ -461,122 +448,122 @@ def test_excel_rejects_text_truncation_without_replacing_existing_workbook(tmp_p
     assert not result.excel_path.with_suffix(".xlsx.tmp").exists()
 
 
-def _excel_records(sheet: Any) -> list[dict[str, Any]]:
-    headers = [cell.value for cell in sheet[6]]
-    return [
-        dict(zip(headers, row, strict=True)) for row in sheet.iter_rows(min_row=7, values_only=True)
+def test_cli_artifact_list_drives_release_workflow_without_publishing(tmp_path):
+    """A wildcard, split pathname or stale second list would send wrong files to gh."""
+    import os
+
+    import yaml
+
+    data = _write_sample_data(tmp_path / "data")
+    baseline = accept_source(data)
+    output = tmp_path / "exports with spaces\nand newline"
+    output.mkdir()
+    (output / "stale.zip").write_bytes(b"do not upload")
+    command = [
+        sys.executable,
+        str(BUILD_RELEASE_SCRIPT),
+        "--data-dir",
+        str(data),
+        "--output-dir",
+        str(output),
+        "--generated-at",
+        GENERATED_AT,
+        "--artifact-list",
+        *cli_args(baseline),
     ]
-
-
-def _write_sample_data(data_dir: Path) -> None:
-    for name in ("objects", "caves", "relations"):
-        (data_dir / name).mkdir(parents=True, exist_ok=True)
-    _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", _valid_object())
-    _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
-
-
-def _valid_object() -> dict[str, Any]:
-    return {
-        "schema_version": 1,
-        "id": "KSW-0001",
-        "category": "jaskinia_otwor",
-        "name_local": "Test Cave - main entrance",
-        "cave_id": "C-0001",
-        "id_assignment": {
-            "method": "auto",
-            "assigned_from_measurement_id": "m-001",
-            "assigned_prefix": "KSW",
-            "prefix_override_reason": None,
-        },
-        "external_refs": [
-            {
-                "system": "TPN",
-                "ref_type": "source_globalid",
-                "external_id": "{38626571-CAA6-4317-8900-D61A995020E9}",
-                "scope": "object",
-                "notes": "TPN point reference.",
-            }
-        ],
-        "measurements": [
-            _measurement("m-001", source="PIG", observed_date="2026-05-15"),
-            _measurement("m-002", source="TPN", observed_date="2026-05-16"),
-        ],
-        "best_measurement": {
-            "mode": "auto",
-            "measurement_id": "m-002",
-            "reason": None,
-            "updated_at": "2026-05-16T10:30:00Z",
-            "updated_by": "dl",
-        },
-        "attachments": [],
-        "notes": None,
-        "created_at": "2026-05-15T10:00:00Z",
-        "created_by": "dl",
-        "updated_at": "2026-05-16T10:30:00Z",
-        "updated_by": "dl",
+    blocked = subprocess.run(command, capture_output=True, check=False)
+    assert blocked.returncode == 1
+    assert blocked.stdout == b""
+    assert b"unmanaged entries" in blocked.stderr
+    assert {p.name: p.read_bytes() for p in output.iterdir()} == {"stale.zip": b"do not upload"}
+    (output / "stale.zip").unlink()
+    result = subprocess.run(command, capture_output=True, check=False)
+    assert result.returncode == 0, result.stdout + result.stderr
+    filenames = (
+        "katalog.dump",
+        "katalog.gpkg",
+        "best-measurements.geojson",
+        "best-measurements.csv",
+        "best-measurements.gpx",
+        "chocholowska-lejowa-koscieliska.gpx",
+        "mietusia-sucha-woda.gpx",
+        "pozostale-pl-sk.gpx",
+        "best-measurements.shp.zip",
+        "metadata.json",
+        "statistics.json",
+        "statistics.md",
+        "katalog.xlsx",
+    )
+    assets = [str(output / name) for name in filenames]
+    assert result.stderr == b""
+    assert result.stdout == b"".join(os.fsencode(p) + b"\0" for p in assets)
+    assert set(p.name for p in output.iterdir()) == set(filenames)
+    # Run the workflow build in a fresh directory, adapting only its installed uv runner.
+    workflow = yaml.safe_load((REPO_ROOT / ".github/workflows/release.yml").read_text())
+    steps = workflow["jobs"]["release"]["steps"]
+    build = next(s for s in steps if s["name"] == "Build release artifacts")
+    runner = (
+        'uv() { shift 4; "$U10_PYTHON" "$U10_BUILDER" "$@" '
+        '--data-dir "$U10_DATA" --output-dir "$U10_OUTPUT" '
+        '--history-repo "$U10_HISTORY"; }\n'
+    )
+    env = {
+        **os.environ,
+        "U10_PYTHON": sys.executable,
+        "U10_BUILDER": str(BUILD_RELEASE_SCRIPT),
+        "U10_DATA": str(data),
+        "U10_OUTPUT": str(output),
+        "U10_HISTORY": str(baseline["history_repo"]),
+        "HISTORY_BASE_SHA": baseline["base_ref"],
+        "GITHUB_REF_NAME": "v1.2.3",
+        "GITHUB_SHA": "a" * 40,
     }
+    completed = subprocess.run(
+        ["bash", "-e", "-c", runner + build["run"]],
+        cwd=tmp_path,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    assert (tmp_path / "build/release-artifacts.list").read_bytes() == result.stdout
+    (output / "stale.zip").write_bytes(b"even a later extra must not be uploaded")
+    publish = next(s for s in steps if s["name"] == "Publish GitHub Release")
+    script = publish["run"].replace("${{ steps.version.outputs.VERSION }}", "v1.2.3")
+    capture = tmp_path / "gh-arguments"
+    completed = subprocess.run(
+        ["bash", "-e", "-c", 'gh() { printf "%s\\0" "$@" > "$GH_CAPTURE"; }\n' + script],
+        cwd=tmp_path,
+        env={**os.environ, "GH_CAPTURE": str(capture)},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    expected = [
+        "release",
+        "create",
+        "v1.2.3",
+        *assets,
+        "--title",
+        "v1.2.3",
+        "--notes-file",
+        "release_notes.md",
+    ]
+    assert capture.read_bytes() == b"".join(os.fsencode(p) + b"\0" for p in expected)
 
-
-def _valid_cave() -> dict[str, Any]:
-    return {
-        "schema_version": 1,
-        "id": "C-0001",
-        "name": "Test Cave",
-        "system_name": None,
-        "external_refs": [
-            {
-                "system": "PIG",
-                "ref_type": "catalog_id",
-                "external_id": "1094",
-                "url": "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094",
-                "scope": "cave",
-                "notes": "PIG catalog record identifier.",
-            }
-        ],
-        "object_ids": ["KSW-0001"],
-        "notes": None,
-        "created_at": "2026-05-15T10:00:00Z",
-        "created_by": "dl",
-        "updated_at": "2026-05-16T10:30:00Z",
-        "updated_by": "dl",
-    }
-
-
-def _measurement(
-    measurement_id: str,
-    *,
-    source: str,
-    observed_date: str,
-) -> dict[str, Any]:
-    pl_1992 = wgs84_to_1992(lat=KSW_LAT, lon=KSW_LON)
-    return {
-        "id": measurement_id,
-        "lat": KSW_LAT,
-        "lon": KSW_LON,
-        "x_1992": pl_1992.x_1992,
-        "y_1992": pl_1992.y_1992,
-        "elevation_m": 1240.0,
-        "elevation_datum": "unknown",
-        "elevation_source": "source_record",
-        "horizontal_accuracy_m": 5.0,
-        "vertical_accuracy_m": 8.0,
-        "source": source,
-        "source_ref": f"{source}:{measurement_id}",
-        "observed_at": None,
-        "observed_date": observed_date,
-        "source_date": None,
-        "method": "source_record",
-        "device": None,
-        "tags": ["fixture"],
-        "verification_status": "nieweryfikowany",
-        "verified_by": None,
-        "verified_at": None,
-        "notes": None,
-        "created_at": "2026-05-15T10:00:00Z",
-        "created_by": "dl",
-    }
-
-
-def _write_yaml(path: Path, data: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(yaml.safe_dump(deepcopy(data), sort_keys=False), encoding="utf-8")
+    previous = {p.name: p.read_bytes() for p in output.iterdir()}
+    (data / "publications/.gitkeep").unlink()
+    (data / "publications").rmdir()
+    failed = subprocess.run(
+        ["bash", "-e", "-c", runner + build["run"]],
+        cwd=tmp_path,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert failed.returncode == 1
+    assert "required data directory" in failed.stderr
+    assert {p.name: p.read_bytes() for p in output.iterdir()} == previous

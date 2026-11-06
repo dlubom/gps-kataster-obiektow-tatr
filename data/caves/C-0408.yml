@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1069
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- CHZ-0014
+bibliography_status: unknown
 notes: 'PIG sector: D. ChochoĹ‚owska - Zach.
 
   PIG morphometry: length_m=430, depth_m=15,8, denivelation_m=30,3

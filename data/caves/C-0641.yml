@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1222
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MLZ-0067
+bibliography_status: unknown
 notes: 'PIG aliases: Jaskinia Kozia, Jaskinia Zielona, Jaskinia przy Zagonie
 
   PIG sector: D. Małej Łąki - Zach.

@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1325
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSZ-0053
+bibliography_status: unknown
 notes: 'PIG aliases: Nad Owczą Percią II
 
   PIG sector: D. Kościeliska - Zach.

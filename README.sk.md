@@ -28,7 +28,10 @@ a vyberte názov z tabuľky.
 | Otvoriť prehľadnú tabuľku v Exceli | `katalog.xlsx` — hárky **Best** a **Full** |
 | Stiahnuť tabuľku CSV | [CSV — `best-measurements.csv`](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest/download/best-measurements.csv) |
 | Pracovať s bodovou vrstvou v QGIS alebo inom mapovom programe | `best-measurements.geojson` alebo `best-measurements.shp.zip` |
-| Analyzovať celú históriu meraní | `katalog.sqlite.zip` — databáza pre pokročilých používateľov |
+| Analyzovať celú históriu meraní | `katalog.gpkg` — vrstvy Best a celej histórie; `katalog.dump` — úplná databáza PostgreSQL |
+
+Dump a GeoPackage sa týkajú vydaní po migrácii na PostgreSQL. Staršie balíky
+obsahujú úplnú databázu ako `katalog.sqlite.zip`.
 
 Excel bude dostupný vo vydaniach po v1.0.4. **Best** obsahuje vybrané body,
 **Full** podrobné údaje a históriu meraní vrátane starších a zamietnutých.
@@ -135,8 +138,10 @@ súbory projektu nemusíte upravovať sami.
 
 ## Pre vývojárov a správcov údajov
 
-Zdrojom pravdy sú súbory YAML v `data/`. SQLite, GeoJSON, GPX, CSV, Excel a Shapefile
-sú artefakty generované z týchto súborov.
+Zdrojom pravdy sú záznamy YAML v `data/` a schéma
+[`schema/catalog.sql`](schema/catalog.sql). Dočasný PostgreSQL/PostGIS
+overuje údaje a vypočítava Best. Dump, GeoPackage, GeoJSON, GPX, CSV, Excel
+a Shapefile sú generované artefakty.
 
 `Obiekt` označuje konkrétny bod v teréne a `Jaskinia` je katalógový záznam,
 ktorý zoskupuje jeden alebo viac vchodov. Každý objekt uchováva úplnú históriu
@@ -144,11 +149,14 @@ meraní a určenie najlepšieho aktuálneho merania.
 
 ### Rýchly štart
 
+Požiadavky: Python 3.12, uv, spustený Docker, GDAL (`ogr2ogr`) a Node 24
+pre testy publishera. Runner používa jeden dočasný PostgreSQL/PostGIS kontajner
+pripnutý digestom, na ARM cez `linux/amd64`, a odstráni ho aj po chybe.
+[Runtime a natívny režim](docs/operations.md#runtime-lokalny-i-ci).
+
 ```bash
-uv sync
-uv run pytest
-uv run python scripts/validate.py
-uv run python scripts/build_release_artifacts.py
+uv sync --frozen
+uv run --frozen python scripts/check_project.py --base-ref origin/main
 ```
 
 Lokálne artefakty vznikajú v `build/` a neukladajú sa do Gitu.

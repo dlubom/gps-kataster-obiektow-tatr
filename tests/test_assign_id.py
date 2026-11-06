@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+from gps_kataster_obiektow_tatr.id_allocation import IdSequence
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     OUTSIDE_COUNTRIES_CODE,
     OUTSIDE_COUNTRIES_MESSAGE,
@@ -126,3 +127,60 @@ def test_cli_accepts_lat_lon_and_prints_proposed_id(tmp_path: Path) -> None:
     assert "proposed_id: KSW-0001" in result.stdout
     assert "status: ok" in result.stdout
     assert "warning:" not in result.stdout
+
+
+@pytest.mark.parametrize("extension", ["yml", "yaml", "sql"])
+def test_assignment_scans_file_suffixes_and_ignores_false_id_names(tmp_path, extension):
+    prefix_dir = tmp_path / "KSW"
+    prefix_dir.mkdir()
+    for name in [
+        "KSW-0001.yml",
+        f"KSW-0042.{extension}",
+        "KSW-0042.sql",
+        "OTHER-9999.yml",
+        "KSW-9999.yml.bak",
+        "KSW-9998.YML",
+        "KSW-bad.yml",
+        "KSW--9999.yml",
+        "KSW-9999.yml\n",
+        "KSW-9999.txt",
+    ]:
+        (prefix_dir / name).touch()
+    (prefix_dir / "KSW-9999.yml").mkdir()
+    before = set(prefix_dir.iterdir())
+    assert [assign_id.next_object_id("KSW", objects_dir=tmp_path) for _ in range(2)] == [
+        "KSW-0043",
+        "KSW-0043",
+    ]
+    assert set(prefix_dir.iterdir()) == before
+
+
+@pytest.mark.parametrize(
+    ("prefix", "width", "existing", "reserved", "expected"),
+    [
+        ("KSW", 4, [], [], ["KSW-0001", "KSW-0002"]),
+        ("KSW", 4, ["KSW-0001", "KSW-0009", "KSW-0009"], [], ["KSW-0010", "KSW-0011"]),
+        ("KSW", 4, ["KSW-0009"], ["KSW-0012", "KSW-0011"], ["KSW-0013", "KSW-0014"]),
+        ("KSW", 4, ["C-9999", "CHZ-9999", "m-999"], [], ["KSW-0001", "KSW-0002"]),
+        ("C", 4, ["KSW-9999", "C-9999"], [], ["C-10000", "C-10001"]),
+        ("m", 3, ["m-001", "m-003", "m-003"], ["m-009"], ["m-010", "m-011"]),
+        ("m", 3, ["m-999"], [], ["m-1000", "m-1001"]),
+        ("m", 3, ["M-999", "m--999", "m-999x", "m-999\n", " m-999"], [], ["m-001", "m-002"]),
+    ],
+)
+def test_id_sequence_respects_namespace_maximum_and_batch_reservations(
+    prefix, width, existing, reserved, expected
+):
+    original_existing, original_reserved = existing[:], reserved[:]
+    sequence = IdSequence(prefix, width=width, existing_ids=existing, reserved_ids=reserved)
+    assert [sequence.next_id(), sequence.next_id()] == expected
+    assert (existing, reserved) == (original_existing, original_reserved)
+
+
+def test_reserving_more_ids_never_reuses_a_number():
+    sequence = IdSequence("KSW", existing_ids=["KSW-0001"])
+    assert sequence.next_id() == "KSW-0002"
+    sequence.reserve(["KSW-0001", "KSW-0002", "CHZ-9999"])
+    assert sequence.next_id() == "KSW-0003"
+    sequence.reserve(["KSW-0010"])
+    assert sequence.next_id() == "KSW-0011"

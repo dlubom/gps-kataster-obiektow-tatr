@@ -1,54 +1,69 @@
-import json
-import sqlite3
 import subprocess
 import sys
 from copy import deepcopy
 from pathlib import Path
-from typing import Any
 
 import pytest
 import yaml
+from export_test_support import (
+    GENERATED_AT,
+    KSW_LAT,
+    KSW_LON,
+    REPO_ROOT,
+    accept_source,
+    cli_args,
+)
+from export_test_support import (
+    valid_cave as _valid_cave,
+)
+from export_test_support import (
+    valid_object as _valid_object,
+)
+from export_test_support import (
+    write_sample_data as _write_sample_data,
+)
+from export_test_support import (
+    write_yaml as _write_yaml,
+)
 
 from gps_kataster_obiektow_tatr.build_db import (
-    BuildDatabaseValidationError,
-    build_sqlite_database,
+    build_database,
 )
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
+from gps_kataster_obiektow_tatr.postgres import restore_dump
 from gps_kataster_obiektow_tatr.staging_review import StagingReports, apply_review_decisions
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
 BUILD_DB_SCRIPT = REPO_ROOT / "scripts" / "build_db.py"
-KSW_LAT = 49.23459299
-KSW_LON = 19.87589498
-GENERATED_AT = "2026-05-16T12:00:00Z"
 
 
 @pytest.mark.parametrize("damage", ["missing-member", "no-cave-id", "two-caves"])
-def test_asymmetric_cave_membership_blocks_sqlite_before_writes(tmp_path, damage):
+def test_asymmetric_cave_membership_blocks_dump_before_writes(tmp_path, damage):
     data_dir = tmp_path / "data"
     _write_sample_data(data_dir)
-    output = tmp_path / "output/katalog.sqlite"
-    build_sqlite_database(data_dir=data_dir, output_path=output)
+    baseline = accept_source(data_dir)
+    output = tmp_path / "output/katalog.dump"
+    build_database(**baseline, data_dir=data_dir, output_path=output)
     before = output.read_bytes()
     if damage == "missing-member":
         cave = _valid_cave()
         cave["object_ids"] = []
         _write_yaml(data_dir / "caves/C-0001.yml", cave)
-        code = "OBJECT_CAVE_MEMBERSHIP_MISSING"
+        code = "Canonical YAML must not contain computed membership"
     elif damage == "no-cave-id":
         obj = _valid_object()
         obj["cave_id"] = None
         _write_yaml(data_dir / "objects/KSW/KSW-0001.yml", obj)
-        code = "CAVE_OBJECT_MEMBERSHIP_MISMATCH"
+        code = "objects_check"
     else:
         cave = _valid_cave()
         cave["id"] = "C-0002"
+        cave["object_ids"] = ["KSW-0001"]
         _write_yaml(data_dir / "caves/C-0002.yml", cave)
-        code = "CAVE_OBJECT_MEMBERSHIP_MISMATCH"
+        code = "Canonical YAML must not contain computed membership"
     source_before = {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()}
-    for path in (output, tmp_path / "new-output/katalog.sqlite"):
-        with pytest.raises(BuildDatabaseValidationError, match=code):
-            build_sqlite_database(data_dir=data_dir, output_path=path)
+    for path in (output, tmp_path / "new-output/katalog.dump"):
+        with pytest.raises(ValueError, match=code):
+            build_database(**baseline, data_dir=data_dir, output_path=path)
         result = subprocess.run(
             [
                 sys.executable,
@@ -71,45 +86,50 @@ def test_asymmetric_cave_membership_blocks_sqlite_before_writes(tmp_path, damage
     assert {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()} == source_before
 
 
-def test_relinked_cave_membership_matches_sqlite_and_yaml(tmp_path):
+def test_relinked_cave_membership_matches_dump_and_yaml(tmp_path):
     data_dir = tmp_path / "data"
     _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
     cave = _valid_cave()
-    cave.update(id="C-0002", object_ids=[])
+    cave.update(id="C-0002")
     _write_yaml(data_dir / "caves/C-0002.yml", cave)
     result = apply_review_decisions(
         {"decisions": [{"action": "link_cave", "object_id": "KSW-0001", "cave_id": "C-0002"}]},
         staging_reports=StagingReports(),
         data_dir=data_dir,
+        base_ref=baseline["base_ref"],
+        repo_root=baseline["history_repo"],
     )
     assert not result.has_errors, result.issues
-    output = tmp_path / "katalog.sqlite"
-    build_sqlite_database(data_dir=data_dir, output_path=output)
-    with sqlite3.connect(output) as connection:
-        assert connection.execute("PRAGMA integrity_check").fetchall() == [("ok",)]
-        assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
-        assert connection.execute("SELECT id,cave_id FROM objects").fetchall() == [
+    output = tmp_path / "katalog.dump"
+    build_database(**baseline, data_dir=data_dir, output_path=output)
+    with restore_dump(output) as restored:
+        dataset = restored.dataset()
+        assert [(r.data["id"], r.data.get("cave_id")) for r in dataset.objects] == [
             ("KSW-0001", "C-0002")
         ]
-        memberships = {
-            cid: json.loads(ids)
-            for cid, ids in connection.execute("SELECT id,object_ids_json FROM caves")
+        assert {r.data["id"]: r.data["object_ids"] for r in dataset.caves} == {
+            "C-0001": [],
+            "C-0002": ["KSW-0001"],
         }
-        assert memberships == {"C-0001": [], "C-0002": ["KSW-0001"]}
-        for cave_id, ids in memberships.items():
-            assert (
-                yaml.safe_load((data_dir / f"caves/{cave_id}.yml").read_text())["object_ids"] == ids
-            )
-        assert connection.execute("SELECT count(*) FROM measurements").fetchone() == (2,)
+        assert sum(len(r.data["measurements"]) for r in dataset.objects) == 2
+        from sql_test_support import read_record
+
+        for r in dataset.caves:
+            assert "object_ids" not in read_record(data_dir / f"caves/{r.data['id']}.yml")
+        source_object = read_record(data_dir / "objects/KSW/KSW-0001.yml")
+        assert source_object["cave_id"] == "C-0002"
+        assert source_object["membership_ordinal"] == 1
 
 
 @pytest.mark.parametrize("variant", ["identical", "coordinates"])
-def test_duplicate_local_measurement_id_blocks_sqlite_before_writes(tmp_path, variant):
+def test_duplicate_local_measurement_id_blocks_dump_before_writes(tmp_path, variant):
     data_dir = tmp_path / "data"
     _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
     output = tmp_path / "output"
-    path = output / "katalog.sqlite"
-    build_sqlite_database(data_dir=data_dir, output_path=path)
+    path = output / "katalog.dump"
+    build_database(**baseline, data_dir=data_dir, output_path=path)
     before = path.read_bytes()
     source = data_dir / "objects/KSW/KSW-0001.yml"
     obj = yaml.safe_load(source.read_text())
@@ -117,16 +137,14 @@ def test_duplicate_local_measurement_id_blocks_sqlite_before_writes(tmp_path, va
     if variant == "coordinates":
         duplicate.update(
             lat=49.235,
-            x_1992=wgs84_to_1992(lat=49.235, lon=KSW_LON).x_1992,
-            y_1992=wgs84_to_1992(lat=49.235, lon=KSW_LON).y_1992,
         )
     obj["measurements"].append(duplicate)
     _write_yaml(source, obj)
     source_before = source.read_bytes()
 
-    for target in (path, tmp_path / "new-output/katalog.sqlite"):
-        with pytest.raises(BuildDatabaseValidationError, match="DUPLICATE_MEASUREMENT_ID"):
-            build_sqlite_database(data_dir=data_dir, output_path=target)
+    for target in (path, tmp_path / "new-output/katalog.dump"):
+        with pytest.raises(ValueError, match="measurements_pkey"):
+            build_database(**baseline, data_dir=data_dir, output_path=target)
         result = subprocess.run(
             [
                 sys.executable,
@@ -141,8 +159,8 @@ def test_duplicate_local_measurement_id_blocks_sqlite_before_writes(tmp_path, va
             check=False,
         )
         assert result.returncode == 1
-        assert "DUPLICATE_MEASUREMENT_ID" in result.stdout + result.stderr
-        assert str(source) in result.stdout + result.stderr
+        assert "measurements_pkey" in result.stdout + result.stderr
+        assert str(data_dir) in result.stdout + result.stderr
         assert "Traceback" not in result.stdout + result.stderr
     assert path.read_bytes() == before
     assert set(output.iterdir()) == {path}
@@ -150,75 +168,64 @@ def test_duplicate_local_measurement_id_blocks_sqlite_before_writes(tmp_path, va
     assert source.read_bytes() == source_before
 
 
-def test_build_sqlite_database_writes_logical_tables_and_metadata(tmp_path: Path) -> None:
+def test_build_database_writes_logical_tables_and_metadata(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
-    sqlite_path = tmp_path / "build" / "katalog.sqlite"
+    dump_path = tmp_path / "build" / "katalog.dump"
     _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
 
-    result = build_sqlite_database(
+    result = build_database(
+        **baseline,
         data_dir=data_dir,
-        output_path=sqlite_path,
+        output_path=dump_path,
         generated_at=GENERATED_AT,
     )
 
-    assert result.sqlite_path == sqlite_path
-    assert sqlite_path.exists()
-
-    with _connect(sqlite_path) as connection:
-        table_names = {
-            row["name"]
-            for row in connection.execute(
-                "SELECT name FROM sqlite_master WHERE type = 'table'"
-            ).fetchall()
+    assert result.dump_path == dump_path
+    assert dump_path.read_bytes().startswith(b"PGDMP")
+    assert result.metadata["generated_at"] == GENERATED_AT
+    assert result.metadata["object_count"] == "1"
+    assert result.metadata["cave_count"] == "1"
+    assert result.metadata["measurement_count"] == "2"
+    assert result.metadata["validation_error_count"] == "0"
+    with restore_dump(dump_path) as restored:
+        tables = set(restored.fingerprints())
+        assert tables >= {
+            "objects",
+            "caves",
+            "measurements",
+            "object_external_refs",
+            "cave_external_refs",
+            "attachments",
+            "relations",
+            "best_policy",
+            "publications",
+            "v_best",
+            "v_auto_best",
         }
-        metadata = _metadata(connection)
-        object_row = connection.execute("SELECT * FROM objects WHERE id = 'KSW-0001'").fetchone()
-        measurement_rows = connection.execute(
-            "SELECT id, source, geom_wgs84, geom_1992 FROM measurements ORDER BY id"
-        ).fetchall()
-        best_row = connection.execute(
-            "SELECT * FROM best_measurements WHERE object_id = 'KSW-0001'"
-        ).fetchone()
-        cave_refs = connection.execute("SELECT * FROM cave_external_refs").fetchall()
-        object_refs = connection.execute("SELECT * FROM object_external_refs").fetchall()
-
-    assert table_names >= {
-        "objects",
-        "caves",
-        "measurements",
-        "object_external_refs",
-        "cave_external_refs",
-        "attachments",
-        "relations",
-        "best_measurements",
-        "validation_flags",
-        "metadata",
-    }
-    assert metadata["generated_at"] == GENERATED_AT
-    assert metadata["object_count"] == str(len(list((data_dir / "objects").rglob("*.yml"))))
-    assert metadata["cave_count"] == str(len(list((data_dir / "caves").rglob("*.yml"))))
-    assert metadata["relation_count"] == str(len(list((data_dir / "relations").rglob("*.yml"))))
-    assert metadata["measurement_count"] == "2"
-    assert metadata["validation_error_count"] == "0"
-
-    pl_1992 = wgs84_to_1992(lat=KSW_LAT, lon=KSW_LON)
-    assert object_row["best_measurement_id"] == "m-002"
-    assert object_row["computed_best_measurement_id"] == "m-002"
-    assert object_row["best_geom_wgs84"] == f"POINT({KSW_LON} {KSW_LAT})"
-    assert object_row["best_geom_1992"] == f"POINT({pl_1992.y_1992} {pl_1992.x_1992})"
-    assert [row["id"] for row in measurement_rows] == ["m-001", "m-002"]
-    assert measurement_rows[1]["source"] == "TPN"
-    assert best_row["mode"] == "auto"
-    assert best_row["measurement_id"] == "m-002"
-    assert best_row["computed_best_measurement_id"] == "m-002"
-    assert cave_refs[0]["external_id"] == "1094"
-    assert object_refs[0]["external_id"] == "{38626571-CAA6-4317-8900-D61A995020E9}"
+        dataset = restored.dataset()
+        obj = dataset.objects[0].data
+        assert obj["best_measurement"]["mode"] == "auto"
+        assert (
+            obj["best_measurement"]["measurement_id"]
+            == obj["computed_best_measurement_id"]
+            == "m-002"
+        )
+        assert [m["id"] for m in obj["measurements"]] == ["m-001", "m-002"]
+        assert obj["measurements"][1]["source"] == "TPN"
+        assert (obj["measurements"][1]["lon"], obj["measurements"][1]["lat"]) == (KSW_LON, KSW_LAT)
+        projected = wgs84_to_1992(lat=KSW_LAT, lon=KSW_LON)
+        assert obj["measurements"][1]["x_1992"] == pytest.approx(projected.x_1992, abs=0.005)
+        assert obj["measurements"][1]["y_1992"] == pytest.approx(projected.y_1992, abs=0.005)
+        assert dataset.caves[0].data["external_refs"][0]["external_id"] == "1094"
+        assert obj["external_refs"][0]["external_id"] == "{38626571-CAA6-4317-8900-D61A995020E9}"
 
 
-def test_build_db_cli_creates_sqlite(tmp_path: Path) -> None:
+def test_build_db_cli_creates_dump(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
-    sqlite_path = tmp_path / "build" / "katalog.sqlite"
+    dump_path = tmp_path / "build" / "katalog.dump"
     _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
 
     result = subprocess.run(
         [
@@ -227,9 +234,10 @@ def test_build_db_cli_creates_sqlite(tmp_path: Path) -> None:
             "--data-dir",
             str(data_dir),
             "--output",
-            str(sqlite_path),
+            str(dump_path),
             "--generated-at",
             GENERATED_AT,
+            *cli_args(baseline),
         ],
         cwd=REPO_ROOT,
         check=False,
@@ -238,152 +246,31 @@ def test_build_db_cli_creates_sqlite(tmp_path: Path) -> None:
     )
 
     assert result.returncode == 0, result.stdout + result.stderr
-    assert sqlite_path.exists()
-    assert "SQLite build: 1 objects, 1 caves, 2 measurements" in result.stdout
+    assert dump_path.exists()
+    assert "PostgreSQL dump build: 1 objects, 1 caves, 2 measurements" in result.stdout
 
 
-def test_build_sqlite_database_rejects_invalid_yaml(tmp_path: Path) -> None:
+def test_build_database_rejects_invalid_yaml(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
-    sqlite_path = tmp_path / "build" / "katalog.sqlite"
+    dump_path = tmp_path / "build" / "katalog.dump"
+    _write_sample_data(data_dir)
+    baseline = accept_source(data_dir)
     object_data = _valid_object()
-    object_data["best_measurement"]["measurement_id"] = "m-999"
-    (data_dir / "relations").mkdir(parents=True)
+    object_data["best_measurement"].update(
+        mode="manual", measurement_id="m-999", reason="Invalid manual selection"
+    )
     _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", object_data)
     _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
 
-    with pytest.raises(BuildDatabaseValidationError) as exc_info:
-        build_sqlite_database(
+    with pytest.raises(ValueError, match="best_policy_object_id_manual_measurement_id_fkey"):
+        build_database(
+            **baseline,
             data_dir=data_dir,
-            output_path=sqlite_path,
+            output_path=dump_path,
             generated_at=GENERATED_AT,
         )
 
-    assert "BEST_MEASUREMENT_MISSING" in {issue.code for issue in exc_info.value.issues}
-    assert not sqlite_path.exists()
+    from gps_kataster_obiektow_tatr.validator import validate_data_dir
 
-
-def _write_sample_data(data_dir: Path) -> None:
-    for name in ("objects", "caves", "relations"):
-        (data_dir / name).mkdir(parents=True, exist_ok=True)
-    _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", _valid_object())
-    _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
-
-
-def _valid_object() -> dict[str, Any]:
-    return {
-        "schema_version": 1,
-        "id": "KSW-0001",
-        "category": "jaskinia_otwor",
-        "name_local": "Test Cave - main entrance",
-        "cave_id": "C-0001",
-        "id_assignment": {
-            "method": "auto",
-            "assigned_from_measurement_id": "m-001",
-            "assigned_prefix": "KSW",
-            "prefix_override_reason": None,
-        },
-        "external_refs": [
-            {
-                "system": "TPN",
-                "ref_type": "source_globalid",
-                "external_id": "{38626571-CAA6-4317-8900-D61A995020E9}",
-                "scope": "object",
-                "notes": "TPN point reference.",
-            }
-        ],
-        "measurements": [
-            _measurement("m-001", source="PIG", observed_date="2026-05-15"),
-            _measurement("m-002", source="TPN", observed_date="2026-05-16"),
-        ],
-        "best_measurement": {
-            "mode": "auto",
-            "measurement_id": "m-002",
-            "reason": None,
-            "updated_at": "2026-05-16T10:30:00Z",
-            "updated_by": "dl",
-        },
-        "attachments": [],
-        "notes": None,
-        "created_at": "2026-05-15T10:00:00Z",
-        "created_by": "dl",
-        "updated_at": "2026-05-16T10:30:00Z",
-        "updated_by": "dl",
-    }
-
-
-def _valid_cave() -> dict[str, Any]:
-    return {
-        "schema_version": 1,
-        "id": "C-0001",
-        "name": "Test Cave",
-        "system_name": None,
-        "external_refs": [
-            {
-                "system": "PIG",
-                "ref_type": "catalog_id",
-                "external_id": "1094",
-                "url": "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094",
-                "scope": "cave",
-                "notes": "PIG catalog record identifier.",
-            }
-        ],
-        "object_ids": ["KSW-0001"],
-        "notes": None,
-        "created_at": "2026-05-15T10:00:00Z",
-        "created_by": "dl",
-        "updated_at": "2026-05-16T10:30:00Z",
-        "updated_by": "dl",
-    }
-
-
-def _measurement(
-    measurement_id: str,
-    *,
-    source: str,
-    observed_date: str,
-) -> dict[str, Any]:
-    pl_1992 = wgs84_to_1992(lat=KSW_LAT, lon=KSW_LON)
-    measurement = {
-        "id": measurement_id,
-        "lat": KSW_LAT,
-        "lon": KSW_LON,
-        "x_1992": pl_1992.x_1992,
-        "y_1992": pl_1992.y_1992,
-        "elevation_m": 1240.0,
-        "elevation_datum": "unknown",
-        "elevation_source": "source_record",
-        "horizontal_accuracy_m": 5.0,
-        "vertical_accuracy_m": 8.0,
-        "source": source,
-        "source_ref": f"{source}:{measurement_id}",
-        "observed_at": None,
-        "observed_date": observed_date,
-        "source_date": None,
-        "method": "source_record",
-        "device": None,
-        "tags": ["fixture"],
-        "verification_status": "nieweryfikowany",
-        "verified_by": None,
-        "verified_at": None,
-        "notes": None,
-        "created_at": "2026-05-15T10:00:00Z",
-        "created_by": "dl",
-    }
-    if source == "wlasne":
-        measurement["method"] = "gps_receiver"
-    return measurement
-
-
-def _write_yaml(path: Path, data: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(yaml.safe_dump(deepcopy(data), sort_keys=False), encoding="utf-8")
-
-
-def _connect(path: Path) -> sqlite3.Connection:
-    connection = sqlite3.connect(path)
-    connection.row_factory = sqlite3.Row
-    return connection
-
-
-def _metadata(connection: sqlite3.Connection) -> dict[str, str]:
-    return {row["key"]: row["value"] for row in connection.execute("SELECT * FROM metadata")}
+    assert "BEST_MEASUREMENT_MISSING" in {issue.code for issue in validate_data_dir(data_dir)}
+    assert not dump_path.exists()

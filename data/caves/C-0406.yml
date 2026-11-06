@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1581
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MLZ-0039
+bibliography_status: unknown
 notes: 'PIG aliases: SYSTEM Jędrusiowa Dziura
 
   PIG sector: D. Małej Łąki - Zach.

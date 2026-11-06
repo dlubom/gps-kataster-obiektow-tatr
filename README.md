@@ -28,7 +28,10 @@ Na tej stronie rozwiń listę **Assets** (pliki do pobrania) i wybierz nazwę z 
 | Otworzyć czytelną tabelę w Excelu | `katalog.xlsx` — arkusze **Best** i **Full** |
 | Pobrać tabelę CSV | [CSV — `best-measurements.csv`](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest/download/best-measurements.csv) |
 | Pracować z warstwą punktów w QGIS lub innym programie mapowym | `best-measurements.geojson` lub `best-measurements.shp.zip` |
-| Analizować pełną historię pomiarów | `katalog.sqlite.zip` — baza dla zaawansowanych użytkowników |
+| Analizować pełną historię pomiarów | `katalog.gpkg` — warstwy Best i pełnej historii; `katalog.dump` — pełna baza PostgreSQL |
+
+Dump i GeoPackage dotyczą wydań po migracji na PostgreSQL. Starsze paczki
+udostępniają pełną bazę jako `katalog.sqlite.zip`.
 
 Excel będzie dostępny w wydaniach po v1.0.4. **Best** zawiera wybrane punkty,
 a **Full** pełne dane i historię pomiarów, również starszych i odrzuconych.
@@ -135,8 +138,10 @@ nie musisz samodzielnie edytować plików projektu.
 
 ## Dla osób rozwijających i utrzymujących dane
 
-Źródłem prawdy są pliki YAML w `data/`. SQLite, GeoJSON, GPX, CSV, Excel i
-Shapefile są artefaktami generowanymi z tych plików.
+Źródłem prawdy są pliki YAML w `data/` oraz schemat
+[`schema/catalog.sql`](schema/catalog.sql). Tymczasowy PostgreSQL/PostGIS
+sprawdza dane i oblicza Best. Dump, GeoPackage, GeoJSON, GPX, CSV, Excel
+i Shapefile są generowanymi artefaktami.
 
 `Obiekt` oznacza konkretny punkt w terenie, a `Jaskinia` jest rekordem
 katalogowym grupującym jeden lub więcej otworów. Każdy obiekt zachowuje pełną
@@ -144,11 +149,14 @@ historię pomiarów i wskazanie najlepszego aktualnego pomiaru.
 
 ### Szybki start
 
+Wymagane: Python 3.12, uv, Docker z działającym silnikiem, GDAL (`ogr2ogr`)
+i Node 24 do testów publishera. Runner uruchamia jeden tymczasowy kontener
+PostgreSQL/PostGIS przypięty digestem, także na ARM przez `linux/amd64`;
+usuwany jest po zakończeniu lub błędzie. [Runtime i tryb native](docs/operations.md#runtime-lokalny-i-ci).
+
 ```bash
-uv sync
-uv run pytest
-uv run python scripts/validate.py
-uv run python scripts/build_release_artifacts.py
+uv sync --frozen
+uv run --frozen python scripts/check_project.py --base-ref origin/main
 ```
 
 Artefakty lokalne powstają w `build/` i nie są commitowane.
@@ -156,6 +164,7 @@ Artefakty lokalne powstają w `build/` i nie są commitowane.
 ### Dokumentacja projektu
 
 - [Specyfikacja i model domeny](specyfikacja_gps_kataster_obiektow_tatr_v_2.md)
+- [Schematy bazy i przepływ CI/CD](docs/architecture/schema.md)
 - [Dodawanie i weryfikacja pomiarów](docs/operations.md)
 - [Formaty i pola plików wydania](docs/release_artifacts.md)
 - [CHANGELOG.md](CHANGELOG.md)

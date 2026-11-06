@@ -8,6 +8,9 @@ from pathlib import Path
 
 import pytest
 import yaml
+from sql_test_support import history_cli_args, read_record, repository_records
+
+from gps_kataster_obiektow_tatr.postgres import open_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/maintenance/restore_tpn_notes.py"
@@ -25,7 +28,10 @@ def _seed(tmp_path, make_data_dir):
     data = make_data_dir(tmp_path / "data")
     path = data / "objects/MTW/MTW-0047.yml"
     path.parent.mkdir(parents=True)
-    original = yaml.safe_load((ROOT / "data/objects/MTW/MTW-0047.yml").read_text())
+    original = deepcopy(repository_records()["MTW-0047"])
+    cave = deepcopy(repository_records()[original["cave_id"]])
+    cave["object_ids"] = [original["id"]]
+    (data / "caves" / f"{cave['id']}.yml").write_text(yaml.safe_dump(cave))
     original["measurements"][1]["notes"] = "Ręczna uwaga bez utraty.  "
     path.write_text(yaml.safe_dump(original, allow_unicode=True, sort_keys=False))
     source = tmp_path / "source.csv"
@@ -49,6 +55,7 @@ def _run(source, data, report, apply=False):
         [
             sys.executable,
             str(SCRIPT),
+            *history_cli_args(data),
             "--source",
             str(source),
             "--data-dir",
@@ -62,8 +69,9 @@ def _run(source, data, report, apply=False):
         capture_output=True,
         text=True,
     )
-    assert result.returncode == 0, result.stderr
-    return json.loads(report.read_text())
+    payload = json.loads(report.read_text())
+    assert result.returncode == (1 if apply and payload["issues"] else 0), result.stderr
+    return payload
 
 
 def test_restore_manifest_manual_notes_allowed_fields_and_idempotence(tmp_path, make_data_dir):
@@ -87,7 +95,7 @@ def test_restore_manifest_manual_notes_allowed_fields_and_idempotence(tmp_path, 
     assert change["reason"]
     applied = _run(source, data, report, True)
     assert applied["changes"] == dry["changes"]
-    obj = yaml.safe_load(path.read_text())
+    obj = read_record(path)
     assert obj["measurements"][1]["notes"] == expected
     assert obj["updated_by"] == "maintenance:PBI-082"
     assert obj["updated_at"] != original["updated_at"]
@@ -95,7 +103,15 @@ def test_restore_manifest_manual_notes_allowed_fields_and_idempotence(tmp_path, 
     allowed["measurements"][1]["notes"] = expected
     allowed["updated_by"] = obj["updated_by"]
     allowed["updated_at"] = obj["updated_at"]
+    with open_catalog(data) as catalog:
+        assert catalog.dataset().objects[0].data == allowed
+    allowed.pop("computed_best_measurement_id", None)
+    allowed["best_measurement"].pop("measurement_id")
+    for measurement in allowed["measurements"]:
+        for field in ("lat", "lon", "x_1992", "y_1992"):
+            measurement.pop(field)
     assert obj == allowed
+    path = path.with_suffix(".yml")
     after = path.read_bytes()
     again = _run(source, data, report, True)
     assert again["changes"] == []
@@ -173,7 +189,7 @@ def test_no_context_has_no_changes_or_audit_updates(tmp_path, make_data_dir):
 
 @pytest.mark.parametrize("level", ["object", "measurement"])
 @pytest.mark.parametrize("invalid", [None, "", "  ", [], {}, 123, "missing"])
-def test_invalid_local_id_skips_only_uncertain_record(tmp_path, make_data_dir, level, invalid):
+def test_invalid_local_id_blocks_entire_atomic_restoration(tmp_path, make_data_dir, level, invalid):
     data, path, source, obj = _seed(tmp_path, make_data_dir)
     valid = deepcopy(obj)
     valid["id"] = "MTW-9999"
@@ -200,10 +216,7 @@ def test_invalid_local_id_skips_only_uncertain_record(tmp_path, make_data_dir, l
     assert len(report["changes"]) == 1
     assert report["changes"][0]["object_id"] == "MTW-9999"
     assert report["issues"] and report["issues"][0]["globalid"] == GID
-    assert (
-        "TPN UWAGI: poprawny kontekst"
-        in yaml.safe_load(valid_path.read_text())["measurements"][1]["notes"]
-    )
+    assert "TPN UWAGI: poprawny kontekst" not in read_record(valid_path)["measurements"][1]["notes"]
 
 
 @pytest.mark.parametrize(
@@ -214,7 +227,7 @@ def test_restore_retains_partial_and_longer_manual_context(tmp_path, make_data_d
     obj["measurements"][1]["notes"] = initial
     path.write_text(yaml.safe_dump(obj, allow_unicode=True, sort_keys=False))
     _run(source, data, tmp_path / "report.json", True)
-    note = yaml.safe_load(path.read_text())["measurements"][1]["notes"]
+    note = read_record(path)["measurements"][1]["notes"]
     assert note.count("TPN WER_LOK: niepewna") == 1
     assert "\nTPN UWAGI: przybliżona lokalizacja\n" in f"\n{note}\n"
     if initial:
@@ -287,14 +300,89 @@ def test_real_source_context_at_correct_measurement(tmp_path, make_data_dir, obj
     data = make_data_dir(tmp_path / "data")
     path = data / f"objects/{object_id.split('-')[0]}/{object_id}.yml"
     path.parent.mkdir(parents=True)
-    obj = yaml.safe_load((ROOT / "data" / path.relative_to(data)).read_text())
+    obj = deepcopy(repository_records()[object_id])
+    cave = deepcopy(repository_records()[obj["cave_id"]])
+    cave["object_ids"] = [object_id]
+    (data / "caves" / f"{cave['id']}.yml").write_text(yaml.safe_dump(cave))
     for measurement in obj["measurements"]:
         if measurement["source"] == "TPN":
             measurement["notes"] = "Ręczna uwaga zachowana przy odtworzeniu."
     path.write_text(yaml.safe_dump(obj, allow_unicode=True, sort_keys=False))
     source = ROOT / "data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv"
+    # A full source against a subset catalogue is unresolved and must remain atomic.
+    before = path.read_bytes()
+    rejected = _run(source, data, tmp_path / "unresolved.json", True)
+    assert rejected["issues"] and rejected["mode"] == "blocked"
+    assert path.read_bytes() == before
+    with source.open(encoding="utf-8-sig", newline="") as stream:
+        rows = list(csv.DictReader(stream))
+    ids = {
+        m["source_ref"].removeprefix("TPN:") for m in obj["measurements"] if m["source"] == "TPN"
+    }
+    selected = [row for row in rows if row["GLOBALID"] in ids]
+    source = tmp_path / "selected.csv"
+    _source(
+        source,
+        [{key: row[key] for key in ("GLOBALID", "NAZWA", "WER_LOK", "UWAGI")} for row in selected],
+    )
     result = _run(source, data, tmp_path / "report.json", True)
-    obj = yaml.safe_load(path.read_text())
+    assert not result["issues"], result["issues"]
+    obj = read_record(path)
     measurement = next(m for m in obj["measurements"] if m["source"] == "TPN")
     assert f"TPN UWAGI: {text}" in measurement["notes"]
     assert all(c["object_id"] == object_id for c in result["changes"])
+
+
+@pytest.mark.parametrize("failure", [OSError, KeyboardInterrupt])
+def test_exchange_failure_keeps_data_and_records_failed_manifest(
+    tmp_path, make_data_dir, monkeypatch, failure
+):
+    import importlib.util
+
+    from gps_kataster_obiektow_tatr import catalog_records
+
+    data, _, source, _ = _seed(tmp_path, make_data_dir)
+    before = {p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()}
+    report = tmp_path / "failed-manifest.json"
+    spec = importlib.util.spec_from_file_location("restore_exchange_failure", SCRIPT)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    observed = []
+
+    def fail_exchange(*args):
+        observed.append(json.loads(report.read_text()))
+        raise failure("injected atomic exchange failure")
+
+    monkeypatch.setattr(catalog_records, "_exchange_directories", fail_exchange)
+    with pytest.raises(failure, match="injected atomic exchange failure"):
+        module.restore_notes(
+            source=source,
+            data_dir=data,
+            report=report,
+            apply=True,
+            generated_at="2026-10-15T00:00:00Z",
+        )
+    after = {p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()}
+    assert after == before
+    assert len(observed) == 1 and observed[0]["mode"] == "pending"
+    failed = json.loads(report.read_text())
+    if failure is OSError:
+        assert failed["mode"] == "failed"
+        assert any(
+            "injected atomic exchange failure" in item["reason"] for item in failed["issues"]
+        )
+    else:
+        assert failed["mode"] == "pending"
+
+
+def test_cleanup_failure_keeps_successful_apply_manifest(tmp_path, make_data_dir):
+    data, path, source, _ = _seed(tmp_path, make_data_dir)
+    (data / "objects/MTW").chmod(0o555)
+    try:
+        result = _run(source, data, tmp_path / "report.json", True)
+        assert result["mode"] == "apply"
+        assert not result["issues"]
+        assert "TPN UWAGI: przybliżona lokalizacja" in read_record(path)["measurements"][1]["notes"]
+    finally:
+        for old in tmp_path.glob(".data-snapshot-*"):
+            (old / "objects/MTW").chmod(0o755)

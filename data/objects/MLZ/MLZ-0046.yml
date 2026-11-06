@@ -3,6 +3,7 @@ id: MLZ-0046
 category: jaskinia_otwor
 name_local: Świstowa Studnia
 cave_id: C-0487
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24123613
-  lon: 19.92457218
-  x_1992: 153047.67
-  y_1992: 567277.72
+  input_srid: 4326
+  input_x: 19.92457218
+  input_y: 49.24123613
   elevation_m: 1670.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24121054417201
-  lon: 19.924485533776473
-  x_1992: 153044.75
-  y_1992: 567271.45
+  input_srid: 4326
+  input_x: 19.924485533776473
+  input_y: 49.24121054417201
   elevation_m: 1668.811263
   elevation_datum: unknown
   elevation_source: source_record
@@ -66,11 +65,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

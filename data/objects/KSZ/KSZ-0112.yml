@@ -3,6 +3,7 @@ id: KSZ-0112
 category: jaskinia_otwor
 name_local: Jaskinia Bańdzioch Kominiarski - otwór dolny
 cave_id: C-0078
+membership_ordinal: 2
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -11,10 +12,9 @@ id_assignment:
 external_refs: []
 measurements:
 - id: m-001
-  lat: 49.24258746
-  lon: 19.8495785
-  x_1992: 153133.85
-  y_1992: 561819.08
+  input_srid: 4326
+  input_x: 19.8495785
+  input_y: 49.24258746
   elevation_m: 1451.06
   elevation_datum: unknown
   elevation_source: gnss
@@ -46,6 +46,7 @@ best_measurement:
   updated_at: '2026-10-23T13:20:59Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: 'Created during multi-opening review from a supplied unknown-GNSS point.
   The existing LEJ-0002 object is treated as the upper opening; this object
   records the lower opening.'

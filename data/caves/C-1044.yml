@@ -16,8 +16,20 @@ external_refs:
   scope: cave
   notes: 'Załącznik „03 Dol. Chochołowska 2026.07” do zestawienia Jakuba Nowaka „Jaskinie Tatr”, KKTJ,
     10.07.2026; s. 3, lp. 72; nazwa w wykazie: Rura w Olejarni.'
-object_ids:
-- CHZ-0036
+bibliography_status: known
+citations:
+- publication_id: literature-7a878a42b53d8284
+  locator: s. 32
+  name_in_source: Rura w Olejarni
+  purpose: description
+  notes: Jakub Nowak, „Dwie jaskinie w Olejarni”, Jaskinie 4 (93), 2018, s. 32; opis
+    i plan Rury w Olejarni.
+- publication_id: literature-287fd900950743ce
+  locator: s. 3, lp. 72
+  name_in_source: Rura w Olejarni
+  purpose: description
+  notes: 'Załącznik „03 Dol. Chochołowska 2026.07” do zestawienia Jakuba Nowaka „Jaskinie
+    Tatr”, KKTJ, 10.07.2026; s. 3, lp. 72; nazwa w wykazie: Rura w Olejarni.'
 notes: |-
   Jaskinia w Olejarni przy Wyżniej Bramie Chochołowskiej, odrębna od Zbójeckiej Dziury. Długość 6,5 m. Nowak (2018, 2026) podaje 2 m deniwelacji; TPN zapisuje 2 m przewyższenia i nie podaje deniwelacji. Znak różnicy wysokości pozostaje niepotwierdzony.
 

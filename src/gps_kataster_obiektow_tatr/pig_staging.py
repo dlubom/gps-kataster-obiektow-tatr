@@ -5,7 +5,6 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass
-from datetime import UTC, datetime
 from math import isfinite
 from pathlib import Path
 from typing import Any, Protocol
@@ -15,11 +14,14 @@ from gps_kataster_obiektow_tatr.coordinates import (
     coordinate_consistency_error_m,
 )
 from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR
+from gps_kataster_obiektow_tatr.id_allocation import IdSequence, file_ids
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
     PrefixResolutionStatus,
     default_prefix_resolver,
 )
+from gps_kataster_obiektow_tatr.report_formatting import markdown_code_or_dash, markdown_text
+from gps_kataster_obiektow_tatr.source_parsing import clean_text, date_part_or_today, parse_decimal
 from gps_kataster_obiektow_tatr.source_table import read_source_table
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -97,20 +99,19 @@ def build_pig_staging(
 
     table = read_source_table(source_path)
     resolver = prefix_resolver or default_prefix_resolver()
-    cave_number = _max_existing_cave_number(data_dir / "caves")
-    object_numbers: dict[str, int] = {}
+    cave_ids = IdSequence("C", existing_ids=file_ids(data_dir / "caves"))
+    object_ids: dict[str, IdSequence] = {}
     proposed_caves: list[dict[str, Any]] = []
     proposed_objects: list[dict[str, Any]] = []
     staging_rows: list[PigStagingRow] = []
     issues: list[PigStagingIssue] = []
 
     for record_number, row in enumerate(table.rows, start=1):
-        cave_number += 1
-        cave_id = f"C-{cave_number:04d}"
-        pig_id = _clean_value(row.get("ID"))
-        nr_inwent = _clean_value(row.get("Nr inw."))
-        name = _clean_value(row.get("Nazwa")) or f"PIG row {record_number}"
-        link = _clean_value(row.get("Link"))
+        cave_id = cave_ids.next_id()
+        pig_id = clean_text(row.get("ID"))
+        nr_inwent = clean_text(row.get("Nr inw."))
+        name = clean_text(row.get("Nazwa")) or f"PIG row {record_number}"
+        link = clean_text(row.get("Link"))
 
         cave = _build_cave_proposal(
             row=row,
@@ -133,7 +134,7 @@ def build_pig_staging(
                 record_number=record_number,
                 pig_id=pig_id,
                 data_dir=data_dir,
-                object_numbers=object_numbers,
+                object_ids=object_ids,
                 resolver=resolver,
                 issues=issues,
             )
@@ -229,10 +230,10 @@ def render_markdown_report(report: PigStagingReport) -> str:
             "| "
             f"{row.record_number} | "
             f"`{row.cave_id}` | "
-            f"{_markdown_code_or_dash(row.object_id)} | "
-            f"{_markdown_text(row.pig_id)} | "
-            f"{_markdown_text(row.nr_inwent)} | "
-            f"{_markdown_text(row.name)} | "
+            f"{markdown_code_or_dash(row.object_id)} | "
+            f"{markdown_text(row.pig_id)} | "
+            f"{markdown_text(row.nr_inwent)} | "
+            f"{markdown_text(row.name)} | "
             f"`{row.status}` |"
         )
 
@@ -252,8 +253,8 @@ def render_markdown_report(report: PigStagingReport) -> str:
                 f"`{issue.severity}` | "
                 f"`{issue.code}` | "
                 f"{issue.record_number or '-'} | "
-                f"{_markdown_text(issue.pig_id or '')} | "
-                f"{_markdown_text(issue.description)} |"
+                f"{markdown_text(issue.pig_id or '')} | "
+                f"{markdown_text(issue.description)} |"
             )
 
     return "\n".join(lines) + "\n"
@@ -287,7 +288,7 @@ def _try_build_object_proposal(
     record_number: int,
     pig_id: str,
     data_dir: Path,
-    object_numbers: dict[str, int],
+    object_ids: dict[str, IdSequence],
     resolver: PrefixResolverLike,
     issues: list[PigStagingIssue],
 ) -> str | None:
@@ -350,9 +351,11 @@ def _try_build_object_proposal(
         )
 
     prefix = resolution.prefix
-    object_numbers.setdefault(prefix, _max_existing_object_number(data_dir / "objects", prefix))
-    object_numbers[prefix] += 1
-    return f"{prefix}-{object_numbers[prefix]:04d}"
+    if prefix not in object_ids:
+        object_ids[prefix] = IdSequence(
+            prefix, existing_ids=file_ids(data_dir / "objects" / prefix)
+        )
+    return object_ids[prefix].next_id()
 
 
 def _build_object_proposal(
@@ -448,11 +451,11 @@ def _parse_pig_point(
     generated_at: str,
     issues: list[PigStagingIssue],
 ) -> PigPoint | None:
-    lat = _parse_decimal(row.get("B"))
-    lon = _parse_decimal(row.get("L"))
-    x_1992 = _parse_decimal(row.get("X 1992"))
-    y_1992 = _parse_decimal(row.get("Y 1992"))
-    elevation_m = _parse_decimal(row.get("H (wg PIG)"))
+    lat = parse_decimal(row.get("B"))
+    lon = parse_decimal(row.get("L"))
+    x_1992 = parse_decimal(row.get("X 1992"))
+    y_1992 = parse_decimal(row.get("Y 1992"))
+    elevation_m = parse_decimal(row.get("H (wg PIG)"))
 
     invalid_fields = [
         field
@@ -493,7 +496,7 @@ def _parse_pig_point(
 
     source_date = _parse_source_year_date(row.get("Stan na rok"))
     if source_date is None:
-        source_date = _date_part(generated_at)
+        source_date = date_part_or_today(generated_at)
         issues.append(
             PigStagingIssue(
                 code="PIG_SOURCE_YEAR_INVALID",
@@ -517,9 +520,9 @@ def _parse_pig_point(
 
 def _pig_cave_external_refs(row: dict[str, str]) -> list[dict[str, Any]]:
     refs: list[dict[str, Any]] = []
-    nr_inwent = _clean_value(row.get("Nr inw."))
-    pig_id = _clean_value(row.get("ID"))
-    link = _clean_value(row.get("Link"))
+    nr_inwent = clean_text(row.get("Nr inw."))
+    pig_id = clean_text(row.get("ID"))
+    link = clean_text(row.get("Link"))
 
     if nr_inwent:
         refs.append(
@@ -561,9 +564,9 @@ def _pig_cave_external_refs(row: dict[str, str]) -> list[dict[str, Any]]:
 
 def _pig_cave_notes(row: dict[str, str]) -> str | None:
     parts: list[str] = []
-    aliases = _clean_value(row.get("Inne nazwy"))
-    sector = _clean_value(row.get("Sektor (nazwa)"))
-    source_year = _clean_value(row.get("Stan na rok"))
+    aliases = clean_text(row.get("Inne nazwy"))
+    sector = clean_text(row.get("Sektor (nazwa)"))
+    source_year = clean_text(row.get("Stan na rok"))
     morphometry = _format_morphometry(row)
 
     if aliases:
@@ -580,9 +583,9 @@ def _pig_cave_notes(row: dict[str, str]) -> str | None:
 
 def _format_morphometry(row: dict[str, str]) -> str | None:
     values = {
-        "length_m": _clean_value(row.get("Długość [m]")),
-        "depth_m": _clean_value(row.get("Głębokość [m]")),
-        "denivelation_m": _clean_value(row.get("Deniwelacja [m]")),
+        "length_m": clean_text(row.get("Długość [m]")),
+        "depth_m": clean_text(row.get("Głębokość [m]")),
+        "denivelation_m": clean_text(row.get("Deniwelacja [m]")),
     }
     present = {key: value for key, value in values.items() if value}
     if not present:
@@ -626,69 +629,8 @@ def _report_to_json_data(report: PigStagingReport) -> dict[str, Any]:
     }
 
 
-def _max_existing_cave_number(caves_dir: Path) -> int:
-    return _max_existing_number(caves_dir, prefix="C")
-
-
-def _max_existing_object_number(objects_dir: Path, prefix: str) -> int:
-    return _max_existing_number(objects_dir / prefix, prefix=prefix)
-
-
-def _max_existing_number(directory: Path, *, prefix: str) -> int:
-    if not directory.exists():
-        return 0
-
-    max_number = 0
-    pattern = re.compile(rf"^{re.escape(prefix)}-(\d+)\.ya?ml$")
-    for path in directory.iterdir():
-        match = pattern.match(path.name)
-        if match:
-            max_number = max(max_number, int(match.group(1)))
-    return max_number
-
-
 def _parse_source_year_date(raw_value: str | None) -> str | None:
-    text = _clean_value(raw_value)
+    text = clean_text(raw_value)
     if not re.fullmatch(r"\d{4}", text):
         return None
     return f"{int(text):04d}-12-31"
-
-
-def _date_part(timestamp: str) -> str:
-    try:
-        parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
-    except ValueError:
-        return datetime.now(UTC).date().isoformat()
-    return parsed.date().isoformat()
-
-
-def _parse_decimal(raw_value: str | None) -> float | None:
-    text = _clean_value(raw_value)
-    if text == "":
-        return None
-
-    text = text.replace("\u00a0", " ").replace(" ", "")
-    text = text.replace(",", ".")
-    try:
-        return float(text)
-    except ValueError:
-        return None
-
-
-def _clean_value(raw_value: str | None) -> str:
-    if raw_value is None:
-        return ""
-    return str(raw_value).strip()
-
-
-def _markdown_code_or_dash(value: str | None) -> str:
-    if not value:
-        return "-"
-    return f"`{_markdown_text(value)}`"
-
-
-def _markdown_text(value: str) -> str:
-    text = _clean_value(value)
-    if not text:
-        return "-"
-    return text.replace("|", "\\|").replace("\n", "<br>")

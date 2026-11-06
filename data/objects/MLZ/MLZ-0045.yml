@@ -3,6 +3,7 @@ id: MLZ-0045
 category: jaskinia_otwor
 name_local: Komora w Jatkach
 cave_id: C-0469
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24851941
-  lon: 19.92237225
-  x_1992: 153855.14
-  y_1992: 567107.77
+  input_srid: 4326
+  input_x: 19.92237225
+  input_y: 49.24851941
   elevation_m: 1190.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -44,10 +44,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.26559296201374
-  lon: 19.922434472506332
-  x_1992: 155752.66
-  y_1992: 567089.15
+  input_srid: 4326
+  input_x: 19.922434472506332
+  input_y: 49.26559296201374
   elevation_m: 1311.048764
   elevation_datum: unknown
   elevation_source: source_record
@@ -71,13 +70,13 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: 'TPN leży około 77 m na NE od Dziurawej Niszy, zgodnie z opisem PIG
     i mapą Jatek (https://www.openstreetmap.org/node/11603241071).
     Dokładność lokalizacji i rozbieżność wysokości 1190/1311 m pozostają niepotwierdzone.'
   updated_at: '2026-10-16T09:44:22Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

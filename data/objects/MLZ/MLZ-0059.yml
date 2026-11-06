@@ -3,6 +3,7 @@ id: MLZ-0059
 category: jaskinia_otwor
 name_local: Jaskinia Śnieżna Studnia
 cave_id: C-0581
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24148894
-  lon: 19.92270828
-  x_1992: 153074.11
-  y_1992: 567141.75
+  input_srid: 4326
+  input_x: 19.92270828
+  input_y: 49.24148894
   elevation_m: 1747.6
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24148829648404
-  lon: 19.922732319412003
-  x_1992: 153074.06
-  y_1992: 567143.5
+  input_srid: 4326
+  input_x: 19.922732319412003
+  input_y: 49.24148829648404
   elevation_m: 1755.166511
   elevation_datum: unknown
   elevation_source: source_record
@@ -70,11 +69,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

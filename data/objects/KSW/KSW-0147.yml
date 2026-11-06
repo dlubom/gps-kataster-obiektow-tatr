@@ -3,6 +3,7 @@ id: KSW-0147
 category: jaskinia_otwor
 name_local: Jaskinia przy Sikawce
 cave_id: C-0476
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24811664
-  lon: 19.88099996
-  x_1992: 153774.49
-  y_1992: 564098.26
+  input_srid: 4326
+  input_x: 19.88099996
+  input_y: 49.24811664
   elevation_m: 1305.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24811663952398
-  lon: 19.880999960095412
-  x_1992: 153774.49
-  y_1992: 564098.26
+  input_srid: 4326
+  input_x: 19.880999960095412
+  input_y: 49.24811663952398
   elevation_m: 1310.098688
   elevation_datum: unknown
   elevation_source: source_record
@@ -65,10 +64,9 @@ measurements:
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-003
-  lat: 49.24787225375916
-  lon: 19.88195744765718
-  x_1992: 153748.14
-  y_1992: 564168.24
+  input_srid: 4326
+  input_x: 19.88195744765718
+  input_y: 49.24787225375916
   elevation_m: 1338.23999
   elevation_datum: unknown
   elevation_source: dem
@@ -106,11 +104,11 @@ measurements:
   created_by: maintenance:PBI-111
 best_measurement:
   mode: auto
-  measurement_id: m-003
   reason: Nowszy stan tego samego rekordu TPN; bez niezależnej weryfikacji terenowej.
   updated_at: '2026-10-23T11:59:37Z'
   updated_by: maintenance:PBI-111
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

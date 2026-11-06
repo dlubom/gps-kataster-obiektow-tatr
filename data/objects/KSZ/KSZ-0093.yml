@@ -3,6 +3,7 @@ id: KSZ-0093
 category: jaskinia_otwor
 name_local: Tunel w Żlebie z Bramką
 cave_id: C-0785
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.2419533
-  lon: 19.85625398
-  x_1992: 153068.85
-  y_1992: 562305.61
+  input_srid: 4326
+  input_x: 19.85625398
+  input_y: 49.2419533
   elevation_m: 1255.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24195330205986
-  lon: 19.85625398345582
-  x_1992: 153068.85
-  y_1992: 562305.61
+  input_srid: 4326
+  input_x: 19.85625398345582
+  input_y: 49.24195330205986
   elevation_m: 1242.72947
   elevation_datum: unknown
   elevation_source: source_record
@@ -66,11 +65,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

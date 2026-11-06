@@ -8,6 +8,8 @@ MEASUREMENT_NUMERIC_FIELDS = (
     "lon",
     "x_1992",
     "y_1992",
+    "input_x",
+    "input_y",
     "elevation_m",
     "horizontal_accuracy_m",
     "vertical_accuracy_m",

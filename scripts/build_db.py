@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Build the generated SQLite catalog from source YAML."""
+"""Build the generated PostgreSQL dump catalog from source YAML."""
 
 from __future__ import annotations
 
 import argparse
+import subprocess
 import sys
 from collections.abc import Sequence
-from datetime import UTC, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -15,75 +15,64 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from gps_kataster_obiektow_tatr.build_db import (  # noqa: E402
-    DEFAULT_SQLITE_PATH,
-    BuildDatabaseValidationError,
-    build_sqlite_database,
+    DEFAULT_DUMP_PATH,
+    build_database,
 )
-from gps_kataster_obiektow_tatr.data_loader import (  # noqa: E402
-    DEFAULT_DATA_DIR,
-    DataDirectoryError,
+from gps_kataster_obiektow_tatr.catalog_cli import (  # noqa: E402
+    add_catalog_arguments,
+    add_generated_at_argument,
+    print_error,
+    print_issues,
 )
-from gps_kataster_obiektow_tatr.validator import format_issue  # noqa: E402
+from gps_kataster_obiektow_tatr.report_formatting import utc_timestamp  # noqa: E402
+from gps_kataster_obiektow_tatr.validator import CatalogValidationError  # noqa: E402
 
 
 def build_parser() -> argparse.ArgumentParser:
     """Build the CLI argument parser."""
 
-    parser = argparse.ArgumentParser(description="Build build/katalog.sqlite from YAML data.")
-    parser.add_argument(
-        "--data-dir",
-        type=Path,
-        default=DEFAULT_DATA_DIR,
-        help="Data root directory. Defaults to data/.",
-    )
+    parser = argparse.ArgumentParser(description="Build build/katalog.dump from YAML data.")
+    add_catalog_arguments(parser)
     parser.add_argument(
         "--output",
         type=Path,
-        default=DEFAULT_SQLITE_PATH,
-        help="SQLite output path. Defaults to build/katalog.sqlite.",
+        default=DEFAULT_DUMP_PATH,
+        help="PostgreSQL dump output path. Defaults to build/katalog.dump.",
     )
-    parser.add_argument(
-        "--generated-at",
-        default=None,
-        help="Override generated timestamp, mainly for deterministic tests.",
-    )
+    add_generated_at_argument(parser)
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    """Run the SQLite build command line interface."""
+    """Run the PostgreSQL dump build command line interface."""
 
     args = build_parser().parse_args(argv)
-    generated_at = args.generated_at or _utc_timestamp()
+    generated_at = args.generated_at or utc_timestamp()
 
     try:
-        result = build_sqlite_database(
+        result = build_database(
             data_dir=args.data_dir,
+            base_ref=args.base_ref,
+            history_repo=args.history_repo,
             output_path=args.output,
             generated_at=generated_at,
         )
-    except DataDirectoryError as exc:
-        print(f"error: {exc}", file=sys.stderr)
+    except CatalogValidationError as exc:
+        print_issues(exc.issues)
         return 1
-    except BuildDatabaseValidationError as exc:
-        for issue in exc.issues:
-            print(format_issue(issue))
-        return 1
+    except (ValueError, OSError, subprocess.SubprocessError) as exc:
+        return print_error(exc)
 
     metadata = result.metadata
-    print(f"wrote: {result.sqlite_path}")
+    print(f"wrote: {result.dump_path}")
     print(
-        "SQLite build: "
+        "PostgreSQL dump build: "
         f"{metadata['object_count']} objects, "
         f"{metadata['cave_count']} caves, "
         f"{metadata['measurement_count']} measurements, "
         f"{metadata['validation_warning_count']} validation warnings"
     )
     return 0
-
-
-def _utc_timestamp() -> str:
-    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 if __name__ == "__main__":

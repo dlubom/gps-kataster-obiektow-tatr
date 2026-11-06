@@ -3,6 +3,7 @@ id: PL-0019
 category: jaskinia_otwor
 name_local: Schron w Skale Kmietowicza II
 cave_id: C-0328
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.23512618
-  lon: 19.8202703
-  x_1992: 152281.1
-  y_1992: 559695.5
+  input_srid: 4326
+  input_x: 19.8202703
+  input_y: 49.23512618
   elevation_m: 994.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -46,10 +46,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.25731616101058
-  lon: 19.815499973336546
-  x_1992: 154743.43
-  y_1992: 559321.75
+  input_srid: 4326
+  input_x: 19.815499973336546
+  input_y: 49.25731616101058
   elevation_m: 986.0514
   elevation_datum: unknown
   elevation_source: source_record
@@ -79,12 +78,12 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: 'Przegląd mapowy PBI-087: TPN przy Skale Kmietowicza; punkt PIG m-001
     odrzucony jako sprzeczny z położeniem skały i opisem schronu.'
   updated_at: '2026-10-16T09:27:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

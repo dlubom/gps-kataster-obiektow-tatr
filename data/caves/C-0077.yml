@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1654
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSW-0026
+bibliography_status: unknown
 notes: 'PIG sector: D. Kościeliska - Wsch.
 
   PIG morphometry: length_m=15, depth_m=7,5, denivelation_m=7,5

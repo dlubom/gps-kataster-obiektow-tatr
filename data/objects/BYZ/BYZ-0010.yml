@@ -3,6 +3,7 @@ id: BYZ-0010
 category: jaskinia_otwor
 name_local: Dziura w Szczerbie II
 cave_id: C-0220
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.25023731
-  lon: 19.9374878
-  x_1992: 154059.58
-  y_1992: 568205.13
+  input_srid: 4326
+  input_x: 19.9374878
+  input_y: 49.25023731
   elevation_m: 1830.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.25144165727259
-  lon: 19.93727143189621
-  x_1992: 154193.23
-  y_1992: 568187.73
+  input_srid: 4326
+  input_x: 19.93727143189621
+  input_y: 49.25144165727259
   elevation_m: 1816.192232
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

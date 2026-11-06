@@ -48,6 +48,122 @@ class StubResolver:
         )
 
 
+def test_new_batch_ids_reserve_existing_files_and_pig_candidates(
+    tmp_path, monkeypatch, make_data_dir
+):
+    data = make_data_dir(tmp_path / "data")
+    for directory, prefix in [(data / "caves", "C"), (data / "objects/KSW", "KSW")]:
+        directory.mkdir(exist_ok=True)
+        (directory / f"{prefix}-0001.yml").write_text(f"id: {prefix}-0001\n", encoding="utf-8")
+        (directory / f"{prefix}-0009.yaml").write_text(f"id: {prefix}-0009\n", encoding="utf-8")
+        (directory / f"{prefix}-9999.yaml").mkdir()
+        (directory / f"{prefix}-9998.yaml\n").touch()
+    pig = tmp_path / "pig.json"
+    _write_pig_staging(
+        pig,
+        object_id="KSW-0042",
+        cave_id="C-0050",
+        nr_inwent="old",
+        name="Old cave",
+        x_1992=200000,
+        y_1992=600000,
+    )
+    payload = json.loads(pig.read_text())
+    payload["rows"].append({"object_id": "CHZ-99999", "cave_id": "C-0002"})
+    payload["proposed_objects"].append({"id": "CHZ-99999", "measurements": []})
+    pig.write_text(json.dumps(payload), encoding="utf-8")
+    source = tmp_path / "tpn.csv"
+    _write_tpn_csv(
+        source,
+        [
+            _tpn_row(
+                nr_inwent=f"new-{n}",
+                name=f"New cave {n}",
+                globalid=f"{{new-{n}}}",
+                x_1992="152267.23",
+                y_1992="563744.25",
+            )
+            for n in range(2)
+        ],
+    )
+    before = {p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()}
+    scans = []
+    iterdir = Path.iterdir
+
+    def observe(directory):
+        scans.append(directory)
+        return iterdir(directory)
+
+    monkeypatch.setattr(Path, "iterdir", observe)
+    for _ in range(2):
+        report = build_tpn_staging(
+            source,
+            generated_at="2026-11-06T12:00:00Z",
+            data_dir=data,
+            pig_staging_path=pig,
+            prefix_resolver=StubResolver(),
+        )
+        assert [c["id"] for c in report.proposed_caves] == ["C-0051", "C-0052"]
+        assert [o["id"] for o in report.proposed_objects] == ["KSW-0043", "KSW-0044"]
+        assert [o["measurements"][0]["id"] for o in report.proposed_objects] == ["m-001", "m-001"]
+        assert {
+            p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()
+        } == before
+        assert json.loads(pig.read_text()) == payload
+    assert scans.count(data / "caves") == 2
+    assert scans.count(data / "objects/KSW") == 2
+
+
+@pytest.mark.parametrize(
+    ("highest", "expected"),
+    [(3, ["m-004", "m-005", "m-002"]), (999, ["m-1000", "m-1001", "m-002"])],
+)
+def test_matched_measurement_ids_reserve_within_object_only(
+    tmp_path, make_data_dir, highest, expected
+):
+    data = make_data_dir(tmp_path / "data")
+    for number, globalids in [(1, ["{first}", "{second}"]), (2, ["{third}"])]:
+        obj = {
+            "id": f"KSW-{number:04d}",
+            "external_refs": [{"system": "TPN", "external_id": value} for value in globalids],
+            "measurements": [{"id": "m-001", "x_1992": 152267.23, "y_1992": 563744.25}],
+        }
+        if number == 1:
+            obj["measurements"].append({"id": f"m-{highest:03d}"})
+        (data / "objects" / f"{obj['id']}.yml").write_text(yaml.safe_dump(obj), encoding="utf-8")
+    source = tmp_path / "tpn.csv"
+    _write_tpn_csv(
+        source,
+        [
+            _tpn_row(
+                nr_inwent="",
+                name="Matched cave",
+                globalid=value,
+                x_1992="152267.23",
+                y_1992="563744.25",
+            )
+            for value in ["{first}", "{second}", "{third}"]
+        ],
+    )
+    before = {p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()}
+    for _ in range(2):
+        report = build_tpn_staging(
+            source,
+            generated_at="2026-11-06T12:00:00Z",
+            data_dir=data,
+            pig_staging_path=None,
+        )
+        assert [m["target_object_id"] for m in report.matched_measurements] == [
+            "KSW-0001",
+            "KSW-0001",
+            "KSW-0002",
+        ]
+        assert [m["measurement"]["id"] for m in report.matched_measurements] == expected
+        assert {
+            p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()
+        } == before
+
+
 @pytest.mark.parametrize("matched", [False, True])
 @pytest.mark.parametrize(
     ("location", "remarks"), [("niepewna", "Trzeba uściślić położenie"), ("", "")]

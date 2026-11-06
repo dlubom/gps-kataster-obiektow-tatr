@@ -3,6 +3,7 @@ id: MTW-0050
 category: jaskinia_otwor
 name_local: Dziura w Grzędzie I
 cave_id: C-0642
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -26,10 +27,9 @@ external_refs:
     układ PL-1992, geoida PL-EVRF2007-NHv2021artgeo,GGF.
 measurements:
 - id: m-001
-  lat: 49.23893142
-  lon: 19.91585442
-  x_1992: 152783.82
-  y_1992: 566646.47
+  input_srid: 4326
+  input_x: 19.91585442
+  input_y: 49.23893142
   elevation_m: 1926.9
   elevation_datum: unknown
   elevation_source: source_record
@@ -51,10 +51,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.23926878607452
-  lon: 19.91529475176308
-  x_1992: 152820.82
-  y_1992: 566605.29
+  input_srid: 4326
+  input_x: 19.91529475176308
+  input_y: 49.23926878607452
   elevation_m: 1926.954825
   elevation_datum: unknown
   elevation_source: source_record
@@ -79,8 +78,6 @@ measurements:
 - id: m-003
   lat: 49.239277112744546
   lon: 19.91530878776928
-  x_1992: 152821.75773975198
-  y_1992: 566606.3001782902
   elevation_m: 1924.9890695162003
   elevation_datum: PL-EVRF2007-NH
   elevation_source: other
@@ -120,6 +117,7 @@ attachments:
   caption: 'Marek Jędrzejczak: raport GNSS/domiarów, Zestawienie wiersz 11.'
   created_at: '2026-11-04T10:47:15Z'
   created_by: dl
+bibliography_status: unknown
 notes: >-
   Imported from PIG source record after operator review.
   Poprawiony XLS Marka Jędrzejczaka przypisuje wiersz 11 do otworu I

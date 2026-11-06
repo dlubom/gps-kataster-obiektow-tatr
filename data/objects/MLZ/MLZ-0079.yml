@@ -3,6 +3,7 @@ id: MLZ-0079
 category: jaskinia_otwor
 name_local: Średni Lej
 cave_id: C-0794
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.23981391
-  lon: 19.92059166
-  x_1992: 152886.08
-  y_1992: 566990.0
+  input_srid: 4326
+  input_x: 19.92059166
+  input_y: 49.23981391
   elevation_m: 1879.9
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.23981391112247
-  lon: 19.920591663951324
-  x_1992: 152886.08
-  y_1992: 566990.0
+  input_srid: 4326
+  input_x: 19.920591663951324
+  input_y: 49.23981391112247
   elevation_m: 1870.207198
   elevation_datum: unknown
   elevation_source: source_record
@@ -67,10 +66,9 @@ measurements:
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-003
-  lat: 49.239847644511535
-  lon: 19.92063056805087
-  x_1992: 152889.86
-  y_1992: 566992.79
+  input_srid: 4326
+  input_x: 19.92063056805087
+  input_y: 49.239847644511535
   elevation_m: 1865.109985
   elevation_datum: unknown
   elevation_source: dem
@@ -111,11 +109,11 @@ measurements:
   created_by: maintenance:PBI-111
 best_measurement:
   mode: auto
-  measurement_id: m-003
   reason: Nowszy stan tego samego rekordu TPN; bez niezależnej weryfikacji terenowej.
   updated_at: '2026-10-23T11:59:37Z'
   updated_by: maintenance:PBI-111
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

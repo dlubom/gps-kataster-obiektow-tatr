@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1454
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MTZ-0010
+bibliography_status: unknown
 notes: 'PIG sector: D. Miętusia - Zach.
 
   PIG morphometry: length_m=8,5, depth_m=1,7, denivelation_m=1,7

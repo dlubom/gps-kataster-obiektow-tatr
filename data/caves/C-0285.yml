@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1086
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- LEJ-0009
+bibliography_status: unknown
 notes: 'PIG sector: D. Lejowa
 
   PIG morphometry: length_m=3,6, depth_m=0, denivelation_m=0

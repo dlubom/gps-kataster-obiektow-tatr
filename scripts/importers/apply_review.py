@@ -81,6 +81,15 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Validate the complete review and render its report without writing final YAML.",
     )
+    parser.add_argument(
+        "--history-repo",
+        type=Path,
+        default=REPO_ROOT,
+        help="Git repository containing the accepted baseline.",
+    )
+    parser.add_argument(
+        "--base-ref", default="origin/main", help="Accepted Git baseline for immutable history."
+    )
     return parser
 
 
@@ -99,6 +108,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             staging_reports=staging_reports,
             data_dir=args.data_dir,
             write=not args.dry_run,
+            base_ref=args.base_ref,
+            repo_root=args.history_repo,
         )
     except (ReviewDecisionError, DataDirectoryError) as exc:
         print(f"error: {exc}", file=sys.stderr)

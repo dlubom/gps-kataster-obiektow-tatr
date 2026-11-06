@@ -17,8 +17,20 @@ external_refs:
   scope: cave
   notes: 'Załącznik „05 Dol. Kościeliska 2026.07” do zestawienia Jakuba Nowaka „Jaskinie Tatr”, KKTJ,
     10.07.2026; s. 7, lp. 196; nazwa w wykazie: Okno pod Sikawką.'
-object_ids:
-- KSW-0263
+bibliography_status: known
+citations:
+- publication_id: literature-9a04acfe8d04f16e
+  locator: s. 27–28
+  name_in_source: Okno pod Sikawką
+  purpose: description
+  notes: Jakub Nowak, „Z archiwum «J» cz. VII – Sikawka”, Jaskinie 4 (73), 2013, s.
+    27–28; opis, plan i fotografie Okna pod Sikawką.
+- publication_id: literature-60e5e5ac5cd0bdce
+  locator: s. 7, lp. 196
+  name_in_source: Okno pod Sikawką
+  purpose: description
+  notes: 'Załącznik „05 Dol. Kościeliska 2026.07” do zestawienia Jakuba Nowaka „Jaskinie
+    Tatr”, KKTJ, 10.07.2026; s. 7, lp. 196; nazwa w wykazie: Okno pod Sikawką.'
 notes: |-
   Jaskinia przy wodospadzie Sikawka w Żlebie pod Wysranki, odrębna od Jaskini przy Sikawce. Długość 3,5 m. Deniwelacja 1 m według Nowaka (2013), przewyższenie 1 m według Nowaka (2026); oba pola TPN są puste.
 

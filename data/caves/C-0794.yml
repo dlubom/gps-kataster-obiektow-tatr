@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1563
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MLZ-0079
+bibliography_status: unknown
 notes: 'PIG aliases: Awen Górny, Dziura pod Lejem, Śnieżny Lej, Śnieżna Studnia w
   Kotlinach
 

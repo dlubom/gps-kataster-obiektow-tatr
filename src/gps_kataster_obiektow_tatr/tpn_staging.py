@@ -6,22 +6,30 @@ import json
 import re
 import unicodedata
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import datetime
 from math import hypot, isfinite
 from pathlib import Path
 from typing import Any, Protocol
 
 from gps_kataster_obiektow_tatr.coordinates import pl1992_to_wgs84
-from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR, load_dataset
+from gps_kataster_obiektow_tatr.data_loader import (
+    DEFAULT_DATA_DIR,
+    is_canonical_source,
+    load_yaml_dataset,
+)
+from gps_kataster_obiektow_tatr.id_allocation import IdSequence, file_ids
 from gps_kataster_obiektow_tatr.measurement_values import (
     MEASUREMENT_NUMERIC_FIELDS,
     non_finite_measurement_fields,
 )
+from gps_kataster_obiektow_tatr.postgres import read_catalog_projection
 from gps_kataster_obiektow_tatr.prefix_resolver import (
     PrefixResolution,
     PrefixResolutionStatus,
     default_prefix_resolver,
 )
+from gps_kataster_obiektow_tatr.report_formatting import markdown_code_or_dash, markdown_text
+from gps_kataster_obiektow_tatr.source_parsing import clean_text, date_part_or_today, parse_decimal
 from gps_kataster_obiektow_tatr.source_table import read_source_table
 from gps_kataster_obiektow_tatr.tpn_notes import append_tpn_context
 
@@ -98,7 +106,7 @@ class _Candidate:
     x_1992: float | None
     y_1992: float | None
     globalids: tuple[str, ...]
-    next_measurement_id: str
+    measurement_ids: tuple[str, ...]
 
 
 @dataclass(frozen=True, slots=True)
@@ -141,8 +149,18 @@ def build_tpn_staging(
     )
     resolver = prefix_resolver or default_prefix_resolver()
     source_nr_counts = _source_nr_counts(table.rows)
-    cave_number = _seed_cave_number(data_dir, candidates)
-    object_numbers = _seed_object_numbers(data_dir, candidates)
+    cave_ids = IdSequence(
+        "C",
+        existing_ids=file_ids(data_dir / "caves"),
+        reserved_ids=(c.cave_id for c in candidates if c.cave_id is not None),
+    )
+    object_ids: dict[str, IdSequence] = {}
+    reserved_object_ids = tuple(c.object_id for c in candidates)
+    measurement_ids: dict[str, IdSequence] = {}
+    for candidate in candidates:
+        measurement_ids.setdefault(candidate.object_id, IdSequence("m", width=3)).reserve(
+            candidate.measurement_ids
+        )
 
     matched_measurements: list[dict[str, Any]] = []
     proposed_caves: list[dict[str, Any]] = []
@@ -151,9 +169,9 @@ def build_tpn_staging(
     issues: list[TpnStagingIssue] = []
 
     for record_number, row in enumerate(table.rows, start=1):
-        globalid = _clean_value(row.get("GLOBALID"))
-        nr_inwent = _clean_value(row.get("NR_INWENT"))
-        name = _clean_value(row.get("NAZWA")) or f"TPN row {record_number}"
+        globalid = clean_text(row.get("GLOBALID"))
+        nr_inwent = clean_text(row.get("NR_INWENT"))
+        name = clean_text(row.get("NAZWA")) or f"TPN row {record_number}"
         point = _parse_tpn_point(
             row,
             record_number=record_number,
@@ -253,6 +271,7 @@ def build_tpn_staging(
                     globalid=globalid,
                     nr_inwent=nr_inwent,
                     generated_at=generated_at,
+                    measurement_id=measurement_ids[match.candidate.object_id].next_id(),
                 )
             )
             staging_rows.append(
@@ -276,7 +295,8 @@ def build_tpn_staging(
             globalid=globalid,
             nr_inwent=nr_inwent,
             data_dir=data_dir,
-            object_numbers=object_numbers,
+            object_ids=object_ids,
+            reserved_ids=reserved_object_ids,
             resolver=resolver,
             issues=issues,
         )
@@ -292,8 +312,7 @@ def build_tpn_staging(
             )
             continue
 
-        cave_number += 1
-        cave_id = f"C-{cave_number:04d}"
+        cave_id = cave_ids.next_id()
         object_id = new_ids
         proposed_caves.append(
             _build_cave_proposal(
@@ -394,13 +413,13 @@ def render_markdown_report(report: TpnStagingReport) -> str:
             "| "
             f"{row.record_number} | "
             f"`{row.status}` | "
-            f"{_markdown_code_or_dash(row.cave_id)} | "
-            f"{_markdown_code_or_dash(row.object_id)} | "
-            f"{_markdown_code_or_dash(row.match_strategy)} | "
+            f"{markdown_code_or_dash(row.cave_id)} | "
+            f"{markdown_code_or_dash(row.object_id)} | "
+            f"{markdown_code_or_dash(row.match_strategy)} | "
             f"{distance} | "
-            f"{_markdown_text(row.globalid)} | "
-            f"{_markdown_text(row.nr_inwent)} | "
-            f"{_markdown_text(row.name)} |"
+            f"{markdown_text(row.globalid)} | "
+            f"{markdown_text(row.nr_inwent)} | "
+            f"{markdown_text(row.name)} |"
         )
 
     if report.issues:
@@ -419,9 +438,9 @@ def render_markdown_report(report: TpnStagingReport) -> str:
                 f"`{issue.severity}` | "
                 f"`{issue.code}` | "
                 f"{issue.record_number or '-'} | "
-                f"{_markdown_text(issue.globalid or '')} | "
-                f"{_markdown_text(issue.nr_inwent or '')} | "
-                f"{_markdown_text(issue.description)} |"
+                f"{markdown_text(issue.globalid or '')} | "
+                f"{markdown_text(issue.nr_inwent or '')} | "
+                f"{markdown_text(issue.description)} |"
             )
 
     return "\n".join(lines) + "\n"
@@ -436,9 +455,9 @@ def _parse_tpn_point(
     generated_at: str,
     issues: list[TpnStagingIssue],
 ) -> TpnPoint | None:
-    x_1992 = _parse_decimal(row.get("X1992"))
-    y_1992 = _parse_decimal(row.get("Y1992"))
-    elevation_m = _parse_decimal(row.get("Z"))
+    x_1992 = parse_decimal(row.get("X1992"))
+    y_1992 = parse_decimal(row.get("Y1992"))
+    elevation_m = parse_decimal(row.get("Z"))
 
     invalid_fields = [
         field
@@ -471,7 +490,7 @@ def _parse_tpn_point(
         )
         return None
 
-    source_date = _parse_source_date(row) or _date_part(generated_at)
+    source_date = _parse_source_date(row) or date_part_or_today(generated_at)
     try:
         wgs84 = pl1992_to_wgs84(x_1992=x_1992, y_1992=y_1992)
     except ValueError as exc:
@@ -637,7 +656,8 @@ def _try_build_new_ids(
     globalid: str,
     nr_inwent: str,
     data_dir: Path,
-    object_numbers: dict[str, int],
+    object_ids: dict[str, IdSequence],
+    reserved_ids: tuple[str, ...],
     resolver: PrefixResolverLike,
     issues: list[TpnStagingIssue],
 ) -> str | None:
@@ -668,9 +688,13 @@ def _try_build_new_ids(
         )
 
     prefix = resolution.prefix
-    object_numbers.setdefault(prefix, _max_existing_object_number(data_dir / "objects", prefix))
-    object_numbers[prefix] += 1
-    return f"{prefix}-{object_numbers[prefix]:04d}"
+    if prefix not in object_ids:
+        object_ids[prefix] = IdSequence(
+            prefix,
+            existing_ids=file_ids(data_dir / "objects" / prefix),
+            reserved_ids=reserved_ids,
+        )
+    return object_ids[prefix].next_id()
 
 
 def _build_measurement_update(
@@ -682,6 +706,7 @@ def _build_measurement_update(
     globalid: str,
     nr_inwent: str,
     generated_at: str,
+    measurement_id: str,
 ) -> dict[str, Any]:
     return {
         "status": "matched",
@@ -697,7 +722,7 @@ def _build_measurement_update(
         "cave_external_refs": _tpn_cave_external_refs(row),
         "measurement": _build_tpn_measurement(
             row=row,
-            measurement_id=match.candidate.next_measurement_id,
+            measurement_id=measurement_id,
             point=point,
             globalid=globalid,
             generated_at=generated_at,
@@ -830,7 +855,7 @@ def _tpn_object_external_ref(globalid: str) -> dict[str, Any]:
 
 def _tpn_cave_external_refs(row: dict[str, str]) -> list[dict[str, Any]]:
     refs: list[dict[str, Any]] = []
-    nr_inwent = _clean_value(row.get("NR_INWENT"))
+    nr_inwent = clean_text(row.get("NR_INWENT"))
     if nr_inwent:
         refs.append(
             {
@@ -853,20 +878,20 @@ def _tpn_cave_notes(row: dict[str, str]) -> str | None:
         ("TPN verification/location note", "WER_LOK"),
         ("TPN notes", "UWAGI"),
     ):
-        value = _clean_value(row.get(column))
+        value = clean_text(row.get(column))
         if value:
             parts.append(f"{label}: {value}")
     return "\n".join(parts) if parts else None
 
 
 def _tpn_object_notes(row: dict[str, str]) -> str:
-    otwor = _clean_value(row.get("OTWÓR"))
+    otwor = clean_text(row.get("OTWÓR"))
     note = "Staging proposal from TPN; requires operator review before final YAML."
     if otwor:
         note += f"\nTPN opening: {otwor}"
     if _has_mixed_tpn_genesis(row):
         note += (
-            f"\nTPN GENEZA: {_clean_value(row.get('GENEZA'))}"
+            f"\nTPN GENEZA: {clean_text(row.get('GENEZA'))}"
             "\nMixed natural cave and mine working; requires category review."
         )
     return note
@@ -892,8 +917,12 @@ def _infer_tpn_object_category(*, row: dict[str, str], name: str) -> str:
 
 
 def _load_existing_candidates(data_dir: Path) -> tuple[_Candidate, ...]:
-    dataset = load_dataset(data_dir)
-    caves_by_id = {_clean_value(record.data.get("id")): record.data for record in dataset.caves}
+    dataset = (
+        read_catalog_projection(data_dir)
+        if is_canonical_source(data_dir)
+        else load_yaml_dataset(data_dir)
+    )
+    caves_by_id = {clean_text(record.data.get("id")): record.data for record in dataset.caves}
     cave_id_by_object_id: dict[str, str] = {}
     for cave_id, cave in caves_by_id.items():
         for object_id in cave.get("object_ids", []):
@@ -903,10 +932,10 @@ def _load_existing_candidates(data_dir: Path) -> tuple[_Candidate, ...]:
     candidates: list[_Candidate] = []
     for record in dataset.objects:
         data = record.data
-        object_id = _clean_value(data.get("id"))
+        object_id = clean_text(data.get("id"))
         if not object_id:
             continue
-        cave_id = _clean_value(data.get("cave_id")) or cave_id_by_object_id.get(object_id)
+        cave_id = clean_text(data.get("cave_id")) or cave_id_by_object_id.get(object_id)
         cave = caves_by_id.get(cave_id or "")
         measurement = _candidate_measurement(data)
         candidates.append(
@@ -915,12 +944,12 @@ def _load_existing_candidates(data_dir: Path) -> tuple[_Candidate, ...]:
                 cave_id=cave_id,
                 object_id=object_id,
                 nr_inwent=_first_external_ref_id(cave, system="NR_INWENT"),
-                name=_clean_value(data.get("name_local"))
-                or _clean_value(cave.get("name") if cave else ""),
-                x_1992=_parse_decimal(measurement.get("x_1992") if measurement else None),
-                y_1992=_parse_decimal(measurement.get("y_1992") if measurement else None),
+                name=clean_text(data.get("name_local"))
+                or clean_text(cave.get("name") if cave else ""),
+                x_1992=parse_decimal(measurement.get("x_1992") if measurement else None),
+                y_1992=parse_decimal(measurement.get("y_1992") if measurement else None),
                 globalids=tuple(_external_ref_ids(data, system="TPN")),
-                next_measurement_id=_next_measurement_id(data.get("measurements", [])),
+                measurement_ids=_measurement_ids(data.get("measurements", [])),
             )
         )
 
@@ -933,13 +962,13 @@ def _load_pig_staging_candidates(pig_staging_path: Path | None) -> tuple[_Candid
 
     data = json.loads(pig_staging_path.read_text(encoding="utf-8"))
     rows_by_object_id = {
-        _clean_value(row.get("object_id")): row
+        clean_text(row.get("object_id")): row
         for row in data.get("rows", [])
-        if _clean_value(row.get("object_id"))
+        if clean_text(row.get("object_id"))
     }
     candidates: list[_Candidate] = []
     for proposed_object in data.get("proposed_objects", []):
-        object_id = _clean_value(proposed_object.get("id"))
+        object_id = clean_text(proposed_object.get("id"))
         row = rows_by_object_id.get(object_id)
         if not object_id or row is None:
             continue
@@ -947,15 +976,14 @@ def _load_pig_staging_candidates(pig_staging_path: Path | None) -> tuple[_Candid
         candidates.append(
             _Candidate(
                 source="pig_staging",
-                cave_id=_clean_value(row.get("cave_id")) or None,
+                cave_id=clean_text(row.get("cave_id")) or None,
                 object_id=object_id,
-                nr_inwent=_clean_value(row.get("nr_inwent")) or None,
-                name=_clean_value(row.get("name"))
-                or _clean_value(proposed_object.get("name_local")),
-                x_1992=_parse_decimal(measurement.get("x_1992") if measurement else None),
-                y_1992=_parse_decimal(measurement.get("y_1992") if measurement else None),
+                nr_inwent=clean_text(row.get("nr_inwent")) or None,
+                name=clean_text(row.get("name")) or clean_text(proposed_object.get("name_local")),
+                x_1992=parse_decimal(measurement.get("x_1992") if measurement else None),
+                y_1992=parse_decimal(measurement.get("y_1992") if measurement else None),
                 globalids=tuple(_external_ref_ids(proposed_object, system="TPN")),
-                next_measurement_id=_next_measurement_id(proposed_object.get("measurements", [])),
+                measurement_ids=_measurement_ids(proposed_object.get("measurements", [])),
             )
         )
     return tuple(candidates)
@@ -972,7 +1000,7 @@ def _candidate_measurement(data: dict[str, Any]) -> dict[str, Any] | None:
         # Matching accepts source-style decimal text as well as JSON numbers.
         # Check after parsing too: strings and large integers can become NaN/inf.
         parsed_numbers = {
-            field: _parse_decimal(measurement.get(field)) for field in MEASUREMENT_NUMERIC_FIELDS
+            field: parse_decimal(measurement.get(field)) for field in MEASUREMENT_NUMERIC_FIELDS
         }
         invalid_fields = non_finite_measurement_fields(parsed_numbers)
         if invalid_fields:
@@ -1003,11 +1031,11 @@ def _external_ref_ids(data: dict[str, Any] | None, *, system: str) -> list[str]:
     if not isinstance(refs, list):
         return []
     return [
-        _clean_value(ref.get("external_id"))
+        clean_text(ref.get("external_id"))
         for ref in refs
         if isinstance(ref, dict)
         and ref.get("system") == system
-        and _clean_value(ref.get("external_id"))
+        and clean_text(ref.get("external_id"))
     ]
 
 
@@ -1019,36 +1047,10 @@ def _first_external_ref_id(data: dict[str, Any] | None, *, system: str) -> str |
 def _source_nr_counts(rows: tuple[dict[str, str], ...]) -> dict[str, int]:
     counts: dict[str, int] = {}
     for row in rows:
-        nr_inwent = _clean_value(row.get("NR_INWENT"))
+        nr_inwent = clean_text(row.get("NR_INWENT"))
         if nr_inwent:
             counts[nr_inwent] = counts.get(nr_inwent, 0) + 1
     return counts
-
-
-def _seed_cave_number(data_dir: Path, candidates: tuple[_Candidate, ...]) -> int:
-    cave_number = _max_existing_cave_number(data_dir / "caves")
-    for candidate in candidates:
-        if candidate.cave_id:
-            cave_number = max(cave_number, _parse_prefixed_number(candidate.cave_id, prefix="C"))
-    return cave_number
-
-
-def _seed_object_numbers(
-    data_dir: Path,
-    candidates: tuple[_Candidate, ...],
-) -> dict[str, int]:
-    numbers: dict[str, int] = {}
-    for candidate in candidates:
-        parsed = _parse_object_id(candidate.object_id)
-        if parsed is None:
-            continue
-        prefix, number = parsed
-        numbers[prefix] = max(
-            numbers.get(prefix, 0),
-            _max_existing_object_number(data_dir / "objects", prefix),
-            number,
-        )
-    return numbers
 
 
 def _report_to_json_data(report: TpnStagingReport) -> dict[str, Any]:
@@ -1136,21 +1138,21 @@ def _names_equal(left: str, right: str) -> bool:
 
 
 def _normalize_name(value: str) -> str:
-    normalized = unicodedata.normalize("NFKD", _clean_value(value).lower())
+    normalized = unicodedata.normalize("NFKD", clean_text(value).lower())
     ascii_text = "".join(char for char in normalized if not unicodedata.combining(char))
     return re.sub(r"[^a-z0-9]+", " ", ascii_text).strip()
 
 
 def _parse_source_date(row: dict[str, str]) -> str | None:
     for column in ("LAST_EDI_1", "CREATED_DA"):
-        parsed = _parse_date(_clean_value(row.get(column)))
+        parsed = _parse_date(clean_text(row.get(column)))
         if parsed is not None:
             return parsed
     return None
 
 
 def _parse_date(raw_value: str) -> str | None:
-    text = _clean_value(raw_value)
+    text = clean_text(raw_value)
     if not text:
         return None
 
@@ -1162,86 +1164,11 @@ def _parse_date(raw_value: str) -> str | None:
     return None
 
 
-def _date_part(timestamp: str) -> str:
-    try:
-        parsed = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
-    except ValueError:
-        return datetime.now(UTC).date().isoformat()
-    return parsed.date().isoformat()
-
-
-def _next_measurement_id(measurements: Any) -> str:
-    max_number = 0
-    if isinstance(measurements, list):
-        for measurement in measurements:
-            if not isinstance(measurement, dict):
-                continue
-            match = re.fullmatch(r"m-(\d+)", _clean_value(measurement.get("id")))
-            if match:
-                max_number = max(max_number, int(match.group(1)))
-    return f"m-{max_number + 1:03d}"
-
-
-def _max_existing_cave_number(caves_dir: Path) -> int:
-    return _max_existing_number(caves_dir, prefix="C")
-
-
-def _max_existing_object_number(objects_dir: Path, prefix: str) -> int:
-    return _max_existing_number(objects_dir / prefix, prefix=prefix)
-
-
-def _max_existing_number(directory: Path, *, prefix: str) -> int:
-    if not directory.exists():
-        return 0
-
-    max_number = 0
-    pattern = re.compile(rf"^{re.escape(prefix)}-(\d+)\.ya?ml$")
-    for path in directory.iterdir():
-        match = pattern.match(path.name)
-        if match:
-            max_number = max(max_number, int(match.group(1)))
-    return max_number
-
-
-def _parse_object_id(object_id: str) -> tuple[str, int] | None:
-    match = re.fullmatch(r"([A-Z]{2,3})-(\d+)", _clean_value(object_id))
-    if not match:
-        return None
-    return match.group(1), int(match.group(2))
-
-
-def _parse_prefixed_number(value: str, *, prefix: str) -> int:
-    match = re.fullmatch(rf"{re.escape(prefix)}-(\d+)", _clean_value(value))
-    return int(match.group(1)) if match else 0
-
-
-def _parse_decimal(raw_value: Any) -> float | None:
-    text = _clean_value(raw_value)
-    if text == "":
-        return None
-
-    text = text.replace("\u00a0", " ").replace(" ", "")
-    text = text.replace(",", ".")
-    try:
-        return float(text)
-    except ValueError:
-        return None
-
-
-def _clean_value(raw_value: Any) -> str:
-    if raw_value is None:
-        return ""
-    return str(raw_value).strip()
-
-
-def _markdown_code_or_dash(value: str | None) -> str:
-    if not value:
-        return "-"
-    return f"`{_markdown_text(value)}`"
-
-
-def _markdown_text(value: str) -> str:
-    text = _clean_value(value)
-    if not text:
-        return "-"
-    return text.replace("|", "\\|").replace("\n", "<br>")
+def _measurement_ids(measurements: Any) -> tuple[str, ...]:
+    if not isinstance(measurements, list):
+        return ()
+    return tuple(
+        clean_text(measurement.get("id"))
+        for measurement in measurements
+        if isinstance(measurement, dict)
+    )

@@ -20,7 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/10935
   scope: cave
   notes: PIG catalog record link.
-object_ids: []
+bibliography_status: unknown
 notes: 'Pozycja katalogowa systemu Jaskinie Pawlikowskiego: Mylna (C-0573), Obłazkowa (C-0759)
   i Raptawicka (C-0403). PIG 10935 nie opisuje dodatkowego otworu; jego współrzędne odnoszą
   się do głównego otworu Mylnej, reprezentowanego przez KSZ-0064.

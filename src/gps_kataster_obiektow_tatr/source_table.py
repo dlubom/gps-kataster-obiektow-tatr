@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from xml.etree import ElementTree
 
+from gps_kataster_obiektow_tatr.source_parsing import clean_text
+
 DEFAULT_XLSX_SHEET_NAME = "Export"
 
 _MAIN_NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
@@ -30,16 +32,23 @@ def read_source_table(path: Path, *, sheet_name: str = DEFAULT_XLSX_SHEET_NAME) 
 
     if path.suffix.lower() == ".xlsx":
         return _read_xlsx_table(path, sheet_name=sheet_name)
-    return _read_csv_table(path)
+    table = read_raw_csv_table(path)
+    return SourceTable(
+        columns=table.columns,
+        rows=tuple({key: clean_text(value) for key, value in row.items()} for row in table.rows),
+    )
 
 
-def _read_csv_table(path: Path) -> SourceTable:
+def read_raw_csv_table(path: Path) -> SourceTable:
+    """Read UTF-8/BOM comma-separated text without trimming headers or values.
+
+    Missing cells become empty text; surplus unnamed cells are ignored.
+    """
     with path.open(encoding="utf-8-sig", newline="") as csv_file:
         reader = csv.DictReader(csv_file)
         columns = tuple(reader.fieldnames or ())
         rows = tuple(
-            {key: _clean_value(value) for key, value in row.items() if key is not None}
-            for row in reader
+            {key: value or "" for key, value in row.items() if key is not None} for row in reader
         )
     return SourceTable(columns=columns, rows=rows)
 
@@ -64,11 +73,11 @@ def _read_xlsx_table(path: Path, *, sheet_name: str) -> SourceTable:
     if not raw_rows:
         return SourceTable(columns=(), rows=())
 
-    columns = tuple(_clean_value(value) for value in raw_rows[0])
+    columns = tuple(clean_text(value) for value in raw_rows[0])
     rows = []
     for raw_row in raw_rows[1:]:
         row = {
-            column: _clean_value(raw_row[index]) if index < len(raw_row) else ""
+            column: clean_text(raw_row[index]) if index < len(raw_row) else ""
             for index, column in enumerate(columns)
             if column
         }
@@ -153,9 +162,3 @@ def _column_index_from_cell_ref(cell_ref: str | None) -> int:
     for char in letters.group(0):
         index = index * 26 + (ord(char) - ord("A") + 1)
     return index - 1
-
-
-def _clean_value(raw_value: str | None) -> str:
-    if raw_value is None:
-        return ""
-    return str(raw_value).strip()

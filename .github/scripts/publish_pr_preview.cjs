@@ -71,7 +71,7 @@ module.exports = async function publish({ github, context }) {
     const body = `${MARKER}\n### Paczka testowa eksportów\n\n${status}\n\n` +
       `HEAD: \`${pr.head.sha}\`\n\nBaza: \`${pr.base.sha}\`\n\n` +
       (merge ? `Testowany merge: \`${merge}\`\n\n` : '') +
-      `Pełne eksporty obecnego buildera wydania, manifest i SHA256SUMS. ` +
+      `Pełne eksporty obecnego buildera wydania (dump PostgreSQL i GeoPackage), manifest i SHA256SUMS. ` +
       `To podgląd PR przed scaleniem. Zmiana samego main wymaga nowego buildu.\n`;
     const comments = await github.paginate(github.rest.issues.listComments, {
       ...repo, issue_number: pr.number, per_page: 100,

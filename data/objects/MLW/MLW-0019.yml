@@ -3,6 +3,7 @@ id: MLW-0019
 category: jaskinia_otwor
 name_local: Szczelina w Mnichowych Turniach II
 cave_id: C-0507
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24474165
-  lon: 19.92826942
-  x_1992: 153440.55
-  y_1992: 567541.97
+  input_srid: 4326
+  input_x: 19.92826942
+  input_y: 49.24474165
   elevation_m: 1680.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24468368025698
-  lon: 19.928249920540946
-  x_1992: 153434.09
-  y_1992: 567540.63
+  input_srid: 4326
+  input_x: 19.928249920540946
+  input_y: 49.24468368025698
   elevation_m: 1652.02262
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

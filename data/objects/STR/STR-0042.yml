@@ -3,6 +3,7 @@ id: STR-0042
 category: jaskinia_otwor
 name_local: Nyża pod Szarą Turnią III
 cave_id: C-1041
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -33,10 +34,9 @@ external_refs:
     SHA-256 odpowiedzi NMT: 62dea436b5b049d6f88186ef7d21279fd8c19c6d71575d78451135e5c110fce5.
 measurements:
 - id: m-001
-  lat: 49.253266838681846
-  lon: 19.927308030992126
-  x_1992: 154387.13
-  y_1992: 567460.4
+  input_srid: 4326
+  input_x: 19.927308030992126
+  input_y: 49.253266838681846
   elevation_m: 1472.170044
   elevation_datum: unknown
   elevation_source: dem
@@ -61,11 +61,11 @@ measurements:
   created_by: maintenance:PBI-113
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: Jedyny pomiar TPN; bez niezależnej weryfikacji terenowej.
   updated_at: '2026-10-23T18:10:08Z'
   updated_by: maintenance:PBI-113
 attachments: []
+bibliography_status: unknown
 notes: null
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113

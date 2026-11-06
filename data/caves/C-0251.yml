@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1363
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSW-0075
+bibliography_status: unknown
 notes: 'PIG aliases: SYSTEM Jaskinia Ziobrowa, Jaskinia Niżnia pod Zamkiem, Jaskinia
   Zbiorowa
 

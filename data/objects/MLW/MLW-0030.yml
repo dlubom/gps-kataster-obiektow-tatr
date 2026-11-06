@@ -3,6 +3,7 @@ id: MLW-0030
 category: jaskinia_otwor
 name_local: Dziura przy Lodowej Małołąckiej III
 cave_id: C-0682
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24317218
-  lon: 19.92871951
-  x_1992: 153266.53
-  y_1992: 567576.86
+  input_srid: 4326
+  input_x: 19.92871951
+  input_y: 49.24317218
   elevation_m: 1662.95
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24317218295978
-  lon: 19.928719507489447
-  x_1992: 153266.53
-  y_1992: 567576.86
+  input_srid: 4326
+  input_x: 19.928719507489447
+  input_y: 49.24317218295978
   elevation_m: 1669.279678
   elevation_datum: unknown
   elevation_source: source_record
@@ -66,11 +65,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

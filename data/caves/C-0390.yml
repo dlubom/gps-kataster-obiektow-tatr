@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1724
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- PL-0023
+bibliography_status: unknown
 notes: 'PIG aliases: Studnia w Dziurawej Turni
 
   PIG morphometry: length_m=6, depth_m=0, denivelation_m=6

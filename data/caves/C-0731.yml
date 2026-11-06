@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1681
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- SUW-0006
+bibliography_status: unknown
 notes: 'PIG sector: D. Suchej Wody
 
   PIG morphometry: length_m=17, depth_m=3,5, denivelation_m=8,5

@@ -3,30 +3,45 @@
 from __future__ import annotations
 
 import json
+from contextlib import ExitStack
 from copy import deepcopy
 from dataclasses import dataclass
-from datetime import UTC, datetime
 from enum import StrEnum
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from gps_kataster_obiektow_tatr.best_measurement import select_default_best_measurement_id
+from gps_kataster_obiektow_tatr.catalog_records import SourceDataset, source_dataset, source_record
 from gps_kataster_obiektow_tatr.data_loader import (
     DEFAULT_DATA_DIR,
     DataKind,
     LoadedDataset,
     LoadedYamlRecord,
     YamlDataLoadError,
-    load_dataset,
+    is_canonical_source,
+    load_yaml_dataset,
 )
+from gps_kataster_obiektow_tatr.postgres import CatalogLoadError
+from gps_kataster_obiektow_tatr.report_formatting import (
+    markdown_code_or_dash,
+    markdown_text,
+    utc_timestamp,
+)
+from gps_kataster_obiektow_tatr.source_parsing import clean_text
 from gps_kataster_obiektow_tatr.validator import (
+    CatalogValidationError,
     ValidationIssue,
     ValidationSeverity,
+    _validate_proposal_membership,
     format_issue,
-    validate_dataset,
+    validate_auto_best_declaration,
+    validate_coordinate_declarations,
     validate_record_schema,
+    validate_staging_fields,
+    validated_catalog_source,
+    validated_proposal,
+    validated_source_proposal,
 )
 from gps_kataster_obiektow_tatr.yaml_io import load_unique_yaml
 
@@ -168,14 +183,15 @@ def apply_review_decisions(
     staging_reports: StagingReports,
     data_dir: Path = DEFAULT_DATA_DIR,
     write: bool = True,
+    base_ref: str | None = None,
+    repo_root: Path = REPO_ROOT,
 ) -> StagingReviewResult:
-    """Apply operator decisions and optionally write final YAML under ``data_dir``."""
+    """Apply operator decisions and optionally write canonical YAML under ``data_dir``."""
 
-    reviewed_at = _clean_value(decision_data.get("reviewed_at")) or _utc_timestamp()
-    reviewed_by = _clean_value(decision_data.get("reviewed_by")) or DEFAULT_REVIEW_AUTHOR
+    reviewed_at = clean_text(decision_data.get("reviewed_at")) or utc_timestamp()
+    reviewed_by = clean_text(decision_data.get("reviewed_by")) or DEFAULT_REVIEW_AUTHOR
     decisions = decision_data.get("decisions")
     issues: list[ReviewIssue] = []
-    applied: list[AppliedDecision] = []
 
     if not isinstance(decisions, list):
         issues.append(
@@ -195,150 +211,182 @@ def apply_review_decisions(
             written_paths=(),
         )
 
-    try:
-        dataset = load_dataset(data_dir)
-    except YamlDataLoadError as exc:
-        issues.append(
-            ReviewIssue(
-                code="FINAL_DATA_INVALID",
-                severity=ReviewSeverity.ERROR,
-                decision_index=None,
-                description=str(exc),
+    with ExitStack() as stack:
+        try:
+            if is_canonical_source(data_dir):
+                catalog, dataset, _ = stack.enter_context(validated_catalog_source(data_dir))
+            else:
+                dataset = load_yaml_dataset(data_dir)
+                catalog, _ = stack.enter_context(validated_proposal(dataset, data_dir=data_dir))
+        except (CatalogValidationError, YamlDataLoadError, CatalogLoadError) as exc:
+            issues.extend(_input_review_errors(exc))
+        if issues:
+            return StagingReviewResult(
+                reviewed_at=reviewed_at,
+                reviewed_by=reviewed_by,
+                data_dir=data_dir,
+                applied_decisions=(),
+                issues=tuple(issues),
+                written_paths=(),
             )
+        applied: list[AppliedDecision] = []
+        source = source_dataset(dataset)
+        objects = {record.data["id"]: deepcopy(record.raw_data) for record in source.objects}
+        caves = {record.data["id"]: deepcopy(record.raw_data) for record in source.caves}
+        paths = {(r.kind, r.data["id"]): r.path for r in source.records()}
+        indexes = _build_indexes(staging_reports)
+        declaration_objects, object_schema = _object_declarations(
+            source, decisions, indexes, data_dir
         )
+        declaration_issues: list[ReviewIssue] = []
+        dirty_objects: set[str] = set()
+        dirty_caves: set[str] = set()
+
+        for decision_index, decision in enumerate(decisions, start=1):
+            if not isinstance(decision, dict):
+                issues.append(
+                    ReviewIssue(
+                        code="DECISION_INVALID",
+                        severity=ReviewSeverity.ERROR,
+                        decision_index=decision_index,
+                        description="Decision entry must be a mapping.",
+                    )
+                )
+                continue
+
+            action = clean_text(decision.get("action"))
+            if action not in _ACTIONS:
+                issues.append(
+                    ReviewIssue(
+                        code="DECISION_ACTION_INVALID",
+                        severity=ReviewSeverity.ERROR,
+                        decision_index=decision_index,
+                        description=f"Unsupported decision action {action!r}.",
+                    )
+                )
+                continue
+
+            if action == _CREATE_CAVE:
+                _apply_create_cave(
+                    decision=decision,
+                    decision_index=decision_index,
+                    indexes=indexes,
+                    data_dir=data_dir,
+                    declaration_objects=declaration_objects,
+                    caves=caves,
+                    dirty_caves=dirty_caves,
+                    issues=issues,
+                    applied=applied,
+                )
+            elif action == _CREATE_OBJECT:
+                _apply_create_object(
+                    decision=decision,
+                    decision_index=decision_index,
+                    indexes=indexes,
+                    data_dir=data_dir,
+                    connection=catalog.connection,
+                    declaration_issues=declaration_issues,
+                    object_schema=object_schema,
+                    objects=objects,
+                    dirty_objects=dirty_objects,
+                    issues=issues,
+                    applied=applied,
+                )
+            elif action == _ADD_MEASUREMENT:
+                _apply_add_measurement(
+                    decision=decision,
+                    decision_index=decision_index,
+                    indexes=indexes,
+                    data_dir=data_dir,
+                    paths=paths,
+                    connection=catalog.connection,
+                    declaration_issues=declaration_issues,
+                    objects=objects,
+                    caves=caves,
+                    dirty_objects=dirty_objects,
+                    dirty_caves=dirty_caves,
+                    reviewed_at=reviewed_at,
+                    reviewed_by=reviewed_by,
+                    issues=issues,
+                    applied=applied,
+                )
+            elif action == _LINK_CAVE:
+                _apply_link_cave(
+                    decision=decision,
+                    decision_index=decision_index,
+                    objects=objects,
+                    caves=caves,
+                    dirty_objects=dirty_objects,
+                    dirty_caves=dirty_caves,
+                    reviewed_at=reviewed_at,
+                    reviewed_by=reviewed_by,
+                    issues=issues,
+                    applied=applied,
+                )
+            elif action in {_REJECT, _UNRESOLVED}:
+                _apply_non_materialized_decision(
+                    decision=decision,
+                    decision_index=decision_index,
+                    action=action,
+                    indexes=indexes,
+                    issues=issues,
+                    applied=applied,
+                )
+
+        prospective = _dataset_with_review_changes(
+            source, data_dir=data_dir, objects=objects, caves=caves
+        )
+        try:
+            if dirty_objects or dirty_caves:
+                with validated_source_proposal(prospective, data_dir=data_dir) as (
+                    proposal_catalog,
+                    _,
+                ):
+                    issues.extend(
+                        _review_history_errors(
+                            dataset,
+                            prospective,
+                            base_ref=base_ref,
+                            repo_root=repo_root,
+                            connection=proposal_catalog.connection,
+                        )
+                    )
+            else:
+                issues.extend(
+                    _review_history_errors(
+                        dataset,
+                        prospective,
+                        base_ref=base_ref,
+                        repo_root=repo_root,
+                        connection=catalog.connection,
+                    )
+                )
+        except CatalogValidationError as exc:
+            issues.extend(_review_errors(exc.issues, code="REVIEW_DATA_INVALID"))
+        # Owned database cleanup must succeed before the first source write.
+        try:
+            stack.close()
+        except (CatalogValidationError, YamlDataLoadError, CatalogLoadError) as exc:
+            issues.extend(_input_review_errors(exc))
+        issues.extend(declaration_issues)
+        has_errors = any(issue.severity == ReviewSeverity.ERROR for issue in issues)
+        written_paths: tuple[Path, ...] = ()
+        if write and not has_errors:
+            written_paths = _write_dirty_records(
+                dataset=prospective,
+                data_dir=data_dir,
+                dirty_objects=dirty_objects,
+                dirty_caves=dirty_caves,
+            )
+
         return StagingReviewResult(
             reviewed_at=reviewed_at,
             reviewed_by=reviewed_by,
             data_dir=data_dir,
-            applied_decisions=(),
+            applied_decisions=tuple(applied),
             issues=tuple(issues),
-            written_paths=(),
+            written_paths=written_paths,
         )
-
-    issues.extend(_dataset_review_errors(dataset, data_dir=data_dir, code="FINAL_DATA_INVALID"))
-    if issues:
-        return StagingReviewResult(
-            reviewed_at=reviewed_at,
-            reviewed_by=reviewed_by,
-            data_dir=data_dir,
-            applied_decisions=(),
-            issues=tuple(issues),
-            written_paths=(),
-        )
-
-    objects = {record.data["id"]: deepcopy(record.raw_data) for record in dataset.objects}
-    caves = {record.data["id"]: deepcopy(record.raw_data) for record in dataset.caves}
-    indexes = _build_indexes(staging_reports)
-    dirty_objects: set[str] = set()
-    dirty_caves: set[str] = set()
-
-    for decision_index, decision in enumerate(decisions, start=1):
-        if not isinstance(decision, dict):
-            issues.append(
-                ReviewIssue(
-                    code="DECISION_INVALID",
-                    severity=ReviewSeverity.ERROR,
-                    decision_index=decision_index,
-                    description="Decision entry must be a mapping.",
-                )
-            )
-            continue
-
-        action = _clean_value(decision.get("action"))
-        if action not in _ACTIONS:
-            issues.append(
-                ReviewIssue(
-                    code="DECISION_ACTION_INVALID",
-                    severity=ReviewSeverity.ERROR,
-                    decision_index=decision_index,
-                    description=f"Unsupported decision action {action!r}.",
-                )
-            )
-            continue
-
-        if action == _CREATE_CAVE:
-            _apply_create_cave(
-                decision=decision,
-                decision_index=decision_index,
-                indexes=indexes,
-                data_dir=data_dir,
-                caves=caves,
-                dirty_caves=dirty_caves,
-                issues=issues,
-                applied=applied,
-            )
-        elif action == _CREATE_OBJECT:
-            _apply_create_object(
-                decision=decision,
-                decision_index=decision_index,
-                indexes=indexes,
-                data_dir=data_dir,
-                objects=objects,
-                dirty_objects=dirty_objects,
-                issues=issues,
-                applied=applied,
-            )
-        elif action == _ADD_MEASUREMENT:
-            _apply_add_measurement(
-                decision=decision,
-                decision_index=decision_index,
-                indexes=indexes,
-                data_dir=data_dir,
-                objects=objects,
-                caves=caves,
-                dirty_objects=dirty_objects,
-                dirty_caves=dirty_caves,
-                reviewed_at=reviewed_at,
-                reviewed_by=reviewed_by,
-                issues=issues,
-                applied=applied,
-            )
-        elif action == _LINK_CAVE:
-            _apply_link_cave(
-                decision=decision,
-                decision_index=decision_index,
-                objects=objects,
-                caves=caves,
-                dirty_objects=dirty_objects,
-                dirty_caves=dirty_caves,
-                reviewed_at=reviewed_at,
-                reviewed_by=reviewed_by,
-                issues=issues,
-                applied=applied,
-            )
-        elif action in {_REJECT, _UNRESOLVED}:
-            _apply_non_materialized_decision(
-                decision=decision,
-                decision_index=decision_index,
-                action=action,
-                indexes=indexes,
-                issues=issues,
-                applied=applied,
-            )
-
-    prospective = _dataset_with_review_changes(
-        dataset, data_dir=data_dir, objects=objects, caves=caves
-    )
-    issues.extend(
-        _dataset_review_errors(prospective, data_dir=data_dir, code="REVIEW_DATA_INVALID")
-    )
-    has_errors = any(issue.severity == ReviewSeverity.ERROR for issue in issues)
-    written_paths: tuple[Path, ...] = ()
-    if write and not has_errors:
-        written_paths = _write_dirty_records(
-            dataset=prospective,
-            dirty_objects=dirty_objects,
-            dirty_caves=dirty_caves,
-        )
-
-    return StagingReviewResult(
-        reviewed_at=reviewed_at,
-        reviewed_by=reviewed_by,
-        data_dir=data_dir,
-        applied_decisions=tuple(applied),
-        issues=tuple(issues),
-        written_paths=written_paths,
-    )
 
 
 def write_review_report_files(
@@ -391,11 +439,11 @@ def render_review_markdown(result: StagingReviewResult) -> str:
             f"{decision.decision_index} | "
             f"`{decision.action}` | "
             f"`{decision.status}` | "
-            f"{_markdown_code_or_dash(decision.source)} | "
+            f"{markdown_code_or_dash(decision.source)} | "
             f"{decision.record_number or '-'} | "
-            f"{_markdown_code_or_dash(decision.cave_id)} | "
-            f"{_markdown_code_or_dash(decision.object_id)} | "
-            f"{_markdown_text(decision.description)} |"
+            f"{markdown_code_or_dash(decision.cave_id)} | "
+            f"{markdown_code_or_dash(decision.object_id)} | "
+            f"{markdown_text(decision.description)} |"
         )
 
     if result.issues:
@@ -414,7 +462,7 @@ def render_review_markdown(result: StagingReviewResult) -> str:
                 f"`{issue.severity.value}` | "
                 f"`{issue.code}` | "
                 f"{issue.decision_index or '-'} | "
-                f"{_markdown_text(issue.description)} |"
+                f"{markdown_text(issue.description)} |"
             )
 
     if result.written_paths:
@@ -430,6 +478,7 @@ def _apply_create_cave(
     decision_index: int,
     indexes: _StagingIndexes,
     data_dir: Path,
+    declaration_objects: tuple[LoadedYamlRecord, ...],
     caves: dict[str, dict[str, Any]],
     dirty_caves: set[str],
     issues: list[ReviewIssue],
@@ -442,7 +491,7 @@ def _apply_create_cave(
     proposal = _cave_proposal_for_decision(
         source=source,
         record_number=record_number,
-        explicit_cave_id=_clean_value(decision.get("cave_id")) or None,
+        explicit_cave_id=clean_text(decision.get("cave_id")) or None,
         indexes=indexes,
     )
     if proposal is None:
@@ -456,7 +505,7 @@ def _apply_create_cave(
         )
         return
 
-    cave_id = _clean_value(proposal.get("id"))
+    cave_id = clean_text(proposal.get("id"))
     if cave_id in caves:
         issues.append(
             ReviewIssue(
@@ -475,7 +524,16 @@ def _apply_create_cave(
             _review_errors(schema_issues, code="REVIEW_DATA_INVALID", decision_index=decision_index)
         )
         return
-    caves[cave_id] = finalized
+    membership_issues = _validate_proposal_membership(
+        LoadedDataset(
+            objects=declaration_objects,
+            caves=(_review_record(finalized, DataKind.CAVE, data_dir),),
+            relations=(),
+        )
+    )
+    if membership_issues:
+        issues.extend(_review_errors(membership_issues, code="REVIEW_DATA_INVALID"))
+    caves[cave_id] = source_record("cave", finalized)
     dirty_caves.add(cave_id)
     applied.append(
         AppliedDecision(
@@ -497,6 +555,9 @@ def _apply_create_object(
     decision_index: int,
     indexes: _StagingIndexes,
     data_dir: Path,
+    connection,
+    declaration_issues: list[ReviewIssue],
+    object_schema,
     objects: dict[str, dict[str, Any]],
     dirty_objects: set[str],
     issues: list[ReviewIssue],
@@ -509,7 +570,7 @@ def _apply_create_object(
     proposal = _object_proposal_for_decision(
         source=source,
         record_number=record_number,
-        explicit_object_id=_clean_value(decision.get("object_id")) or None,
+        explicit_object_id=clean_text(decision.get("object_id")) or None,
         indexes=indexes,
     )
     if proposal is None:
@@ -523,7 +584,7 @@ def _apply_create_object(
         )
         return
 
-    object_id = _clean_value(proposal.get("id"))
+    object_id = clean_text(proposal.get("id"))
     if object_id in objects:
         issues.append(
             ReviewIssue(
@@ -538,12 +599,22 @@ def _apply_create_object(
         return
 
     finalized = _finalize_staging_record(proposal, source=source)
-    schema_issues = validate_record_schema(_review_record(finalized, DataKind.OBJECT, data_dir))
+    schema_issues = object_schema[(source, object_id)]
     if schema_issues:
         issues.extend(
             _review_errors(schema_issues, code="REVIEW_DATA_INVALID", decision_index=decision_index)
         )
         return
+    declaration_issues.extend(
+        _review_errors(
+            validate_coordinate_declarations(
+                (_review_record(finalized, DataKind.OBJECT, data_dir),), connection
+            ),
+            code="REVIEW_DATA_INVALID",
+        )
+    )
+    finalized = source_record("object", finalized)
+    finalized["membership_ordinal"] = _next_membership_ordinal(objects, finalized.get("cave_id"))
     objects[object_id] = finalized
     dirty_objects.add(object_id)
     applied.append(
@@ -554,7 +625,7 @@ def _apply_create_object(
             source=source,
             record_number=record_number,
             object_id=object_id,
-            cave_id=_clean_value(proposal.get("cave_id")) or None,
+            cave_id=clean_text(proposal.get("cave_id")) or None,
             description=f"Created final object {object_id} from staging proposal.",
         )
     )
@@ -566,6 +637,9 @@ def _apply_add_measurement(
     decision_index: int,
     indexes: _StagingIndexes,
     data_dir: Path,
+    paths,
+    connection,
+    declaration_issues: list[ReviewIssue],
     objects: dict[str, dict[str, Any]],
     caves: dict[str, dict[str, Any]],
     dirty_objects: set[str],
@@ -601,12 +675,10 @@ def _apply_add_measurement(
         )
         return
 
-    object_id = _clean_value(decision.get("target_object_id")) or _clean_value(
+    object_id = clean_text(decision.get("target_object_id")) or clean_text(
         update.get("target_object_id")
     )
-    cave_id = _clean_value(decision.get("target_cave_id")) or _clean_value(
-        update.get("target_cave_id")
-    )
+    cave_id = clean_text(decision.get("target_cave_id")) or clean_text(update.get("target_cave_id"))
     if object_id not in objects:
         issues.append(
             ReviewIssue(
@@ -646,7 +718,10 @@ def _apply_add_measurement(
         kind = DataKind.CAVE if field == "cave_external_refs" and cave_id else DataKind.OBJECT
         target = caves[cave_id] if kind == DataKind.CAVE else object_data
         reference_data = target | {"external_refs": update.get(field, [])}
-        schema_issues = validate_record_schema(_review_record(reference_data, kind, data_dir))
+        schema_issues = validate_staging_fields(
+            _review_record(reference_data, kind, data_dir, path=paths.get((kind, target["id"]))),
+            ("external_refs",),
+        )
         if schema_issues:
             issues.extend(
                 ReviewIssue(
@@ -659,9 +734,9 @@ def _apply_add_measurement(
             )
             return
 
-    measurement_id = _clean_value(measurement.get("id"))
+    measurement_id = clean_text(measurement.get("id"))
     existing_measurement_ids = {
-        _clean_value(item.get("id"))
+        clean_text(item.get("id"))
         for item in object_data.get("measurements", [])
         if isinstance(item, dict)
     }
@@ -677,10 +752,15 @@ def _apply_add_measurement(
         return
 
     finalized_measurement = _finalize_staging_measurement(measurement)
-    prospective = object_data | {
-        "measurements": [*object_data.get("measurements", []), finalized_measurement]
-    }
-    payload_issues = validate_record_schema(_review_record(prospective, DataKind.OBJECT, data_dir))
+    incoming = _review_record(
+        object_data | {"measurements": [finalized_measurement]},
+        DataKind.OBJECT,
+        data_dir,
+        path=paths.get((DataKind.OBJECT, object_id)),
+    )
+    payload_issues = validate_staging_fields(
+        incoming, ("measurements",), measurement_offset=len(object_data.get("measurements", []))
+    )
     if payload_issues:
         issues.extend(
             _review_errors(
@@ -688,11 +768,18 @@ def _apply_add_measurement(
             )
         )
         return
-    object_data.setdefault("measurements", []).append(finalized_measurement)
+    declaration_issues.extend(
+        _review_errors(
+            validate_coordinate_declarations((incoming,), connection), code="REVIEW_DATA_INVALID"
+        )
+    )
+    object_data.setdefault("measurements", []).append(
+        source_record("object", incoming.data)["measurements"][0]
+    )
     _append_unique_dicts(
         object_data.setdefault("external_refs", []), update.get("object_external_refs")
     )
-    _refresh_auto_best_measurement(object_data, reviewed_at=reviewed_at, reviewed_by=reviewed_by)
+    _touch_auto_best_policy_audit(object_data, reviewed_at=reviewed_at, reviewed_by=reviewed_by)
     _touch_record(object_data, reviewed_at=reviewed_at, reviewed_by=reviewed_by)
     dirty_objects.add(object_id)
 
@@ -718,6 +805,44 @@ def _apply_add_measurement(
     )
 
 
+def _next_membership_ordinal(objects, cave_id):
+    if not cave_id:
+        return None
+    return 1 + max(
+        (o["membership_ordinal"] for o in objects.values() if o.get("cave_id") == cave_id),
+        default=0,
+    )
+
+
+def _object_declarations(source, decisions, indexes, data_dir):
+    """Retain selected raw assertions for checks before cave lists are discarded."""
+    records = {r.data["id"]: r for r in source.objects}
+    checks = {}
+    for decision in decisions:
+        if not isinstance(decision, dict) or clean_text(decision.get("action")) != _CREATE_OBJECT:
+            continue
+        source_name = clean_text(decision.get("source")).upper()
+        number = _parse_positive_int(decision.get("record_number"))
+        if source_name not in ("PIG", "TPN") or number is None:
+            continue
+        proposal = _object_proposal_for_decision(
+            source=source_name,
+            record_number=number,
+            explicit_object_id=clean_text(decision.get("object_id")) or None,
+            indexes=indexes,
+        )
+        if proposal is not None:
+            record = _review_record(proposal, DataKind.OBJECT, data_dir)
+            key = (source_name, clean_text(proposal.get("id")))
+            if key not in checks:
+                checks[key] = validate_record_schema(record)
+                if not checks[key]:
+                    checks[key] = validate_auto_best_declaration(record)
+            if not checks[key]:
+                records[record.data["id"]] = record
+    return tuple(records.values()), checks
+
+
 def _apply_link_cave(
     *,
     decision: dict[str, Any],
@@ -731,8 +856,8 @@ def _apply_link_cave(
     issues: list[ReviewIssue],
     applied: list[AppliedDecision],
 ) -> None:
-    object_id = _clean_value(decision.get("object_id"))
-    cave_id = _clean_value(decision.get("cave_id"))
+    object_id = clean_text(decision.get("object_id"))
+    cave_id = clean_text(decision.get("cave_id"))
     if not object_id or not cave_id:
         issues.append(
             ReviewIssue(
@@ -769,13 +894,11 @@ def _apply_link_cave(
     old_cave_id = object_data.get("cave_id")
     if old_cave_id in caves and old_cave_id != cave_id:
         old_cave = caves[old_cave_id]
-        old_cave["object_ids"] = [oid for oid in old_cave["object_ids"] if oid != object_id]
         _touch_record(old_cave, reviewed_at=reviewed_at, reviewed_by=reviewed_by)
         dirty_caves.add(old_cave_id)
+    if old_cave_id != cave_id:
+        object_data["membership_ordinal"] = _next_membership_ordinal(objects, cave_id)
     object_data["cave_id"] = cave_id
-    object_ids = cave_data.setdefault("object_ids", [])
-    if object_id not in object_ids:
-        object_ids.append(object_id)
     _touch_record(object_data, reviewed_at=reviewed_at, reviewed_by=reviewed_by)
     _touch_record(cave_data, reviewed_at=reviewed_at, reviewed_by=reviewed_by)
     dirty_objects.add(object_id)
@@ -816,7 +939,7 @@ def _apply_non_materialized_decision(
             )
         )
         return
-    reason = _clean_value(decision.get("reason"))
+    reason = clean_text(decision.get("reason"))
     if not reason:
         issues.append(
             ReviewIssue(
@@ -847,7 +970,7 @@ def _decision_source_record(
     decision_index: int,
     issues: list[ReviewIssue],
 ) -> tuple[str | None, int | None]:
-    source = _clean_value(decision.get("source")).upper()
+    source = clean_text(decision.get("source")).upper()
     record_number = _parse_positive_int(decision.get("record_number"))
     if source not in {"PIG", "TPN"}:
         issues.append(
@@ -880,7 +1003,7 @@ def _cave_proposal_for_decision(
 ) -> dict[str, Any] | None:
     rows = indexes.pig_rows_by_record if source == "PIG" else indexes.tpn_rows_by_record
     caves = indexes.pig_caves_by_id if source == "PIG" else indexes.tpn_caves_by_id
-    cave_id = explicit_cave_id or _clean_value(rows.get(record_number, {}).get("cave_id"))
+    cave_id = explicit_cave_id or clean_text(rows.get(record_number, {}).get("cave_id"))
     return caves.get(cave_id)
 
 
@@ -893,7 +1016,7 @@ def _object_proposal_for_decision(
 ) -> dict[str, Any] | None:
     rows = indexes.pig_rows_by_record if source == "PIG" else indexes.tpn_rows_by_record
     objects = indexes.pig_objects_by_id if source == "PIG" else indexes.tpn_objects_by_id
-    object_id = explicit_object_id or _clean_value(rows.get(record_number, {}).get("object_id"))
+    object_id = explicit_object_id or clean_text(rows.get(record_number, {}).get("object_id"))
     return objects.get(object_id)
 
 
@@ -907,10 +1030,34 @@ def _staging_row_exists(
     return record_number in rows
 
 
-def _dataset_review_errors(
-    dataset: LoadedDataset, *, data_dir: Path, code: str
-) -> tuple[ReviewIssue, ...]:
-    return _review_errors(validate_dataset(dataset, data_dir=data_dir), code=code)
+def _input_review_errors(exc):
+    if isinstance(exc, CatalogValidationError):
+        return _review_errors(exc.issues, code="FINAL_DATA_INVALID")
+    return (
+        ReviewIssue(
+            code="FINAL_DATA_INVALID",
+            severity=ReviewSeverity.ERROR,
+            decision_index=None,
+            description=str(exc),
+        ),
+    )
+
+
+def _review_history_errors(dataset, prospective, *, base_ref, repo_root, connection):
+    from gps_kataster_obiektow_tatr.history import check_history, compare_history
+
+    issues = compare_history(dataset, prospective, connection=connection)
+    if base_ref is not None:
+        issues = (
+            *issues,
+            *check_history(
+                base_ref,
+                prospective,
+                repo_root=repo_root,
+                connection=connection,
+            ),
+        )
+    return _review_errors(issues, code="HISTORY_INVALID")
 
 
 def _review_errors(
@@ -928,8 +1075,12 @@ def _review_errors(
     )
 
 
-def _review_record(data: dict[str, Any], kind: DataKind, data_dir: Path) -> LoadedYamlRecord:
-    record_id = _clean_value(data.get("id"))
+def _review_record(
+    data: dict[str, Any], kind: DataKind, data_dir: Path, *, path: Path | None = None
+) -> LoadedYamlRecord:
+    record_id = clean_text(data.get("id"))
+    if path is not None:
+        return LoadedYamlRecord(kind=kind, path=path, data=data, raw_data=data)
     if kind == DataKind.OBJECT:
         prefix = record_id.split("-", maxsplit=1)[0]
         path = data_dir / "objects" / prefix / f"{record_id}.yml"
@@ -939,12 +1090,12 @@ def _review_record(data: dict[str, Any], kind: DataKind, data_dir: Path) -> Load
 
 
 def _dataset_with_review_changes(
-    dataset: LoadedDataset,
+    dataset: SourceDataset,
     *,
     data_dir: Path,
     objects: dict[str, dict[str, Any]],
     caves: dict[str, dict[str, Any]],
-) -> LoadedDataset:
+) -> SourceDataset:
     def records_with_changes(
         records: tuple[LoadedYamlRecord, ...], changes: dict[str, dict[str, Any]], kind: DataKind
     ) -> tuple[LoadedYamlRecord, ...]:
@@ -964,34 +1115,23 @@ def _dataset_with_review_changes(
                 result.append(_review_record(data, kind, data_dir))
         return tuple(sorted(result, key=lambda record: record.path))
 
-    return LoadedDataset(
+    return SourceDataset(
         objects=records_with_changes(dataset.objects, objects, DataKind.OBJECT),
         caves=records_with_changes(dataset.caves, caves, DataKind.CAVE),
         relations=dataset.relations,
+        publications=dataset.publications,
     )
 
 
 def _write_dirty_records(
-    *,
-    dataset: LoadedDataset,
-    dirty_objects: set[str],
-    dirty_caves: set[str],
+    *, dataset: LoadedDataset, data_dir: Path, dirty_objects: set[str], dirty_caves: set[str]
 ) -> tuple[Path, ...]:
-    paths: list[Path] = []
+    from gps_kataster_obiektow_tatr.catalog_records import write_dataset
 
-    for records, dirty_ids in ((dataset.caves, dirty_caves), (dataset.objects, dirty_objects)):
-        records_by_id = {record.data["id"]: record for record in records}
-        for record_id in sorted(dirty_ids):
-            record = records_by_id[record_id]
-            _write_yaml(record.path, record.raw_data)
-            paths.append(record.path)
-
-    return tuple(paths)
-
-
-def _write_yaml(path: Path, data: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8")
+    if not dirty_objects and not dirty_caves:
+        return ()
+    changed = {("object", oid) for oid in dirty_objects} | {("cave", cid) for cid in dirty_caves}
+    return write_dataset(dataset, data_dir, changed=changed).written_paths
 
 
 def _load_staging_json(path: Path | None) -> dict[str, Any] | None:
@@ -1040,7 +1180,7 @@ def _records_by_id(report: dict[str, Any] | None, key: str) -> dict[str, dict[st
     for item in report.get(key, []):
         if not isinstance(item, dict):
             continue
-        record_id = _clean_value(item.get("id"))
+        record_id = clean_text(item.get("id"))
         if record_id:
             records[record_id] = item
     return records
@@ -1057,7 +1197,7 @@ def _tpn_measurements_by_record(
     by_record: dict[int, dict[str, Any]] = {}
     globalid_to_record: dict[str, int] = {}
     for record_number, row in rows_by_record.items():
-        globalid = _clean_value(row.get("globalid"))
+        globalid = clean_text(row.get("globalid"))
         if globalid:
             globalid_to_record[globalid] = record_number
 
@@ -1109,7 +1249,7 @@ def _finalize_staging_record(data: dict[str, Any], *, source: str) -> dict[str, 
 
 def _finalize_staging_measurement(measurement: dict[str, Any]) -> dict[str, Any]:
     finalized = deepcopy(measurement)
-    source = _clean_value(finalized.get("source")).upper()
+    source = clean_text(finalized.get("source")).upper()
     tags = finalized.get("tags")
     if isinstance(tags, list):
         finalized["tags"] = [tag for tag in tags if tag != "staging"]
@@ -1132,14 +1272,14 @@ def _finalized_note(value: object, *, staging_prefix: str, final_prefix: str) ->
 
 def _dict_identity(item: dict[str, Any]) -> tuple[str, str, str, str]:
     return (
-        _clean_value(item.get("system")),
-        _clean_value(item.get("ref_type")),
-        _clean_value(item.get("external_id")),
-        _clean_value(item.get("url")),
+        clean_text(item.get("system")),
+        clean_text(item.get("ref_type")),
+        clean_text(item.get("external_id")),
+        clean_text(item.get("url")),
     )
 
 
-def _refresh_auto_best_measurement(
+def _touch_auto_best_policy_audit(
     object_data: dict[str, Any],
     *,
     reviewed_at: str,
@@ -1151,12 +1291,7 @@ def _refresh_auto_best_measurement(
         return
     if best_measurement.get("mode") != "auto":
         return
-    selected_id = select_default_best_measurement_id(
-        [measurement for measurement in measurements if isinstance(measurement, dict)]
-    )
-    if selected_id is None:
-        return
-    best_measurement["measurement_id"] = selected_id
+    # SQL computes the selection; only the policy audit changes here.
     best_measurement["updated_at"] = reviewed_at
     best_measurement["updated_by"] = reviewed_by
 
@@ -1218,26 +1353,3 @@ def _parse_positive_int(value: Any) -> int | None:
     except (TypeError, ValueError):
         return None
     return parsed if parsed > 0 else None
-
-
-def _clean_value(raw_value: Any) -> str:
-    if raw_value is None:
-        return ""
-    return str(raw_value).strip()
-
-
-def _utc_timestamp() -> str:
-    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
-
-
-def _markdown_code_or_dash(value: str | None) -> str:
-    if not value:
-        return "-"
-    return f"`{_markdown_text(value)}`"
-
-
-def _markdown_text(value: str) -> str:
-    text = _clean_value(value)
-    if not text:
-        return "-"
-    return text.replace("|", "\\|").replace("\n", "<br>")

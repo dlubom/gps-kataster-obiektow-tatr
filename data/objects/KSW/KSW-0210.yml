@@ -3,6 +3,7 @@ id: KSW-0210
 category: jaskinia_otwor
 name_local: Groby
 cave_id: C-0745
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.23654839
-  lon: 19.86529092
-  x_1992: 152475.66
-  y_1992: 562970.05
+  input_srid: 4326
+  input_x: 19.86529092
+  input_y: 49.23654839
   elevation_m: 1227.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.2365483861031
-  lon: 19.865290918574804
-  x_1992: 152475.66
-  y_1992: 562970.05
+  input_srid: 4326
+  input_x: 19.865290918574804
+  input_y: 49.2365483861031
   elevation_m: 1268.163301
   elevation_datum: unknown
   elevation_source: source_record
@@ -66,11 +65,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

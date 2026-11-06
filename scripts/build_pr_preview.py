@@ -7,13 +7,14 @@ import argparse
 import hashlib
 import json
 import sys
-from datetime import UTC, datetime
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from gps_kataster_obiektow_tatr.build_db import check_artifact_set  # noqa: E402
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts  # noqa: E402
+from gps_kataster_obiektow_tatr.report_formatting import utc_timestamp  # noqa: E402
 
 
 def main() -> int:
@@ -28,13 +29,12 @@ def main() -> int:
     parser.add_argument("--run-id", type=int, required=True)
     parser.add_argument("--run-attempt", type=int, required=True)
     parser.add_argument("--generated-at")
+    parser.add_argument("--history-repo", type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
     output = args.output_dir
-    if output.exists():
+    if output.exists() or output.is_symlink():
         parser.error(f"output directory already exists: {output}")
-    stamp = args.generated_at or datetime.now(UTC).replace(microsecond=0).isoformat().replace(
-        "+00:00", "Z"
-    )
+    stamp = args.generated_at or utc_timestamp()
     output.parent.mkdir(parents=True, exist_ok=True)
     # Publish only a complete fresh set; never upload files left from an older build.
     with TemporaryDirectory(prefix="pr-preview-", dir=output.parent) as temporary:
@@ -42,14 +42,14 @@ def main() -> int:
         package = staging / "exports"
         result = build_release_artifacts(
             data_dir=args.data_dir,
-            sqlite_path=staging / "katalog.sqlite",
             output_dir=package,
             generated_at=stamp,
             source_commit=args.merge_sha,
+            base_ref=args.base_sha,
+            history_repo=args.history_repo,
         )
-        assets = [p for p in result.artifact_paths if p != result.sqlite_result.sqlite_path]
-        if set(package.iterdir()) != set(assets):
-            raise ValueError("preview directory differs from the release builder's artifact set")
+        assets = result.artifact_paths
+        check_artifact_set(package, assets)
         provenance = {
             "kind": "pr-preview",
             "repository": args.repository,

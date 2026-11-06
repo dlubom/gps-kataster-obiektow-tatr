@@ -3,6 +3,7 @@ id: CHW-0019
 category: jaskinia_otwor
 name_local: Jaskinia w Dudzińcu
 cave_id: C-0432
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24775783
-  lon: 19.82095814
-  x_1992: 153685.46
-  y_1992: 559730.32
+  input_srid: 4326
+  input_x: 19.82095814
+  input_y: 49.24775783
   elevation_m: 1250.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.247031442824365
-  lon: 19.82033364552278
-  x_1992: 153604.24
-  y_1992: 559685.76
+  input_srid: 4326
+  input_x: 19.82033364552278
+  input_y: 49.247031442824365
   elevation_m: 1261.091435
   elevation_datum: unknown
   elevation_source: source_record
@@ -66,11 +65,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

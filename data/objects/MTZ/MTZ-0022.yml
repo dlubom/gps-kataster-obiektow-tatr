@@ -3,6 +3,7 @@ id: MTZ-0022
 category: jaskinia_otwor
 name_local: Jaskinia Lodowa Miętusia
 cave_id: C-0271
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24064142
-  lon: 19.90174076
-  x_1992: 152961.52
-  y_1992: 565617.17
+  input_srid: 4326
+  input_x: 19.90174076
+  input_y: 49.24064142
   elevation_m: 1589.7
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.23992018168459
-  lon: 19.901711276147346
-  x_1992: 152881.34
-  y_1992: 565615.98
+  input_srid: 4326
+  input_x: 19.901711276147346
+  input_y: 49.23992018168459
   elevation_m: 1586.427564
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

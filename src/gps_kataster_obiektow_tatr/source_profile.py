@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-import csv
 import json
 from dataclasses import dataclass
 from pathlib import Path
+
+from gps_kataster_obiektow_tatr.source_parsing import clean_text, parse_decimal
+from gps_kataster_obiektow_tatr.source_table import read_raw_csv_table
 
 MAX_DUPLICATE_EXAMPLES = 10
 MAX_DUPLICATE_ROW_NUMBERS = 20
@@ -93,7 +95,8 @@ TPN_PROFILE_SPEC = SourceProfileSpec(
 def profile_csv_source(path: Path, spec: SourceProfileSpec) -> SourceCsvProfile:
     """Read and profile one CSV source export."""
 
-    columns, rows = _read_csv(path)
+    table = read_raw_csv_table(path)
+    columns, rows = table.columns, table.rows
     relevant_columns = (*spec.key_columns, *spec.duplicate_columns, *spec.coordinate_columns)
     missing_columns = tuple(
         dict.fromkeys(column for column in relevant_columns if column not in columns)
@@ -318,17 +321,6 @@ def _numeric_to_json_data(numeric: NumericColumnProfile) -> dict[str, object]:
     }
 
 
-def _read_csv(path: Path) -> tuple[tuple[str, ...], tuple[dict[str, str], ...]]:
-    with path.open(encoding="utf-8-sig", newline="") as csv_file:
-        reader = csv.DictReader(csv_file)
-        columns = tuple(reader.fieldnames or ())
-        rows = tuple(
-            {key: value or "" for key, value in row.items() if key is not None} for row in reader
-        )
-
-    return columns, rows
-
-
 def _profile_key_missing_counts(
     rows: tuple[dict[str, str], ...],
     columns: tuple[str, ...],
@@ -343,7 +335,7 @@ def _profile_duplicates(
     value_rows: dict[str, list[int]] = {}
 
     for row_number, row in enumerate(rows, start=1):
-        value = _clean_value(row.get(column))
+        value = clean_text(row.get(column))
         if value == "":
             continue
         value_rows.setdefault(value, []).append(row_number)
@@ -382,7 +374,7 @@ def _profile_numeric_column(
             missing_count += 1
             continue
 
-        number = _parse_decimal(raw_value)
+        number = parse_decimal(raw_value)
         if number is None:
             non_numeric_count += 1
         else:
@@ -398,27 +390,8 @@ def _profile_numeric_column(
     )
 
 
-def _parse_decimal(raw_value: str | None) -> float | None:
-    text = _clean_value(raw_value)
-    if text == "":
-        return None
-
-    text = text.replace("\u00a0", " ").replace(" ", "")
-    text = text.replace(",", ".")
-    try:
-        return float(text)
-    except ValueError:
-        return None
-
-
 def _is_blank(raw_value: str | None) -> bool:
-    return _clean_value(raw_value) == ""
-
-
-def _clean_value(raw_value: str | None) -> str:
-    if raw_value is None:
-        return ""
-    return str(raw_value).strip()
+    return clean_text(raw_value) == ""
 
 
 def _format_number(value: float | None) -> str:

@@ -8,6 +8,19 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Zmieniono
+
+- Źródłem danych są pliki YAML; tymczasowy PostgreSQL 18/PostGIS
+  3.6 kontroluje integralność, historię względem Git, wybór Best i geometrię.
+- Dump PostgreSQL i GeoPackage Best/pełnej historii zastępują SQLite i jego
+  ZIP. Pozostałe formaty zachowują kontrakty; źródłowe pomiary, ID,
+  uzasadnienia ręcznych Best oraz kolejność historii pozostają zachowane.
+- Bibliografia ma osobne cytowania jaskiń, obiektów i pomiarów; jawne
+  `unknown` jest legalne i daje ostrzeżenie. Dokumentacja zawiera schematy,
+  przypięty runtime lokalny/CI oraz instrukcje restore i rollbacku.
+
+Zmiana oczekuje na odbiór draft PR PBI-119; nie jest jeszcze wydaniem.
+
 ## [v1.3.3] - 2026-11-04
 
 ### Dodano

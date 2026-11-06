@@ -64,11 +64,26 @@ def yaml_key_collision(request) -> tuple[str, str, int]:
 
 @pytest.fixture
 def make_data_dir() -> Callable[[Path], Path]:
-    """Explicitly initialize a complete, empty source dataset for a test."""
+    """Initialize an empty legacy dataset; canonical sources use their own fixture."""
 
     def create(path: Path) -> Path:
         for name in ("objects", "caves", "relations"):
             (path / name).mkdir(parents=True, exist_ok=True)
+        return path
+
+    return create
+
+
+@pytest.fixture
+def make_canonical_data_dir(make_data_dir) -> Callable[[Path], Path]:
+    """Initialize the four directories and marker of a canonical YAML source."""
+
+    def create(path: Path) -> Path:
+        make_data_dir(path)
+        (path / "publications").mkdir()
+        (path / "catalog.json").write_text(
+            '{"format":"postgresql-yaml","schema_version":2}', encoding="utf-8"
+        )
         return path
 
     return create

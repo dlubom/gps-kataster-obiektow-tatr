@@ -4,9 +4,11 @@ version = "1.3.3"
 description = "Git-native catalog of GPS/GNSS measurements for Tatra karst and cave objects."
 requires-python = ">=3.12"
 dependencies = [
+    "psycopg[binary]>=3.2,<4",
     "pyproj>=3.7.0",
     "pyshp>=2.3.1",
     "pyyaml>=6.0.2",
+    "rfc3986-validator==0.1.1",
     "xlsxwriter>=3.2,<4",
 ]
 
@@ -32,7 +34,6 @@ pythonpath = ["src"]
 
 [tool.mutmut]
 paths_to_mutate = [
-    "src/gps_kataster_obiektow_tatr/best_measurement.py",
     "src/gps_kataster_obiektow_tatr/coordinates.py",
     "src/gps_kataster_obiektow_tatr/prefix_resolver.py",
     "src/gps_kataster_obiektow_tatr/validator.py",
@@ -41,7 +42,6 @@ paths_to_mutate = [
     "src/gps_kataster_obiektow_tatr/staging_review.py",
 ]
 tests_dir = [
-    "tests/test_best_measurement.py",
     "tests/test_coordinates.py",
     "tests/test_prefix_resolver.py",
     "tests/test_validator.py",

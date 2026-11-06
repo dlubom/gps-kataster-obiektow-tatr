@@ -1,0 +1,44 @@
+name: Set up catalogue runtime
+description: Install the pinned Python, uv, GDAL and dependencies; use the workflow's PG18 clients.
+inputs:
+  postgres-port:
+    description: Loopback port of the workflow PostgreSQL service.
+    required: true
+  postgres-container:
+    description: Container ID of the workflow PostgreSQL service, owning matching clients.
+    required: true
+  enable-uv-cache:
+    description: Preserve the caller's uv cache policy; PR preview disables it.
+    default: "true"
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12.13"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "0.11.8"
+        enable-cache: ${{ inputs.enable-uv-cache }}
+
+    - name: Configure matching PostgreSQL clients
+      shell: bash
+      env:
+        PG_SERVICE_PORT: ${{ inputs.postgres-port }}
+        PG_SERVICE_CONTAINER: ${{ inputs.postgres-container }}
+      run: |
+        printf 'KATASTER_DATABASE_URL=postgresql://postgres:kataster-ci-only@127.0.0.1:%s/postgres\n' "$PG_SERVICE_PORT" >> "$GITHUB_ENV"
+        printf 'KATASTER_POSTGRES_CONTAINER=%s\n' "$PG_SERVICE_CONTAINER" >> "$GITHUB_ENV"
+
+    - name: Install pinned GDAL
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install --yes gdal-bin=3.8.4+dfsg-3ubuntu3
+
+    - name: Sync dependencies
+      shell: bash
+      run: uv sync --frozen

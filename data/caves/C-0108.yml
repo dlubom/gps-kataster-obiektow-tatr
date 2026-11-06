@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1247
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- BYW-0004
+bibliography_status: unknown
 notes: 'PIG aliases: Wyżnia Grota Kasprowa, Jaskinia Jaworzyńska
 
   PIG sector: D. Bystrej - Wsch.

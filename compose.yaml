@@ -1,0 +1,16 @@
+# Optional interactive engine. The normal check runner owns its own container.
+services:
+  postgres:
+    image: postgis/postgis:18-3.6@sha256:4a43e3c3e5d55b9208240fc71db543b79c638766280c625a425bd0a2390989c4
+    platform: linux/amd64
+    environment:
+      POSTGRES_PASSWORD: ${KATASTER_POSTGRES_PASSWORD:?Set a local disposable database password}
+    ports:
+      - "127.0.0.1::5432"
+    tmpfs:
+      - /var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 2s
+      timeout: 3s
+      retries: 30

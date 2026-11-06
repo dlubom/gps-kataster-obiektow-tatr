@@ -1,6 +1,5 @@
 import csv
 import json
-import sqlite3
 import subprocess
 import sys
 import zipfile
@@ -11,30 +10,46 @@ from xml.etree import ElementTree as ET
 import pytest
 import shapefile
 import yaml
+from export_test_support import (
+    GENERATED_AT,
+    KSW_LAT,
+    KSW_LON,
+    REPO_ROOT,
+    accept_source,
+    cli_args,
+    initialize_source,
+)
+from export_test_support import (
+    valid_cave as _valid_cave,
+)
+from export_test_support import (
+    valid_object as _valid_object,
+)
+from export_test_support import (
+    write_sample_data as _write_sample_data,
+)
+from export_test_support import (
+    write_yaml as _write_yaml,
+)
 
 from gps_kataster_obiektow_tatr.best_measurements_export import (
-    BestMeasurementsExportValidationError,
     export_best_measurements,
 )
-from gps_kataster_obiektow_tatr.build_db import BuildDatabaseValidationError, build_sqlite_database
+from gps_kataster_obiektow_tatr.build_db import build_database
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
+from gps_kataster_obiektow_tatr.postgres import restore_dump
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPORT_SCRIPT = REPO_ROOT / "scripts" / "export_best_measurements.py"
-KSW_LAT = 49.23459299
-KSW_LON = 19.87589498
-GENERATED_AT = "2026-05-16T12:00:00Z"
 
 
 @pytest.mark.parametrize("mode", ["auto", "manual"])
 def test_duplicate_local_measurement_id_blocks_exports_and_release(tmp_path, mode):
     data_dir = tmp_path / "data"
-    _write_sample_data(data_dir)
+    _write_sample_data(data_dir, notes=True)
+    baseline = accept_source(data_dir)
     output = tmp_path / "output"
-    build_release_artifacts(
-        data_dir=data_dir, sqlite_path=output / "katalog.sqlite", output_dir=output / "exports"
-    )
+    build_release_artifacts(**baseline, data_dir=data_dir, output_dir=output / "exports")
     before = {str(p.relative_to(output)): p.read_bytes() for p in output.rglob("*") if p.is_file()}
     assert len(before) == 13
     source = data_dir / "objects/KSW/KSW-0001.yml"
@@ -43,16 +58,18 @@ def test_duplicate_local_measurement_id_blocks_exports_and_release(tmp_path, mod
     duplicate["notes"] = "Second reading with ambiguous identity."
     obj["measurements"].append(duplicate)
     obj["best_measurement"].update(mode=mode, reason="Operator selection.")
+    if mode == "manual":
+        obj["best_measurement"]["measurement_id"] = "m-002"
     _write_yaml(source, obj)
     source_before = source.read_bytes()
 
     for target in (output, tmp_path / "new-output"):
-        with pytest.raises(BestMeasurementsExportValidationError, match="DUPLICATE_MEASUREMENT_ID"):
-            export_best_measurements(data_dir=data_dir, output_dir=target / "exports")
-        with pytest.raises(BuildDatabaseValidationError, match="DUPLICATE_MEASUREMENT_ID"):
+        with pytest.raises(ValueError, match="measurements_pkey"):
+            export_best_measurements(**baseline, data_dir=data_dir, output_dir=target / "exports")
+        with pytest.raises(ValueError, match="measurements_pkey"):
             build_release_artifacts(
+                **baseline,
                 data_dir=data_dir,
-                sqlite_path=target / "katalog.sqlite",
                 output_dir=target / "exports",
             )
         for script, args in [
@@ -60,8 +77,6 @@ def test_duplicate_local_measurement_id_blocks_exports_and_release(tmp_path, mod
             (
                 REPO_ROOT / "scripts/build_release_artifacts.py",
                 [
-                    "--sqlite-output",
-                    str(target / "katalog.sqlite"),
                     "--output-dir",
                     str(target / "exports"),
                 ],
@@ -75,8 +90,11 @@ def test_duplicate_local_measurement_id_blocks_exports_and_release(tmp_path, mod
                 check=False,
             )
             assert result.returncode == 1
-            assert "DUPLICATE_MEASUREMENT_ID" in result.stdout + result.stderr
-            assert str(source) in result.stdout + result.stderr
+            expected_code = (
+                "DUPLICATE_MEASUREMENT_ID" if script.name == "validate.py" else "measurements_pkey"
+            )
+            assert expected_code in result.stdout + result.stderr
+            assert str(data_dir) in result.stdout + result.stderr
             assert "Traceback" not in result.stdout + result.stderr
     assert {
         str(p.relative_to(output)): p.read_bytes() for p in output.rglob("*") if p.is_file()
@@ -88,12 +106,14 @@ def test_duplicate_local_measurement_id_blocks_exports_and_release(tmp_path, mod
 @pytest.mark.parametrize("note", ["a" * 253 + "ą", "TPN UWAGI: " + "źółć" * 90])
 def test_dbf_notes_truncate_at_utf8_boundary(tmp_path, note):
     data_dir = tmp_path / "data"
-    _write_sample_data(data_dir)
+    _write_sample_data(data_dir, notes=True)
+    baseline = accept_source(data_dir)
     path = data_dir / "objects/KSW/KSW-0001.yml"
     obj = yaml.safe_load(path.read_text())
     obj["measurements"][1]["notes"] = note
     _write_yaml(path, obj)
     result = export_best_measurements(
+        **baseline,
         data_dir=data_dir,
         output_dir=tmp_path / "exports",
         generated_at=GENERATED_AT,
@@ -113,7 +133,8 @@ def test_dbf_notes_truncate_at_utf8_boundary(tmp_path, note):
 
 def test_survey_network_manual_point_survives_newer_tpn_in_database_and_exports(tmp_path):
     data = tmp_path / "data"
-    _write_sample_data(data)
+    _write_sample_data(data, notes=True)
+    baseline = accept_source(data)
     path = data / "objects/KSW/KSW-0001.yml"
     obj = yaml.safe_load(path.read_text())
     obj["measurements"][0].update(
@@ -127,16 +148,26 @@ def test_survey_network_manual_point_survives_newer_tpn_in_database_and_exports(
     )
     _write_yaml(path, obj)
 
-    database = build_sqlite_database(data_dir=data, output_path=tmp_path / "katalog.sqlite")
-    with sqlite3.connect(database.sqlite_path) as conn:
+    database = build_database(**baseline, data_dir=data, output_path=tmp_path / "katalog.dump")
+    with restore_dump(database.dump_path) as restored:
+        conn = restored.connection
         assert conn.execute(
-            "SELECT mode,measurement_id,computed_best_measurement_id FROM best_measurements"
-        ).fetchone() == ("manual", "m-001", "m-002")
+            "SELECT p.mode,b.id AS measurement_id,"
+            "a.measurement_id AS computed_best_measurement_id FROM v_best b "
+            "JOIN best_policy p USING(object_id) JOIN v_auto_best a USING(object_id)"
+        ).fetchone() == {
+            "mode": "manual",
+            "measurement_id": "m-001",
+            "computed_best_measurement_id": "m-002",
+        }
         assert conn.execute(
             "SELECT method,source_ref FROM measurements WHERE id='m-001'"
-        ).fetchone() == ("siec_pomiarowa", "JKTZ:historical:Survey:entrance")
+        ).fetchone() == {
+            "method": "siec_pomiarowa",
+            "source_ref": "JKTZ:historical:Survey:entrance",
+        }
 
-    result = export_best_measurements(data_dir=data, output_dir=tmp_path / "exports")
+    result = export_best_measurements(**baseline, data_dir=data, output_dir=tmp_path / "exports")
     with result.csv_path.open(encoding="utf-8", newline="") as stream:
         row = list(csv.DictReader(stream))[0]
     assert (row["best_mode"], row["measurement_id"], row["method"]) == (
@@ -151,13 +182,14 @@ def test_survey_network_manual_point_survives_newer_tpn_in_database_and_exports(
 
 def test_tpn_best_context_readable_in_all_full_text_exports(tmp_path):
     data = tmp_path / "data"
-    _write_sample_data(data)
+    _write_sample_data(data, notes=True)
+    baseline = accept_source(data)
     path = data / "objects/KSW/KSW-0001.yml"
     obj = yaml.safe_load(path.read_text())
     note = "Ręczna uwaga.\nTPN WER_LOK: niepewna\nTPN UWAGI: Trzeba uściślić położenie"
     obj["measurements"][1]["notes"] = note
     _write_yaml(path, obj)
-    result = export_best_measurements(data_dir=data, output_dir=tmp_path / "exports")
+    result = export_best_measurements(**baseline, data_dir=data, output_dir=tmp_path / "exports")
     with result.csv_path.open(encoding="utf-8", newline="") as stream:
         assert list(csv.DictReader(stream))[0]["measurement_notes"] == note
     assert (
@@ -168,12 +200,13 @@ def test_tpn_best_context_readable_in_all_full_text_exports(tmp_path):
     )
     desc = ET.parse(result.gpx_path).findtext(".//{http://www.topografix.com/GPX/1/1}desc")
     assert note in desc
-    database = build_sqlite_database(data_dir=data, output_path=tmp_path / "katalog.sqlite")
-    with sqlite3.connect(database.sqlite_path) as conn:
+    database = build_database(**baseline, data_dir=data, output_path=tmp_path / "katalog.dump")
+    with restore_dump(database.dump_path) as restored:
+        conn = restored.connection
         assert (
             conn.execute(
                 "SELECT notes FROM measurements WHERE object_id='KSW-0001' AND id='m-002'"
-            ).fetchone()[0]
+            ).fetchone()["notes"]
             == note
         )
 
@@ -181,9 +214,11 @@ def test_tpn_best_context_readable_in_all_full_text_exports(tmp_path):
 def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
     output_dir = tmp_path / "build" / "exports"
-    _write_sample_data(data_dir)
+    _write_sample_data(data_dir, notes=True)
+    baseline = accept_source(data_dir)
 
     result = export_best_measurements(
+        **baseline,
         data_dir=data_dir,
         output_dir=output_dir,
         generated_at=GENERATED_AT,
@@ -259,7 +294,7 @@ def test_exports_geojson_csv_gpx_and_shapefile_zip(tmp_path: Path) -> None:
         record = reader.record(0)
 
     pl_1992 = wgs84_to_1992(lat=KSW_LAT, lon=KSW_LON)
-    assert list(shape.points[0]) == [pl_1992.y_1992, pl_1992.x_1992]
+    assert list(shape.points[0]) == pytest.approx([pl_1992.y_1992, pl_1992.x_1992], abs=0.005)
     assert record["object_id"] == "KSW-0001"
     assert record["meas_id"] == "m-002"
     assert record["nr_inwent"] == "T.E-08.75"
@@ -284,15 +319,18 @@ def test_gpx_labels_use_local_names_and_preserve_object_ids(
     tmp_path: Path, name_local: str | None, expected_label: str
 ) -> None:
     data_dir = tmp_path / "data"
-    _write_sample_data(data_dir)
-    object_data = _valid_object()
+    _write_sample_data(data_dir, notes=True)
+    baseline = accept_source(data_dir)
+    object_data = _valid_object(notes=True)
     if name_local == "missing":
         object_data.pop("name_local")
     else:
         object_data["name_local"] = name_local
     _write_yaml(data_dir / "objects/KSW/KSW-0001.yml", object_data)
 
-    result = export_best_measurements(data_dir=data_dir, output_dir=tmp_path / "exports")
+    result = export_best_measurements(
+        **baseline, data_dir=data_dir, output_dir=tmp_path / "exports"
+    )
 
     ns = "{http://www.topografix.com/GPX/1/1}"
     waypoint = ET.parse(result.gpx_path).find(ns + "wpt")
@@ -306,16 +344,18 @@ def test_gpx_labels_use_local_names_and_preserve_object_ids(
 
 def test_export_writes_metadata_snapshot(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
-    (data_dir / "relations").mkdir(parents=True)
+    initialize_source(data_dir)
     output_dir = tmp_path / "build" / "exports"
-    object_data = _valid_object()
+    object_data = _valid_object(notes=True)
     object_data.pop("cave_id")
+    object_data.pop("membership_ordinal")
     _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", object_data)
-    cave_data = _valid_cave()
-    cave_data["object_ids"] = []
+    cave_data = _valid_cave(notes=True)
     _write_yaml(data_dir / "caves" / "C-0001.yml", cave_data)
+    baseline = accept_source(data_dir)
 
     result = export_best_measurements(
+        **baseline,
         data_dir=data_dir,
         output_dir=output_dir,
         generated_at=GENERATED_AT,
@@ -330,7 +370,7 @@ def test_export_writes_metadata_snapshot(tmp_path: Path) -> None:
             "caves": 1,
             "relations": 0,
             "measurements": 2,
-            "validation_warnings": 1,
+            "validation_warnings": 3,
             "validation_errors": 0,
         },
     }
@@ -341,7 +381,8 @@ def test_export_writes_metadata_snapshot(tmp_path: Path) -> None:
 def test_export_cli_writes_artifacts(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
     output_dir = tmp_path / "build" / "exports"
-    _write_sample_data(data_dir)
+    _write_sample_data(data_dir, notes=True)
+    baseline = accept_source(data_dir)
 
     result = subprocess.run(
         [
@@ -353,6 +394,7 @@ def test_export_cli_writes_artifacts(tmp_path: Path) -> None:
             str(output_dir),
             "--generated-at",
             GENERATED_AT,
+            *cli_args(baseline),
         ],
         cwd=REPO_ROOT,
         check=False,
@@ -371,135 +413,19 @@ def test_export_cli_writes_artifacts(tmp_path: Path) -> None:
 
 def test_export_rejects_invalid_yaml(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
-    _write_sample_data(data_dir)
+    _write_sample_data(data_dir, notes=True)
+    baseline = accept_source(data_dir)
     object_path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
     object_data = yaml.safe_load(object_path.read_text(encoding="utf-8"))
-    object_data["best_measurement"]["measurement_id"] = "m-999"
+    object_data["best_measurement"].update(
+        mode="manual", measurement_id="m-999", reason="Invalid manual selection"
+    )
     _write_yaml(object_path, object_data)
 
-    with pytest.raises(BestMeasurementsExportValidationError) as exc_info:
-        export_best_measurements(data_dir=data_dir, output_dir=tmp_path / "exports")
+    with pytest.raises(ValueError, match="best_policy_object_id_manual_measurement_id_fkey"):
+        export_best_measurements(**baseline, data_dir=data_dir, output_dir=tmp_path / "exports")
 
-    assert "BEST_MEASUREMENT_MISSING" in {issue.code for issue in exc_info.value.issues}
+    from gps_kataster_obiektow_tatr.validator import validate_data_dir
+
+    assert "BEST_MEASUREMENT_MISSING" in {issue.code for issue in validate_data_dir(data_dir)}
     assert not (tmp_path / "exports" / "best-measurements.geojson").exists()
-
-
-def _write_sample_data(data_dir: Path) -> None:
-    for name in ("objects", "caves", "relations"):
-        (data_dir / name).mkdir(parents=True, exist_ok=True)
-    _write_yaml(data_dir / "objects" / "KSW" / "KSW-0001.yml", _valid_object())
-    _write_yaml(data_dir / "caves" / "C-0001.yml", _valid_cave())
-
-
-def _valid_object() -> dict[str, object]:
-    return {
-        "schema_version": 1,
-        "id": "KSW-0001",
-        "category": "jaskinia_otwor",
-        "name_local": "Test Cave - main entrance",
-        "cave_id": "C-0001",
-        "id_assignment": {
-            "method": "auto",
-            "assigned_from_measurement_id": "m-001",
-            "assigned_prefix": "KSW",
-            "prefix_override_reason": None,
-        },
-        "external_refs": [
-            {
-                "system": "TPN",
-                "ref_type": "source_globalid",
-                "external_id": "{38626571-CAA6-4317-8900-D61A995020E9}",
-                "scope": "object",
-                "notes": "TPN point reference.",
-            }
-        ],
-        "measurements": [
-            _measurement("m-001", source="PIG", observed_date="2026-05-15"),
-            _measurement("m-002", source="TPN", observed_date="2026-05-16"),
-        ],
-        "best_measurement": {
-            "mode": "auto",
-            "measurement_id": "m-002",
-            "reason": None,
-            "updated_at": "2026-05-16T10:30:00Z",
-            "updated_by": "dl",
-        },
-        "attachments": [],
-        "notes": "Object terrain note.",
-        "created_at": "2026-05-15T10:00:00Z",
-        "created_by": "dl",
-        "updated_at": "2026-05-16T10:30:00Z",
-        "updated_by": "dl",
-    }
-
-
-def _valid_cave() -> dict[str, object]:
-    return {
-        "schema_version": 1,
-        "id": "C-0001",
-        "name": "Test Cave",
-        "system_name": None,
-        "external_refs": [
-            {
-                "system": "NR_INWENT",
-                "ref_type": "inventory_number",
-                "external_id": "T.E-08.75",
-                "scope": "cave",
-                "notes": "Inventory number belongs to the cave/catalog entry.",
-            },
-            {
-                "system": "PIG",
-                "ref_type": "catalog_id",
-                "external_id": "1094",
-                "url": "https://jaskiniepolski.pgi.gov.pl/Details/Information/1094",
-                "scope": "cave",
-                "notes": "PIG catalog record identifier.",
-            },
-        ],
-        "object_ids": ["KSW-0001"],
-        "notes": "Cave catalog note.",
-        "created_at": "2026-05-15T10:00:00Z",
-        "created_by": "dl",
-        "updated_at": "2026-05-16T10:30:00Z",
-        "updated_by": "dl",
-    }
-
-
-def _measurement(
-    measurement_id: str,
-    *,
-    source: str,
-    observed_date: str,
-) -> dict[str, object]:
-    pl_1992 = wgs84_to_1992(lat=KSW_LAT, lon=KSW_LON)
-    return {
-        "id": measurement_id,
-        "lat": KSW_LAT,
-        "lon": KSW_LON,
-        "x_1992": pl_1992.x_1992,
-        "y_1992": pl_1992.y_1992,
-        "elevation_m": 1240.0,
-        "elevation_datum": "unknown",
-        "elevation_source": "source_record",
-        "horizontal_accuracy_m": 5.0,
-        "vertical_accuracy_m": 8.0,
-        "source": source,
-        "source_ref": f"{source}:{measurement_id}",
-        "observed_at": None,
-        "observed_date": observed_date,
-        "source_date": None,
-        "method": "source_record",
-        "device": None,
-        "tags": ["fixture"],
-        "verification_status": "nieweryfikowany",
-        "verified_by": None,
-        "verified_at": None,
-        "notes": f"{source} measurement note.",
-        "created_at": "2026-05-15T10:00:00Z",
-        "created_by": "dl",
-    }
-
-
-def _write_yaml(path: Path, data: dict[str, object]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(yaml.safe_dump(deepcopy(data), sort_keys=False), encoding="utf-8")

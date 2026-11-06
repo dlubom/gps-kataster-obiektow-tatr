@@ -3,6 +3,7 @@ id: MLZ-0028
 category: jaskinia_otwor
 name_local: Komora Gwiaździsta
 cave_id: C-0279
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.2449406
-  lon: 19.91901903
-  x_1992: 153454.44
-  y_1992: 566868.64
+  input_srid: 4326
+  input_x: 19.91901903
+  input_y: 49.2449406
   elevation_m: 1708.3
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24523731653354
-  lon: 19.918593936059644
-  x_1992: 153487.04
-  y_1992: 566837.31
+  input_srid: 4326
+  input_x: 19.918593936059644
+  input_y: 49.24523731653354
   elevation_m: 1728.827986
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

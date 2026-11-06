@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1207
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MLZ-0052
+bibliography_status: unknown
 notes: 'PIG aliases: Siwarowa Niżnia
 
   PIG sector: D. Małej Łąki - Zach.

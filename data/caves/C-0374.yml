@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1210
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MLZ-0035
+bibliography_status: unknown
 notes: 'PIG aliases: ZT - 3
 
   PIG sector: D. Małej Łąki - Zach.

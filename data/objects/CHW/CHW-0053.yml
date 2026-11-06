@@ -3,6 +3,7 @@ id: CHW-0053
 category: jaskinia_otwor
 name_local: Okno za Kościołem
 cave_id: C-0964
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24677535367425
-  lon: 19.829420006389014
-  x_1992: 153582.99
-  y_1992: 560347.17
+  input_srid: 4326
+  input_x: 19.829420006389014
+  input_y: 49.24677535367425
   elevation_m: 1329.569795
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,11 +41,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: null
   updated_at: '2026-05-16T10:22:52Z'
   updated_by: importer:tpn
 attachments: []
+bibliography_status: unknown
 notes: Imported from TPN source record after operator review.
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn

@@ -17,8 +17,21 @@ external_refs:
   scope: cave
   notes: 'Załącznik „03 Dol. Chochołowska 2026.07” do zestawienia Jakuba Nowaka „Jaskinie Tatr”, KKTJ,
     10.07.2026; s. 3, lp. 73; nazwa w wykazie: Szczelina przy Zbójeckiej Dziurze.'
-object_ids:
-- CHZ-0033
+bibliography_status: known
+citations:
+- publication_id: literature-7a878a42b53d8284
+  locator: s. 32–33
+  name_in_source: Szczelina przy Zbójeckiej Dziurze
+  purpose: description
+  notes: Jakub Nowak, „Dwie jaskinie w Olejarni”, Jaskinie 4 (93), 2018, s. 32–33;
+    opis i plan Szczeliny przy Zbójeckiej Dziurze.
+- publication_id: literature-287fd900950743ce
+  locator: s. 3, lp. 73
+  name_in_source: Szczelina przy Zbójeckiej Dziurze
+  purpose: description
+  notes: 'Załącznik „03 Dol. Chochołowska 2026.07” do zestawienia Jakuba Nowaka „Jaskinie
+    Tatr”, KKTJ, 10.07.2026; s. 3, lp. 73; nazwa w wykazie: Szczelina przy Zbójeckiej
+    Dziurze.'
 notes: |-
   Jaskinia w Olejarni, w Dolinie Chochołowskiej, odrębna od Zbójeckiej Dziury. Długość 15,5 m. Przewyższenie według Nowaka (2018, 2026) wynosi 5,3 m, według TPN — 5,5 m; rozbieżność nierozstrzygnięta.
 

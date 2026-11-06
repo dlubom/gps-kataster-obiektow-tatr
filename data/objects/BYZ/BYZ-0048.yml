@@ -3,6 +3,7 @@ id: BYZ-0048
 category: jaskinia_otwor
 name_local: Okap w Kondratowych Basztach
 cave_id: C-0918
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24466963274424
-  lon: 19.934545532598747
-  x_1992: 153438.17
-  y_1992: 567998.72
+  input_srid: 4326
+  input_x: 19.934545532598747
+  input_y: 49.24466963274424
   elevation_m: 1658.377328
   elevation_datum: unknown
   elevation_source: source_record
@@ -45,11 +45,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: null
   updated_at: '2026-05-16T10:22:52Z'
   updated_by: importer:tpn
 attachments: []
+bibliography_status: unknown
 notes: Imported from TPN source record after operator review.
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn

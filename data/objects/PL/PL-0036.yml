@@ -3,6 +3,7 @@ id: PL-0036
 category: jaskinia_otwor
 name_local: Schron w Żlebie za Skałką
 cave_id: C-0667
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.27836111
-  lon: 20.07888891
-  x_1992: 157322.24
-  y_1992: 578447.73
+  input_srid: 4326
+  input_x: 20.07888891
+  input_y: 49.27836111
   elevation_m: 1074.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.27836111206743
-  lon: 20.07888891118976
-  x_1992: 157322.24
-  y_1992: 578447.73
+  input_srid: 4326
+  input_x: 20.07888891118976
+  input_y: 49.27836111206743
   elevation_m: 1068.927122
   elevation_datum: unknown
   elevation_source: source_record
@@ -66,11 +65,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T13:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

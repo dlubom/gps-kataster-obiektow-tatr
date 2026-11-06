@@ -99,9 +99,11 @@ indeksowaniem historii i wyborem best. `add_measurement` nadal zgłasza
 zapis całej partii, także w dry-run. To samo ID w różnych obiektach
 pozostaje legalne, a poprawna historia zachowuje kolejność.
 
-Po wszystkich decyzjach `validate_dataset(...)` ocenia pełny przyszły
+Po wszystkich decyzjach `validated_proposal(...)` ocenia pełny przyszły
 zbiór w pamięci, z niezmienionymi relacjami oraz wszystkimi zmienionymi
-i niezmienionymi rekordami. Dopiero wtedy rozpoczyna się zapis. Błędy tego
+i niezmienionymi rekordami. Jeśli decyzje nie zmieniły danych, używa się
+już sprawdzonego stanu wejściowego. Kontrole historii korzystają z połączenia
+odpowiedniego stanu; wszystkie konteksty baz są zamykane przed zapisem. Błędy tego
 stanu dają `REVIEW_DATA_INVALID`; opis zachowuje kod reguły walidatora,
 ścieżkę i szczegóły. Błąd dowolnej decyzji, także ostatniej, lub walidacji
 blokuje całą partię: `has_errors=true`, `written_paths=[]`, niezmienione

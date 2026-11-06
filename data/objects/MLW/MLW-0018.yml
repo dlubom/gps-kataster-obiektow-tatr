@@ -3,6 +3,7 @@ id: MLW-0018
 category: jaskinia_otwor
 name_local: Jaskinia Pomarańczarnia
 cave_id: C-0491
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24617501
-  lon: 19.92882229
-  x_1992: 153600.34
-  y_1992: 567580.24
+  input_srid: 4326
+  input_x: 19.92882229
+  input_y: 49.24617501
   elevation_m: 1655.19
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24609308638105
-  lon: 19.928816762792664
-  x_1992: 153591.23
-  y_1992: 567579.95
+  input_srid: 4326
+  input_x: 19.928816762792664
+  input_y: 49.24609308638105
   elevation_m: 1649.115085
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

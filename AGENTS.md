@@ -9,20 +9,20 @@ Read these files before making changes:
 
 1. `specyfikacja_gps_kataster_obiektow_tatr_v_2.md` - current project
    specification and domain model.
-2. `docs/asdlc/backlog_v1.md` - V1 backlog, PBI order, scope and verification.
-3. `docs/asdlc/context.md` - compact current state and operating agreements.
-4. `docs/asdlc/remediation_plan.md` and `docs/asdlc/remediation_runbook.md` -
-   active repair scope and delivery procedure.
+2. `docs/asdlc/context.md` - current state, open questions and source decisions.
+3. `docs/operations.md` - runtime, editing and verification commands.
+4. `docs/asdlc/backlog_v1.md` - consult when choosing or changing PBI scope.
 
-## Main remediation from 2026-10-15
+For a PR #40 simplification task U03–U11, start at
+`docs/asdlc/plans/PR-40/README.md`. It routes to the specification, design,
+execution procedure and individual task cards, and owns their statuses.
+Read the selected card before coding; implement only the requested task.
+
+## Git and delivery
 
 - The user abandoned the previous branch-based repair series on 2026-10-15.
   Its PBI-034–077 statuses do not apply to this checkout. Do not resume,
   merge or cherry-pick `codex/review-remediation` or other old branches.
-- PBI-078–086 are complete and PR #4 is merged into `main` at
-  `89592969298cf04b547a694edf2755eb56209ae3`. Post-merge CI passed and
-  release v1.0.3 is published; see `docs/asdlc/verification/v1.0.3.md`.
-  The remediation branch is historical; do not resume it.
 - Start each new session from current `main`: inspect status, fetch origin,
   and on a clean checkout use `git switch main` and `git pull --ff-only`.
   Compare HEAD with `origin/main`; use the live tip, not the release SHA.
@@ -30,14 +30,18 @@ Read these files before making changes:
   with a successful `Validate code and data` check. The permanent
   single-maintainer policy requires 0 approving GitHub reviews; retain
   the PR rule, required CI, and empty bypass list.
-- No ready PBI remains in this series. New work requires a user instruction;
+- Exception for an explicitly requested continuation of U03–U11 while PR #40
+  is open: isolate work from its current remote head, as described in
+  `docs/asdlc/plans/PR-40/development.md`. After the PR is merged, use current
+  main and a new PR. Never resume a stale local branch merely by its name.
+- New work requires a user instruction;
   implement exactly one ready PBI per session unless explicitly asked for more.
-- For simple data corrections (no code/schema changes), explanations in YAML,
-  the PR description and CI suffice; no separate or expanded Markdown report is required.
-  Otherwise, keep evidence in `docs/asdlc/verification/PBI-NNN.md` so a clean
-  checkout is sufficient to continue without chat history or `build/`.
-- Commit and push verified steps; confirm remote SHA and CI for that SHA
-  as described in the runbook. Do not merge, tag or publish a release
+- Keep current behavior in the specification and operational docs. Record
+  verification in the PR and CI; add separate research evidence only when it
+  establishes source provenance or a data decision. Retain historical logs in Git
+  rather than adding repeated step reports or completed implementation plans.
+- Commit and push verified steps; confirm the remote SHA and CI for that SHA.
+  Do not merge, tag or publish a release
   without a separate user instruction.
 
 ## Operating mode
@@ -55,8 +59,20 @@ Read these files before making changes:
 
 ## Current V1 boundaries
 
-- YAML in `data/` is the future source of truth.
-- SQLite, GeoJSON, GPX, CSV and Shapefile outputs are generated artifacts.
+- YAML records in `data/` are the source of truth; `schema/catalog.sql` defines
+  the database model. Canonical files contain source geometry, cave membership
+  and Best policy; derived fields belong to read models and exports.
+- Temporary PostgreSQL 18 / PostGIS 3.6 owns integrity, automatic Best and derived
+  coordinates. Use the digest-pinned image in `compose.yaml` / `postgres.py`;
+  no permanent production database is maintained.
+- PostgreSQL dump, GeoPackage, GeoJSON, GPX, CSV, Excel and Shapefile are generated
+  artifacts. A complete build must restore the dump and read back the GeoPackage.
+- Run `uv sync --frozen`, then `uv run --frozen python scripts/check_project.py
+  --base-ref origin/main` (one disposable server for the full gate). See
+  `docs/operations.md` for Docker/native requirements. Missing history baselines
+  block writes/builds; never replace an event's real base with candidate HEAD.
+- Existing measurements and their order are immutable; corrections append a new
+  measurement. Unknown bibliography is legal and reported as a warning.
 - `Obiekt` is a concrete field object / point.
 - `Jaskinia` is a logical/catalog entity grouping one or more objects.
 - TPN `GLOBALID` generally belongs to `Obiekt.external_refs`.

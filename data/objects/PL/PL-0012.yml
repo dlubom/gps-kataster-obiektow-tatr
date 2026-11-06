@@ -3,6 +3,7 @@ id: PL-0012
 category: jaskinia_otwor
 name_local: Łężna Dziura
 cave_id: C-0179
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.28197224
-  lon: 20.07375004
-  x_1992: 157718.24
-  y_1992: 578068.38
+  input_srid: 4326
+  input_x: 20.07375004
+  input_y: 49.28197224
   elevation_m: 984.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.2819722372387
-  lon: 20.073750038317144
-  x_1992: 157718.24
-  y_1992: 578068.38
+  input_srid: 4326
+  input_x: 20.073750038317144
+  input_y: 49.2819722372387
   elevation_m: 985.6995285
   elevation_datum: unknown
   elevation_source: source_record
@@ -66,11 +65,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T13:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

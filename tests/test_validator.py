@@ -6,13 +6,15 @@ from typing import Any
 
 import pytest
 import yaml
+from export_test_support import accept_source, write_sample_data
+from sql_test_support import history_cli_args
 
 from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
 from gps_kataster_obiektow_tatr.data_loader import (
     DataKind,
     LoadedDataset,
     LoadedYamlRecord,
-    load_dataset,
+    load_yaml_dataset,
 )
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
 from gps_kataster_obiektow_tatr.validator import (
@@ -20,7 +22,7 @@ from gps_kataster_obiektow_tatr.validator import (
     ValidationSeverity,
     has_errors,
     validate_data_dir,
-    validate_dataset,
+    validate_proposal,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -94,7 +96,7 @@ def test_unhashable_pig_reference_type_reports_schema_error(tmp_path):
 def test_in_memory_dataset_validates_all_record_kinds_without_writing(tmp_path, target):
     data_dir = tmp_path / "data"
     _write_object(data_dir, _valid_object())
-    dataset = load_dataset(data_dir)
+    dataset = load_yaml_dataset(data_dir)
     if target == "object":
         data = deepcopy(dataset.objects[0].raw_data)
         data["measurements"][0]["lat"] = 0
@@ -119,7 +121,7 @@ def test_in_memory_dataset_validates_all_record_kinds_without_writing(tmp_path, 
         prospective = LoadedDataset(dataset.objects, dataset.caves, (record,))
         expected = "RELATION_OBJECT_REFERENCE_MISSING"
     before = {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()}
-    issues = validate_dataset(prospective, data_dir=data_dir)
+    issues = validate_proposal(prospective, data_dir=data_dir)
     assert any(i.code == expected and i.path == record.path for i in issues)
     assert {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()} == before
     assert not any(i.severity == ValidationSeverity.ERROR for i in validate_data_dir(data_dir))
@@ -128,17 +130,21 @@ def test_in_memory_dataset_validates_all_record_kinds_without_writing(tmp_path, 
 @pytest.mark.parametrize("replacement", ["same", "best-only"])
 def test_duplicate_measurements_block_validation_and_release(tmp_path, replacement):
     data_dir = tmp_path / "data"
-    obj = _valid_object()
+    write_sample_data(data_dir)
+    path = data_dir / "objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(path.read_text())
+    obj["measurements"] = obj["measurements"][:1]
     older = deepcopy(obj["measurements"][0])
     older.update(id="m-002", observed_date="2026-05-14")
     obj["measurements"].append(older)
-    _write_object(data_dir, obj)
+    _write_yaml(path, obj)
+    baseline = accept_source(data_dir)
     path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
     output = tmp_path / "output"
     kwargs = {
         "data_dir": data_dir,
-        "sqlite_path": output / "katalog.sqlite",
         "output_dir": output / "exports",
+        **baseline,
     }
     # A valid two-measurement release is the independent positive control.
     release = build_release_artifacts(**kwargs, generated_at="2026-10-15T00:00:00Z")
@@ -151,7 +157,7 @@ def test_duplicate_measurements_block_validation_and_release(tmp_path, replaceme
 
     issues = validate_data_dir(data_dir)
     assert len(issues) == 1
-    assert issues[0].code == "YAML_INVALID"
+    assert issues[0].code == "SQL_CATALOG_INVALID"
     assert issues[0].severity == ValidationSeverity.ERROR
     assert issues[0].path == path
     assert "measurements" in issues[0].description
@@ -168,8 +174,8 @@ def test_duplicate_measurements_block_validation_and_release(tmp_path, replaceme
     for target in (output, tmp_path / "new-output"):
         with pytest.raises(ValueError, match="duplicate key.*measurements"):
             build_release_artifacts(
+                **baseline,
                 data_dir=data_dir,
-                sqlite_path=target / "katalog.sqlite",
                 output_dir=target / "exports",
             )
     assert {
@@ -244,14 +250,9 @@ def test_duplicate_local_measurement_ids_are_reported_before_indexing_and_best(
     def ambiguous_identity_used(*args, **kwargs):
         pytest.fail("Ambiguous measurements used before identity validation")
 
-    for function in (
-        "_measurement_ids",
-        "_measurement_by_id",
-        "select_default_best_measurement_id",
-    ):
-        monkeypatch.setattr(
-            f"gps_kataster_obiektow_tatr.validator.{function}", ambiguous_identity_used
-        )
+    monkeypatch.setattr(
+        "gps_kataster_obiektow_tatr.postgres.open_proposal", ambiguous_identity_used
+    )
 
     issues = validate_data_dir(data_dir)
     descriptions = [i.description for i in issues if i.code == "DUPLICATE_MEASUREMENT_ID"]
@@ -274,7 +275,7 @@ def test_measurement_identity_is_local_and_preserves_history_order(tmp_path):
     _write_yaml(data_dir / "caves/C-0001.yml", cave)
 
     assert not has_errors(validate_data_dir(data_dir))
-    assert [r.data["measurements"] for r in load_dataset(data_dir).objects] == [
+    assert [r.data["measurements"] for r in load_yaml_dataset(data_dir).objects] == [
         obj["measurements"],
         other["measurements"],
     ]
@@ -283,7 +284,7 @@ def test_measurement_identity_is_local_and_preserves_history_order(tmp_path):
 def test_reports_error_for_missing_best_measurement() -> None:
     with _validation_tmp_data() as data_dir:
         object_data = _valid_object()
-        object_data["best_measurement"]["measurement_id"] = "m-999"
+        object_data["best_measurement"].update(mode="manual", measurement_id="m-999", reason="test")
         _write_object(data_dir, object_data)
 
         issues = validate_data_dir(data_dir)
@@ -304,7 +305,7 @@ def test_reports_error_for_manual_best_without_reason() -> None:
 
         issues = validate_data_dir(data_dir)
 
-    assert _codes(issues) >= {"BEST_MEASUREMENT_MANUAL_REASON_REQUIRED"}
+    assert _codes(issues) >= {"SCHEMA_VALIDATION"}
 
 
 def test_reports_error_for_inconsistent_coordinates() -> None:
@@ -359,7 +360,13 @@ def test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors(tmp_path
     _write_object(warnings_data_dir, warnings_object)
 
     warning_result = subprocess.run(
-        [sys.executable, str(VALIDATE_SCRIPT), "--data-dir", str(warnings_data_dir)],
+        [
+            sys.executable,
+            str(VALIDATE_SCRIPT),
+            "--data-dir",
+            str(warnings_data_dir),
+            *history_cli_args(warnings_data_dir),
+        ],
         cwd=REPO_ROOT,
         check=False,
         capture_output=True,
@@ -371,7 +378,7 @@ def test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors(tmp_path
 
     errors_data_dir = tmp_path / "errors" / "data"
     errors_object = _valid_object()
-    errors_object["best_measurement"]["measurement_id"] = "m-999"
+    errors_object["best_measurement"].update(mode="manual", measurement_id="m-999", reason="test")
     _write_object(errors_data_dir, errors_object)
 
     error_result = subprocess.run(
@@ -386,7 +393,7 @@ def test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors(tmp_path
     assert "BEST_MEASUREMENT_MISSING" in error_result.stdout
 
 
-def test_reports_warning_for_auto_best_measurement_mismatch() -> None:
+def test_sql_computes_auto_best_despite_stale_proposal_selection() -> None:
     with _validation_tmp_data() as data_dir:
         object_data = _valid_object()
         object_data["measurements"] = [
@@ -398,8 +405,14 @@ def test_reports_warning_for_auto_best_measurement_mismatch() -> None:
 
         issues = validate_data_dir(data_dir)
 
-    assert _codes(issues) >= {"BEST_MEASUREMENT_AUTO_MISMATCH"}
-    assert _severities(issues, "BEST_MEASUREMENT_AUTO_MISMATCH") == {ValidationSeverity.WARNING}
+        from gps_kataster_obiektow_tatr.postgres import open_proposal
+
+        with open_proposal(load_yaml_dataset(data_dir)) as catalog:
+            assert (
+                catalog.dataset().objects[0].data["best_measurement"]["measurement_id"] == "m-002"
+            )
+    assert not has_errors(issues)
+    assert "BEST_MEASUREMENT_AUTO_MISMATCH" not in _codes(issues)
 
 
 def test_manual_best_measurement_is_not_checked_against_auto_algorithm() -> None:

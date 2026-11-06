@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1474
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MTW-0004
+bibliography_status: unknown
 notes: 'PIG aliases: SYSTEM Ptasia Studnia
 
   PIG sector: D. Miętusia - Wsch.

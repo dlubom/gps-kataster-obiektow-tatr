@@ -3,6 +3,7 @@ id: PL-0022
 category: jaskinia_otwor
 name_local: Szpara pod Rysami
 cave_id: C-0382
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.18160173
-  lon: 20.08095271
-  x_1992: 146571.18
-  y_1992: 578751.45
+  input_srid: 4326
+  input_x: 20.08095271
+  input_y: 49.18160173
   elevation_m: 2047.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.181601734619925
-  lon: 20.08095270814154
-  x_1992: 146571.18
-  y_1992: 578751.45
+  input_srid: 4326
+  input_x: 20.08095270814154
+  input_y: 49.181601734619925
   elevation_m: 2046.032745
   elevation_datum: unknown
   elevation_source: source_record
@@ -65,10 +64,9 @@ measurements:
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-003
-  lat: 49.18200944871954
-  lon: 20.08133060093272
-  x_1992: 146616.88
-  y_1992: 578778.33
+  input_srid: 4326
+  input_x: 20.08133060093272
+  input_y: 49.18200944871954
   elevation_m: 2040.839966
   elevation_datum: unknown
   elevation_source: dem
@@ -106,11 +104,11 @@ measurements:
   created_by: maintenance:PBI-111
 best_measurement:
   mode: auto
-  measurement_id: m-003
   reason: Nowszy stan tego samego rekordu TPN; bez niezależnej weryfikacji terenowej.
   updated_at: '2026-10-23T11:59:37Z'
   updated_by: maintenance:PBI-111
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

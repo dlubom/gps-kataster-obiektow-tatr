@@ -3,6 +3,7 @@ id: MLZ-0002
 category: jaskinia_otwor
 name_local: Jaskinia przy Jędrusiowej Dziurze
 cave_id: C-0013
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24195279
-  lon: 19.92396946
-  x_1992: 153126.78
-  y_1992: 567232.89
+  input_srid: 4326
+  input_x: 19.92396946
+  input_y: 49.24195279
   elevation_m: 1562.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24195278812099
-  lon: 19.923969460540683
-  x_1992: 153126.78
-  y_1992: 567232.89
+  input_srid: 4326
+  input_x: 19.923969460540683
+  input_y: 49.24195278812099
   elevation_m: 1560.056048
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

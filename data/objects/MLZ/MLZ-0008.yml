@@ -3,6 +3,7 @@ id: MLZ-0008
 category: jaskinia_otwor
 name_local: Jaskinia nad Wyżniem
 cave_id: C-0089
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24663848
-  lon: 19.91788324
-  x_1992: 153642.13
-  y_1992: 566783.71
+  input_srid: 4326
+  input_x: 19.91788324
+  input_y: 49.24663848
   elevation_m: 1442.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24714055371008
-  lon: 19.917636761086857
-  x_1992: 153697.71
-  y_1992: 566765.1
+  input_srid: 4326
+  input_x: 19.917636761086857
+  input_y: 49.24714055371008
   elevation_m: 1455.397129
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

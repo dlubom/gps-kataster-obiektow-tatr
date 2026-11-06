@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1272
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MLZ-0078
+bibliography_status: unknown
 notes: 'PIG aliases: Szpara Shazzy
 
   PIG sector: D. Małej Łąki - Zach.

@@ -3,6 +3,7 @@ id: MTW-0076
 category: jaskinia_otwor
 name_local: Jaskinia Kozia - otwór II
 cave_id: C-0135
+membership_ordinal: 2
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -25,8 +26,6 @@ measurements:
 - id: m-001
   lat: 49.23880047822733
   lon: 19.909431670506475
-  x_1992: 152763.62849716467
-  y_1992: 566179.2691446381
   elevation_m: 1839.468682246115
   elevation_datum: PL-EVRF2007-NH
   elevation_source: other

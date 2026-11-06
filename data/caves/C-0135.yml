@@ -20,9 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1478
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MTW-0013
-- MTW-0076
+bibliography_status: unknown
 notes: 'PIG aliases: Szczelina w Kozim Grzbiecie, Jaskinia Nova, Jaskinia Machajowa
 
   PIG sector: D. Miętusia - Wsch.

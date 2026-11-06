@@ -48,6 +48,70 @@ class StubResolver:
         )
 
 
+@pytest.mark.parametrize(
+    ("highest", "expected"), [(9, ["0010", "0011"]), (9999, ["10000", "10001"])]
+)
+def test_batch_ids_follow_files_not_directories_without_filling_gaps(
+    tmp_path, monkeypatch, highest, expected
+):
+    data = tmp_path / "data"
+    for directory, prefix in [(data / "caves", "C"), (data / "objects/KSW", "KSW")]:
+        directory.mkdir(parents=True)
+        for name in [f"{prefix}-0001.yml", f"{prefix}-{highest}.yaml", f"{prefix}-{highest}.sql"]:
+            (directory / name).touch()
+        (directory / f"{prefix}-999999.yml").mkdir()
+        for name in [
+            "OTHER-999999.yml",
+            f"{prefix}-bad.yml",
+            f"{prefix}-999999.yml.bak",
+            f"{prefix}-999998.yml\n",
+        ]:
+            (directory / name).touch()
+    source = tmp_path / "pig.csv"
+    source.write_text(
+        _pig_header()
+        + "\n"
+        + "\n".join(
+            _pig_row(
+                pig_id=str(index),
+                name=f"Cave {index}",
+                nr_inwent=f"T.{index}",
+                x_1992="152267.23",
+                y_1992="563744.25",
+                lat="49.23459299",
+                lon="19.87589498",
+                source_year="2010",
+            )
+            for index in range(2)
+        ),
+        encoding="utf-8",
+    )
+    before = {p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()}
+    scans = []
+    iterdir = Path.iterdir
+
+    def observe(directory):
+        scans.append(directory)
+        return iterdir(directory)
+
+    monkeypatch.setattr(Path, "iterdir", observe)
+    for _ in range(2):
+        report = build_pig_staging(
+            source,
+            generated_at="2026-11-06T12:00:00Z",
+            data_dir=data,
+            prefix_resolver=StubResolver(),
+        )
+        assert [c["id"] for c in report.proposed_caves] == [f"C-{n}" for n in expected]
+        assert [o["id"] for o in report.proposed_objects] == [f"KSW-{n}" for n in expected]
+        assert [o["measurements"][0]["id"] for o in report.proposed_objects] == ["m-001", "m-001"]
+        assert {
+            p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()
+        } == before
+    assert scans.count(data / "caves") == 2
+    assert scans.count(data / "objects/KSW") == 2
+
+
 def test_csv_staging_keeps_pig_refs_on_cave_and_pig_measurement_low_priority(
     tmp_path: Path,
 ) -> None:

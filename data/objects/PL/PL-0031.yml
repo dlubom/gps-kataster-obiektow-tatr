@@ -3,6 +3,7 @@ id: PL-0031
 category: jaskinia_otwor
 name_local: Wyżnia Koszowa Dziura
 cave_id: C-0575
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24872218
-  lon: 20.0586945
-  x_1992: 154007.58
-  y_1992: 577025.51
+  input_srid: 4326
+  input_x: 20.0586945
+  input_y: 49.24872218
   elevation_m: 1800.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24872218195745
-  lon: 20.058694500142256
-  x_1992: 154007.58
-  y_1992: 577025.51
+  input_srid: 4326
+  input_x: 20.058694500142256
+  input_y: 49.24872218195745
   elevation_m: 1794.824636
   elevation_datum: unknown
   elevation_source: source_record
@@ -73,11 +72,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T13:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

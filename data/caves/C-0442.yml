@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1071
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- BYW-0019
+bibliography_status: unknown
 notes: 'PIG aliases: Jaskinia za Iglicą, Jaskinia przy Szczycie
 
   PIG sector: D. Bystrej - Wsch.

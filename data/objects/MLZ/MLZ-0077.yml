@@ -3,6 +3,7 @@ id: MLZ-0077
 category: jaskinia_otwor
 name_local: Meander w Małołąckim Siodle
 cave_id: C-0774
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.2453889
-  lon: 19.91268328
-  x_1992: 153498.68
-  y_1992: 566407.05
+  input_srid: 4326
+  input_x: 19.91268328
+  input_y: 49.2453889
   elevation_m: 1891.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.245362461926675
-  lon: 19.912681692536776
-  x_1992: 153495.74
-  y_1992: 566406.97
+  input_srid: 4326
+  input_x: 19.912681692536776
+  input_y: 49.245362461926675
   elevation_m: 1793.610911
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

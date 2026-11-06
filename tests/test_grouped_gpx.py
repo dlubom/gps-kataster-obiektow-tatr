@@ -1,15 +1,20 @@
 import re
 import subprocess
 import sys
+from contextlib import contextmanager
 from copy import deepcopy
+from dataclasses import replace
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
 import pytest
-from test_best_measurements_export import GENERATED_AT, REPO_ROOT, _valid_object, _write_yaml
+import shapefile
+import yaml
+from export_test_support import GENERATED_AT, REPO_ROOT, accept_source, cli_args, initialize_source
+from export_test_support import valid_object as _valid_object
+from export_test_support import write_yaml as _write_yaml
 
 from gps_kataster_obiektow_tatr.best_measurements_export import export_best_measurements
-from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
 
 NS = "{http://www.topografix.com/GPX/1/1}"
 FILENAMES = (
@@ -44,20 +49,20 @@ LOCATIONS = (
 
 
 def _write_points(data: Path, locations: tuple[tuple[float, float], ...]) -> None:
-    for directory in ("objects", "caves", "relations"):
-        (data / directory).mkdir(parents=True, exist_ok=True)
+    initialize_source(data)
     for i, (lat, lon) in enumerate(locations, 1):
-        obj = deepcopy(_valid_object())
+        obj = deepcopy(_valid_object(notes=True))
         obj["id"] = f"KSW-{i:04d}"
         obj.pop("cave_id")
+        obj.pop("membership_ordinal")
         obj["external_refs"] = []
         obj["id_assignment"].update(
             method="manual", prefix_override_reason="Historical durable ID retained."
         )
         obj["name_local"] = "Żółta <jaskinia> & wspólna nazwa"
-        xy = wgs84_to_1992(lat=lat, lon=lon)
-        obj["measurements"][1].update(lat=lat, lon=lon, x_1992=xy.x_1992, y_1992=xy.y_1992)
+        obj["measurements"][1].update(lat=lat, lon=lon)
         _write_yaml(data / "objects/KSW" / f"{obj['id']}.yml", obj)
+    return accept_source(data)
 
 
 def _waypoints(path: Path) -> dict[str, bytes]:
@@ -74,9 +79,9 @@ def _waypoints(path: Path) -> dict[str, bytes]:
 
 def test_groups_use_selected_location_and_keep_all_waypoint_fields(tmp_path):
     data = tmp_path / "data"
-    _write_points(data, LOCATIONS)
+    baseline = _write_points(data, LOCATIONS)
     result = export_best_measurements(
-        data_dir=data, output_dir=tmp_path / "exports", generated_at=GENERATED_AT
+        **baseline, data_dir=data, output_dir=tmp_path / "exports", generated_at=GENERATED_AT
     )
     full = _waypoints(result.gpx_path)
     assert len(full) == 20
@@ -101,8 +106,8 @@ def test_groups_use_selected_location_and_keep_all_waypoint_fields(tmp_path):
 
 def test_empty_catalog_still_writes_full_and_three_empty_gpx(tmp_path):
     data = tmp_path / "data"
-    _write_points(data, ())
-    result = export_best_measurements(data_dir=data, output_dir=tmp_path / "exports")
+    baseline = _write_points(data, ())
+    result = export_best_measurements(**baseline, data_dir=data, output_dir=tmp_path / "exports")
     for name in ("best-measurements.gpx", *FILENAMES):
         path = result.output_dir / name
         assert path.exists(), f"Missing GPX for empty catalog: {name}"
@@ -116,8 +121,8 @@ def test_empty_catalog_still_writes_full_and_three_empty_gpx(tmp_path):
 )
 def test_exactly_500_points_fit_without_truncation(tmp_path, location, filename):
     data = tmp_path / "data"
-    _write_points(data, (location,) * 500)
-    result = export_best_measurements(data_dir=data, output_dir=tmp_path / "exports")
+    baseline = _write_points(data, (location,) * 500)
+    result = export_best_measurements(**baseline, data_dir=data, output_dir=tmp_path / "exports")
     group = result.output_dir / filename
     assert group.exists(), "Missing additional GPX for a group at the limit"
     assert len(_waypoints(group)) == len(_waypoints(result.gpx_path)) == 500
@@ -131,17 +136,20 @@ def test_501_points_fail_before_overwriting_exports_and_cli_reports_the_group(
     tmp_path, location, filename
 ):
     data = tmp_path / "data"
-    _write_points(data, (LOCATIONS[3],))
+    previous_data = tmp_path / "previous-data"
+    previous_baseline = _write_points(previous_data, (LOCATIONS[3],))
     output = tmp_path / "exports"
-    export_best_measurements(data_dir=data, output_dir=output, generated_at=GENERATED_AT)
+    export_best_measurements(
+        **previous_baseline, data_dir=previous_data, output_dir=output, generated_at=GENERATED_AT
+    )
     before = {p.name: p.read_bytes() for p in output.iterdir()}
-    _write_points(data, (location,) * 501)
+    baseline = _write_points(data, (location,) * 501)
     with pytest.raises(ValueError, match=rf"{re.escape(filename)}.*501.*500"):
-        export_best_measurements(data_dir=data, output_dir=output)
+        export_best_measurements(**baseline, data_dir=data, output_dir=output)
     assert before == {p.name: p.read_bytes() for p in output.iterdir()}
     for script, extra in (
         ("export_best_measurements.py", []),
-        ("build_release_artifacts.py", ["--sqlite-output", str(tmp_path / "catalog.sqlite")]),
+        ("build_release_artifacts.py", []),
     ):
         command = [
             sys.executable,
@@ -151,6 +159,7 @@ def test_501_points_fail_before_overwriting_exports_and_cli_reports_the_group(
             "--output-dir",
             str(output),
             *extra,
+            *cli_args(baseline),
         ]
         completed = subprocess.run(command, capture_output=True, text=True, check=False)
         assert completed.returncode == 1
@@ -162,15 +171,15 @@ def test_501_points_fail_before_overwriting_exports_and_cli_reports_the_group(
 
 def test_full_gpx_keeps_more_than_500_points_across_groups(tmp_path):
     data = tmp_path / "data"
-    _write_points(data, (LOCATIONS[3],) * 500 + (LOCATIONS[5],))
-    result = export_best_measurements(data_dir=data, output_dir=tmp_path / "exports")
+    baseline = _write_points(data, (LOCATIONS[3],) * 500 + (LOCATIONS[5],))
+    result = export_best_measurements(**baseline, data_dir=data, output_dir=tmp_path / "exports")
     assert len(_waypoints(result.gpx_path)) == 501
     assert [len(_waypoints(result.output_dir / name)) for name in FILENAMES] == [500, 1, 0]
 
 
 def test_cli_reports_full_and_all_additional_gpx(tmp_path):
     data = tmp_path / "data"
-    _write_points(data, LOCATIONS)
+    baseline = _write_points(data, LOCATIONS)
     command = [
         sys.executable,
         str(REPO_ROOT / "scripts/export_best_measurements.py"),
@@ -179,7 +188,268 @@ def test_cli_reports_full_and_all_additional_gpx(tmp_path):
         "--output-dir",
         str(tmp_path / "exports"),
     ]
+    command += cli_args(baseline)
     completed = subprocess.run(command, capture_output=True, text=True, check=False)
     assert completed.returncode == 0, completed.stdout + completed.stderr
     for filename in ("best-measurements.gpx", *FILENAMES):
         assert filename in completed.stdout
+
+
+# Source EPSG:2180 coordinates, with independent expected regions/groups. The
+# first valley has a hole; the second overlaps it but follows it in ordinal.
+SPATIAL_CASES = (
+    (560001, 150001, "MTW", 1),  # interior
+    (560000, 150005, "MTW", 1),  # outer edge
+    (560000, 150000, "MTW", 1),  # outer vertex
+    (560004, 150004, "PL", 2),  # hole interior
+    (560002, 150005, "MTW", 1),  # hole edge: ST_Covers includes the boundary
+    (560009, 150009, "MTW", 1),  # overlap: first ordinal wins
+    (560015, 150015, "KSW", 0),  # second valley only
+    (560025, 150025, "PL", 2),  # outside valleys, both countries: PL first
+    (560050, 150005, "SK", 2),  # SK only
+    (560100, 150005, None, None),  # no region
+)
+
+
+def _spatial_reference(root, *, reverse=False):
+    (root / "config").mkdir(parents=True)
+    (root / "config/prefixes.yml").write_text(
+        yaml.safe_dump(
+            {
+                "valley_prefixes": {"first": "MTW", "second": "KSW"},
+                "fallback_prefixes": {"polska": "PL", "slowacja": "SK"},
+            }
+        )
+    )
+    shapes = root / "data/shapes"
+    shapes.mkdir(parents=True)
+    outer = [
+        (560000, 150000),
+        (560000, 150010),
+        (560010, 150010),
+        (560010, 150000),
+        (560000, 150000),
+    ]
+    hole = [
+        (560002, 150002),
+        (560008, 150002),
+        (560008, 150008),
+        (560002, 150008),
+        (560002, 150002),
+    ]
+    overlap = [
+        (560006, 150006),
+        (560006, 150020),
+        (560020, 150020),
+        (560020, 150006),
+        (560006, 150006),
+    ]
+    valleys = [("first", [outer, hole]), ("second", [overlap])]
+    if reverse:
+        valleys.reverse()
+    with shapefile.Writer(str(shapes / "doliny"), shapeType=shapefile.POLYGON) as w:
+        w.field("NAME", "C")
+        for name, rings in valleys:
+            w.poly(rings)
+            w.record(name)
+    for name, x0, x1 in (("granica_polski", 559990, 560030), ("granica_slowacji", 559990, 560060)):
+        with shapefile.Writer(str(shapes / name), shapeType=shapefile.POLYGON) as w:
+            w.field("NAME", "C")
+            w.poly([[(x0, 149990), (x0, 150030), (x1, 150030), (x1, 149990), (x0, 149990)]])
+            w.record(name)
+    return root
+
+
+def _spatial_source(root, make_canonical_data_dir, cases):
+    # Author canonical YAML directly. No validator, converter or writer runs
+    # before the production API under test. Each manual Best is the older PIG
+    # point; auto Best and the durable KSW ID point to the other valley.
+    data = make_canonical_data_dir(root / "data")
+    for directory in ("caves", "relations", "publications"):
+        (data / directory / ".gitkeep").touch()
+    for i, (x, y, _, _) in enumerate(cases, 1):
+        obj = _valid_object(notes=True)
+        obj["id"] = f"KSW-{i:04d}"
+        obj.pop("cave_id")
+        obj.pop("membership_ordinal")
+        obj["external_refs"] = []
+        obj["id_assignment"].update(method="manual", prefix_override_reason="Retain durable ID")
+        obj["best_measurement"].update(
+            mode="manual", measurement_id="m-001", reason="Retain the older point"
+        )
+        for measurement, (easting, northing) in zip(
+            obj["measurements"], ((x, y), (560015, 150015)), strict=True
+        ):
+            for key in ("lat", "lon", "x_1992", "y_1992"):
+                measurement.pop(key, None)
+            measurement.update(input_srid=2180, input_x=easting, input_y=northing)
+        _write_yaml(data / "objects/KSW" / f"{obj['id']}.yml", obj)
+    for args in (
+        ["init"],
+        ["add", "data"],
+        [
+            "-c",
+            "user.name=Test",
+            "-c",
+            "user.email=test@example.com",
+            "commit",
+            "-qm",
+            "Accepted spatial fixture",
+        ],
+    ):
+        subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True)
+    return data, {"base_ref": "HEAD", "history_repo": root}
+
+
+@pytest.mark.parametrize("reverse", [False, True], ids=["first-ordinal", "reversed-ordinal"])
+def test_sql_regions_cover_edges_holes_overlap_countries_and_missing_region(
+    tmp_path, make_canonical_data_dir, reverse
+):
+    from gps_kataster_obiektow_tatr.export_data import prepare_export_data
+    from gps_kataster_obiektow_tatr.postgres import open_catalog
+    from gps_kataster_obiektow_tatr.prefix_resolver import PrefixResolver
+
+    reference = _spatial_reference(tmp_path / "reference", reverse=reverse)
+    data, _ = _spatial_source(tmp_path / "source", make_canonical_data_dir, SPATIAL_CASES)
+    with open_catalog(data, validate=False, reference_root=reference) as catalog:
+        prepared = prepare_export_data(catalog.dataset())
+    expected = {f"KSW-{i:04d}": prefix for i, (_, _, prefix, _) in enumerate(SPATIAL_CASES, 1)}
+    if reverse:
+        expected["KSW-0006"] = "KSW"
+    assert dict(prepared.gpx_regions) == expected
+    assert all(
+        row.measurement_id == "m-001" and row.computed_best_measurement_id == "m-002"
+        for row in prepared.best
+    )
+    with pytest.raises(TypeError):
+        prepared.gpx_regions["KSW-0001"] = "KSW"
+    # Contrast exact 2180 geometry, without a 4326 round-trip. The old even/odd
+    # resolver excludes a hole boundary, while SQL ST_Covers includes it.
+    resolver = PrefixResolver(
+        config_path=reference / "config/prefixes.yml", shapes_dir=reference / "data/shapes"
+    )
+    first = next(f for f in resolver._valley_features if f.prefix == "MTW")
+    assert first.contains(easting=560001, northing=150001)
+    assert first.contains(easting=560000, northing=150005)
+    assert not first.contains(easting=560004, northing=150004)
+    assert not first.contains(easting=560002, northing=150005)
+
+
+@pytest.mark.parametrize("full_release", [False, True], ids=["standalone", "release"])
+def test_both_exports_use_sql_manual_regions_without_python_geography_or_extra_catalogue(
+    tmp_path, make_canonical_data_dir, monkeypatch, full_release
+):
+    from gps_kataster_obiektow_tatr import postgres, prefix_resolver
+    from gps_kataster_obiektow_tatr.best_measurements_export import export_best_measurements
+    from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
+
+    reference = _spatial_reference(tmp_path / "reference")
+    data, baseline = _spatial_source(
+        tmp_path / "source", make_canonical_data_dir, SPATIAL_CASES[:-1]
+    )
+    original = postgres.open_catalog
+    opened = []
+
+    @contextmanager
+    def configured(*args, **kwargs):
+        with original(*args, **kwargs, reference_root=reference) as catalog:
+            opened.append(catalog.connection)
+            yield catalog
+
+    def unexpected(*args, **kwargs):
+        pytest.fail("Export must use SQL regions, without Python geography")
+
+    monkeypatch.setattr(postgres, "open_catalog", configured)
+    monkeypatch.setattr(prefix_resolver.PrefixResolver, "resolve", unexpected)
+    monkeypatch.setattr(prefix_resolver, "default_prefix_resolver", unexpected)
+    build = build_release_artifacts if full_release else export_best_measurements
+    result = build(
+        data_dir=data, output_dir=tmp_path / "exports", generated_at=GENERATED_AT, **baseline
+    )
+    result = result.export_result if full_release else result
+    assert len(opened) == 1
+    full = _waypoints(result.gpx_path)
+    expected = (
+        ("KSW-0007",),
+        ("KSW-0001", "KSW-0002", "KSW-0003", "KSW-0005", "KSW-0006"),
+        ("KSW-0004", "KSW-0008", "KSW-0009"),
+    )
+    actual = []
+    for name, ids in zip(FILENAMES, expected, strict=True):
+        group = _waypoints(result.output_dir / name)
+        assert tuple(group) == ids
+        assert all(point == full[oid] for oid, point in group.items())
+        actual.extend(group)
+    assert len(actual) == len(set(actual)) == len(full) == 9
+    assert set(actual) == set(full)
+    import csv
+
+    with result.csv_path.open() as stream:
+        rows = list(csv.DictReader(stream))
+    assert all(
+        row["measurement_id"] == "m-001" and row["computed_best_measurement_id"] == "m-002"
+        for row in rows
+    )
+    assert not any("region" in key for key in rows[0])
+
+
+@pytest.mark.parametrize("full_release", [False, True], ids=["standalone", "release"])
+@pytest.mark.parametrize("region", [None, "unknown", "missing"])
+def test_unmapped_sql_region_blocks_publication_without_id_fallback(
+    tmp_path, make_canonical_data_dir, monkeypatch, full_release, region
+):
+    from gps_kataster_obiektow_tatr import postgres
+    from gps_kataster_obiektow_tatr.best_measurements_export import (
+        GpxGroupingError,
+        export_best_measurements,
+    )
+    from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
+
+    # Geography validation succeeds first. A missing/damaged read-model region
+    # must still fail closed at the grouping boundary for either public API.
+    data, baseline = _spatial_source(
+        tmp_path / "source", make_canonical_data_dir, SPATIAL_CASES[:1]
+    )
+    original = postgres.Catalog.dataset
+
+    def unmapped(catalog):
+        dataset = original(catalog)
+        regions = {(oid, mid): prefix for oid, mid, prefix in dataset.measurement_regions}
+        key = ("KSW-0001", "m-001")
+        if region == "missing":
+            del regions[key]
+        else:
+            regions[key] = region
+        return replace(
+            dataset, measurement_regions=tuple((*key, value) for key, value in regions.items())
+        )
+
+    monkeypatch.setattr(postgres.Catalog, "dataset", unmapped)
+    output = tmp_path / "exports"
+    output.mkdir()
+    (output / "previous").write_bytes(b"accepted artifacts")
+    build = build_release_artifacts if full_release else export_best_measurements
+    with pytest.raises(GpxGroupingError, match="GPX group missing for object KSW-0001"):
+        build(data_dir=data, output_dir=output, **baseline)
+    assert {p.name: p.read_bytes() for p in output.iterdir()} == {"previous": b"accepted artifacts"}
+
+
+def test_copied_read_model_keeps_sql_regions_and_detached_records(
+    tmp_path, make_canonical_data_dir
+):
+    from gps_kataster_obiektow_tatr.best_measurements_export import write_best_measurements
+    from gps_kataster_obiektow_tatr.export_data import prepare_export_data
+    from gps_kataster_obiektow_tatr.postgres import open_catalog
+
+    reference = _spatial_reference(tmp_path / "reference")
+    data, _ = _spatial_source(tmp_path / "source", make_canonical_data_dir, SPATIAL_CASES[:1])
+    with open_catalog(data, reference_root=reference) as catalog:
+        dataset = catalog.dataset()
+    candidate = deepcopy(dataset)
+    dataset.objects[0].data["notes"] = "Separate later edit"
+    prepared = prepare_export_data(candidate)
+    assert prepared.best[0].object_notes == "Object terrain note."
+    assert prepared.gpx_regions["KSW-0001"] == "MTW"
+    result = write_best_measurements(prepared, output_dir=tmp_path / "exports")
+    assert tuple(_waypoints(result.output_dir / FILENAMES[1])) == ("KSW-0001",)
+    assert not _waypoints(result.output_dir / FILENAMES[0])

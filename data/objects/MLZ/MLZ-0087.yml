@@ -3,6 +3,7 @@ id: MLZ-0087
 category: jaskinia_otwor
 name_local: Szczelina nad Okapami
 cave_id: C-0866
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -21,10 +22,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.246909089048465
-  lon: 19.91938377839141
-  x_1992: 153673.53
-  y_1992: 566892.52
+  input_srid: 4326
+  input_x: 19.91938377839141
+  input_y: 49.246909089048465
   elevation_m: 1520.233053
   elevation_datum: unknown
   elevation_source: source_record
@@ -47,10 +47,9 @@ measurements:
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-002
-  lat: 49.24692127487006
-  lon: 19.919367648867567
-  x_1992: 153674.87
-  y_1992: 566891.33
+  input_srid: 4326
+  input_x: 19.919367648867567
+  input_y: 49.24692127487006
   elevation_m: 1514.183319
   elevation_datum: unknown
   elevation_source: source_record
@@ -74,11 +73,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: Przy remisie dat i nieznanej dokładności zachowano m-001 z MLZ-0087; brak podstaw do oceny przewagi dokładności.
   updated_at: '2026-10-17T19:51:35Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: >-
   Scalono MLZ-0091/C-0888 do MLZ-0087/C-0866: F.F., Jaskinie 118–119/2025,
   s. 37–38, plan jednego otworu. Dawne MLZ-0091/m-001 zachowano jako m-002.

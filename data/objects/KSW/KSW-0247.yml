@@ -3,6 +3,7 @@ id: KSW-0247
 category: sztolnia
 name_local: Sztolnia w Małym Reglu nr 2
 cave_id: C-0948
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.27419457351446
-  lon: 19.869141510445974
-  x_1992: 156662.68
-  y_1992: 563202.18
+  input_srid: 4326
+  input_x: 19.869141510445974
+  input_y: 49.27419457351446
   elevation_m: 944.457948
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,11 +41,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: null
   updated_at: '2026-05-16T10:22:52Z'
   updated_by: importer:tpn
 attachments: []
+bibliography_status: unknown
 notes: Imported from TPN source record after operator review.
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn

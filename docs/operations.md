@@ -1,7 +1,143 @@
 # Dokumentacja operacyjna
 
-Ten dokument opisuje codzienna prace na danych YAML w V1. Zrodlem prawdy sa
-pliki w `data/`; katalog `build/` zawiera tylko artefakty wygenerowane lokalnie.
+Ten dokument opisuje pracę na rekordach YAML w `data/`. Schemat
+`schema/catalog.sql` odtwarza tymczasowy PostgreSQL/PostGIS; `build/` zawiera
+wyłącznie wygenerowane artefakty. [Model i diagramy](architecture/schema.md).
+
+## Runtime lokalny i CI
+
+Wspólny silnik to `postgis/postgis:18-3.6` przypięty digestem
+`sha256:4a43e3c3e5d55b9208240fc71db543b79c638766280c625a425bd0a2390989c4`.
+Obraz jest `linux/amd64`; ARM wymaga emulacji tej platformy. Dane PG18
+są w `/var/lib/postgresql`. Baza jest jednorazowa, bez wolumenu produkcyjnego.
+Wymagane: Python 3.12 (CI 3.12.13), uv (CI 0.11.8), GDAL z `ogr2ogr`
+(CI Ubuntu 24.04: `gdal-bin=3.8.4+dfsg-3ubuntu3`) oraz Node 24 (CI 24.22.2).
+Plik `.python-version` przypina lokalny interpreter 3.12.13.
+Zależności Python instaluje `uv sync --frozen` z `uv.lock`.
+[Wersja GDAL w Ubuntu](https://packages.ubuntu.com/noble/gdal-bin).
+
+Przy porównaniu GeoPackage z CI używaj zgodnej bazy definicji CRS GDAL/PROJ
+(`PROJ_DATA`), np. narzędzi dostarczanych z QGIS. Sam kod EPSG:2180 nie
+uzasadnia pominięcia różnicy WKT lub datum. Odbiór U09 porównuje je ściśle;
+różne lokalne bazy CRS rozstrzyga przez dobór runtime, a nie normalizację.
+
+```bash
+git fetch origin
+uv sync --frozen
+uv run --frozen python scripts/check_project.py --base-ref origin/main
+```
+
+Runner wykonuje formatowanie, lint, pełne testy, walidację historii, kompletny
+build i `git diff --check`. Wszystkie procesy dzielą jeden zarządzany serwer;
+każdy katalog/restore dostaje własną losową bazę. Wyniki są w
+`build/verification/exports` (można zmienić przez `--output-dir`). Brak Dockera,
+timeout startu, błąd kontroli albo cleanup daje błąd procesu. Cleanup dotyczy
+wyłącznie własnego kontenera `kataster-<uuid>`. Nie resetuj Docker Desktop ani
+innych kontenerów w ramach walidacji.
+
+Builder przygotowuje wspólne, niezmienne dane eksportowe raz po walidacji.
+Best, Excel, GeoPackage i statystyki korzystają z tej samej historii, wyboru
+PostgreSQL i czasu generowania. Samodzielny eksport Best używa tego samego
+przygotowania. Pominięte i null pola starego pomiaru pozostają puste.
+Regiony GPX pochodzą z `v_measurement_regions` przez jedno zbiorcze zapytanie
+projekcji na istniejącym połączeniu. `ST_Covers` i `boundaries.ordinal` określają
+przypisanie, także na granicach poligonów i ich otworów. Niezmienne metadane
+odczytu nie trafiają do YAML ani publicznych kolumn. Grupowanie używa regionu
+faktycznie wybranego Best; brak/nieznany region i grupa ponad 500 punktów dają
+`GpxGroupingError` przed publikacją, zachowując wcześniejsze pliki.
+Resolver Pythona nadal obsługuje kandydatów importu przed utworzeniem katalogu.
+
+Samodzielne CLI (`validate.py`, `build_release_artifacts.py`) także uruchamiają
+zarządzany kontener, jeśli `KATASTER_DATABASE_URL` nie jest ustawiony. Do
+natywnego zgodnego serwera PostgreSQL 18/PostGIS 3.6 ustaw URL administratora
+z prawami tworzenia/usuwania tymczasowych baz i ról oraz katalog narzędzi PG18:
+
+```bash
+export KATASTER_DATABASE_URL='postgresql://postgres@127.0.0.1:5432/postgres'
+export KATASTER_PG_BIN='/path/to/postgresql18/bin'
+uv run --frozen python scripts/check_project.py --base-ref origin/main
+```
+
+Skonfigurowany zewnętrzny serwer nie jest zatrzymywany. Własne bazy i role są
+usuwane. `KATASTER_POSTGRES_CONTAINER` wskazuje kontener serwera, aby dump i
+restore używały jego zgodnych klientów; nie ustawiaj go przy serwerze native.
+Nie używaj klientów starszego PostgreSQL do dumpa PG18.
+
+Opcjonalny interaktywny silnik: `compose.yaml` ma ten sam obraz i losowy port
+loopback, hasło jest wymagane; `tmpfs` zapobiega pozostawieniu katalogu bazy:
+
+```bash
+export KATASTER_POSTGRES_PASSWORD="$(openssl rand -hex 24)"
+docker compose -p kataster-review up -d --wait
+export KATASTER_POSTGRES_CONTAINER="$(docker compose -p kataster-review ps -q postgres)"
+export KATASTER_DATABASE_URL="postgresql://postgres:${KATASTER_POSTGRES_PASSWORD}@$(docker compose -p kataster-review port postgres 5432)/postgres"
+uv run --frozen python scripts/validate.py --base-ref origin/main
+docker compose -p kataster-review down --volumes
+unset KATASTER_POSTGRES_CONTAINER KATASTER_DATABASE_URL KATASTER_POSTGRES_PASSWORD
+```
+
+CI używa tego samego obrazu jako usługi na Ubuntu 24.04; `pg_dump` i
+`pg_restore` działają wewnątrz tej usługi. Oddzielny obowiązkowy test
+`KATASTER_DOCKER_SMOKE=1` uruchamia dodatkowy zarządzany kontener, odczytuje
+port, ładuje katalog, wykonuje dump/restore i sprawdza usunięcie po błędzie.
+Lokalnie test ten jest jawnie pomijany, gdy przełącznik nie jest ustawiony.
+
+Historia CI: PR używa `pull_request.base.sha`, push main — `before`, tag
+wydania — pierwszego rodzica commitu przyjętego na `origin/main`. Ręczne
+mutacje używają `origin/main`, a na jego tipie pierwszego rodzica. Checkout
+pobiera pełne obiekty Git; `scripts/ci_baseline.py` odrzuca brak, zero,
+niedostępny commit i baseline równy kandydatowi. Baza jest przekazywana jawnie
+do walidatora i buildera; preview używa wymaganego `--base-sha`. Kod PR ma
+`contents: read`; osobny zaufany publisher czyta wyłącznie metadane GitHub,
+bez pobierania i wykonywania paczki PR. Retencja paczki wynosi 14 dni.
+
+### Wspólny setup GitHub Actions
+
+`validate.yml`, `pr-preview.yml`, `release.yml` i `mutation.yml` wywołują
+lokalną composite action `.github/actions/setup-runtime`. Jest jednym
+właścicielem instalacji przypiętych Python/uv/GDAL, konfiguracji zgodnych
+klientów z kontenera PG18 oraz `uv sync --frozen`. Port i ID serwisu są
+przekazywane przez `env`, bez interpolowania wejścia do kodu powłoki.
+Preview jawnie wyłącza cache uv; pozostałe trzy workflow zachowują cache.
+Node 24.22.2 pozostaje osobnym krokiem tylko w validate/mutation.
+
+Każdy workflow nadal deklaruje zdarzenia, uprawnienia, checkout pełnej
+historii bez zachowanych credentials, serwis z przypiętym digestem i komendy
+kontroli/publikacji. Po setupie `scripts/ci_baseline.py` rozstrzyga rzeczywisty
+baseline, przed testami, walidacją i buildem. Setup instaluje zależności;
+nie zastępuje żadnej bramki ani wyniku walidacji innego commitu.
+Zaufany `publish-pr-preview.yml` pozostaje odrębny i nie używa tej akcji.
+Release zachowuje `contents: write` wyłącznie na istniejącym zdarzeniu taga.
+[Zakres i odbiór U11](asdlc/plans/PR-40/tasks/U11-ci-setup.md#odbiór).
+
+### CLI i zestaw artefaktów
+
+`build_db.py`, `export_best_measurements.py`, `build_release_artifacts.py`
+i `validate.py` współdzielą argumenty `--data-dir`, `--base-ref` (domyślnie
+`origin/main`) i `--history-repo`. Trzy komendy generujące pliki współdzielą
+też `--generated-at`; nadal używają zegara UTC U08. Każda operacja zachowuje
+własny parser, wywołanie i podsumowanie.
+
+Walidator wypisuje diagnostykę na stdout. Build dumpa i pełnego wydania
+wypisują tam rozpoznane błędy walidacji/historii, a pozostałe błędy na stderr.
+Best zachowuje swoje `error:` na stderr także dla błędu historii. Kod 1 oznacza
+błąd operacji, kod 2 błąd argumentów; ostrzeżenia nie blokują poprawnego wejścia.
+Wspólne formatowanie nie zmienia tej polityki ani zaakceptowanego baseline.
+
+`build_release_artifacts.py --artifact-list` udostępnia po sukcesie ten sam
+sprawdzony komplet 13 ścieżek co builder, rozdzielony bajtami NUL. Domyślne
+komunikaty tekstowe pozostają bez zmian. Lista dla workflow leży poza paczką;
+Best nadal chroni pełne wydanie po kontroli wejścia i historii.
+Wskazuj osobny katalog wynikowy: źródłowe `data/`, jego podkatalogi
+i przodkowie, korzeń repozytorium oraz `.git` są odrzucane, także przez
+dowiązania. Istniejące wyjście może zawierać tylko zwykłe pliki bieżącego
+zestawu artefaktów. Obce pliki, podkatalogi i dowiązania zatrzymują eksport
+bez nadpisania; wybierz inny katalog lub samodzielnie uporządkuj zawartość.
+Wejście legacy przechodzi tę samą kontrolę deklaracji co walidator:
+wszystkie podane pary współrzędnych muszą być kompletne i zgodne z pozycją
+źródłową, a zapisany cache Auto Best musi wskazywać istniejący pomiar obiektu.
+[Kontrakt paczkowania](release_artifacts.md#oficjalna-paczka-wydania),
+[odbiór U10](asdlc/plans/PR-40/tasks/U10-artifacts-and-cli.md#odbiór).
 
 ## Pobieranie jaskiń, lejów i sztolni z API TPN
 
@@ -146,44 +282,150 @@ zmiany modelu, YAML lub `best`. [Kontrakt i źródła](asdlc/plans/PBI-106.md).
 
 ## Struktura wejścia danych
 
-Walidacja, build SQLite, eksporty, importer TPN i review wymagają istniejącego
-root danych oraz katalogów `objects`, `caves` i `relations`. Brak ścieżki lub
-plik zamiast katalogu daje błąd z jej nazwą i kod wyjścia 1. Walidator używa
-kodu `DATA_DIRECTORY_INVALID`; API loadera zgłasza `DataDirectoryError`.
-Przy takim błędzie istniejące artefakty pozostają bajtowo niezmienione,
-a nowe wyjścia nie powstają.
+Katalog wymaga znacznika `data/catalog.json` z `format: postgresql-yaml`
+i `schema_version: 2` oraz katalogów `objects`, `caves`, `relations` i
+`publications`. Obiekty zapisuje się w `objects/PREFIX/ID.yml`, pozostałe
+encje w odpowiednich katalogach jako `ID.yml`; rozszerzenie `.yaml` także
+jest obsługiwane i zachowywane przy edycji. Puste katalogi zachowują
+`.gitkeep`. Jeden plik zawiera encję, jej pomiary, referencje i załączniki.
+Brak któregokolwiek z czterech katalogów albo plik zamiast katalogu blokuje
+odczyt przed uruchomieniem bazy oraz przygotowaniem i zapisem wyjścia.
+Walidator/CLI zgłasza `DATA_DIRECTORY_INVALID` z właściwą ścieżką; build
+oraz review (także dry-run) zachowują `DataDirectoryError`. Istniejące YAML
+i artefakty pozostają bez zmian. Nie twórz katalogów podczas odczytu,
+aby ukryć niepełne wejście. Błędny/brakujący znacznik domyślnego źródła
+nadal ma pierwszeństwo w diagnostyce kanonicznego CLI.
 
-Przed pierwszym importem lub dla świadomie pustego zbioru przygotuj strukturę
-jawnie (dla osobnego katalogu roboczego):
+Legacy bez znacznika, używane przez historyczne rewizje i wejścia importu,
+wymaga `objects`, `caves` i `relations`. Może nie mieć `publications`;
+nieobecność oznacza pustą bibliografię, lecz istniejący plik tej nazwy jest
+błędem. Odczyt Git nie naprawia zaakceptowanej rewizji: bierze układ z jej
+rzeczywistych ścieżek, w tym katalogi utrwalone plikami pomocniczymi.
+
+W YAML jawne `null` i pominięcie klucza to odrębne stany. Daty i czasy
+zapisuj jako cytowane ciągi. Loader odrzuca powtórzone klucze i przekazuje
+wartości do PostgreSQL jako parametry na ograniczonym koncie.
+
+Adapter sprawdza strukturę i typy przed konwersjami sterownika: liczba w polu
+tekstu, tekst w polu liczby, bool zamiast liczby i ułamkowe pole całkowite są
+błędami. Referencje i publikacje wymagają poprawnego bezwzględnego URI;
+sprawdzenie składni nie pobiera strony ani nie potwierdza jej dostępności.
+
+Zapisuj `cave_id` i dodatnie `membership_ordinal` przy obiekcie. Kolejność
+jest unikalna w jaskini i może zawierać luki; przeniesienie dopisuje obiekt
+za jej ostatnim numerem. `object_ids` jest wyliczane wyłącznie do odczytu.
+W pomiarze podaj jedną reprezentację źródłową: `lon`/`lat` albo komplet
+`input_srid`/`input_x`/`input_y`. Pola `x_1992`/`y_1992` są wyliczane.
+W `mode: auto` pomiń `measurement_id`; ręczny wybór zachowuje to pole.
+Kanoniczny loader odrzuca pola wyliczane, aby edycja nie była ignorowana.
+
+### Przydzielanie ID
+
+`id_allocation.IdSequence` obsługuje `assign_id` oraz staging PIG/TPN.
+Przydziela numer po największym istniejącym/zarezerwowanym, bez wypełniania
+luk. Każdy prefix obiektu, jaskinie `C` i pomiary `m` mają oddzielną sekwencję;
+pomiary są dodatkowo lokalne dla obiektu. Kolejne dopasowania TPN do jednego
+obiektu rezerwują osobne numery, a dwa obiekty mogą mieć własne `m-001`.
+Format ma minimum cztery cyfry dla obiektu/jaskini i trzy dla pomiaru.
+
+Adapter `file_ids` rozpoznaje nazwy rzeczywistych plików `.yml`, `.yaml`,
+`.sql`; katalog nazwany np. `KSW-9999.yml` nie zajmuje numeru. Ten odczyt nie
+uruchamia bazy ani loadera; loader nadal odrzuca katalog z plikami SQL.
+Skan nazw danego katalogu jest wykonywany najwyżej raz na partię.
+Rezerwacje propozycji PIG/TPN są wyłącznie w pamięci; ponowienie bez zapisu
+proponuje te same ID. Nie ma trwałego rejestru wycofanych ID ani ochrony
+przed równoległym przydziałem w innym procesie. Kolizje blokuje walidacja.
+[Zakres i odbiór U09](asdlc/plans/PR-40/tasks/U09-id-allocation.md#odbiór).
+
+### Parsowanie źródeł i raporty staging
+
+`source_parsing` współdzieli `clean_text`, `parse_decimal` i
+`date_part_or_today`. Pierwszy helper zamienia `None` na pusty tekst i przycina
+końce; parser usuwa zwykłe/NBSP spacje grupujące i akceptuje przecinek/kropkę.
+Nie zamienia błędnych liczb niefinitywnych na brak: kontrola skończoności
+pozostaje u odbiorcy. Profilowanie nadal liczy takie wartości jako liczby.
+
+`source_table.read_raw_csv_table` czyta raz CSV (UTF-8/BOM, przecinek),
+zachowując nagłówki i białe znaki wartości. Brakujące komórki są puste,
+nadmiarowe bez nagłówka pomijane. `source_profile` używa tego surowego wejścia;
+`read_source_table` przycina wartości CSV oraz wartości i nagłówki XLSX.
+Reguły pełności CSV i wyboru arkusza pozostają bez zmian.
+
+`report_formatting` dostarcza komórki Markdown dla PIG/TPN/review i
+`utc_timestamp` dla raportów, builderów i CLI. Komórki zachowują pionową
+kreskę jako `\|`, LF jako `<br>`, dotychczasowe backticki i CR oraz rozróżnienie
+pustej wartości od samych spacji w komórce kodu. Formatowanie surowych
+przykładów profilu pozostaje osobne. Jawny `--generated-at`/`reviewed_at` ma
+pierwszeństwo; zegar UTC domyślnie pomija mikrosekundy. Zegary pobrań TPN
+zachowują mikrosekundy. Rok PIG i cztery formaty dat TPN pozostają u importerów;
+`date_part_or_today` zachowuje dzień podanej strefy, a dla błędnego timestampu
+używa dzisiejszego dnia UTC. [Zakres i odbiór U08](asdlc/plans/PR-40/tasks/U08-shared-helpers.md#odbiór).
+
+### Granice walidacji w Pythonie
+
+| Punkt wejścia | Stan i wykonane kontrole |
+|---|---|
+| `load_yaml_dataset` | Rekordy YAML z surowymi polami i ścieżkami; wymagane katalogi, składnia i unikalne klucze. Bez bazy i kontroli domeny/historii. |
+| `read_catalog_projection` | Zawsze projekcja PostgreSQL po kontroli wejścia przez adapter. Zawiera pola wyliczane; bez pełnej walidacji domeny i Git. |
+| `validate_proposal` / `validated_proposal` | Propozycja legacy/staging w pamięci: schemat przed odczytem zagnieżdżonych wartości, ID, członkostwo, SQL, redundantne współrzędne. Drugi wariant zachowuje połączenie do dalszych kontroli. |
+| `source_dataset(LoadedDataset) → SourceDataset` | Jawna konwersja już sprawdzonych deklaracji/projekcji do pól źródłowych. Zachowuje ścieżki i ordinal; usuwa listy otworów, współrzędne pochodne i ID auto Best. Sama konwersja nie poświadcza walidacji. |
+| `validated_source_proposal(SourceDataset)` / `open_source_proposal(SourceDataset)` | Kanoniczna propozycja zmian w pamięci: kontrola pól źródłowych i mapowanie do SQL bez ponownego schematu legacy i deklaracji `object_ids`. Pierwszy wariant dodaje kontrolę ścieżek i stanu SQL; połączenie służy także historii. Zwykła projekcja nie jest przyjmowana jako `SourceDataset`. |
+| `validate_catalog` | Kontrola już załadowanego stanu SQL, ścieżek i załączników. Bez odczytu YAML, odbudowy projekcji ani kolejnej bazy. |
+| `validated_catalog_source` | Źródło YAML i kontrola stanu SQL; zwraca jedno połączenie, jedną projekcję i diagnostykę. Bez historii Git. |
+| `history_checked_catalog` | Wspólna bramka builda i kanonicznego CLI: powyższe kontrole oraz wymagany `base_ref` z zaakceptowanej rewizji. Historia używa tego samego połączenia. |
+
+`validate_data_dir` raportuje kontrole wejścia i SQL, wybierając kanoniczny
+kontrakt źródła lub jawny kontrakt propozycji legacy; nie wykonuje kontroli Git.
+Polecenie `scripts/validate.py` zawsze dodaje rzeczywistą bazę historii.
+Review używa sprawdzonego wejścia bez ponownej walidacji jego projekcji jako
+propozycji. Otwiera następną bazę tylko dla zmienionego stanu i zamyka wszystkie
+konteksty przed zapisem. Dry-run przeprowadza te same kontrole.
+
+Akcje review zmieniają tylko źródłowe członkostwo, geometrię i politykę Best.
+Struktura wybranych deklaracji staging i ich członkostwo są sprawdzane przed
+usunięciem pól; redundantne współrzędne są porównywane zapytaniem na istniejącym
+połączeniu wejścia. Nowy/przenoszony otwór dostaje ordinal za największym
+numerem docelowej jaskini, bez wypełniania luk. Ponowienie linku do tej samej
+jaskini zachowuje numer i aktualizuje dotychczasowy audyt obiektu/jaskini.
+Finalizacja notatek i tagów staging pozostaje polityką review.
+
+Pusty katalog jest poprawny strukturalnie, ale zastąpienie nim niepustej
+zaakceptowanej bazy narusza ochronę historii. `schema/history.sql` porównuje
+źródłowe wartości i kolejność pomiarów z danymi odczytanymi z Git:
 
 ```bash
-mkdir -p /sciezka/do/danych/{objects,caves,relations}
-uv run python scripts/validate.py --data-dir /sciezka/do/danych
+uv run python scripts/validate.py --data-dir data --base-ref origin/main
 ```
 
-Puste katalogi są legalnym zbiorem z zerowymi licznikami. Loader nie tworzy
-ich sam; pominięty katalog `relations` jest błędem również przy braku relacji.
+Brak wskazanej rewizji oraz Git blob zamiast drzewa `data` dają
+`HISTORY_BASELINE_UNAVAILABLE`, bez publikacji wyników. CI podaje SHA rzeczywistej bazy PR albo
+poprzedniego stanu main; nie buduje baseline z danych kandydata.
 
 ## Jednoznaczne klucze YAML
 
-Rekordy obiektów, jaskiń i relacji oraz pliki decyzji review muszą mieć
-unikalne klucze w każdej mapie, także wewnątrz pomiarów i list decyzji.
-Drugi klucz `measurements` jest błędem również przy identycznej wartości:
-nowy pomiar dopisuj do istniejącej listy. Loader odrzuca duplikat przed
-normalizacją i wskazuje plik, klucz oraz linię/kolumnę obu wystąpień.
-Walidator zgłasza `YAML_INVALID`; CLI kończy się kodem 1.
+YAML jest formatem katalogu, decyzji importowych i historycznych fixture'ów.
+Klucze każdej mapy muszą być unikalne, także
+wewnątrz pomiarów i list decyzji. Parser wskazuje plik, klucz oraz obie
+lokalizacje duplikatu. Zwykłe aliasy i merge keys o rozłącznych kluczach są
+legalne; kolizje po rozwinięciu są błędem, także przy identycznej wartości.
 
-Zwykłe aliasy (`&wzor` / `*wzor`) i merge keys (`<<`) o rozłącznych kluczach
-są dozwolone. Kolizja po rozwinięciu merge jest błędem: dotyczy to również
-jawnego nadpisania odziedziczonej wartości, powtórzenia tego samego aliasu
-w merge oraz powtórzonego `<<` w tej samej mapie. Przykładowo
-`{<<: {source: TPN}, source: PIG}` jest odrzucane. Zapisz docelową wartość
-jednoznacznie w jednej mapie zamiast korzystać z priorytetów nadpisywania.
+Błędne wejście blokuje zapis finalnych danych. Zatwierdzone decyzje kończą się
+jednym atomowym zapisem katalogu YAML; błąd ostatniego rekordu nie pozostawia
+części wcześniejszych zmian. Snapshot zachowuje pliki pomocnicze także
+wewnątrz katalogów encji. Dowiązanie katalogu będącego celem zapisu rekordu
+blokuje podmianę zamiast kierować zapis poza snapshot.
 
-Błędny YAML blokuje build/eksport i zapis finalnych danych review.
-Istniejące artefakty i źródłowe bajty są zachowane; poprawny dokument
-zachowuje wartości i kolejność list. Jest to reguła parsera, niezależna
-od późniejszych kontroli schematu i lokalnych ID pomiarów.
+Writer zwraca niezmienny `WriteResult` z `written_paths` (nowe lub zmienione
+bajty YAML) i `removed_paths` (usunięte YAML), ze ścieżkami docelowymi.
+Obie listy mają kolejność `caves`, `objects`, `relations`, `publications`,
+z sortowaniem w grupach; identyczny ponowny zapis daje puste krotki.
+Review zachowuje dotychczasowe publiczne `written_paths`, korzystając z wyniku
+writera bez pełnych skanów przed/po. Obejmuje też adopcję legacy poza dirty ID;
+nie dodaje do raportu usunięć ani assetów. `changed` nadal wskazuje rekordy
+do edycji i pozwala kopiować niezmienione pliki z zachowaniem ich bajtów.
+Odczyty autora YAML dla kolejności pól i porównania bajtów nadal są potrzebne.
+Dry-run nie wywołuje writera. Błąd serializacji/podmiany pozostawia poprzedni
+katalog; cleanup starego drzewa po udanej podmianie zachowuje wynik sukcesu.
 
 ## Pozycja z sieci pomiarowej jaskini
 
@@ -198,108 +440,60 @@ Nowa metoda nie zmienia statusu weryfikacji, priorytetu auto ani manual best.
 
 ## Dodanie recznego pomiaru
 
-1. Znajdz obiekt w `data/objects/{PREFIX}/{OBJECT_ID}.yml`.
-2. Dopisz nowy wpis na koncu `measurements`.
-3. Nadaj kolejny lokalny identyfikator `m-NNN`, np. po `m-002` wpisz `m-003`.
-4. Uzupelnij oba uklady wspolrzednych:
+1. Otwórz `data/objects/{PREFIX}/{OBJECT_ID}.yml`. Dopisz pozycję na końcu
+   listy `measurements` i nadaj jej kolejne wolne lokalne `id` (`m-NNN`).
+2. Podaj `input_srid` (4326 albo 2180) oraz `input_x` i `input_y`. Dla 4326
+   X to długość, Y to szerokość. Dla 2180 X to easting, Y to northing.
+   Możesz też podać `lon` i `lat` w EPSG:4326. Wysokość i datum są osobne.
+3. Uzupełnij źródło, `source_ref`, datę, metodę, autorstwo i znane dokładności.
+   W `best_measurement` wybierz `mode: auto` lub `mode: manual` z `measurement_id`
+   oraz niepustym `reason`. Zaktualizuj audyt obiektu i uruchom walidację.
 
-   - `lat`, `lon` w WGS84,
-   - `x_1992`, `y_1992` w projektowej konwencji `x_1992 = northing`,
-     `y_1992 = easting`.
+Korekta pozycji albo wysokości wymaga nowego pomiaru. Błędny stary pomiar
+można oznaczyć jako odrzucony i objaśnić notatką. Zmiana notatki lub statusu
+nie przelicza i nie zastępuje jego źródłowej geometrii.
 
-5. Dla pomiaru terenowego ustaw zwykle:
-
-   - `source: wlasne`,
-   - `method: gps_receiver`, `gnss` albo `smartfon`,
-   - `verification_status: nieweryfikowany`, dopoki nie ma review,
-   - `horizontal_accuracy_m` i `vertical_accuracy_m`, jezeli sa znane,
-   - `source_ref`, np. `teren:2026-05-16:gnss`,
-   - `created_at` i `created_by`.
-
-6. Ustaw `best_measurement`:
-
-   - zostaw `mode: auto`, jesli domyslny algorytm ma wybrac najlepszy pomiar,
-   - ustaw `mode: manual` tylko gdy swiadomie wskazujesz inny pomiar; wtedy
-     `reason` musi jasno wyjasniac decyzje.
-
-7. Zmien `updated_at` i `updated_by` obiektu.
-8. Uruchom walidacje.
-
-Pomocniczo, nowe ID obiektu mozna zaproponowac komenda:
+Nowe ID obiektu można zaproponować poleceniem:
 
 ```bash
 uv run python scripts/assign_id.py 49.2425 19.8147
 ```
 
-Do przeliczenia wspolrzednych w druga strone mozna uzyc helperow projektu:
+## Bibliografia i nowe obiekty
 
-```bash
-uv run python -c "from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992; print(wgs84_to_1992(49.2425, 19.8147))"
-```
+Obiekt i jaskinia mają niezależny `bibliography_status`: `known` albo `unknown`.
+Jawne `unknown` jest dozwolone także przy tworzeniu nowego wpisu, np. z TPN.
+`known` wymaga cytowania we właściwej tabeli: `cave_citations` lub
+`object_citations`. Pomiary mogą osobno wskazywać `measurement_citations`.
+
+Publikację zapisujemy w `data/publications/` z pełnym cytowaniem tekstowym,
+aby dało się ją znaleźć także bez działającego URL. Przywołanie wskazuje
+publikację i lokalizator, np. strony, tabelę albo pozycję wykazu. Cytowania
+jaskini nie kopiujemy automatycznie na wszystkie otwory. Referencje TPN/PIG
+pozostają osobnymi informacjami o pochodzeniu i identyfikatorach.
 
 ## Cwiczeniowy pomiar testowy
 
-Ten przeplyw pozwala nowej osobie przejsc cwiczenie bez dotykania prawdziwych
-danych. Kopiuje jeden zwalidowany obiekt i jaskinie z aktualnego katalogu do
-tymczasowego katalogu:
+Kopiuj cały katalog: ochrona historii powinna widzieć wszystkie istniejące
+pomiary, również te spoza ćwiczonego obiektu.
 
 ```bash
-tmpdir="$(mktemp -d)"
-mkdir -p "$tmpdir/objects/KSW" "$tmpdir/caves" "$tmpdir/relations"
-cp data/caves/C-0002.yml "$tmpdir/caves/C-0002.yml"
-cp data/objects/KSW/KSW-0001.yml "$tmpdir/objects/KSW/KSW-0001.yml"
+catalogue_demo_dir="$(mktemp -d)"
+cp -R data "$catalogue_demo_dir/data"
 ```
 
-Nastepnie w pliku `$tmpdir/objects/KSW/KSW-0001.yml` dopisz kolejny pomiar:
-
-```yaml
-  - id: m-003
-    lat: 49.2345931
-    lon: 19.8758951
-    x_1992: 152267.24
-    y_1992: 563744.26
-    elevation_m: 1238.0
-    elevation_datum: unknown
-    elevation_source: gnss
-    horizontal_accuracy_m: 0.8
-    vertical_accuracy_m: 1.5
-    source: wlasne
-    source_ref: "teren:fixture:m-003"
-    observed_date: "2026-05-16"
-    source_date: null
-    method: gnss
-    device: "Emlid Reach"
-    tags:
-      - weryfikacja_terenowa
-    verification_status: zweryfikowany
-    verified_by: dl
-    verified_at: "2026-05-16T10:30:00Z"
-    notes: "Cwiczeniowy pomiar dodany w kopii fixture."
-    created_at: "2026-05-16T10:00:00Z"
-    created_by: dl
-```
-
-W tym samym pliku ustaw `best_measurement` na nowy pomiar:
-
-```yaml
-best_measurement:
-  mode: auto
-  measurement_id: m-003
-  reason: null
-  updated_at: "2026-05-16T10:30:00Z"
-  updated_by: dl
-```
-
-Na koncu uruchom:
+W kopii `objects/KSW/KSW-0001.yml` dopisz pomiar na końcu `measurements`
+i nadaj mu nowe lokalne `m-NNN`. Dodaj w `notes` informację o ćwiczeniu,
+wartości testowe, datę i pochodzenie zgodnie z regułami powyżej.
 
 ```bash
-uv run python scripts/validate.py --data-dir "$tmpdir"
+uv run python scripts/validate.py --data-dir "$catalogue_demo_dir/data" \
+  --base-ref origin/main
 ```
 
-Walidacja powinna przejsc bez errorow. Moga zostac ostrzezenia dotyczace
-starszych pomiarow z importu PIG/TPN, jezeli nie maja `horizontal_accuracy_m`.
-Jezeli `best_measurement.mode: auto` wskazuje inny pomiar niz algorytm, popraw
-`measurement_id` albo ustaw `mode: manual` z powodem.
+Ostrzeżenia o nieznanej dokładności i bibliografii są legalne. Dla próby
+negatywnej usuń stary pomiar w kopii: ochrona historii powinna przerwać
+walidację. Ćwiczeniowej kopii nie commituj ani nie używaj do wydania.
 
 ## Domyslny algorytm `auto`
 
@@ -312,8 +506,9 @@ aktualnego pomiaru. Priorytet zrodel:
 4. najlepszy nieodrzucony pomiar z PIG,
 5. najlepszy nieodrzucony pomiar z innych zrodel.
 
-W tym samym priorytecie wygrywa nowszy `observed_date` / `observed_at`, potem
-nizsze `horizontal_accuracy_m`, a na koncu stabilny porzadek po
+W tym samym priorytecie wygrywa nowszy czas w UTC: `observed_at`, a przy
+jego braku `observed_date` o północy. Następnie niższe `horizontal_accuracy_m`
+(brak wartości na końcu), a na końcu stabilny tekstowy porządek po
 `measurement.id`. Jezeli wszystkie pomiary sa odrzucone, algorytm wskaze
 fallback i walidator pokaze ostrzezenie. `mode: manual` zawsze ma pierwszenstwo,
 ale wymaga pola `reason`.
@@ -323,21 +518,38 @@ ale wymaga pola `reason`.
 Przed commitem uruchom lokalna bramke:
 
 ```bash
-uv run ruff format --check src tests scripts
-uv run ruff check src tests scripts
-uv run pytest
-uv run python scripts/validate.py
+uv sync --frozen
+uv run --frozen python scripts/check_project.py --base-ref origin/main
 ```
 
 `scripts/validate.py` zwraca kod niezerowy tylko dla `error`. Ostrzezenia trzeba
-przeczytac i zrozumiec; obecny import PIG/TPN ma znane ostrzezenia
+przeczytac i zrozumiec. Błędy constraints są mapowane na kody domenowe
+(np. `DUPLICATE_MEASUREMENT_ID`) albo `SQL_CATALOG_INVALID`. Historia raportuje
+`HISTORY_BASELINE_UNAVAILABLE`, `HISTORY_OBJECT_DELETED`,
+`HISTORY_MEASUREMENT_DELETED`, `HISTORY_MEASUREMENT_CHANGED` i
+`HISTORY_ORDER_CHANGED`. Obecny import PIG/TPN ma znane ostrzezenia
 `MISSING_HORIZONTAL_ACCURACY`, bo zrodla nie podaja dokladnosci poziomej.
 
 Jesli lokalny cache `uv` nie jest dostepny w srodowisku sandboxowym, uzyj:
 
 ```bash
-UV_CACHE_DIR=/private/tmp/uv-cache uv run pytest
+UV_CACHE_DIR=/private/tmp/uv-cache uv run --frozen python scripts/check_project.py --base-ref origin/main
 ```
+
+## Testy eksportów i zaakceptowane fixtures
+
+`tests/export_test_support.py` tworzy jawny kanoniczny YAML oraz osobny commit
+Git. Zwykły test importuje badane API z modułu produkcyjnego; helper nie
+waliduje, nie konwertuje ani nie naprawia kandydata. Najpierw przygotuj poprawny
+fixture i wywołaj `accept_source`, potem zmień tylko kandydata i przekaż
+zachowane `base_ref`/`history_repo`. `cli_args` formatuje wyłącznie te argumenty.
+Puste istniejące katalogi są utrwalane w kopii Git; brakujące nie są dodawane.
+
+`tests/test_legacy_migration.py` celowo wykonuje walidację deklaracji i zapis
+konwersji: tam migracja jest przedmiotem testu. `make_legacy_history_baseline`
+w `sql_test_support.py` służy do zaakceptowanych rewizji starego formatu.
+Odczyty konsumenckie nadal używają openpyxl, pyshp, SQLite/GDAL i natywnego
+restore. [Zakres i odbiór U07](asdlc/plans/PR-40/tasks/U07-production-path-tests.md#odbiór).
 
 ## Testy mutacyjne
 
@@ -368,7 +580,7 @@ git, zeby wyniki lokalnych eksperymentow nie trafialy do commitow.
 ## Tagowany release danych
 
 Oficjalna paczka danych powinna byc publikowana recznie przez tag `vX.Y.Z` z
-czystego checkoutu po review zmian w YAML:
+czystego checkoutu po review zmian w YAML i osobnej zgodzie na wydanie:
 
 1. Zaktualizuj repo i upewnij sie, ze nie ma przypadkowych zmian:
 
@@ -399,10 +611,17 @@ czystego checkoutu po review zmian w YAML:
    - `best-measurements.gpx`,
    - `best-measurements.shp.zip`,
    - `metadata.json`,
-   - `katalog.sqlite.zip`.
+   - `katalog.dump` i `katalog.gpkg`,
+   - grupowe GPX, `katalog.xlsx` oraz statystyki JSON/Markdown.
 
    Dokladny przeglad kolumn i pol tych plikow jest w
    `docs/release_artifacts.md`.
+
+   Samodzielny `scripts/export_best_measurements.py` zapisuje osiem plików
+   Best. Jeśli katalog docelowy zawiera dump, GeoPackage, Excel lub statystyki
+   pełnego wydania, odmawia zapisu i zachowuje wszystkie pliki. Przebuduj wtedy
+   całą paczkę przez `scripts/build_release_artifacts.py` albo wskaż osobny
+   `--output-dir`, np. `build/best-only`.
 
 7. Zacommituj zmiany, przeprowadz review w PR i po merge do `main` utworz
    annotated tag:
@@ -465,17 +684,25 @@ wartości źródłowe i notes/audyt przed oraz po zmianie. `record_number` słu�
 tylko jako odnośnik dowodowy. Dopasowanie wymaga jednocześnie jednoznacznej
 referencji `TPN/source_globalid` na obiekcie i `source: TPN` z
 `source_ref: TPN:{GLOBALID}` na pomiarze. Niejednoznaczność w źródle,
-obiektach lub pomiarach jest raportowana i pomijana, bez dopasowania po
-nazwie. Pozostałe jednoznaczne rekordy mogą być uzupełnione.
+obiektach lub pomiarach jest raportowana bez dopasowania po nazwie.
+Nierozstrzygnięty przypadek blokuje zapis całej partii; dry-run pozwala
+przejrzeć i rozwiązać go przed ponowieniem operacji.
 
 Po przeglądzie raportu powtórz polecenie z `--apply` i osobnym `--report`.
 Opcjonalne `--generated-at 2026-10-15T13:16:44Z` ustala czas audytu dla
 odtwarzalnego przebiegu. Zapis ogranicza się do notes właściwego pomiaru
 i `updated_at`/`updated_by` obiektu (`maintenance:PBI-082`). Ręczne uwagi
 pozostają; obecne etykietowane wartości nie są dopisywane drugi raz.
-Manifest jest zapisywany przed finalnymi plikami; raport musi znajdować
-się poza katalogiem danych i nie może nadpisać źródła. Nie deklarujemy
-rollbacku przy awarii I/O ani ochrony przed równoczesną edycją.
+Raport przed zapisem ma stan `pending`; dopiero udana atomowa podmiana danych
+pozwala zapisać `apply`. Raport i katalog danych są publikowane oddzielnie;
+błąd końcowego zapisu raportu może pozostawić `pending` mimo zmienionych danych. Błąd zapisu daje `failed`, a przerwana operacja może
+zostawić `pending`, co wymaga sprawdzenia jej stanu. Raport musi znajdować
+się poza katalogiem danych i nie może nadpisać źródła. Po udanej podmianie
+sprzątanie starego katalogu jest wykonywane w miarę możliwości: błąd jego
+usunięcia nie zmienia wyniku zapisu na `failed`. Może pozostawić ukryty katalog
+`.data-snapshot-*` obok danych do późniejszego usunięcia. Zapis snapshotu chroni
+przed częściową podmianą plików, ale nie zastępuje izolacji równoczesnych
+edycji; używaj osobnych gałęzi/worktree i review w Git.
 
 [Manifest PBI-082](asdlc/verification/PBI-082-manifest.json) wskazuje 469
 plików i wyłącznie dozwolone pola. [Log](asdlc/verification/PBI-082.md)
@@ -500,7 +727,7 @@ automatycznie nowej jaskini tylko dlatego, ze jest drugi punkt.
 
    - dodaj nowy `Obiekt` z wlasnym ID,
    - ustaw `cave_id` na istniejaca jaskinie,
-   - dopisz nowe ID do `Jaskinia.object_ids`,
+   - ustaw kolejność `membership_ordinal`; lista `Jaskinia.object_ids` jest wyliczana,
    - zachowaj TPN `GLOBALID` na obiekcie i PIG / `NR_INWENT` na jaskini,
    - w notatkach zapisz, z ktorego wiersza TPN i z ktorego pola PIG wynika
      rozstrzygniecie.
@@ -527,11 +754,13 @@ backlog jawnie zmieni zasade traktowania artefaktow generowanych.
 
 ## Skończone liczby pomiarów (PBI-084)
 
-NaN i ±Infinity są niedozwolone w lat/lon, cache PL-1992, wysokości
+NaN i ±Infinity są niedozwolone w geometrii źródłowej, wysokości
 oraz obu dokładnościach, także w historycznym lub odrzuconym pomiarze.
-Walidator zwraca `MEASUREMENT_NON_FINITE` z plikiem, obiektem, pomiarem
-oraz polem. Kontrola poprzedza geometrię i wybór best. Review (dry-run
-oraz zapis), SQLite i eksporty blokują całą operację przed zapisem;
+Adapter/SQL odrzuca je jako `SQL_CATALOG_INVALID` z plikiem i diagnostyką
+constraints; historyczna nazwa `MEASUREMENT_NON_FINITE` dotyczy pomocniczych
+kontroli modelu legacy. Kontrola poprzedza eksport i wybór Best na danych
+uznanych za poprawne. Review (dry-run
+oraz zapis), PostgreSQL i eksporty blokują całą operację przed zapisem;
 istniejące wyjścia zachowują bajty. Opcjonalne `null`, zera i skończone
 wartości zachowują dotychczasową semantykę.
 
@@ -539,7 +768,17 @@ Importery CSV/XLSX wykrywają także przepełnienie zapisu liczby, np.
 `1e999`. `PIG_MEASUREMENT_NON_FINITE` pomija obiekt, zachowując jaskinię;
 `TPN_MEASUREMENT_NON_FINITE` odrzuca cały wiersz. Diagnostyka podaje
 źródłowe pole i numer rekordu/identyfikator. Wadliwy kandydat z istniejącego
-YAML lub PIG staging JSON przerywa staging TPN przed dopasowaniem;
+katalogu albo PIG staging JSON przerywa staging TPN przed dopasowaniem;
 CLI kończy się kodem 1 bez raportów. Nie poprawiać tego przez zamianę
 niepoprawnej wysokości na brak wartości. Błąd projekcji dla skończonego
 wejścia również jest raportowany, bez propagacji nieskończonego wyniku.
+
+## Rollback formatu PostgreSQL
+
+Przed scaleniem zamknięcie draft PR pozostawia main bez zmian. Po scaleniu
+rollback jest osobnym PR/migracją: zachowaj wszystkie nowe rekordy YAML i surowe
+źródła, odtwórz snapshot na przypiętym silniku, przenieś nowe pomiary oraz
+uzasadnienia i porównaj całą historię z ostatnim zaakceptowanym SHA.
+Samo przywrócenie dawnych plików utraciłoby nowe pomiary. Przed podmianą
+formatu ponów pełną bramkę, porównanie eksportów i niezależny odczyt. Nie
+nadpisuj opublikowanych assetów starego wydania; korekta wymaga nowej wersji.
