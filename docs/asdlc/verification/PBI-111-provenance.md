@@ -1,8 +1,8 @@
-# PBI-111 — korekta pochodzenia czterech punktów
+# Pochodzenie czterech punktów — PBI-111
 
-2026-10-23, kontynuacja istniejącego draft PR #19 na polecenie użytkownika.
-Baza poprawki: `ea04f3aafdc41a7d37f1ea7349d2683f6c473e1a`.
-[Zakres i zaakceptowana nazwa](../plans/PBI-111-provenance.md).
+Ustalenia źródłowe z 2026-10-23. Metoda `siec_pomiarowa` oznacza punkt
+wynikający z sieci pomiarów jaskiniowych lub powierzchniowych; nie dowodzi
+użycia GNSS ani określonej dokładności.
 
 ## Źródła i ustalenia
 
@@ -34,52 +34,12 @@ i robocze SRV bez `_RAW`) do katalogu tymczasowego, wykonać
 `cavern -o historic KATASTER.wpj`, odczytać stacje przez
 `dump3d historic.3d` i przeliczyć EPSG:32634 → EPSG:4326.
 Survex 1.4.24: exit 0, 69 historycznych ostrzeżeń kompilacji; dla trzech
-punktów brak FIXED, dla Mylnej FIXED. Wynik po konwersji zgodny z obecnym
+punktów brak FIXED, dla Mylnej FIXED. Wynik po konwersji zgodny z zapisanym wtedy
 lat/lon do 1e-10 stopnia, wysokości identyczne. To dowód pochodzenia
 z historycznej sieci, bez deklaracji jej dokładności ani równoważności
 kompilacji z natywnym Walls. Historyczne źródła i odtworzony wynik
 pozostają odrębnymi klasami pochodzenia; nie dodano artefaktów do danych.
 
-## Manifest i kontrakt
-
-Tylko m-003 w czterech wymienionych obiektach: method, source_ref, tags,
-elevation_source, notes; także korekta błędnych wzmiankowań GNSS w reason
-best i audyt best/obiektu. `source: inne` zachowane. Trzy wysokości wynikowe
-mają other, wysokość kotwicy Mylnej source_record; datum nadal unknown.
-Daty importu zachowano, z wyjaśnieniem w notes, że nie potwierdzają dat
-pomiarów terenowych. Nie zmieniono statusów ani nie podniesiono dokładności.
-
-Porównanie strukturalne do bazy i dosłownych linii geometrii potwierdza:
-mode manual, measurement_id m-003, wszystkie lat/lon/XY, wysokości, datum,
-dokładności, daty i pozostałe pomiary pozostają bez zmian. Poza czterema
-plikami żaden śledzony plik data/ nie uległ zmianie.
-
-Dodano jedną wartość enum method w schema_version 1. Brak zmian algorytmu
-auto, formatu eksportów i produkcyjnego kodu Python. Konsumenci zamkniętej
-listy metod muszą przyjąć nową wartość, co opisuje changelog schematu.
-
-## Weryfikacja
-
-- Nowy test `test_survey_network_manual_point_survives_newer_tpn_in_database_and_exports`:
-  RED — SQLite odrzucone przez SCHEMA_VALIDATION dla nowej metody;
-  GREEN — manual m-001 zachowany przy automatycznym kandydacie TPN m-002,
-  nowa metoda zapisana w SQLite, CSV i GeoJSON, status zachowany.
-  Usunięcie nowej wartości enum odtwarza RED — kontrola 1/1 zmiany schematu.
-- `.venv/bin/ruff format --check src tests scripts`: PASS, 65 plików.
-- `.venv/bin/ruff check src tests scripts`: PASS.
-- `.venv/bin/python -m pytest`: **951 passed**.
-- `.venv/bin/python scripts/validate.py`: exit 0, **0 błędów / 2103 ostrzeżenia**.
-- `scripts/build_release_artifacts.py` do
-  `build/verification/PBI-111-provenance/`: 1007 obiektów, 1001 jaskiń,
-  1908 pomiarów; odczyt 10/10 artefaktów, SQLite integrity/FK i identyczność
-  ZIP SQLite, Best 1007 / Full 1908. Geometria i ID best całego katalogu
-  zgodne z YAML (CSV/GPX z dotychczasowym formatem 12 cyfr znaczących,
-  GeoJSON/SQLite z pełnymi wartościami). Cztery korekty pochodzenia potwierdzone w SQLite,
-  CSV, GeoJSON, GPX, Excel; DBF poprawnie skraca długie notes na granicy UTF-8.
-- Niezależny review danych, historii, schematu/spec i testu: brak uwag
-  materialnych; kontrola nie obejmowała tego później spisanego dokumentu.
-
-## Dostarczenie
-
-Końcowy commit, zdalny HEAD i CI wskazuje opis PR #19. Pozostaje draftem;
-merge, tag i wydanie nie należą do tej poprawki.
+Korekta dotyczyła opisów pochodzenia m-003, bez zmiany lokalizacji,
+ręcznego Best, statusów i dokładności. Zachowano `source: inne` i nieznane
+datum. Daty importu nie potwierdzają dat pomiarów terenowych.

@@ -216,8 +216,7 @@ GPX nie ma kolumn. Kazdy waypoint zawiera:
 - `desc` z nazwą, jawnym `object <object_id>`, `measurement_id`, źródłem,
   datą obserwacji oraz notatkami obiektu, jaskini i pomiaru, jeśli istnieją.
 
-Nazwy w etykietach GPX pojawią się w wydaniach po v1.0.4. Powtarzające się
-nazwy są dozwolone; trwałe ID w opisie pozwala wskazać konkretny punkt w CSV/Excelu.
+Powtarzające się nazwy są dozwolone; trwałe ID w opisie pozwala wskazać konkretny punkt w CSV/Excelu.
 
 ### Dodatkowe GPX według grup dolin
 
@@ -247,7 +246,7 @@ plików, bez nadpisania wcześniejszych eksportów. Builder mógł już wcześni
 odtworzyć bazę; nie oznacza to gotowej paczki do publikacji. Nie obcinamy
 punktów ani nie rozcinamy dolin automatycznie. Wzrost liczby punktów wymaga
 ponownego uzgodnienia grup. `metadata.json` zachowuje dotychczasowy kontrakt.
-Pliki są w lokalnym buildzie, podglądzie PR i wydaniach po v1.2.1.
+Pliki są w lokalnym buildzie, podglądzie PR i wydaniach.
 
 ## `metadata.json`
 

@@ -162,13 +162,16 @@ def load_records(
 
 
 def iter_yaml_paths(root_dir: Path) -> tuple[Path, ...]:
-    """Return all ``.yml`` and ``.yaml`` files below ``root_dir`` sorted by path."""
+    """Return sorted YAML paths, including symlinks so callers can reject them."""
 
     if not root_dir.exists():
         return ()
 
     paths = [
-        path for suffix in ("*.yml", "*.yaml") for path in root_dir.rglob(suffix) if path.is_file()
+        path
+        for suffix in ("*.yml", "*.yaml")
+        for path in root_dir.rglob(suffix)
+        if path.is_symlink() or path.is_file()
     ]
     return tuple(sorted(paths))
 

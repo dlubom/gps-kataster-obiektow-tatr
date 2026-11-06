@@ -1,7 +1,7 @@
 # Agent instructions for gps-kataster-obiektow-tatr
 
-This repository is managed in a lightweight AS-DLC mode. Treat the files in
-the repo as the durable project memory; do not rely on chat history.
+This repository uses lightweight AS-DLC. Keep durable project knowledge in
+current repository files; use Git and PRs for implementation history.
 
 ## Canonical context
 
@@ -13,54 +13,29 @@ Read these files before making changes:
 3. `docs/operations.md` - runtime, editing and verification commands.
 4. `docs/asdlc/backlog_v1.md` - consult when choosing or changing PBI scope.
 
-For a PR #40 simplification task U03–U11, start at
-`docs/asdlc/plans/PR-40/README.md`. It routes to the specification, design,
-execution procedure and individual task cards, and owns their statuses.
-Read the selected card before coding; implement only the requested task.
+## Scope and documentation
 
-For cleanup tasks U12, U15 and U16,
-start at `docs/asdlc/plans/PR-40/next/README.md` and read its `spec.md`.
-U13/U14 (retired IDs and deletion exceptions) were withdrawn from scope.
-The cleanup preserves current history errors; consult the index for each task status.
+- Implement the requested task; new work requires a user instruction.
+- Keep behavior in the specification and operational docs. Update context and
+  backlog only when decisions, unresolved questions or task status change.
+- Keep source provenance and unresolved data decisions. Do not retain completed
+  task cards, superseded document versions or execution logs in the working tree;
+  Git and PRs retain that history. Record verification in the PR and CI.
+- Never revert user changes unless explicitly requested.
 
 ## Git and delivery
 
-- The user abandoned the previous branch-based repair series on 2026-10-15.
-  Its PBI-034–077 statuses do not apply to this checkout. Do not resume,
-  merge or cherry-pick `codex/review-remediation` or other old branches.
-- Start each new session from current `main`: inspect status, fetch origin,
-  and on a clean checkout use `git switch main` and `git pull --ff-only`.
-  Compare HEAD with `origin/main`; use the live tip, not the release SHA.
-  New changes go on a branch from main and reach main only through a PR
-  with a successful `Validate code and data` check. The permanent
-  single-maintainer policy requires 0 approving GitHub reviews; retain
-  the PR rule, required CI, and empty bypass list.
-- Exception for an explicitly requested continuation of an active PR #40 task while PR #40
-  is open: isolate work from its current remote head, as described in
-  `docs/asdlc/plans/PR-40/development.md`. After the PR is merged, use current
-  main and a new PR. Never resume a stale local branch merely by its name.
-- New work requires a user instruction;
-  implement exactly one ready PBI per session unless explicitly asked for more.
-- Keep current behavior in the specification and operational docs. Record
-  verification in the PR and CI; add separate research evidence only when it
-  establishes source provenance or a data decision. Retain historical logs in Git
-  rather than adding repeated step reports or completed implementation plans.
-- Commit and push verified steps; confirm the remote SHA and CI for that SHA.
-  Do not merge, tag or publish a release
-  without a separate user instruction.
-
-## Operating mode
-
-- Use spec-anchored development: the spec defines current system intent.
-- Use PBIs as execution units: small scope, explicit verification, commit after
-  each completed step.
-- Update `docs/asdlc/backlog_v1.md` when a PBI status changes.
-- Update `docs/asdlc/context.md` when an important decision, data fact, or
-  project status changes.
-- Keep implementation conservative and close to the specification.
-- Prefer deterministic scripts, schemas and tests over prompt-only decisions.
-- Do not start bulk PIG/TPN import into final YAML until schema, fixtures and
-  validator exist.
+- Inspect status and fetch origin. Start new work from current `origin/main` in
+  an isolated branch. For an explicitly requested continuation of an open PR,
+  use its current remote head in a separate worktree. Never resume a stale branch
+  merely by name or restore the abandoned `codex/review-remediation` series.
+- Commit small completed steps with readable conventional messages. Run the
+  verification appropriate to the change unless the user limits it; record
+  exactly what was and was not checked. Confirm remote SHA after pushing.
+- Main changes only through PRs with successful `Validate code and data` for
+  that SHA. The single-maintainer policy requires 0 approving reviews; preserve
+  required CI and the empty bypass list. An unverified change remains in its PR.
+- Do not merge, tag or publish a release without a separate user instruction.
 
 ## Current V1 boundaries
 
@@ -72,7 +47,7 @@ The cleanup preserves current history errors; consult the index for each task st
   no permanent production database is maintained.
 - PostgreSQL dump, GeoPackage, GeoJSON, GPX, CSV, Excel and Shapefile are generated
   artifacts. A complete build must restore the dump and read back the GeoPackage.
-- Run `uv sync --frozen`, then `uv run --frozen python scripts/check_project.py
+- Full verification: `uv sync --frozen`, then `uv run --frozen python scripts/check_project.py
   --base-ref origin/main` (one disposable server for the full gate). See
   `docs/operations.md` for Docker/native requirements. Missing history baselines
   block writes/builds; never replace an event's real base with candidate HEAD.
@@ -85,11 +60,3 @@ The cleanup preserves current history errors; consult the index for each task st
   `Jaskinia.external_refs`.
 - Frontend, PWA, GitHub API integration, permanent Geoportal importer and
   cyclic external synchronization are outside V1.
-
-## Commit discipline
-
-- Commit after every completed PBI or equivalent small step.
-- Use conventional, readable commit messages, for example
-  `chore: scaffold project structure`.
-- Before committing, run the verification that matches the PBI.
-- Never revert user changes unless explicitly requested.

@@ -14,9 +14,9 @@
   Przynależność obiektu do jaskini zapisuje pojedynczy FK `objects.cave_id`.
 - Pliki YAML zapisują tylko źródłowe współrzędne, `cave_id` i
   `membership_ordinal` oraz politykę Best. `object_ids`, współrzędne pochodne
-  i ID wybranego auto Best pozostają w modelu odczytu. Legacy/staging mogą
-  dostarczać dodatkowe projekcje, sprawdzane przed importem. Adapter odrzuca
-  niejawne konwersje typów i niepoprawne bezwzględne URI referencji/publikacji.
+  i ID wybranego auto Best pozostają w modelu odczytu. Bieżące wejścia
+  przyjmują wyłącznie v2; adapter historii czyta zaakceptowane v1/v2.
+  Adapter YAML odrzuca niejawne konwersje typów i niepoprawne URI referencji/publikacji.
 - Dodano publikacje oraz odrębne cytowania jaskiń, obiektów i pomiarów.
   Jawny stan bibliografii `unknown` jest legalny i raportowany ostrzeżeniem;
   `known` wymaga cytowania właściwego poziomu.
@@ -24,9 +24,9 @@
   SQLite i jego ZIP. Build wymaga restore dumpa i niezależnego odczytu
   GeoPackage; pozostałe formaty konsumenckie zachowują swoje kontrakty.
 - Wersja 2 opisuje format zapisu katalogu, a nie wymuszoną zmianę każdego
-  dokumentu JSON/YAML. Logiczny model odczytu, legacy JSON Schema oraz
-  odpowiednie formaty staging/decyzji zachowują `schema_version: 1` tam,
-  gdzie ich dotychczasowy kontrakt pozostaje bez zmian.
+  dokumentu JSON/YAML. Logiczny model odczytu i JSON Schema zaakceptowanej
+  historii zachowują `schema_version: 1`. Wycofano formaty staging/decyzji
+  oraz writer i konwersję bieżących wejść legacy.
 
 ## schema_version: 1 — rozszerzenie 2026-10-23
 

@@ -1,15 +1,12 @@
 # PBI-110: wywierzyska w lokalnym zrzucie TPN — projekt do akceptacji
 
-Stan: 2026-10-23. To projekt, nie wykonana implementacja.
-Aktywny PR: [#18](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/18),
-gałąź `codex/tpn-data-download`, HEAD
-`27d65697d95a79b184024a9b9c258eba43d7a88e`, po fetch main
-`4924415de3cd5c3bd9e1fe2c541f42e023e4a21a`.
+Projekt do akceptacji; rozpoznanie źródeł pochodzi z 2026-10-23.
+Przed implementacją trzeba odebrać PDF PIG i rozstrzygnąć lokalizację Bystrej.
+Bieżący kod i polecenia pobierania opisuje [instrukcja operacyjna](../../operations.md).
 
 ## Uzgodniony cel
 
-Użytkownik polecił dodać wywierzyska bez zwykłych źródeł, do istniejącego
-PR #18. Następnie zatwierdził wszystkie trzy decyzje wywiadu:
+Zakres uzgodniony z użytkownikiem:
 
 1. Uwzględnić wywierzyska udokumentowane również poza turystycznym API TPN,
    pod warunkiem udokumentowania klasyfikacji i lokalizacji.
@@ -127,8 +124,8 @@ Nie tworzymy współrzędnych drugiego otworu przez przesunięcie punktu.
 
 Po akceptacji projektu powstanie właściwy plan implementacji PBI-110:
 testy przed kodem, odczyt źródeł, implementacja, regresja starego zrzutu,
-pełna bramka i eksporty według runbooka, celowane mutacje selekcji,
-niezależny review, commit/push do tego PR, CI dokładnego SHA i odczyt paczki.
+pełna bramka i eksporty według instrukcji operacyjnej, celowane mutacje
+selekcji, review i dostarczenie przez nowy PR z aktualnego main.
 Testy mają obejmować zwykłe źródło i inny POI jako kontrprzykłady, zmianę
 typu rekordu, brak oczekiwanego GLOBALID, błędną konwersję DMS/osi,
 nieznane daty/dokładność, niejednoznaczny wypływ i identyfikację dowodu NMT.
@@ -136,7 +133,3 @@ nieznane daty/dokładność, niejednoznaczny wypływ i identyfikację dowodu NMT
 Na tym etapie nie zmieniono kodu i nie wykonano jego testów ani nowego
 zrzutu. Projekt wymaga akceptacji oraz rozstrzygnięcia Bystrej przed
 przygotowaniem planu wykonania.
-
-Historyczna kontrola dokumentacji obejmowała `git diff --check`, odczyt
-70 lokalnych odnośników i 5 ówczesnych testów dokumentacji. Nie są to testy
-przyszłej funkcji ani dowód odbioru PDF PIG.

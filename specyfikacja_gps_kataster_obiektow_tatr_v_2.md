@@ -200,17 +200,14 @@ Zasady:
   indeksowaniem pomiarów i rozstrzyganiem referencji best/załącznika.
   Review, baza i eksporty blokują wtedy zapis. Nie wybieramy pierwszego
   rekordu, nie usuwamy duplikatu ani nie zmieniamy jego ID automatycznie.
-  Poprawna historia zachowuje wartości i kolejność. Bezpośredni selektor
-  best odrzuca powtórzone ID przez `ValueError` przed wyborem pomiaru.
+  Poprawna historia zachowuje wartości i kolejność.
 - Współrzędne źródłowe mają jawny EPSG:4326 lub 2180. PostGIS wylicza pozostałe reprezentacje; nie zapisujemy drugiego ręcznie edytowanego cache.
 - Migracja dotychczasowych danych zachowuje źródłowe `lon` i `lat` w 4326; różnicę względem starego cache kontroluje odbiór migracji.
 - Wszystkie pola liczbowe pomiaru (`lat`, `lon`, `x_1992`, `y_1992`,
   `elevation_m`, `horizontal_accuracy_m`, `vertical_accuracy_m`) muszą być
   skończone. NaN i ±Infinity blokują zapis przez constraints lub adapter YAML
-  (`SQL_CATALOG_INVALID` z plikiem i diagnostyką). Importery dodatkowo
-  zwracają `PIG_MEASUREMENT_NON_FINITE` / `TPN_MEASUREMENT_NON_FINITE`
-  ze źródłowym polem. Geometria, wybór Best i eksport nie pracują na
-  niepoprawnym stanie. Dotyczy to całej historii, także pomiarów
+  (`SQL_CATALOG_INVALID` z plikiem i diagnostyką). Geometria, wybór Best
+  i eksport nie pracują na niepoprawnym stanie. Dotyczy to całej historii, także pomiarów
   odrzuconych i niewybranych jako best. Opcjonalne `null` pozostaje legalne;
   reguła nie zmienia jednostek, zakresów ani znaczenia dokładności.
 - `horizontal_accuracy_m` dotyczy dokładności poziomej, a nie wysokości.
@@ -224,16 +221,15 @@ Każdy `Obiekt` ma wskazanie najlepszego aktualnego pomiaru.
 ```yaml
 best_measurement:
   mode: auto
-  manual_measurement_id: null
   reason: null
-  updated_at: 2026-05-15T10:00:00Z
+  updated_at: "2026-05-15T10:00:00Z"
   updated_by: dl
 ```
 
 | Pole | Typ | Uwagi |
 |---|---|---|
 | `mode` | `auto` \| `manual` | Czy wskazanie wynika z algorytmu, czy z decyzji operatora. |
-| `manual_measurement_id` | FK → `Pomiar`, opt | Wskazanie ręczne; NULL dla auto. |
+| `measurement_id` | FK → `Pomiar`, opt | Wskazanie ręczne; pomijane w YAML dla auto. |
 | `reason` | string, opt | Wymagane dla `manual`. Opcjonalne dla `auto`. |
 | `updated_at`, `updated_by` | audyt | Kto i kiedy ustawił wskazanie. |
 
@@ -241,6 +237,7 @@ Zasady walidacji:
 
 - W `manual` wskazanie musi dotyczyć pomiaru tego samego obiektu i mieć powód.
 - W `auto` nie zapisujemy ID wybranego pomiaru. Widok SQL wylicza go z historii.
+- Adapter zapisuje ręczne `measurement_id` w kolumnie SQL `manual_measurement_id`.
 - Model odczytu i eksporty nadal pokazują ID wybranego oraz obliczanego Best.
 - Uzasadnienie i audyt polityki wyboru są zachowane także przy migracji.
 
@@ -493,7 +490,6 @@ sprawdzane przed i po pobraniu; każda partia musi zawierać dokładnie żądane
 Gotowy plik jest publikowany atomowo bez nadpisania. Domyślny datowany zrzut
 trafia do ignorowanego `data/sources/tpn/api/` i nie jest commitowany.
 To odczyt źródła, bez importu, porównań, zmian danych/`best` lub harmonogramu.
-[Kontrakt PBI-108](docs/asdlc/plans/PBI-108.md),
 [obsługa i ograniczenia](docs/operations.md#pobieranie-jaskiń-lejów-i-sztolni-z-api-tpn).
 
 Rozszerzenie PBI-109 dodaje opcjonalne `--simple-dir PATH [--with-nmt]`
@@ -519,7 +515,7 @@ i dokładność pionowa są `unknown`. Wejście EPSG:4326 nie ustala datum
 pionowego. Zakres dat nalotu według opisu „Wysokości” TPN to
 `2019-10-14/2019-10-15`; wynik zachowuje odnośnik do tego dokumentu.
 Brak danych i błędy nie dają wysokości zastępczej. Zmiana rozpoznanego
-modelu wymaga ponownego przeglądu. [Kontrakt PBI-106](docs/asdlc/plans/PBI-106.md).
+modelu wymaga ponownego przeglądu. [Źródła NMT](docs/asdlc/verification/PBI-106.md).
 
 TPN jest traktowany jako źródło o wyższym priorytecie niż PIG dla aktualnej lokalizacji obiektu.
 
@@ -604,12 +600,12 @@ Dla własnych pomiarów wymagane minimum:
 id: m-001
 lat: 49.2423
 lon: 19.8145
-x_1992: 558123.45
-y_1992: 150456.78
 source: wlasne
-observed_date: 2024-07-15
+observed_date: "2024-07-15"
 method: gps_receiver
 verification_status: nieweryfikowany
+created_at: "2024-07-15T10:00:00Z"
+created_by: dl
 ```
 
 ---
@@ -714,7 +710,7 @@ Kontrole mają odrębne granice: odczyt YAML nie zwraca projekcji PostgreSQL,
 a walidacja istniejącego katalogu używa jego połączenia bez ponownego ładowania.
 Projekcja z polami wyliczanymi nie jest kanonicznym wejściem YAML.
 Build i wszystkie CLI współdzielą bramkę źródła, stanu SQL oraz rzeczywistej
-zaakceptowanej rewizji Git. Bieżący loader odrzuca dowiązania plików YAML
+zaakceptowanej rewizji Git. Bieżący loader odrzuca dowiązania plików YAML, także zerwane,
 oraz przekroczenie limitów 8 MiB na plik i 256 MiB na katalog przed parsowaniem.
 
 Wyłącznie adapter historii czyta zaakceptowany baseline v1 lub v2.

@@ -93,6 +93,21 @@ def test_yaml_error_includes_source_path(tmp_path: Path, make_canonical_data_dir
     assert "invalid YAML" in message
 
 
+@pytest.mark.parametrize("directory", ["objects/KSW", "caves", "relations", "publications"])
+@pytest.mark.parametrize("suffix", [".yml", ".yaml"])
+def test_rejects_dangling_yaml_links(tmp_path, make_canonical_data_dir, directory, suffix):
+    data_dir = make_canonical_data_dir(tmp_path / "data")
+    path = data_dir / directory / f"missing{suffix}"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.symlink_to(tmp_path / "absent.yml")
+
+    with pytest.raises(YamlDataLoadError, match="YAML snapshots must not be symlinks") as error:
+        load_yaml_dataset(data_dir)
+
+    assert error.value.path == path
+    assert path.is_symlink()
+
+
 def test_rejects_yaml_key_collisions_before_normalization(
     tmp_path: Path, make_canonical_data_dir, yaml_key_collision
 ) -> None:

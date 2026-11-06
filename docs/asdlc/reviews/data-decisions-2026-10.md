@@ -156,6 +156,10 @@ W poniższych trzech plikach znajdują się wszystkie cytowane wartości. JSON z
 | `data/sources/pig/pig_otwory_jaskin_.xlsx.-.Export.csv` | `54ac148504ba852d29359984fad87dac2afc9be2dd80c4b347fb447d9cc9b477` |
 | `data/sources/tpn/tpn_otwory_jaskin.xlsx.-.Export.csv` | `554beb579e04c79c4fa926910e38ae551ea684e895b9b63f8ddddca73522f581` |
 
-Odtworzenie z czystego checkoutu: `uv sync --frozen`, `uv run --frozen python scripts/validate.py`; ostrzeżenia `MEASUREMENT_DISTANCE_OUTLIER` muszą odpowiadać 72 parom JSON. Do ponownego wyliczenia użyć `load_dataset()`, kombinacji pomiarów każdego obiektu, `wgs84_to_1992` oraz `hypot(dx,dy)>100`; dla best grupować wybrane `measurement_id` według obu wartości WGS84 zaokrąglonych do 7 miejsc. Porównać z polami `pair`, `distance_m`, `rounded_wgs84` i członkami `shared_best`; weryfikować source_ref po kluczu i hashe źródeł. Nie wymaga dawnych gałęzi ani `build/`.
+Liczby i pomiary opisują snapshot z 2026-10-15, nie bieżący katalog.
+JSON zachowuje pary pomiarów, odległości, grupy wspólnych Best i identyfikatory
+źródeł. Porównanie z podanymi wierszami CSV/JSONL i hashami pozwala odtworzyć
+podstawę oceny. Późniejsze decyzje, np. odrzucenie pomiaru PL-0019, są w YAML;
+aktualną walidację opisuje [instrukcja operacyjna](../../operations.md#walidacja).
 
 Pozostałe niepewności stanowią listę do weryfikacji terenowej/źródłowej. PBI-083 zamyka udokumentowaną korektę i ocenę, a nie rozstrzygnięcie 72 lokalizacji, 11 tożsamości grup i mieszanego otworu CHZ-0011. Nie przeniesiono punktów, nie scalono encji, nie odrzucono pomiarów i nie podniesiono statusów.

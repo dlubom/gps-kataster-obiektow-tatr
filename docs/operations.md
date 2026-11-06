@@ -18,8 +18,8 @@ Zależności Python instaluje `uv sync --frozen` z `uv.lock`.
 
 Przy porównaniu GeoPackage z CI używaj zgodnej bazy definicji CRS GDAL/PROJ
 (`PROJ_DATA`), np. narzędzi dostarczanych z QGIS. Sam kod EPSG:2180 nie
-uzasadnia pominięcia różnicy WKT lub datum. Odbiór U09 porównuje je ściśle;
-różne lokalne bazy CRS rozstrzyga przez dobór runtime, a nie normalizację.
+uzasadnia pominięcia różnicy WKT lub datum. Przy różnych definicjach CRS
+dobierz zgodny runtime przed porównaniem wyników.
 
 ```bash
 git fetch origin
@@ -113,14 +113,13 @@ baseline, przed testami, walidacją i buildem. Setup instaluje zależności;
 nie zastępuje żadnej bramki ani wyniku walidacji innego commitu.
 Zaufany `publish-pr-preview.yml` pozostaje odrębny i nie używa tej akcji.
 Release zachowuje `contents: write` wyłącznie na istniejącym zdarzeniu taga.
-[Zakres i odbiór U11](asdlc/plans/PR-40/tasks/U11-ci-setup.md#odbiór).
 
 ### CLI i zestaw artefaktów
 
 `build_db.py`, `export_best_measurements.py`, `build_release_artifacts.py`
 i `validate.py` współdzielą argumenty `--data-dir`, `--base-ref` (domyślnie
 `origin/main`) i `--history-repo`. Trzy komendy generujące pliki współdzielą
-też `--generated-at`; nadal używają zegara UTC U08. Każda operacja zachowuje
+też `--generated-at` i zegar UTC. Każda operacja zachowuje
 własny parser, wywołanie i podsumowanie.
 
 Walidator wypisuje diagnostykę na stdout. Build dumpa i pełnego wydania
@@ -141,8 +140,7 @@ bez nadpisania; wybierz inny katalog lub samodzielnie uporządkuj zawartość.
 Każde bieżące wejście wymaga `catalog.json` z `format: postgresql-yaml`
 i `schema_version: 2` oraz czterech katalogów encji. Legacy bez znacznika
 jest odrzucane przed bazą i publikacją wyjścia; nie jest automatycznie migrowane.
-[Kontrakt paczkowania](release_artifacts.md#oficjalna-paczka-wydania),
-[odbiór U10](asdlc/plans/PR-40/tasks/U10-artifacts-and-cli.md#odbiór).
+[Kontrakt paczkowania](release_artifacts.md#oficjalna-paczka-wydania).
 
 ## Pobieranie jaskiń, lejów i sztolni z API TPN
 
@@ -195,7 +193,6 @@ Istniejący plik (również utworzony równolegle) nie zostanie nadpisany.
 HTTP/API error, niepełny zbiór, błędna odpowiedź lub błąd zapisu daje kod 1
 i diagnostykę na stderr, bez częściowego pliku wynikowego.
 Bez importu, porównań, zmian YAML i `best` lub automatyzacji.
-[Kontrakt i odbiór PBI-108](asdlc/plans/PBI-108.md).
 
 ### Uproszczone pliki i wysokość NMT
 
@@ -252,7 +249,7 @@ całej partii i zapisaniu osobnego dowodu. Każdy plik jest publikowany
 oddzielnie, bez transakcji obejmującej całą grupę plików.
 Zrzut i wersje simple w `data/sources/tpn/api/` pozostają lokalne,
 ignorowane przez Git; nie trafiają do paczki katalogu ani do wydania.
-[Zakres i weryfikacja PBI-109](asdlc/verification/PBI-109.md).
+[Pochodzenie lokalnego zrzutu](asdlc/verification/PBI-109.md).
 
 ## Wysokość gruntu z publicznego NMT TPN
 
@@ -283,7 +280,7 @@ To wysokość gruntu w modelu, nie gwarantowana wysokość otworu jaskini.
 Brak danych i błędy dają niezerowy exit oraz diagnostykę na stderr.
 `SOURCE_CHANGED` oznacza potrzebę ponownego przeglądu metadanych modelu;
 skrypt nie przypisuje nowemu źródłu parametrów starego. Bez automatycznej
-zmiany modelu, YAML lub `best`. [Kontrakt i źródła](asdlc/plans/PBI-106.md).
+zmiany modelu, YAML lub `best`. [Źródła i ograniczenia](asdlc/verification/PBI-106.md).
 
 ## Struktura wejścia danych
 
@@ -301,7 +298,7 @@ i artefakty pozostają bez zmian. Nie twórz katalogów podczas odczytu,
 aby ukryć niepełne wejście. Błędny/brakujący znacznik domyślnego źródła
 nadal ma pierwszeństwo w diagnostyce kanonicznego CLI.
 
-Legacy bez znacznika, używane przez historyczne rewizje i wewnętrzne propozycje,
+Legacy bez znacznika, odczytywane wyłącznie jako zaakceptowana historia Git,
 wymaga `objects`, `caves` i `relations`. Może nie mieć `publications`;
 nieobecność oznacza pustą bibliografię, lecz istniejący plik tej nazwy jest
 błędem. Odczyt Git nie naprawia zaakceptowanej rewizji: bierze układ z jej
@@ -309,7 +306,8 @@ rzeczywistych ścieżek, w tym katalogi utrwalone plikami pomocniczymi.
 
 W YAML jawne `null` i pominięcie klucza to odrębne stany. Daty i czasy
 zapisuj jako cytowane ciągi. Loader odrzuca powtórzone klucze i przekazuje
-wartości do PostgreSQL jako parametry na ograniczonym koncie.
+wartości do PostgreSQL jako parametry na ograniczonym koncie. Dowiązania
+symboliczne do rekordów YAML, także zerwane, są odrzucane przed parsowaniem.
 
 Adapter sprawdza strukturę i typy przed konwersjami sterownika: liczba w polu
 tekstu, tekst w polu liczby, bool zamiast liczby i ułamkowe pole całkowite są
@@ -394,7 +392,9 @@ Nowa metoda nie zmienia statusu weryfikacji, priorytetu auto ani manual best.
    Możesz też podać `lon` i `lat` w EPSG:4326. Wysokość i datum są osobne.
 3. Uzupełnij źródło, `source_ref`, datę, metodę, autorstwo i znane dokładności.
    W `best_measurement` wybierz `mode: auto` lub `mode: manual` z `measurement_id`
-   oraz niepustym `reason`. Zaktualizuj audyt obiektu i uruchom walidację.
+   oraz niepustym `reason`. Reguły auto i manual opisuje
+   [specyfikacja](../specyfikacja_gps_kataster_obiektow_tatr_v_2.md#44-bestmeasurement).
+   Zaktualizuj audyt obiektu i uruchom walidację.
 
 Korekta pozycji albo wysokości wymaga nowego pomiaru. Błędny stary pomiar
 można oznaczyć jako odrzucony i objaśnić notatką. Zmiana notatki lub statusu
@@ -442,24 +442,6 @@ Ostrzeżenia o nieznanej dokładności i bibliografii są legalne. Dla próby
 negatywnej usuń stary pomiar w kopii: ochrona historii powinna przerwać
 walidację. Ćwiczeniowej kopii nie commituj ani nie używaj do wydania.
 
-## Domyslny algorytm `auto`
-
-`best_measurement.mode: auto` jest deterministycznym wskazaniem najlepszego
-aktualnego pomiaru. Priorytet zrodel:
-
-1. najnowszy wlasny pomiar ze statusem `zweryfikowany`,
-2. najlepszy nieodrzucony pomiar z TPN,
-3. najlepszy nieodrzucony wlasny pomiar `nieweryfikowany`,
-4. najlepszy nieodrzucony pomiar z PIG,
-5. najlepszy nieodrzucony pomiar z innych zrodel.
-
-W tym samym priorytecie wygrywa nowszy czas w UTC: `observed_at`, a przy
-jego braku `observed_date` o północy. Następnie niższe `horizontal_accuracy_m`
-(brak wartości na końcu), a na końcu stabilny tekstowy porządek po
-`measurement.id`. Jezeli wszystkie pomiary sa odrzucone, algorytm wskaze
-fallback i walidator pokaze ostrzezenie. `mode: manual` zawsze ma pierwszenstwo,
-ale wymaga pola `reason`.
-
 ## Walidacja
 
 Przed commitem uruchom lokalna bramke:
@@ -498,7 +480,7 @@ rzeczywistego starszego commitu; nie wywołuje konwertera ani writera katalogu.
 a `write_canonical_history_source` kopiuje jawne pliki v2 z fixtures.
 Schematy JSON i ich zależności pozostają potrzebne do odczytu historii.
 Odczyty konsumenckie nadal używają openpyxl, pyshp, SQLite/GDAL i natywnego
-restore. [Zakres i odbiór U07](asdlc/plans/PR-40/tasks/U07-production-path-tests.md#odbiór).
+restore.
 
 ## Testy mutacyjne
 
@@ -544,26 +526,11 @@ czystego checkoutu po review zmian w YAML i osobnej zgodzie na wydanie:
    uv run python scripts/build_release_artifacts.py
    ```
 
-5. Sprawdz `build/exports/metadata.json`, zwlaszcza liczniki:
-
-   - `object_count`,
-   - `cave_count`,
-   - `measurement_count`,
-   - `validation_error_count`,
-   - `validation_warning_count`.
-
-6. Paczka lokalna znajduje sie w `build/exports/`:
-
-   - `best-measurements.geojson`,
-   - `best-measurements.csv`,
-   - `best-measurements.gpx`,
-   - `best-measurements.shp.zip`,
-   - `metadata.json`,
-   - `katalog.dump` i `katalog.gpkg`,
-   - grupowe GPX, `katalog.xlsx` oraz statystyki JSON/Markdown.
-
-   Dokladny przeglad kolumn i pol tych plikow jest w
-   `docs/release_artifacts.md`.
+5. Sprawdź [liczniki metadata.json](release_artifacts.md#metadatajson)
+   w `build/exports/metadata.json`.
+6. Paczka lokalna znajduje się w `build/exports/`.
+   [Lista plików i kontrakty formatów](release_artifacts.md#zestaw-plikow)
+   określają kompletność i zawartość wydania.
 
    Samodzielny `scripts/export_best_measurements.py` zapisuje osiem plików
    Best. Jeśli katalog docelowy zawiera dump, GeoPackage, Excel lub statystyki
@@ -612,13 +579,6 @@ Pomiar odrzucony moze zostac w `measurements`, ale zwykle nie powinien byc
 wskazany jako `best_measurement`. Jezeli wszystkie pomiary sa odrzucone,
 walidator moze wskazac to jako ostrzezenie.
 
-## Odtworzenie kontekstu TPN (PBI-082)
-
-Jednorazowa naprawa została zakończona. Zachowane etykiety `TPN WER_LOK:` i
-`TPN UWAGI:` opisują źródło, a nie weryfikację terenową. [Manifest](asdlc/verification/PBI-082-manifest.json)
-i [log](asdlc/verification/PBI-082.md) dokumentują przebieg i pominięte przypadki.
-Nowe ustalenia należy wprowadzać ręcznie w YAML i oceniać w PR.
-
 ## Dopelnianie brakujacych otworow
 
 Kilka otworow tej samej jaskini moze miec jeden numer inwentarzowy. Wtedy nie tworz
@@ -648,21 +608,7 @@ automatycznie nowej jaskini tylko dlatego, ze jest drugi punkt.
    pozycji katalogowej do powiazania.
 5. Uruchom `uv run python scripts/validate.py` i przeczytaj nowe ostrzezenia.
 
-## Commit operacyjny
-
-Po przejsciu bramki:
-
-```bash
-git status --short
-git diff --stat
-git add docs/asdlc/backlog_v1.md docs/asdlc/context.md data schema src scripts tests
-git commit -m "docs: add operational workflow"
-```
-
-Dobierz `git add` do faktycznego zakresu zmiany. Nie dodawaj `build/`, chyba ze
-backlog jawnie zmieni zasade traktowania artefaktow generowanych.
-
-## Skończone liczby pomiarów (PBI-084)
+## Skończone liczby pomiarów
 
 NaN i ±Infinity są niedozwolone w geometrii źródłowej, wysokości
 oraz obu dokładnościach, także w historycznym lub odrzuconym pomiarze.

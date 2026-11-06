@@ -138,4 +138,3 @@ Bloki Mermaid powyżej są edytowalnym źródłem diagramów; pliki PNG są
 wersjami do odczytu także poza przeglądarką Markdown. Po zmianie modelu
 zaktualizuj odpowiedni blok i wyrenderuj go ponownie przez Mermaid CLI
 (`@mermaid-js/mermaid-cli@12.0.0`, `--size 2000 -b white -t neutral`).
-Diagramy przeszły renderowanie i kontrolę czytelności w odbiorze PBI-119.
