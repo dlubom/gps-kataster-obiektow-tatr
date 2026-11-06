@@ -56,6 +56,13 @@ zdarzenia, uprawnienia, serwisy i rzeczywisty baseline pozostają u odbiorców.
 [U11](plans/PR-40/tasks/U11-ci-setup.md#odbiór) opisuje zakres i dowody;
 status jest wyłącznie w indeksie.
 
+Nowy zakres zaakceptowany 2026-11-06: [U12–U17](plans/PR-40/next/README.md)
+usuwa zakończone importy i zbędne ścieżki, projektuje rejestr wycofanych ID
+oraz jawne usuwanie encji/pomiarów. To plan dalszych podzadań PBI-119;
+implementacja jeszcze nie ruszyła. Statusy i zależności są wyłącznie
+w nowym indeksie. U13/U14 podejmują temat issue #33; pozostałe odłożone
+zadania poniżej nie wchodzą do tej serii.
+
 
 ## Zadania odłożone
 
@@ -67,7 +74,6 @@ oraz issues sprawdź przed wznowieniem pracy.
 | PBI-118, paczka QGIS | Osobny [PR #39](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/39); nie włączać do PBI-119. |
 | PBI-110, wywierzyska | [Projekt](plans/PBI-110-design.md) do akceptacji; nie przypisywać nierozstrzygniętego punktu Bystrej. |
 | Odroczone obiekty TPN | [PBI-113](plans/PBI-113-new-tpn-objects.md); wymagana ocena wskazanych niejednoznaczności. |
-| Ponowne użycie wycofanych ID | [Issue #33](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/33) |
 | Systemy i historyczne części jaskiń | [Issue #34](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/34) |
 | Położenie głównego otworu Mylnej | [Issue #36](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/36) |
 

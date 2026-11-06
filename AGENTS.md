@@ -18,6 +18,10 @@ For a PR #40 simplification task U03–U11, start at
 execution procedure and individual task cards, and owns their statuses.
 Read the selected card before coding; implement only the requested task.
 
+For U12–U17 (retiring one-time imports, retired IDs and further simplification),
+start at `docs/asdlc/plans/PR-40/next/README.md` and read its `spec.md`.
+These are new, unimplemented tasks; the U01–U11 completion does not execute them.
+
 ## Git and delivery
 
 - The user abandoned the previous branch-based repair series on 2026-10-15.
@@ -30,7 +34,7 @@ Read the selected card before coding; implement only the requested task.
   with a successful `Validate code and data` check. The permanent
   single-maintainer policy requires 0 approving GitHub reviews; retain
   the PR rule, required CI, and empty bypass list.
-- Exception for an explicitly requested continuation of U03–U11 while PR #40
+- Exception for an explicitly requested continuation of U03–U17 while PR #40
   is open: isolate work from its current remote head, as described in
   `docs/asdlc/plans/PR-40/development.md`. After the PR is merged, use current
   main and a new PR. Never resume a stale local branch merely by its name.

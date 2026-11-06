@@ -65,6 +65,15 @@ zdarzenia, uprawnienia, serwisy i rzeczywisty baseline pozostają u odbiorców.
 [U11](plans/PR-40/tasks/U11-ci-setup.md#odbiór) opisuje zakres i dowody;
 status jest wyłącznie w indeksie.
 
+Użytkownik zaakceptował wycofanie zakończonych importów PIG/TPN, profilera
+i jednorazowych napraw oraz ograniczenie programu do odczytu YAML,
+walidacji i eksportów. [Plan U12–U17](plans/PR-40/next/README.md) rozpisuje
+ten zakres i projekt rejestru wycofanych ID. Potwierdzono, że jawne
+wycofanie może wyjątkowo objąć pojedynczy pomiar. Szczegóły rejestru są
+do review przed U13; kod i dane nie zostały jeszcze zmienione. Rejestr
+rezerwuje ID, a wpis uzasadnia konkretny ubytek względem zaakceptowanej bazy.
+API TPN/NMT, archiwalne źródła i formaty eksportów pozostają w zakresie utrzymania.
+
 Kontynuację opisuje [pakiet zleceń PR #40](plans/PR-40/README.md): specyfikacja,
 projekt, procedura wykonania i osobne karty U03–U11. Indeks jest jedynym
 rejestrem ich statusów. Zachowuje numerację wdrożonych commitów: U02 to fazy,
@@ -96,7 +105,8 @@ PL-EVRF2007-NH. Data weryfikacji Marka i dokładności punktów są nieznane.
 
 - Mylna KSZ-0064/m-003: trzy warianty położenia wymagają porównania z LiDAR;
   [issue #36](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/36).
-- Rezerwacja wycofanych ID nie jest wdrożona;
+- Rezerwacja wycofanych ID nie jest wdrożona; jej projekt i jawne wycofanie
+  obejmują [U13/U14](plans/PR-40/next/README.md) oraz
   [issue #33](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/33).
 - Model systemów i historycznych części pozostaje otwarty;
   [issue #34](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/34).
