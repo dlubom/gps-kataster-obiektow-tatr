@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/951
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- BRA-0005
+bibliography_status: unknown
 notes: 'PIG sector: Mały Żlebek, D. za Bramką i Suchy Żleb
 
   PIG morphometry: length_m=3, depth_m=0, denivelation_m=0

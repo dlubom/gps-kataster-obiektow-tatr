@@ -3,6 +3,7 @@ id: KSW-0043
 category: jaskinia_otwor
 name_local: Schron nad Zakosistą
 cave_id: C-0153
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.23483338
-  lon: 19.87358333
-  x_1992: 152292.0
-  y_1992: 563575.71
+  input_srid: 4326
+  input_x: 19.87358333
+  input_y: 49.23483338
   elevation_m: 1310.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.234833381284375
-  lon: 19.87358332616234
-  x_1992: 152292.0
-  y_1992: 563575.71
+  input_srid: 4326
+  input_x: 19.87358332616234
+  input_y: 49.234833381284375
   elevation_m: 1276.818313
   elevation_datum: unknown
   elevation_source: source_record
@@ -66,11 +65,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

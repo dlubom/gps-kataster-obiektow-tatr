@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/4411
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MLZ-0009
+bibliography_status: unknown
 notes: 'PIG aliases: Szczepanowy Lej, Siwy Kocioł
 
   PIG sector: D. Małej Łąki - Zach.

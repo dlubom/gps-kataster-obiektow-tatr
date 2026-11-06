@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/955
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- OLC-0004
+bibliography_status: unknown
 notes: 'PIG sector: D. Olczyska, Sucha i Chłabowska
 
   PIG morphometry: length_m=18, depth_m=4,5, denivelation_m=4,5

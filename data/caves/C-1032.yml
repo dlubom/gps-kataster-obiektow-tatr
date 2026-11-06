@@ -10,8 +10,15 @@ external_refs:
   scope: cave
   notes: 'Załącznik „04 Dolinki Reglowe 2026.07” do zestawienia Jakuba Nowaka „Jaskinie Tatr”, KKTJ, 10.07.2026;
     s. 3, Dolina Białego, lp. 4; nazwa w wykazie: Okno przy Źródle.'
-object_ids:
-- BIA-0010
+bibliography_status: known
+citations:
+- publication_id: literature-069d20e4255afa4d
+  locator: s. 3, Dolina Białego, lp. 4
+  name_in_source: Okno przy Źródle
+  purpose: description
+  notes: 'Załącznik „04 Dolinki Reglowe 2026.07” do zestawienia Jakuba Nowaka „Jaskinie
+    Tatr”, KKTJ, 10.07.2026; s. 3, Dolina Białego, lp. 4; nazwa w wykazie: Okno przy
+    Źródle.'
 notes: |-
   Jaskinia w Dolinie Białego. Długość 3 m, przewyższenie i deniwelacja 1,2 m (TPN; Nowak 2026).
 

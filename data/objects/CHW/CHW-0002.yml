@@ -3,6 +3,7 @@ id: CHW-0002
 category: jaskinia_otwor
 name_local: Schron w Opalonem I
 cave_id: C-0021
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24915395
-  lon: 19.83358897
-  x_1992: 153850.67
-  y_1992: 560647.58
+  input_srid: 4326
+  input_x: 19.83358897
+  input_y: 49.24915395
   elevation_m: 1450.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.2484578510009
-  lon: 19.8373226972063
-  x_1992: 153776.31
-  y_1992: 560920.08
+  input_srid: 4326
+  input_x: 19.8373226972063
+  input_y: 49.2484578510009
   elevation_m: 1445.514337
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

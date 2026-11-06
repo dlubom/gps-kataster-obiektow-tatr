@@ -3,6 +3,7 @@ id: MTZ-0001
 category: jaskinia_otwor
 name_local: Schron z Balkonem
 cave_id: C-0016
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.23838741
-  lon: 19.90110401
-  x_1992: 152710.47
-  y_1992: 565573.82
+  input_srid: 4326
+  input_x: 19.90110401
+  input_y: 49.23838741
   elevation_m: 1781.6
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.23795263854196
-  lon: 19.902197508027328
-  x_1992: 152663.1
-  y_1992: 565653.97
+  input_srid: 4326
+  input_x: 19.902197508027328
+  input_y: 49.23795263854196
   elevation_m: 1781.690401
   elevation_datum: unknown
   elevation_source: source_record
@@ -67,10 +66,9 @@ measurements:
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-003
-  lat: 49.237925581626655
-  lon: 19.90220458612156
-  x_1992: 152660.1
-  y_1992: 565654.52
+  input_srid: 4326
+  input_x: 19.90220458612156
+  input_y: 49.237925581626655
   elevation_m: 1787.180054
   elevation_datum: unknown
   elevation_source: dem
@@ -111,11 +109,11 @@ measurements:
   created_by: maintenance:PBI-111
 best_measurement:
   mode: auto
-  measurement_id: m-003
   reason: Nowszy stan tego samego rekordu TPN; bez niezależnej weryfikacji terenowej.
   updated_at: '2026-10-23T11:59:37Z'
   updated_by: maintenance:PBI-111
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

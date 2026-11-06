@@ -3,6 +3,7 @@ id: STR-0024
 category: sztolnia
 name_local: BEZ_NAZWY_001
 cave_id: C-0903
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.25553076282336
-  lon: 19.936682142313494
-  x_1992: 154647.14
-  y_1992: 568139.23
+  input_srid: 4326
+  input_x: 19.936682142313494
+  input_y: 49.25553076282336
   elevation_m: 1275.097117
   elevation_datum: unknown
   elevation_source: source_record
@@ -45,11 +45,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: null
   updated_at: '2026-05-16T10:22:52Z'
   updated_by: importer:tpn
 attachments: []
+bibliography_status: unknown
 notes: 'Imported from TPN source record after operator review. Source TPN row 273
   has empty NR_INWENT and NAZWA; maintainer review 2026-05-16 assigned the working
   name BEZ_NAZWY_001.

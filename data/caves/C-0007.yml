@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1719
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- PL-0002
+bibliography_status: unknown
 notes: 'PIG aliases: Jaskinia Żabia w Siedmiu Granatach, Żabia
 
   PIG morphometry: length_m=35,8, depth_m=26, denivelation_m=26

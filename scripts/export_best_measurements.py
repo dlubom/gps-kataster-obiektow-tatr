@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import subprocess
 import sys
 from collections.abc import Sequence
-from datetime import UTC, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -16,15 +16,14 @@ if str(SRC_DIR) not in sys.path:
 
 from gps_kataster_obiektow_tatr.best_measurements_export import (  # noqa: E402
     DEFAULT_EXPORT_DIR,
-    BestMeasurementsExportValidationError,
-    GpxGroupingError,
     export_best_measurements,
 )
-from gps_kataster_obiektow_tatr.data_loader import (  # noqa: E402
-    DEFAULT_DATA_DIR,
-    DataDirectoryError,
+from gps_kataster_obiektow_tatr.catalog_cli import (  # noqa: E402
+    add_catalog_arguments,
+    add_generated_at_argument,
+    print_error,
 )
-from gps_kataster_obiektow_tatr.validator import format_issue  # noqa: E402
+from gps_kataster_obiektow_tatr.report_formatting import utc_timestamp  # noqa: E402
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -33,23 +32,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Export build/exports/best-measurements.* from YAML data."
     )
-    parser.add_argument(
-        "--data-dir",
-        type=Path,
-        default=DEFAULT_DATA_DIR,
-        help="Data root directory. Defaults to data/.",
-    )
+    add_catalog_arguments(parser)
     parser.add_argument(
         "--output-dir",
         type=Path,
         default=DEFAULT_EXPORT_DIR,
         help="Export output directory. Defaults to build/exports/.",
     )
-    parser.add_argument(
-        "--generated-at",
-        default=None,
-        help="Override generated timestamp, mainly for deterministic tests.",
-    )
+    add_generated_at_argument(parser)
     return parser
 
 
@@ -57,35 +47,23 @@ def main(argv: Sequence[str] | None = None) -> int:
     """Run the best-measurements export command line interface."""
 
     args = build_parser().parse_args(argv)
-    generated_at = args.generated_at or _utc_timestamp()
+    generated_at = args.generated_at or utc_timestamp()
 
     try:
         result = export_best_measurements(
             data_dir=args.data_dir,
+            base_ref=args.base_ref,
+            history_repo=args.history_repo,
             output_dir=args.output_dir,
             generated_at=generated_at,
         )
-    except (DataDirectoryError, GpxGroupingError) as exc:
-        print(f"error: {exc}", file=sys.stderr)
-        return 1
-    except BestMeasurementsExportValidationError as exc:
-        for issue in exc.issues:
-            print(format_issue(issue))
-        return 1
+    except (ValueError, OSError, subprocess.SubprocessError) as exc:
+        return print_error(exc)
 
-    print(f"wrote: {result.geojson_path}")
-    print(f"wrote: {result.csv_path}")
-    print(f"wrote: {result.gpx_path}")
-    for path in result.grouped_gpx_paths:
+    for path in result.artifact_paths:
         print(f"wrote: {path}")
-    print(f"wrote: {result.shapefile_zip_path}")
-    print(f"wrote: {result.metadata_path}")
     print(f"best-measurements export: {result.feature_count} features")
     return 0
-
-
-def _utc_timestamp() -> str:
-    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
 if __name__ == "__main__":

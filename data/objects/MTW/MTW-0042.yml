@@ -3,6 +3,7 @@ id: MTW-0042
 category: jaskinia_otwor
 name_local: Szczelina w Ratuszu Miętusim
 cave_id: C-0560
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24256904
-  lon: 19.90588658
-  x_1992: 153179.35
-  y_1992: 565916.28
+  input_srid: 4326
+  input_x: 19.90588658
+  input_y: 49.24256904
   elevation_m: 1425.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24269588903613
-  lon: 19.905338620606287
-  x_1992: 153192.97
-  y_1992: 565876.24
+  input_srid: 4326
+  input_x: 19.905338620606287
+  input_y: 49.24269588903613
   elevation_m: 1427.515682
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

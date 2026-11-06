@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1667
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSW-0123
+bibliography_status: unknown
 notes: 'PIG aliases: SYSTEM Jaskinia Wysoka
 
   PIG sector: D. Kościeliska - Wsch.

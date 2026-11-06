@@ -3,6 +3,7 @@ id: CHZ-0037
 category: jaskinia_otwor
 name_local: Schron pod Gawrą w Bobrowcu
 cave_id: C-1045
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -33,10 +34,9 @@ external_refs:
     SHA-256 odpowiedzi NMT: 08f8cf93fa6b49cc9096c619b1a9407e12bdc9891cb3875d8cdeac2b72ed060e.
 measurements:
 - id: m-001
-  lat: 49.24042794387105
-  lon: 19.800939863529027
-  x_1992: 152855.24
-  y_1992: 558282.49
+  input_srid: 4326
+  input_x: 19.800939863529027
+  input_y: 49.24042794387105
   elevation_m: 1181.569946
   elevation_datum: unknown
   elevation_source: dem
@@ -61,11 +61,11 @@ measurements:
   created_by: maintenance:PBI-113
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: Jedyny pomiar TPN; bez niezależnej weryfikacji terenowej.
   updated_at: '2026-10-23T18:10:08Z'
   updated_by: maintenance:PBI-113
 attachments: []
+bibliography_status: unknown
 notes: null
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113

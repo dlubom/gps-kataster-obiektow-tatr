@@ -1,7 +1,8 @@
-"""Load source-of-truth YAML data records from the repository."""
+"""Load catalogue source records from YAML."""
 
 from __future__ import annotations
 
+import json
 from collections.abc import Callable
 from copy import deepcopy
 from dataclasses import dataclass
@@ -15,10 +16,15 @@ from gps_kataster_obiektow_tatr.yaml_io import load_unique_yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_DIR = REPO_ROOT / "data"
+MAX_FILE_BYTES = 8 * 1024 * 1024
+MAX_CATALOG_BYTES = 256 * 1024 * 1024
+FORMAT_MARKER = "catalog.json"
+CATALOG_FORMAT = {"format": "postgresql-yaml", "schema_version": 2}
 
 OBJECTS_DIR_NAME = "objects"
 CAVES_DIR_NAME = "caves"
 RELATIONS_DIR_NAME = "relations"
+DATA_DIRECTORIES = (OBJECTS_DIR_NAME, CAVES_DIR_NAME, RELATIONS_DIR_NAME, "publications")
 
 
 class DataKind(StrEnum):
@@ -27,6 +33,7 @@ class DataKind(StrEnum):
     OBJECT = "object"
     CAVE = "cave"
     RELATION = "relation"
+    PUBLICATION = "publication"
 
 
 @dataclass(frozen=True, slots=True)
@@ -41,16 +48,20 @@ class LoadedYamlRecord:
 
 @dataclass(frozen=True, slots=True)
 class LoadedDataset:
-    """All source-of-truth domain records loaded from a data directory."""
+    """Records in stable order; the entry point defines source or read-model semantics."""
 
     objects: tuple[LoadedYamlRecord, ...]
     caves: tuple[LoadedYamlRecord, ...]
     relations: tuple[LoadedYamlRecord, ...]
 
+    publications: tuple[LoadedYamlRecord, ...] = ()
+    # SQL read-model metadata, separate from authored records and their YAML.
+    measurement_regions: tuple[tuple[str, str, str | None], ...] = ()
+
     def records(self) -> tuple[LoadedYamlRecord, ...]:
         """Return all loaded records in stable validation order."""
 
-        return (*self.objects, *self.caves, *self.relations)
+        return (*self.objects, *self.caves, *self.relations, *self.publications)
 
 
 class YamlDataLoadError(ValueError):
@@ -69,18 +80,50 @@ class DataDirectoryError(ValueError):
         super().__init__(f"{path}: required data directory is missing or is not a directory")
 
 
-def load_dataset(data_dir: Path = DEFAULT_DATA_DIR) -> LoadedDataset:
-    """Load objects, caves and relations from a repository ``data/`` directory."""
+def require_data_directory(path: Path) -> None:
+    """Reject a missing/file directory before build output or YAML record operations."""
+    if not path.is_dir():
+        raise DataDirectoryError(path)
 
-    for path in (
-        data_dir,
-        data_dir / OBJECTS_DIR_NAME,
-        data_dir / CAVES_DIR_NAME,
-        data_dir / RELATIONS_DIR_NAME,
-    ):
-        if not path.is_dir():
-            raise DataDirectoryError(path)
 
+def require_dataset_layout(data_dir: Path, *, canonical: bool) -> None:
+    """Require all entity directories; only legacy may omit its bibliography."""
+    require_data_directory(data_dir)
+    for name in DATA_DIRECTORIES:
+        path = data_dir / name
+        if canonical or name != "publications" or path.exists():
+            require_data_directory(path)
+
+
+def load_yaml_dataset(data_dir: Path = DEFAULT_DATA_DIR) -> LoadedDataset:
+    """Read current v2 YAML only, guarding files before parsing their contents."""
+    marker = data_dir / FORMAT_MARKER
+    if not marker.is_file():
+        raise YamlDataLoadError(marker, "Canonical YAML catalogue format marker is missing")
+    try:
+        metadata = json.loads(marker.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise YamlDataLoadError(marker, "Invalid catalogue format marker") from exc
+    if metadata != CATALOG_FORMAT:
+        raise YamlDataLoadError(marker, "Unsupported catalogue storage format")
+    require_dataset_layout(data_dir, canonical=True)
+    size = 0
+    for name in DATA_DIRECTORIES:
+        for path in iter_yaml_paths(data_dir / name):
+            if path.is_symlink():
+                raise YamlDataLoadError(path, "YAML snapshots must not be symlinks")
+            file_size = path.stat().st_size
+            size += file_size
+            if file_size > MAX_FILE_BYTES or size > MAX_CATALOG_BYTES:
+                raise YamlDataLoadError(path, "YAML snapshot size limit exceeded")
+    return _load_dataset_records(data_dir)
+
+
+def _load_dataset_records(data_dir: Path) -> LoadedDataset:
+    """Read records after the caller checks the current or accepted-history layout."""
+    for name in DATA_DIRECTORIES:
+        if path := next((data_dir / name).rglob("*.sql"), None):
+            raise YamlDataLoadError(path, "SQL snapshots are not YAML catalogue data")
     return LoadedDataset(
         objects=load_records(
             data_dir / OBJECTS_DIR_NAME,
@@ -95,6 +138,11 @@ def load_dataset(data_dir: Path = DEFAULT_DATA_DIR) -> LoadedDataset:
         relations=load_records(
             data_dir / RELATIONS_DIR_NAME,
             kind=DataKind.RELATION,
+            normalize=_normalize_relation,
+        ),
+        publications=load_records(
+            data_dir / "publications",
+            kind=DataKind.PUBLICATION,
             normalize=_normalize_relation,
         ),
     )
@@ -114,13 +162,16 @@ def load_records(
 
 
 def iter_yaml_paths(root_dir: Path) -> tuple[Path, ...]:
-    """Return all ``.yml`` and ``.yaml`` files below ``root_dir`` sorted by path."""
+    """Return sorted YAML paths, including symlinks so callers can reject them."""
 
     if not root_dir.exists():
         return ()
 
     paths = [
-        path for suffix in ("*.yml", "*.yaml") for path in root_dir.rglob(suffix) if path.is_file()
+        path
+        for suffix in ("*.yml", "*.yaml")
+        for path in root_dir.rglob(suffix)
+        if path.is_symlink() or path.is_file()
     ]
     return tuple(sorted(paths))
 

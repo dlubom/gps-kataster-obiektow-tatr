@@ -3,6 +3,7 @@ id: BIA-0010
 category: jaskinia_otwor
 name_local: Okno przy Źródle
 cave_id: C-1032
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -33,10 +34,9 @@ external_refs:
     SHA-256 odpowiedzi NMT: 86f5b5d01a54752bd4eb89de5f1d415390ced60e0426de991db63cd2f8584a6e.
 measurements:
 - id: m-001
-  lat: 49.25953732835311
-  lon: 19.953589664455603
-  x_1992: 155107.78
-  y_1992: 569363.54
+  input_srid: 4326
+  input_x: 19.953589664455603
+  input_y: 49.25953732835311
   elevation_m: 1240.01001
   elevation_datum: unknown
   elevation_source: dem
@@ -61,11 +61,11 @@ measurements:
   created_by: maintenance:PBI-113
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: Jedyny pomiar TPN; bez niezależnej weryfikacji terenowej.
   updated_at: '2026-10-23T18:10:08Z'
   updated_by: maintenance:PBI-113
 attachments: []
+bibliography_status: unknown
 notes: null
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113

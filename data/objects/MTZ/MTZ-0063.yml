@@ -3,6 +3,7 @@ id: MTZ-0063
 category: jaskinia_otwor
 name_local: Dziura w Kominie
 cave_id: C-0814
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24194802
-  lon: 19.89731691
-  x_1992: 153102.9
-  y_1992: 565293.54
+  input_srid: 4326
+  input_x: 19.89731691
+  input_y: 49.24194802
   elevation_m: 1627.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24194801930612
-  lon: 19.897316913732965
-  x_1992: 153102.9
-  y_1992: 565293.54
+  input_srid: 4326
+  input_x: 19.897316913732965
+  input_y: 49.24194801930612
   elevation_m: 1581.263758
   elevation_datum: unknown
   elevation_source: source_record
@@ -66,11 +65,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

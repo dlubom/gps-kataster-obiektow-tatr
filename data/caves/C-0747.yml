@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1680
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MTW-0058
+bibliography_status: unknown
 notes: 'PIG sector: D. Miętusia - Wsch.
 
   PIG morphometry: length_m=43, depth_m=16,4, denivelation_m=16,4

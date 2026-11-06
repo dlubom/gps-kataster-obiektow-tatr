@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1098
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSZ-0006
+bibliography_status: unknown
 notes: 'PIG sector: D. Kościeliska - Zach.
 
   PIG morphometry: length_m=13,6, depth_m=9, denivelation_m=9

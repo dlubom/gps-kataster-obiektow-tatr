@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1341
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSZ-0061
+bibliography_status: unknown
 notes: 'PIG aliases: Schronisko w Żlebie II?
 
   PIG sector: D. Kościeliska - Zach.

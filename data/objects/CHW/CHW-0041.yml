@@ -3,6 +3,7 @@ id: CHW-0041
 category: jaskinia_otwor
 name_local: Schron w Skale Kmietowicza I
 cave_id: C-0827
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.25720536
-  lon: 19.81540274
-  x_1992: 154731.04
-  y_1992: 559314.81
+  input_srid: 4326
+  input_x: 19.81540274
+  input_y: 49.25720536
   elevation_m: 994.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.25744775643767
-  lon: 19.815442753504616
-  x_1992: 154758.01
-  y_1992: 559317.43
+  input_srid: 4326
+  input_x: 19.815442753504616
+  input_y: 49.25744775643767
   elevation_m: 986.2565771
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

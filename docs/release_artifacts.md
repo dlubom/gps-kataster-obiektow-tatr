@@ -7,9 +7,9 @@ uruchamia `PR export preview`. Po udanym buildzie komentarz bota
 **Paczka testowa eksportów** zawiera link **Pobierz ZIP eksportów**.
 Pobierz po zalogowaniu do GitHub i rozpakuj paczkę, aby obejrzeć np.
 Excel Best/Full, GPX w GPS lub GeoJSON/Shapefile w QGIS.
-ZIP obejmuje wszystkie dwanaście plików wydania wymienionych poniżej,
+ZIP obejmuje wszystkie trzynaście plików wydania wymienionych poniżej,
 `preview.json` i `SHA256SUMS` (`sha256sum -c SHA256SUMS` po rozpakowaniu).
-SQLite i Shapefile zachowują własne wewnętrzne ZIP-y jak w wydaniu.
+Shapefile zachowuje wewnętrzny ZIP; dump i GeoPackage są osobnymi plikami.
 
 Retencja wynosi **14 dni** od uploadu; komentarz pokazuje datę wygaśnięcia.
 Po wygaśnięciu uruchom ponownie build albo wypchnij kolejny commit.
@@ -53,11 +53,43 @@ wobec checkoutu i rodziców commitu. Paczki nie zmieniają tagowego procesu wyda
 Ten dokument opisuje lokalna paczke generowana przez:
 
 ```bash
-uv run python scripts/build_release_artifacts.py
+uv run --frozen python scripts/build_release_artifacts.py --base-ref origin/main
 ```
 
-Zrodlem prawdy pozostaja YAML-e w `data/`. Pliki w `build/` sa artefaktami
+Źródłem prawdy są rekordy YAML w `data/`; `schema/catalog.sql` definiuje
+model tymczasowego PostgreSQL/PostGIS.
+Pliki w `build/` są artefaktami
 pochodnymi i nie sa commitowane.
+
+Builder, CLI, preview i workflow wydania korzystają z jednej kolejności
+`ReleaseArtifactsResult.artifact_paths`: 8 plików Best i 5 pozostałych plików
+wydania. Przed atomową podmianą builder sprawdza dokładny komplet, bez
+braków, dodatkowych plików, powtórzeń, dowiązań ani ścieżek poza katalogiem
+wynikowym. Błąd serializera lub odczytu zachowuje poprzedni komplet.
+
+Do paczkowania służy opcjonalne `--artifact-list`. Po udanym buildzie stdout
+zawiera wyłącznie 13 ścieżek w dotychczasowej kolejności, każdą zakończoną
+bajtem NUL (także ostatnią). Ścieżki zachowują postać `--output-dir`;
+spacje i znaki nowej linii nie są separatorami. Bez tej flagi pozostają
+komunikaty `wrote:` i podsumowanie. Błędy zachowują dotychczasowe kanały i kody;
+listę wolno konsumować wyłącznie po exit 0.
+
+```bash
+mkdir -p build
+uv run --frozen python scripts/build_release_artifacts.py \
+  --base-ref origin/main --artifact-list > build/release-artifacts.list
+```
+
+Workflow wydania czyta tę listę jako tablicę argumentów `gh`, bez wildcardu,
+ponownego spisu nazw ani wykonywania zawartości listy. Plik listy leży poza
+`build/exports/` i nie jest publicznym artefaktem. Paczka wydania nadal ma
+13 plików, a preview dodaje tylko `preview.json` i `SHA256SUMS`. Zaufany
+publisher komentarza nadal korzysta wyłącznie z metadanych GitHub.
+
+Samodzielny eksport Best publikuje 8 plików z `BestMeasurementsExportResult`.
+Po walidacji wejścia i historii nadal odmawia nadpisania katalogu zawierającego
+choć jeden z pięciu pozostałych plików pełnego wydania. Do przebudowy pełnej
+paczki użyj buildera wydania albo osobnego `--output-dir`.
 
 ## Wersjonowanie
 
@@ -69,8 +101,8 @@ sekcji `CHANGELOG.md` o tym samym numerze wersji.
 
 | Plik | Rola | Geometria / format |
 |---|---|---|
-| `build/katalog.sqlite` | Pelny wygenerowany snapshot katalogu. | SQLite, tabele relacyjne. |
-| `build/exports/katalog.sqlite.zip` | Spakowany `katalog.sqlite` do release. | ZIP zawierajacy `katalog.sqlite`. |
+| `build/exports/katalog.dump` | Pełny snapshot katalogu z bibliografią i historią. | PostgreSQL custom dump; odtworzenie sprawdzane podczas buildu. |
+| `build/exports/katalog.gpkg` | Warstwy Best oraz wszystkich pomiarów. | GeoPackage; geometria Point, jawny CRS, wysokość osobno. |
 | `build/exports/best-measurements.csv` | Plaski eksport najlepszego pomiaru dla kazdego obiektu. | CSV, WGS84 + EPSG:2180. |
 | `build/exports/best-measurements.geojson` | Ten sam plaski eksport jako warstwa punktowa. | GeoJSON `FeatureCollection`, geometria WGS84 lon/lat. |
 | `build/exports/best-measurements.shp.zip` | Warstwa punktowa do QGIS/desktop GIS. | ZIP Shapefile, geometria EPSG:2180. |
@@ -95,17 +127,17 @@ geodezyjnego rodzaju GNSS. Źródłowe `wlasne` ma etykietę „Opracowania wła
 ## `katalog.xlsx`
 
 Generowany przy każdym buildzie wydania, bez osobnego ręcznego kroku.
-**Best** ma jeden wiersz na obiekt: podstawowe pola wybranego punktu z CSV,
+**Best** ma jeden wiersz na obiekt: te same podstawowe pola wybranego punktu co CSV,
 w tym współrzędne WGS84, wysokość, źródło, weryfikację i dokładność.
-**Full** ma jeden wiersz na zachowany pomiar z SQLite, także starszy lub
+**Full** ma jeden wiersz na zachowany pomiar z PostgreSQL, także starszy lub
 odrzucony, z pełnymi danymi pomiaru i towarzyszącymi danymi obiektu.
 Kolumna „Wybrany do eksportu” porównuje ID pomiaru w obrębie tego samego
 obiektu. Powtarzające się ID obiektu w Full są historią, nie duplikatami.
 
 Full zachowuje uwagi, dane wyboru, nadania ID i autorstwa; listy referencji,
 załączników i relacji są tekstem JSON w osobnych kolumnach. Metadane jaskini
-obejmują ID, nazwę, system, uwagi i referencje. SQLite pozostaje pełnym
-relacyjnym snapshotem. Załączniki są opisane, nie osadzone w Excelu.
+obejmują ID, nazwę, system, uwagi i referencje. Dump PostgreSQL jest pełnym
+relacyjnym snapshotem, w tym z bibliografią. Załączniki są opisane, nie osadzone w Excelu.
 
 Oba arkusze mają polskie nagłówki, filtry, pasy wierszy i zamrożone pierwsze
 dwie kolumny oraz nagłówki. Liczby i daty dzienne od 1900-01-01 są typowane;
@@ -119,8 +151,10 @@ po v1.0.4, nie zmienia starszych paczek.
 
 ## Statystyki wydania
 
-Powstają przy każdym `build_release_artifacts.py`, z wygenerowanego CSV
-(wybrane punkty) oraz SQLite (pozycje katalogowe i cała historia).
+Powstają przy każdym `build_release_artifacts.py` ze wspólnego `ExportData`:
+tych samych wybranych punktów co CSV, pozycji katalogowych i pełnej historii
+z jednego zwalidowanego stanu PostgreSQL. Dane są przygotowywane raz na build;
+statystyki nie odczytują plików ani nie odbudowują historii i indeksu pomiarów.
 Oddzielają obiekty od jaskiń i pomiarów; zawierają rodzaje obiektów, źródła,
 statusy weryfikacji i liczbę punktów ze znaną/nieznaną dokładnością poziomą.
 Historia obejmuje również odrzucone pomiary. Brak dokładności nie jest zerem;
@@ -168,7 +202,7 @@ pol:
 Uwagi w DBF są limitowane do **254 bajtów UTF-8** na pole; tekst jest
 ucinany przed niepełnym znakiem. Dotyczy to `obj_notes`, `cave_notes`
 i `meas_notes`. Shapefile nie gwarantuje pełnej treści długich uwag;
-CSV, GeoJSON, GPX i SQLite zachowują pełny tekst. Plik `.cpg` wskazuje UTF-8.
+CSV, GeoJSON, GPX i dump PostgreSQL zachowują pełny tekst. Plik `.cpg` wskazuje UTF-8.
 
 ## `best-measurements.gpx`
 
@@ -182,8 +216,7 @@ GPX nie ma kolumn. Kazdy waypoint zawiera:
 - `desc` z nazwą, jawnym `object <object_id>`, `measurement_id`, źródłem,
   datą obserwacji oraz notatkami obiektu, jaskini i pomiaru, jeśli istnieją.
 
-Nazwy w etykietach GPX pojawią się w wydaniach po v1.0.4. Powtarzające się
-nazwy są dozwolone; trwałe ID w opisie pozwala wskazać konkretny punkt w CSV/Excelu.
+Powtarzające się nazwy są dozwolone; trwałe ID w opisie pozwala wskazać konkretny punkt w CSV/Excelu.
 
 ### Dodatkowe GPX według grup dolin
 
@@ -198,18 +231,22 @@ zbioru w metadanych GPX. Każdy punkt trafia do dokładnie jednej grupy:
 | `mietusia-sucha-woda.gpx` | MTZ, MTW, STN, MLZ, MLW, BRA, STR, DZI, BIA, BYZ, BYW, OLC, SUW |
 | `pozostale-pl-sk.gpx` | PL, SK poza polygonami dolin |
 
-Przypisanie wynika ze współrzędnych wskazanego Best oraz istniejących
-polygonów i `config/prefixes.yml`, nie z historycznego prefiksu trwałego ID.
+Przypisanie pochodzi z `v_measurement_regions` na tym samym połączeniu
+PostgreSQL co katalog. `ST_Covers` obejmuje granice poligonów, także granice
+ich otworów; przy nakładaniu wygrywa niższy `boundaries.ordinal`.
+Eksporter odczytuje region faktycznie wybranego pomiaru (również manual),
+nie trwałego ID ani propozycji auto. `ExportData` przechowuje go wewnętrznie;
+nie ma ponownego resolvera Pythona ani nowych publicznych kolumn.
 Wschód/zachód danej doliny pozostają w jednej grupie. Kolejność punktów
 pozostaje zgodna z pełnym GPX, według ID. Powstają też puste pliki grup.
 
 Każdy dodatkowy plik ma najwyżej 500 punktów. Przekroczenie limitu albo
 nierozpoznany region przerywa eksport czytelnym błędem przed zapisem jego
 plików, bez nadpisania wcześniejszych eksportów. Builder mógł już wcześniej
-zbudować SQLite; nie oznacza to gotowej paczki do publikacji. Nie obcinamy
+odtworzyć bazę; nie oznacza to gotowej paczki do publikacji. Nie obcinamy
 punktów ani nie rozcinamy dolin automatycznie. Wzrost liczby punktów wymaga
 ponownego uzgodnienia grup. `metadata.json` zachowuje dotychczasowy kontrakt.
-Pliki są w lokalnym buildzie, podglądzie PR i wydaniach po v1.2.1.
+Pliki są w lokalnym buildzie, podglądzie PR i wydaniach.
 
 ## `metadata.json`
 
@@ -225,22 +262,54 @@ Pola:
 - `counts.validation_warnings`,
 - `counts.validation_errors`.
 
-## `katalog.sqlite`
+## `katalog.dump`
 
-SQLite trzyma pelniejszy model niz plaskie eksporty. Glowne tabele i kolumny:
+Custom dump PostgreSQL zawiera pełny model relacyjny, a nie tylko wybrane
+punkty. [Schemat SQL](../schema/catalog.sql) jest dokładną definicją tabel,
+typów i widoków; [diagramy](architecture/schema.md) pokazują ich powiązania.
 
-| Tabela | Kolumny |
+| Tabele / widoki | Zawartość |
 |---|---|
-| `objects` | `id`, `schema_version`, `category`, `name_local`, `cave_id`, `id_assignment_method`, `assigned_from_measurement_id`, `assigned_prefix`, `prefix_override_reason`, `best_measurement_id`, `computed_best_measurement_id`, `best_lat`, `best_lon`, `best_x_1992`, `best_y_1992`, `best_geom_wgs84`, `best_geom_1992`, `notes`, `created_at`, `created_by`, `updated_at`, `updated_by` |
-| `caves` | `id`, `schema_version`, `name`, `system_name`, `object_ids_json`, `notes`, `created_at`, `created_by`, `updated_at`, `updated_by` |
-| `measurements` | `object_id`, `id`, `lat`, `lon`, `x_1992`, `y_1992`, `geom_wgs84`, `geom_1992`, `elevation_m`, `elevation_datum`, `elevation_source`, `horizontal_accuracy_m`, `vertical_accuracy_m`, `source`, `source_ref`, `observed_at`, `observed_date`, `source_date`, `method`, `device`, `tags_json`, `verification_status`, `verified_by`, `verified_at`, `notes`, `created_at`, `created_by` |
-| `best_measurements` | `object_id`, `mode`, `measurement_id`, `computed_best_measurement_id`, `reason`, `updated_at`, `updated_by` |
-| `object_external_refs` | `object_id`, `system`, `ref_type`, `external_id`, `url`, `scope`, `notes` |
-| `cave_external_refs` | `cave_id`, `system`, `ref_type`, `external_id`, `url`, `scope`, `notes` |
-| `attachments` | `object_id`, `path`, `type`, `description`, `created_at`, `created_by` |
-| `relations` | `id`, `schema_version`, `from_object_id`, `to_object_id`, `relation_type`, `notes` |
-| `validation_flags` | `code`, `severity`, `path`, `description` |
-| `metadata` | `key`, `value` |
+| `objects`, `caves` | Obiekty terenowe i pozycje katalogowe, źródła, audyt i stan bibliografii. Przynależność wyznacza `objects.cave_id`. |
+| `measurements`, `measurement_tags` | Pełna uporządkowana historia z natywną geometrią EPSG:4326/2180, wysokością, datum i pochodzeniem. Klucz pomiaru to `(object_id, id)`. |
+| `best_policy` | Tryb auto/manual, ręczne wskazanie i uzasadnienie. |
+| `v_measurements`, `v_auto_best`, `v_best` | Wyliczone współrzędne, niezależny wynik auto oraz ostatecznie wybrany Best. |
+| `object_external_refs`, `cave_external_refs` | Referencje TPN/PIG i pozostałych źródeł, z zachowanymi notatkami. |
+| `publications` i trzy tabele `*_citations` | Pełne opisy bibliograficzne oraz przywołania dla jaskiń, obiektów i pomiarów. |
+| `attachments`, `relations` | Opisy załączników i powiązania obiektów. Same pliki załączników nie są osadzane w dumpie. |
+
+Do odtworzenia potrzebny jest zgodny PostgreSQL z PostGIS, a do pliku custom
+narzędzie `pg_restore`. Nie otwiera się go programem SQLite. Przykład dla
+nowej, osobnej bazy na przypiętym PostgreSQL 18/PostGIS 3.6
+([runtime](operations.md#runtime-lokalny-i-ci)); standardowe zmienne `PGHOST`,
+`PGPORT`, `PGUSER` opisują połączenie:
+
+```bash
+createdb kataster_review
+pg_restore --exit-on-error --no-owner --no-privileges \
+  --dbname kataster_review build/exports/katalog.dump
+psql --dbname kataster_review -c 'SELECT count(*) FROM catalog.v_best;'
+dropdb kataster_review
+```
+
+Build sam odtwarza dump w osobnej bazie, porównuje komplet tabel oraz wynik
+Best i usuwa własne zasoby. Brak narzędzia, błąd restore lub różnica danych
+blokuje podmianę zestawu wynikowego.
+
+## `katalog.gpkg`
+
+GeoPackage jest plikiem do GIS, np. QGIS, z warstwami `best` i `measurements`.
+Pierwsza zawiera jeden wybrany pomiar na obiekt, druga pełną historię,
+także pomiary starsze i odrzucone. Tożsamość wiersza określa para
+`object_id` i `measurement_id`. Wysokość i datum są atrybutami niezależnymi
+od poziomego CRS; nie deklarujemy przez to znanego układu pionowego.
+
+Podczas buildu GeoPackage jest ponownie odczytywany. Sprawdzane są deklaracje
+typów wszystkich pól (także pustych warstw i kolumn null), EPSG:2180, Point, ID,
+liczność, wszystkie wyeksportowane atrybuty i geometria; samo istnienie pliku
+nie jest wynikiem pozytywnym. Pełna bibliografia i model relacyjny są w dumpie.
+Starsze wydania sprzed migracji zawierają `katalog.sqlite.zip` zamiast dwóch
+nowych formatów; ich pliki pozostają niezmienione.
 
 ## Decyzja o notatkach
 
@@ -254,10 +323,10 @@ pozwala zachowac sens domenowy:
 
 Kontekst lokalizacji TPN (`TPN WER_LOK:` i `TPN UWAGI:`) jest zapisany przy
 pomiarze. Jeśli jest on wybranym best, trafia do `measurement_notes` w CSV
-i GeoJSON oraz części `measurement notes` opisu GPX. SQLite przechowuje
+i GeoJSON oraz części `measurement notes` opisu GPX. PostgreSQL przechowuje
 notes wszystkich pomiarów. Tekst TPN nie zmienia statusu weryfikacji;
 długi kontekst może być skrócony w `meas_notes` DBF zgodnie z limitem wyżej.
 
 Nie dodajemy na razie notatek z `external_refs` do plaskiego eksportu, bo to
 potrafiloby dublowac `source_ref`, `pig_url`, `tpn_globalid` i szybko robic
-nieczytelny CSV. Pelne notatki referencji zostaja w `katalog.sqlite`.
+nieczytelny CSV. Pełne notatki referencji pozostają w `katalog.dump` i arkuszu Full.

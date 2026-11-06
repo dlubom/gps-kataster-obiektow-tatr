@@ -1,7 +1,39 @@
+import shutil
 from collections.abc import Callable
 from pathlib import Path
 
 import pytest
+
+
+@pytest.fixture(scope="session")
+def copy_release_template(tmp_path_factory):
+    """Copy a real prior release, built once per byte-identical source fixture."""
+    from export_test_support import accept_source
+
+    from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
+
+    templates = {}
+
+    def copy(data_dir, output_dir):
+        key = tuple(
+            (path.relative_to(data_dir), path.read_bytes())
+            for path in sorted(data_dir.rglob("*"))
+            if path.is_file()
+        )
+        if key not in templates:
+            root = tmp_path_factory.mktemp("release-template")
+            data = shutil.copytree(data_dir, root / "data", symlinks=True)
+            templates[key] = build_release_artifacts(
+                **accept_source(data),
+                data_dir=data,
+                output_dir=root / "exports",
+                generated_at="2026-10-15T00:00:00Z",
+            )
+        result = templates[key]
+        shutil.copytree(result.export_result.output_dir, output_dir)
+        return result
+
+    return copy
 
 
 @pytest.fixture(
@@ -64,11 +96,26 @@ def yaml_key_collision(request) -> tuple[str, str, int]:
 
 @pytest.fixture
 def make_data_dir() -> Callable[[Path], Path]:
-    """Explicitly initialize a complete, empty source dataset for a test."""
+    """Initialize an empty legacy dataset; canonical sources use their own fixture."""
 
     def create(path: Path) -> Path:
         for name in ("objects", "caves", "relations"):
             (path / name).mkdir(parents=True, exist_ok=True)
+        return path
+
+    return create
+
+
+@pytest.fixture
+def make_canonical_data_dir(make_data_dir) -> Callable[[Path], Path]:
+    """Initialize the four directories and marker of a canonical YAML source."""
+
+    def create(path: Path) -> Path:
+        make_data_dir(path)
+        (path / "publications").mkdir()
+        (path / "catalog.json").write_text(
+            '{"format":"postgresql-yaml","schema_version":2}', encoding="utf-8"
+        )
         return path
 
     return create

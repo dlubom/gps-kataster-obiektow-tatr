@@ -3,6 +3,7 @@ id: KSW-0201
 category: jaskinia_otwor
 name_local: Jaskinia Czarna
 cave_id: C-0699
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24438517
-  lon: 19.8703713
-  x_1992: 153350.84
-  y_1992: 563329.74
+  input_srid: 4326
+  input_x: 19.8703713
+  input_y: 49.24438517
   elevation_m: 1326.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24438516916111
-  lon: 19.87037130431677
-  x_1992: 153350.84
-  y_1992: 563329.74
+  input_srid: 4326
+  input_x: 19.87037130431677
+  input_y: 49.24438516916111
   elevation_m: 1315.425766
   elevation_datum: unknown
   elevation_source: source_record
@@ -67,10 +66,9 @@ measurements:
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-003
-  lat: 49.2444121431
-  lon: 19.8705053667
-  x_1992: 153353.95
-  y_1992: 563339.46
+  input_srid: 4326
+  input_x: 19.8705053667
+  input_y: 49.2444121431
   elevation_m: 1323.42
   elevation_datum: Kronstadt86
   elevation_source: dem
@@ -101,6 +99,7 @@ best_measurement:
   updated_at: '2026-10-23T13:20:59Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review. GNSS+LIDAR review 2026-05-09/2026-05-16
   added the main-opening Wrogeo-derived point.
 created_at: '2026-05-16T10:22:49Z'

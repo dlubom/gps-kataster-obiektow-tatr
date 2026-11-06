@@ -3,6 +3,7 @@ id: MTW-0075
 category: jaskinia_otwor
 name_local: Nyża za Jałowcem
 cave_id: C-1035
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -33,10 +34,9 @@ external_refs:
     SHA-256 odpowiedzi NMT: 8794e4cd34884fe9a3ea3a62fe96b34223142c807bbd94e23edf6e33a857d53a.
 measurements:
 - id: m-001
-  lat: 49.26374024770888
-  lon: 19.879551085758283
-  x_1992: 155509.59
-  y_1992: 563972.65
+  input_srid: 4326
+  input_x: 19.879551085758283
+  input_y: 49.26374024770888
   elevation_m: 1188.380005
   elevation_datum: unknown
   elevation_source: dem
@@ -61,11 +61,11 @@ measurements:
   created_by: maintenance:PBI-113
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: Jedyny pomiar TPN; bez niezależnej weryfikacji terenowej.
   updated_at: '2026-10-23T18:10:08Z'
   updated_by: maintenance:PBI-113
 attachments: []
+bibliography_status: unknown
 notes: null
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113

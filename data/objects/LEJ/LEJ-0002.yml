@@ -3,6 +3,7 @@ id: LEJ-0002
 category: jaskinia_otwor
 name_local: Jaskinia Bańdzioch Kominiarski - otwór górny
 cave_id: C-0078
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24313033
-  lon: 19.84352305
-  x_1992: 153189.25
-  y_1992: 561377.79
+  input_srid: 4326
+  input_x: 19.84352305
+  input_y: 49.24313033
   elevation_m: 1456.3
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24313033403709
-  lon: 19.843523045374237
-  x_1992: 153189.25
-  y_1992: 561377.79
+  input_srid: 4326
+  input_x: 19.843523045374237
+  input_y: 49.24313033403709
   elevation_m: 1650.307419
   elevation_datum: unknown
   elevation_source: source_record
@@ -65,10 +64,9 @@ measurements:
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-003
-  lat: 49.2425632426
-  lon: 19.8437239672
-  x_1992: 153126.39
-  y_1992: 561393.11
+  input_srid: 4326
+  input_x: 19.8437239672
+  input_y: 49.2425632426
   elevation_m: 1675.02
   elevation_datum: unknown
   elevation_source: other
@@ -109,6 +107,7 @@ best_measurement:
   updated_at: '2026-10-23T13:45:51Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

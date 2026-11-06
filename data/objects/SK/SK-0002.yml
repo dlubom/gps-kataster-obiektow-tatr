@@ -3,6 +3,7 @@ id: SK-0002
 category: jaskinia_otwor
 name_local: Obcasna Vyvieracka
 cave_id: C-1004
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: DATA_SOURCE from maintainer note.
 measurements:
 - id: m-001
-  lat: 49.22661111
-  lon: 19.92986944
-  x_1992: 151427.05
-  y_1992: 567683.16
+  input_srid: 4326
+  input_x: 19.92986944
+  input_y: 49.22661111
   elevation_m: 1453.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -43,11 +43,11 @@ measurements:
   created_by: dl
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: null
   updated_at: '2026-05-16T19:04:29Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: 'Slovak cave opening added from maintainer-supplied source coordinates.
   Prefix SK is a country fallback because the point is outside configured valley
   polygons.'

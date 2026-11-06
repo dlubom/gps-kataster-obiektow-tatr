@@ -3,6 +3,7 @@ id: MTZ-0044
 category: jaskinia_otwor
 name_local: Komin w Kazalnicy Miętusiej
 cave_id: C-0598
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24064006
-  lon: 19.90160345
-  x_1992: 152961.25
-  y_1992: 565607.18
+  input_srid: 4326
+  input_x: 19.90160345
+  input_y: 49.24064006
   elevation_m: 1640.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.23973039948298
-  lon: 19.902093156635445
-  x_1992: 152860.58
-  y_1992: 565644.02
+  input_srid: 4326
+  input_x: 19.902093156635445
+  input_y: 49.23973039948298
   elevation_m: 1635.086702
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1421
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSW-0050
+bibliography_status: unknown
 notes: 'PIG aliases: Nad Mostem, Za Bramą, Za Arkadą, Arkada
 
   PIG sector: D. Kościeliska - Wsch.

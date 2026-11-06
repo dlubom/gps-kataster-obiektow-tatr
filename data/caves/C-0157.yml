@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/4175
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSW-0045
+bibliography_status: unknown
 notes: 'PIG aliases: Okap z Półką
 
   PIG sector: D. Kościeliska - Wsch.

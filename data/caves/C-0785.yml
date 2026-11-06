@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1434
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSZ-0093
+bibliography_status: unknown
 notes: 'PIG aliases: Niżni Tunel
 
   PIG sector: D. Kościeliska - Zach.

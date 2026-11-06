@@ -9,32 +9,20 @@ GITIGNORE = REPO_ROOT / ".gitignore"
 MUTATION_WORKFLOW = REPO_ROOT / ".github" / "workflows" / "mutation.yml"
 
 MUTATED_PATHS = [
-    "src/gps_kataster_obiektow_tatr/best_measurement.py",
     "src/gps_kataster_obiektow_tatr/coordinates.py",
     "src/gps_kataster_obiektow_tatr/prefix_resolver.py",
     "src/gps_kataster_obiektow_tatr/validator.py",
-    "src/gps_kataster_obiektow_tatr/pig_staging.py",
-    "src/gps_kataster_obiektow_tatr/tpn_staging.py",
-    "src/gps_kataster_obiektow_tatr/staging_review.py",
 ]
 
 MUTATION_TEST_SELECTION = [
-    "tests/test_best_measurement.py",
     "tests/test_coordinates.py",
     "tests/test_prefix_resolver.py",
     "tests/test_validator.py",
-    "tests/test_pig_staging.py",
-    "tests/test_tpn_staging.py",
-    "tests/test_staging_review.py",
 ]
 
 MUTATION_PYTEST_SELECTION_ARGS = [
     "-k",
-    (
-        "not test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors "
-        "and not test_cli_writes_staging_artifacts_without_final_yaml "
-        "and not test_cli_applies_sample_decisions_and_final_yaml_passes_validate_py"
-    ),
+    ("not test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors"),
 ]
 
 MUTATION_SUPPORT_PATHS = [
@@ -70,15 +58,19 @@ def test_mutation_workflow_is_manual_and_uses_local_mutmut_config() -> None:
     assert set(workflow["on"]) == {"workflow_dispatch"}
     assert workflow["permissions"] == {"contents": "read"}
 
+    steps = workflow["jobs"]["mutation"]["steps"]
+    assert any(s.get("uses") == "./.github/actions/setup-runtime" for s in steps)
+    runtime = yaml.safe_load((REPO_ROOT / ".github/actions/setup-runtime/action.yml").read_text())
     run_commands = [
-        step["run"].strip() for step in workflow["jobs"]["mutation"]["steps"] if "run" in step
+        step["run"].strip() for step in [*runtime["runs"]["steps"], *steps] if "run" in step
     ]
-    assert run_commands == [
-        "uv sync",
-        "uv run pytest",
-        "uv run mutmut run --max-children 2",
-        "uv run mutmut export-cicd-stats",
-    ]
+    for command in [
+        "uv sync --frozen",
+        "uv run --frozen pytest",
+        "uv run --frozen mutmut run --max-children 2",
+        "uv run --frozen mutmut export-cicd-stats",
+    ]:
+        assert command in run_commands
 
     upload_step = workflow["jobs"]["mutation"]["steps"][-1]
     assert upload_step["uses"] == "actions/upload-artifact@v4"

@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1701
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSW-0173
+bibliography_status: unknown
 notes: 'PIG aliases: Dziura Lodowa, Grota Lodowa, Grota Lodowa w Czerwonych Wierchach,
   Grota Lodowa w Kamiennem, Lodowa jaskinia pod Czerwonym Wierchem, Lodowa w Kamiennem
   pod Ciemniakiem

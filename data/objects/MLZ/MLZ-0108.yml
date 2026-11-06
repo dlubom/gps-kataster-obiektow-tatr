@@ -3,6 +3,7 @@ id: MLZ-0108
 category: jaskinia_otwor
 name_local: Jaskinia nad Korytem - otwór wschodni
 cave_id: C-0713
+membership_ordinal: 2
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.2477742196
-  lon: 19.9111774083
-  x_1992: 153762.45
-  y_1992: 566294.29
+  input_srid: 4326
+  input_x: 19.9111774083
+  input_y: 49.2477742196
   elevation_m: 1621.705669
   elevation_datum: unknown
   elevation_source: source_record
@@ -44,11 +44,11 @@ measurements:
   created_by: dl
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: null
   updated_at: '2026-05-16T19:30:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: 'Created during multi-opening review. PIG dump says Jaskinia nad Korytem has
   another entrance: "2 - ku E, 1618,7 m n.p.m."; TPN row 672 provides this object-level
   point.'

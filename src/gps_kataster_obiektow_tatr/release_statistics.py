@@ -2,15 +2,14 @@
 
 from __future__ import annotations
 
-import csv
 import json
-import sqlite3
 from collections import Counter
-from collections.abc import Iterable
-from contextlib import closing
+from collections.abc import Iterable, Sequence
 from html import escape
 from pathlib import Path
 from typing import Any
+
+from gps_kataster_obiektow_tatr.export_data import ExportData
 
 LABELS = {
     "title": ("Statystyki wydania (PL)", "Release statistics (EN)", "Štatistiky vydania (SK)"),
@@ -118,44 +117,28 @@ LABELS = {
 
 
 def write_release_statistics(
+    export_data: ExportData,
     *,
-    csv_path: Path,
-    sqlite_path: Path,
     output_dir: Path,
-    generated_at: str,
     release_version: str | None,
     source_commit: str | None,
 ) -> tuple[Path, Path]:
     """Count the exported selections and packaged history without choosing points again."""
 
-    with csv_path.open(encoding="utf-8", newline="") as stream:
-        selected = list(csv.DictReader(stream))
-    with closing(sqlite3.connect(f"{sqlite_path.resolve().as_uri()}?mode=ro", uri=True)) as db:
-        db.row_factory = sqlite3.Row
-        history = db.execute(
-            "SELECT object_id, id, source, verification_status, method, tags_json FROM measurements"
-        ).fetchall()
-        caves = db.execute("SELECT COUNT(*) FROM caves").fetchone()[0]
+    history = export_data.history
+    selected = export_data.selected
+    selected_methods = (_position_method(row["method"], row["tags"]) for row in selected)
 
-    methods_by_measurement = {
-        (row["object_id"], row["id"]): _position_method(row["method"], json.loads(row["tags_json"]))
-        for row in history
-    }
-    selected_methods = []
-    for row in selected:
-        key = (row["object_id"], row["measurement_id"])
-        if key not in methods_by_measurement:
-            raise ValueError(
-                f"Selected measurement {key[0]}/{key[1]} is missing from packaged history"
-            )
-        selected_methods.append(methods_by_measurement[key])
-
-    known_accuracy = sum(row["horizontal_accuracy_m"] != "" for row in selected)
+    known_accuracy = sum(row["horizontal_accuracy_m"] is not None for row in selected)
     statistics = {
         "statistics_schema_version": 1,
         "release": {"version": release_version, "source_commit": source_commit},
-        "generated_at": generated_at,
-        "counts": {"objects": len(selected), "caves": caves, "measurements": len(history)},
+        "generated_at": export_data.generated_at,
+        "counts": {
+            "objects": len(selected),
+            "caves": export_data.cave_count,
+            "measurements": len(history),
+        },
         "selected_points": {
             "by_category": _count(row["category"] for row in selected),
             "by_source": _count(row["source"] for row in selected),
@@ -168,7 +151,9 @@ def write_release_statistics(
         },
         "measurement_history": {
             "by_source": _count(row["source"] for row in history),
-            "by_position_method": _count(methods_by_measurement.values()),
+            "by_position_method": _count(
+                _position_method(row["method"], row["tags"]) for row in history
+            ),
             "by_verification_status": _count(row["verification_status"] for row in history),
         },
     }
@@ -186,7 +171,7 @@ def _count(values: Iterable[str]) -> dict[str, int]:
     return dict(sorted(Counter(values).items()))
 
 
-def _position_method(method: str, tags: list[str]) -> str:
+def _position_method(method: str, tags: Sequence[str]) -> str:
     if method == "ustalenie" and "lidar" in tags and "gnss_anchor" in tags:
         return "lidar_gnss"
     if method == "source_record" and "survey_anchor" in tags:

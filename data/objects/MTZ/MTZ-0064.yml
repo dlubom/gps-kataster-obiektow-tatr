@@ -3,6 +3,7 @@ id: MTZ-0064
 category: jaskinia_otwor
 name_local: Szczelina w Krzesanicy II
 cave_id: C-0817
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.2316188
-  lon: 19.90798216
-  x_1992: 151964.23
-  y_1992: 566083.37
+  input_srid: 4326
+  input_x: 19.90798216
+  input_y: 49.2316188
   elevation_m: 2110.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.2316188022467
-  lon: 19.90798215741562
-  x_1992: 151964.23
-  y_1992: 566083.37
+  input_srid: 4326
+  input_x: 19.90798215741562
+  input_y: 49.2316188022467
   elevation_m: 2090.360179
   elevation_datum: unknown
   elevation_source: source_record
@@ -66,11 +65,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

@@ -88,6 +88,37 @@
     },
     "updated_by": {
       "$ref": "#/$defs/personId"
+    },
+    "bibliography_status": {
+      "enum": [
+        "known",
+        "unknown"
+      ]
+    },
+    "bibliography_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "membership_ordinal": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "computed_best_measurement_id": {
+      "type": [
+        "string",
+        "null"
+      ]
     }
   },
   "$defs": {
@@ -329,10 +360,6 @@
       "additionalProperties": false,
       "required": [
         "id",
-        "lat",
-        "lon",
-        "x_1992",
-        "y_1992",
         "source",
         "observed_date",
         "method",
@@ -486,7 +513,56 @@
         },
         "created_by": {
           "$ref": "#/$defs/personId"
+        },
+        "input_srid": {
+          "enum": [
+            4326,
+            2180
+          ]
+        },
+        "input_x": {
+          "type": "number"
+        },
+        "input_y": {
+          "type": "number"
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
         }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "input_srid",
+            "input_x",
+            "input_y"
+          ]
+        },
+        {
+          "required": [
+            "lat",
+            "lon",
+            "x_1992",
+            "y_1992"
+          ]
+        }
+      ],
+      "dependentRequired": {
+        "input_srid": [
+          "input_x",
+          "input_y"
+        ],
+        "input_x": [
+          "input_srid",
+          "input_y"
+        ],
+        "input_y": [
+          "input_srid",
+          "input_x"
+        ]
       }
     },
     "measurementId": {

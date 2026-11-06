@@ -10,8 +10,14 @@ external_refs:
   scope: cave
   notes: 'Załącznik „08 Dol. Miętusia 2026.07” do zestawienia Jakuba Nowaka „Jaskinie Tatr”, KKTJ, 10.07.2026;
     s. 4, lp. 131; nazwa w wykazie: Jaskinia Lodowa Ponorowa.'
-object_ids:
-- MTZ-0073
+bibliography_status: known
+citations:
+- publication_id: literature-9af65c08df692c3e
+  locator: s. 4, lp. 131
+  name_in_source: Jaskinia Lodowa Ponorowa
+  purpose: description
+  notes: 'Załącznik „08 Dol. Miętusia 2026.07” do zestawienia Jakuba Nowaka „Jaskinie
+    Tatr”, KKTJ, 10.07.2026; s. 4, lp. 131; nazwa w wykazie: Jaskinia Lodowa Ponorowa.'
 notes: |-
   Długość 8 m, głębokość 5,3 m (TPN; Nowak 2026).
 

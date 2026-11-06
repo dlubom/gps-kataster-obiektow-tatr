@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/969
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- STN-0003
+bibliography_status: unknown
 notes: 'PIG sector: Staników Żleb
 
   PIG morphometry: length_m=17, depth_m=0, denivelation_m=0

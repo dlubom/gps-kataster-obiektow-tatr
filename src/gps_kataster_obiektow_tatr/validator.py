@@ -1,48 +1,26 @@
-"""Local data validator for source-of-truth YAML records."""
+"""Validate canonical YAML and PostgreSQL state before accepted-history checks."""
 
 from __future__ import annotations
 
-import json
-from collections import Counter
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable
+from contextlib import contextmanager
 from dataclasses import dataclass
 from enum import StrEnum
-from itertools import combinations
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any
 from urllib.parse import urlparse
 
-from jsonschema import Draft202012Validator, FormatChecker
-from jsonschema.exceptions import ValidationError
+import psycopg
 
-from gps_kataster_obiektow_tatr.best_measurement import (
-    select_default_best_measurement_id,
-    selected_default_uses_rejected_fallback,
-)
-from gps_kataster_obiektow_tatr.coordinates import (
-    DEFAULT_CONSISTENCY_TOLERANCE_M,
-    coordinate_consistency_error_m,
-    wgs84_to_1992,
-)
 from gps_kataster_obiektow_tatr.data_loader import (
     DEFAULT_DATA_DIR,
     DataDirectoryError,
     DataKind,
-    LoadedDataset,
-    LoadedYamlRecord,
     YamlDataLoadError,
-    load_dataset,
 )
-from gps_kataster_obiektow_tatr.measurement_values import non_finite_measurement_fields
-from gps_kataster_obiektow_tatr.prefix_resolver import (
-    PrefixResolution,
-    PrefixResolutionStatus,
-    default_prefix_resolver,
-)
+from gps_kataster_obiektow_tatr.urls import valid_absolute_url
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_SCHEMA_DIR = REPO_ROOT / "schema"
-FAR_MEASUREMENT_DISTANCE_M = 100.0
 
 
 class ValidationSeverity(StrEnum):
@@ -62,86 +40,95 @@ class ValidationIssue:
     description: str
 
 
-class PrefixResolverLike(Protocol):
-    """Minimal prefix resolver interface used by validation."""
+class CatalogValidationError(ValueError):
+    """Findings that block use of a catalogue."""
 
-    def resolve(self, *, lat: float, lon: float) -> PrefixResolution:
-        """Resolve a WGS84 coordinate to a prefix/spatial status."""
+    def __init__(self, issues):
+        self.issues = tuple(issues)
+        super().__init__(
+            "Cannot use invalid catalogue:\n"
+            + "\n".join(format_issue(i) for i in self.issues if i.severity == "error")
+        )
 
 
 def validate_data_dir(
     data_dir: Path = DEFAULT_DATA_DIR,
     *,
     repo_root: Path = REPO_ROOT,
-    schema_dir: Path = DEFAULT_SCHEMA_DIR,
-    prefix_resolver: PrefixResolverLike | None = None,
 ) -> tuple[ValidationIssue, ...]:
-    """Load and validate a data directory."""
+    """Report canonical source and SQL checks; Git history is a separate build gate."""
+    from gps_kataster_obiektow_tatr.postgres import CatalogLoadError, open_catalog
 
     try:
-        dataset = load_dataset(data_dir)
+        with open_catalog(data_dir, validate=False) as catalog:
+            return validate_catalog(catalog, repo_root=repo_root)
     except DataDirectoryError as exc:
         return (
-            ValidationIssue(
-                code="DATA_DIRECTORY_INVALID",
-                severity=ValidationSeverity.ERROR,
-                path=exc.path,
-                description=str(exc),
-            ),
+            ValidationIssue("DATA_DIRECTORY_INVALID", ValidationSeverity.ERROR, exc.path, str(exc)),
         )
     except YamlDataLoadError as exc:
-        return (
-            ValidationIssue(
-                code="YAML_INVALID",
-                severity=ValidationSeverity.ERROR,
-                path=exc.path,
-                description=str(exc),
-            ),
-        )
+        return (ValidationIssue("YAML_INVALID", ValidationSeverity.ERROR, exc.path, str(exc)),)
+    except (CatalogLoadError, psycopg.Error) as exc:
+        return (_sql_issue(exc),)
 
-    return validate_dataset(
-        dataset,
-        data_dir=data_dir,
-        repo_root=repo_root,
-        schema_dir=schema_dir,
-        prefix_resolver=prefix_resolver,
+
+def validate_catalog(catalog, *, repo_root: Path | None = None):
+    """Full checks of the existing SQL state, with no reserialization or second database."""
+    return (
+        *_validate_file_id_paths(
+            ((kind, record_id, path) for (kind, record_id), path in catalog.paths.items()),
+            data_dir=catalog.data_dir,
+        ),
+        *catalog.issues(repo_root=repo_root),
     )
 
 
-def validate_dataset(
-    dataset: LoadedDataset,
-    *,
-    data_dir: Path = DEFAULT_DATA_DIR,
-    repo_root: Path = REPO_ROOT,
-    schema_dir: Path = DEFAULT_SCHEMA_DIR,
-    prefix_resolver: PrefixResolverLike | None = None,
-) -> tuple[ValidationIssue, ...]:
-    """Validate an already-loaded dataset and return all issues."""
+@contextmanager
+def validated_catalog_source(data_dir=DEFAULT_DATA_DIR, *, repo_root=REPO_ROOT):
+    """Check YAML source and existing SQL state; yield its projection once, without Git history."""
+    from gps_kataster_obiektow_tatr.postgres import open_catalog
 
-    resolver = prefix_resolver or default_prefix_resolver()
-    validators = _load_schema_validators(schema_dir)
-    issues: list[ValidationIssue] = []
-
-    issues.extend(_validate_schema(dataset.records(), validators))
-    issues.extend(_validate_file_id_paths(dataset.records(), data_dir=data_dir))
-    issues.extend(_validate_duplicate_object_ids(dataset.objects))
-    issues.extend(_validate_cross_references(dataset))
-    issues.extend(_validate_object_records(dataset.objects, resolver=resolver, repo_root=repo_root))
-    issues.extend(_validate_duplicate_tpn_globalids(dataset.objects))
-
-    return tuple(issues)
+    data_dir = Path(data_dir)
+    with open_catalog(data_dir, validate=False) as catalog:
+        issues = validate_catalog(catalog, repo_root=repo_root)
+        if has_errors(issues):
+            raise CatalogValidationError(issues)
+        yield catalog, catalog.dataset(), issues
 
 
-def validate_record_schema(
-    record: LoadedYamlRecord, *, schema_dir: Path = DEFAULT_SCHEMA_DIR
-) -> tuple[ValidationIssue, ...]:
-    """Check a proposal's shape before review actions consume its nested values."""
+@contextmanager
+def history_checked_catalog(data_dir=DEFAULT_DATA_DIR, *, base_ref, history_repo=REPO_ROOT):
+    """Build/CLI boundary: checked source, SQL state and actual accepted Git history."""
+    from gps_kataster_obiektow_tatr.history import check_history
 
-    issues = _validate_schema((record,), _load_schema_validators(schema_dir))
-    if record.kind == DataKind.OBJECT:
-        issues += _validate_measurement_identity(record)
-        issues += _validate_finite_measurements(record)
-    return issues
+    with validated_catalog_source(data_dir) as (catalog, projection, issues):
+        issues = (
+            *issues,
+            *check_history(
+                base_ref, projection, repo_root=history_repo, connection=catalog.connection
+            ),
+        )
+        if has_errors(issues):
+            raise CatalogValidationError(issues)
+        yield catalog, projection, issues
+
+
+def _sql_issue(exc):
+    path = getattr(exc, "path", None)
+    cause = exc.__cause__ or exc
+    constraint = getattr(getattr(cause, "diag", None), "constraint_name", None)
+    code = {
+        "measurements_pkey": "DUPLICATE_MEASUREMENT_ID",
+        "objects_pkey": "DUPLICATE_OBJECT_ID",
+        "unique_tpn_globalid": "DUPLICATE_TPN_GLOBALID",
+        "objects_cave_id_fkey": "CAVE_REFERENCE_MISSING",
+        "best_policy_object_id_manual_measurement_id_fkey": "BEST_MEASUREMENT_MISSING",
+        "best_policy_check": "BEST_MEASUREMENT_MANUAL_REASON_REQUIRED",
+        "relations_from_object_id_fkey": "RELATION_OBJECT_REFERENCE_MISSING",
+        "relations_to_object_id_fkey": "RELATION_OBJECT_REFERENCE_MISSING",
+        "attachments_object_id_measurement_id_fkey": "ATTACHMENT_MEASUREMENT_MISSING",
+    }.get(constraint, "SQL_CATALOG_INVALID")
+    return ValidationIssue(code, ValidationSeverity.ERROR, path, str(exc))
 
 
 def format_issue(issue: ValidationIssue) -> str:
@@ -163,72 +150,29 @@ def exit_code_for_issues(issues: Iterable[ValidationIssue]) -> int:
     return 1 if has_errors(issues) else 0
 
 
-def _load_schema_validators(schema_dir: Path) -> dict[DataKind, Draft202012Validator]:
-    schema_paths = {
-        DataKind.OBJECT: schema_dir / "object.schema.json",
-        DataKind.CAVE: schema_dir / "cave.schema.json",
-        DataKind.RELATION: schema_dir / "relation.schema.json",
-    }
-    validators: dict[DataKind, Draft202012Validator] = {}
-
-    for kind, path in schema_paths.items():
-        with path.open(encoding="utf-8") as schema_file:
-            schema = json.load(schema_file)
-        Draft202012Validator.check_schema(schema)
-        validators[kind] = Draft202012Validator(schema, format_checker=FormatChecker())
-
-    return validators
-
-
-def _validate_schema(
-    records: Sequence[LoadedYamlRecord],
-    validators: dict[DataKind, Draft202012Validator],
-) -> tuple[ValidationIssue, ...]:
-    issues: list[ValidationIssue] = []
-
-    for record in records:
-        if record.raw_data.get("schema_version") != 1:
-            issues.append(
-                ValidationIssue(
-                    code="SCHEMA_VERSION_INVALID",
-                    severity=ValidationSeverity.ERROR,
-                    path=record.path,
-                    description="schema_version must be 1.",
-                )
-            )
-
-        validator = validators[record.kind]
-        for error in sorted(validator.iter_errors(record.raw_data), key=_schema_error_sort_key):
-            issues.append(
-                ValidationIssue(
-                    code="SCHEMA_VALIDATION",
-                    severity=ValidationSeverity.ERROR,
-                    path=record.path,
-                    description=_format_schema_error(error),
-                )
-            )
-
-    return tuple(issues)
-
-
 def _validate_file_id_paths(
-    records: Sequence[LoadedYamlRecord],
+    paths: Iterable[tuple[str, object, Path]],
     *,
     data_dir: Path,
 ) -> tuple[ValidationIssue, ...]:
     issues: list[ValidationIssue] = []
 
-    for record in records:
-        record_id = record.data.get("id")
+    for kind, record_id, path in paths:
         if not isinstance(record_id, str):
             continue
-
-        if not _record_path_matches_id(record, record_id=record_id, data_dir=data_dir):
+        directory = data_dir / f"{kind}s"
+        if kind == DataKind.OBJECT:
+            directory /= record_id.split("-", maxsplit=1)[0]
+        if (
+            path.parent != directory
+            or path.suffix not in {".yml", ".yaml", ".sql"}
+            or path.stem != record_id
+        ):
             issues.append(
                 ValidationIssue(
                     code="FILE_ID_MISMATCH",
                     severity=ValidationSeverity.ERROR,
-                    path=record.path,
+                    path=path,
                     description=f"File path does not match record id {record_id}.",
                 )
             )
@@ -236,289 +180,27 @@ def _validate_file_id_paths(
     return tuple(issues)
 
 
-def _validate_duplicate_object_ids(
-    object_records: Sequence[LoadedYamlRecord],
-) -> tuple[ValidationIssue, ...]:
-    issues: list[ValidationIssue] = []
-
-    for object_id, records in _records_by_id(object_records).items():
-        if len(records) <= 1:
-            continue
-        paths = ", ".join(str(record.path) for record in records)
-        for record in records:
-            issues.append(
-                ValidationIssue(
-                    code="DUPLICATE_OBJECT_ID",
-                    severity=ValidationSeverity.ERROR,
-                    path=record.path,
-                    description=f"Obiekt.id {object_id} is duplicated in: {paths}.",
-                )
-            )
-
-    return tuple(issues)
-
-
-def _validate_cross_references(dataset: LoadedDataset) -> tuple[ValidationIssue, ...]:
-    issues: list[ValidationIssue] = []
-    objects_by_id = _records_by_id(dataset.objects)
-    caves_by_id = _records_by_id(dataset.caves)
-    object_ids = set(objects_by_id)
-    cave_ids = set(caves_by_id)
-
-    for object_record in dataset.objects:
-        object_id = _record_id(object_record)
-        cave_id = object_record.data.get("cave_id")
-        if isinstance(cave_id, str) and cave_id not in cave_ids:
-            issues.append(
-                ValidationIssue(
-                    code="CAVE_REFERENCE_MISSING",
-                    severity=ValidationSeverity.ERROR,
-                    path=object_record.path,
-                    description=f"Object {object_id} references missing cave_id {cave_id}.",
-                )
-            )
-
-        if isinstance(cave_id, str):
-            for cave_record in caves_by_id.get(cave_id, ()):
-                if object_id not in _iter_strings(cave_record.data.get("object_ids")):
-                    issues.append(
-                        ValidationIssue(
-                            code="OBJECT_CAVE_MEMBERSHIP_MISSING",
-                            severity=ValidationSeverity.ERROR,
-                            path=object_record.path,
-                            description=(
-                                f"Object {object_id} references cave {cave_id}, "
-                                "but is absent from its object_ids."
-                            ),
-                        )
-                    )
-
-        identity_issues = _validate_measurement_identity(object_record)
-        issues.extend(identity_issues)
-        if identity_issues:
-            continue
-        measurement_ids = _measurement_ids(object_record)
-        best_measurement = object_record.data.get("best_measurement")
-        if isinstance(best_measurement, dict):
-            measurement_id = best_measurement.get("measurement_id")
-            if isinstance(measurement_id, str) and measurement_id not in measurement_ids:
-                issues.append(
-                    ValidationIssue(
-                        code="BEST_MEASUREMENT_MISSING",
-                        severity=ValidationSeverity.ERROR,
-                        path=object_record.path,
-                        description=(
-                            f"Object {object_id} best_measurement.measurement_id "
-                            f"{measurement_id} does not exist."
-                        ),
-                    )
-                )
-
-            if best_measurement.get("mode") == "manual" and not best_measurement.get("reason"):
-                issues.append(
-                    ValidationIssue(
-                        code="BEST_MEASUREMENT_MANUAL_REASON_REQUIRED",
-                        severity=ValidationSeverity.ERROR,
-                        path=object_record.path,
-                        description=f"Object {object_id} manual best_measurement requires reason.",
-                    )
-                )
-
-        for attachment in _iter_dicts(object_record.data.get("attachments")):
-            measurement_id = attachment.get("measurement_id")
-            if isinstance(measurement_id, str) and measurement_id not in measurement_ids:
-                issues.append(
-                    ValidationIssue(
-                        code="ATTACHMENT_MEASUREMENT_MISSING",
-                        severity=ValidationSeverity.ERROR,
-                        path=object_record.path,
-                        description=(
-                            f"Object {object_id} attachment references missing "
-                            f"measurement_id {measurement_id}."
-                        ),
-                    )
-                )
-
-    for cave_record in dataset.caves:
-        cave_id = _record_id(cave_record)
-        for object_id in _iter_strings(cave_record.data.get("object_ids")):
-            if object_id not in object_ids:
-                issues.append(
-                    ValidationIssue(
-                        code="CAVE_OBJECT_REFERENCE_MISSING",
-                        severity=ValidationSeverity.ERROR,
-                        path=cave_record.path,
-                        description=f"Cave {cave_id} references missing object_id {object_id}.",
-                    )
-                )
-            for object_record in objects_by_id.get(object_id, ()):
-                if object_record.data.get("cave_id") != cave_id:
-                    issues.append(
-                        ValidationIssue(
-                            code="CAVE_OBJECT_MEMBERSHIP_MISMATCH",
-                            severity=ValidationSeverity.ERROR,
-                            path=cave_record.path,
-                            description=(
-                                f"Cave {cave_id} lists object {object_id}, but its "
-                                f"cave_id is {object_record.data.get('cave_id')!r}."
-                            ),
-                        )
-                    )
-
-    for relation_record in dataset.relations:
-        relation_id = _record_id(relation_record)
-        for field_name in ("from_object_id", "to_object_id"):
-            object_id = relation_record.data.get(field_name)
-            if isinstance(object_id, str) and object_id not in object_ids:
-                issues.append(
-                    ValidationIssue(
-                        code="RELATION_OBJECT_REFERENCE_MISSING",
-                        severity=ValidationSeverity.ERROR,
-                        path=relation_record.path,
-                        description=(
-                            f"Relation {relation_id} {field_name} references missing "
-                            f"object_id {object_id}."
-                        ),
-                    )
-                )
-
-    return tuple(issues)
-
-
-def _validate_object_records(
-    object_records: Sequence[LoadedYamlRecord],
+def _validate_attachments(
+    attachments: Iterable[dict[str, Any]],
     *,
-    resolver: PrefixResolverLike,
+    paths: dict[tuple[str, str], Path],
     repo_root: Path,
 ) -> tuple[ValidationIssue, ...]:
     issues: list[ValidationIssue] = []
-
-    for object_record in object_records:
-        issues.extend(_validate_object_domain_warnings(object_record))
-        issues.extend(_validate_object_attachments(object_record, repo_root=repo_root))
-        numeric_issues = _validate_finite_measurements(object_record)
-        issues.extend(numeric_issues)
-        if numeric_issues or _validate_measurement_identity(object_record):
-            continue
-        issues.extend(_validate_object_measurements(object_record, resolver=resolver))
-        issues.extend(_validate_best_measurement_auto(object_record))
-
-    return tuple(issues)
-
-
-def _validate_measurement_identity(
-    object_record: LoadedYamlRecord,
-) -> tuple[ValidationIssue, ...]:
-    counts = Counter(
-        measurement["id"]
-        for measurement in _iter_dicts(object_record.data.get("measurements"))
-        if isinstance(measurement.get("id"), str)
-    )
-    return tuple(
-        ValidationIssue(
-            code="DUPLICATE_MEASUREMENT_ID",
-            severity=ValidationSeverity.ERROR,
-            path=object_record.path,
-            description=(
-                f"Object {_record_id(object_record)} measurement.id {measurement_id} "
-                f"occurs {count} times; measurement IDs must be unique within an object."
-            ),
+    for attachment in attachments:
+        object_id, attachment_id, attachment_path = (
+            attachment["object_id"],
+            attachment["id"],
+            attachment["path"],
         )
-        for measurement_id, count in counts.items()
-        if count > 1
-    )
-
-
-def _validate_finite_measurements(
-    object_record: LoadedYamlRecord,
-) -> tuple[ValidationIssue, ...]:
-    return tuple(
-        ValidationIssue(
-            code="MEASUREMENT_NON_FINITE",
-            severity=ValidationSeverity.ERROR,
-            path=object_record.path,
-            description=(
-                f"Object {_record_id(object_record)} measurement {_measurement_id(measurement)} "
-                f"field {field} must be finite."
-            ),
-        )
-        for measurement in _iter_dicts(object_record.data.get("measurements"))
-        for field in non_finite_measurement_fields(measurement)
-    )
-
-
-def _validate_object_domain_warnings(
-    object_record: LoadedYamlRecord,
-) -> tuple[ValidationIssue, ...]:
-    issues: list[ValidationIssue] = []
-    object_id = _record_id(object_record)
-
-    if object_record.data.get("category") == "jaskinia_otwor" and not object_record.data.get(
-        "cave_id"
-    ):
-        issues.append(
-            ValidationIssue(
-                code="CAVE_ID_MISSING_FOR_CAVE_OPENING",
-                severity=ValidationSeverity.WARNING,
-                path=object_record.path,
-                description=f"Object {object_id} is category jaskinia_otwor without cave_id.",
-            )
-        )
-
-    for external_ref in _iter_dicts(object_record.data.get("external_refs")):
-        system = external_ref.get("system")
-        ref_type = external_ref.get("ref_type")
-
-        if system == "NR_INWENT":
-            issues.append(
-                ValidationIssue(
-                    code="NR_INWENT_ON_OBJECT_REFERENCE",
-                    severity=ValidationSeverity.WARNING,
-                    path=object_record.path,
-                    description=(
-                        f"Object {object_id} has NR_INWENT in Obiekt.external_refs; "
-                        "inventory numbers belong on Jaskinia.external_refs in V1."
-                    ),
-                )
-            )
-
-        if system == "PIG" and isinstance(ref_type, str) and ref_type in {"catalog_id", "url"}:
-            issues.append(
-                ValidationIssue(
-                    code="PIG_CATALOG_REFERENCE_ON_OBJECT",
-                    severity=ValidationSeverity.WARNING,
-                    path=object_record.path,
-                    description=(
-                        f"Object {object_id} has PIG catalog reference in Obiekt.external_refs; "
-                        "PIG catalog references belong on Jaskinia.external_refs in V1."
-                    ),
-                )
-            )
-
-    return tuple(issues)
-
-
-def _validate_object_attachments(
-    object_record: LoadedYamlRecord,
-    *,
-    repo_root: Path,
-) -> tuple[ValidationIssue, ...]:
-    issues: list[ValidationIssue] = []
-    object_id = _record_id(object_record)
-
-    for attachment in _iter_dicts(object_record.data.get("attachments")):
-        attachment_id = attachment.get("id", "<unknown>")
-        attachment_path = attachment.get("path")
-        if not isinstance(attachment_path, str):
-            continue
-
+        path = paths.get(("object", object_id))
         if _is_url_like(attachment_path):
             if not _valid_http_url(attachment_path):
                 issues.append(
                     ValidationIssue(
                         code="ATTACHMENT_URL_INVALID",
                         severity=ValidationSeverity.ERROR,
-                        path=object_record.path,
+                        path=path,
                         description=(
                             f"Object {object_id} attachment {attachment_id} has invalid URL "
                             f"{attachment_path!r}."
@@ -535,7 +217,7 @@ def _validate_object_attachments(
                 ValidationIssue(
                     code="ATTACHMENT_PATH_MISSING",
                     severity=ValidationSeverity.ERROR,
-                    path=object_record.path,
+                    path=path,
                     description=(
                         f"Object {object_id} attachment {attachment_id} path "
                         f"{attachment_path!r} does not exist."
@@ -546,371 +228,9 @@ def _validate_object_attachments(
     return tuple(issues)
 
 
-def _validate_object_measurements(
-    object_record: LoadedYamlRecord,
-    *,
-    resolver: PrefixResolverLike,
-) -> tuple[ValidationIssue, ...]:
-    issues: list[ValidationIssue] = []
-    object_id = _record_id(object_record)
-    measurement_points: list[tuple[str, float, float]] = []
-
-    for measurement in _iter_dicts(object_record.data.get("measurements")):
-        measurement_id = _measurement_id(measurement)
-        if measurement.get("horizontal_accuracy_m") is None:
-            issues.append(
-                ValidationIssue(
-                    code="MISSING_HORIZONTAL_ACCURACY",
-                    severity=ValidationSeverity.WARNING,
-                    path=object_record.path,
-                    description=(
-                        f"Object {object_id} measurement {measurement_id} has no "
-                        "horizontal_accuracy_m."
-                    ),
-                )
-            )
-
-        if not measurement.get("source_ref"):
-            issues.append(
-                ValidationIssue(
-                    code="MISSING_SOURCE_REF",
-                    severity=ValidationSeverity.WARNING,
-                    path=object_record.path,
-                    description=(
-                        f"Object {object_id} measurement {measurement_id} has no source_ref."
-                    ),
-                )
-            )
-
-        coordinate_values = _measurement_coordinate_values(measurement)
-        if coordinate_values is None:
-            continue
-
-        lat, lon, x_1992, y_1992 = coordinate_values
-        try:
-            coordinate_error = coordinate_consistency_error_m(
-                lat=lat,
-                lon=lon,
-                x_1992=x_1992,
-                y_1992=y_1992,
-            )
-        except ValueError as exc:
-            issues.append(
-                ValidationIssue(
-                    code="COORDINATE_TRANSFORM_INVALID",
-                    severity=ValidationSeverity.ERROR,
-                    path=object_record.path,
-                    description=f"Object {object_id} measurement {measurement_id}: {exc}",
-                )
-            )
-            continue
-        if coordinate_error > DEFAULT_CONSISTENCY_TOLERANCE_M:
-            issues.append(
-                ValidationIssue(
-                    code="COORDINATE_MISMATCH",
-                    severity=ValidationSeverity.ERROR,
-                    path=object_record.path,
-                    description=(
-                        f"Object {object_id} measurement {measurement_id} WGS84 and PL-1992 "
-                        f"differ by {coordinate_error:.2f} m."
-                    ),
-                )
-            )
-
-        resolution = resolver.resolve(lat=lat, lon=lon)
-        if resolution.status == PrefixResolutionStatus.ERROR:
-            issues.append(
-                ValidationIssue(
-                    code="MEASUREMENT_OUTSIDE_PL_SK",
-                    severity=ValidationSeverity.ERROR,
-                    path=object_record.path,
-                    description=(
-                        f"Object {object_id} measurement {measurement_id} is outside Poland "
-                        "and Slovakia fallback boundaries."
-                    ),
-                )
-            )
-        elif resolution.status == PrefixResolutionStatus.WARNING:
-            issues.append(
-                ValidationIssue(
-                    code="MEASUREMENT_OUTSIDE_VALLEYS",
-                    severity=ValidationSeverity.WARNING,
-                    path=object_record.path,
-                    description=(
-                        f"Object {object_id} measurement {measurement_id} is inside Poland or "
-                        "Slovakia but outside configured Tatra valley polygons."
-                    ),
-                )
-            )
-
-        measurement_points.append((measurement_id, lat, lon))
-
-    issues.extend(_validate_prefix_matches_best_measurement(object_record, resolver=resolver))
-    issues.extend(_validate_measurement_distances(object_record, measurement_points))
-
-    return tuple(issues)
-
-
-def _validate_prefix_matches_best_measurement(
-    object_record: LoadedYamlRecord,
-    *,
-    resolver: PrefixResolverLike,
-) -> tuple[ValidationIssue, ...]:
-    object_id = _record_id(object_record)
-    object_prefix = object_id.split("-", maxsplit=1)[0] if "-" in object_id else None
-    if not object_prefix:
-        return ()
-
-    best_measurement = object_record.data.get("best_measurement")
-    if not isinstance(best_measurement, dict):
-        return ()
-
-    best_measurement_id = best_measurement.get("measurement_id")
-    if not isinstance(best_measurement_id, str):
-        return ()
-
-    measurement = _measurement_by_id(object_record, best_measurement_id)
-    if measurement is None:
-        return ()
-
-    coordinate_values = _measurement_coordinate_values(measurement)
-    if coordinate_values is None:
-        return ()
-
-    lat, lon, _x_1992, _y_1992 = coordinate_values
-    # A finite input can still be outside the projection's domain.
-    try:
-        wgs84_to_1992(lat=lat, lon=lon)
-    except ValueError:
-        return ()
-    resolution = resolver.resolve(lat=lat, lon=lon)
-    if resolution.prefix is None or resolution.prefix == object_prefix:
-        return ()
-
-    return (
-        ValidationIssue(
-            code="OBJECT_PREFIX_MISMATCH",
-            severity=ValidationSeverity.WARNING,
-            path=object_record.path,
-            description=(
-                f"Object {object_id} prefix {object_prefix} differs from best measurement "
-                f"resolved prefix {resolution.prefix}."
-            ),
-        ),
-    )
-
-
-def _validate_measurement_distances(
-    object_record: LoadedYamlRecord,
-    measurement_points: Sequence[tuple[str, float, float]],
-) -> tuple[ValidationIssue, ...]:
-    issues: list[ValidationIssue] = []
-    object_id = _record_id(object_record)
-
-    for left, right in combinations(measurement_points, 2):
-        left_id, left_lat, left_lon = left
-        right_id, right_lat, right_lon = right
-        left_1992 = wgs84_to_1992(lat=left_lat, lon=left_lon)
-        right_1992 = wgs84_to_1992(lat=right_lat, lon=right_lon)
-        distance = (
-            (left_1992.x_1992 - right_1992.x_1992) ** 2
-            + (left_1992.y_1992 - right_1992.y_1992) ** 2
-        ) ** 0.5
-
-        if distance > FAR_MEASUREMENT_DISTANCE_M:
-            issues.append(
-                ValidationIssue(
-                    code="MEASUREMENT_DISTANCE_OUTLIER",
-                    severity=ValidationSeverity.WARNING,
-                    path=object_record.path,
-                    description=(
-                        f"Object {object_id} measurements {left_id} and {right_id} are "
-                        f"{distance:.1f} m apart."
-                    ),
-                )
-            )
-
-    return tuple(issues)
-
-
-def _validate_best_measurement_auto(
-    object_record: LoadedYamlRecord,
-) -> tuple[ValidationIssue, ...]:
-    object_id = _record_id(object_record)
-    best_measurement = object_record.data.get("best_measurement")
-    if not isinstance(best_measurement, dict) or best_measurement.get("mode") != "auto":
-        return ()
-
-    issues: list[ValidationIssue] = []
-    measurement_id = best_measurement.get("measurement_id")
-    measurements = list(_iter_dicts(object_record.data.get("measurements")))
-    computed_measurement_id = select_default_best_measurement_id(measurements)
-    if computed_measurement_id is not None and measurement_id != computed_measurement_id:
-        issues.append(
-            ValidationIssue(
-                code="BEST_MEASUREMENT_AUTO_MISMATCH",
-                severity=ValidationSeverity.WARNING,
-                path=object_record.path,
-                description=(
-                    f"Object {object_id} auto best_measurement points to {measurement_id}, "
-                    f"but default priority selects {computed_measurement_id}."
-                ),
-            ),
-        )
-
-    if selected_default_uses_rejected_fallback(measurements):
-        issues.append(
-            ValidationIssue(
-                code="BEST_MEASUREMENT_REJECTED_FALLBACK",
-                severity=ValidationSeverity.WARNING,
-                path=object_record.path,
-                description=(
-                    f"Object {object_id} default best_measurement can only select a rejected "
-                    "measurement."
-                ),
-            )
-        )
-
-    return tuple(issues)
-
-
-def _validate_duplicate_tpn_globalids(
-    object_records: Sequence[LoadedYamlRecord],
-) -> tuple[ValidationIssue, ...]:
-    issues: list[ValidationIssue] = []
-    refs_by_external_id: dict[str, list[LoadedYamlRecord]] = {}
-
-    for object_record in object_records:
-        for external_ref in _iter_dicts(object_record.data.get("external_refs")):
-            if (
-                external_ref.get("system") == "TPN"
-                and external_ref.get("ref_type") == "source_globalid"
-                and isinstance(external_ref.get("external_id"), str)
-            ):
-                refs_by_external_id.setdefault(external_ref["external_id"], []).append(
-                    object_record
-                )
-
-    for external_id, records in refs_by_external_id.items():
-        if len(records) <= 1:
-            continue
-        paths = ", ".join(str(record.path) for record in records)
-        for record in records:
-            issues.append(
-                ValidationIssue(
-                    code="DUPLICATE_TPN_GLOBALID",
-                    severity=ValidationSeverity.ERROR,
-                    path=record.path,
-                    description=f"TPN GLOBALID {external_id} appears in multiple objects: {paths}.",
-                )
-            )
-
-    return tuple(issues)
-
-
-def _record_path_matches_id(
-    record: LoadedYamlRecord,
-    *,
-    record_id: str,
-    data_dir: Path,
-) -> bool:
-    try:
-        relative_path = record.path.relative_to(data_dir)
-    except ValueError:
-        return False
-
-    suffix_ok = relative_path.suffix in {".yml", ".yaml"}
-    if not suffix_ok or relative_path.stem != record_id:
-        return False
-
-    if record.kind == DataKind.OBJECT:
-        prefix = record_id.split("-", maxsplit=1)[0]
-        return relative_path.parts == ("objects", prefix, relative_path.name)
-    if record.kind == DataKind.CAVE:
-        return relative_path.parts == ("caves", relative_path.name)
-    if record.kind == DataKind.RELATION:
-        return relative_path.parts == ("relations", relative_path.name)
-    return False
-
-
-def _records_by_id(records: Sequence[LoadedYamlRecord]) -> dict[str, list[LoadedYamlRecord]]:
-    records_by_id: dict[str, list[LoadedYamlRecord]] = {}
-    for record in records:
-        record_id = record.data.get("id")
-        if isinstance(record_id, str):
-            records_by_id.setdefault(record_id, []).append(record)
-    return records_by_id
-
-
-def _measurement_ids(object_record: LoadedYamlRecord) -> set[str]:
-    return {
-        measurement["id"]
-        for measurement in _iter_dicts(object_record.data.get("measurements"))
-        if isinstance(measurement.get("id"), str)
-    }
-
-
-def _measurement_by_id(
-    object_record: LoadedYamlRecord,
-    measurement_id: str,
-) -> dict[str, Any] | None:
-    for measurement in _iter_dicts(object_record.data.get("measurements")):
-        if measurement.get("id") == measurement_id:
-            return measurement
-    return None
-
-
-def _measurement_coordinate_values(
-    measurement: dict[str, Any],
-) -> tuple[float, float, float, float] | None:
-    lat = measurement.get("lat")
-    lon = measurement.get("lon")
-    x_1992 = measurement.get("x_1992")
-    y_1992 = measurement.get("y_1992")
-    if not all(_is_number(value) for value in (lat, lon, x_1992, y_1992)):
-        return None
-    return (float(lat), float(lon), float(x_1992), float(y_1992))
-
-
-def _schema_error_sort_key(error: ValidationError) -> tuple[str, str]:
-    return (".".join(str(path_part) for path_part in error.path), error.message)
-
-
-def _format_schema_error(error: ValidationError) -> str:
-    path = ".".join(str(path_part) for path_part in error.path) or "<root>"
-    return f"{path}: {error.message}"
-
-
-def _record_id(record: LoadedYamlRecord) -> str:
-    record_id = record.data.get("id")
-    return record_id if isinstance(record_id, str) else "<unknown>"
-
-
-def _measurement_id(measurement: dict[str, Any]) -> str:
-    measurement_id = measurement.get("id")
-    return measurement_id if isinstance(measurement_id, str) else "<unknown>"
-
-
-def _iter_dicts(value: object) -> tuple[dict[str, Any], ...]:
-    if not isinstance(value, list):
-        return ()
-    return tuple(item for item in value if isinstance(item, dict))
-
-
-def _iter_strings(value: object) -> tuple[str, ...]:
-    if not isinstance(value, list):
-        return ()
-    return tuple(item for item in value if isinstance(item, str))
-
-
-def _is_number(value: object) -> bool:
-    return isinstance(value, int | float) and not isinstance(value, bool)
-
-
 def _is_url_like(value: str) -> bool:
     return "://" in value
 
 
 def _valid_http_url(value: str) -> bool:
-    parsed = urlparse(value)
-    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+    return valid_absolute_url(value) and urlparse(value).scheme in {"http", "https"}

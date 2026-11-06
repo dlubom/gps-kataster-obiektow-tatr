@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1261
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- BYW-0034
+bibliography_status: unknown
 notes: 'PIG aliases: Jaskinia Jasna w Czubie Jaworzyńskiej
 
   PIG sector: D. Bystrej - Wsch.

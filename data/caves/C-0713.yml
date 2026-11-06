@@ -20,9 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1229
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MLZ-0072
-- MLZ-0108
+bibliography_status: unknown
 notes: 'PIG aliases: Jaskinia pod Schodkami, Siwarowa, Siwarowa Dziura
 
   PIG sector: D. Małej Łąki - Zach.

@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1557
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MLZ-0044
+bibliography_status: unknown
 notes: 'PIG aliases: Łomiska, Jaskinia Kozia, Dziura nad Strzelistą
 
   PIG sector: D. Małej Łąki - Zach.

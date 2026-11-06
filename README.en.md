@@ -28,7 +28,10 @@ and choose a filename from this table.
 | Open a formatted Excel workbook | `katalog.xlsx` — **Best** and **Full** sheets |
 | Download a CSV table | [CSV — `best-measurements.csv`](https://github.com/dlubom/gps-kataster-obiektow-tatr/releases/latest/download/best-measurements.csv) |
 | Use a point layer in QGIS or other mapping software | `best-measurements.geojson` or `best-measurements.shp.zip` |
-| Analyse the full measurement history | `katalog.sqlite.zip` — a database for advanced users |
+| Analyse the full measurement history | `katalog.gpkg` — Best and full-history layers; `katalog.dump` — the complete PostgreSQL database |
+
+The dump and GeoPackage apply to releases after the PostgreSQL migration.
+Older packages provide the full database as `katalog.sqlite.zip`.
 
 The Excel workbook will be available in releases after v1.0.4. **Best** contains
 selected points; **Full** contains detailed records and measurement history,
@@ -137,8 +140,10 @@ as unknown; you do not need to edit project files yourself.
 
 ## For developers and data maintainers
 
-YAML files in `data/` are the source of truth. SQLite, GeoJSON, GPX, CSV, Excel and
-Shapefile files are generated artifacts.
+YAML records in `data/` and [`schema/catalog.sql`](schema/catalog.sql)
+are the source of truth. Temporary PostgreSQL/PostGIS validates the catalogue
+and computes Best. The dump, GeoPackage, GeoJSON, GPX, CSV, Excel and Shapefile
+files are generated artifacts.
 
 `Obiekt` represents a specific physical feature recorded as a point, while
 `Jaskinia` is a catalogue record that groups one or more entrances. Every
@@ -147,11 +152,14 @@ measurement.
 
 ### Quick start
 
+Requirements: Python 3.12, uv, a running Docker engine, GDAL (`ogr2ogr`)
+and Node 24 for publisher tests. The runner shares one digest-pinned disposable
+PostgreSQL/PostGIS container, including `linux/amd64` emulation on ARM, and
+removes it after success or failure. [Runtime and native mode](docs/operations.md#runtime-lokalny-i-ci).
+
 ```bash
-uv sync
-uv run pytest
-uv run python scripts/validate.py
-uv run python scripts/build_release_artifacts.py
+uv sync --frozen
+uv run --frozen python scripts/check_project.py --base-ref origin/main
 ```
 
 Local artifacts are written to `build/` and are not committed.

@@ -3,6 +3,7 @@ id: MTW-0011
 category: jaskinia_otwor
 name_local: Dziurka w Trawce
 cave_id: C-0121
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24250005
-  lon: 19.90962785
-  x_1992: 153174.95
-  y_1992: 566188.6
+  input_srid: 4326
+  input_x: 19.90962785
+  input_y: 49.24250005
   elevation_m: 1762.5
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24261032674396
-  lon: 19.909072586500724
-  x_1992: 153186.72
-  y_1992: 566148.05
+  input_srid: 4326
+  input_x: 19.909072586500724
+  input_y: 49.24261032674396
   elevation_m: 1760.114035
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

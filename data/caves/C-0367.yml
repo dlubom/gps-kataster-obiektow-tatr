@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1216
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- MLZ-0033
+bibliography_status: unknown
 notes: 'PIG sector: D. Małej Łąki - Zach.
 
   PIG morphometry: length_m=7, depth_m=0, denivelation_m=0

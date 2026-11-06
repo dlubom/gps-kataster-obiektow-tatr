@@ -57,6 +57,24 @@
     },
     "updated_by": {
       "$ref": "#/$defs/personId"
+    },
+    "bibliography_status": {
+      "enum": [
+        "known",
+        "unknown"
+      ]
+    },
+    "bibliography_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
     }
   },
   "$defs": {

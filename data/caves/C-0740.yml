@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1013
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- STR-0018
+bibliography_status: unknown
 notes: 'PIG sector: D. Strążyska
 
   PIG morphometry: length_m=5,3, depth_m=0, denivelation_m=5,2

@@ -3,6 +3,7 @@ id: STR-0008
 category: jaskinia_otwor
 name_local: Mała Dziura Giewontowa
 cave_id: C-0321
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.25450559
-  lon: 19.93265839
-  x_1992: 154529.59
-  y_1992: 567847.93
+  input_srid: 4326
+  input_x: 19.93265839
+  input_y: 49.25450559
   elevation_m: 1290.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.25450559155843
-  lon: 19.93265839131423
-  x_1992: 154529.59
-  y_1992: 567847.93
+  input_srid: 4326
+  input_x: 19.93265839131423
+  input_y: 49.25450559155843
   elevation_m: 1330.177049
   elevation_datum: unknown
   elevation_source: source_record
@@ -66,11 +65,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T10:41:53Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

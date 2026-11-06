@@ -3,6 +3,7 @@ id: MTZ-0057
 category: jaskinia_otwor
 name_local: Śnieżny Awen
 cave_id: C-0737
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.24064468
-  lon: 19.90208384
-  x_1992: 152962.18
-  y_1992: 565642.13
+  input_srid: 4326
+  input_x: 19.90208384
+  input_y: 49.24064468
   elevation_m: 1595.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.239805726678334
-  lon: 19.90207996179077
-  x_1992: 152868.94
-  y_1992: 565642.96
+  input_srid: 4326
+  input_x: 19.90207996179077
+  input_y: 49.239805726678334
   elevation_m: 1643.542053
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

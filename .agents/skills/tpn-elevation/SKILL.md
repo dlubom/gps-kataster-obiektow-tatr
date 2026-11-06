@@ -50,4 +50,4 @@ nie omijaj kontroli tylko po to, aby otrzymać liczbę.
 Odczyt nie zmienia YAML ani wyboru `best`. Zapis do katalogu to oddzielny
 zakres wymagający polecenia użytkownika.
 
-Kontrakt i źródła: [PBI-106](../../../docs/asdlc/plans/PBI-106.md).
+Kontrakt i źródła: [PBI-106](../../../docs/asdlc/verification/PBI-106.md).

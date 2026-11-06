@@ -3,6 +3,7 @@ id: MTW-0054
 category: jaskinia_otwor
 name_local: Jaskinia pod Wantą
 cave_id: C-0711
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -28,10 +29,9 @@ external_refs:
     nieznana.'
 measurements:
 - id: m-001
-  lat: 49.24063334
-  lon: 19.91146104
-  x_1992: 152969.1
-  y_1992: 566324.49
+  input_srid: 4326
+  input_x: 19.91146104
+  input_y: 49.24063334
   elevation_m: 1793.3
   elevation_datum: unknown
   elevation_source: source_record
@@ -53,10 +53,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.24158679002186
-  lon: 19.91141386272168
-  x_1992: 153075.02
-  y_1992: 566319.78
+  input_srid: 4326
+  input_x: 19.91141386272168
+  input_y: 49.24158679002186
   elevation_m: 1790.525556
   elevation_datum: unknown
   elevation_source: source_record
@@ -81,8 +80,6 @@ measurements:
 - id: m-003
   lat: 49.24158252719022
   lon: 19.911421938377966
-  x_1992: 153074.55333333332
-  y_1992: 566320.3733333334
   elevation_m: 1790.886666666667
   elevation_datum: PL-EVRF2007-NH
   elevation_source: gnss
@@ -119,6 +116,7 @@ attachments:
   caption: 'Marek Jędrzejczak: raport GNSS/domiarów, Zestawienie wiersz 14.'
   created_at: '2026-11-04T10:47:15Z'
   created_by: dl
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

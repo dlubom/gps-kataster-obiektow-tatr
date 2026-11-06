@@ -3,6 +3,7 @@ id: KSZ-0090
 category: jaskinia_otwor
 name_local: Jaskinia Obłazkowa
 cave_id: C-0759
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -30,10 +31,9 @@ external_refs:
     historyczny opis sieci na tej stronie zastępuje podana wyżej rewizja JKTZ.'
 measurements:
 - id: m-001
-  lat: 49.2396333
-  lon: 19.8618834
-  x_1992: 152815.67
-  y_1992: 562718.17
+  input_srid: 4326
+  input_x: 19.8618834
+  input_y: 49.2396333
   elevation_m: 1096.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -55,10 +55,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.23939382550534
-  lon: 19.86211752421207
-  x_1992: 152789.25
-  y_1992: 562735.51
+  input_srid: 4326
+  input_x: 19.86211752421207
+  input_y: 49.23939382550534
   elevation_m: 1098.389054
   elevation_datum: unknown
   elevation_source: source_record
@@ -81,10 +80,9 @@ measurements:
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-003
-  lat: 49.239561635
-  lon: 19.8625797302
-  x_1992: 152808.28
-  y_1992: 562768.93
+  input_srid: 4326
+  input_x: 19.8625797302
+  input_y: 49.239561635
   elevation_m: 1096.62
   elevation_datum: unknown
   elevation_source: other
@@ -117,10 +115,9 @@ measurements:
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
 - id: m-004
-  lat: 49.2395309076
-  lon: 19.8624012665
-  x_1992: 152804.72
-  y_1992: 562755.98
+  input_srid: 4326
+  input_x: 19.8624012665
+  input_y: 49.2395309076
   elevation_m: 1096.11
   elevation_datum: Kronstadt86
   elevation_source: other
@@ -153,6 +150,7 @@ best_measurement:
   updated_at: '2026-10-25T11:37:09Z'
   updated_by: codex
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1430
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSZ-0002
+bibliography_status: unknown
 notes: 'PIG aliases: Szczelina na Grzędzie Niżnia?
 
   PIG sector: D. Kościeliska - Zach.

@@ -20,7 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/490
   scope: cave
   notes: PIG catalog record link.
-object_ids: []
+bibliography_status: unknown
 notes: 'Pozycja katalogowa systemu Jaskinia Wielka Śnieżna: Wielka Litworowa (C-0120), nad Kotlinami
   (C-0331), Śnieżna (C-0648), Wilcza (C-0812) i Jasny Awen (C-0858). Współrzędne PIG 490 określają
   geometryczny środek systemu, a nie otwór ani dodatkowy obiekt terenowy.

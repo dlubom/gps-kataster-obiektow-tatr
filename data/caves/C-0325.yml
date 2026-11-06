@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1412
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSW-0101
+bibliography_status: unknown
 notes: 'PIG aliases: Pod Gniazdem
 
   PIG sector: D. Kościeliska - Wsch.

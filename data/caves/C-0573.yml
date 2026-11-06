@@ -20,12 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1349
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- KSZ-0064
-- KSZ-0113
-- KSZ-0115
-- KSZ-0116
-- KSZ-0117
+bibliography_status: unknown
 notes: 'PIG aliases: Jaskinie Pawlikowskiego
 
   PIG sector: D. Kościeliska - Zach.

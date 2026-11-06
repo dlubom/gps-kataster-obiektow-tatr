@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1018
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- DZI-0004
+bibliography_status: unknown
 notes: 'PIG aliases: w Dolinie ku Dziurze, Jaskinia Strążyska, Zbójnicka Jama, Jaskinia
   Dziura
 

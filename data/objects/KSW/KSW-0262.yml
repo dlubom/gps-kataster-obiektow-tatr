@@ -3,6 +3,7 @@ id: KSW-0262
 category: jaskinia_otwor
 name_local: Nyża we Wysrankach
 cave_id: C-1040
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -33,10 +34,9 @@ external_refs:
     SHA-256 odpowiedzi NMT: 16bc45b6849f9d378e8cd4a0e7d8d4e8bfe30d8f8b7a3ae9342cba96b79c7b70.
 measurements:
 - id: m-001
-  lat: 49.24966207787314
-  lon: 19.877003828090277
-  x_1992: 153942.86
-  y_1992: 563805.53
+  input_srid: 4326
+  input_x: 19.877003828090277
+  input_y: 49.24966207787314
   elevation_m: 1197.430054
   elevation_datum: unknown
   elevation_source: dem
@@ -61,11 +61,11 @@ measurements:
   created_by: maintenance:PBI-113
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: Jedyny pomiar TPN; bez niezależnej weryfikacji terenowej.
   updated_at: '2026-10-23T18:10:08Z'
   updated_by: maintenance:PBI-113
 attachments: []
+bibliography_status: unknown
 notes: null
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113

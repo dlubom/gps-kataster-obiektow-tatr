@@ -16,8 +16,20 @@ external_refs:
   scope: cave
   notes: 'Załącznik „03 Dol. Chochołowska 2026.07” do zestawienia Jakuba Nowaka „Jaskinie Tatr”, KKTJ,
     10.07.2026; s. 3, lp. 84; nazwa w wykazie: Jaskinia Cynamonowa.'
-object_ids:
-- CHZ-0035
+bibliography_status: known
+citations:
+- publication_id: literature-eb20f0662be196c0
+  locator: s. 33–34
+  name_in_source: Jaskinia Cynamonowa
+  purpose: description
+  notes: Sylwia Solarczyk, „Jaskinia Cynamonowa”, Jaskinie 4 (101), 2020, s. 33–34;
+    opis, plan i metryka.
+- publication_id: literature-287fd900950743ce
+  locator: s. 3, lp. 84
+  name_in_source: Jaskinia Cynamonowa
+  purpose: description
+  notes: 'Załącznik „03 Dol. Chochołowska 2026.07” do zestawienia Jakuba Nowaka „Jaskinie
+    Tatr”, KKTJ, 10.07.2026; s. 3, lp. 84; nazwa w wykazie: Jaskinia Cynamonowa.'
 notes: |-
   Jaskinia w Dolinie Chochołowskiej. Długość 47 m, deniwelacja 13,7 m, przewyższenie 1,8 m (Solarczyk 2020; TPN). Głębokość: 11,9 m według Solarczyk (2020) i TPN, 11,3 m według Nowaka (2026); rozbieżność nierozstrzygnięta.
 

@@ -3,6 +3,7 @@ id: MTZ-0072
 category: jaskinia_otwor
 name_local: Korytarz pod Ciemniakiem
 cave_id: C-1037
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -55,10 +56,9 @@ external_refs:
     SHA-256 odpowiedzi NMT: ce445fd5209b4b3a8edda718ca0bcadd70d5f630f375a2bb9c4627c1702928ea.
 measurements:
 - id: m-001
-  lat: 49.232111943661685
-  lon: 19.903130591561503
-  x_1992: 152014.81
-  y_1992: 565729.62
+  input_srid: 4326
+  input_x: 19.903130591561503
+  input_y: 49.232111943661685
   elevation_m: 2021.319946
   elevation_datum: unknown
   elevation_source: dem
@@ -82,10 +82,9 @@ measurements:
   created_at: '2026-10-23T18:10:08Z'
   created_by: maintenance:PBI-113
 - id: m-002
-  lat: 49.2321110675022
-  lon: 19.90313059173134
-  x_1992: 152014.71
-  y_1992: 565729.62
+  input_srid: 4326
+  input_x: 19.90313059173134
+  input_y: 49.2321110675022
   elevation_m: 2021.319946
   elevation_datum: unknown
   elevation_source: dem
@@ -109,13 +108,13 @@ measurements:
   created_by: maintenance:PBI-113
 best_measurement:
   mode: auto
-  measurement_id: m-001
   reason: Zaakceptowano punkt TPN 7044 (m-001). Oba pomiary mają tę samą datę stanu źródła i nieznaną
     dokładność; auto wybiera m-001 według stabilnego porządku ID. Pełniejszy zapis 7044 nie dowodzi większej
     dokładności XY; pomiar 6408 pozostaje nieodrzucony w historii.
   updated_at: '2026-10-23T18:10:08Z'
   updated_by: maintenance:PBI-113
 attachments: []
+bibliography_status: unknown
 notes: |-
   Dwa rekordy TPN przypisano do tego samego otworu; ich utożsamienie jest interpretacją danych źródłowych.
 created_at: '2026-10-23T18:10:08Z'

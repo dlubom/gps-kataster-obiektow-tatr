@@ -20,8 +20,7 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/11038
   scope: cave
   notes: PIG catalog record link.
-object_ids:
-- PL-0040
+bibliography_status: unknown
 notes: 'PIG morphometry: length_m=7,3, depth_m=0,7, denivelation_m=4,9
 
   PIG source state year: 2016'

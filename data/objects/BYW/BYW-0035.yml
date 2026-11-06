@@ -3,6 +3,7 @@ id: BYW-0035
 category: jaskinia_otwor
 name_local: Nyża pod Jaskinią Magurską IV
 cave_id: C-0844
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.25000833
-  lon: 19.99537229
-  x_1992: 154087.95
-  y_1992: 572416.68
+  input_srid: 4326
+  input_x: 19.99537229
+  input_y: 49.25000833
   elevation_m: 1415.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.25063864564027
-  lon: 19.99479830839249
-  x_1992: 154157.45
-  y_1992: 572374.0
+  input_srid: 4326
+  input_x: 19.99479830839249
+  input_y: 49.25063864564027
   elevation_m: 1418.043462
   elevation_datum: unknown
   elevation_source: source_record
@@ -70,11 +69,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

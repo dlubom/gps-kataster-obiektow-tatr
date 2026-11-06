@@ -3,6 +3,7 @@ id: KSZ-0047
 category: jaskinia_otwor
 name_local: Jaskinia Raptawicka
 cave_id: C-0403
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -38,10 +39,9 @@ external_refs:
     historyczny opis sieci na tej stronie zastępuje podana wyżej rewizja JKTZ.'
 measurements:
 - id: m-001
-  lat: 49.23985282
-  lon: 19.86225002
-  x_1992: 152840.37
-  y_1992: 562744.57
+  input_srid: 4326
+  input_x: 19.86225002
+  input_y: 49.23985282
   elevation_m: 1146.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -63,10 +63,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.239841184574054
-  lon: 19.862060722526167
-  x_1992: 152838.92
-  y_1992: 562730.81
+  input_srid: 4326
+  input_x: 19.862060722526167
+  input_y: 49.239841184574054
   elevation_m: 1140.427999
   elevation_datum: unknown
   elevation_source: source_record
@@ -89,10 +88,9 @@ measurements:
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
 - id: m-003
-  lat: 49.2398675351
-  lon: 19.8622197642
-  x_1992: 152841.98
-  y_1992: 562742.35
+  input_srid: 4326
+  input_x: 19.8622197642
+  input_y: 49.2398675351
   elevation_m: 1141.31
   elevation_datum: unknown
   elevation_source: other
@@ -126,10 +124,9 @@ measurements:
   created_at: '2026-05-16T19:30:00Z'
   created_by: dl
 - id: m-004
-  lat: 49.2398375402
-  lon: 19.8620426566
-  x_1992: 152838.5
-  y_1992: 562729.5
+  input_srid: 4326
+  input_x: 19.8620426566
+  input_y: 49.2398375402
   elevation_m: 1140.8
   elevation_datum: Kronstadt86
   elevation_source: other
@@ -162,6 +159,7 @@ best_measurement:
   updated_at: '2026-10-25T11:37:09Z'
   updated_by: codex
 attachments: []
+bibliography_status: unknown
 notes: Historyczny punkt TPN opisano jako górny, lecz jego przypisania do stacji 5.1 nie potwierdzono.
   Pozostaje przy tym obiekcie; otwór górny to KSZ-0114.
 created_at: '2026-05-16T10:22:49Z'

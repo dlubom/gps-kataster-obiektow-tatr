@@ -3,6 +3,7 @@ id: MTZ-0052
 category: jaskinia_otwor
 name_local: Jaskinia Lodowa Mułowa
 cave_id: C-0717
+membership_ordinal: 1
 id_assignment:
   method: auto
   assigned_from_measurement_id: m-001
@@ -16,10 +17,9 @@ external_refs:
   notes: TPN GLOBALID belongs to the object/source feature.
 measurements:
 - id: m-001
-  lat: 49.23911572
-  lon: 19.90204912
-  x_1992: 152792.23
-  y_1992: 565641.63
+  input_srid: 4326
+  input_x: 19.90204912
+  input_y: 49.23911572
   elevation_m: 1680.0
   elevation_datum: unknown
   elevation_source: source_record
@@ -41,10 +41,9 @@ measurements:
   created_at: '2026-05-16T10:22:49Z'
   created_by: importer:pig
 - id: m-002
-  lat: 49.239245656384995
-  lon: 19.902578910051087
-  x_1992: 152807.13
-  y_1992: 565680.01
+  input_srid: 4326
+  input_x: 19.902578910051087
+  input_y: 49.239245656384995
   elevation_m: 1682.464447
   elevation_datum: unknown
   elevation_source: source_record
@@ -68,11 +67,11 @@ measurements:
   created_by: importer:tpn
 best_measurement:
   mode: auto
-  measurement_id: m-002
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
 attachments: []
+bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig

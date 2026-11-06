@@ -6,27 +6,22 @@ import csv
 import json
 import tempfile
 import zipfile
-from dataclasses import dataclass
-from datetime import UTC, datetime
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree as ET
 
 import shapefile
 
-from gps_kataster_obiektow_tatr.best_measurement import select_default_best_measurement_id
-from gps_kataster_obiektow_tatr.data_loader import (
-    DEFAULT_DATA_DIR,
-    LoadedDataset,
-    LoadedYamlRecord,
-    load_dataset,
+from gps_kataster_obiektow_tatr.data_loader import DEFAULT_DATA_DIR, require_data_directory
+from gps_kataster_obiektow_tatr.export_data import (
+    BEST_FIELDS,
+    BestMeasurementExportRow,
+    ExportData,
+    prepare_export_data,
 )
-from gps_kataster_obiektow_tatr.prefix_resolver import resolve_prefix
 from gps_kataster_obiektow_tatr.validator import (
     ValidationIssue,
-    format_issue,
-    has_errors,
-    validate_dataset,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -85,40 +80,6 @@ EPSG_2180_PRJ = (
 
 
 @dataclass(frozen=True, slots=True)
-class BestMeasurementExportRow:
-    """One selected best measurement ready for generated exports."""
-
-    object_id: str
-    category: str
-    name_local: str | None
-    cave_id: str | None
-    measurement_id: str
-    best_mode: str
-    computed_best_measurement_id: str | None
-    best_reason: str | None
-    lat: float
-    lon: float
-    x_1992: float
-    y_1992: float
-    elevation_m: float | None
-    source: str
-    source_ref: str | None
-    observed_at: str | None
-    observed_date: str
-    method: str
-    verification_status: str
-    horizontal_accuracy_m: float | None
-    vertical_accuracy_m: float | None
-    nr_inwent: str | None
-    pig_id: str | None
-    pig_url: str | None
-    tpn_globalid: str | None
-    object_notes: str | None
-    cave_notes: str | None
-    measurement_notes: str | None
-
-
-@dataclass(frozen=True, slots=True)
 class BestMeasurementsExportResult:
     """Summary of a completed best-measurements export."""
 
@@ -133,14 +94,16 @@ class BestMeasurementsExportResult:
     feature_count: int
     validation_issues: tuple[ValidationIssue, ...]
 
-
-class BestMeasurementsExportValidationError(ValueError):
-    """Raised when source YAML has validation errors that block export."""
-
-    def __init__(self, issues: tuple[ValidationIssue, ...]) -> None:
-        self.issues = issues
-        details = "\n".join(format_issue(issue) for issue in issues if issue.severity == "error")
-        super().__init__(f"Cannot export best measurements from invalid YAML:\n{details}")
+    @property
+    def artifact_paths(self) -> tuple[Path, ...]:
+        return (
+            self.geojson_path,
+            self.csv_path,
+            self.gpx_path,
+            *self.grouped_gpx_paths,
+            self.shapefile_zip_path,
+            self.metadata_path,
+        )
 
 
 class GpxGroupingError(ValueError):
@@ -152,17 +115,68 @@ def export_best_measurements(
     data_dir: Path = DEFAULT_DATA_DIR,
     output_dir: Path = DEFAULT_EXPORT_DIR,
     generated_at: str | None = None,
+    base_ref: str = "origin/main",
+    history_repo: Path = REPO_ROOT,
 ) -> BestMeasurementsExportResult:
-    """Validate YAML and export one best measurement per object."""
+    """Validate one SQL catalogue and atomically export selected measurements."""
 
-    dataset = load_dataset(data_dir)
-    validation_issues = validate_dataset(dataset, data_dir=data_dir, repo_root=REPO_ROOT)
-    if has_errors(validation_issues):
-        raise BestMeasurementsExportValidationError(validation_issues)
+    from gps_kataster_obiektow_tatr.build_db import check_artifact_set, staged_artifact_directory
+    from gps_kataster_obiektow_tatr.release_artifacts import RELEASE_ONLY_FILENAMES
+    from gps_kataster_obiektow_tatr.validator import history_checked_catalog
 
-    rows = _collect_best_measurement_rows(dataset)
-    groups = _group_gpx_rows(rows)
-    timestamp = generated_at or _utc_timestamp()
+    output_dir = Path(output_dir)
+    require_data_directory(Path(data_dir))
+    with history_checked_catalog(data_dir, base_ref=base_ref, history_repo=history_repo) as (
+        _,
+        dataset,
+        issues,
+    ):
+        if any(
+            (output_dir / name).exists() or (output_dir / name).is_symlink()
+            for name in RELEASE_ONLY_FILENAMES
+        ):
+            raise ValueError(
+                "Destination contains full release artifacts; "
+                "use scripts/build_release_artifacts.py "
+                "to rebuild the complete package or choose another --output-dir."
+            )
+        with staged_artifact_directory(
+            output_dir, data_dir=data_dir, history_repo=history_repo
+        ) as stage:
+            result = write_best_measurements(
+                prepare_export_data(dataset, generated_at=generated_at),
+                output_dir=stage,
+                validation_issues=issues,
+            )
+            check_artifact_set(stage, result.artifact_paths)
+        return relocate_export_result(result, output_dir)
+
+
+def relocate_export_result(result, output_dir):
+    return replace(
+        result,
+        output_dir=output_dir,
+        **{
+            key: output_dir / getattr(result, key).name
+            for key in (
+                "geojson_path",
+                "csv_path",
+                "gpx_path",
+                "shapefile_zip_path",
+                "metadata_path",
+            )
+        },
+        grouped_gpx_paths=tuple(output_dir / p.name for p in result.grouped_gpx_paths),
+    )
+
+
+def write_best_measurements(
+    export_data: ExportData, *, output_dir: Path, validation_issues=()
+) -> BestMeasurementsExportResult:
+    """Format the already validated SQL read model; never reload or choose Best."""
+    rows = export_data.best
+    groups = _group_gpx_rows(export_data)
+    timestamp = export_data.generated_at
 
     output_dir.mkdir(parents=True, exist_ok=True)
     geojson_path = output_dir / GEOJSON_FILENAME
@@ -172,7 +186,7 @@ def export_best_measurements(
     shapefile_zip_path = output_dir / SHAPEFILE_ZIP_FILENAME
     metadata_path = output_dir / METADATA_FILENAME
     metadata = _build_release_metadata(
-        dataset,
+        export_data,
         generated_at=timestamp,
         validation_issues=validation_issues,
     )
@@ -200,16 +214,16 @@ def export_best_measurements(
 
 
 def _group_gpx_rows(
-    rows: tuple[BestMeasurementExportRow, ...],
+    export_data: ExportData,
 ) -> tuple[tuple[BestMeasurementExportRow, ...], ...]:
-    """Keep whole configured valleys together, using each selected measurement."""
+    """Keep whole valleys together using the selected measurement's SQL region."""
 
     groups: list[list[BestMeasurementExportRow]] = [[] for _ in GPX_GROUPS]
     group_by_region = {
         region: index for index, (_, _, regions) in enumerate(GPX_GROUPS) for region in regions
     }
-    for row in rows:
-        region = resolve_prefix(lat=row.lat, lon=row.lon).prefix
+    for row in export_data.best:
+        region = export_data.gpx_regions.get(row.object_id)
         if region not in group_by_region:
             raise GpxGroupingError(
                 f"GPX group missing for object {row.object_id}: region {region!r}"
@@ -222,57 +236,6 @@ def _group_gpx_rows(
                 "revise the valley groups before exporting."
             )
     return tuple(tuple(group) for group in groups)
-
-
-def _collect_best_measurement_rows(dataset: LoadedDataset) -> tuple[BestMeasurementExportRow, ...]:
-    rows: list[BestMeasurementExportRow] = []
-    caves_by_id = {str(cave_record.data["id"]): cave_record.data for cave_record in dataset.caves}
-
-    for object_record in sorted(dataset.objects, key=lambda record: str(record.data["id"])):
-        object_data = object_record.data
-        best_measurement = _best_measurement_data(object_data)
-        measurement_id = str(best_measurement["measurement_id"])
-        measurement = _measurement_by_id(object_record, measurement_id)
-        computed_best_measurement_id = select_default_best_measurement_id(
-            _measurement_dicts(object_data.get("measurements"))
-        )
-        cave_id = _optional_str(object_data.get("cave_id"))
-        cave_data = caves_by_id.get(cave_id or "")
-
-        rows.append(
-            BestMeasurementExportRow(
-                object_id=str(object_data["id"]),
-                category=str(object_data["category"]),
-                name_local=_optional_str(object_data.get("name_local")),
-                cave_id=cave_id,
-                measurement_id=measurement_id,
-                best_mode=str(best_measurement["mode"]),
-                computed_best_measurement_id=computed_best_measurement_id,
-                best_reason=_optional_str(best_measurement.get("reason")),
-                lat=_number(measurement["lat"]),
-                lon=_number(measurement["lon"]),
-                x_1992=_number(measurement["x_1992"]),
-                y_1992=_number(measurement["y_1992"]),
-                elevation_m=_optional_number(measurement.get("elevation_m")),
-                source=str(measurement["source"]),
-                source_ref=_optional_str(measurement.get("source_ref")),
-                observed_at=_optional_str(measurement.get("observed_at")),
-                observed_date=str(measurement["observed_date"]),
-                method=str(measurement["method"]),
-                verification_status=str(measurement["verification_status"]),
-                horizontal_accuracy_m=_optional_number(measurement.get("horizontal_accuracy_m")),
-                vertical_accuracy_m=_optional_number(measurement.get("vertical_accuracy_m")),
-                nr_inwent=_joined_values(_ref_external_ids(cave_data, "NR_INWENT")),
-                pig_id=_joined_values(_ref_external_ids(cave_data, "PIG", ref_type="catalog_id")),
-                pig_url=_joined_values(_pig_urls(cave_data)),
-                tpn_globalid=_joined_values(_tpn_globalids(object_data)),
-                object_notes=_optional_str(object_data.get("notes")),
-                cave_notes=_optional_str(cave_data.get("notes")) if cave_data is not None else None,
-                measurement_notes=_optional_str(measurement.get("notes")),
-            )
-        )
-
-    return tuple(rows)
 
 
 def _write_geojson(
@@ -310,7 +273,7 @@ def _write_geojson(
 
 def _write_csv(rows: tuple[BestMeasurementExportRow, ...], path: Path) -> None:
     with path.open("w", encoding="utf-8", newline="") as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=_csv_fieldnames())
+        writer = csv.DictWriter(csv_file, fieldnames=BEST_FIELDS)
         writer.writeheader()
         for row in rows:
             writer.writerow({key: _csv_value(value) for key, value in _row_properties(row).items()})
@@ -401,25 +364,22 @@ def _write_metadata(metadata: dict[str, Any], path: Path) -> None:
 
 
 def _build_release_metadata(
-    dataset: LoadedDataset,
+    export_data: ExportData,
     *,
     generated_at: str,
     validation_issues: tuple[ValidationIssue, ...],
 ) -> dict[str, Any]:
     warning_count = sum(1 for issue in validation_issues if issue.severity == "warning")
     error_count = sum(1 for issue in validation_issues if issue.severity == "error")
-    measurement_count = sum(
-        len(_measurement_dicts(record.data.get("measurements"))) for record in dataset.objects
-    )
     return {
         "metadata_schema_version": RELEASE_METADATA_SCHEMA_VERSION,
         "data_schema_version": DATA_SCHEMA_VERSION,
         "generated_at": generated_at,
         "counts": {
-            "objects": len(dataset.objects),
-            "caves": len(dataset.caves),
-            "relations": len(dataset.relations),
-            "measurements": measurement_count,
+            "objects": len(export_data.best),
+            "caves": export_data.cave_count,
+            "relations": export_data.relation_count,
+            "measurements": len(export_data.history),
             "validation_warnings": warning_count,
             "validation_errors": error_count,
         },
@@ -450,182 +410,7 @@ def _define_shapefile_fields(writer: shapefile.Writer) -> None:
 
 
 def _row_properties(row: BestMeasurementExportRow) -> dict[str, Any]:
-    return {
-        "object_id": row.object_id,
-        "category": row.category,
-        "name_local": row.name_local,
-        "cave_id": row.cave_id,
-        "measurement_id": row.measurement_id,
-        "best_mode": row.best_mode,
-        "computed_best_measurement_id": row.computed_best_measurement_id,
-        "best_reason": row.best_reason,
-        "lat": row.lat,
-        "lon": row.lon,
-        "x_1992": row.x_1992,
-        "y_1992": row.y_1992,
-        "elevation_m": row.elevation_m,
-        "source": row.source,
-        "source_ref": row.source_ref,
-        "nr_inwent": row.nr_inwent,
-        "pig_id": row.pig_id,
-        "pig_url": row.pig_url,
-        "tpn_globalid": row.tpn_globalid,
-        "observed_at": row.observed_at,
-        "observed_date": row.observed_date,
-        "method": row.method,
-        "verification_status": row.verification_status,
-        "horizontal_accuracy_m": row.horizontal_accuracy_m,
-        "vertical_accuracy_m": row.vertical_accuracy_m,
-        "object_notes": row.object_notes,
-        "cave_notes": row.cave_notes,
-        "measurement_notes": row.measurement_notes,
-    }
-
-
-def _csv_fieldnames() -> list[str]:
-    return list(_row_properties(_empty_row()).keys())
-
-
-def _empty_row() -> BestMeasurementExportRow:
-    return BestMeasurementExportRow(
-        object_id="",
-        category="",
-        name_local=None,
-        cave_id=None,
-        measurement_id="",
-        best_mode="",
-        computed_best_measurement_id=None,
-        best_reason=None,
-        lat=0.0,
-        lon=0.0,
-        x_1992=0.0,
-        y_1992=0.0,
-        elevation_m=None,
-        source="",
-        source_ref=None,
-        observed_at=None,
-        observed_date="",
-        method="",
-        verification_status="",
-        horizontal_accuracy_m=None,
-        vertical_accuracy_m=None,
-        nr_inwent=None,
-        pig_id=None,
-        pig_url=None,
-        tpn_globalid=None,
-        object_notes=None,
-        cave_notes=None,
-        measurement_notes=None,
-    )
-
-
-def _measurement_by_id(
-    object_record: LoadedYamlRecord,
-    measurement_id: str,
-) -> dict[str, Any]:
-    for measurement in _measurement_dicts(object_record.data.get("measurements")):
-        if measurement.get("id") == measurement_id:
-            return measurement
-    raise KeyError(f"Best measurement {measurement_id} missing for {object_record.data['id']}.")
-
-
-def _best_measurement_data(object_data: dict[str, Any]) -> dict[str, Any]:
-    best_measurement = object_data.get("best_measurement")
-    if not isinstance(best_measurement, dict):
-        raise KeyError(f"best_measurement missing for {object_data['id']}.")
-    return best_measurement
-
-
-def _measurement_dicts(value: object) -> tuple[dict[str, Any], ...]:
-    if not isinstance(value, list):
-        return ()
-    return tuple(item for item in value if isinstance(item, dict))
-
-
-def _dicts(value: object) -> tuple[dict[str, Any], ...]:
-    if not isinstance(value, list):
-        return ()
-    return tuple(item for item in value if isinstance(item, dict))
-
-
-def _ref_external_ids(
-    data: dict[str, Any] | None,
-    system: str,
-    *,
-    ref_type: str | None = None,
-) -> tuple[str, ...]:
-    if data is None:
-        return ()
-    values: list[str] = []
-    for ref in _dicts(data.get("external_refs")):
-        if ref.get("system") != system:
-            continue
-        if ref_type is not None and ref.get("ref_type") != ref_type:
-            continue
-        external_id = _optional_str(ref.get("external_id"))
-        if external_id:
-            values.append(external_id)
-    return tuple(values)
-
-
-def _pig_urls(cave_data: dict[str, Any] | None) -> tuple[str, ...]:
-    if cave_data is None:
-        return ()
-    urls: list[str] = []
-    for ref in _dicts(cave_data.get("external_refs")):
-        if ref.get("system") != "PIG":
-            continue
-        url = _optional_str(ref.get("url"))
-        if url:
-            urls.append(url)
-        elif ref.get("ref_type") == "url":
-            external_id = _optional_str(ref.get("external_id"))
-            if external_id:
-                urls.append(external_id)
-    return tuple(urls)
-
-
-def _tpn_globalids(object_data: dict[str, Any]) -> tuple[str, ...]:
-    values = list(_ref_external_ids(object_data, "TPN", ref_type="source_globalid"))
-    for measurement in _measurement_dicts(object_data.get("measurements")):
-        source_ref = _optional_str(measurement.get("source_ref"))
-        if source_ref and source_ref.startswith("TPN:"):
-            external_id = source_ref.removeprefix("TPN:")
-            if external_id.startswith("{") and external_id.endswith("}"):
-                values.append(external_id)
-    return tuple(values)
-
-
-def _joined_values(values: tuple[str, ...]) -> str | None:
-    unique_values: list[str] = []
-    seen: set[str] = set()
-    for value in values:
-        clean_value = value.strip()
-        if not clean_value or clean_value in seen:
-            continue
-        unique_values.append(clean_value)
-        seen.add(clean_value)
-    if not unique_values:
-        return None
-    return ";".join(unique_values)
-
-
-def _number(value: object) -> float:
-    if isinstance(value, int | float) and not isinstance(value, bool):
-        return float(value)
-    raise TypeError(f"Expected numeric value, got {value!r}.")
-
-
-def _optional_number(value: object) -> float | None:
-    if value is None:
-        return None
-    return _number(value)
-
-
-def _optional_str(value: object) -> str | None:
-    if value is None:
-        return None
-    return str(value)
+    return {key: getattr(row, key) for key in BEST_FIELDS}
 
 
 def _csv_value(value: object) -> str:
@@ -670,7 +455,3 @@ def _gpx_description(row: BestMeasurementExportRow) -> str:
 
 def _gpx_tag(name: str) -> str:
     return f"{{{GPX_NS}}}{name}"
-
-
-def _utc_timestamp() -> str:
-    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
