@@ -42,6 +42,8 @@ Historyczny writer U06 został usunięty w U15. Helper atomowej podmiany
 pozostaje przy publikacji eksportów w `build_db`.
 Testy eksportów podają kanoniczne fixtures bezpośrednio do API/CLI, z osobnym
 zaakceptowanym commitem Git sprzed mutacji; migracja legacy ma własne testy.
+Testy brakujących wejść oraz NaN/Infinity kopiują poprzednią prawdziwą paczkę
+ze wzorca sesji dla identycznych plików źródłowych; każdy przypadek ma własne wyjście.
 [Odbiór U07](plans/PR-40/tasks/U07-production-path-tests.md#odbiór) opisuje
 pokrycie, diagnostykę baseline i porównanie formatów.
 Historyczne U08/U09 opisywały współdzielone helpery importerów i rezerwacje

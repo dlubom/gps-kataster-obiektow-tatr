@@ -57,6 +57,7 @@ def test_non_finite_measurement_blocks_validation_and_all_artifacts(
     tmp_path,
     field,
     value,
+    copy_release_template,
 ):
     data_dir, path, obj = canonical_finite_dataset
     if field in ("input_x", "input_y"):
@@ -68,13 +69,11 @@ def test_non_finite_measurement_blocks_validation_and_all_artifacts(
         path.write_text(yaml.safe_dump(obj))
     baseline = accept_source(data_dir)
     output = tmp_path / "output"
-    result = build_release_artifacts(
-        **baseline,
-        data_dir=data_dir,
-        output_dir=output / "exports",
-        generated_at="2026-10-15T00:00:00Z",
+    result = copy_release_template(data_dir, output / "exports")
+    json.loads(
+        (output / "exports" / result.export_result.geojson_path.name).read_text(),
+        parse_constant=_reject_json_constant,
     )
-    json.loads(result.export_result.geojson_path.read_text(), parse_constant=_reject_json_constant)
     before_output = _snapshot(output)
     assert len(before_output) == 13
     # Corrupt a historical, rejected, non-best measurement: the entire history is checked.

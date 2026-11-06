@@ -1066,11 +1066,17 @@ Wersje zależności są utrwalane w lockfile, aby lokalne środowisko i CI dzia�
 ### 16.6 Testy
 
 Zwykłe testy builda, eksportów i podglądu podają bezpośrednio kanoniczny YAML
-do produkcyjnego API/CLI. Fabryki nie uruchamiają walidatora, SQL ani writera.
+do produkcyjnego API/CLI. Fabryki wejściowego YAML nie uruchamiają walidatora, SQL ani writera.
 Osobne repozytorium Git utrwala zaakceptowany fixture przed uszkodzeniem
 kandydata; jego SHA jest jawnym argumentem wejścia. Testy historycznego baseline v1 i v2 mają osobne scenariusze; bieżący
 kandydat jest jawnym fixture v2, bez produkcyjnego konwertera źródeł. Wzorce wartości i odczyty
 XLSX, GeoPackage, Shapefile oraz dumpa są niezależne od serializera eksportu.
+
+Testy ochrony wcześniejszych wyników budują prawdziwą paczkę raz w sesji
+dla identycznych ścieżek i bajtów źródła, a następnie kopiują jej pliki do
+osobnego katalogu każdego przypadku. Wzorzec służy wyłącznie jako poprzednie
+wyjście; uszkodzony kandydat nadal trafia bezpośrednio do badanego API/CLI
+z własnym zaakceptowanym baseline Git, jeśli dana operacja go wymaga.
 
 Wymagane testy V1:
 

@@ -71,22 +71,16 @@ def test_validator_reports_input_path(invalid_input):
 @pytest.mark.parametrize("interface", ["api", "cli"])
 @pytest.mark.parametrize("existing", [False, True], ids=["new-output", "existing-release"])
 def test_invalid_input_preserves_outputs(
-    invalid_input, tmp_path, make_data_dir, operation, interface, existing
+    invalid_input, tmp_path, make_data_dir, operation, interface, existing, copy_release_template
 ):
     data_dir, bad_path = invalid_input
     output_root = tmp_path / "output"
     dump_path = output_root / "katalog.dump"
     output_dir = output_root / "exports"
     if existing:
-        # Build a real nonempty release, so R1 cannot replace it with empty artifacts.
+        # Each case owns a copy of a real nonempty release.
         good_data = write_sample_data(tmp_path / "good-data")
-        baseline = accept_source(good_data)
-        release = build_release_artifacts(
-            **baseline,
-            data_dir=good_data,
-            output_dir=output_dir,
-            generated_at="2026-10-15T00:00:00Z",
-        )
+        release = copy_release_template(good_data, output_dir)
         assert release.export_result.feature_count == 1
         assert release.export_result.metadata["counts"]["measurements"] == 2
     before = _snapshot(output_root)
