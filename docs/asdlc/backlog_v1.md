@@ -2,7 +2,8 @@
 
 ## PBI-119: Migracja PostgreSQL/PostGIS
 
-Status: do review w [draft PR #40](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/40).
+Status: implementacja zakończona. Weryfikacja i dostarczenie:
+[PR #40](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/40).
 YAML v2 pozostaje źródłem prawdy. PostgreSQL/PostGIS zastępuje SQLite;
 baza odpowiada za reguły, Best i współrzędne pochodne, a Git za baseline historii.
 Dump i GeoPackage zastępują SQLite/ZIP. Zakończone importery, writer i

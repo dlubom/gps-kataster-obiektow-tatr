@@ -1,7 +1,7 @@
 # Bieżący kontekst projektu
 
-[Draft PR #40](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/40)
-(PBI-119) przenosi katalog na tymczasowy PostgreSQL/PostGIS. YAML v2 w Git
+[PR #40](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/40)
+(PBI-119) opisuje migrację katalogu na tymczasowy PostgreSQL/PostGIS. YAML v2 w Git
 pozostaje źródłem prawdy; baza wylicza Best, współrzędne i regiony pomiarów.
 Bieżące wejścia wymagają katalogów `objects`, `caves`, `relations` i
 `publications`. Adapter historii odczytuje również zaakceptowany baseline v1.
