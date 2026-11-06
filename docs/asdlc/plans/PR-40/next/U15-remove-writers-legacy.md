@@ -20,23 +20,40 @@ właścicielu tej publikacji. Nie kasuj go razem z writerem źródeł.
 
 ## Kroki i kryteria
 
-- [ ] Przejrzyj graf produkcyjnych wywołań po U12. Ustal minimalne
+- [x] Przejrzyj graf produkcyjnych wywołań po U12. Ustal minimalne
   funkcje/schematy potrzebne wyłącznie do zaufanej historii i ich odbiorców.
-- [ ] Przełącz testy żywych zachowań na jawne fixtures v2. Test historycznej
+- [x] Przełącz testy żywych zachowań na jawne fixtures v2. Test historycznej
   migracji pozostaje testem starego baseline, nie sposobem przygotowania
   każdego bieżącego eksportu. Usuń testy wycofanych możliwości zapisu.
-- [ ] Usuń martwe ścieżki bez aliasów/adopcji legacy przy zwykłym buildzie.
+- [x] Usuń martwe ścieżki bez aliasów/adopcji legacy przy zwykłym buildzie.
   Nie dopisuj ORM ani nowego formatu pośredniego. Pełne schematy JSON usuń
   tylko tam, gdzie nie czyta ich historyczny adapter; zależności zgodnie z użyciem.
-- [ ] Zachowaj typy przed coercion SQL, źródłowe CRS, marker, kontrolę
+- [x] Zachowaj typy przed coercion SQL, źródłowe CRS, marker, kontrolę
   kompletności, duplikaty YAML, limity wejścia i blokady symlinków. Zwykły
   build przy niepoprawnym wejściu odmawia przed zapisem wyjścia.
-- [ ] Publiczne CLI odrzucają bieżące wejście legacy; starszy zaakceptowany
+- [x] Publiczne CLI odrzucają bieżące wejście legacy; starszy zaakceptowany
   baseline pozostaje czytelny. Zachowaj obecne błędy historii dla usunięcia
   obiektu/pomiaru, zmiany chronionych wartości, kolejności i braku baseline.
-- [ ] `uv run --frozen pytest -q tests/test_history.py tests/test_catalog_source_model.py tests/test_catalog_input_contract.py tests/test_production_entrypoints.py tests/test_review_output_safety.py tests/test_catalog_publication_regressions.py`;
+- [x] `uv run --frozen pytest -q tests/test_history.py tests/test_catalog_source_model.py tests/test_catalog_input_contract.py tests/test_production_entrypoints.py tests/test_review_output_safety.py tests/test_catalog_publication_regressions.py`;
   pełna bramka i pełne porównanie eksportów. Hash `data/` bez zmian.
-- [ ] Zaktualizuj główną spec i operations. Podaj bilans całego kodu wraz
+- [x] Zaktualizuj główną spec i operations. Podaj bilans całego kodu wraz
   z ewentualnymi przeniesieniami helperów i pozostałym kosztem historii.
 - [ ] Commit `refactor: keep catalogue tools read-only (PBI-119 U15)`;
   dostarcz, odbierz i zakończ po U15.
+
+## Odbiór
+
+U15 usuwa writer źródeł, `SourceDataset` i bieżące interfejsy propozycji.
+Publiczne wejścia wymagają v2. Adapter Git zachowuje historyczny v1/v2;
+`history_schema.py` mieści 146 linii dawnych kontroli struktury v1.
+Schematy JSON i zależności pozostają potrzebne. Atomowy helper podmiany
+przeniesiono bez zmiany do `build_db`, przy publikacji eksportów.
+
+Siedem regresji API/CLI wykazało przyjęcie legacy i zapis wyjścia przed
+zmianą; po zmianie każde wejście odmawia i zachowuje źródła oraz wyjście.
+Porównanie 13/13 eksportów i manifest 2084 plików `data/` są zgodne.
+Niezależny review nie znalazł uwag wymagających poprawki. U16 i rozszerzenie
+istniejących reguł przechodzenia dowiązań katalogów pozostają poza U15.
+[Dowody i odtworzenie](../../../verification/PBI-119.md#u15--katalog-tylko-do-odczytu).
+Końcowy zdalny SHA, terminalne CI i odbiór pobranej paczki wskazuje
+[PR #40](https://github.com/dlubom/gps-kataster-obiektow-tatr/pull/40).

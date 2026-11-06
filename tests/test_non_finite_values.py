@@ -14,7 +14,6 @@ from gps_kataster_obiektow_tatr.best_measurements_export import export_best_meas
 from gps_kataster_obiektow_tatr.build_db import build_database
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
 from gps_kataster_obiektow_tatr.validator import (
-    CatalogValidationError,
     ValidationSeverity,
     validate_data_dir,
 )
@@ -31,26 +30,6 @@ FIELDS = (
 )
 SOURCE_FIELDS = ("lat", "lon", "input_x", "input_y", *FIELDS[4:])
 BAD_VALUES = [float("nan"), float("inf"), float("-inf")]
-
-
-@pytest.fixture
-def finite_dataset(tmp_path, make_data_dir):
-    data_dir = make_data_dir(tmp_path / "data")
-    obj = yaml.safe_load((REPO_ROOT / "tests/fixtures/valid-object.yml").read_text())
-    # Independently known WGS84/PL-1992 pair from the coordinate fixture.
-    obj["measurements"][0].update(
-        lat=49.23459299,
-        lon=19.87589498,
-        x_1992=152267.23,
-        y_1992=563744.25,
-    )
-    cave = yaml.safe_load((REPO_ROOT / "tests/fixtures/valid-cave.yml").read_text())
-    cave["object_ids"] = [obj["id"]]
-    path = data_dir / "objects/KSW/KSW-0001.yml"
-    path.parent.mkdir(parents=True)
-    path.write_text(yaml.safe_dump(obj), encoding="utf-8")
-    (data_dir / "caves/C-0001.yml").write_text(yaml.safe_dump(cave), encoding="utf-8")
-    return data_dir, path, obj
 
 
 @pytest.fixture
@@ -131,21 +110,6 @@ def test_non_finite_measurement_blocks_validation_and_all_artifacts(
     assert _snapshot(data_dir) == before_data
 
 
-def test_validator_diagnoses_all_bad_fields_before_geometry_and_best(finite_dataset, monkeypatch):
-    data_dir, path, obj = finite_dataset
-    obj["measurements"][0].update({field: float("nan") for field in FIELDS})
-    path.write_text(yaml.safe_dump(obj), encoding="utf-8")
-
-    def unexpected(*args, **kwargs):
-        pytest.fail("Invalid measurement reached geometry or best selection")
-
-    monkeypatch.setattr("gps_kataster_obiektow_tatr.postgres.open_proposal", unexpected)
-    issues = validate_data_dir(data_dir)
-    errors = [i for i in issues if i.code == "MEASUREMENT_NON_FINITE"]
-    assert len(errors) == 7
-    assert all(any(field in i.description for i in errors) for field in FIELDS)
-
-
 @pytest.mark.parametrize("value", [None, 0, 12.5])
 def test_optional_numbers_preserve_null_zero_and_finite_values(
     canonical_finite_dataset, tmp_path, value
@@ -198,51 +162,30 @@ def test_non_finite_cli_returns_controlled_error_without_writes(
     assert not output.exists()
 
 
-def test_validator_handles_non_finite_projection_result(finite_dataset):
-    data_dir, path, obj = finite_dataset
+def test_validator_handles_invalid_latitude(canonical_finite_dataset):
+    data_dir, path, obj = canonical_finite_dataset
     obj["measurements"][0]["lat"] = 100
     path.write_text(yaml.safe_dump(obj), encoding="utf-8")
     issues = validate_data_dir(data_dir)
-    assert any(i.code == "SCHEMA_VALIDATION" and "lat" in i.description for i in issues)
+    assert any(
+        i.code == "SQL_CATALOG_INVALID"
+        and i.path == path
+        and "measurements_input_geom_check4" in i.description
+        for i in issues
+    )
 
 
-@pytest.mark.parametrize("field", FIELDS)
-def test_unrepresentable_integer_is_diagnosed_before_float_conversion(finite_dataset, field):
-    data_dir, path, obj = finite_dataset
+@pytest.mark.parametrize("field", ("lat", "lon", *FIELDS[4:]))
+def test_unrepresentable_integer_is_diagnosed_before_float_conversion(
+    canonical_finite_dataset, field
+):
+    data_dir, path, obj = canonical_finite_dataset
     obj["measurements"][0][field] = 10**400
     path.write_text(yaml.safe_dump(obj), encoding="utf-8")
     issues = validate_data_dir(data_dir)
-    assert any(i.code == "MEASUREMENT_NON_FINITE" and field in i.description for i in issues)
-
-
-@pytest.mark.parametrize("field", FIELDS)
-@pytest.mark.parametrize("value", BAD_VALUES, ids=["nan", "pos-inf", "neg-inf"])
-def test_legacy_non_finite_declarations_reach_production_input(
-    finite_dataset, tmp_path, field, value
-):
-    # Keep every legacy declaration case, including its redundant PL-1992 cache.
-    data, path, obj = finite_dataset
-    baseline = accept_source(data)
-    obj["measurements"][0][field] = value
-    path.write_text(yaml.safe_dump(obj))
-    issues = validate_data_dir(data)
     assert any(
-        i.code == "MEASUREMENT_NON_FINITE"
-        and i.path == path
+        i.code == "SQL_CATALOG_INVALID"
+        and "MEASUREMENT_NON_FINITE" in i.description
         and field in i.description
-        and "m-001" in i.description
         for i in issues
     )
-    output = tmp_path / "katalog.dump"
-    before = path.read_bytes()
-    with pytest.raises(CatalogValidationError) as caught:
-        build_database(data_dir=data, output_path=output, **baseline)
-    assert any(
-        i.code == "MEASUREMENT_NON_FINITE"
-        and i.path == path
-        and field in i.description
-        and "m-001" in i.description
-        for i in caught.value.issues
-    )
-    assert not output.exists()
-    assert path.read_bytes() == before

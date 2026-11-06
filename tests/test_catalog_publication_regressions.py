@@ -9,8 +9,6 @@ from export_test_support import excel_records as _excel_records
 from openpyxl import load_workbook
 
 from gps_kataster_obiektow_tatr.best_measurements_export import export_best_measurements
-from gps_kataster_obiektow_tatr.catalog_records import write_dataset
-from gps_kataster_obiektow_tatr.data_loader import DataKind, LoadedDataset, LoadedYamlRecord
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
 
 
@@ -103,21 +101,3 @@ def test_standalone_export_cannot_replace_a_complete_release(tmp_path):
     separate = tmp_path / "best-only"
     export_best_measurements(data_dir=data, output_dir=separate, **baseline)
     assert len(list(separate.iterdir())) == 8
-
-
-def test_old_snapshot_cleanup_failure_does_not_report_a_failed_commit(tmp_path):
-    root = tmp_path / "data"
-    write_dataset(LoadedDataset((), (), ()), root)
-    (root / "objects").chmod(0o555)
-    publication = {"id": "new-publication", "citation": "A source added to the catalogue."}
-    record = LoadedYamlRecord(
-        DataKind.PUBLICATION, root / "publications/new-publication.yml", publication, publication
-    )
-    try:
-        result = write_dataset(LoadedDataset((), (), (), (record,)), root)
-        assert (root / "publications/new-publication.yml").is_file()
-        assert result.written_paths == (root / "publications/new-publication.yml",)
-        assert result.removed_paths == ()
-    finally:
-        for old in tmp_path.glob(".data-snapshot-*"):
-            (old / "objects").chmod(0o755)

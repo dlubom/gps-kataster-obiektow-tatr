@@ -5,7 +5,7 @@ from dataclasses import replace
 from pathlib import Path
 
 import pytest
-from sql_test_support import make_legacy_history_baseline
+from sql_test_support import make_legacy_history_baseline, write_canonical_history_source
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -72,14 +72,21 @@ def test_local_history_uses_native_geometry(baseline):
 
 
 def test_yaml_git_baseline_protects_native_source_not_derived_read_model(baseline):
-    from gps_kataster_obiektow_tatr.catalog_records import write_dataset
     from gps_kataster_obiektow_tatr.history import check_history
     from gps_kataster_obiektow_tatr.postgres import read_catalog_projection
 
     root, _, dataset = baseline
-    m = dataset.objects[0].data["measurements"][0]
+    write_canonical_history_source(root / "data")
+    import yaml
+    from export_test_support import write_yaml
+
+    path = root / "data/objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(path.read_text())
+    m = obj["measurements"][0]
+    m.pop("lat")
+    m.pop("lon")
     m.update(input_srid=2180, input_x=562729.5, input_y=152838.5)
-    write_dataset(dataset, root / "data")
+    write_yaml(path, obj)
     subprocess.run(["git", "-C", str(root), "add", "data"], check=True)
     subprocess.run(
         [
@@ -122,7 +129,6 @@ def test_history_rejects_reordering_but_allows_same_id_on_another_object(baselin
 
 @pytest.mark.parametrize("storage", ["canonical", "legacy"])
 def test_accepted_empty_yaml_baseline_is_not_a_missing_baseline(tmp_path, storage):
-    from gps_kataster_obiektow_tatr.catalog_records import write_dataset
     from gps_kataster_obiektow_tatr.data_loader import LoadedDataset
     from gps_kataster_obiektow_tatr.history import check_history
 
@@ -130,7 +136,9 @@ def test_accepted_empty_yaml_baseline_is_not_a_missing_baseline(tmp_path, storag
     root.mkdir()
     dataset = LoadedDataset((), (), ())
     if storage == "canonical":
-        write_dataset(dataset, root / "data")
+        from export_test_support import initialize_source
+
+        initialize_source(root / "data")
     else:
         for name in ("objects", "caves", "relations"):
             directory = root / "data" / name
@@ -161,10 +169,9 @@ def test_validation_cli_reuses_one_catalogue_for_validation_and_history(baseline
     from contextlib import contextmanager
 
     from gps_kataster_obiektow_tatr import postgres
-    from gps_kataster_obiektow_tatr.catalog_records import write_dataset
 
     root, sha, dataset = baseline
-    write_dataset(dataset, root / "data")
+    write_canonical_history_source(root / "data")
     calls = []
     original = postgres.open_catalog
 
@@ -190,10 +197,8 @@ def test_cli_never_uses_head_when_origin_main_baseline_is_unavailable(
 ):
     import importlib.util
 
-    from gps_kataster_obiektow_tatr.catalog_records import write_dataset
-
     root, _, dataset = baseline
-    write_dataset(dataset, root / "data")
+    write_canonical_history_source(root / "data")
     spec = importlib.util.spec_from_file_location(
         "validate_cli_no_base", ROOT / "scripts/validate.py"
     )
@@ -218,13 +223,12 @@ def test_cli_never_uses_head_when_origin_main_baseline_is_unavailable(
 def test_incomplete_or_mixed_git_baseline_fails_closed(baseline, damage):
     import yaml
 
-    from gps_kataster_obiektow_tatr.catalog_records import write_dataset
     from gps_kataster_obiektow_tatr.data_loader import LoadedDataset
     from gps_kataster_obiektow_tatr.history import check_history
 
     root, _, dataset = baseline
     if not damage.startswith("legacy-"):
-        write_dataset(dataset, root / "data")
+        write_canonical_history_source(root / "data")
         path = root / "data/objects/KSW/KSW-0001.yml"
         if damage == "yaml-no-measurements":
             obj = yaml.safe_load(path.read_text())
@@ -268,14 +272,22 @@ def test_incomplete_or_mixed_git_baseline_fails_closed(baseline, damage):
 
 @pytest.mark.parametrize("srid,x,y", [(4326, 19.8145, 49.2423), (2180, 562729.5, 152838.5)])
 def test_accepted_geometry_edit_remains_readable_as_next_git_baseline(baseline, srid, x, y):
-    from gps_kataster_obiektow_tatr.catalog_records import write_dataset
     from gps_kataster_obiektow_tatr.history import check_history
     from gps_kataster_obiektow_tatr.postgres import open_catalog
     from gps_kataster_obiektow_tatr.validator import validate_catalog
 
     root, _, dataset = baseline
-    dataset.objects[0].data["measurements"][0].update(input_srid=srid, input_x=x, input_y=y)
-    write_dataset(dataset, root / "data")
+    write_canonical_history_source(root / "data")
+    import yaml
+    from export_test_support import write_yaml
+
+    path = root / "data/objects/KSW/KSW-0001.yml"
+    obj = yaml.safe_load(path.read_text())
+    m = obj["measurements"][0]
+    m.pop("lat")
+    m.pop("lon")
+    m.update(input_srid=srid, input_x=x, input_y=y)
+    write_yaml(path, obj)
 
     def commit(message):
         subprocess.run(["git", "-C", str(root), "add", "data"], check=True)
@@ -323,14 +335,15 @@ def test_accepted_geometry_edit_remains_readable_as_next_git_baseline(baseline, 
 def test_loader_and_git_baseline_reject_unsupported_geometry(baseline, geometry):
     import yaml
 
-    from gps_kataster_obiektow_tatr.catalog_records import write_dataset
     from gps_kataster_obiektow_tatr.history import check_history
     from gps_kataster_obiektow_tatr.postgres import CatalogLoadError, open_catalog
 
     root, _, dataset = baseline
-    write_dataset(dataset, root / "data")
+    write_canonical_history_source(root / "data")
     path = root / "data/objects/KSW/KSW-0001.yml"
     obj = yaml.safe_load(path.read_text())
+    obj["measurements"][0].pop("lat")
+    obj["measurements"][0].pop("lon")
     obj["measurements"][0].update(input_srid=4326, input_x=19.8145, input_y=49.2423)
     obj["measurements"][0].update(geometry)
     path.write_text(yaml.safe_dump(obj))

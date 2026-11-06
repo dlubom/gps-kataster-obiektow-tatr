@@ -4,7 +4,7 @@ import subprocess
 from functools import lru_cache
 from pathlib import Path
 
-from gps_kataster_obiektow_tatr.data_loader import load_yaml_dataset
+from gps_kataster_obiektow_tatr.history import _git_baseline
 from gps_kataster_obiektow_tatr.postgres import read_catalog_projection
 
 
@@ -84,4 +84,20 @@ def make_legacy_history_baseline(tmp_path):
     git(
         "-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "-qm", "baseline"
     )
-    return root, git("rev-parse", "HEAD"), load_yaml_dataset(root / "data")
+    sha = git("rev-parse", "HEAD")
+    return root, sha, _git_baseline(sha, root, "data")
+
+
+def write_canonical_history_source(data_dir):
+    """Literal v2 counterpart of the historical fixture, without conversion code."""
+    from export_test_support import initialize_source
+
+    from gps_kataster_obiektow_tatr.data_loader import load_yaml_dataset
+
+    initialize_source(data_dir)
+    fixtures = Path(__file__).parent / "fixtures"
+    for kind, relative in (("object", "objects/KSW/KSW-0001.yml"), ("cave", "caves/C-0001.yml")):
+        path = data_dir / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes((fixtures / f"canonical-{kind}.yml").read_bytes())
+    return load_yaml_dataset(data_dir)

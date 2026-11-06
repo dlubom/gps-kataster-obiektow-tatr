@@ -19,12 +19,13 @@ from gps_kataster_obiektow_tatr.data_loader import (
     DATA_DIRECTORIES,
     FORMAT_MARKER,
     LoadedDataset,
-    load_yaml_dataset,
+    _load_dataset_records,
+    require_dataset_layout,
 )
+from gps_kataster_obiektow_tatr.history_schema import validate_legacy_records
 from gps_kataster_obiektow_tatr.validator import (
     ValidationIssue,
     ValidationSeverity,
-    validate_records_schema,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -184,13 +185,14 @@ def _git_baseline(base_ref: str, repo_root: Path, data_path: str) -> LoadedDatas
                 continue
             # A top-level entity path may itself be a file: the shared guard must see it.
             target.write_bytes(content)
-        baseline = load_yaml_dataset(root)
         marker = root / FORMAT_MARKER
+        require_dataset_layout(root, canonical=marker.exists())
+        baseline = _load_dataset_records(root)
         if marker.exists():
             if json.loads(marker.read_text(encoding="utf-8")) != CATALOG_FORMAT:
                 raise ValueError("Unsupported YAML baseline format")
         else:
-            if issues := validate_records_schema(baseline.records()):
+            if issues := validate_legacy_records(baseline.records()):
                 raise ValueError(f"Incomplete legacy baseline record: {issues[0].path.name}")
         return _validate_history_objects(baseline)
 

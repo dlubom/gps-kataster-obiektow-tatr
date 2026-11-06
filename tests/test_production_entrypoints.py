@@ -139,3 +139,60 @@ def test_canonical_manual_best_and_bibliography_survive_native_release(tmp_path)
             assert db.execute(f"SELECT publication_id,locator FROM {table}").fetchall() == [
                 {"publication_id": "fixture-publication", "locator": "p. 7"}
             ]
+
+
+@pytest.mark.parametrize(
+    "entry", ["dump", "best", "release", "validate-cli", "dump-cli", "best-cli", "release-cli"]
+)
+def test_current_legacy_source_is_rejected_without_replacing_outputs(tmp_path, entry):
+    """A legacy fallback must not let a missing v2 marker reach current tools."""
+    from sql_test_support import make_legacy_history_baseline
+
+    root, base_ref, _ = make_legacy_history_baseline(tmp_path)
+    data = root / "data"
+    baseline = {"history_repo": root, "base_ref": base_ref}
+    before = {p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()}
+    output = tmp_path / "output"
+    output.mkdir()
+    dump = output / "katalog.dump"
+    dump.write_bytes(b"accepted dump")
+    exports = output / "exports"
+    exports.mkdir()
+    (exports / "best-measurements.csv").write_bytes(b"accepted CSV")
+    old = {p.relative_to(output): p.read_bytes() for p in output.rglob("*") if p.is_file()}
+    if entry.endswith("-cli"):
+        script, args = {
+            "validate-cli": ("validate.py", []),
+            "dump-cli": ("build_db.py", ["--output", str(dump)]),
+            "best-cli": ("export_best_measurements.py", ["--output-dir", str(exports)]),
+            "release-cli": ("build_release_artifacts.py", ["--output-dir", str(exports)]),
+        }[entry]
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(REPO_ROOT / "scripts" / script),
+                "--data-dir",
+                str(data),
+                *args,
+                *cli_args(baseline),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        diagnostic = result.stdout + result.stderr
+        assert result.returncode == 1, diagnostic
+        assert "Traceback" not in diagnostic
+    else:
+        api, kwargs = {
+            "dump": (build_database, {"output_path": dump}),
+            "best": (export_best_measurements, {"output_dir": exports}),
+            "release": (build_release_artifacts, {"output_dir": exports}),
+        }[entry]
+        with pytest.raises(ValueError) as error:
+            api(data_dir=data, **baseline, **kwargs)
+        diagnostic = str(error.value)
+    assert "format marker is missing" in diagnostic
+    assert str(data / "catalog.json") in diagnostic
+    assert {p.relative_to(output): p.read_bytes() for p in output.rglob("*") if p.is_file()} == old
+    assert {p.relative_to(data): p.read_bytes() for p in data.rglob("*") if p.is_file()} == before

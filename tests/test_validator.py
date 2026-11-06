@@ -9,11 +9,7 @@ import yaml
 from export_test_support import accept_source, write_sample_data
 from sql_test_support import history_cli_args
 
-from gps_kataster_obiektow_tatr.coordinates import wgs84_to_1992
 from gps_kataster_obiektow_tatr.data_loader import (
-    DataKind,
-    LoadedDataset,
-    LoadedYamlRecord,
     load_yaml_dataset,
 )
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
@@ -22,7 +18,6 @@ from gps_kataster_obiektow_tatr.validator import (
     ValidationSeverity,
     has_errors,
     validate_data_dir,
-    validate_proposal,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -31,100 +26,14 @@ KSW_LAT = 49.23459299
 KSW_LON = 19.87589498
 
 
-@pytest.mark.parametrize("damage", ["missing-member", "wrong-cave", "no-cave-id", "two-caves"])
-def test_cave_membership_symmetry_is_required(tmp_path, damage):
-    data_dir = tmp_path / "data"
-    _write_object(data_dir, _valid_object())
-    assert not has_errors(validate_data_dir(data_dir))
-    object_path = data_dir / "objects/KSW/KSW-0001.yml"
-    cave_path = data_dir / "caves/C-0001.yml"
-    if damage == "missing-member":
-        cave = _valid_cave()
-        cave["object_ids"] = []
-        _write_yaml(cave_path, cave)
-        code, path = "OBJECT_CAVE_MEMBERSHIP_MISSING", object_path
-    elif damage == "no-cave-id":
-        obj = _valid_object()
-        obj.pop("cave_id")
-        _write_yaml(object_path, obj)
-        code, path = "CAVE_OBJECT_MEMBERSHIP_MISMATCH", cave_path
-    else:
-        cave = _valid_cave()
-        cave["id"] = "C-0002"
-        _write_yaml(data_dir / "caves/C-0002.yml", cave)
-        if damage == "wrong-cave":
-            cave["id"] = "C-0001"
-            cave["object_ids"] = []
-            _write_yaml(cave_path, cave)
-        code, path = "CAVE_OBJECT_MEMBERSHIP_MISMATCH", data_dir / "caves/C-0002.yml"
-    before = {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()}
-    issues = validate_data_dir(data_dir)
-    matches = [i for i in issues if i.code == code]
-    assert len(matches) == 1
-    assert matches[0].severity == ValidationSeverity.ERROR
-    assert matches[0].path == path
-    assert "KSW-0001" in matches[0].description
-    assert ("C-0002" if damage in {"wrong-cave", "two-caves"} else "C-0001") in matches[
-        0
-    ].description
-    if damage == "wrong-cave":
-        assert "OBJECT_CAVE_MEMBERSHIP_MISSING" in _codes(issues)
-    result = subprocess.run(
-        [sys.executable, str(VALIDATE_SCRIPT), "--data-dir", str(data_dir)],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    assert result.returncode == 1
-    assert code in result.stdout + result.stderr
-    assert str(path) in result.stdout + result.stderr
-    assert "Traceback" not in result.stdout + result.stderr
-    assert {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()} == before
-
-
 def test_unhashable_pig_reference_type_reports_schema_error(tmp_path):
     data_dir = tmp_path / "data"
     obj = _valid_object()
     obj["external_refs"] = [{"system": "PIG", "ref_type": [], "external_id": "test"}]
     _write_object(data_dir, obj)
     issues = validate_data_dir(data_dir)
-    assert "SCHEMA_VALIDATION" in _codes(issues)
-    assert _severities(issues, "SCHEMA_VALIDATION") == {ValidationSeverity.ERROR}
-
-
-@pytest.mark.parametrize("target", ["object", "cave", "relation"])
-def test_in_memory_dataset_validates_all_record_kinds_without_writing(tmp_path, target):
-    data_dir = tmp_path / "data"
-    _write_object(data_dir, _valid_object())
-    dataset = load_yaml_dataset(data_dir)
-    if target == "object":
-        data = deepcopy(dataset.objects[0].raw_data)
-        data["measurements"][0]["lat"] = 0
-        record = LoadedYamlRecord(DataKind.OBJECT, dataset.objects[0].path, data, data)
-        prospective = LoadedDataset((record,), dataset.caves, ())
-        expected = "COORDINATE_MISMATCH"
-    elif target == "cave":
-        data = deepcopy(dataset.caves[0].raw_data)
-        data["object_ids"].append("KSW-9999")
-        record = LoadedYamlRecord(DataKind.CAVE, dataset.caves[0].path, data, data)
-        prospective = LoadedDataset(dataset.objects, (record,), ())
-        expected = "CAVE_OBJECT_REFERENCE_MISSING"
-    else:
-        data = {
-            "schema_version": 1,
-            "id": "R-0001",
-            "relation_type": "sasiad",
-            "from_object_id": "KSW-0001",
-            "to_object_id": "KSW-9999",
-        }
-        record = LoadedYamlRecord(DataKind.RELATION, data_dir / "relations/R-0001.yml", data, data)
-        prospective = LoadedDataset(dataset.objects, dataset.caves, (record,))
-        expected = "RELATION_OBJECT_REFERENCE_MISSING"
-    before = {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()}
-    issues = validate_proposal(prospective, data_dir=data_dir)
-    assert any(i.code == expected and i.path == record.path for i in issues)
-    assert {p: p.read_bytes() for p in data_dir.rglob("*") if p.is_file()} == before
-    assert not any(i.severity == ValidationSeverity.ERROR for i in validate_data_dir(data_dir))
+    assert "SQL_CATALOG_INVALID" in _codes(issues)
+    assert _severities(issues, "SQL_CATALOG_INVALID") == {ValidationSeverity.ERROR}
 
 
 @pytest.mark.parametrize("replacement", ["same", "best-only"])
@@ -193,8 +102,8 @@ def test_reports_error_for_duplicate_object_id(tmp_path: Path) -> None:
 
     issues = validate_data_dir(data_dir)
 
-    assert _codes(issues) >= {"DUPLICATE_OBJECT_ID"}
-    assert _severities(issues, "DUPLICATE_OBJECT_ID") == {ValidationSeverity.ERROR}
+    assert _codes(issues) >= {"SQL_CATALOG_INVALID"}
+    assert _severities(issues, "SQL_CATALOG_INVALID") == {ValidationSeverity.ERROR}
 
 
 @pytest.mark.parametrize("mode", ["auto", "manual"])
@@ -203,12 +112,13 @@ def test_duplicate_local_measurement_id_is_an_error(tmp_path, mode, variant):
     data_dir = tmp_path / "data"
     obj = _valid_object()
     obj["best_measurement"].update(mode=mode, reason="Operator selection.")
+    if mode == "manual":
+        obj["best_measurement"]["measurement_id"] = "m-001"
     duplicate = deepcopy(obj["measurements"][0])
     if variant == "notes":
         duplicate["notes"] = "A separate historical reading."
     elif variant == "coordinates":
-        point = wgs84_to_1992(lat=KSW_LAT + 0.001, lon=KSW_LON)
-        duplicate.update(lat=KSW_LAT + 0.001, x_1992=point.x_1992, y_1992=point.y_1992)
+        duplicate.update(lat=KSW_LAT + 0.001)
     elif variant == "non-best-rejected":
         duplicate.update(id="m-002", verification_status="odrzucony")
         obj["measurements"].append(deepcopy(duplicate))
@@ -236,31 +146,6 @@ def test_duplicate_local_measurement_id_is_an_error(tmp_path, mode, variant):
     assert path.read_bytes() == before
 
 
-def test_duplicate_local_measurement_ids_are_reported_before_indexing_and_best(
-    tmp_path, monkeypatch
-):
-    data_dir = tmp_path / "data"
-    obj = _valid_object()
-    obj["measurements"] *= 3
-    second = deepcopy(obj["measurements"][0])
-    second["id"] = "m-002"
-    obj["measurements"] += [second, deepcopy(second)]
-    _write_object(data_dir, obj)
-
-    def ambiguous_identity_used(*args, **kwargs):
-        pytest.fail("Ambiguous measurements used before identity validation")
-
-    monkeypatch.setattr(
-        "gps_kataster_obiektow_tatr.postgres.open_proposal", ambiguous_identity_used
-    )
-
-    issues = validate_data_dir(data_dir)
-    descriptions = [i.description for i in issues if i.code == "DUPLICATE_MEASUREMENT_ID"]
-    assert len(descriptions) == 2
-    assert "m-001" in descriptions[0]
-    assert "m-002" in descriptions[1]
-
-
 def test_measurement_identity_is_local_and_preserves_history_order(tmp_path):
     data_dir = tmp_path / "data"
     obj = _valid_object()
@@ -269,9 +154,9 @@ def test_measurement_identity_is_local_and_preserves_history_order(tmp_path):
     _write_object(data_dir, obj)
     other = deepcopy(obj)
     other["id"] = "KSW-0002"
+    other["membership_ordinal"] = 2
     _write_yaml(data_dir / "objects/KSW/KSW-0002.yml", other)
     cave = _valid_cave()
-    cave["object_ids"].append("KSW-0002")
     _write_yaml(data_dir / "caves/C-0001.yml", cave)
 
     assert not has_errors(validate_data_dir(data_dir))
@@ -305,24 +190,25 @@ def test_reports_error_for_manual_best_without_reason() -> None:
 
         issues = validate_data_dir(data_dir)
 
-    assert _codes(issues) >= {"SCHEMA_VALIDATION"}
+    assert _codes(issues) >= {"BEST_MEASUREMENT_MANUAL_REASON_REQUIRED"}
 
 
-def test_reports_error_for_inconsistent_coordinates() -> None:
+def test_reports_error_for_derived_coordinates() -> None:
     with _validation_tmp_data() as data_dir:
         object_data = _valid_object()
-        object_data["measurements"][0]["x_1992"] += 25.0
+        object_data["measurements"][0]["x_1992"] = 152267.23
         _write_object(data_dir, object_data)
 
         issues = validate_data_dir(data_dir)
 
-    assert _codes(issues) >= {"COORDINATE_MISMATCH"}
+    assert _codes(issues) >= {"SQL_CATALOG_INVALID"}
 
 
 def test_reports_requested_warning_rules_without_error(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
     object_data = _valid_object()
     object_data.pop("cave_id")
+    object_data.pop("membership_ordinal")
     object_data["external_refs"] = [
         {
             "system": "NR_INWENT",
@@ -357,6 +243,7 @@ def test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors(tmp_path
     warnings_data_dir = tmp_path / "warnings" / "data"
     warnings_object = _valid_object()
     warnings_object.pop("cave_id")
+    warnings_object.pop("membership_ordinal")
     _write_object(warnings_data_dir, warnings_object)
 
     warning_result = subprocess.run(
@@ -393,21 +280,20 @@ def test_validate_script_exits_zero_for_warnings_and_nonzero_for_errors(tmp_path
     assert "BEST_MEASUREMENT_MISSING" in error_result.stdout
 
 
-def test_sql_computes_auto_best_despite_stale_proposal_selection() -> None:
+def test_sql_computes_auto_best_from_source_measurements() -> None:
     with _validation_tmp_data() as data_dir:
         object_data = _valid_object()
         object_data["measurements"] = [
             _measurement_variant("m-001", source="PIG", observed_date="2026-05-16"),
             _measurement_variant("m-002", source="TPN", observed_date="2026-05-15"),
         ]
-        object_data["best_measurement"]["measurement_id"] = "m-001"
         _write_object(data_dir, object_data)
 
         issues = validate_data_dir(data_dir)
 
-        from gps_kataster_obiektow_tatr.postgres import open_proposal
+        from gps_kataster_obiektow_tatr.postgres import open_catalog
 
-        with open_proposal(load_yaml_dataset(data_dir)) as catalog:
+        with open_catalog(data_dir) as catalog:
             assert (
                 catalog.dataset().objects[0].data["best_measurement"]["measurement_id"] == "m-002"
             )
@@ -447,7 +333,6 @@ def test_reports_warning_when_auto_best_measurement_uses_rejected_fallback() -> 
                 status="odrzucony",
             )
         ]
-        object_data["best_measurement"]["measurement_id"] = "m-001"
         _write_object(data_dir, object_data)
 
         issues = validate_data_dir(data_dir)
@@ -476,6 +361,7 @@ def _valid_object() -> dict[str, Any]:
         "category": "jaskinia_otwor",
         "name_local": "Jaskinia testowa - otwor glowny",
         "cave_id": "C-0001",
+        "membership_ordinal": 1,
         "id_assignment": {
             "method": "auto",
             "assigned_from_measurement_id": "m-001",
@@ -486,7 +372,6 @@ def _valid_object() -> dict[str, Any]:
         "measurements": [measurement],
         "best_measurement": {
             "mode": "auto",
-            "measurement_id": "m-001",
             "reason": None,
             "updated_at": "2026-05-15T10:30:00Z",
             "updated_by": "dl",
@@ -501,13 +386,10 @@ def _valid_object() -> dict[str, Any]:
 
 
 def _valid_measurement() -> dict[str, Any]:
-    pl_1992 = wgs84_to_1992(lat=KSW_LAT, lon=KSW_LON)
     return {
         "id": "m-001",
         "lat": KSW_LAT,
         "lon": KSW_LON,
-        "x_1992": pl_1992.x_1992,
-        "y_1992": pl_1992.y_1992,
         "elevation_m": 1240.0,
         "elevation_datum": "unknown",
         "elevation_source": "gps",
@@ -560,7 +442,6 @@ def _valid_cave(object_id: str = "KSW-0001") -> dict[str, Any]:
         "name": "Jaskinia testowa",
         "system_name": None,
         "external_refs": [],
-        "object_ids": [object_id],
         "notes": None,
         "created_at": "2026-05-15T10:00:00Z",
         "created_by": "dl",
@@ -570,8 +451,9 @@ def _valid_cave(object_id: str = "KSW-0001") -> dict[str, Any]:
 
 
 def _write_object(data_dir: Path, object_data: dict[str, Any]) -> None:
-    for name in ("objects", "caves", "relations"):
-        (data_dir / name).mkdir(parents=True, exist_ok=True)
+    from export_test_support import initialize_source
+
+    initialize_source(data_dir)
     data = deepcopy(object_data)
     object_id = data["id"]
     prefix = object_id.split("-", maxsplit=1)[0]

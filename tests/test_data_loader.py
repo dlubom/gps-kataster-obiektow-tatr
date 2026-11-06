@@ -14,14 +14,16 @@ FIXTURE_DIR = REPO_ROOT / "tests" / "fixtures"
 SCHEMA_FIXTURE_DIR = FIXTURE_DIR / "schema"
 
 
-def test_load_yaml_dataset_reads_fixture_records_and_keeps_paths(tmp_path: Path) -> None:
-    data_dir = tmp_path / "data"
+def test_load_yaml_dataset_reads_fixture_records_and_keeps_paths(
+    tmp_path: Path, make_canonical_data_dir
+) -> None:
+    data_dir = make_canonical_data_dir(tmp_path / "data")
     object_path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
     cave_path = data_dir / "caves" / "C-0001.yml"
     relation_path = data_dir / "relations" / "R-0001.yml"
 
-    _copy_fixture(FIXTURE_DIR / "valid-object.yml", object_path)
-    _copy_fixture(FIXTURE_DIR / "valid-cave.yml", cave_path)
+    _copy_fixture(FIXTURE_DIR / "canonical-object.yml", object_path)
+    _copy_fixture(FIXTURE_DIR / "canonical-cave.yml", cave_path)
     _copy_fixture(SCHEMA_FIXTURE_DIR / "valid-relation.yml", relation_path)
 
     dataset = load_yaml_dataset(data_dir)
@@ -40,9 +42,9 @@ def test_load_yaml_dataset_reads_fixture_records_and_keeps_paths(tmp_path: Path)
 
 
 def test_missing_lists_are_normalized_in_memory_without_rewriting_yaml(
-    tmp_path: Path, make_data_dir
+    tmp_path: Path, make_canonical_data_dir
 ) -> None:
-    data_dir = make_data_dir(tmp_path / "data")
+    data_dir = make_canonical_data_dir(tmp_path / "data")
     object_path = data_dir / "objects" / "KSW" / "KSW-0001.yml"
     cave_path = data_dir / "caves" / "C-0001.yml"
     object_yaml = """\
@@ -78,8 +80,8 @@ name: Jaskinia testowa
     assert cave_path.read_text(encoding="utf-8") == cave_yaml
 
 
-def test_yaml_error_includes_source_path(tmp_path: Path, make_data_dir) -> None:
-    data_dir = make_data_dir(tmp_path / "data")
+def test_yaml_error_includes_source_path(tmp_path: Path, make_canonical_data_dir) -> None:
+    data_dir = make_canonical_data_dir(tmp_path / "data")
     bad_path = data_dir / "objects" / "KSW" / "bad.yml"
     _write_yaml(bad_path, "id: [unterminated\n")
 
@@ -92,10 +94,10 @@ def test_yaml_error_includes_source_path(tmp_path: Path, make_data_dir) -> None:
 
 
 def test_rejects_yaml_key_collisions_before_normalization(
-    tmp_path: Path, make_data_dir, yaml_key_collision
+    tmp_path: Path, make_canonical_data_dir, yaml_key_collision
 ) -> None:
     content, key, line = yaml_key_collision
-    data_dir = make_data_dir(tmp_path / "data")
+    data_dir = make_canonical_data_dir(tmp_path / "data")
     path = data_dir / "objects" / "bad.yml"
     path.write_text(content, encoding="utf-8")
     before = path.read_bytes()
@@ -113,16 +115,18 @@ def test_rejects_yaml_key_collisions_before_normalization(
 
 
 @pytest.mark.parametrize("directory", ["objects", "caves", "relations"])
-def test_rejects_duplicate_keys_in_every_record_kind(tmp_path, make_data_dir, directory):
-    data_dir = make_data_dir(tmp_path / "data")
+def test_rejects_duplicate_keys_in_every_record_kind(tmp_path, make_canonical_data_dir, directory):
+    data_dir = make_canonical_data_dir(tmp_path / "data")
     path = data_dir / directory / "bad.yml"
     path.write_text("id: first\nid: second\n", encoding="utf-8")
     with pytest.raises(YamlDataLoadError, match="duplicate key.*id"):
         load_yaml_dataset(data_dir)
 
 
-def test_aliases_and_disjoint_merges_preserve_values_and_list_order(tmp_path, make_data_dir):
-    data_dir = make_data_dir(tmp_path / "data")
+def test_aliases_and_disjoint_merges_preserve_values_and_list_order(
+    tmp_path, make_canonical_data_dir
+):
+    data_dir = make_canonical_data_dir(tmp_path / "data")
     path = data_dir / "objects" / "good.yml"
     content = """\
 id: KSW-0001
@@ -151,8 +155,8 @@ measurements:
 
 
 @pytest.mark.parametrize("content", ["? [not, a, scalar]\n: value\n", "!!python/tuple [1, 2]\n"])
-def test_strict_loader_keeps_safe_yaml_errors(tmp_path, make_data_dir, content):
-    data_dir = make_data_dir(tmp_path / "data")
+def test_strict_loader_keeps_safe_yaml_errors(tmp_path, make_canonical_data_dir, content):
+    data_dir = make_canonical_data_dir(tmp_path / "data")
     path = data_dir / "objects" / "bad.yml"
     path.write_text(content, encoding="utf-8")
     with pytest.raises(YamlDataLoadError, match="invalid YAML") as error:

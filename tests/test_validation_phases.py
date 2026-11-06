@@ -1,10 +1,9 @@
-"""Contracts at source, proposal, SQL state and accepted-history boundaries."""
+"""Contracts at source, SQL state and accepted-history boundaries."""
 
 import importlib.util
 import shutil
 import subprocess
 import sys
-from contextlib import contextmanager
 from pathlib import Path
 
 import pytest
@@ -17,20 +16,15 @@ from gps_kataster_obiektow_tatr.data_loader import load_yaml_dataset
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def source(root, *, canonical=True):
+def source(root):
     for directory in ("objects/KSW", "caves", "relations", "publications"):
         (root / directory).mkdir(parents=True, exist_ok=True)
-    obj = yaml.safe_load((ROOT / "tests/fixtures/valid-object.yml").read_text())
+    obj = yaml.safe_load((ROOT / "tests/fixtures/canonical-object.yml").read_text())
     obj["measurements"][0].update(input_srid=2180, input_x=562729.5, input_y=152838.5)
-    for key in ("lat", "lon", "x_1992", "y_1992"):
+    for key in ("lat", "lon"):
         obj["measurements"][0].pop(key)
-    cave = yaml.safe_load((ROOT / "tests/fixtures/valid-cave.yml").read_text())
-    cave["object_ids"] = ["KSW-0001"]
-    if canonical:
-        (root / "catalog.json").write_text('{"format":"postgresql-yaml","schema_version":2}')
-        obj["membership_ordinal"] = 1
-        obj["best_measurement"].pop("measurement_id")
-        cave.pop("object_ids")
+    cave = yaml.safe_load((ROOT / "tests/fixtures/canonical-cave.yml").read_text())
+    (root / "catalog.json").write_text('{"format":"postgresql-yaml","schema_version":2}')
     (root / "objects/KSW/KSW-0001.yml").write_text(yaml.safe_dump(obj))
     (root / "caves/C-0001.yml").write_text(yaml.safe_dump(cave))
     return root
@@ -40,12 +34,9 @@ def snapshot(root):
     return {p.relative_to(root): p.read_bytes() for p in root.rglob("*") if p.is_file()}
 
 
-@pytest.mark.parametrize("canonical", [False, True])
 @pytest.mark.parametrize("nested", [None, 42, [42]])
-def test_invalid_source_shape_is_reported_before_database_use(
-    tmp_path, monkeypatch, canonical, nested
-):
-    data = source(tmp_path / "data", canonical=canonical)
+def test_invalid_source_shape_is_reported_before_database_use(tmp_path, monkeypatch, nested):
+    data = source(tmp_path / "data")
     path = data / "objects/KSW/KSW-0001.yml"
     obj = yaml.safe_load(path.read_text())
     obj["measurements"] = nested
@@ -57,7 +48,7 @@ def test_invalid_source_shape_is_reported_before_database_use(
     monkeypatch.setattr(postgres, "_open_rows", unexpected)
     issues = validator.validate_data_dir(data)
     assert [(i.code, i.severity, i.path) for i in issues] == [
-        ("SQL_CATALOG_INVALID" if canonical else "SCHEMA_VALIDATION", "error", path)
+        ("SQL_CATALOG_INVALID", "error", path)
     ]
     assert "measurements" in issues[0].description
 
@@ -77,9 +68,6 @@ def test_source_and_projection_have_separate_input_contracts(tmp_path):
         152838.5,
     )
     assert {"lat", "lon", "x_1992", "y_1992"} <= measurement.keys()
-    validate_proposal = getattr(validator, "validate_proposal", None)
-    assert callable(validate_proposal), "Proposal validation must be an explicit entry point"
-    assert not validator.has_errors(validate_proposal(projection, data_dir=data))
     for record in projection.records():
         record.path.write_text(yaml.safe_dump(record.data))
     issues = validator.validate_data_dir(data)
@@ -136,35 +124,6 @@ def test_existing_catalogue_validation_never_reloads_source_or_projection(tmp_pa
         issues = validator.validate_catalog(catalog)
         assert not validator.has_errors(issues)
         assert all(i.path is not None for i in issues)
-
-
-def test_proposal_cleanup_failure_retains_sql_diagnostic(tmp_path, monkeypatch):
-    data = source(tmp_path / "data", canonical=False)
-    original = postgres.open_proposal
-
-    @contextmanager
-    def broken_cleanup(*args, **kwargs):
-        with original(*args, **kwargs) as catalog:
-            yield catalog
-        raise postgres.CatalogLoadError("owned proposal cleanup failed")
-
-    monkeypatch.setattr(postgres, "open_proposal", broken_cleanup)
-    issues = validator.validate_proposal(load_yaml_dataset(data), data_dir=data)
-    errors = [i for i in issues if i.severity == "error"]
-    assert [(i.code, i.path, i.description) for i in errors] == [
-        ("SQL_CATALOG_INVALID", None, "owned proposal cleanup failed")
-    ]
-
-
-def test_proposal_consumer_exception_is_not_reclassified(tmp_path):
-    data = source(tmp_path / "data", canonical=False)
-    error = ValueError("failure in the context consumer")
-    with (
-        pytest.raises(ValueError) as raised,
-        validator.validated_proposal(load_yaml_dataset(data), data_dir=data),
-    ):
-        raise error
-    assert raised.value is error
 
 
 @pytest.mark.parametrize("kind", ["missing", "file"])

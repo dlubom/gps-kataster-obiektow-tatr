@@ -24,20 +24,18 @@ i konkretnego pomiaru, bez uzupełniania braków wartościami Best.
 Nazwy i typy wspólnych pól są niezależne od formatowania Excela.
 Samodzielny eksport Best używa tego samego przygotowania.
 
-U02 oddziela odczyt YAML, propozycje legacy, kontrolę istniejącego stanu
-PostgreSQL i historię zaakceptowanej rewizji Git. Build i kanoniczne CLI
-używają wspólnej bramki historii. `SourceDataset` i interfejsy propozycji
-pozostają wewnętrzne do U15. Historyczne review U04 używało tych interfejsów;
-[odbiór U04](plans/PR-40/tasks/U04-canonical-proposals.md#odbiór) zachowuje
-dowody jego ówczesnego działania.
+U02 oddzielił fazy walidacji. U15 usuwa `SourceDataset`, writer YAML
+oraz interfejsy propozycji po wycofaniu importów. Bieżące API/CLI przyjmują
+wyłącznie v2; osobny adapter zachowuje odczyt zaakceptowanego baseline v1/v2
+oraz dotychczasowe błędy ochrony historii. [Karta U15](plans/PR-40/next/U15-remove-writers-legacy.md)
+zawiera odbiór; status jest w indeksie. Historyczne U04 opisuje ówczesne review.
 Grupowanie GPX korzysta z regionu SQL wybranego pomiaru, przekazanego
 niezmiennymi metadanymi do `ExportData`; nie odtwarza geometrii w Pythonie.
 Granice i priorytet poligonów określa `ST_Covers` / `boundaries.ordinal`.
 [Odbiór U05](plans/PR-40/tasks/U05-spatial-read-model.md#odbiór) opisuje regresje
 i porównanie eksportów; status i następne zlecenie są wyłącznie w indeksie.
-Writer zwraca faktyczne zmiany bajtów i usunięcia przez niezmienny `WriteResult`.
-Historyczne review używało `written_paths` bez pełnych skanów YAML;
-[odbiór U06](plans/PR-40/tasks/U06-write-result.md#odbiór) opisuje kontrakt i pomiar IO.
+Historyczny writer U06 został usunięty w U15. Helper atomowej podmiany
+pozostaje przy publikacji eksportów w `build_db`.
 Testy eksportów podają kanoniczne fixtures bezpośrednio do API/CLI, z osobnym
 zaakceptowanym commitem Git sprzed mutacji; migracja legacy ma własne testy.
 [Odbiór U07](plans/PR-40/tasks/U07-production-path-tests.md#odbiór) opisuje
@@ -68,7 +66,7 @@ Kontynuację opisuje [pakiet zleceń PR #40](plans/PR-40/README.md): specyfikacj
 projekt, procedura wykonania i osobne karty U03–U11. Indeks jest jedynym
 rejestrem ich statusów. Zachowuje numerację wdrożonych commitów: U02 to fazy,
 a U03 to kontrola kompletności wejścia, w tym `publications/`. Wspólny guard
-odrzuca brak/plik wymaganej ścieżki przed bazą i zapisem; odczyt legacy może
+odrzuca brak/plik wymaganej ścieżki przed bazą i zapisem; odczyt historycznego baseline v1 może
 pominąć bibliografię. Układ historii pochodzi z rzeczywistych ścieżek Git.
 [Wynik U03](plans/PR-40/tasks/U03-input-completeness.md#odbiór) zawiera odbiór;
 statusy i następne zlecenie pozostają w indeksie serii.

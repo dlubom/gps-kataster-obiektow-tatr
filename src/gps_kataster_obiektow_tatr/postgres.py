@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import secrets
 import shutil
 import subprocess
@@ -24,30 +25,22 @@ from psycopg.rows import dict_row
 from gps_kataster_obiektow_tatr.catalog_records import (
     ENTITY_TABLES,
     FIELDS,
-    SourceDataset,
     check_source_fields,
-    dataset_records,
     record_rows,
 )
 from gps_kataster_obiektow_tatr.data_loader import (
-    CATALOG_FORMAT,
     DEFAULT_DATA_DIR,
-    FORMAT_MARKER,
     DataDirectoryError,
     DataKind,
     LoadedDataset,
     LoadedYamlRecord,
-    iter_yaml_paths,
     load_yaml_dataset,
-    require_dataset_layout,
 )
 
 SCHEMA_PATH = Path(__file__).resolve().parents[2] / "schema/catalog.sql"
 DOCKER_IMAGE = (
     "postgis/postgis:18-3.6@sha256:4a43e3c3e5d55b9208240fc71db543b79c638766280c625a425bd0a2390989c4"
 )
-MAX_FILE_BYTES = 8 * 1024 * 1024
-MAX_CATALOG_BYTES = 256 * 1024 * 1024
 
 
 class CatalogLoadError(ValueError):
@@ -133,62 +126,32 @@ def _server():
             )
 
 
-def check_snapshot_files(data_dir: Path, *, canonical: bool) -> None:
-    """Preserve filesystem guards before parsing either canonical or legacy build inputs."""
-    require_dataset_layout(data_dir, canonical=canonical)
-    size = 0
-    for table in ENTITY_TABLES.values():
-        root = data_dir / table
-        for path in iter_yaml_paths(root):
-            if path.is_symlink():
-                raise CatalogLoadError("YAML snapshots must not be symlinks", path=path)
-            file_size = path.stat().st_size
-            size += file_size
-            if file_size > MAX_FILE_BYTES or size > MAX_CATALOG_BYTES:
-                raise CatalogLoadError("YAML snapshot size limit exceeded", path=path)
-
-
 def _read_snapshots(data_dir: Path):
-    marker = data_dir / FORMAT_MARKER
-    if data_dir.resolve() == DEFAULT_DATA_DIR.resolve() and not marker.is_file():
-        raise CatalogLoadError("Canonical YAML catalogue format marker is missing", path=marker)
-    if marker.exists():
-        try:
-            metadata = json.loads(marker.read_text(encoding="utf-8"))
-        except (OSError, ValueError) as exc:
-            raise CatalogLoadError("Invalid catalogue format marker", path=marker) from exc
-        if metadata != CATALOG_FORMAT:
-            raise CatalogLoadError("Unsupported catalogue storage format", path=marker)
-    check_snapshot_files(data_dir, canonical=marker.exists())
     try:
-        dataset = load_yaml_dataset(data_dir)
-        from gps_kataster_obiektow_tatr.validator import _validate_proposal_membership
-
-        if not marker.exists() and (issues := _validate_proposal_membership(dataset)):
-            issue = issues[0]
-            raise CatalogLoadError(f"{issue.code}: {issue.description}", path=issue.path)
-        if marker.exists():
-            for record in dataset.records():
-                try:
-                    check_source_fields(str(record.kind), record.raw_data)
-                except (KeyError, TypeError, ValueError) as exc:
-                    raise CatalogLoadError(str(exc), path=record.path) from exc
-        return _catalog_rows(dataset, raw=True, legacy_membership=not marker.exists())
+        return _catalog_rows(load_yaml_dataset(data_dir))
     except (CatalogLoadError, DataDirectoryError):
         raise
     except (KeyError, TypeError, ValueError) as exc:
         raise CatalogLoadError(str(exc), path=getattr(exc, "path", data_dir)) from exc
 
 
-def _catalog_rows(dataset: LoadedDataset, *, raw: bool = False, legacy_membership: bool = True):
+def _catalog_rows(dataset: LoadedDataset):
     rows, paths = [], {}
-    for record, data in dataset_records(dataset, raw=raw, legacy_membership=legacy_membership):
-        kind, record_id = str(record.kind), data["id"]
-        if raw and record.path.stem != record_id:
+    for record in dataset.records():
+        kind, data = str(record.kind), dict(record.raw_data)
+        record_id = data.get("id")
+        if not isinstance(record_id, str) or not re.fullmatch(r"[A-Za-z0-9_-]+", record_id):
+            raise CatalogLoadError("Duplicate or unsafe record ID", path=record.path)
+        if (kind, record_id) in paths:
+            raise CatalogLoadError("Duplicate or unsafe record ID", path=record.path)
+        if record.path.stem != record_id:
             raise CatalogLoadError(
                 "YAML entity ID does not match snapshot filename", path=record.path
             )
         try:
+            check_source_fields(kind, data)
+            if kind == "object":
+                data.setdefault("membership_ordinal", 1 if data.get("cave_id") else None)
             entries = record_rows(kind, data)
         except (KeyError, TypeError, ValueError) as exc:
             raise CatalogLoadError(str(exc), path=record.path) from exc
@@ -703,33 +666,6 @@ def _open_rows(rows, paths, data_dir, validate, reference_root):
                 )
             if role_created:
                 admin.execute(sql.SQL("DROP ROLE {}").format(sql.Identifier(role)))
-
-
-@contextmanager
-def open_proposal(
-    dataset: LoadedDataset, *, validate: bool = True, reference_root: Path = SCHEMA_PATH.parents[1]
-):
-    """Load an in-memory proposal; import assertions belong to validator.py."""
-    rows, paths = _catalog_rows(dataset)
-    with _open_rows(rows, paths, DEFAULT_DATA_DIR, validate, reference_root) as catalog:
-        yield catalog
-
-
-@contextmanager
-def open_source_proposal(
-    source: SourceDataset, *, validate: bool = True, reference_root: Path = SCHEMA_PATH.parents[1]
-):
-    """Load canonical edits without legacy membership or derived-field normalization."""
-    if not isinstance(source, SourceDataset):
-        raise TypeError("Canonical proposals require SourceDataset, not a read projection")
-    for record in source.records():
-        try:
-            check_source_fields(str(record.kind), record.raw_data)
-        except (KeyError, TypeError, ValueError) as exc:
-            raise CatalogLoadError(str(exc), path=record.path) from exc
-    rows, paths = _catalog_rows(source, raw=True, legacy_membership=False)
-    with _open_rows(rows, paths, DEFAULT_DATA_DIR, validate, reference_root) as catalog:
-        yield catalog
 
 
 def read_catalog_projection(data_dir: Path = DEFAULT_DATA_DIR) -> LoadedDataset:

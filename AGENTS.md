@@ -21,7 +21,7 @@ Read the selected card before coding; implement only the requested task.
 For cleanup tasks U12, U15, U16 and U17,
 start at `docs/asdlc/plans/PR-40/next/README.md` and read its `spec.md`.
 U13/U14 (retired IDs and deletion exceptions) were withdrawn from scope.
-The cleanup preserves current history errors; these tasks are not yet implemented.
+The cleanup preserves current history errors; consult the index for each task status.
 
 ## Git and delivery
 

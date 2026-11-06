@@ -48,8 +48,11 @@ def test_loader_rejects_incomplete_input(invalid_input):
     data_dir, bad_path = invalid_input
     with pytest.raises(ValueError) as error:
         data_loader.load_yaml_dataset(data_dir)
-    assert type(error.value).__name__ == "DataDirectoryError"
-    assert error.value.path == bad_path
+    root_missing = bad_path == data_dir
+    assert type(error.value).__name__ == (
+        "YamlDataLoadError" if root_missing else "DataDirectoryError"
+    )
+    assert error.value.path == (data_dir / "catalog.json" if root_missing else bad_path)
     assert str(bad_path) in str(error.value)
 
 
@@ -57,9 +60,10 @@ def test_validator_reports_input_path(invalid_input):
     data_dir, bad_path = invalid_input
     issues = validate_data_dir(data_dir)
     assert len(issues) == 1
-    assert issues[0].code == "DATA_DIRECTORY_INVALID"
+    root_missing = bad_path == data_dir
+    assert issues[0].code == ("SQL_CATALOG_INVALID" if root_missing else "DATA_DIRECTORY_INVALID")
     assert issues[0].severity == ValidationSeverity.ERROR
-    assert issues[0].path == bad_path
+    assert issues[0].path == (data_dir / "catalog.json" if root_missing else bad_path)
     assert str(bad_path) in issues[0].description
 
 

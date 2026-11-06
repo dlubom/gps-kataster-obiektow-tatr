@@ -679,8 +679,9 @@ scripts/                   walidacja, pobieranie źródeł i eksport
 build/                     wyłącznie wyniki generowane
 ```
 
-Jawny znacznik formatu katalogu zapobiega potraktowaniu uszkodzonego albo
-niepełnego katalogu jako pustego legacy YAML. Kanoniczne źródło wymaga
+Bieżące wejścia przyjmują wyłącznie YAML v2 ze znacznikiem
+`catalog.json`: `format: postgresql-yaml`, `schema_version: 2`. Brak lub
+niepoprawny znacznik blokuje odczyt; nie ma automatycznej adopcji legacy. Kanoniczne źródło wymaga
 katalogów `objects`, `caves`, `relations` i `publications`, także gdy są puste.
 Brak lub zwykły plik zamiast katalogu daje `DataDirectoryError` z jego ścieżką
 (`DATA_DIRECTORY_INVALID` w walidatorze/CLI), przed otwarciem bazy i zapisem.
@@ -705,35 +706,22 @@ tekstu na liczbę, liczby na tekst, bool na liczbę lub zaokrąglania pól całk
 Referencje i publikacje wymagają poprawnego bezwzględnego URI bez sprawdzania
 dostępności sieciowej. W źródle nie ma pól wyliczanych: `object_ids`, cache
 współrzędnych i wybranego `measurement_id` w trybie auto. Loader zgłasza je
-jako błąd, a writer odfiltrowuje z modelu odczytu. Przy edycji zachowuje
-źródłowe EPSG i istniejący zapis 4326 (`lon`/`lat` albo `input_*`).
-Zapis zachowuje rozszerzenie pliku rekordu (`.yml` lub `.yaml`) oraz pliki
-pomocnicze w katalogu danych, także wewnątrz katalogów encji.
-`write_dataset` zwraca niezmienny `WriteResult`: `written_paths` obejmuje
-nowe lub zmienione bajty YAML, a `removed_paths` — usunięte rekordy.
-Ścieżki wskazują opublikowany katalog, w kolejności caves, objects, relations,
-publications i posortowane wewnątrz grup. Wynik jest wyliczany przed atomową
-podmianą i zwracany dopiero po jej sukcesie; błąd sprzątania starego drzewa
-nie cofa udanego zapisu. Marker, `.gitkeep` i assety nie są zmianami encji.
+jako błąd. Narzędzia katalogu nie przepisują źródłowych YAML; zmiany
+wprowadza się ręcznie i sprawdza przez PR. Źródłowe EPSG, wartości i null
+oraz kolejność pomiarów pozostają chronione.
 
 Kontrole mają odrębne granice: odczyt YAML nie zwraca projekcji PostgreSQL,
-walidacja propozycji legacy sprawdza jej strukturę i deklaracje,
 a walidacja istniejącego katalogu używa jego połączenia bez ponownego ładowania.
 Projekcja z polami wyliczanymi nie jest kanonicznym wejściem YAML.
-Build i kanoniczne CLI współdzielą bramkę źródła, stanu SQL oraz rzeczywistej
-zaakceptowanej rewizji Git. Historyczny adapter i wewnętrzne interfejsy
-propozycji pozostają do osobnej karty U15.
-Buildery dumpa, Best i pełnego wydania stosują ten sam preflight także dla
-wejścia legacy. Każda podana para współrzędnych jest kompletna i zgodna
-z geometrią źródłową, również gdy zapisano `input_*`. Po kontroli schematu
-sprzeczna albo niepełna redundantna para daje `COORDINATE_MISMATCH`
-przed usunięciem deklaracji.
-Podane legacy `best_measurement.measurement_id` w trybie auto
-musi istnieć w tym samym obiekcie (`BEST_MEASUREMENT_MISSING`). Poprawny
-historyczny cache może różnić się od aktualnego wyniku algorytmu auto.
-Kontrola dotyczy bieżących propozycji; nie rozszerza wymagań wobec już
-zaakceptowanych rewizji Git. Buildery legacy zachowują blokadę dowiązań
-plików YAML oraz limity wielkości pliku i całego katalogu przed parsowaniem.
+Build i wszystkie CLI współdzielą bramkę źródła, stanu SQL oraz rzeczywistej
+zaakceptowanej rewizji Git. Bieżący loader odrzuca dowiązania plików YAML
+oraz przekroczenie limitów 8 MiB na plik i 256 MiB na katalog przed parsowaniem.
+
+Wyłącznie adapter historii czyta zaakceptowany baseline v1 lub v2.
+Schematy JSON sprawdzają kompletność starszych rekordów przed porównaniem;
+nie wymuszają aktualnego cache Auto Best w zaakceptowanej historii.
+Usunięcie writera źródeł nie zmienia atomowej publikacji eksportów: helper
+podmiany katalogów pozostaje w module `build_db`, przy jej właścicielu.
 
 ### 10.2 Edycja i historyczna zgodność
 
@@ -743,8 +731,9 @@ Dopisanie źródła, notatki lub zmiana statusu nie wymaga zmiany pozycji.
 Kopiowanie współrzędnych pochodnych do źródłowych podczas takiej edycji
 jest niedopuszczalne; natywne EPSG i wartości są zachowywane.
 
-Ochrona historii odczytuje YAML z zaakceptowanej rewizji Git. Walidacja
-propozycji w pamięci korzysta z tego samego mapowania wartości do PostgreSQL.
+Ochrona historii odczytuje YAML z zaakceptowanej rewizji Git. Usunięcie
+obiektu lub pomiaru, zmiana chronionych wartości, kolejności albo brak baseline
+nadal dają błędy blokujące publikację. Nie ma interfejsów zapisu propozycji.
 
 [Diagramy ERD i przepływu](docs/architecture/schema.md) oraz
 [instrukcja pracy](docs/operations.md) uzupełniają wykonywalny schemat.
@@ -1067,8 +1056,8 @@ Wersje zależności są utrwalane w lockfile, aby lokalne środowisko i CI dzia�
 Zwykłe testy builda, eksportów i podglądu podają bezpośrednio kanoniczny YAML
 do produkcyjnego API/CLI. Fabryki nie uruchamiają walidatora, SQL ani writera.
 Osobne repozytorium Git utrwala zaakceptowany fixture przed uszkodzeniem
-kandydata; jego SHA jest jawnym argumentem wejścia. Testy adaptera legacy
-i rzeczywistej migracji mają osobne scenariusze. Wzorce wartości i odczyty
+kandydata; jego SHA jest jawnym argumentem wejścia. Testy historycznego baseline v1 i v2 mają osobne scenariusze; bieżący
+kandydat jest jawnym fixture v2, bez produkcyjnego konwertera źródeł. Wzorce wartości i odczyty
 XLSX, GeoPackage, Shapefile oraz dumpa są niezależne od serializera eksportu.
 
 Wymagane testy V1:
@@ -1128,8 +1117,8 @@ Pole `verified_by` i `created_by` może używać krótkiego identyfikatora osoby
 
 Format `postgresql-yaml` ma wersję 2 i jawny znacznik w `data/`. Schemat wykonywalny
 jest w `schema/catalog.sql`, a zmiany opisuje `schema/CHANGELOG.md`.
-Reprezentacje legacy wersji 1 służą odczytowi historycznej bazy i zachowanym
-wewnętrznym interfejsom propozycji. Nie stanowią alternatywnego źródła bieżącego katalogu.
+Reprezentacje legacy wersji 1 służą wyłącznie odczytowi zaakceptowanej
+historycznej bazy Git. Bieżące API/CLI odrzucają je przed zapisem wyników.
 Zmiana niekompatybilna wymaga jawnej migracji, testu historii i odtworzenia.
 
 ---

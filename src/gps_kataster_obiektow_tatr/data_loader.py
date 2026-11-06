@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from collections.abc import Callable
 from copy import deepcopy
 from dataclasses import dataclass
@@ -15,6 +16,8 @@ from gps_kataster_obiektow_tatr.yaml_io import load_unique_yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_DIR = REPO_ROOT / "data"
+MAX_FILE_BYTES = 8 * 1024 * 1024
+MAX_CATALOG_BYTES = 256 * 1024 * 1024
 FORMAT_MARKER = "catalog.json"
 CATALOG_FORMAT = {"format": "postgresql-yaml", "schema_version": 2}
 
@@ -93,9 +96,31 @@ def require_dataset_layout(data_dir: Path, *, canonical: bool) -> None:
 
 
 def load_yaml_dataset(data_dir: Path = DEFAULT_DATA_DIR) -> LoadedDataset:
-    """Read source YAML after checking the canonical or legacy directory layout."""
-    require_dataset_layout(data_dir, canonical=is_canonical_source(data_dir))
+    """Read current v2 YAML only, guarding files before parsing their contents."""
+    marker = data_dir / FORMAT_MARKER
+    if not marker.is_file():
+        raise YamlDataLoadError(marker, "Canonical YAML catalogue format marker is missing")
+    try:
+        metadata = json.loads(marker.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise YamlDataLoadError(marker, "Invalid catalogue format marker") from exc
+    if metadata != CATALOG_FORMAT:
+        raise YamlDataLoadError(marker, "Unsupported catalogue storage format")
+    require_dataset_layout(data_dir, canonical=True)
+    size = 0
+    for name in DATA_DIRECTORIES:
+        for path in iter_yaml_paths(data_dir / name):
+            if path.is_symlink():
+                raise YamlDataLoadError(path, "YAML snapshots must not be symlinks")
+            file_size = path.stat().st_size
+            size += file_size
+            if file_size > MAX_FILE_BYTES or size > MAX_CATALOG_BYTES:
+                raise YamlDataLoadError(path, "YAML snapshot size limit exceeded")
+    return _load_dataset_records(data_dir)
 
+
+def _load_dataset_records(data_dir: Path) -> LoadedDataset:
+    """Read records after the caller checks the current or accepted-history layout."""
     for name in DATA_DIRECTORIES:
         if path := next((data_dir / name).rglob("*.sql"), None):
             raise YamlDataLoadError(path, "SQL snapshots are not YAML catalogue data")
@@ -207,8 +232,3 @@ def _normalize_relation(raw_data: dict[str, Any]) -> dict[str, Any]:
 def _setdefault_list(data: dict[str, Any], key: str) -> None:
     if key not in data:
         data[key] = []
-
-
-def is_canonical_source(data_dir: Path) -> bool:
-    """Select the canonical input contract, including a damaged default catalogue."""
-    return data_dir.resolve() == DEFAULT_DATA_DIR.resolve() or (data_dir / FORMAT_MARKER).exists()

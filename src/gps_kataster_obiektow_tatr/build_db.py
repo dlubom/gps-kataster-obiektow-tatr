@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import ctypes
+import os
 import shutil
+import sys
 import tempfile
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -70,13 +73,24 @@ def _build_metadata(dataset, *, generated_at, validation_issues):
     }
 
 
+def _exchange_directories(left: Path, right: Path) -> None:
+    """Atomically exchange two directory trees; fail closed on unsupported systems."""
+    libc = ctypes.CDLL(None, use_errno=True)
+    if sys.platform == "darwin":
+        result = libc.renamex_np(os.fsencode(left), os.fsencode(right), 2)  # RENAME_SWAP
+    elif sys.platform.startswith("linux"):
+        result = libc.renameat2(-100, os.fsencode(left), -100, os.fsencode(right), 2)
+    else:
+        raise OSError("Atomic snapshot replacement requires Linux or macOS")
+    if result:
+        raise OSError(ctypes.get_errno(), "Atomic snapshot exchange failed")
+
+
 @contextmanager
 def staged_artifact_directory(
     output_dir: Path, *, data_dir=DEFAULT_DATA_DIR, history_repo=REPO_ROOT
 ):
     """Commit a whole directory with one atomic exchange, only after all writers pass."""
-    from gps_kataster_obiektow_tatr.catalog_records import _exchange_directories
-
     output_dir = Path(output_dir)
     _check_artifact_destination(output_dir, Path(data_dir), Path(history_repo))
     output_dir.parent.mkdir(parents=True, exist_ok=True)

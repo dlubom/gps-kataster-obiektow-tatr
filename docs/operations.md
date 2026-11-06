@@ -133,9 +133,9 @@ i przodkowie, korzeń repozytorium oraz `.git` są odrzucane, także przez
 dowiązania. Istniejące wyjście może zawierać tylko zwykłe pliki bieżącego
 zestawu artefaktów. Obce pliki, podkatalogi i dowiązania zatrzymują eksport
 bez nadpisania; wybierz inny katalog lub samodzielnie uporządkuj zawartość.
-Wejście legacy przechodzi tę samą kontrolę deklaracji co walidator:
-wszystkie podane pary współrzędnych muszą być kompletne i zgodne z pozycją
-źródłową, a zapisany cache Auto Best musi wskazywać istniejący pomiar obiektu.
+Każde bieżące wejście wymaga `catalog.json` z `format: postgresql-yaml`
+i `schema_version: 2` oraz czterech katalogów encji. Legacy bez znacznika
+jest odrzucane przed bazą i publikacją wyjścia; nie jest automatycznie migrowane.
 [Kontrakt paczkowania](release_artifacts.md#oficjalna-paczka-wydania),
 [odbiór U10](asdlc/plans/PR-40/tasks/U10-artifacts-and-cli.md#odbiór).
 
@@ -334,17 +334,15 @@ Buildery i CLI używają `utc_timestamp` z dokładnością do sekundy; jawny
 
 | Punkt wejścia | Stan i wykonane kontrole |
 |---|---|
-| `load_yaml_dataset` | Rekordy YAML z surowymi polami i ścieżkami; wymagane katalogi, składnia i unikalne klucze. Bez bazy i kontroli domeny/historii. |
+| `load_yaml_dataset` | Rekordy v2 z surowymi polami i ścieżkami; znacznik, katalogi, limity rozmiaru, blokada dowiązań YAML, składnia i unikalne klucze. Bez bazy i kontroli domeny/historii. |
 | `read_catalog_projection` | Zawsze projekcja PostgreSQL po kontroli wejścia przez adapter. Zawiera pola wyliczane; bez pełnej walidacji domeny i Git. |
-| `validate_proposal` / `validated_proposal` | Propozycja legacy w pamięci: schemat przed odczytem zagnieżdżonych wartości, ID, członkostwo, SQL, redundantne współrzędne. Drugi wariant zachowuje połączenie do dalszych kontroli. |
-| `source_dataset(LoadedDataset) → SourceDataset` | Jawna konwersja już sprawdzonych deklaracji/projekcji do pól źródłowych. Zachowuje ścieżki i ordinal; usuwa listy otworów, współrzędne pochodne i ID auto Best. Sama konwersja nie poświadcza walidacji. |
-| `validated_source_proposal(SourceDataset)` / `open_source_proposal(SourceDataset)` | Kanoniczna propozycja zmian w pamięci: kontrola pól źródłowych i mapowanie do SQL bez ponownego schematu legacy i deklaracji `object_ids`. Pierwszy wariant dodaje kontrolę ścieżek i stanu SQL; połączenie służy także historii. Zwykła projekcja nie jest przyjmowana jako `SourceDataset`. |
 | `validate_catalog` | Kontrola już załadowanego stanu SQL, ścieżek i załączników. Bez odczytu YAML, odbudowy projekcji ani kolejnej bazy. |
 | `validated_catalog_source` | Źródło YAML i kontrola stanu SQL; zwraca jedno połączenie, jedną projekcję i diagnostykę. Bez historii Git. |
 | `history_checked_catalog` | Wspólna bramka builda i kanonicznego CLI: powyższe kontrole oraz wymagany `base_ref` z zaakceptowanej rewizji. Historia używa tego samego połączenia. |
 
-`validate_data_dir` raportuje kontrole wejścia i SQL, wybierając kanoniczny
-kontrakt źródła lub jawny kontrakt propozycji legacy; nie wykonuje kontroli Git.
+`validate_data_dir` raportuje kontrole kanonicznego wejścia v2 i SQL;
+nie wykonuje kontroli Git. Wyłącznie adapter historii czyta starszy baseline
+v1; `history_schema.py` zachowuje potrzebne schematy JSON i diagnostykę.
 Polecenie `scripts/validate.py` zawsze dodaje rzeczywistą bazę historii.
 Pusty katalog jest poprawny strukturalnie, ale zastąpienie nim niepustej
 zaakceptowanej bazy narusza ochronę historii. `schema/history.sql` porównuje
@@ -366,12 +364,10 @@ wewnątrz pomiarów. Parser wskazuje plik, klucz oraz obie
 lokalizacje duplikatu. Zwykłe aliasy i merge keys o rozłącznych kluczach są
 legalne; kolizje po rozwinięciu są błędem, także przy identycznej wartości.
 
-Wewnętrzny writer katalogu zachowano do U15. Atomowo podmienia snapshot,
-chroni pliki pomocnicze i blokuje niedozwolone dowiązania. Zwraca `WriteResult`
-z `written_paths` i `removed_paths`, w kolejności caves, objects, relations,
-publications. Błąd serializacji lub podmiany pozostawia poprzedni katalog;
-cleanup starego drzewa po udanej podmianie nie zmienia wyniku sukcesu.
-Bieżące zmiany źródeł wprowadza się ręcznie w YAML i sprawdza w PR.
+Narzędzia katalogu czytają YAML, walidują i publikują eksporty. Nie ma
+programowego writera źródeł ani interfejsów propozycji. Źródła edytuj ręcznie
+w YAML i sprawdzaj w PR. Atomowa publikacja eksportów nadal zachowuje
+poprzednie wyniki przy awarii przed podmianą katalogów.
 
 ## Pozycja z sieci pomiarowej jaskini
 
@@ -491,9 +487,11 @@ fixture i wywołaj `accept_source`, potem zmień tylko kandydata i przekaż
 zachowane `base_ref`/`history_repo`. `cli_args` formatuje wyłącznie te argumenty.
 Puste istniejące katalogi są utrwalane w kopii Git; brakujące nie są dodawane.
 
-`tests/test_legacy_migration.py` celowo wykonuje walidację deklaracji i zapis
-konwersji: tam migracja jest przedmiotem testu. `make_legacy_history_baseline`
-w `sql_test_support.py` służy do zaakceptowanych rewizji starego formatu.
+`tests/test_legacy_migration.py` sprawdza bieżący fixture v2 względem
+rzeczywistego starszego commitu; nie wywołuje konwertera ani writera katalogu.
+`make_legacy_history_baseline` w `sql_test_support.py` utrwala v1 w Git,
+a `write_canonical_history_source` kopiuje jawne pliki v2 z fixtures.
+Schematy JSON i ich zależności pozostają potrzebne do odczytu historii.
 Odczyty konsumenckie nadal używają openpyxl, pyshp, SQLite/GDAL i natywnego
 restore. [Zakres i odbiór U07](asdlc/plans/PR-40/tasks/U07-production-path-tests.md#odbiór).
 

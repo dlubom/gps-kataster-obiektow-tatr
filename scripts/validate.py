@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate YAML source/proposals, PostgreSQL state and accepted Git history."""
+"""Validate canonical YAML, PostgreSQL state and accepted Git history."""
 
 from __future__ import annotations
 
@@ -18,7 +18,6 @@ from gps_kataster_obiektow_tatr.validator import (  # noqa: E402
     CatalogValidationError,
     exit_code_for_issues,
     history_checked_catalog,
-    validated_proposal,
 )
 
 
@@ -26,7 +25,7 @@ def build_parser() -> argparse.ArgumentParser:
     """Build the CLI argument parser."""
 
     parser = argparse.ArgumentParser(
-        description="Validate YAML source/proposals, PostgreSQL state and accepted Git history."
+        description="Validate canonical YAML, PostgreSQL state and accepted Git history."
     )
     add_catalog_arguments(parser)
     return parser
@@ -41,10 +40,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     from gps_kataster_obiektow_tatr.data_loader import (
         DataDirectoryError,
         YamlDataLoadError,
-        is_canonical_source,
-        load_yaml_dataset,
     )
-    from gps_kataster_obiektow_tatr.history import check_history
     from gps_kataster_obiektow_tatr.postgres import CatalogLoadError
     from gps_kataster_obiektow_tatr.validator import (
         ValidationIssue,
@@ -53,26 +49,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
 
     try:
-        if is_canonical_source(args.data_dir):
-            with history_checked_catalog(
-                args.data_dir, base_ref=args.base_ref, history_repo=args.history_repo
-            ) as (_, _, issues):
-                pass
-        else:
-            proposal = load_yaml_dataset(args.data_dir)
-            with validated_proposal(proposal, data_dir=args.data_dir, repo_root=REPO_ROOT) as (
-                catalog,
-                issues,
-            ):
-                issues = (
-                    *issues,
-                    *check_history(
-                        args.base_ref,
-                        proposal,
-                        repo_root=args.history_repo,
-                        connection=catalog.connection,
-                    ),
-                )
+        with history_checked_catalog(
+            args.data_dir, base_ref=args.base_ref, history_repo=args.history_repo
+        ) as (_, _, issues):
+            pass
     except CatalogValidationError as exc:
         issues = exc.issues
     except (CatalogLoadError, psycopg.Error) as exc:

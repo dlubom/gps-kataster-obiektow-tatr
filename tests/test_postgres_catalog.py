@@ -6,8 +6,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from gps_kataster_obiektow_tatr.catalog_records import record_rows, write_dataset
-from gps_kataster_obiektow_tatr.data_loader import DataKind, load_yaml_dataset
+from gps_kataster_obiektow_tatr.catalog_records import record_rows
 from gps_kataster_obiektow_tatr.postgres import CatalogLoadError, open_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,17 +14,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 @pytest.fixture
 def records():
-    obj = yaml.safe_load((ROOT / "tests/fixtures/valid-object.yml").read_text())
-    cave = yaml.safe_load((ROOT / "tests/fixtures/valid-cave.yml").read_text())
-    cave["object_ids"] = [obj["id"]]
+    obj = yaml.safe_load((ROOT / "tests/fixtures/canonical-object.yml").read_text())
+    cave = yaml.safe_load((ROOT / "tests/fixtures/canonical-cave.yml").read_text())
     for record in (obj, cave):
         record["bibliography_status"] = "unknown"
-    obj["measurements"][0].pop("x_1992")
-    obj["measurements"][0].pop("y_1992")
     return obj, cave
 
 
 def snapshot(tmp_path, records):
+    from export_test_support import initialize_source
+
+    initialize_source(tmp_path)
     for kind, record in zip(("objects", "caves"), records, strict=True):
         root = tmp_path / kind
         root.mkdir(parents=True, exist_ok=True)
@@ -38,13 +37,15 @@ def snapshot(tmp_path, records):
 def test_native_catalog_round_trip(tmp_path, records):
     with open_catalog(snapshot(tmp_path / "first", records)) as catalog:
         dataset = catalog.dataset()
-        assert dataset.objects[0].data["best_measurement"] == records[0]["best_measurement"]
+        assert dataset.objects[0].data["best_measurement"] == {
+            **records[0]["best_measurement"],
+            "measurement_id": "m-001",
+        }
         assert dataset.objects[0].data["measurements"][0]["lat"] == 49.2423
         assert (
             catalog.connection.execute("SELECT count(*) n FROM catalog.v_best").fetchone()["n"] == 1
         )
-        write_dataset(dataset, tmp_path / "second")
-    with open_catalog(tmp_path / "second") as catalog:
+    with open_catalog(tmp_path / "first") as catalog:
         assert catalog.dataset().objects[0].data == dataset.objects[0].data
 
 
@@ -67,8 +68,10 @@ def test_native_constraints_reject_invalid_catalog(tmp_path, records, change):
         pass
 
 
-def test_native_geometry_and_citations_survive_note_edit(tmp_path, records):
+def test_native_geometry_and_citations_survive_projection(tmp_path, records):
     obj, cave = records
+    obj["measurements"][0].pop("lat")
+    obj["measurements"][0].pop("lon")
     obj["measurements"][0].update(input_srid=2180, input_x=562729.5, input_y=152838.5)
     obj["bibliography_status"] = "known"
     obj["citations"] = [{"publication_id": "example", "locator": "s. 3", "purpose": "identity"}]
@@ -79,11 +82,6 @@ def test_native_geometry_and_citations_survive_note_edit(tmp_path, records):
         )
     )
     with open_catalog(root) as catalog:
-        dataset = catalog.dataset()
-        obj = dataset.objects[0].data
-        obj["notes"] = "Only notes changed; apostrophe ' and \\ stay literal."
-        write_dataset(dataset, tmp_path / "second")
-    with open_catalog(tmp_path / "second") as catalog:
         m = catalog.dataset().objects[0].data["measurements"][0]
         assert (m["input_srid"], m["input_x"], m["input_y"]) == (2180, 562729.5, 152838.5)
         assert catalog.dataset().objects[0].data["citations"] == obj["citations"]
@@ -181,11 +179,6 @@ def test_database_rejects_non_finite_values_without_python_preflight(
                 )
 
 
-def test_legacy_loader_is_explicit():
-    assert callable(load_yaml_dataset)
-    assert DataKind.PUBLICATION.value == "publication"
-
-
 def test_yaml_filename_cannot_own_another_entity(tmp_path, records):
     root = snapshot(tmp_path, records)
     (root / "objects/KSW-0001.yml").rename(root / "objects/KSW-0002.yml")
@@ -211,17 +204,6 @@ def test_storage_marker_cannot_fall_back_to_yaml(tmp_path):
     (tmp_path / "objects/legacy.yml").write_text("id: KSW-0001\n")
     with pytest.raises(CatalogLoadError, match="Unsupported catalogue storage format"):
         read_catalog_projection(tmp_path)
-
-
-def test_atomic_write_failure_preserves_entire_old_snapshot(tmp_path, records):
-    root = snapshot(tmp_path / "data", records)
-    with open_catalog(root) as catalog:
-        dataset = catalog.dataset()
-    before = {p.relative_to(root): p.read_bytes() for p in root.rglob("*") if p.is_file()}
-    dataset.objects[0].data["unknown_field"] = "cannot serialize"
-    with pytest.raises(ValueError, match="Unknown"):
-        write_dataset(dataset, root)
-    assert {p.relative_to(root): p.read_bytes() for p in root.rglob("*") if p.is_file()} == before
 
 
 def test_native_resource_cleanup_and_loader_privileges(tmp_path, records, monkeypatch):
@@ -345,16 +327,14 @@ def test_yaml_presence_distinguishes_null_from_absence(tmp_path, records, field)
     )
 
 
-def test_open_proposal_uses_sql_and_retains_native_coordinates(tmp_path, records):
-    from gps_kataster_obiektow_tatr.postgres import open_proposal
-
-    records[0]["measurements"][0].update(input_srid=2180, input_x=562729.5, input_y=152838.5)
+def test_canonical_input_retains_native_coordinates(tmp_path, records):
+    measurement = records[0]["measurements"][0]
+    measurement.pop("lat")
+    measurement.pop("lon")
+    measurement.update(input_srid=2180, input_x=562729.5, input_y=152838.5)
     with open_catalog(snapshot(tmp_path, records)) as catalog:
-        dataset = catalog.dataset()
-    with open_proposal(dataset) as catalog:
         m = catalog.dataset().objects[0].data["measurements"][0]
-        assert m["input_srid"] == 2180
-        assert (m["input_x"], m["input_y"]) == (562729.5, 152838.5)
+        assert (m["input_srid"], m["input_x"], m["input_y"]) == (2180, 562729.5, 152838.5)
 
 
 def test_computed_best_is_auto_even_when_manual_selects_another_measurement(tmp_path, records):
@@ -392,7 +372,6 @@ def test_measurement_citation_attachment_relation_and_literal_notes_roundtrip(tm
     second = deepcopy(obj)
     second["id"] = "KSW-0002"
     second["membership_ordinal"] = 2
-    cave["object_ids"].append(second["id"])
     root = snapshot(tmp_path / "first", records)
     (root / "objects/KSW-0002.yml").write_text(yaml.safe_dump(second))
     publication = {
@@ -418,9 +397,6 @@ def test_measurement_citation_attachment_relation_and_literal_notes_roundtrip(tm
     }
     (root / "relations/R-0001.yml").write_text(yaml.safe_dump(relation))
     with open_catalog(root) as catalog:
-        dataset = catalog.dataset()
-        write_dataset(dataset, tmp_path / "second")
-    with open_catalog(tmp_path / "second") as catalog:
         readback = catalog.dataset()
         assert readback.objects[0].data["notes"] == obj["notes"]
         assert readback.objects[0].data["attachments"] == obj["attachments"]
@@ -440,60 +416,6 @@ def test_default_catalog_missing_marker_cannot_be_downgraded_to_legacy(tmp_path,
         (tmp_path / directory).mkdir()
     with pytest.raises(CatalogLoadError, match="marker is missing"):
         postgres.read_catalog_projection(tmp_path)
-
-
-@pytest.mark.parametrize("invalid_record", [True, False])
-def test_snapshot_writer_never_follows_existing_marker_symlink(tmp_path, records, invalid_record):
-    import json
-    import os
-
-    from gps_kataster_obiektow_tatr.data_loader import LoadedDataset, LoadedYamlRecord
-
-    root = tmp_path / "data"
-    root.mkdir()
-    marker_target = tmp_path / "external-marker.txt"
-    marker_target.write_bytes(b"KEEP ORIGINAL\n")
-    (root / "catalog.json").symlink_to(marker_target)
-    (root / "objects").mkdir()
-    (root / "objects/old.yml").write_bytes(b"OLD SNAPSHOT\n")
-    (root / "asset.txt").write_bytes(b"UNCHANGED ASSET\n")
-    obj, cave = records
-    if invalid_record:
-        obj["id"] = "../invalid"
-    dataset = LoadedDataset(
-        objects=(LoadedYamlRecord(DataKind.OBJECT, root / "objects/new.yml", obj, obj),),
-        caves=(LoadedYamlRecord(DataKind.CAVE, root / "caves/new.yml", cave, cave),),
-        relations=(),
-    )
-
-    def tree_state():
-        return {
-            str(path.relative_to(root)): (
-                ("symlink", os.readlink(path))
-                if path.is_symlink()
-                else ("directory", None)
-                if path.is_dir()
-                else ("file", path.read_bytes())
-            )
-            for path in root.rglob("*")
-        }
-
-    before = tree_state()
-    if invalid_record:
-        with pytest.raises(ValueError, match="unsafe record ID"):
-            write_dataset(dataset, root)
-        assert marker_target.read_bytes() == b"KEEP ORIGINAL\n"
-        assert tree_state() == before
-    else:
-        write_dataset(dataset, root)
-        assert marker_target.read_bytes() == b"KEEP ORIGINAL\n"
-        assert (root / "catalog.json").is_file()
-        assert not (root / "catalog.json").is_symlink()
-        assert json.loads((root / "catalog.json").read_text()) == {
-            "format": "postgresql-yaml",
-            "schema_version": 2,
-        }
-        assert (root / "asset.txt").read_bytes() == b"UNCHANGED ASSET\n"
 
 
 def test_membership_is_derived_from_object_fk(tmp_path, records):
@@ -660,6 +582,8 @@ def test_serializer_rejects_partial_native_geometry_instead_of_discarding_it(rec
 
 
 def test_untransformable_native_geometry_returns_controlled_catalog_error(tmp_path, records):
+    records[0]["measurements"][0].pop("lat")
+    records[0]["measurements"][0].pop("lon")
     records[0]["measurements"][0].update(input_srid=2180, input_x=1e308, input_y=1e308)
     with pytest.raises(CatalogLoadError), open_catalog(snapshot(tmp_path, records)):
         pass
@@ -690,32 +614,3 @@ def test_canonical_sql_allows_nullable_or_named_verifier(tmp_path, records, veri
     records[0]["measurements"][0]["verified_by"] = verifier
     with open_catalog(snapshot(tmp_path, records)) as catalog:
         assert catalog.dataset().objects[0].data["measurements"][0]["verified_by"] == verifier
-
-
-@pytest.mark.parametrize("destination", ["symlink", "dangling", "file"])
-def test_snapshot_rejects_non_directory_root_without_mutation(tmp_path, destination):
-    from gps_kataster_obiektow_tatr.catalog_records import write_dataset
-    from gps_kataster_obiektow_tatr.data_loader import LoadedDataset
-
-    target = tmp_path / "target"
-    root = tmp_path / "data"
-    if destination == "file":
-        root.write_bytes(b"KEEP")
-    else:
-        if destination == "symlink":
-            target.mkdir()
-            (target / "original").write_bytes(b"KEEP")
-        root.symlink_to(target, target_is_directory=True)
-    before = set(tmp_path.iterdir())
-    with pytest.raises(ValueError, match="real directory"):
-        write_dataset(LoadedDataset(objects=(), caves=(), relations=()), root)
-    assert set(tmp_path.iterdir()) == before
-    if destination == "file":
-        assert root.read_bytes() == b"KEEP"
-    else:
-        assert root.is_symlink()
-        assert root.readlink() == target
-        if destination == "symlink":
-            assert (target / "original").read_bytes() == b"KEEP"
-        else:
-            assert not target.exists()

@@ -24,7 +24,7 @@ pomylić ich z wcześniejszą propozycją. Jej zapis pozostaje w historii Git.
 |---|---|---|---|
 | [U12](U12-remove-imports.md) | Usunięte zakończone importy, profiler i naprawa TPN | wykonane; CI w opisie PR | brak |
 | U13 / U14 | Rejestr ID i kontrolowane wycofania | wyłączone z zakresu | nie realizować |
-| [U15](U15-remove-writers-legacy.md) | Jeden bieżący format v2, usunięte programowe zapisy katalogu | oczekuje | U12 |
+| [U15](U15-remove-writers-legacy.md) | Jeden bieżący format v2, usunięte programowe zapisy katalogu | w odbiorze | U12 |
 | [U16](U16-postgis-validation.md) | Jeden silnik walidacji geografii katalogu | oczekuje | U15 |
 | [U17](U17-export-read-model.md) | Decyzja o skróceniu drogi SQL → ExportData | oczekuje | U16 |
 
@@ -40,7 +40,6 @@ ani polityki merge/tag/release. Issue #33 pozostaje odłożone.
   kontraktów określa spec powyżej; ograniczenia zakończonej serii U03–U11
   dotyczą jej własnego zakresu.
 - Uaktualniaj główną specyfikację i operations w karcie wdrażającej zachowanie.
-  Obecny pakiet zmienia tylko dokumentację planowania.
 - Każda karta kończy się sprawdzalnym wynikiem, bilansem kodu, commitem
   i terminalnym CI dla zdalnego SHA. Kończ po wskazanej karcie.
 - Pełna bramka: `uv run --frozen python scripts/check_project.py --base-ref origin/main`

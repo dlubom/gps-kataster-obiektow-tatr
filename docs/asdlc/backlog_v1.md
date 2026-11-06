@@ -61,7 +61,9 @@ Zakres po korekcie użytkownika 2026-11-06: [plan czyszczenia](plans/PR-40/next/
 usuwa zakończone importy i zbędne ścieżki. Aktywne karty to U12, U15–U17;
 U13/U14 wyłączono z zakresu. Nie wprowadzamy rejestru ID ani nowych zasad
 usuwania. Obecna ochrona historii pozostaje bez zmian. [Odbiór U12](plans/PR-40/next/U12-remove-imports.md#odbiór)
-opisuje wykonane usunięcie; statusy i zależności są wyłącznie w nowym indeksie.
+opisuje wykonane usunięcie; [U15](plans/PR-40/next/U15-remove-writers-legacy.md)
+usuwa writer i bieżące propozycje legacy, zachowując starszą historię.
+Statusy i zależności są wyłącznie w nowym indeksie.
 
 
 ## Zadania odłożone

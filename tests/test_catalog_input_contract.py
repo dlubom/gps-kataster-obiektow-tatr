@@ -1,4 +1,4 @@
-"""The YAML and proposal adapters reject coercion before PostgreSQL sees values."""
+"""The canonical YAML adapter reject coercion before PostgreSQL sees values."""
 
 import os
 import subprocess
@@ -11,16 +11,15 @@ import yaml
 
 from gps_kataster_obiektow_tatr.catalog_records import record_rows
 from gps_kataster_obiektow_tatr.data_loader import load_yaml_dataset
-from gps_kataster_obiektow_tatr.postgres import CatalogLoadError, _catalog_rows, _read_snapshots
+from gps_kataster_obiektow_tatr.postgres import CatalogLoadError, _read_snapshots
 
 
 @pytest.fixture
-def source(tmp_path, make_data_dir):
-    make_data_dir(tmp_path)
+def source(tmp_path, make_canonical_data_dir):
+    make_canonical_data_dir(tmp_path)
     fixtures = Path(__file__).parent / "fixtures"
-    obj = yaml.safe_load((fixtures / "valid-object.yml").read_text())
-    cave = yaml.safe_load((fixtures / "valid-cave.yml").read_text())
-    cave["object_ids"] = [obj["id"]]
+    obj = yaml.safe_load((fixtures / "canonical-object.yml").read_text())
+    cave = yaml.safe_load((fixtures / "canonical-cave.yml").read_text())
     return tmp_path, obj, cave
 
 
@@ -31,7 +30,6 @@ def save(source):
     return root
 
 
-@pytest.mark.parametrize("entry", ["yaml", "proposal"])
 @pytest.mark.parametrize(
     "location,field,value",
     [
@@ -44,10 +42,10 @@ def save(source):
         ("measurement", "vertical_accuracy_m", False),
         ("measurement", "elevation_m", "1240"),
         ("assignment", "assigned_prefix", 123),
-        ("best", "measurement_id", 123),
+        ("best", "reason", 123),
     ],
 )
-def test_scalar_types_cannot_be_coerced(source, entry, location, field, value):
+def test_scalar_types_cannot_be_coerced(source, location, field, value):
     root, obj, _ = source
     target = {
         "object": obj,
@@ -58,10 +56,7 @@ def test_scalar_types_cannot_be_coerced(source, entry, location, field, value):
     target[field] = value
     save(source)
     with pytest.raises(CatalogLoadError, match=field) as caught:
-        if entry == "yaml":
-            _read_snapshots(root)
-        else:
-            _catalog_rows(load_yaml_dataset(root))
+        _read_snapshots(root)
     assert caught.value.path == root / "objects/KSW-0001.yml"
 
 
@@ -222,18 +217,3 @@ def test_complete_empty_canonical_source_and_publications_are_readable(
     assert record.data["id"] == "source"
     assert record.data["citation"] == "Katalog Tatr, 1994"
     assert record.data["url"] is None
-
-
-def test_legacy_accepts_absent_bibliography_but_rejects_a_file(tmp_path, make_data_dir):
-    from gps_kataster_obiektow_tatr.data_loader import DataDirectoryError, iter_yaml_paths
-
-    root = make_data_dir(tmp_path / "data")
-    path = root / "publications"
-    assert load_yaml_dataset(root).publications == ()
-    assert iter_yaml_paths(path) == ()
-    path.write_bytes(b"not a bibliography directory")
-    # Optional-source traversal stays permissive; the dataset boundary owns the layout.
-    assert iter_yaml_paths(path) == ()
-    with pytest.raises(DataDirectoryError) as raised:
-        load_yaml_dataset(root)
-    assert raised.value.path == path
