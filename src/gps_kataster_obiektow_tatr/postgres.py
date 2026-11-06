@@ -177,8 +177,8 @@ class Catalog:
         except psycopg.Error as exc:
             raise CatalogLoadError(str(exc)) from exc
 
-    def issues(self, *, repo_root=None, prefix_resolver=None):
-        """Core relational findings; domain/geography validation builds on these."""
+    def issues(self, *, repo_root=None):
+        """SQL integrity, domain and geography findings plus attachment checks."""
         from gps_kataster_obiektow_tatr.validator import ValidationIssue, ValidationSeverity
 
         findings = []
@@ -204,7 +204,6 @@ class Catalog:
                         + (f" ({row['measurement_id']})" if row.get("measurement_id") else ""),
                     )
                 )
-        from gps_kataster_obiektow_tatr.prefix_resolver import PrefixResolutionStatus
         from gps_kataster_obiektow_tatr.validator import (
             _validate_attachments,
         )
@@ -221,8 +220,6 @@ class Catalog:
         for row in self._fetchall(
             "SELECT * FROM catalog.v_geography_issues ORDER BY code,entity_id,measurement_id"
         ):
-            if prefix_resolver is not None and row["code"] != "MEASUREMENT_DISTANCE_OUTLIER":
-                continue
             findings.append(
                 ValidationIssue(
                     row["code"],
@@ -232,42 +229,6 @@ class Catalog:
                     f"{row['code']} {row['detail'] or ''}",
                 )
             )
-        if prefix_resolver is not None:
-            for row in self._fetchall(
-                "SELECT m.object_id,m.id,m.lat,m.lon,b.id IS NOT NULL AS is_best "
-                "FROM catalog.v_measurements m LEFT JOIN catalog.v_best b "
-                "ON (m.object_id,m.id)=(b.object_id,b.id) ORDER BY m.object_id,m.history_order"
-            ):
-                path = self.paths.get(("object", row["object_id"]))
-                resolution = prefix_resolver.resolve(lat=row["lat"], lon=row["lon"])
-                code = {
-                    PrefixResolutionStatus.ERROR: "MEASUREMENT_OUTSIDE_PL_SK",
-                    PrefixResolutionStatus.WARNING: "MEASUREMENT_OUTSIDE_VALLEYS",
-                }.get(resolution.status)
-                if code:
-                    findings.append(
-                        ValidationIssue(
-                            code,
-                            ValidationSeverity.ERROR
-                            if resolution.status == PrefixResolutionStatus.ERROR
-                            else ValidationSeverity.WARNING,
-                            path,
-                            f"{row['object_id']}/{row['id']}: {code}",
-                        )
-                    )
-                if (
-                    row["is_best"]
-                    and resolution.prefix is not None
-                    and resolution.prefix != row["object_id"].split("-")[0]
-                ):
-                    findings.append(
-                        ValidationIssue(
-                            "OBJECT_PREFIX_MISMATCH",
-                            ValidationSeverity.WARNING,
-                            path,
-                            f"Resolved prefix {resolution.prefix}",
-                        )
-                    )
         return tuple(findings)
 
     def dataset(self) -> LoadedDataset:

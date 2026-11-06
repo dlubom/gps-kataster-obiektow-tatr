@@ -8,11 +8,10 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 import pytest
-import shapefile
-import yaml
 from export_test_support import GENERATED_AT, REPO_ROOT, accept_source, cli_args, initialize_source
 from export_test_support import valid_object as _valid_object
 from export_test_support import write_yaml as _write_yaml
+from spatial_test_support import spatial_reference
 
 from gps_kataster_obiektow_tatr.best_measurements_export import export_best_measurements
 
@@ -211,55 +210,6 @@ SPATIAL_CASES = (
 )
 
 
-def _spatial_reference(root, *, reverse=False):
-    (root / "config").mkdir(parents=True)
-    (root / "config/prefixes.yml").write_text(
-        yaml.safe_dump(
-            {
-                "valley_prefixes": {"first": "MTW", "second": "KSW"},
-                "fallback_prefixes": {"polska": "PL", "slowacja": "SK"},
-            }
-        )
-    )
-    shapes = root / "data/shapes"
-    shapes.mkdir(parents=True)
-    outer = [
-        (560000, 150000),
-        (560000, 150010),
-        (560010, 150010),
-        (560010, 150000),
-        (560000, 150000),
-    ]
-    hole = [
-        (560002, 150002),
-        (560008, 150002),
-        (560008, 150008),
-        (560002, 150008),
-        (560002, 150002),
-    ]
-    overlap = [
-        (560006, 150006),
-        (560006, 150020),
-        (560020, 150020),
-        (560020, 150006),
-        (560006, 150006),
-    ]
-    valleys = [("first", [outer, hole]), ("second", [overlap])]
-    if reverse:
-        valleys.reverse()
-    with shapefile.Writer(str(shapes / "doliny"), shapeType=shapefile.POLYGON) as w:
-        w.field("NAME", "C")
-        for name, rings in valleys:
-            w.poly(rings)
-            w.record(name)
-    for name, x0, x1 in (("granica_polski", 559990, 560030), ("granica_slowacji", 559990, 560060)):
-        with shapefile.Writer(str(shapes / name), shapeType=shapefile.POLYGON) as w:
-            w.field("NAME", "C")
-            w.poly([[(x0, 149990), (x0, 150030), (x1, 150030), (x1, 149990), (x0, 149990)]])
-            w.record(name)
-    return root
-
-
 def _spatial_source(root, make_canonical_data_dir, cases):
     # Author canonical YAML directly. No validator, converter or writer runs
     # before the production API under test. Each manual Best is the older PIG
@@ -309,7 +259,7 @@ def test_sql_regions_cover_edges_holes_overlap_countries_and_missing_region(
     from gps_kataster_obiektow_tatr.postgres import open_catalog
     from gps_kataster_obiektow_tatr.prefix_resolver import PrefixResolver
 
-    reference = _spatial_reference(tmp_path / "reference", reverse=reverse)
+    reference = spatial_reference(tmp_path / "reference", reverse=reverse)
     data, _ = _spatial_source(tmp_path / "source", make_canonical_data_dir, SPATIAL_CASES)
     with open_catalog(data, validate=False, reference_root=reference) as catalog:
         prepared = prepare_export_data(catalog.dataset())
@@ -343,7 +293,7 @@ def test_both_exports_use_sql_manual_regions_without_python_geography_or_extra_c
     from gps_kataster_obiektow_tatr.best_measurements_export import export_best_measurements
     from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
 
-    reference = _spatial_reference(tmp_path / "reference")
+    reference = spatial_reference(tmp_path / "reference")
     data, baseline = _spatial_source(
         tmp_path / "source", make_canonical_data_dir, SPATIAL_CASES[:-1]
     )
@@ -441,7 +391,7 @@ def test_copied_read_model_keeps_sql_regions_and_detached_records(
     from gps_kataster_obiektow_tatr.export_data import prepare_export_data
     from gps_kataster_obiektow_tatr.postgres import open_catalog
 
-    reference = _spatial_reference(tmp_path / "reference")
+    reference = spatial_reference(tmp_path / "reference")
     data, _ = _spatial_source(tmp_path / "source", make_canonical_data_dir, SPATIAL_CASES[:1])
     with open_catalog(data, reference_root=reference) as catalog:
         dataset = catalog.dataset()

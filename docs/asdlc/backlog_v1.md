@@ -63,6 +63,8 @@ U13/U14 wyłączono z zakresu. Nie wprowadzamy rejestru ID ani nowych zasad
 usuwania. Obecna ochrona historii pozostaje bez zmian. [Odbiór U12](plans/PR-40/next/U12-remove-imports.md#odbiór)
 opisuje wykonane usunięcie; [U15](plans/PR-40/next/U15-remove-writers-legacy.md)
 usuwa writer i bieżące propozycje legacy, zachowując starszą historię.
+[U16](plans/PR-40/next/U16-postgis-validation.md#odbiór) usuwa alternatywny
+resolver walidacji katalogu; diagnostyka geografii pochodzi wyłącznie z PostGIS.
 Statusy i zależności są wyłącznie w nowym indeksie.
 
 

@@ -7,7 +7,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any
 from urllib.parse import urlparse
 
 import psycopg
@@ -17,9 +17,6 @@ from gps_kataster_obiektow_tatr.data_loader import (
     DataDirectoryError,
     DataKind,
     YamlDataLoadError,
-)
-from gps_kataster_obiektow_tatr.prefix_resolver import (
-    PrefixResolution,
 )
 from gps_kataster_obiektow_tatr.urls import valid_absolute_url
 
@@ -43,13 +40,6 @@ class ValidationIssue:
     description: str
 
 
-class PrefixResolverLike(Protocol):
-    """Minimal prefix resolver interface used by validation."""
-
-    def resolve(self, *, lat: float, lon: float) -> PrefixResolution:
-        """Resolve a WGS84 coordinate to a prefix/spatial status."""
-
-
 class CatalogValidationError(ValueError):
     """Findings that block use of a catalogue."""
 
@@ -65,14 +55,13 @@ def validate_data_dir(
     data_dir: Path = DEFAULT_DATA_DIR,
     *,
     repo_root: Path = REPO_ROOT,
-    prefix_resolver: PrefixResolverLike | None = None,
 ) -> tuple[ValidationIssue, ...]:
     """Report canonical source and SQL checks; Git history is a separate build gate."""
     from gps_kataster_obiektow_tatr.postgres import CatalogLoadError, open_catalog
 
     try:
         with open_catalog(data_dir, validate=False) as catalog:
-            return validate_catalog(catalog, repo_root=repo_root, prefix_resolver=prefix_resolver)
+            return validate_catalog(catalog, repo_root=repo_root)
     except DataDirectoryError as exc:
         return (
             ValidationIssue("DATA_DIRECTORY_INVALID", ValidationSeverity.ERROR, exc.path, str(exc)),
@@ -83,27 +72,25 @@ def validate_data_dir(
         return (_sql_issue(exc),)
 
 
-def validate_catalog(catalog, *, repo_root: Path | None = None, prefix_resolver=None):
+def validate_catalog(catalog, *, repo_root: Path | None = None):
     """Full checks of the existing SQL state, with no reserialization or second database."""
     return (
         *_validate_file_id_paths(
             ((kind, record_id, path) for (kind, record_id), path in catalog.paths.items()),
             data_dir=catalog.data_dir,
         ),
-        *catalog.issues(repo_root=repo_root, prefix_resolver=prefix_resolver),
+        *catalog.issues(repo_root=repo_root),
     )
 
 
 @contextmanager
-def validated_catalog_source(
-    data_dir=DEFAULT_DATA_DIR, *, repo_root=REPO_ROOT, prefix_resolver=None
-):
+def validated_catalog_source(data_dir=DEFAULT_DATA_DIR, *, repo_root=REPO_ROOT):
     """Check YAML source and existing SQL state; yield its projection once, without Git history."""
     from gps_kataster_obiektow_tatr.postgres import open_catalog
 
     data_dir = Path(data_dir)
     with open_catalog(data_dir, validate=False) as catalog:
-        issues = validate_catalog(catalog, repo_root=repo_root, prefix_resolver=prefix_resolver)
+        issues = validate_catalog(catalog, repo_root=repo_root)
         if has_errors(issues):
             raise CatalogValidationError(issues)
         yield catalog, catalog.dataset(), issues

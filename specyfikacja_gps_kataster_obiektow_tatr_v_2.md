@@ -774,6 +774,18 @@ punkt poza dolinami, rozbieżny prefix, odległe pomiary, brak przypisanej
 jaskini, niewłaściwy poziom referencji PIG/NR_INWENT i odrzucony fallback.
 Jawne `unknown` bibliografii jest raportowane bez blokowania wpisu.
 
+Geografię katalogu waliduje wyłącznie PostGIS (`v_geography_issues`).
+`ST_Covers` uwzględnia brzeg zewnętrzny i brzeg otworu poligonu; wnętrze
+jego otworu nie należy do doliny. Pierwszy pasujący `boundaries.ordinal`
+wygrywa: doliny w kolejności źródła, następnie PL, potem SK. Brak regionu
+to `MEASUREMENT_OUTSIDE_PL_SK` (error), region kraju bez doliny to
+`MEASUREMENT_OUTSIDE_VALLEYS` (warning). Kontrola obejmuje każdy pomiar.
+`OBJECT_PREFIX_MISMATCH` (warning) porównuje trwałe ID z regionem wybranego
+Best, także manual. `MEASUREMENT_DISTANCE_OUTLIER` (warning) dotyczy par
+pomiarów obiektu odległych o więcej niż 100 m w EPSG:2180.
+API walidacji nie przyjmuje zastępczego resolvera. Resolver Pythona pozostaje
+przy propozycji nowego ID przez `assign_id`, przed istnieniem obiektu.
+
 Timeout, wyjątek lub pominięta wymagana kontrola nie jest wynikiem poprawnym.
 Kod PR działa bez sekretów publikacji. Zaufany publisher nie wykonuje kodu PR.
 

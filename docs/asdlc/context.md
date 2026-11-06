@@ -32,6 +32,10 @@ zawiera odbiór; status jest w indeksie. Historyczne U04 opisuje ówczesne revie
 Grupowanie GPX korzysta z regionu SQL wybranego pomiaru, przekazanego
 niezmiennymi metadanymi do `ExportData`; nie odtwarza geometrii w Pythonie.
 Granice i priorytet poligonów określa `ST_Covers` / `boundaries.ordinal`.
+U16 usuwa zastępowanie diagnostyki SQL wstrzykniętym resolverem Pythona.
+Katalog ma jeden silnik walidacji geografii; `assign_id` zachowuje swój
+resolver. [Karta U16](plans/PR-40/next/U16-postgis-validation.md#odbiór)
+opisuje testy brzegów/otworów, priorytetów, Best i odległości; status jest w indeksie.
 [Odbiór U05](plans/PR-40/tasks/U05-spatial-read-model.md#odbiór) opisuje regresje
 i porównanie eksportów; status i następne zlecenie są wyłącznie w indeksie.
 Historyczny writer U06 został usunięty w U15. Helper atomowej podmiany

@@ -25,7 +25,7 @@ pomylić ich z wcześniejszą propozycją. Jej zapis pozostaje w historii Git.
 | [U12](U12-remove-imports.md) | Usunięte zakończone importy, profiler i naprawa TPN | wykonane; CI w opisie PR | brak |
 | U13 / U14 | Rejestr ID i kontrolowane wycofania | wyłączone z zakresu | nie realizować |
 | [U15](U15-remove-writers-legacy.md) | Jeden bieżący format v2, usunięte programowe zapisy katalogu | wykonane; CI w opisie PR | U12 |
-| [U16](U16-postgis-validation.md) | Jeden silnik walidacji geografii katalogu | oczekuje | U15 |
+| [U16](U16-postgis-validation.md) | Jeden silnik walidacji geografii katalogu | wykonane; CI w opisie PR | U15 |
 | [U17](U17-export-read-model.md) | Decyzja o skróceniu drogi SQL → ExportData | oczekuje | U16 |
 
 To jedyny rejestr statusów tej serii. `gotowe do zlecenia` nie oznacza

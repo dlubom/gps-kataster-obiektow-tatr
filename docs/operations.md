@@ -45,7 +45,12 @@ przypisanie, także na granicach poligonów i ich otworów. Niezmienne metadane
 odczytu nie trafiają do YAML ani publicznych kolumn. Grupowanie używa regionu
 faktycznie wybranego Best; brak/nieznany region i grupa ponad 500 punktów dają
 `GpxGroupingError` przed publikacją, zachowując wcześniejsze pliki.
-Resolver Pythona nadal obsługuje propozycje nowych ID.
+Walidacja geografii korzysta wyłącznie z `v_geography_issues` w PostGIS;
+API walidatora nie przyjmuje `prefix_resolver`. Wszystkie pomiary są
+sprawdzane względem regionów: poza zasięgiem to error, poza dolinami w PL/SK
+to warning. Rozbieżność trwałego prefixu z wybranym Best (także manual)
+i odległość par pomiarów ponad 100 m pozostają warningami z lokalizacją
+w pliku źródłowym. Resolver Pythona nadal obsługuje propozycje nowych ID.
 
 Samodzielne CLI (`validate.py`, `build_release_artifacts.py`) także uruchamiają
 zarządzany kontener, jeśli `KATASTER_DATABASE_URL` nie jest ustawiony. Do

@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from spatial_test_support import spatial_reference
 
 from gps_kataster_obiektow_tatr.catalog_records import record_rows
 from gps_kataster_obiektow_tatr.postgres import CatalogLoadError, open_catalog
@@ -485,27 +486,15 @@ def test_catalog_binds_explicit_reference_root_and_attachment_paths(tmp_path, re
         assert not any(i.code == "ATTACHMENT_PATH_MISSING" for i in issues)
 
 
-def test_catalog_reports_incomplete_best_and_attachments_with_injected_regions(tmp_path, records):
-    from gps_kataster_obiektow_tatr.prefix_resolver import (
-        PrefixResolution,
-        PrefixResolutionArea,
-        PrefixResolutionStatus,
-    )
+def test_catalog_reports_incomplete_best_and_attachments_in_postgis(tmp_path, records):
     from gps_kataster_obiektow_tatr.validator import validate_catalog
 
-    class Resolver:
-        def resolve(self, *, lat, lon):
-            return PrefixResolution(
-                PrefixResolutionStatus.WARNING,
-                PrefixResolutionArea.POLAND,
-                "PL",
-                None,
-                None,
-                0,
-                0,
-            )
-
     obj, _ = records
+    measurement = obj["measurements"][0]
+    measurement.pop("lat")
+    measurement.pop("lon")
+    measurement.update(input_srid=2180, input_x=560004, input_y=150004)  # valley hole
+    reference = spatial_reference(tmp_path / "reference")
     obj["attachments"] = [
         {
             "id": f"a-{i:03}",
@@ -520,12 +509,12 @@ def test_catalog_reports_incomplete_best_and_attachments_with_injected_regions(t
     ]
     root = snapshot(tmp_path / "catalog", records)
     path = root / "objects/KSW-0001.yml"
-    from gps_kataster_obiektow_tatr.postgres import SCHEMA_PATH, _open_rows, _read_snapshots
+    from gps_kataster_obiektow_tatr.postgres import _open_rows, _read_snapshots
 
     rows, paths = _read_snapshots(root)
     rows = [entry for entry in rows if entry[1] != "best_policy"]
-    with _open_rows(rows, paths, root, False, SCHEMA_PATH.parents[1]) as catalog:
-        issues = validate_catalog(catalog, repo_root=tmp_path, prefix_resolver=Resolver())
+    with _open_rows(rows, paths, root, False, reference) as catalog:
+        issues = validate_catalog(catalog, repo_root=tmp_path)
     errors = {issue.code: issue for issue in issues if issue.severity == "error"}
     assert set(errors) == {
         "FILE_ID_MISMATCH",
@@ -614,3 +603,139 @@ def test_canonical_sql_allows_nullable_or_named_verifier(tmp_path, records, veri
     records[0]["measurements"][0]["verified_by"] = verifier
     with open_catalog(snapshot(tmp_path, records)) as catalog:
         assert catalog.dataset().objects[0].data["measurements"][0]["verified_by"] == verifier
+
+
+@pytest.mark.parametrize("reverse", [False, True], ids=["first-ordinal", "reversed-ordinal"])
+def test_catalog_geography_uses_polygon_coverage_and_priority(
+    tmp_path, records, make_canonical_data_dir, reverse
+):
+    from gps_kataster_obiektow_tatr.validator import validate_catalog
+
+    reference = spatial_reference(tmp_path / "reference", reverse=reverse)
+    root = make_canonical_data_dir(tmp_path / "catalog")
+    # Literal expectations: covers includes exterior and hole boundaries;
+    # valley order wins overlaps, then PL precedes SK, then no match is an error.
+    cases = (
+        (560001, 150001, "MTW", None),  # valley interior
+        (560000, 150005, "MTW", None),  # outer edge
+        (560000, 150000, "MTW", None),  # outer vertex
+        (560004, 150004, "PL", "MEASUREMENT_OUTSIDE_VALLEYS"),  # hole interior
+        (560002, 150005, "MTW", None),  # hole edge
+        (560002, 150002, "MTW", None),  # hole vertex
+        (560009, 150009, "KSW" if reverse else "MTW", None),  # overlapping valleys
+        (560015, 150015, "KSW", None),  # second valley only
+        (560025, 150025, "PL", "MEASUREMENT_OUTSIDE_VALLEYS"),  # both countries
+        (560030, 150025, "PL", "MEASUREMENT_OUTSIDE_VALLEYS"),  # PL boundary
+        (560050, 150005, "SK", "MEASUREMENT_OUTSIDE_VALLEYS"),  # SK only
+        (560060, 150005, "SK", "MEASUREMENT_OUTSIDE_VALLEYS"),  # SK boundary
+        (560100, 150005, None, "MEASUREMENT_OUTSIDE_PL_SK"),  # outside all polygons
+    )
+    template, cave = records
+    (root / "caves/C-0001.yml").write_text(yaml.safe_dump(cave))
+    paths, expected_regions, expected_issues = {}, [], []
+    for index, (x, y, prefix, code) in enumerate(cases, 1):
+        obj = deepcopy(template)
+        obj["id"] = f"KSW-{index:04d}"
+        obj["membership_ordinal"] = index
+        measurement = obj["measurements"][0]
+        measurement.pop("lat")
+        measurement.pop("lon")
+        measurement.update(input_srid=2180, input_x=x, input_y=y)
+        path = root / "objects/KSW" / f"{obj['id']}.yml"
+        path.parent.mkdir(exist_ok=True)
+        path.write_text(yaml.safe_dump(obj))
+        paths[obj["id"]] = path
+        expected_regions.append((obj["id"], "m-001", prefix))
+        if code:
+            severity = "error" if code == "MEASUREMENT_OUTSIDE_PL_SK" else "warning"
+            expected_issues.append((code, severity, path))
+        if prefix not in (None, "KSW"):
+            expected_issues.append(("OBJECT_PREFIX_MISMATCH", "warning", path))
+
+    with open_catalog(root, validate=False, reference_root=reference) as catalog:
+        assert catalog.dataset().measurement_regions == tuple(expected_regions)
+        issues = validate_catalog(catalog)
+    geography = [i for i in issues if i.code.startswith(("MEASUREMENT_OUTSIDE", "OBJECT_PREFIX"))]
+    assert sorted((i.code, i.severity, i.path) for i in geography) == sorted(expected_issues)
+    for issue in geography:
+        assert f"{issue.path.stem}/m-001:" in issue.description
+        if issue.code == "OBJECT_PREFIX_MISMATCH":
+            prefix = next(p for oid, _, p in expected_regions if paths[oid] == issue.path)
+            assert issue.description.endswith(f"OBJECT_PREFIX_MISMATCH {prefix}")
+
+
+@pytest.mark.parametrize("mode", ["manual", "auto"])
+def test_catalog_prefix_mismatch_follows_selected_best_not_assignment_or_auto(
+    tmp_path, records, mode
+):
+    from gps_kataster_obiektow_tatr.validator import validate_catalog
+
+    obj, _ = records
+    first = obj["measurements"][0]
+    first.pop("lat")
+    first.pop("lon")
+    first.update(input_srid=2180, input_x=560001, input_y=150001)
+    obj["measurements"].append(
+        {
+            **first,
+            "id": "m-002",
+            "input_x": 560015,
+            "input_y": 150015,
+            "observed_date": "2026-06-01",
+        }
+    )
+    if mode == "manual":
+        obj["best_measurement"].update(
+            mode="manual", measurement_id="m-001", reason="Keep the older point"
+        )
+    root = snapshot(tmp_path / "catalog", records)
+    with open_catalog(
+        root, validate=False, reference_root=spatial_reference(tmp_path / "reference")
+    ) as catalog:
+        assert catalog.dataset().objects[0].data["best_measurement"]["measurement_id"] == (
+            "m-001" if mode == "manual" else "m-002"
+        )
+        issues = validate_catalog(catalog)
+    mismatch = [i for i in issues if i.code == "OBJECT_PREFIX_MISMATCH"]
+    assert [(i.severity, i.path, i.description) for i in mismatch] == (
+        [("warning", root / "objects/KSW-0001.yml", "KSW-0001/m-001: OBJECT_PREFIX_MISMATCH MTW")]
+        if mode == "manual"
+        else []
+    )
+
+
+@pytest.mark.parametrize("distance", [99, 100, 100.1])
+def test_catalog_distance_outlier_threshold_and_non_best_outside_countries(
+    tmp_path, records, distance
+):
+    from gps_kataster_obiektow_tatr.validator import validate_catalog
+
+    obj, _ = records
+    first = obj["measurements"][0]
+    first.pop("lat")
+    first.pop("lon")
+    first.update(input_srid=2180, input_x=560015, input_y=150015)
+    obj["measurements"].append(
+        {**first, "id": "m-002", "input_x": 560015 + distance, "observed_date": "2026-06-01"}
+    )
+    obj["best_measurement"].update(
+        mode="manual", measurement_id="m-001", reason="Keep the in-valley point"
+    )
+    root = snapshot(tmp_path / "catalog", records)
+    with open_catalog(
+        root, validate=False, reference_root=spatial_reference(tmp_path / "reference")
+    ) as catalog:
+        issues = validate_catalog(catalog)
+    path = root / "objects/KSW-0001.yml"
+    outside = [i for i in issues if i.code.startswith("MEASUREMENT_OUTSIDE")]
+    assert [(i.code, i.severity, i.path) for i in outside] == [
+        ("MEASUREMENT_OUTSIDE_PL_SK", "error", path)
+    ]
+    assert "KSW-0001/m-002:" in outside[0].description
+    assert not any(i.code == "OBJECT_PREFIX_MISMATCH" for i in issues)
+    outliers = [i for i in issues if i.code == "MEASUREMENT_DISTANCE_OUTLIER"]
+    assert [(i.severity, i.path, i.description) for i in outliers] == (
+        [("warning", path, "KSW-0001/m-001: MEASUREMENT_DISTANCE_OUTLIER m-002: 100.1 m")]
+        if distance > 100
+        else []
+    )
