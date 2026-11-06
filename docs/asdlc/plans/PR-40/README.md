@@ -45,8 +45,9 @@ Zadania U03–U11 są podzadaniami PBI-119; nie zajmują numerów nowych PBI.
 Serię U01–U11 zakończono. Dalsze usprawnienia wymagają osobnego zakresu.
 
 Nowe zlecenie z 2026-11-06 rozpisano jako
-[U12–U17: wycofanie dawnych ścieżek i ochrona ID](next/README.md).
-Ten osobny indeks posiada ich statusy i kontrakt; obejmuje także issue #33.
+[plan czyszczenia: U12, U15–U17](next/README.md).
+Ten osobny indeks posiada ich statusy i kontrakt. U13/U14 wyłączono z zakresu;
+rejestr ID i nowe zasady usuwania pozostają odłożone.
 Przygotowanie planu nie oznacza rozpoczęcia implementacji.
 
 ## Zweryfikowany punkt odniesienia U01/U02
@@ -88,7 +89,7 @@ regresji U01/U02. W szczególności stare schematy są nadal potrzebne do histor
 ## Po U11
 
 Wszystkie karty U01–U11 są odebrane. Kolejny uzgodniony zakres prowadzi do
-[osobnego indeksu U12–U17](next/README.md); realizacja nadal wymaga zlecenia karty.
+[osobnego indeksu czyszczenia](next/README.md); realizacja nadal wymaga zlecenia karty.
 Zakres uruchomienia mutation i istniejący błąd mutmut odtworzony sprzed U11
 opisano w [karcie U11](tasks/U11-ci-setup.md#ograniczenie-mutation).
 Naprawa tego toolingu wymaga osobnego zlecenia. PR #40 pozostaje draftem;

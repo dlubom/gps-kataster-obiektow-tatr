@@ -67,11 +67,11 @@ status jest wyłącznie w indeksie.
 
 Użytkownik zaakceptował wycofanie zakończonych importów PIG/TPN, profilera
 i jednorazowych napraw oraz ograniczenie programu do odczytu YAML,
-walidacji i eksportów. [Plan U12–U17](plans/PR-40/next/README.md) rozpisuje
-ten zakres i projekt rejestru wycofanych ID. Potwierdzono, że jawne
-wycofanie może wyjątkowo objąć pojedynczy pomiar. Szczegóły rejestru są
-do review przed U13; kod i dane nie zostały jeszcze zmienione. Rejestr
-rezerwuje ID, a wpis uzasadnia konkretny ubytek względem zaakceptowanej bazy.
+walidacji i eksportów. [Plan czyszczenia](plans/PR-40/next/README.md) rozpisuje
+ten zakres. Użytkownik następnie wyłączył rejestr ID i nowe zasady wycofywania
+rekordów: U13/U14 nie są realizowane. Obecne błędy historii pozostają;
+raport ubytków/warningi są osobnym tematem do decyzji. Kod i dane nie zostały
+jeszcze zmienione. Aktywne karty to U12, U15, U16 i U17.
 API TPN/NMT, archiwalne źródła i formaty eksportów pozostają w zakresie utrzymania.
 
 Kontynuację opisuje [pakiet zleceń PR #40](plans/PR-40/README.md): specyfikacja,
@@ -105,8 +105,7 @@ PL-EVRF2007-NH. Data weryfikacji Marka i dokładności punktów są nieznane.
 
 - Mylna KSZ-0064/m-003: trzy warianty położenia wymagają porównania z LiDAR;
   [issue #36](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/36).
-- Rezerwacja wycofanych ID nie jest wdrożona; jej projekt i jawne wycofanie
-  obejmują [U13/U14](plans/PR-40/next/README.md) oraz
+- Rezerwacja wycofanych ID nie jest wdrożona i pozostaje poza czyszczeniem kodu;
   [issue #33](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/33).
 - Model systemów i historycznych części pozostaje otwarty;
   [issue #34](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/34).
