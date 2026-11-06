@@ -17,25 +17,25 @@ CLI walidacji, przydziału ID, API TPN/NMT i eksportu zachowują kontrakty.
 
 ## Kroki i kryteria
 
-- [ ] Utrwal manifest SHA-256 wszystkich `data/sources/`, `data/shapes/`
+- [x] Utrwal manifest SHA-256 wszystkich `data/sources/`, `data/shapes/`
   i katalogu przed zmianą oraz referencyjny build. Sprawdź domknięcie importów.
-- [ ] Usuń wskazany podsystem. Usuń dedykowane testy `test_pig_staging.py`,
+- [x] Usuń wskazany podsystem. Usuń dedykowane testy `test_pig_staging.py`,
   `test_tpn_staging.py`, `test_staging_review.py`, `test_review_declarations.py`,
   `test_source_profile.py`, `test_source_table.py`, `test_restore_tpn_notes.py`.
   Zachowaj przypadki w testach mieszanych, które chronią nadal żywe zachowanie.
-- [ ] Usuń nieużywane helpery parsowania/raportowania dopiero po sprawdzeniu
+- [x] Usuń nieużywane helpery parsowania/raportowania dopiero po sprawdzeniu
   wszystkich odbiorców. `utc_timestamp` pozostaje używany przez buildery.
   `test_review_output_safety.py` chroni eksporty i pozostaje.
-- [ ] Usuń scope mutation dotyczący nieistniejących importerów. Zaktualizuj
+- [x] Usuń scope mutation dotyczący nieistniejących importerów. Zaktualizuj
   §7–8, §16 i §20 specyfikacji oraz operations/source README: materiały
   źródłowe służą ręcznej ocenie, a przyszłe pomiary są edytowane w YAML/PR.
   Zachowaj dowody danych i historie dawnych napraw, usuń nieaktualne komendy.
-- [ ] Uruchom `uv run --frozen pytest -q tests/test_source_helpers.py tests/test_validation_phases.py tests/test_build_db.py tests/test_review_output_safety.py tests/test_tpn_download.py tests/test_tpn_simple.py tests/test_tpn_elevation.py`;
+- [x] Uruchom `uv run --frozen pytest -q tests/test_source_helpers.py tests/test_validation_phases.py tests/test_build_db.py tests/test_review_output_safety.py tests/test_tpn_download.py tests/test_tpn_simple.py tests/test_tpn_elevation.py`;
   plik helperów można usunąć tylko jeśli nie ma już żywego zachowania.
-- [ ] Pełna bramka, zgodność manifestów źródeł, pełny odczyt eksportów przed/po
+- [x] Pełna bramka, zgodność manifestów źródeł, pełny odczyt eksportów przed/po
   oraz bilans kodu. Cel: usunięcie całych nieużywanych ścieżek; bez nowego
   uniwersalnego importera, przenoszenia kodu do archiwum runtime lub utraty testów ochrony danych.
-- [ ] Commit `refactor: retire one-time source imports (PBI-119 U12)`, push,
+- [x] Commit `refactor: retire one-time source imports (PBI-119 U12)`, push,
   terminalne CI i odbiór według indeksu. Zakończ po U12.
 
 ## Odbiór
@@ -51,12 +51,15 @@ kanoniczny YAML bez pośrednictwa usuniętego review.
 Przed zmianą i po niej zweryfikowano wszystkie 2084 pliki `data/` według
 [manifestu SHA-256](../../../verification/PBI-119-U12-data.sha256)
 (hash manifestu `493d0f18713a30e8520d3e32c9b729b93296f64b4b83be9e1a201f33125e0d54`).
-`data/`, `config/` i `schema/` bez różnic względem bazy zadania.
-Karta wymienia edycję `data/sources/README.md`, lecz kontrakt serii wymaga
-bajtowej niezmienności całego `data/`. Pierwszeństwo ma ten niezmiennik:
-README nie zmieniono; aktualny sposób pracy opisuje `docs/operations.md`.
-W README pozostaje historyczna instrukcja dopisania `Jaskinia.object_ids`;
-kanoniczna edycja używa `cave_id` i `membership_ordinal`.
+W commicie U12 `d3e6da874baa20ba5de80f2167a0e7f59756f264` katalogi `data/`,
+`config/` i `schema/` były bez różnic względem bazy zadania. Następnie na osobne
+polecenie użytkownika poprawiono tylko dokumentację `data/sources/README.md`:
+źródłowy obiekt otrzymuje `cave_id` i `membership_ordinal`, a lista
+`Jaskinia.object_ids` jest wyliczana. Powyższy manifest pozostaje świadectwem
+stanu sprzed tej poprawki, więc jego suma dla README jest historyczna. Wszystkie
+pozostałe 2083 pliki danych i materiały źródłowe sprawdzono wobec niego bez
+różnic. SHA-256 samego README: przed `3633a32f2d95d478b5fbc686ad2b977cdfbb35f1b8292ff17b0b4965c04b5f21`,
+po `25146352f85bdb34b73b1144c6e9f7af1ac0ecb9d731ef551acd8175d455c95f`.
 
 Przy `--generated-at 2026-11-06T00:00:00Z`, identycznym `source-commit`
 i baseline, build przed/po dał **13 artefaktów**, 1029 obiektów, 1019 jaskiń,

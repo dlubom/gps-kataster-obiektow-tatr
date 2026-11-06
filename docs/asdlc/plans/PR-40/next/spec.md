@@ -31,6 +31,8 @@ Narzędzia API TPN/NMT, przydział ID i eksport Excela pozostają w utrzymaniu.
 
 - Wszystkie `data/`, archiwalne źródła, geometrie regionów oraz konfiguracja
   pozostają bajtowo bez zmian. Nie powstaje rejestr ani znacznik formatu v3.
+  Wyjątek na osobne polecenie użytkownika po U12: korekta dokumentacji
+  `data/sources/README.md`; dane katalogu i materiały źródłowe bez zmian.
 - Reguły Best, manual Best, źródłowe EPSG/wartości/null, pomiary i ich
   kolejność oraz kontrakty 13 artefaktów pozostają zachowane.
 - Obecna bramka historii i wybór rzeczywistego baseline PR/main/wydania

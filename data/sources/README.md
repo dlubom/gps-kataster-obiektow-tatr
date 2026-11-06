@@ -1,8 +1,9 @@
 # Source Data
 
-Ten katalog przechowuje zewnętrzne dane wejściowe i pomocnicze dumpy używane do
-review. Nie są one źródłem prawdy V1. Źródłem prawdy pozostają YAML-e w
-`data/objects/` i `data/caves/`.
+Ten katalog przechowuje zewnętrzne dane wejściowe i pomocnicze dumpy do ręcznej
+oceny. Nie są one źródłem prawdy V1: jest nim katalog YAML w `data/`.
+Początkowe importy PIG/TPN zakończono; nowe rekordy i pomiary edytuje się
+bezpośrednio w YAML i poddaje przeglądowi w PR.
 
 ## PIG / Jaskinie Polski
 
@@ -24,8 +25,9 @@ rg -n "Mroźna" data/sources/pig/jaskinie_polski_pig_dump.jsonl
 W znalezionym rekordzie sprawdź pola takie jak `other_entrances`,
 `entrance_access_description`, `cave_description`, `documentation_history` i
 `images`. Jeśli opis potwierdza dodatkowy otwór tej samej jaskini, dodaj nowy
-`Obiekt`, dopisz jego ID do istniejącej `Jaskinia.object_ids` i zachowaj
-referencje źródłowe.
+`Obiekt` z własnym ID, ustaw jego `cave_id` i `membership_ordinal` oraz
+zachowaj referencje źródłowe. Lista `Jaskinia.object_ids` jest wyliczana;
+nie edytuj jej w źródłowym YAML.
 
 ## TPN
 
