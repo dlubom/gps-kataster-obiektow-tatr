@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0442
 name: Jaskinia pod Szczytem
 system_name: null
+length_m: 28
+denivelation_m: 14.5
+morphometry_source_ref: KKTJ 2026-07, PDF 10, s. 3, lp. 66
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -30,5 +33,5 @@ notes: 'PIG aliases: Jaskinia za Iglicą, Jaskinia przy Szczycie
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

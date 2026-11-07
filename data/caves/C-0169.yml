@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0169
 name: Jaskinia Miętusia Wyżnia
 system_name: null
+length_m: 776
+depth_m: 108
+denivelation_m: 145
+morphometry_source_ref: KKTJ 2026-07, PDF 08, s. 1, lp. 6
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -28,5 +32,5 @@ notes: 'PIG sector: D. Miętusia - Zach.
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

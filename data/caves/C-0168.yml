@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0168
 name: Jaskinia Dudnica
 system_name: null
+length_m: 185
+denivelation_m: 12
+morphometry_source_ref: KKTJ 2026-07, PDF 10, s. 1, lp. 9
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -30,5 +33,5 @@ notes: 'PIG aliases: Elektrownia, Mała Jaskinia
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

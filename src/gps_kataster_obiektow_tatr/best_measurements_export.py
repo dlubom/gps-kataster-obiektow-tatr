@@ -343,6 +343,11 @@ def _write_shapefile_zip(rows: tuple[BestMeasurementExportRow, ...], path: Path)
                     _truncated_text(row.object_notes, max_length=254),
                     _truncated_text(row.cave_notes, max_length=254),
                     _truncated_text(row.measurement_notes, max_length=254),
+                    row.cave_length_m,
+                    row.cave_depth_m,
+                    row.cave_denivelation_m,
+                    _text_or_empty(row.cave_denivelation_qualifier),
+                    _truncated_text(row.cave_morphometry_source_ref, max_length=254),
                 )
         finally:
             writer.close()
@@ -407,6 +412,11 @@ def _define_shapefile_fields(writer: shapefile.Writer) -> None:
     writer.field("obj_notes", "C", size=254)
     writer.field("cave_notes", "C", size=254)
     writer.field("meas_notes", "C", size=254)
+    writer.field("cave_len_m", "F", size=20, decimal=3)
+    writer.field("cave_dep_m", "F", size=20, decimal=3)
+    writer.field("cave_den_m", "F", size=20, decimal=3)
+    writer.field("cave_den_q", "C", size=16)
+    writer.field("cave_m_ref", "C", size=254)
 
 
 def _row_properties(row: BestMeasurementExportRow) -> dict[str, Any]:
@@ -443,6 +453,16 @@ def _gpx_description(row: BestMeasurementExportRow) -> str:
         f"source {row.source}",
         f"observed {row.observed_date}",
     ]
+    denivelation_prefix = "~" if row.cave_denivelation_qualifier == "approximate" else ""
+    for label, value, prefix in (
+        ("długość jaskini", row.cave_length_m, ""),
+        ("głębokość", row.cave_depth_m, ""),
+        ("deniwelacja", row.cave_denivelation_m, denivelation_prefix),
+    ):
+        if value is not None:
+            parts.append(f"{label} {prefix}{_float_text(value)} m")
+    if row.cave_morphometry_source_ref:
+        parts.append(f"morfometria: {row.cave_morphometry_source_ref}")
     for label, note in (
         ("object notes", row.object_notes),
         ("cave notes", row.cave_notes),

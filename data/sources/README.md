@@ -38,6 +38,13 @@ TPN `GLOBALID` jest identyfikatorem rekordu punktowego i trafia do
 `Obiekt.external_refs`. `NR_INWENT` opisuje zwykle jaskinię / pozycję
 katalogową i trafia do `Jaskinia.external_refs`.
 
+## KKTJ / Jaskinie Tatr
+
+[Tabela zbiorcza z lipca 2026](kktj/2026-07/jaskinie-tatr.md) to opracowanie
+11 tabel PDF z publikacji Jakuba Nowaka, przeznaczone do ręcznego porównywania
+z katalogiem. Każdy wiersz wskazuje PDF i stronę, a kursywa zachowuje
+źródłowe oznaczenie braku dokumentacji kartograficznej.
+
 ## Marek Jędrzejczak — pomiary z 2026-10-17
 
 Marek Jędrzejczak (Speleoclub Wrocław) przekazał poprawiony arkusz
