@@ -33,10 +33,11 @@ nie edytuj jej w źródłowym YAML.
 
 - `tpn/tpn_otwory_jaskin.xlsx`
 - `tpn/tpn_otwory_jaskin.xlsx.-.Export.csv`
-- [Odczyt API z 19.10.2026](tpn/morfometria-2026-10-19.json) zawiera 11
-  oryginalnych rekordów wykorzystanych do uzupełnienia długości jaskiń.
-  Wyciąg zachowuje atrybuty, geometrię, parametry zapytania i sumę SHA-256
-  strony źródłowej.
+- [Pełny zrzut warstwy „Jaskinie” z 19.10.2026](tpn/snapshots/pbi-101-live-20261019/)
+  obejmuje 1035 rekordów z atrybutami i geometrią. Zachowuje oryginalne
+  odpowiedzi API, schemat warstwy i kontrole liczby rekordów oraz identyfikatorów
+  przed i po pobraniu. [Manifest](tpn/snapshots/pbi-101-live-20261019/manifest.json)
+  podaje adres warstwy, parametry zapytania i sumy SHA-256.
 
 TPN `GLOBALID` jest identyfikatorem rekordu punktowego i trafia do
 `Obiekt.external_refs`. `NR_INWENT` opisuje zwykle jaskinię / pozycję

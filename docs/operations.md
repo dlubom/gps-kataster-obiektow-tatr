@@ -443,9 +443,9 @@ TATRY o zgodnej tożsamości i zakresie. Podaj ID i rok stanu PIG lub
 `GLOBALID` otworu i wersję danych TPN. Wartość ze starszego arkusza
 odszukasz w [archiwum CSV TPN](../data/sources/tpn/).
 Odniesienie `TPN Geoportal TATRY 2026-10-19` wskazuje
-[11 rekordów z odczytu API](../data/sources/tpn/morfometria-2026-10-19.json)
-zarchiwizowanych w repozytorium. Wyszukaj rekord po `GLOBALID` i odczytaj
-długość z pola `DLUGOSC`.
+[pełny zrzut warstwy „Jaskinie”](../data/sources/tpn/snapshots/pbi-101-live-20261019/).
+Wyszukaj rekord po `GLOBALID` w plikach `page-*.json` i odczytaj długość
+z pola `DLUGOSC`.
 Zero wymagające interpretacji, orientacyjny wymiar i nieustalony poziom
 odniesienia zachowaj jako informację źródłową w archiwum lub krótkiej uwadze.
 

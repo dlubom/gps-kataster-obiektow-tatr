@@ -12,8 +12,9 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 - Długość, głębokość i deniwelację jaskiń wraz z odsyłaczami do źródeł.
   Podstawą jest zestawienie KKTJ z lipca 2026 r. Uzupełnienia pochodzą
-  z PIG, TPN i poligonów JKTZ. Archiwum zawiera 11 rekordów TPN użytych
-  do uzupełnienia długości.
+  z PIG, TPN i poligonów JKTZ. Archiwum zawiera pełny zrzut warstwy
+  „Jaskinie” TPN z 19 października 2026 r. obejmujący 1035 rekordów,
+  w tym źródła 11 długości.
 - Powiązania części z systemami jaskiniowymi. Eksporty pokazują osobno
   wymiary części i systemu, a arkusz **Jaskinie** w Excelu obejmuje także
   pozycje bez własnych otworów.
