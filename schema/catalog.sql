@@ -35,6 +35,8 @@ CREATE TABLE caves (
   id cave_id PRIMARY KEY,
   name nonempty_text NOT NULL,
   system_name text,
+  system_cave_id cave_id REFERENCES caves(id) DEFERRABLE INITIALLY DEFERRED,
+  CHECK (system_cave_id IS DISTINCT FROM id),
   length_m nonnegative_float,
   depth_m nonnegative_float,
   denivelation_m nonnegative_float,
@@ -287,6 +289,9 @@ FROM objects o WHERE NOT EXISTS (SELECT FROM measurements m WHERE m.object_id=o.
 UNION ALL
 SELECT 'OBJECT_WITHOUT_BEST_POLICY',o.id FROM objects o
 WHERE NOT EXISTS (SELECT FROM best_policy p WHERE p.object_id=o.id)
+UNION ALL
+SELECT 'NESTED_CAVE_SYSTEM',c.id FROM caves c
+JOIN caves s ON s.id=c.system_cave_id WHERE s.system_cave_id IS NOT NULL
 UNION ALL
 SELECT 'CAVE_BIBLIOGRAPHY_KNOWN_WITHOUT_CITATION',c.id FROM caves c
 WHERE bibliography_status='known' AND NOT EXISTS (SELECT FROM cave_citations r WHERE r.cave_id=c.id)

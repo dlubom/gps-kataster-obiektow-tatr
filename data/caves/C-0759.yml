@@ -2,6 +2,7 @@ schema_version: 1
 id: C-0759
 name: Jaskinia Obłazkowa
 system_name: Jaskinie Pawlikowskiego
+system_cave_id: C-0095
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -34,5 +35,5 @@ notes: 'PIG aliases: SYSTEM Jaskinia Mylna, Obłazkowa Jama, Jaskinie Pawlikowsk
   measurement to KSZ-0090.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T19:30:00Z'
-updated_by: dl
+updated_at: '2026-11-07T15:33:39Z'
+updated_by: maintenance:kktj-systems

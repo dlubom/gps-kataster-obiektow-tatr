@@ -49,6 +49,13 @@ class BestMeasurementExportRow:
     cave_denivelation_m: float | None
     cave_denivelation_qualifier: str | None
     cave_morphometry_source_ref: str | None
+    system_cave_id: str | None
+    cave_system_name: str | None
+    system_length_m: float | None
+    system_depth_m: float | None
+    system_denivelation_m: float | None
+    system_denivelation_qualifier: str | None
+    system_morphometry_source_ref: str | None
 
 
 BEST_FIELDS = tuple(field.name for field in fields(BestMeasurementExportRow))
@@ -121,6 +128,12 @@ FULL_FIELDS = MappingProxyType(
         "cave_denivelation_m": float,
         "cave_denivelation_qualifier": str,
         "cave_morphometry_source_ref": str,
+        "system_cave_id": str,
+        "system_length_m": float,
+        "system_depth_m": float,
+        "system_denivelation_m": float,
+        "system_denivelation_qualifier": str,
+        "system_morphometry_source_ref": str,
     }
 )
 NUMERIC_FIELDS = frozenset(key for key, kind in FULL_FIELDS.items() if kind is float)
@@ -145,20 +158,30 @@ class ExportData:
 def prepare_export_data(dataset: LoadedDataset, *, generated_at: str | None = None) -> ExportData:
     """Assemble once, retaining SQL's selected and computed Best and historical nulls."""
     caves = {r.data["id"]: r.data for r in dataset.caves}
-    cave_rows = {
-        cave_id: MappingProxyType(
+    cave_rows = {}
+    for cave_id, cave in sorted(caves.items()):
+        system_id = cave.get("system_cave_id")
+        system = caves[system_id] if system_id is not None else {}
+        cave_rows[cave_id] = MappingProxyType(
             {
                 "cave_id": cave_id,
                 "cave_name": cave["name"],
-                "cave_system_name": cave.get("system_name"),
+                "cave_system_name": system.get("name", cave.get("system_name")),
                 "nr_inwent": _joined_values(_external_ids(cave, "NR_INWENT")),
                 **{f"cave_{key}": cave.get(key) for key in CAVE_MORPHOMETRY},
+                "system_cave_id": system_id,
+                **{f"system_{key}": system.get(key) for key in CAVE_MORPHOMETRY},
             }
         )
-        for cave_id, cave in sorted(caves.items())
-    }
     empty_cave = dict.fromkeys(
-        ("cave_name", "cave_system_name", "nr_inwent", *(f"cave_{key}" for key in CAVE_MORPHOMETRY))
+        (
+            "cave_name",
+            "cave_system_name",
+            "nr_inwent",
+            *(f"cave_{key}" for key in CAVE_MORPHOMETRY),
+            "system_cave_id",
+            *(f"system_{key}" for key in CAVE_MORPHOMETRY),
+        )
     )
     regions = {(oid, mid): prefix for oid, mid, prefix in dataset.measurement_regions}
     relations = {}

@@ -2,6 +2,7 @@ schema_version: 1
 id: C-0997
 name: Ptasia Studnia dolny otwór
 system_name: null
+system_cave_id: C-1049
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 0
@@ -10,8 +11,11 @@ notes: 'TPN length: 0
 
   TPN denivelation: 0
 
-  TPN notes: lokalizacja orientacyjna'
+  TPN notes: lokalizacja orientacyjna
+
+  Przynależność do Systemu Ptasiej podaje pole SYSTEM w archiwum TPN dla
+  GLOBALID {964DB8E1-2BE8-4126-A9D2-2DA687C5CD0D} (obiekt MTZ-0066).'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-11-07T15:33:39Z'
+updated_by: maintenance:kktj-systems

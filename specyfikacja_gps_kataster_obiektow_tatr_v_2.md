@@ -142,7 +142,8 @@ Dopuszczalne wartości:
 |---|---|---|
 | `id` | string | Wewnętrzne ID, np. `C-0001`. |
 | `name` | string | Nazwa jaskini / pozycji katalogowej. |
-| `system_name` | string, opt | Nazwa systemu jaskiniowego, jeśli dotyczy. |
+| `system_name` | string, opt | Tekstowa nazwa systemu ze starszych danych. |
+| `system_cave_id` | FK → `Jaskinia`, opt | Potwierdzona przynależność do jednej pozycji całego systemu. |
 | `length_m` | liczba, opt | Długość jaskini w metrach. |
 | `depth_m` | liczba, opt | Wielkość zagłębienia poniżej poziomu odniesienia źródła, w metrach. |
 | `denivelation_m` | liczba, opt | Różnica między najwyższym i najniższym punktem jaskini, w metrach. |
@@ -155,7 +156,9 @@ Dopuszczalne wartości:
 
 Wymiary są skończone i nieujemne. Puste pole oznacza wartość nieznaną.
 Deniwelację i głębokość zapisujemy niezależnie. Pozycja katalogowa systemu
-może mieć własną morfometrię niezależnie od jego części.
+może mieć własną morfometrię niezależnie od jego części. Część wskazuje
+rekord systemu przez `system_cave_id`. System wskazany przez część sam nie
+może wskazywać systemu. Rekord zbiorczy można zapisać bez własnych obiektów.
 
 Jedna `Jaskinia` ma 1..N powiązanych `Obiektów`, jeśli znane są jej otwory. W V1 dopuszczamy utworzenie `Jaskinia` przed pełnym rozpoznaniem wszystkich otworów.
 
@@ -620,8 +623,10 @@ created_by: dl
 ### 7.5 KKTJ / Jaskinie Tatr
 
 Wartości z [zestawienia KKTJ z lipca 2026](data/sources/kktj/2026-07/jaskinie-tatr.md)
-zapisujemy na istniejących jaskiniach. Odniesienie zawiera edycję, numer PDF,
-stronę i Lp. Gdy Lp. powtarza się na stronie, podaje również rejon.
+zapisujemy na odpowiadających im pozycjach katalogowych. Dla potwierdzonego
+systemu obejmującego kilka pozycji tworzymy jeden rekord zbiorczy, jeśli
+katalog nie ma już rekordu opisującego całość. Odniesienie zawiera edycję,
+numer PDF, stronę i Lp. Gdy Lp. powtarza się na stronie, podaje również rejon.
 Przypisanie wymaga zgodności tożsamości i zakresu rekordu.
 Rankingi służą do porównania tabel regionalnych. Brak lub nierozstrzygnięta
 sprzeczność pozostawia pole puste.
@@ -917,7 +922,10 @@ Każdy release zawiera:
 CSV, GeoJSON, Shapefile, Excel Best/Full i obie warstwy GeoPackage podają
 morfometrię przez powiązanie punktu z `Jaskinia`. Excel ma też arkusz
 **Jaskinie** z jednym wierszem na pozycję katalogową, także bez otworów.
-Dump zawiera wartości bezpośrednio w tabeli `caves`.
+Przy części z `system_cave_id` eksport podaje wymiary całego systemu,
+kwalifikator deniwelacji i źródło w osobnych polach `system_*`. Pola
+`cave_*` nadal opisują własną morfometrię jaskini. Dump zawiera własne
+wartości i klucz `caves.system_cave_id`, z którego wynika powiązanie.
 
 Excel zachowuje daty dzienne od `1900-01-01` jako daty, a wcześniejsze
 jako tekst ISO `YYYY-MM-DD`, bez zmiany wartości źródłowej.
@@ -945,7 +953,9 @@ konkretnego otworu. Brak, `null`, pusta nazwa lub same białe znaki oznaczają
 użycie `Obiekt.id`.
 Opis (`wpt/desc`) zawsze zawiera jawne `object <ID>`, ID wybranego pomiaru,
 źródło, datę i dostępne uwagi. Dostępne wymiary jaskini i ich źródło są
-częścią opisu. Deniwelacja przybliżona ma przedrostek `~`. Nazwy nie zastępują
+częścią opisu. Przy części z `system_cave_id` opis podaje również nazwę i ID
+systemu oraz jego dostępne wymiary i źródło. Deniwelacja przybliżona ma
+przedrostek `~`. Nazwy nie zastępują
 trwałych identyfikatorów.
 
 Pełny `best-measurements.gpx` pozostaje bez limitu 500. Trzy dodatkowe pliki

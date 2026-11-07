@@ -64,5 +64,11 @@
   ["cave_depth_m", "REAL"],
   ["cave_denivelation_m", "REAL"],
   ["cave_denivelation_qualifier", "TEXT"],
-  ["cave_morphometry_source_ref", "TEXT"]
+  ["cave_morphometry_source_ref", "TEXT"],
+  ["system_cave_id", "TEXT"],
+  ["system_length_m", "REAL"],
+  ["system_depth_m", "REAL"],
+  ["system_denivelation_m", "REAL"],
+  ["system_denivelation_qualifier", "TEXT"],
+  ["system_morphometry_source_ref", "TEXT"]
 ]

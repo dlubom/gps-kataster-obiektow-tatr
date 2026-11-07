@@ -38,6 +38,7 @@ BEST_POINT_COLUMNS = (
 )
 
 CAVE_ID_COLUMN = Column("cave_id", "ID jaskini", 15)
+SYSTEM_NAME_COLUMN = Column("cave_system_name", "System jaskiniowy", 35)
 MORPHOMETRY_COLUMNS = (
     Column("cave_length_m", "Długość jaskini [m]", 20, "General"),
     Column("cave_depth_m", "Głębokość jaskini [m]", 20, "General"),
@@ -45,7 +46,21 @@ MORPHOMETRY_COLUMNS = (
     Column("cave_denivelation_qualifier", "Kwalifikator deniwelacji", 24),
     Column("cave_morphometry_source_ref", "Źródło morfometrii", 42),
 )
-BEST_COLUMNS = (*BEST_POINT_COLUMNS, CAVE_ID_COLUMN, *MORPHOMETRY_COLUMNS)
+SYSTEM_COLUMNS = (
+    Column("system_cave_id", "ID systemu", 15),
+    Column("system_length_m", "Długość systemu [m]", 21, "General"),
+    Column("system_depth_m", "Głębokość systemu [m]", 22, "General"),
+    Column("system_denivelation_m", "Deniwelacja systemu [m]", 23, "General"),
+    Column("system_denivelation_qualifier", "Kwalifikator deniwelacji systemu", 30),
+    Column("system_morphometry_source_ref", "Źródło morfometrii systemu", 45),
+)
+BEST_COLUMNS = (
+    *BEST_POINT_COLUMNS,
+    CAVE_ID_COLUMN,
+    *MORPHOMETRY_COLUMNS,
+    SYSTEM_NAME_COLUMN,
+    *SYSTEM_COLUMNS,
+)
 
 FULL_COLUMNS = (
     *BEST_POINT_COLUMNS[:2],
@@ -53,7 +68,7 @@ FULL_COLUMNS = (
     *BEST_POINT_COLUMNS[2:],
     CAVE_ID_COLUMN,
     Column("cave_name", "Nazwa jaskini", 45),
-    Column("cave_system_name", "System jaskiniowy", 35),
+    SYSTEM_NAME_COLUMN,
     Column("x_1992", "X PL-1992 [m]", 20, "0.000"),
     Column("y_1992", "Y PL-1992 [m]", 20, "0.000"),
     Column("vertical_accuracy_m", "Dokładność pionowa [m]", 22, "0.00"),
@@ -94,14 +109,16 @@ FULL_COLUMNS = (
     Column("measurement_created_at", "Zapisano pomiar (ISO 8601)", 30),
     Column("measurement_created_by", "Zapisał pomiar", 24),
     *MORPHOMETRY_COLUMNS,
+    *SYSTEM_COLUMNS,
 )
 
 CAVE_COLUMNS = (
     CAVE_ID_COLUMN,
     Column("cave_name", "Nazwa jaskini", 52),
-    Column("cave_system_name", "System jaskiniowy", 35),
+    SYSTEM_NAME_COLUMN,
     Column("nr_inwent", "Numer inwentarzowy", 23),
     *MORPHOMETRY_COLUMNS,
+    *SYSTEM_COLUMNS,
 )
 
 SHEET_TEXT = {

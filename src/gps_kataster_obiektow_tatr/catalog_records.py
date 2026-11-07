@@ -35,6 +35,7 @@ FIELDS = {
         "id",
         "name",
         "system_name",
+        "system_cave_id",
         *CAVE_MORPHOMETRY,
         "bibliography_status",
         "bibliography_note",

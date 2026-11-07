@@ -134,6 +134,16 @@ przecinku), `cave_den_q` i `cave_m_ref`. Puste wartości liczbowe są
 nieznane. GPX pokazuje znane wymiary i odniesienie do źródła w opisie
 punktu oraz oznacza przybliżoną deniwelację przez `~`.
 
+Przy potwierdzonej części CSV, GeoJSON i GeoPackage podają `system_cave_id`,
+`cave_system_name`, `system_length_m`, `system_depth_m`,
+`system_denivelation_m`, `system_denivelation_qualifier` i
+`system_morphometry_source_ref`. Shapefile używa odpowiednio `sys_cav_id`,
+`sys_name`, `sys_len_m`, `sys_dep_m`, `sys_den_m`, `sys_den_q` i
+`sys_m_ref`. GPX podpisuje dostępne wymiary systemu w opisie otworu.
+We wszystkich trzech arkuszach Excel wartości części i systemu mają osobne
+kolumny. Rekord zbiorczy bez własnych otworów jest widoczny w arkuszu
+Jaskinie i w dumpie.
+
 ## `katalog.xlsx`
 
 Generowany przy każdym buildzie wydania, bez osobnego ręcznego kroku.
@@ -284,7 +294,7 @@ typów i widoków; [diagramy](architecture/schema.md) pokazują ich powiązania.
 
 | Tabele / widoki | Zawartość |
 |---|---|
-| `objects`, `caves` | Obiekty terenowe i pozycje katalogowe, źródła, audyt i stan bibliografii. Przynależność wyznacza `objects.cave_id`. |
+| `objects`, `caves` | Obiekty terenowe i pozycje katalogowe, źródła, audyt i stan bibliografii. Przynależność otworu wyznacza `objects.cave_id`, a części systemu `caves.system_cave_id`. |
 | `measurements`, `measurement_tags` | Pełna uporządkowana historia z natywną geometrią EPSG:4326/2180, wysokością, datum i pochodzeniem. Klucz pomiaru to `(object_id, id)`. |
 | `best_policy` | Tryb auto/manual, ręczne wskazanie i uzasadnienie. |
 | `v_measurements`, `v_auto_best`, `v_best` | Wyliczone współrzędne, niezależny wynik auto oraz ostatecznie wybrany Best. |

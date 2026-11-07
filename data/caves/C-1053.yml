@@ -1,0 +1,15 @@
+schema_version: 1
+id: C-1053
+name: Jaskinia Wysoka–Za Siedmiu Progami–Pośrednia
+length_m: 11660
+depth_m: 288
+denivelation_m: 435
+morphometry_source_ref: KKTJ 2026-07, PDF 06, s. 2, lp. 55
+external_refs: []
+bibliography_status: unknown
+notes: Wiersz regionalny podaje 11660 m i trzy kody. Ranking długości (PDF 01, s.
+  1, lp. 3) pod krótszą nazwą Wysoka–Za Siedmiu Progami podaje 11700 m.
+created_at: '2026-11-07T15:33:39Z'
+created_by: maintenance:kktj-systems
+updated_at: '2026-11-07T15:33:39Z'
+updated_by: maintenance:kktj-systems

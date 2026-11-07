@@ -348,6 +348,13 @@ def _write_shapefile_zip(rows: tuple[BestMeasurementExportRow, ...], path: Path)
                     row.cave_denivelation_m,
                     _text_or_empty(row.cave_denivelation_qualifier),
                     _truncated_text(row.cave_morphometry_source_ref, max_length=254),
+                    _text_or_empty(row.system_cave_id),
+                    _truncated_text(row.cave_system_name, max_length=120),
+                    row.system_length_m,
+                    row.system_depth_m,
+                    row.system_denivelation_m,
+                    _text_or_empty(row.system_denivelation_qualifier),
+                    _truncated_text(row.system_morphometry_source_ref, max_length=254),
                 )
         finally:
             writer.close()
@@ -417,6 +424,13 @@ def _define_shapefile_fields(writer: shapefile.Writer) -> None:
     writer.field("cave_den_m", "F", size=20, decimal=3)
     writer.field("cave_den_q", "C", size=16)
     writer.field("cave_m_ref", "C", size=254)
+    writer.field("sys_cav_id", "C", size=40)
+    writer.field("sys_name", "C", size=120)
+    writer.field("sys_len_m", "F", size=20, decimal=3)
+    writer.field("sys_dep_m", "F", size=20, decimal=3)
+    writer.field("sys_den_m", "F", size=20, decimal=3)
+    writer.field("sys_den_q", "C", size=16)
+    writer.field("sys_m_ref", "C", size=254)
 
 
 def _row_properties(row: BestMeasurementExportRow) -> dict[str, Any]:
@@ -463,6 +477,20 @@ def _gpx_description(row: BestMeasurementExportRow) -> str:
             parts.append(f"{label} {prefix}{_float_text(value)} m")
     if row.cave_morphometry_source_ref:
         parts.append(f"morfometria: {row.cave_morphometry_source_ref}")
+    if row.system_cave_id is not None:
+        parts.append(f"system {row.cave_system_name} ({row.system_cave_id})")
+        system_denivelation_prefix = (
+            "~" if row.system_denivelation_qualifier == "approximate" else ""
+        )
+        for label, value, prefix in (
+            ("długość systemu", row.system_length_m, ""),
+            ("głębokość systemu", row.system_depth_m, ""),
+            ("deniwelacja systemu", row.system_denivelation_m, system_denivelation_prefix),
+        ):
+            if value is not None:
+                parts.append(f"{label} {prefix}{_float_text(value)} m")
+        if row.system_morphometry_source_ref:
+            parts.append(f"morfometria systemu: {row.system_morphometry_source_ref}")
     for label, note in (
         ("object notes", row.object_notes),
         ("cave notes", row.cave_notes),

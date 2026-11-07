@@ -2,6 +2,7 @@ schema_version: 1
 id: C-0573
 name: Jaskinia Mylna
 system_name: Jaskinie Pawlikowskiego
+system_cave_id: C-0095
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -34,5 +35,5 @@ notes: 'PIG aliases: Jaskinie Pawlikowskiego
   3 (północny) - ku NE, 1084 m n.p.m.; KSZ-0113 was created from TPN row 759.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-25T11:37:09Z'
-updated_by: codex
+updated_at: '2026-11-07T15:33:39Z'
+updated_by: maintenance:kktj-systems

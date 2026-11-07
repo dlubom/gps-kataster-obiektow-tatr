@@ -431,8 +431,11 @@ Zapis `KKTJ 2026-07, PDF 03, s. 1, lp. 7` identyfikuje wiersz w
 [zestawieniu z lipca 2026](../data/sources/kktj/2026-07/jaskinie-tatr.md).
 Gdy na stronie powtarza się Lp., po numerze pozycji podaj także nazwę
 rejonu z tabeli.
-Morfometria systemu należy do pozycji katalogowej odpowiadającej całemu
-systemowi. Zgłaszaj niejednoznaczności dopasowania i sprzeczne wartości w PR.
+Morfometrię systemu zapisz w jednym rekordzie opisującym całość.
+W rekordzie potwierdzonej części podaj `system_cave_id` z jego ID. Eksporty
+pokażą wymiary systemu obok własnych wymiarów części. Nowy rekord zbiorczy
+może istnieć bez otworów. Istniejące otwory zachowują swoje przypisania.
+Zgłaszaj niejednoznaczności dopasowania i sprzeczne wartości w PR.
 
 ## Cwiczeniowy pomiar testowy
 
