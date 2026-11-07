@@ -2,6 +2,9 @@ schema_version: 1
 id: C-1043
 name: Jaskinia Cynamonowa
 system_name: null
+length_m: 47
+denivelation_m: 13.7
+morphometry_source_ref: KKTJ 2026-07, PDF 03, s. 3, lp. 84
 external_refs:
 - system: inne
   ref_type: url
@@ -38,5 +41,5 @@ notes: |-
   Nowak J., 2026, „Jaskinie Tatr”, KKTJ, zestawienie z 10.07.2026, załącznik „03 Dol. Chochołowska 2026.07”, s. 3, lp. 84.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-24T08:42:28Z'
-updated_by: maintenance:descriptions
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

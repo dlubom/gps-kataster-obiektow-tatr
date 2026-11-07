@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0771
 name: Jaskinia Rybia
 system_name: null
+length_m: 358
+denivelation_m: 6
+morphometry_source_ref: KKTJ 2026-07, PDF 03, s. 1, lp. 3
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -30,5 +33,5 @@ notes: 'PIG aliases: Wodna pod Zawiesistą
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

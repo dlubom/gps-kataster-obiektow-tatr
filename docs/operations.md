@@ -419,6 +419,21 @@ publikację i lokalizator, np. strony, tabelę albo pozycję wykazu. Cytowania
 jaskini nie kopiujemy automatycznie na wszystkie otwory. Referencje TPN/PIG
 pozostają osobnymi informacjami o pochodzeniu i identyfikatorach.
 
+## Morfometria jaskini
+
+W `data/caves/{CAVE_ID}.yml` zapisz dostępne wartości `length_m`, `depth_m`
+i `denivelation_m` w metrach oraz wspólny `morphometry_source_ref`. Dla
+źródłowego przybliżenia deniwelacji dodaj `denivelation_qualifier: approximate`.
+Puste pola oznaczają brak wartości. Głębokość to nieujemna wielkość podana
+przez źródło. Wysokości otworów ani przewyższenia nie zastępują głębokości.
+
+Zapis `KKTJ 2026-07, PDF 03, s. 1, lp. 7` identyfikuje wiersz w
+[zestawieniu z lipca 2026](../data/sources/kktj/2026-07/jaskinie-tatr.md).
+Gdy na stronie powtarza się Lp., po numerze pozycji podaj także nazwę
+rejonu z tabeli.
+Morfometria systemu należy do pozycji katalogowej odpowiadającej całemu
+systemowi. Zgłaszaj niejednoznaczności dopasowania i sprzeczne wartości w PR.
+
 ## Cwiczeniowy pomiar testowy
 
 Kopiuj cały katalog: ochrona historii powinna widzieć wszystkie istniejące

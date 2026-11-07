@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0928
 name: Studzienka przy Pomarańczarni
 system_name: null
+length_m: 11.0
+depth_m: 2.3
+denivelation_m: 7.4
+morphometry_source_ref: KKTJ 2026-07, PDF 09, s. 5, lp. 139
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 11
@@ -13,5 +17,5 @@ notes: 'TPN length: 11
   TPN notes: wg sprawozdania M. Wierzbowski'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-11-07T09:15:38Z'
+updated_by: maintenance:kktj-morphometry

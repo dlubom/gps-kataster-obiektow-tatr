@@ -1,10 +1,15 @@
+import csv
 import json
+import sqlite3
 import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
+from xml.etree import ElementTree as ET
+from zipfile import ZipFile
 
 import pytest
+import shapefile
 from export_test_support import (
     GENERATED_AT,
     KSW_LAT,
@@ -309,7 +314,23 @@ def test_excel_preserves_best_and_full_history_with_local_measurement_ids(tmp_pa
     second["measurements"][1]["horizontal_accuracy_m"] = None
     _write_yaml(data_dir / "objects/KSW/KSW-0002.yml", second)
     cave = _valid_cave()
+    cave.update(
+        length_m=2320,
+        depth_m=0,
+        denivelation_m=60,
+        denivelation_qualifier="approximate",
+        morphometry_source_ref="KKTJ 2026-07, PDF 03, s. 1, lp. 7",
+    )
     _write_yaml(data_dir / "caves/C-0001.yml", cave)
+    system = _valid_cave()
+    system.update(
+        id="C-0002",
+        name="System bez otworów",
+        external_refs=[],
+        length_m=2404,
+        morphometry_source_ref="KKTJ 2026-07, PDF 05, s. 2, lp. 42",
+    )
+    _write_yaml(data_dir / "caves/C-0002.yml", system)
     result = build_release_artifacts(
         **baseline,
         data_dir=data_dir,
@@ -321,10 +342,21 @@ def test_excel_preserves_best_and_full_history_with_local_measurement_ids(tmp_pa
     path = result.export_result.output_dir / "katalog.xlsx"
     assert path.is_file()
     book = load_workbook(path)
-    assert book.sheetnames == ["Best", "Full"]
+    assert book.sheetnames == ["Best", "Full", "Jaskinie"]
+    caves = _excel_records(book["Jaskinie"])
+    assert [row["ID jaskini"] for row in caves] == ["C-0001", "C-0002"]
+    assert caves[1]["Długość jaskini [m]"] == 2404
+    assert caves[1]["Głębokość jaskini [m]"] is None
     best = _excel_records(book["Best"])
     full = _excel_records(book["Full"])
     assert len(best) == 2 and len(full) == 4
+    for row in [*best, *full, caves[0]]:
+        assert row["ID jaskini"] == "C-0001"
+        assert row["Długość jaskini [m]"] == 2320
+        assert row["Głębokość jaskini [m]"] == 0
+        assert row["Deniwelacja jaskini [m]"] == 60
+        assert row["Kwalifikator deniwelacji"] == "approximate"
+        assert row["Źródło morfometrii"] == cave["morphometry_source_ref"]
     assert [(r["ID obiektu"], r["ID pomiaru"]) for r in best] == [
         ("KSW-0001", "m-001"),
         ("KSW-0002", "m-002"),
@@ -360,6 +392,33 @@ def test_excel_preserves_best_and_full_history_with_local_measurement_ids(tmp_pa
     assert "v1.2.3" in book.properties.description
     assert "a" * 40 in book.properties.description
     book.close()
+
+    with result.export_result.csv_path.open(newline="") as stream:
+        row = next(csv.DictReader(stream))
+    assert row["cave_length_m"] == "2320"
+    properties = json.loads(result.export_result.geojson_path.read_text())["features"][0][
+        "properties"
+    ]
+    assert properties["cave_denivelation_qualifier"] == "approximate"
+    assert properties["cave_depth_m"] == 0
+    gpx = ET.parse(result.export_result.gpx_path)
+    desc = gpx.findtext(".//{*}wpt/{*}desc")
+    assert "długość jaskini 2320 m" in desc
+    assert "głębokość 0 m" in desc
+    assert "deniwelacja ~60 m" in desc
+    with (
+        ZipFile(result.export_result.shapefile_zip_path) as archive,
+        archive.open("best-measurements.dbf") as dbf,
+    ):
+        record = shapefile.Reader(dbf=dbf).record(0).as_dict()
+    assert (record["cave_len_m"], record["cave_dep_m"], record["cave_den_m"]) == (2320, 0, 60)
+    assert record["cave_den_q"] == "approximate"
+    with sqlite3.connect(path.parent / "katalog.gpkg") as database:
+        for table in ("best", "measurements"):
+            rows = database.execute(
+                f"SELECT DISTINCT cave_length_m,cave_depth_m,cave_denivelation_m FROM {table}"
+            ).fetchall()
+            assert rows == [(2320, 0, 60)]
 
 
 @pytest.mark.parametrize(
@@ -418,9 +477,9 @@ def test_excel_empty_catalog_has_headers_without_fake_records(tmp_path: Path) ->
     path = tmp_path / "exports/katalog.xlsx"
     assert path.is_file()
     book = load_workbook(path)
-    assert book.sheetnames == ["Best", "Full"]
+    assert book.sheetnames == ["Best", "Full", "Jaskinie"]
     assert all(sheet.max_row == 6 for sheet in book)
-    assert all(sheet["A6"].value == "ID obiektu" for sheet in book)
+    assert [sheet["A6"].value for sheet in book] == ["ID obiektu", "ID obiektu", "ID jaskini"]
     book.close()
 
 

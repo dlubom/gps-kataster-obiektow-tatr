@@ -35,6 +35,15 @@ CREATE TABLE caves (
   id cave_id PRIMARY KEY,
   name nonempty_text NOT NULL,
   system_name text,
+  length_m nonnegative_float,
+  depth_m nonnegative_float,
+  denivelation_m nonnegative_float,
+  denivelation_qualifier text CHECK (
+    denivelation_qualifier IS NULL OR
+    (denivelation_qualifier = 'approximate' AND denivelation_m IS NOT NULL)),
+  morphometry_source_ref nonempty_text,
+  CHECK ((morphometry_source_ref IS NOT NULL) =
+    (length_m IS NOT NULL OR depth_m IS NOT NULL OR denivelation_m IS NOT NULL)),
   bibliography_status bibliography_state NOT NULL,
   bibliography_note text,
   notes text,

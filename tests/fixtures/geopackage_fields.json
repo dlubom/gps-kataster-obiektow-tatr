@@ -59,5 +59,10 @@
   ["measurement_created_by", "TEXT"],
   ["input_srid", "REAL"],
   ["input_x", "REAL"],
-  ["input_y", "REAL"]
+  ["input_y", "REAL"],
+  ["cave_length_m", "REAL"],
+  ["cave_depth_m", "REAL"],
+  ["cave_denivelation_m", "REAL"],
+  ["cave_denivelation_qualifier", "TEXT"],
+  ["cave_morphometry_source_ref", "TEXT"]
 ]
