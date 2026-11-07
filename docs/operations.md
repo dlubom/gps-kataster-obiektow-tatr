@@ -447,6 +447,12 @@ Odniesienie `TPN Geoportal TATRY 2026-10-19` wskazuje
 Zero wymagające interpretacji, orientacyjny wymiar i nieustalony poziom
 odniesienia zachowaj jako informację źródłową w archiwum lub krótkiej uwadze.
 
+Dla słowackich jaskiń użyj [wykazu SMOPaJ z 31 grudnia 2017 r.](https://www.smopaj.sk/sk/zoznam-jaskyn)
+z Národnej databázy jaskýň (NDJ). W odsyłaczu podaj datę stanu, stronę PDF,
+pozycję w wykazie i numer rejestracyjny NDJ (`r. č.`). W wykazie `dl.`
+oznacza długość, a `hl.` głębokość. Wartości z innych pomiarów można
+odnotować w uwagach z podaniem źródła.
+
 Morfometrię systemu zapisz w jednym rekordzie opisującym całość.
 W rekordzie potwierdzonej części podaj `system_cave_id` z jego ID. Eksporty
 pokażą wymiary systemu obok własnych wymiarów części. Nowy rekord zbiorczy
