@@ -24,9 +24,9 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG sector: D. Kościeliska - Wsch.
+notes: 'PIG:1649, stan 2010 podaje długość 4,5 m wobec 15 m w KKTJ, deniwelacja 0,3 m wobec 2,5 m w KKTJ.
 
-  PIG morphometry: length_m=4,5, depth_m=0, denivelation_m=0,3
+  PIG sector: D. Kościeliska - Wsch.
 
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'

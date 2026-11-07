@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0971
 name: Kalacki Schron
 system_name: null
+length_m: 4
+morphometry_source_ref: TPN CSV, GLOBALID {96B9A3DD-2F35-400C-A96C-A5B21625EC24}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 4

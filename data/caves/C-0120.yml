@@ -3,6 +3,10 @@ id: C-0120
 name: Jaskinia Wielka Litworowa
 system_name: null
 system_cave_id: C-0295
+length_m: 7185
+depth_m: 354
+denivelation_m: 370
+morphometry_source_ref: PIG:491, stan 2013
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -25,8 +29,6 @@ bibliography_status: unknown
 notes: 'PIG aliases: SYSTEM Jaskinia Wielka Śnieżna
 
   PIG sector: D. Miętusia - Wsch.
-
-  PIG morphometry: length_m=7185, depth_m=354, denivelation_m=370
 
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'

@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0942
 name: Sztolnia w Bramie Kantaka nr 2
 system_name: null
+length_m: 15
+morphometry_source_ref: TPN CSV, GLOBALID {B5AC9E3A-A89E-443F-B640-D28804A74046}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 15

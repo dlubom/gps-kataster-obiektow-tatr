@@ -25,11 +25,11 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: Psia Budka
+notes: 'PIG:1392, stan 2013 podaje długość 43 m wobec 60 m w KKTJ, deniwelacja 2,7 m wobec 5 m w KKTJ.
+
+  PIG aliases: Psia Budka
 
   PIG sector: D. Kościeliska - Zach.
-
-  PIG morphometry: length_m=43, depth_m=1,5, denivelation_m=2,7
 
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'

@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0974
 name: Sztolnia na Klinowej Czubie nr 5
 system_name: null
+length_m: 2.5
+morphometry_source_ref: TPN CSV, GLOBALID {08B81C36-6909-4560-B876-9C7A04390725}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 2,5

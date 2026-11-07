@@ -25,12 +25,12 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: Kościół, Kościółek, pod Kościółkiem, Śnieżna Jama, Śnieżny Aven, Lodowa
+notes: 'PIG:1538, stan 2014 podaje długość 12700 m wobec 14670 m w KKTJ, głębokość 726 m wobec 768 m w KKTJ, deniwelacja 763 m wobec 805 m w KKTJ.
+
+  PIG aliases: Kościół, Kościółek, pod Kościółkiem, Śnieżna Jama, Śnieżny Aven, Lodowa
   pod Kotlinami, Jaskinia pod Kotlinami
 
   PIG sector: D. Małej Łąki - Zach.
-
-  PIG morphometry: length_m=12700, depth_m=726, denivelation_m=763
 
   PIG source state year: 2014
 

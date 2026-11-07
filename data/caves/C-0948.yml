@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0948
 name: Sztolnia w Małym Reglu nr 2
 system_name: null
+length_m: 3
+morphometry_source_ref: TPN CSV, GLOBALID {DAF61259-946D-4D5E-8053-D5E69B732C09}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 3

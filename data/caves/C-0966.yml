@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0966
 name: Sztolnia - Kopalnia w Wantulach I
 system_name: null
+length_m: 8.4
+depth_m: 4.7
+denivelation_m: 4.7
+morphometry_source_ref: TPN CSV, GLOBALID {F44F49D6-8702-477C-99CC-83278DFA8C32}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 8,4

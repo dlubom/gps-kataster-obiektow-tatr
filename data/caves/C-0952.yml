@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0952
 name: Sztolnia w Przedniej Kopce nr 2
 system_name: null
+length_m: 5.3
+morphometry_source_ref: TPN CSV, GLOBALID {AFB3118F-4982-4271-AB7E-544CCD7F4854}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 5,3

@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0865
 name: Gawra w Kondratowych Basztach
 system_name: null
+length_m: 7.7
+depth_m: 1.4
+denivelation_m: 3.5
+morphometry_source_ref: TPN CSV, GLOBALID {B70FDCF8-521F-4619-9B06-77D598113DCF}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 7,7

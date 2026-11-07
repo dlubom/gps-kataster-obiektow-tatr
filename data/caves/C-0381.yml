@@ -24,11 +24,11 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: Most, Brama
+notes: 'PIG:1423, stan 2010 podaje głębokość 7 m. Kierunek lub poziom odniesienia względem otworu wymaga potwierdzenia.
+
+  PIG aliases: Most, Brama
 
   PIG sector: D. Kościeliska - Wsch.
-
-  PIG morphometry: length_m=8, depth_m=7, denivelation_m=7
 
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'

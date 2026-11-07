@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0919
 name: Kalacka Nyża IV
 system_name: null
+length_m: 3
+morphometry_source_ref: TPN CSV, GLOBALID {68642D6B-F4C0-4C24-A3CA-ED50C8EE96BA}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 3

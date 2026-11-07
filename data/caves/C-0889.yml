@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0889
 name: Schron nad Sniezna
 system_name: null
+length_m: 3.7
+morphometry_source_ref: TPN CSV, GLOBALID {D6DA794E-6CD4-4CDC-9342-B94BE4734FCA}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 3,7

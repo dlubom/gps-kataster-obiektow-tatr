@@ -2,6 +2,8 @@ schema_version: 1
 id: C-1031
 name: Gawra w Sarniej Skale
 system_name: null
+length_m: 3.3
+morphometry_source_ref: TPN Geoportal TATRY 2026-10-19, GLOBALID {551DF3AD-F3E1-4920-BD23-D741AC938BA8}
 external_refs: []
 bibliography_status: unknown
 notes: |-

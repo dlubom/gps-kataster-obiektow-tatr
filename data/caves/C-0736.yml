@@ -24,11 +24,11 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: Dziura z Blokiem
+notes: 'PIG:1307, stan 2010 podaje głębokość 2,5 m. Kierunek lub poziom odniesienia względem otworu wymaga potwierdzenia.
+
+  PIG aliases: Dziura z Blokiem
 
   PIG sector: D. Lejowa
-
-  PIG morphometry: length_m=14, depth_m=2,5, denivelation_m=2,5
 
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'

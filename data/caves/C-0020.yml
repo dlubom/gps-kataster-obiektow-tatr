@@ -24,11 +24,11 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: Krakowski Tunel
+notes: 'PIG:1440, stan 2010 podaje głębokość 7 m. Zakres lub zgodność z pozostałymi wymiarami wymaga potwierdzenia.
+
+  PIG aliases: Krakowski Tunel
 
   PIG sector: D. Kościeliska - Wsch.
-
-  PIG morphometry: length_m=35, depth_m=7, denivelation_m=21
 
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'

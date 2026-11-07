@@ -25,11 +25,11 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: Jaskinia pod Progiem
+notes: 'PIG:1573, stan 2013 podaje długość 220 m wobec 278 m w KKTJ, głębokość 26,8 m wobec 4,5 m w KKTJ, deniwelacja 28 m wobec 32,6 m w KKTJ.
+
+  PIG aliases: Jaskinia pod Progiem
 
   PIG sector: D. Małej Łąki - Zach.
-
-  PIG morphometry: length_m=220, depth_m=26,8, denivelation_m=28
 
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'

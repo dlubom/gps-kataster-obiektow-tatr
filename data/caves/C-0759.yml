@@ -3,6 +3,9 @@ id: C-0759
 name: Jaskinia Obłazkowa
 system_name: Jaskinie Pawlikowskiego
 system_cave_id: C-0095
+length_m: 214
+denivelation_m: 8.1
+morphometry_source_ref: PIG:1351, stan 2015
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -25,8 +28,6 @@ bibliography_status: unknown
 notes: 'PIG aliases: SYSTEM Jaskinia Mylna, Obłazkowa Jama, Jaskinie Pawlikowskiego
 
   PIG sector: D. Kościeliska - Zach.
-
-  PIG morphometry: length_m=214, depth_m=0, denivelation_m=8,1
 
   PIG source state year: 2015
 

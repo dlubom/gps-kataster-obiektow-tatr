@@ -3,8 +3,9 @@ id: C-0015
 name: Szczelina w Żlebie Kirkora
 system_name: null
 length_m: 5.5
+depth_m: 4
 denivelation_m: 4
-morphometry_source_ref: KKTJ 2026-07, PDF 04, s. 2, lp. 1, Dolina Strążyska
+morphometry_source_ref: length_m, denivelation_m = KKTJ 2026-07, PDF 04, s. 2, lp. 1, Dolina Strążyska | depth_m = PIG:1204, stan 2010
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -25,8 +26,6 @@ external_refs:
   notes: PIG catalog record link.
 bibliography_status: unknown
 notes: 'PIG sector: D. Strążyska
-
-  PIG morphometry: length_m=5,5, depth_m=4, denivelation_m=4
 
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'

@@ -422,15 +422,28 @@ pozostają osobnymi informacjami o pochodzeniu i identyfikatorach.
 ## Morfometria jaskini
 
 W `data/caves/{CAVE_ID}.yml` zapisz dostępne wartości `length_m`, `depth_m`
-i `denivelation_m` w metrach oraz wspólny `morphometry_source_ref`. Dla
-źródłowego przybliżenia deniwelacji dodaj `denivelation_qualifier: approximate`.
+i `denivelation_m` w metrach oraz `morphometry_source_ref`. Gdy źródła są
+różne, podaj nazwy pól przed każdym odsyłaczem. Przykład to
+`length_m, denivelation_m = KKTJ 2026-07, PDF 04, s. 2, lp. 1, Dolina Strążyska | depth_m = PIG:1204, stan 2010`.
+Eksport zachowuje cały odsyłacz. Dla źródłowego przybliżenia deniwelacji
+dodaj `denivelation_qualifier: approximate`.
 Puste pola oznaczają brak wartości. Głębokość to nieujemna wielkość podana
 przez źródło. Wysokości otworów ani przewyższenia nie zastępują głębokości.
 
 Zapis `KKTJ 2026-07, PDF 03, s. 1, lp. 7` identyfikuje wiersz w
 [zestawieniu z lipca 2026](../data/sources/kktj/2026-07/jaskinie-tatr.md).
 Gdy na stronie powtarza się Lp., po numerze pozycji podaj także nazwę
-rejonu z tabeli.
+rejonu z tabeli. Wiersz bez Lp. zidentyfikuj numerem PDF, stroną i kodem.
+
+Brak w KKTJ można uzupełnić na podstawie rekordu PIG albo Geoportalu
+TATRY o zgodnej tożsamości i zakresie. Podaj ID i rok stanu PIG lub
+`GLOBALID` otworu i wersję danych TPN. Wartość ze starszego arkusza
+odszukasz w [archiwum CSV TPN](../data/sources/tpn/).
+Odniesienie `TPN Geoportal TATRY 2026-10-19` wskazuje
+[zarchiwizowany odczyt API](https://github.com/dlubom/gps-kataster-obiektow-tatr/tree/60afeca2d17bbc4b5aa690abc83da1d25d89a506/data/sources/tpn/snapshots/pbi-101-live-20261019).
+Zero wymagające interpretacji, orientacyjny wymiar i nieustalony poziom
+odniesienia zachowaj jako informację źródłową w archiwum lub krótkiej uwadze.
+
 Morfometrię systemu zapisz w jednym rekordzie opisującym całość.
 W rekordzie potwierdzonej części podaj `system_cave_id` z jego ID. Eksporty
 pokażą wymiary systemu obok własnych wymiarów części. Nowy rekord zbiorczy

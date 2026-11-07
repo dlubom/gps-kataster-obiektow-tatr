@@ -3,8 +3,9 @@ id: C-0460
 name: Siwiańskie Okno
 system_name: null
 length_m: 3
+depth_m: 2
 denivelation_m: 2
-morphometry_source_ref: KKTJ 2026-07, PDF 03, s. 3, lp. 70
+morphometry_source_ref: length_m, denivelation_m = KKTJ 2026-07, PDF 03, s. 3, lp. 70 | depth_m = PIG:11046, stan 2016
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -25,8 +26,6 @@ external_refs:
   notes: PIG catalog record link.
 bibliography_status: unknown
 notes: 'PIG sector: D. ChochoĹ‚owska - Zach.
-
-  PIG morphometry: length_m=3, depth_m=2, denivelation_m=2
 
   PIG source state year: 2016'
 created_at: '2026-05-16T10:22:49Z'

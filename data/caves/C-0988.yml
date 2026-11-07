@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0988
 name: Sztolnia na Klinowej Czubie nr 4
 system_name: null
+length_m: 18
+morphometry_source_ref: TPN CSV, GLOBALID {DA201294-463E-4F4D-8A60-D2F88FB17C1A}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 18

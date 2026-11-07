@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0965
 name: Jaskinia w Kondratowych Basztach
 system_name: null
+length_m: 16
+morphometry_source_ref: TPN CSV, GLOBALID {35C7E917-A53F-4A9B-AB4A-7D44B6B7915E}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 16

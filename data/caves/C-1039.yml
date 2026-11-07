@@ -2,6 +2,8 @@ schema_version: 1
 id: C-1039
 name: Gawra w Bobrowcu
 system_name: null
+length_m: 22
+morphometry_source_ref: TPN Geoportal TATRY 2026-10-19, GLOBALID {A32F96EB-2092-4974-9256-B1D26B3F35A3}
 external_refs: []
 bibliography_status: unknown
 notes: |-

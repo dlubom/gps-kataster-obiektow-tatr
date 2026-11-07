@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0881
 name: Sztolnia w Dolinie Białego nr 1
 system_name: null
+length_m: 260
+morphometry_source_ref: TPN CSV, GLOBALID {0606A079-D986-44F9-BC11-22BE576A107E}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 260

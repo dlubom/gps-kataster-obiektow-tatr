@@ -25,9 +25,9 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG sector: D. Małej Łąki - Wsch.
+notes: 'PIG:1590, stan 2014 podaje długość 90 m wobec 106,5 m w KKTJ, głębokość 47 m wobec 52 m w KKTJ, deniwelacja 47 m wobec 52 m w KKTJ.
 
-  PIG morphometry: length_m=90, depth_m=47, denivelation_m=47
+  PIG sector: D. Małej Łąki - Wsch.
 
   PIG source state year: 2014'
 created_at: '2026-05-16T10:22:49Z'

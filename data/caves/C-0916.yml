@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0916
 name: Sztolnia na Klinowej Czubie nr 2
 system_name: null
+length_m: 8.5
+morphometry_source_ref: TPN CSV, GLOBALID {88801933-D166-488A-A718-584A7C9DC4C3}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 8,5

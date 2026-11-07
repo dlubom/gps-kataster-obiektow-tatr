@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0904
 name: Gawra w Pronobisie
 system_name: null
+length_m: 2.5
+morphometry_source_ref: TPN CSV, GLOBALID {204A0610-40F4-4D2D-AA17-A138A1237B13}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 2,5

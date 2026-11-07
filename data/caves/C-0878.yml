@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0878
 name: Sztolnia w Żlebie Piekło
 system_name: null
+length_m: 14.07
+denivelation_m: 2.11
+morphometry_source_ref: TPN CSV, GLOBALID {5DEECEF0-D133-4954-9235-6229FC686B9F}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 14,07

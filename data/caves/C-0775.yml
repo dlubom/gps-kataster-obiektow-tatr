@@ -22,11 +22,11 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: SYSTEM Dziura Wyżnia
+notes: 'PIG:1019, stan 2013 podaje długość 160 m, głębokość 11 m, deniwelacja 14 m dla systemu lub bez jednoznacznego zakresu tej części.
+
+  PIG aliases: SYSTEM Dziura Wyżnia
 
   PIG sector: D. ku Dziurze i Spadowiec
-
-  PIG morphometry: length_m=160, depth_m=11, denivelation_m=14
 
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'

@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0960
 name: Sztolnia w Dolinie Białego nr 3
 system_name: null
+length_m: 5.2
+depth_m: 0.8
+denivelation_m: 1.3
+morphometry_source_ref: TPN CSV, GLOBALID {8393A2D7-0BDE-48E7-AE6E-089C8051B123}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 5,2

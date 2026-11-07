@@ -25,7 +25,9 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'Pozycja katalogowa systemu Jaskinie Pawlikowskiego: Mylna (C-0573), Obłazkowa (C-0759)
+notes: 'PIG:10935, stan 2015 podaje głębokość 71,3 m wobec 22,3 m w KKTJ.
+
+  Pozycja katalogowa systemu Jaskinie Pawlikowskiego: Mylna (C-0573), Obłazkowa (C-0759)
   i Raptawicka (C-0403). PIG 10935 nie opisuje dodatkowego otworu; jego współrzędne odnoszą
   się do głównego otworu Mylnej, reprezentowanego przez KSZ-0064.
 
@@ -34,8 +36,6 @@ notes: 'Pozycja katalogowa systemu Jaskinie Pawlikowskiego: Mylna (C-0573), Obł
   SYSTEM Mylna-Obłazkowa
 
   PIG sector: D. Kościeliska - Zach.
-
-  PIG morphometry: length_m=2404, depth_m=71,3, denivelation_m=76,1
 
   PIG source state year: 2015'
 created_at: '2026-05-16T10:22:49Z'

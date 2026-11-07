@@ -148,7 +148,7 @@ Dopuszczalne wartości:
 | `depth_m` | liczba, opt | Wielkość zagłębienia poniżej poziomu odniesienia źródła, w metrach. |
 | `denivelation_m` | liczba, opt | Różnica między najwyższym i najniższym punktem jaskini, w metrach. |
 | `denivelation_qualifier` | `approximate`, opt | Źródło podało deniwelację jako przybliżenie. |
-| `morphometry_source_ref` | string, opt | Wskazuje wiersz źródłowy wszystkich zapisanych wartości. Wymagane przy co najmniej jednej wartości. |
+| `morphometry_source_ref` | string, opt | Wskazuje źródło wszystkich zapisanych wartości. Przy różnych źródłach przypisuje je do nazw pól. Wymagane przy co najmniej jednej wartości. |
 | `external_refs` | lista `ExternalReference` | Numer inwentarzowy, PIG ID, PIG link, inne identyfikatory katalogowe. |
 | `object_ids` | lista wyliczana | Otwory wynikające z `Obiekt.cave_id`; brak drugiego zapisu źródłowego. |
 | `notes` | string, opt | Uwagi. |
@@ -628,8 +628,12 @@ systemu obejmującego kilka pozycji tworzymy jeden rekord zbiorczy, jeśli
 katalog nie ma już rekordu opisującego całość. Odniesienie zawiera edycję,
 numer PDF, stronę i Lp. Gdy Lp. powtarza się na stronie, podaje również rejon.
 Przypisanie wymaga zgodności tożsamości i zakresu rekordu.
-Rankingi służą do porównania tabel regionalnych. Brak lub nierozstrzygnięta
-sprzeczność pozostawia pole puste.
+Rankingi służą do porównania tabel regionalnych. Wiersz bez Lp. można
+wskazać numerem PDF, stroną i kodem inwentarzowym. Brak wartości KKTJ
+można uzupełnić bezpośrednią wartością PIG lub Geoportalu TATRY, gdy
+tożsamość pozycji, zakres i znaczenie wymiaru są potwierdzone. Nierozstrzygnięta
+sprzeczność pozostawia pole puste. Różnice, w tym poziom odniesienia,
+można opisać z odsyłaczem do źródła w `Jaskinia.notes`.
 
 ---
 
