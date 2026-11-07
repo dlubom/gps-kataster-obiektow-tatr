@@ -130,7 +130,10 @@ CSV, GeoJSON oraz warstwy `best` i `measurements` GeoPackage podają
 `cave_length_m`, `cave_depth_m` i `cave_denivelation_m` w metrach oraz
 `cave_denivelation_qualifier` i `cave_morphometry_source_ref`. Shapefile
 używa pól `cave_len_m`, `cave_dep_m`, `cave_den_m` (trzy miejsca po
-przecinku), `cave_den_q` i `cave_m_ref`. Puste wartości liczbowe są
+przecinku), `cave_den_q` i `cave_m_ref`. DBF skraca odsyłacze
+`cave_m_ref` i `sys_m_ref` do 254 bajtów UTF-8 na granicy znaku.
+Pełny odsyłacz jest dostępny w CSV, GeoJSON, GeoPackage, Excelu
+i dumpie PostgreSQL. Puste wartości liczbowe są
 nieznane. GPX pokazuje znane wymiary i odniesienie do źródła w opisie
 punktu oraz oznacza przybliżoną deniwelację przez `~`.
 

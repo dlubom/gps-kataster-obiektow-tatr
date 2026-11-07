@@ -425,8 +425,9 @@ W `data/caves/{CAVE_ID}.yml` zapisz dostępne wartości `length_m`, `depth_m`
 i `denivelation_m` w metrach oraz `morphometry_source_ref`. Gdy źródła są
 różne, podaj nazwy pól przed każdym odsyłaczem. Przykład to
 `length_m, denivelation_m = KKTJ 2026-07, PDF 04, s. 2, lp. 1, Dolina Strążyska | depth_m = PIG:1204, stan 2010`.
-Eksport zachowuje cały odsyłacz. Dla źródłowego przybliżenia deniwelacji
-dodaj `denivelation_qualifier: approximate`.
+Pełny odsyłacz zachowują CSV, GeoJSON, GeoPackage, Excel i dump PostgreSQL.
+Pola DBF mają limit 254 bajtów UTF-8, a opis GPX podlega regułom XML 1.0.
+Dla źródłowego przybliżenia deniwelacji dodaj `denivelation_qualifier: approximate`.
 Puste pola oznaczają brak wartości. Głębokość to nieujemna wielkość podana
 przez źródło. Wysokości otworów ani przewyższenia nie zastępują głębokości.
 
