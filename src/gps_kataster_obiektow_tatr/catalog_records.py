@@ -15,6 +15,8 @@ ENTITY_TABLES = {
     "publication": "publications",
 }
 COMMON = ("created_at", "created_by", "updated_at", "updated_by")
+CAVE_DIMENSIONS = ("length_m", "depth_m", "denivelation_m")
+CAVE_MORPHOMETRY = (*CAVE_DIMENSIONS, "denivelation_qualifier", "morphometry_source_ref")
 FIELDS = {
     "objects": (
         "schema_version",
@@ -33,6 +35,8 @@ FIELDS = {
         "id",
         "name",
         "system_name",
+        "system_cave_id",
+        *CAVE_MORPHOMETRY,
         "bibliography_status",
         "bibliography_note",
         "notes",
@@ -97,7 +101,13 @@ FIELDS = {
 ASSIGNMENT = ("method", "assigned_from_measurement_id", "assigned_prefix", "prefix_override_reason")
 COORDINATES = ("lat", "lon", "x_1992", "y_1992", "input_srid", "input_x", "input_y")
 INTEGER_FIELDS = {"schema_version", "membership_ordinal", "publication_year", "input_srid"}
-NUMBER_FIELDS = {"elevation_m", "horizontal_accuracy_m", "vertical_accuracy_m", *COORDINATES}
+NUMBER_FIELDS = {
+    "elevation_m",
+    "horizontal_accuracy_m",
+    "vertical_accuracy_m",
+    *COORDINATES,
+    *CAVE_DIMENSIONS,
+}
 
 
 def _mapping(data: object, context: str) -> dict:

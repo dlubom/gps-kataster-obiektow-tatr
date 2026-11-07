@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0889
 name: Schron nad Sniezna
 system_name: null
+length_m: 3.7
+morphometry_source_ref: KKTJ 2026-07, PDF 09, s. 4, lp. 119
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 3,7

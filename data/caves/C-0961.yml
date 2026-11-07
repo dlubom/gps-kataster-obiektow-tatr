@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0961
 name: Sztolnia w Ornaczańskim Żlebie nr 1
 system_name: null
+length_m: 35.09
+denivelation_m: 3.95
+morphometry_source_ref: TPN CSV, GLOBALID {2421D669-E136-4ED2-AE27-9BCFE57BC6D7}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 35,09

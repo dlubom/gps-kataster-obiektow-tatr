@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0781
 name: Jaskinia Mysia
 system_name: null
+system_cave_id: C-1051
+length_m: 155
+morphometry_source_ref: PIG:1358, stan 2013
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -23,10 +26,8 @@ external_refs:
 bibliography_status: unknown
 notes: 'PIG sector: D. Kościeliska - Zach.
 
-  PIG morphometry: length_m=155, depth_m=0, denivelation_m=0
-
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-11-07T15:33:39Z'
+updated_by: maintenance:kktj-systems

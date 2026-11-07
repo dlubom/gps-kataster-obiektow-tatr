@@ -2,6 +2,8 @@ schema_version: 1
 id: C-1040
 name: Nyża we Wysrankach
 system_name: null
+length_m: 4
+morphometry_source_ref: TPN Geoportal TATRY 2026-10-19, GLOBALID {FDD25A5F-1D27-4BAB-9BF7-EBB1C062746C}
 external_refs: []
 bibliography_status: unknown
 notes: |-

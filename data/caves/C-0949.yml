@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0949
 name: Schron pod Kopą Kondracką
 system_name: null
+length_m: 4.5
+morphometry_source_ref: KKTJ 2026-07, PDF 10, s. 2, lp. 40
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 6

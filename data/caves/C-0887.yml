@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0887
 name: Myslenicka Rura
 system_name: null
+length_m: 9.7
+depth_m: 4.3
+denivelation_m: 4.3
+morphometry_source_ref: KKTJ 2026-07, PDF 10, s. 2, lp. 60
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 9

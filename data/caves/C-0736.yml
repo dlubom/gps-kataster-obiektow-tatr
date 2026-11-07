@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0736
 name: Schron nad Lejową
 system_name: null
+length_m: 14
+denivelation_m: 2.5
+morphometry_source_ref: KKTJ 2026-07, PDF 04, s. 1, lp. 8
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -21,14 +24,14 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: Dziura z Blokiem
+notes: 'PIG:1307, stan 2010 podaje głębokość 2,5 m. Kierunek lub poziom odniesienia względem otworu wymaga potwierdzenia.
+
+  PIG aliases: Dziura z Blokiem
 
   PIG sector: D. Lejowa
-
-  PIG morphometry: length_m=14, depth_m=2,5, denivelation_m=2,5
 
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0941
 name: Schron w Nosalu
 system_name: null
+length_m: 6
+denivelation_m: 1
+morphometry_source_ref: TPN CSV, GLOBALID {0AFBFC7D-0BD3-4FE7-A7F2-1774398D7DD9}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 6

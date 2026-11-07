@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0581
 name: Jaskinia Śnieżna Studnia
 system_name: null
+length_m: 14670
+depth_m: 768
+denivelation_m: 805
+morphometry_source_ref: KKTJ 2026-07, PDF 09, s. 2, lp. 52
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -21,12 +25,12 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: Kościół, Kościółek, pod Kościółkiem, Śnieżna Jama, Śnieżny Aven, Lodowa
+notes: 'PIG:1538, stan 2014 podaje długość 12700 m wobec 14670 m w KKTJ, głębokość 726 m wobec 768 m w KKTJ, deniwelacja 763 m wobec 805 m w KKTJ.
+
+  PIG aliases: Kościół, Kościółek, pod Kościółkiem, Śnieżna Jama, Śnieżny Aven, Lodowa
   pod Kotlinami, Jaskinia pod Kotlinami
 
   PIG sector: D. Małej Łąki - Zach.
-
-  PIG morphometry: length_m=12700, depth_m=726, denivelation_m=763
 
   PIG source state year: 2014
 
@@ -37,5 +41,5 @@ notes: 'PIG aliases: Kościół, Kościółek, pod Kościółkiem, Śnieżna Jam
   https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-23T11:59:37Z'
-updated_by: maintenance:PBI-111
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

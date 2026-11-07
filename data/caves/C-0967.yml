@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0967
 name: Sztolnia w Bramie Kantaka nr 1
 system_name: null
+length_m: 3.6
+morphometry_source_ref: TPN CSV, GLOBALID {7FD8BAB1-A46D-4ABA-8DEC-683933F2CAFD}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 3,6

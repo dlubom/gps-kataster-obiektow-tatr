@@ -11,6 +11,7 @@ metadane opisuje DDL. Minimum jednego pomiaru i jednej polityki Best wymusza
 
 ```mermaid
 erDiagram
+    caves o|--o{ caves : "jest systemem dla"
     caves o|--o{ objects : grupuje
     objects ||--|{ measurements : ma_historie
     objects ||--|| best_policy : ustala
@@ -25,6 +26,12 @@ erDiagram
     caves {
         text id PK
         text name
+        text system_cave_id FK "opcjonalny"
+        float length_m
+        float depth_m
+        float denivelation_m
+        text denivelation_qualifier
+        text morphometry_source_ref
         enum bibliography_status "known lub unknown"
     }
     objects {
@@ -56,6 +63,8 @@ erDiagram
 FK do pomiaru zawiera zawsze ID obiektu. Jedna jaskinia może nie mieć
 rozpoznanych otworów; obiekt może nie być jeszcze przypisany do jaskini.
 Lista obiektów jaskini jest wyliczana z FK, bez drugiego ręcznego zapisu.
+Część może wskazywać jeden system przez `caves.system_cave_id`.
+System wskazany przez część sam nie może wskazywać systemu.
 
 ## Publikacje i przywołania
 

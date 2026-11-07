@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0963
 name: Sztolnia w Żlebie Baniste
 system_name: null
+length_m: 5
+morphometry_source_ref: TPN CSV, GLOBALID {F3B07F48-0F30-4692-BBCA-96A387DF1FC5}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 5

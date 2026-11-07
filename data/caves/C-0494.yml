@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0494
 name: Kościół
 system_name: null
+length_m: 11
+denivelation_m: 20
+morphometry_source_ref: PIG:4588, stan 2014
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -21,9 +24,9 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG sector: D. Kościeliska - Wsch.
+notes: 'W PIG:4588 długość 11 m oznacza maksymalny zasięg niszy w głąb skały.
 
-  PIG morphometry: length_m=11, depth_m=0, denivelation_m=20
+  PIG sector: D. Kościeliska - Wsch.
 
   PIG source state year: 2014'
 created_at: '2026-05-16T10:22:49Z'

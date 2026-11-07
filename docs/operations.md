@@ -419,6 +419,51 @@ publikację i lokalizator, np. strony, tabelę albo pozycję wykazu. Cytowania
 jaskini nie kopiujemy automatycznie na wszystkie otwory. Referencje TPN/PIG
 pozostają osobnymi informacjami o pochodzeniu i identyfikatorach.
 
+## Morfometria jaskini
+
+W `data/caves/{CAVE_ID}.yml` zapisz dostępne wartości `length_m`, `depth_m`
+i `denivelation_m` w metrach oraz `morphometry_source_ref`. Gdy źródła są
+różne, podaj nazwy pól przed każdym odsyłaczem. Przykład to
+`length_m, denivelation_m = KKTJ 2026-07, PDF 04, s. 2, lp. 1, Dolina Strążyska | depth_m = PIG:1204, stan 2010`.
+Pełny odsyłacz zachowują CSV, GeoJSON, GeoPackage, Excel i dump PostgreSQL.
+Pola DBF mają limit 254 bajtów UTF-8, a opis GPX podlega regułom XML 1.0.
+Dla źródłowego przybliżenia deniwelacji dodaj `denivelation_qualifier: approximate`.
+Puste pola oznaczają brak wartości. Głębokość to nieujemna wielkość podana
+przez źródło. Wysokości otworów ani przewyższenia nie zastępują głębokości.
+
+Zapis `KKTJ 2026-07, PDF 03, s. 1, lp. 7` identyfikuje wiersz w
+[zestawieniu z lipca 2026](../data/sources/kktj/2026-07/jaskinie-tatr.md).
+Gdy na stronie powtarza się Lp., po numerze pozycji podaj także nazwę
+rejonu z tabeli. Wiersz bez Lp. zidentyfikuj numerem PDF, stroną i kodem.
+
+Po potwierdzeniu tożsamości i zakresu pozycji przyjmij wartość KKTJ,
+a istotne różnice między źródłami opisz w uwagach jaskini.
+Brak w KKTJ można uzupełnić na podstawie rekordu PIG albo Geoportalu
+TATRY o zgodnej tożsamości i zakresie. Podaj ID i rok stanu PIG lub
+`GLOBALID` otworu i wersję danych TPN. Wartość ze starszego arkusza
+odszukasz w [archiwum CSV TPN](../data/sources/tpn/).
+Odniesienie `TPN Geoportal TATRY 2026-10-19` wskazuje
+[pełny zrzut warstwy „Jaskinie”](../data/sources/tpn/snapshots/pbi-101-live-20261019/).
+Wyszukaj rekord po `GLOBALID` w plikach `page-*.json` i odczytaj długość
+z pola `DLUGOSC`.
+Zero wymagające interpretacji, orientacyjny wymiar i nieustalony poziom
+odniesienia zachowaj jako informację źródłową w archiwum lub krótkiej uwadze.
+
+Dla Novej Kresanicy i Občasnej vyvierački użyj zatwierdzonych poligonów
+[Jaskiniowego Katastru Tatr Zachodnich](https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich).
+Odsyłacz podaje wersję projektu, nazwę gałęzi w pliku Walls i wersję Survex.
+Długość to suma odcinków przed wyrównaniem. Głębokość to różnica między
+stacją wejściową i najniższą stacją, a deniwelacja to różnica wysokości
+skrajnych stacji. Wartości porównawcze z [wykazu SMOPaJ z 31 grudnia 2017 r.](https://www.smopaj.sk/sk/zoznam-jaskyn)
+podaj w uwagach ze stroną PDF, pozycją w wykazie i numerem rejestracyjnym
+NDJ (`r. č.`).
+
+Morfometrię systemu zapisz w jednym rekordzie opisującym całość.
+W rekordzie potwierdzonej części podaj `system_cave_id` z jego ID. Eksporty
+pokażą wymiary systemu obok własnych wymiarów części. Nowy rekord zbiorczy
+może istnieć bez otworów. Istniejące otwory zachowują swoje przypisania.
+Zgłaszaj niejednoznaczności dopasowania i sprzeczne wartości w PR.
+
 ## Cwiczeniowy pomiar testowy
 
 Kopiuj cały katalog: ochrona historii powinna widzieć wszystkie istniejące

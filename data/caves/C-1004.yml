@@ -2,11 +2,20 @@ schema_version: 1
 id: C-1004
 name: Obcasna Vyvieracka
 system_name: null
+length_m: 411.56
+depth_m: 9.81
+denivelation_m: 48.18
+morphometry_source_ref: JKTZ KATASTER.wpj @ 721240ff35a416d2fd3fff0aef777743d5ac9a28, OBVYV, Survex 1.4.24
 external_refs: []
 bibliography_status: unknown
 notes: 'Slovak cave added from maintainer-supplied coordinates on 2026-05-16.
-  DATA_SOURCE: Oblastna skupina SSS Ruzomberok.'
+  DATA_SOURCE: Oblastna skupina SSS Ruzomberok.
+
+  Poligon JKTZ obejmuje OVA1 i OVA2. Głębokość odnosi się do stacji wejściowej
+  ObcasnaVyv:A1:o1. SMOPaJ NDJ 2017-12-31 (PDF s. 320, poz. 6047, r. č. 1448)
+  podaje 450 m długości i 41 m głębokości. Hochmuth (2000, s. 34) podaje 450 m
+  z niedokładnie pomierzonym IV syfonem.'
 created_at: '2026-05-16T19:35:23Z'
 created_by: dl
-updated_at: '2026-05-16T19:35:23Z'
-updated_by: dl
+updated_at: '2026-11-07T19:07:31Z'
+updated_by: maintenance:pr-46

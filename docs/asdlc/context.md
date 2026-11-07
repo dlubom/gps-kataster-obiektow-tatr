@@ -40,15 +40,19 @@ PL-EVRF2007-NH. Data weryfikacji Marka i dokładności punktów są nieznane.
   Bieżący ręczny Best to m-004 z sieci opisanej w [PBI-117](verification/PBI-117.md).
 - Rezerwacja wycofanych ID nie jest wdrożona i pozostaje poza czyszczeniem kodu;
   [issue #33](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/33).
-- Model systemów i historycznych części pozostaje otwarty;
+- Potwierdzone części systemów KKTJ wskazują pozycję zbiorczą przez
+  `system_cave_id`. Eksporty pokazują wymiary systemu obok wymiarów części.
+  Odrębne kwestie historycznych nazw, statystyk i integracji pozostają w
   [issue #34](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/34).
-  C-0095 i C-0295 są pozycjami katalogowymi bez własnych otworów;
-  liczba pozycji katalogowych nie oznacza liczby niezależnych jaskiń.
+  Liczba pozycji katalogowych obejmuje także systemy i ich części.
 - [PBI-110: wywierzyska](plans/PBI-110-design.md) pozostaje projektem do
   akceptacji. Lokalizacja Bystrej jest nierozstrzygnięta; odbiór tabeli PIG
   dla Goryczkowego wymaga pełnych bajtów PDF i kontroli wizualnej.
 - Odroczone nowe obiekty TPN, w tym Schron nad Wielką Równią i Jaskinia
   w Kozim Grzbiecie, opisują [decyzje PBI-113](verification/PBI-113.md).
+- Tunel w Skrajnej Giewonckiej Baszcie (C-0981) grupuje otwory MLW-0044
+  i MLW-0050. Wymiary z KKTJ i wysokości otworów TPN wymagają porównania
+  z planem lub pomiarem tunelu. Szczegóły zapisano w uwagach jaskini.
 - Rozbieżności i identyczne Best nie rozstrzygają błędu lokalizacji ani
   duplikatów; [ocena źródeł](reviews/data-decisions-2026-10.md).
 

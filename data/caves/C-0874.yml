@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0874
 name: Dziura w Burcie
 system_name: null
+length_m: 3
+denivelation_m: 0.3
+morphometry_source_ref: TPN CSV, GLOBALID {BA97358D-C961-45B2-8A59-F1423AD3E8A9}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 3

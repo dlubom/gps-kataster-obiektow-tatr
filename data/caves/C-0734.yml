@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0734
 name: Studnia przy Mnichowym Kominie
 system_name: null
+length_m: 10.5
+denivelation_m: 7
+morphometry_source_ref: KKTJ 2026-07, PDF 11, s. 2, lp. 3, Dolina Rybiego Potoku
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -21,10 +24,10 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG morphometry: length_m=10,5, depth_m=7, denivelation_m=7
+notes: 'PIG:1729, stan 2010 podaje głębokość 7 m. Kierunek lub poziom odniesienia względem otworu wymaga potwierdzenia.
 
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T13:00:00Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

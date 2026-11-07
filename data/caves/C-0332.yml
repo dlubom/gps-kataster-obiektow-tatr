@@ -2,6 +2,11 @@ schema_version: 1
 id: C-0332
 name: Dziura pod Lodową Małołącką II
 system_name: null
+system_cave_id: C-0588
+length_m: 2.8
+depth_m: 1.5
+denivelation_m: 1.5
+morphometry_source_ref: length_m = PIG:1629, stan 2010 | depth_m, denivelation_m = KKTJ 2026-07, PDF 09, s. 3, E-13.24 (bez lp.)
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -25,10 +30,8 @@ notes: 'PIG aliases: SYSTEM Dziurawe
 
   PIG sector: D. Małej Łąki - Wsch.
 
-  PIG morphometry: length_m=2,8, depth_m=1,5, denivelation_m=1,5
-
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-11-07T15:33:39Z'
+updated_by: maintenance:kktj-systems

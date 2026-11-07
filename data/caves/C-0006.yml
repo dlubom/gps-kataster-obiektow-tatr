@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0006
 name: Ukryty Schron
 system_name: null
+length_m: 5
+denivelation_m: 1
+morphometry_source_ref: KKTJ 2026-07, PDF 06, s. 3, lp. 71
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -21,12 +24,12 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG sector: D. Kościeliska - Wsch.
+notes: 'PIG:1461, stan 2010 podaje głębokość 0,9 m. Kierunek lub poziom odniesienia względem otworu wymaga potwierdzenia.
 
-  PIG morphometry: length_m=5, depth_m=0,9, denivelation_m=0,9
+  PIG sector: D. Kościeliska - Wsch.
 
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

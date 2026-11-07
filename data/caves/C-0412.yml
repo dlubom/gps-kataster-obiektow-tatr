@@ -2,6 +2,11 @@ schema_version: 1
 id: C-0412
 name: Jaskinia za Siedmiu Progami
 system_name: null
+system_cave_id: C-1053
+length_m: 6150
+denivelation_m: 222
+denivelation_qualifier: approximate
+morphometry_source_ref: PIG:1667, stan 2013
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -21,14 +26,14 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: SYSTEM Jaskinia Wysoka
+notes: 'PIG:1667, stan 2013 podaje głębokość 216 m. Zakres lub zgodność z pozostałymi wymiarami wymaga potwierdzenia.
+
+  PIG aliases: SYSTEM Jaskinia Wysoka
 
   PIG sector: D. Kościeliska - Wsch.
-
-  PIG morphometry: length_m=6150, depth_m=216, denivelation_m=222
 
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-11-07T15:33:39Z'
+updated_by: maintenance:kktj-systems

@@ -2,6 +2,8 @@ schema_version: 1
 id: C-1033
 name: Nyża pod Szarą Turnią I
 system_name: null
+length_m: 3.8
+morphometry_source_ref: TPN Geoportal TATRY 2026-10-19, GLOBALID {55ED69A3-9228-452B-87CE-8133710292B1}
 external_refs: []
 bibliography_status: unknown
 notes: |-

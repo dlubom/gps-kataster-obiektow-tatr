@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0956
 name: Schron nad Mechami
 system_name: null
+length_m: 4
+morphometry_source_ref: KKTJ 2026-07, PDF 06, s. 4, lp. 128
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 3

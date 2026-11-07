@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0867
 name: Sztolnia na Klinowej Czubie nr 8
 system_name: null
+length_m: 1.7
+morphometry_source_ref: TPN CSV, GLOBALID {5811B4F0-9466-491F-A4A5-28ED700D1A5D}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 1,7

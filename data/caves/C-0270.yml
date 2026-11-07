@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0270
 name: Tunel Wiatru
 system_name: null
+length_m: 4
+denivelation_m: 2.5
+morphometry_source_ref: KKTJ 2026-07, PDF 05, s. 2, lp. 36
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -21,12 +24,12 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG sector: D. Kościeliska - Zach.
+notes: 'PIG:1320, stan 2010 podaje głębokość 2,3 m. Zakres lub zgodność z pozostałymi wymiarami wymaga potwierdzenia.
 
-  PIG morphometry: length_m=4, depth_m=2,3, denivelation_m=2,3
+  PIG sector: D. Kościeliska - Zach.
 
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

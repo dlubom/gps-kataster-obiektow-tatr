@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0866
 name: Szczelina nad Okapami
 system_name: null
+length_m: 10.0
+depth_m: 2.3
+denivelation_m: 2.3
+morphometry_source_ref: KKTJ 2026-07, PDF 09, s. 4, lp. 133
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 10
@@ -16,5 +20,5 @@ notes: 'TPN length: 10
   TPN verification/location note: FF 1-06-2024. Scalono do C-0866 / MLZ-0087.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-10-17T19:51:35Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

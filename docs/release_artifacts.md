@@ -113,7 +113,7 @@ sekcji `CHANGELOG.md` o tym samym numerze wersji.
 | `build/exports/metadata.json` | Metadane paczki i liczniki walidacji. | JSON bez geometrii. |
 | `build/exports/statistics.md` | Tabele PL/EN/SK dodawane do opisu wydania. | Markdown, rozwijane sekcje językowe. |
 | `build/exports/statistics.json` | Te same statystyki do dalszego przetwarzania. | JSON, `statistics_schema_version: 1`. |
-| `build/exports/katalog.xlsx` | Czytelny Excel: wybrane punkty oraz pełne dane z historią. | XLSX, arkusze Best i Full. |
+| `build/exports/katalog.xlsx` | Czytelny Excel: wybrane punkty oraz pełne dane z historią. | XLSX, arkusze Best, Full i Jaskinie. |
 
 Statystyki pokazują osobno źródło i sposób wyznaczenia pozycji, dla punktów
 Best oraz pełnej historii. `selected_points.by_position_method` i
@@ -124,6 +124,29 @@ z `lidar` i `gnss_anchor`) oraz `survey_anchor` (`source_record` z
 jest bezpośrednim pomiarem GNSS. Rozbicie nie deklaruje dokładności ani
 geodezyjnego rodzaju GNSS. Źródłowe `wlasne` ma etykietę „Opracowania własne”.
 
+## Morfometria
+
+CSV, GeoJSON oraz warstwy `best` i `measurements` GeoPackage podają
+`cave_length_m`, `cave_depth_m` i `cave_denivelation_m` w metrach oraz
+`cave_denivelation_qualifier` i `cave_morphometry_source_ref`. Shapefile
+używa pól `cave_len_m`, `cave_dep_m`, `cave_den_m` (trzy miejsca po
+przecinku), `cave_den_q` i `cave_m_ref`. DBF skraca odsyłacze
+`cave_m_ref` i `sys_m_ref` do 254 bajtów UTF-8 na granicy znaku.
+Pełny odsyłacz jest dostępny w CSV, GeoJSON, GeoPackage, Excelu
+i dumpie PostgreSQL. Puste wartości liczbowe są
+nieznane. GPX pokazuje znane wymiary i odniesienie do źródła w opisie
+punktu oraz oznacza przybliżoną deniwelację przez `~`.
+
+Przy potwierdzonej części CSV, GeoJSON i GeoPackage podają `system_cave_id`,
+`cave_system_name`, `system_length_m`, `system_depth_m`,
+`system_denivelation_m`, `system_denivelation_qualifier` i
+`system_morphometry_source_ref`. Shapefile używa odpowiednio `sys_cav_id`,
+`sys_name`, `sys_len_m`, `sys_dep_m`, `sys_den_m`, `sys_den_q` i
+`sys_m_ref`. GPX podpisuje dostępne wymiary systemu w opisie otworu.
+We wszystkich trzech arkuszach Excel wartości części i systemu mają osobne
+kolumny. Rekord zbiorczy bez własnych otworów jest widoczny w arkuszu
+Jaskinie i w dumpie.
+
 ## `katalog.xlsx`
 
 Generowany przy każdym buildzie wydania, bez osobnego ręcznego kroku.
@@ -133,6 +156,10 @@ w tym współrzędne WGS84, wysokość, źródło, weryfikację i dokładność.
 odrzucony, z pełnymi danymi pomiaru i towarzyszącymi danymi obiektu.
 Kolumna „Wybrany do eksportu” porównuje ID pomiaru w obrębie tego samego
 obiektu. Powtarzające się ID obiektu w Full są historią, nie duplikatami.
+
+**Jaskinie** ma jeden wiersz na pozycję katalogową, także bez przypisanego
+otworu. Best i Full pokazują wymiary jaskini obok punktu i pozwalają
+powiązać wiersz z arkuszem Jaskinie przez ID jaskini.
 
 Full zachowuje uwagi, dane wyboru, nadania ID i autorstwa; listy referencji,
 załączników i relacji są tekstem JSON w osobnych kolumnach. Metadane jaskini
@@ -270,7 +297,7 @@ typów i widoków; [diagramy](architecture/schema.md) pokazują ich powiązania.
 
 | Tabele / widoki | Zawartość |
 |---|---|
-| `objects`, `caves` | Obiekty terenowe i pozycje katalogowe, źródła, audyt i stan bibliografii. Przynależność wyznacza `objects.cave_id`. |
+| `objects`, `caves` | Obiekty terenowe i pozycje katalogowe, źródła, audyt i stan bibliografii. Przynależność otworu wyznacza `objects.cave_id`, a części systemu `caves.system_cave_id`. |
 | `measurements`, `measurement_tags` | Pełna uporządkowana historia z natywną geometrią EPSG:4326/2180, wysokością, datum i pochodzeniem. Klucz pomiaru to `(object_id, id)`. |
 | `best_policy` | Tryb auto/manual, ręczne wskazanie i uzasadnienie. |
 | `v_measurements`, `v_auto_best`, `v_best` | Wyliczone współrzędne, niezależny wynik auto oraz ostatecznie wybrany Best. |

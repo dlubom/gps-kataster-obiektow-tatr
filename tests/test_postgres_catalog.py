@@ -50,7 +50,9 @@ def test_native_catalog_round_trip(tmp_path, records):
         assert catalog.dataset().objects[0].data == dataset.objects[0].data
 
 
-@pytest.mark.parametrize("change", ["fk", "id", "nan", "epsg", "manual", "known"])
+@pytest.mark.parametrize(
+    "change", ["fk", "id", "nan", "epsg", "manual", "known", "system-fk", "system-self"]
+)
 def test_native_constraints_reject_invalid_catalog(tmp_path, records, change):
     obj, cave = records
     if change == "fk":
@@ -65,7 +67,22 @@ def test_native_constraints_reject_invalid_catalog(tmp_path, records, change):
         obj["best_measurement"].update(mode="manual", reason=" ")
     if change == "known":
         cave["bibliography_status"] = "known"
+    if change == "system-fk":
+        cave["system_cave_id"] = "C-9999"
+    if change == "system-self":
+        cave["system_cave_id"] = cave["id"]
     with pytest.raises((CatalogLoadError, ValueError)), open_catalog(snapshot(tmp_path, records)):
+        pass
+
+
+def test_cave_system_must_not_be_a_member_of_another_system(tmp_path, records):
+    _, cave = records
+    cave["system_cave_id"] = "C-0002"
+    root = snapshot(tmp_path, records)
+    for cave_id, system_id in (("C-0002", "C-0003"), ("C-0003", None)):
+        path = root / "caves" / f"{cave_id}.yml"
+        path.write_text(yaml.safe_dump({**cave, "id": cave_id, "system_cave_id": system_id}))
+    with pytest.raises(CatalogLoadError, match="NESTED_CAVE_SYSTEM"), open_catalog(root):
         pass
 
 

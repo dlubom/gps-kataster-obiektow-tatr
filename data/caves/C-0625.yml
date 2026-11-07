@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0625
 name: Jaskinia za Płytą
 system_name: null
+length_m: 62
+depth_m: 27
+denivelation_m: 27
+morphometry_source_ref: KKTJ 2026-07, PDF 08, s. 3, lp. 94
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -25,10 +29,8 @@ notes: 'PIG aliases: Za Ratuszem Szeroka
 
   PIG sector: D. Miętusia - Wsch.
 
-  PIG morphometry: length_m=62, depth_m=27, denivelation_m=27
-
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T14:00:00Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

@@ -142,11 +142,23 @@ Dopuszczalne wartości:
 |---|---|---|
 | `id` | string | Wewnętrzne ID, np. `C-0001`. |
 | `name` | string | Nazwa jaskini / pozycji katalogowej. |
-| `system_name` | string, opt | Nazwa systemu jaskiniowego, jeśli dotyczy. |
+| `system_name` | string, opt | Tekstowa nazwa systemu ze starszych danych. |
+| `system_cave_id` | FK → `Jaskinia`, opt | Potwierdzona przynależność do jednej pozycji całego systemu. |
+| `length_m` | liczba, opt | Długość jaskini w metrach. |
+| `depth_m` | liczba, opt | Wielkość zagłębienia poniżej poziomu odniesienia źródła, w metrach. |
+| `denivelation_m` | liczba, opt | Różnica między najwyższym i najniższym punktem jaskini, w metrach. |
+| `denivelation_qualifier` | `approximate`, opt | Źródło podało deniwelację jako przybliżenie. |
+| `morphometry_source_ref` | string, opt | Wskazuje źródło wszystkich zapisanych wartości. Przy różnych źródłach przypisuje je do nazw pól. Wymagane przy co najmniej jednej wartości. |
 | `external_refs` | lista `ExternalReference` | Numer inwentarzowy, PIG ID, PIG link, inne identyfikatory katalogowe. |
 | `object_ids` | lista wyliczana | Otwory wynikające z `Obiekt.cave_id`; brak drugiego zapisu źródłowego. |
 | `notes` | string, opt | Uwagi. |
 | `created_at`, `created_by`, `updated_at`, `updated_by` | audyt | |
+
+Wymiary są skończone i nieujemne. Puste pole oznacza wartość nieznaną.
+Deniwelację i głębokość zapisujemy niezależnie. Pozycja katalogowa systemu
+może mieć własną morfometrię niezależnie od jego części. Część wskazuje
+rekord systemu przez `system_cave_id`. System wskazany przez część sam nie
+może wskazywać systemu. Rekord zbiorczy można zapisać bez własnych obiektów.
 
 Jedna `Jaskinia` ma 1..N powiązanych `Obiektów`, jeśli znane są jej otwory. W V1 dopuszczamy utworzenie `Jaskinia` przed pełnym rozpoznaniem wszystkich otworów.
 
@@ -530,7 +542,7 @@ Plik TPN zawiera rekordy punktowe. W V1 przyjmujemy:
 | `GENEZA` | Charakter naturalny / górniczy | `sztolnia` uzasadnia kategorię `sztolnia`, także bez nazwy. Mieszane `jaskinia/sztolnia` zachowujemy jawnie do review. |
 | `X1992`, `Y1992` | Współrzędne PL-1992 | Importowane do `Pomiar`, po konwersji także WGS84. |
 | `Z` | Wysokość | `Pomiar.elevation_m`, z `elevation_source: source_record`. |
-| `DLUGOSC`, `GLEBOKOSC`, `DENIWELACJ` | Dane morfometryczne | W V1 raczej notatka / przyszłe pola jaskini, nie część obiektu terenowego. |
+| `DLUGOSC`, `GLEBOKOSC`, `DENIWELACJ` | Dane morfometryczne | Archiwalna informacja źródłowa; pola morfometrii należą do `Jaskinia`. |
 | `SYSTEM` | Informacja o systemie | `Jaskinia.system_name`, jeśli jednoznaczne. |
 | `WER_LOK`, `UWAGI` | Kontekst i zastrzeżenia źródłowe lokalizacji | Etykietowane `TPN WER_LOK:` / `TPN UWAGI:` w `Pomiar.notes`, dla nowych i dopasowanych rekordów. |
 
@@ -561,7 +573,7 @@ Plik PIG zawiera rekordy katalogowe.
 | `Inne nazwy` | Aliasy | W V1 do `Jaskinia.notes`; model aliasów później. |
 | `X 1992`, `Y 1992`, `B`, `L` | Współrzędne | Mogą utworzyć `Pomiar` konkretnego `Obiektu` po dopasowaniu. |
 | `H (wg PIG)` | Wysokość | `Pomiar.elevation_m`, `elevation_source: source_record`. |
-| `Długość [m]`, `Głębokość [m]`, `Deniwelacja [m]` | Dane morfometryczne jaskini | W V1 notatka / przyszłe pola `Jaskinia`. |
+| `Długość [m]`, `Głębokość [m]`, `Deniwelacja [m]` | Dane morfometryczne jaskini | Archiwalna informacja źródłowa; pola morfometrii należą do `Jaskinia`. |
 | `Stan na rok` | Data stanu źródła | `Pomiar.source_date` albo `Jaskinia.notes`. |
 
 Zasady:
@@ -607,6 +619,22 @@ verification_status: nieweryfikowany
 created_at: "2024-07-15T10:00:00Z"
 created_by: dl
 ```
+
+### 7.5 KKTJ / Jaskinie Tatr
+
+Wartości z [zestawienia KKTJ z lipca 2026](data/sources/kktj/2026-07/jaskinie-tatr.md)
+zapisujemy na odpowiadających im pozycjach katalogowych. Dla potwierdzonego
+systemu obejmującego kilka pozycji tworzymy jeden rekord zbiorczy, jeśli
+katalog nie ma już rekordu opisującego całość. Odniesienie zawiera edycję,
+numer PDF, stronę i Lp. Gdy Lp. powtarza się na stronie, podaje również rejon.
+Po potwierdzeniu tożsamości i zakresu pozycji przyjmujemy wartość KKTJ.
+Rankingi służą do porównania tabel regionalnych. Wiersz bez Lp. można
+wskazać numerem PDF, stroną i kodem inwentarzowym. Brak wartości KKTJ
+można uzupełnić bezpośrednią wartością PIG lub Geoportalu TATRY, gdy
+tożsamość pozycji, zakres i znaczenie wymiaru są potwierdzone. Jeśli nie
+można wskazać wartości o potwierdzonym zakresie i znaczeniu, pole pozostaje
+puste. Istotne różnice między źródłami, w tym różny poziom odniesienia,
+zapisujemy z odsyłaczem do źródła w `Jaskinia.notes`.
 
 ---
 
@@ -896,6 +924,14 @@ Każdy release zawiera:
 | `metadata.json` | JSON | Liczby obiektów, pomiarów, jaskiń, data buildu, wersja schematu. |
 | `statistics.md`, `statistics.json` | Markdown, JSON | Automatyczne statystyki tej samej paczki: obiekty, pozycje katalogowe, historia pomiarów, rodzaje, źródła, weryfikacja i dostępność dokładności. Wersja wydania, commit źródeł i czas generowania. |
 
+CSV, GeoJSON, Shapefile, Excel Best/Full i obie warstwy GeoPackage podają
+morfometrię przez powiązanie punktu z `Jaskinia`. Excel ma też arkusz
+**Jaskinie** z jednym wierszem na pozycję katalogową, także bez otworów.
+Przy części z `system_cave_id` eksport podaje wymiary całego systemu,
+kwalifikator deniwelacji i źródło w osobnych polach `system_*`. Pola
+`cave_*` nadal opisują własną morfometrię jaskini. Dump zawiera własne
+wartości i klucz `caves.system_cave_id`, z którego wynika powiązanie.
+
 Excel zachowuje daty dzienne od `1900-01-01` jako daty, a wcześniejsze
 jako tekst ISO `YYYY-MM-DD`, bez zmiany wartości źródłowej.
 
@@ -921,7 +957,12 @@ Etykieta punktu GPX (`wpt/name`) używa `Obiekt.name_local`, zachowując nazwę
 konkretnego otworu. Brak, `null`, pusta nazwa lub same białe znaki oznaczają
 użycie `Obiekt.id`.
 Opis (`wpt/desc`) zawsze zawiera jawne `object <ID>`, ID wybranego pomiaru,
-źródło, datę i dostępne uwagi. Nazwy nie zastępują trwałych identyfikatorów.
+źródło, datę i dostępne uwagi. Dostępne wymiary jaskini i ich źródło są
+częścią opisu. Przy części z `system_cave_id` opis podaje również nazwę i ID
+systemu oraz jego dostępne wymiary i źródło. Deniwelacja przybliżona ma
+przedrostek `~`. W nazwie i opisie punktu GPX znaki niedozwolone w XML 1.0
+zastępujemy spacjami. Jeśli po tej zamianie nazwa zawiera tylko białe
+znaki, etykietą jest ID obiektu. Nazwy nie zastępują trwałych identyfikatorów.
 
 Pełny `best-measurements.gpx` pozostaje bez limitu 500. Trzy dodatkowe pliki
 razem zawierają dokładnie te same punkty, każdy w jednej grupie. Przypisanie
@@ -1184,7 +1225,6 @@ Na później:
 6. Polityka dużych załączników, jeśli zdjęcia i raporty zaczną być liczne albo ciężkie.
 7. Szczegółowe zasady atrybucji, jeśli pojawią się nowe kategorie źródeł.
 8. Reguły dla systemów transgranicznych PL/SK.
-9. Czy dane morfometryczne jaskini wprowadzać jako pola `Jaskinia`, czy zostawić jako referencje do źródeł.
 
 Poza aktualnym zakresem:
 

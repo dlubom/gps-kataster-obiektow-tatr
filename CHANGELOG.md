@@ -6,20 +6,32 @@ udokumentowane w tym pliku.
 Format jest oparty o [Keep a Changelog](https://keepachangelog.com/), a
 wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [v2.0.0] - 2026-11-07
+
+### Dodano
+
+- Długość, głębokość i deniwelację jaskiń wraz z odsyłaczami do źródeł.
+  Podstawą jest zestawienie KKTJ z lipca 2026 r. Uzupełnienia pochodzą
+  z PIG, TPN i poligonów JKTZ. Archiwum zawiera pełny zrzut warstwy
+  „Jaskinie” TPN z 19 października 2026 r. obejmujący 1035 rekordów,
+  w tym źródła 11 długości.
+- Powiązania części z systemami jaskiniowymi. Eksporty pokazują osobno
+  wymiary części i systemu, a arkusz **Jaskinie** w Excelu obejmuje także
+  pozycje bez własnych otworów.
 
 ### Zmieniono
 
-- Źródłem danych są pliki YAML; tymczasowy PostgreSQL 18/PostGIS
+- Źródłem danych są pliki YAML. Tymczasowy PostgreSQL 18/PostGIS
   3.6 kontroluje integralność, historię względem Git, wybór Best i geometrię.
-- Dump PostgreSQL i GeoPackage Best/pełnej historii zastępują SQLite i jego
-  ZIP. Pozostałe formaty zachowują kontrakty; źródłowe pomiary, ID,
-  uzasadnienia ręcznych Best oraz kolejność historii pozostają zachowane.
-- Bibliografia ma osobne cytowania jaskiń, obiektów i pomiarów; jawne
-  `unknown` jest legalne i daje ostrzeżenie. Dokumentacja zawiera schematy,
-  przypięty runtime lokalny/CI oraz instrukcje restore i rollbacku.
+- `katalog.dump` (PostgreSQL) i `katalog.gpkg` (warstwy Best i pełnej
+  historii) zastępują `katalog.sqlite.zip`. Instrukcje odczytu i odtwarzania
+  znajdują się w [dokumentacji artefaktów](https://github.com/dlubom/gps-kataster-obiektow-tatr/blob/main/docs/release_artifacts.md).
+- Bibliografia ma osobne cytowania jaskiń, obiektów i pomiarów. Status
+  `unknown` jest dopuszczalny i zgłaszany jako ostrzeżenie.
+- Otwory północny `MLW-0044` i południowy `MLW-0050` Tunelu w Skrajnej
+  Giewonckiej Baszcie przypisano do wspólnego rekordu `C-0981`.
 
-Zmiana oczekuje na odbiór draft PR PBI-119; nie jest jeszcze wydaniem.
+Katalog obejmuje 1029 obiektów, 1946 pomiarów i 1026 pozycji katalogowych.
 
 ## [v1.3.3] - 2026-11-04
 

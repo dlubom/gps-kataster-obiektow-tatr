@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 import tempfile
 import zipfile
 from dataclasses import dataclass, replace
@@ -64,6 +65,8 @@ METADATA_FILENAME = "metadata.json"
 RELEASE_METADATA_SCHEMA_VERSION = 1
 DATA_SCHEMA_VERSION = 1
 GPX_NS = "http://www.topografix.com/GPX/1/1"
+# XML 1.0 Char production. ElementTree escapes markup but accepts invalid characters.
+XML_INVALID_CHARACTERS = re.compile(r"[^\t\n\r\x20-\ud7ff\ue000-\ufffd\U00010000-\U0010ffff]")
 EPSG_2180_PRJ = (
     'PROJCS["ETRF2000-PL_CS92",'
     'GEOGCS["GCS_ETRS_1989",'
@@ -302,10 +305,11 @@ def _write_gpx(
             ET.SubElement(waypoint, _gpx_tag("ele")).text = _float_text(row.elevation_m)
         if row.observed_at is not None:
             ET.SubElement(waypoint, _gpx_tag("time")).text = row.observed_at
-        ET.SubElement(waypoint, _gpx_tag("name")).text = (
-            row.name_local if row.name_local and row.name_local.strip() else row.object_id
+        label = XML_INVALID_CHARACTERS.sub(" ", row.name_local or "")
+        ET.SubElement(waypoint, _gpx_tag("name")).text = label if label.strip() else row.object_id
+        ET.SubElement(waypoint, _gpx_tag("desc")).text = XML_INVALID_CHARACTERS.sub(
+            " ", _gpx_description(row)
         )
-        ET.SubElement(waypoint, _gpx_tag("desc")).text = _gpx_description(row)
         ET.SubElement(waypoint, _gpx_tag("type")).text = row.category
 
     tree = ET.ElementTree(gpx)
@@ -343,6 +347,18 @@ def _write_shapefile_zip(rows: tuple[BestMeasurementExportRow, ...], path: Path)
                     _truncated_text(row.object_notes, max_length=254),
                     _truncated_text(row.cave_notes, max_length=254),
                     _truncated_text(row.measurement_notes, max_length=254),
+                    row.cave_length_m,
+                    row.cave_depth_m,
+                    row.cave_denivelation_m,
+                    _text_or_empty(row.cave_denivelation_qualifier),
+                    _truncated_text(row.cave_morphometry_source_ref, max_length=254),
+                    _text_or_empty(row.system_cave_id),
+                    _truncated_text(row.cave_system_name, max_length=120),
+                    row.system_length_m,
+                    row.system_depth_m,
+                    row.system_denivelation_m,
+                    _text_or_empty(row.system_denivelation_qualifier),
+                    _truncated_text(row.system_morphometry_source_ref, max_length=254),
                 )
         finally:
             writer.close()
@@ -407,6 +423,18 @@ def _define_shapefile_fields(writer: shapefile.Writer) -> None:
     writer.field("obj_notes", "C", size=254)
     writer.field("cave_notes", "C", size=254)
     writer.field("meas_notes", "C", size=254)
+    writer.field("cave_len_m", "F", size=20, decimal=3)
+    writer.field("cave_dep_m", "F", size=20, decimal=3)
+    writer.field("cave_den_m", "F", size=20, decimal=3)
+    writer.field("cave_den_q", "C", size=16)
+    writer.field("cave_m_ref", "C", size=254)
+    writer.field("sys_cav_id", "C", size=40)
+    writer.field("sys_name", "C", size=120)
+    writer.field("sys_len_m", "F", size=20, decimal=3)
+    writer.field("sys_dep_m", "F", size=20, decimal=3)
+    writer.field("sys_den_m", "F", size=20, decimal=3)
+    writer.field("sys_den_q", "C", size=16)
+    writer.field("sys_m_ref", "C", size=254)
 
 
 def _row_properties(row: BestMeasurementExportRow) -> dict[str, Any]:
@@ -443,6 +471,30 @@ def _gpx_description(row: BestMeasurementExportRow) -> str:
         f"source {row.source}",
         f"observed {row.observed_date}",
     ]
+    denivelation_prefix = "~" if row.cave_denivelation_qualifier == "approximate" else ""
+    for label, value, prefix in (
+        ("długość jaskini", row.cave_length_m, ""),
+        ("głębokość", row.cave_depth_m, ""),
+        ("deniwelacja", row.cave_denivelation_m, denivelation_prefix),
+    ):
+        if value is not None:
+            parts.append(f"{label} {prefix}{_float_text(value)} m")
+    if row.cave_morphometry_source_ref:
+        parts.append(f"morfometria: {row.cave_morphometry_source_ref}")
+    if row.system_cave_id is not None:
+        parts.append(f"system {row.cave_system_name} ({row.system_cave_id})")
+        system_denivelation_prefix = (
+            "~" if row.system_denivelation_qualifier == "approximate" else ""
+        )
+        for label, value, prefix in (
+            ("długość systemu", row.system_length_m, ""),
+            ("głębokość systemu", row.system_depth_m, ""),
+            ("deniwelacja systemu", row.system_denivelation_m, system_denivelation_prefix),
+        ):
+            if value is not None:
+                parts.append(f"{label} {prefix}{_float_text(value)} m")
+        if row.system_morphometry_source_ref:
+            parts.append(f"morfometria systemu: {row.system_morphometry_source_ref}")
     for label, note in (
         ("object notes", row.object_notes),
         ("cave notes", row.cave_notes),

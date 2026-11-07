@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0628
 name: Śnieżna Szczelina
 system_name: null
+length_m: 5.5
+morphometry_source_ref: KKTJ 2026-07, PDF 06, s. 2, lp. 54
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -23,10 +25,8 @@ external_refs:
 bibliography_status: unknown
 notes: 'PIG sector: D. Kościeliska - Wsch.
 
-  PIG morphometry: length_m=5,5, depth_m=0, denivelation_m=0
-
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

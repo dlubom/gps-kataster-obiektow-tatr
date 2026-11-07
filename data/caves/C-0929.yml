@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0929
 name: Sztolnia w Ornaczańskim Żlebie nr 3
 system_name: null
+length_m: 16.5
+morphometry_source_ref: TPN CSV, GLOBALID {B9CE3858-B5E7-46FF-9ED9-83E15D704972}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 16,5

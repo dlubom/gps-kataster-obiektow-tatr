@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0664
 name: Krucha Szczelina
 system_name: null
+length_m: 4.5
+depth_m: 2.5
+denivelation_m: 2.5
+morphometry_source_ref: KKTJ 2026-07, PDF 08, s. 1, lp. 26
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -25,10 +29,8 @@ notes: 'PIG aliases: Problem z Wajchą, K-17
 
   PIG sector: D. Miętusia - Zach.
 
-  PIG morphometry: length_m=4,5, depth_m=2,4, denivelation_m=2,4
-
   PIG source state year: 2014'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

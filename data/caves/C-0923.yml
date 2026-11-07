@@ -2,6 +2,8 @@ schema_version: 1
 id: C-0923
 name: Sztolnia w Dolinie Białego nr 2
 system_name: null
+length_m: 440
+morphometry_source_ref: TPN CSV, GLOBALID {9F98E21A-0E26-4FEC-A0A1-60F22C48FB42}
 external_refs: []
 bibliography_status: unknown
 notes: 'TPN length: 440

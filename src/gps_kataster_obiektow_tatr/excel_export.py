@@ -1,4 +1,4 @@
-"""A readable Best/Full workbook from the artifacts of one validated build."""
+"""A readable workbook from the artifacts of one validated build."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ class Column:
     number_format: str | None = None
 
 
-BEST_COLUMNS = (
+BEST_POINT_COLUMNS = (
     Column("object_id", "ID obiektu", 15),
     Column("name_local", "Nazwa obiektu", 52),
     Column("category", "Rodzaj obiektu", 22),
@@ -37,13 +37,38 @@ BEST_COLUMNS = (
     Column("source_ref", "Odniesienie do źródła", 50),
 )
 
+CAVE_ID_COLUMN = Column("cave_id", "ID jaskini", 15)
+SYSTEM_NAME_COLUMN = Column("cave_system_name", "System jaskiniowy", 35)
+MORPHOMETRY_COLUMNS = (
+    Column("cave_length_m", "Długość jaskini [m]", 20, "General"),
+    Column("cave_depth_m", "Głębokość jaskini [m]", 20, "General"),
+    Column("cave_denivelation_m", "Deniwelacja jaskini [m]", 20, "General"),
+    Column("cave_denivelation_qualifier", "Kwalifikator deniwelacji", 24),
+    Column("cave_morphometry_source_ref", "Źródło morfometrii", 42),
+)
+SYSTEM_COLUMNS = (
+    Column("system_cave_id", "ID systemu", 15),
+    Column("system_length_m", "Długość systemu [m]", 21, "General"),
+    Column("system_depth_m", "Głębokość systemu [m]", 22, "General"),
+    Column("system_denivelation_m", "Deniwelacja systemu [m]", 23, "General"),
+    Column("system_denivelation_qualifier", "Kwalifikator deniwelacji systemu", 30),
+    Column("system_morphometry_source_ref", "Źródło morfometrii systemu", 45),
+)
+BEST_COLUMNS = (
+    *BEST_POINT_COLUMNS,
+    CAVE_ID_COLUMN,
+    *MORPHOMETRY_COLUMNS,
+    SYSTEM_NAME_COLUMN,
+    *SYSTEM_COLUMNS,
+)
+
 FULL_COLUMNS = (
-    *BEST_COLUMNS[:2],
+    *BEST_POINT_COLUMNS[:2],
     Column("selected", "Wybrany do eksportu", 21),
-    *BEST_COLUMNS[2:],
-    Column("cave_id", "ID jaskini", 15),
+    *BEST_POINT_COLUMNS[2:],
+    CAVE_ID_COLUMN,
     Column("cave_name", "Nazwa jaskini", 45),
-    Column("cave_system_name", "System jaskiniowy", 35),
+    SYSTEM_NAME_COLUMN,
     Column("x_1992", "X PL-1992 [m]", 20, "0.000"),
     Column("y_1992", "Y PL-1992 [m]", 20, "0.000"),
     Column("vertical_accuracy_m", "Dokładność pionowa [m]", 22, "0.00"),
@@ -83,7 +108,35 @@ FULL_COLUMNS = (
     Column("object_updated_by", "Zmienił obiekt", 24),
     Column("measurement_created_at", "Zapisano pomiar (ISO 8601)", 30),
     Column("measurement_created_by", "Zapisał pomiar", 24),
+    *MORPHOMETRY_COLUMNS,
+    *SYSTEM_COLUMNS,
 )
+
+CAVE_COLUMNS = (
+    CAVE_ID_COLUMN,
+    Column("cave_name", "Nazwa jaskini", 52),
+    SYSTEM_NAME_COLUMN,
+    Column("nr_inwent", "Numer inwentarzowy", 23),
+    *MORPHOMETRY_COLUMNS,
+    *SYSTEM_COLUMNS,
+)
+
+SHEET_TEXT = {
+    "Best": (
+        "Wybrane punkty",
+        "Jeden wiersz = jeden wybrany punkt. Szczegóły i uwagi w arkuszu Full. "
+        "Pusta dokładność = nieznana.",
+    ),
+    "Full": (
+        "Pełne dane i historia pomiarów",
+        "Jeden wiersz = jeden pomiar, także starszy lub odrzucony. "
+        "Wybrany do eksportu: Tak/Nie. Pusta dokładność = nieznana.",
+    ),
+    "Jaskinie": (
+        "Jaskinie i pozycje katalogowe",
+        "Jeden wiersz = jedna jaskinia lub pozycja katalogowa. Pusta wartość = nieznana.",
+    ),
+}
 
 
 def write_excel_export(
@@ -93,7 +146,7 @@ def write_excel_export(
     release_version: str | None,
     source_commit: str | None,
 ) -> Path:
-    """Write one row per selected point in Best, one per preserved measurement in Full."""
+    """Write selected points, preserved measurements and cave records on separate sheets."""
     generated_at = export_data.generated_at
     temporary = output_path.with_name(output_path.name + ".tmp")
     try:
@@ -114,6 +167,7 @@ def write_excel_export(
                 book, "Best", BEST_COLUMNS, export_data.selected, source, csv_precision=True
             )
             _write_sheet(book, "Full", FULL_COLUMNS, export_data.history, source)
+            _write_sheet(book, "Jaskinie", CAVE_COLUMNS, export_data.caves, source)
         temporary.replace(output_path)
     except Exception:
         temporary.unlink(missing_ok=True)
@@ -147,26 +201,22 @@ def _write_sheet(
             "bottom_color": "#FFFFFF",
         }
     )
+    title, note = SHEET_TEXT[name]
     sheet.write_string(
         1,
         0,
-        "Wybrane punkty" if name == "Best" else "Pełne dane i historia pomiarów",
+        title,
         book.add_format({**body, "font_size": 15, "bold": True}),
     )
     sheet.write_string(2, 0, source, book.add_format({**body, "font_color": "#596673"}))
-    note = "Jeden wiersz = jeden wybrany punkt. Szczegóły i uwagi w arkuszu Full."
-    if name == "Full":
-        note = (
-            "Jeden wiersz = jeden pomiar, także starszy lub odrzucony. "
-            "Wybrany do eksportu: Tak/Nie."
-        )
-    sheet.write_string(3, 0, note + " Pusta dokładność = nieznana.", book.add_format(body))
+    sheet.write_string(3, 0, note, book.add_format(body))
+    name_key = columns[1].key
     formats = []
     for index, column in enumerate(columns):
         fmt = book.add_format(
             {
                 **body,
-                "text_wrap": column.key == "name_local",
+                "text_wrap": column.key == name_key,
                 **({"num_format": column.number_format} if column.number_format else {}),
             }
         )
@@ -190,7 +240,7 @@ def _write_sheet(
         sheet.autofilter(5, 0, 5, len(columns) - 1)
     for row_index, record in enumerate(rows, start=6):
         name_lines = sum(
-            max(1, ceil(len(line) / 45)) for line in str(record.get("name_local") or "").split("\n")
+            max(1, ceil(len(line) / 45)) for line in str(record.get(name_key) or "").split("\n")
         )
         sheet.set_row(row_index, min(409, max(24, name_lines * 16)))
         for column_index, column in enumerate(columns):
@@ -213,7 +263,7 @@ def _write_sheet(
                 code = sheet.write_string(row_index, column_index, str(value), fmt)
             if code != 0:
                 raise ValueError(
-                    f"Cannot export Excel cell: {name}, {record.get('object_id')}, "
+                    f"Cannot export Excel cell: {name}, {record.get(columns[0].key)}, "
                     f"{column.key} (code {code})"
                 )
     sheet.set_landscape()

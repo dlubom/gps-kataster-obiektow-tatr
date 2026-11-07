@@ -2,6 +2,11 @@ schema_version: 1
 id: C-0403
 name: Jaskinia Raptawicka
 system_name: Jaskinie Pawlikowskiego
+system_cave_id: C-0095
+length_m: 536
+depth_m: 16
+denivelation_m: 27
+morphometry_source_ref: length_m = PIG:1387, opis pomiarów 2013–2014 przed połączeniem | depth_m, denivelation_m = KKTJ 2026-07, PDF 05, s. 2, E-08.03 (bez lp.)
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -21,11 +26,11 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: Raptawicka Jama, Jaskinie Pawlikowskiego
+notes: 'Długość 536 m pochodzi z pomiarów do planu F. Filara i M. Parczewskiego sprzed połączenia z Mylną w 2015 r. Tabela PIG:1387 (stan 2015) podaje 560 m bez wyjaśnienia zakresu tej liczby. Podaje też 22,4 m głębokości wobec 16 m w KKTJ.
+
+  PIG aliases: Raptawicka Jama, Jaskinie Pawlikowskiego
 
   PIG sector: D. Kościeliska - Zach.
-
-  PIG morphometry: length_m=560, depth_m=22,4, denivelation_m=27,2
 
   PIG source state year: 2015
 
@@ -34,5 +39,5 @@ notes: 'PIG aliases: Raptawicka Jama, Jaskinie Pawlikowskiego
   measurement to KSZ-0047.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-25T11:37:09Z'
-updated_by: codex
+updated_at: '2026-11-07T15:33:39Z'
+updated_by: maintenance:kktj-systems

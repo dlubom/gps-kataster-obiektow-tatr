@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0111
 name: Bliźniacza Studnia
 system_name: null
+length_m: 76
+depth_m: 39
+denivelation_m: 39
+morphometry_source_ref: KKTJ 2026-07, PDF 09, s. 2, lp. 60
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -21,14 +25,14 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG aliases: Bliźniacze Studnie, Dwoista Studnia, Trzy Studnie
+notes: 'PIG:1592, stan 2013 podaje długość 80 m wobec 76 m w KKTJ, głębokość 45 m wobec 39 m w KKTJ, deniwelacja 45 m wobec 39 m w KKTJ.
+
+  PIG aliases: Bliźniacze Studnie, Dwoista Studnia, Trzy Studnie
 
   PIG sector: D. Małej Łąki - Zach.
-
-  PIG morphometry: length_m=80, depth_m=45, denivelation_m=45
 
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

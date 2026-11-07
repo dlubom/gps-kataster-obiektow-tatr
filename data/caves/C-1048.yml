@@ -2,6 +2,8 @@ schema_version: 1
 id: C-1048
 name: Gawra w Grześkówkach
 system_name: null
+length_m: 4
+morphometry_source_ref: TPN Geoportal TATRY 2026-10-19, GLOBALID {C9DC792D-FDD9-4AD9-B024-26B8C795CDAF}
 external_refs: []
 bibliography_status: unknown
 notes: |-

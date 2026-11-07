@@ -2,6 +2,10 @@ schema_version: 1
 id: C-0556
 name: Jaskinia Lejowa Wyżnia
 system_name: null
+length_m: 97
+depth_m: 0.5
+denivelation_m: 18
+morphometry_source_ref: KKTJ 2026-07, PDF 04, s. 1, lp. 5
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -21,12 +25,12 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG sector: D. Lejowa
+notes: 'PIG:1289, stan 2010 podaje głębokość 17,3 m wobec 0,5 m w KKTJ.
 
-  PIG morphometry: length_m=97, depth_m=17,3, denivelation_m=17,7
+  PIG sector: D. Lejowa
 
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

@@ -62,3 +62,25 @@ def test_canonical_input_rejects_computed_source_fields(canonical, field):
     with pytest.raises(CatalogLoadError, match="derived|computed") as caught:
         _read_snapshots(canonical)
     assert caught.value.path == path
+
+
+def test_cave_morphometry_reaches_postgres_with_source_and_missing_values(canonical):
+    path = canonical / "caves/C-0001.yml"
+    cave = yaml.safe_load(path.read_text())
+    cave.update(
+        system_cave_id="C-0002",
+        length_m=2320,
+        depth_m=None,
+        denivelation_m=60,
+        denivelation_qualifier="approximate",
+        morphometry_source_ref="KKTJ 2026-07, PDF 03, s. 1, lp. 7",
+    )
+    path.write_text(yaml.safe_dump(cave))
+    rows, _ = _read_snapshots(canonical)
+    values = next(values for _, table, values in rows if table == "caves")
+    assert values["system_cave_id"] == "C-0002"
+    assert values["length_m"] == 2320
+    assert values["depth_m"] is None
+    assert values["denivelation_m"] == 60
+    assert values["denivelation_qualifier"] == "approximate"
+    assert values["morphometry_source_ref"] == cave["morphometry_source_ref"]

@@ -2,6 +2,9 @@ schema_version: 1
 id: C-0417
 name: Studnia w Mnichu
 system_name: null
+length_m: 59.5
+denivelation_m: 22.5
+morphometry_source_ref: KKTJ 2026-07, PDF 11, s. 2, lp. 5
 external_refs:
 - system: NR_INWENT
   ref_type: inventory_number
@@ -21,10 +24,10 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG morphometry: length_m=59,3, depth_m=22,3, denivelation_m=22,3
+notes: 'PIG:1733, stan 2010 podaje głębokość 22,3 m. Zakres lub zgodność z pozostałymi wymiarami wymaga potwierdzenia.
 
   PIG source state year: 2010'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T13:00:00Z'
-updated_by: dl
+updated_at: '2026-11-07T08:09:37Z'
+updated_by: maintenance:kktj-morphometry

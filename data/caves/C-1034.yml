@@ -2,6 +2,8 @@ schema_version: 1
 id: C-1034
 name: Schron nad Komorą w Kończystej Turni
 system_name: null
+length_m: 3
+morphometry_source_ref: TPN Geoportal TATRY 2026-10-19, GLOBALID {2549106F-2EA9-477A-A5D3-77E6B920C8E5}
 external_refs: []
 bibliography_status: unknown
 notes: |-
