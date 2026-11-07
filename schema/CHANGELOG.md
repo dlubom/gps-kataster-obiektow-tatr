@@ -1,5 +1,14 @@
 # Schema changelog
 
+## schema_version: 2 — morfometria jaskiń, 2026-11-07
+
+- Jaskinia ma opcjonalne pola `length_m`, `depth_m` i `denivelation_m`
+  na skończone, nieujemne wartości w metrach. Przy zapisanym wymiarze
+  wymagany jest `morphometry_source_ref`. Kwalifikator `approximate`
+  wymaga podanej deniwelacji.
+- Opcjonalny klucz `caves.system_cave_id` wiąże część z rekordem całego
+  systemu. Walidacja odrzuca odwołania do siebie i zagnieżdżone systemy.
+
 ## schema_version: 2 — katalog YAML i model PostgreSQL, 2026-11-01 (PBI-119)
 
 - Katalog używa plików YAML w `data/`. Znacznik `data/catalog.json` ma

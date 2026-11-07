@@ -435,6 +435,8 @@ Zapis `KKTJ 2026-07, PDF 03, s. 1, lp. 7` identyfikuje wiersz w
 Gdy na stronie powtarza się Lp., po numerze pozycji podaj także nazwę
 rejonu z tabeli. Wiersz bez Lp. zidentyfikuj numerem PDF, stroną i kodem.
 
+Po potwierdzeniu tożsamości i zakresu pozycji przyjmij wartość KKTJ,
+a istotne różnice między źródłami opisz w uwagach jaskini.
 Brak w KKTJ można uzupełnić na podstawie rekordu PIG albo Geoportalu
 TATRY o zgodnej tożsamości i zakresie. Podaj ID i rok stanu PIG lub
 `GLOBALID` otworu i wersję danych TPN. Wartość ze starszego arkusza

@@ -627,13 +627,14 @@ zapisujemy na odpowiadających im pozycjach katalogowych. Dla potwierdzonego
 systemu obejmującego kilka pozycji tworzymy jeden rekord zbiorczy, jeśli
 katalog nie ma już rekordu opisującego całość. Odniesienie zawiera edycję,
 numer PDF, stronę i Lp. Gdy Lp. powtarza się na stronie, podaje również rejon.
-Przypisanie wymaga zgodności tożsamości i zakresu rekordu.
+Po potwierdzeniu tożsamości i zakresu pozycji przyjmujemy wartość KKTJ.
 Rankingi służą do porównania tabel regionalnych. Wiersz bez Lp. można
 wskazać numerem PDF, stroną i kodem inwentarzowym. Brak wartości KKTJ
 można uzupełnić bezpośrednią wartością PIG lub Geoportalu TATRY, gdy
-tożsamość pozycji, zakres i znaczenie wymiaru są potwierdzone. Nierozstrzygnięta
-sprzeczność pozostawia pole puste. Różnice, w tym poziom odniesienia,
-można opisać z odsyłaczem do źródła w `Jaskinia.notes`.
+tożsamość pozycji, zakres i znaczenie wymiaru są potwierdzone. Jeśli nie
+można wskazać wartości o potwierdzonym zakresie i znaczeniu, pole pozostaje
+puste. Istotne różnice między źródłami, w tym różny poziom odniesienia,
+zapisujemy z odsyłaczem do źródła w `Jaskinia.notes`.
 
 ---
 
@@ -959,8 +960,8 @@ Opis (`wpt/desc`) zawsze zawiera jawne `object <ID>`, ID wybranego pomiaru,
 źródło, datę i dostępne uwagi. Dostępne wymiary jaskini i ich źródło są
 częścią opisu. Przy części z `system_cave_id` opis podaje również nazwę i ID
 systemu oraz jego dostępne wymiary i źródło. Deniwelacja przybliżona ma
-przedrostek `~`. Nazwy nie zastępują
-trwałych identyfikatorów.
+przedrostek `~`. W opisie GPX znak podziału strony (`U+000C`) zastępuje
+spacja. Nazwy nie zastępują trwałych identyfikatorów.
 
 Pełny `best-measurements.gpx` pozostaje bez limitu 500. Trzy dodatkowe pliki
 razem zawierają dokładnie te same punkty, każdy w jednej grupie. Przypisanie

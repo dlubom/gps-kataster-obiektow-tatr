@@ -305,7 +305,8 @@ def _write_gpx(
         ET.SubElement(waypoint, _gpx_tag("name")).text = (
             row.name_local if row.name_local and row.name_local.strip() else row.object_id
         )
-        ET.SubElement(waypoint, _gpx_tag("desc")).text = _gpx_description(row)
+        # A page break copied from a PDF is not valid XML text.
+        ET.SubElement(waypoint, _gpx_tag("desc")).text = _gpx_description(row).replace("\f", " ")
         ET.SubElement(waypoint, _gpx_tag("type")).text = row.category
 
     tree = ET.ElementTree(gpx)

@@ -342,6 +342,26 @@ def test_gpx_labels_use_local_names_and_preserve_object_ids(
     assert "TPN measurement note." in description
 
 
+def test_gpx_replaces_form_feed_in_morphometry_source_ref(tmp_path: Path) -> None:
+    data_dir = tmp_path / "data"
+    _write_sample_data(data_dir)
+    cave = _valid_cave()
+    source_ref = "KKTJ 2026-07\fPDF 03, s. 1, lp. 7"
+    cave.update(length_m=160, morphometry_source_ref=source_ref)
+    _write_yaml(data_dir / "caves" / "C-0001.yml", cave)
+    baseline = accept_source(data_dir)
+
+    result = export_best_measurements(
+        **baseline, data_dir=data_dir, output_dir=tmp_path / "exports"
+    )
+
+    for path in (result.gpx_path, result.grouped_gpx_paths[0]):
+        description = ET.parse(path).findtext(".//{*}wpt/{*}desc") or ""
+        assert "morfometria: KKTJ 2026-07 PDF 03, s. 1, lp. 7" in description
+    with result.csv_path.open(encoding="utf-8", newline="") as stream:
+        assert next(csv.DictReader(stream))["cave_morphometry_source_ref"] == source_ref
+
+
 def test_export_writes_metadata_snapshot(tmp_path: Path) -> None:
     data_dir = tmp_path / "data"
     initialize_source(data_dir)
