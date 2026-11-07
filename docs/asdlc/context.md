@@ -50,6 +50,9 @@ PL-EVRF2007-NH. Data weryfikacji Marka i dokładności punktów są nieznane.
   dla Goryczkowego wymaga pełnych bajtów PDF i kontroli wizualnej.
 - Odroczone nowe obiekty TPN, w tym Schron nad Wielką Równią i Jaskinia
   w Kozim Grzbiecie, opisują [decyzje PBI-113](verification/PBI-113.md).
+- Tunel w Skrajnej Giewonckiej Baszcie (C-0981) grupuje otwory MLW-0044
+  i MLW-0050. Wymiary z KKTJ i wysokości otworów TPN wymagają porównania
+  z planem lub pomiarem tunelu. Szczegóły zapisano w uwagach jaskini.
 - Rozbieżności i identyczne Best nie rozstrzygają błędu lokalizacji ani
   duplikatów; [ocena źródeł](reviews/data-decisions-2026-10.md).
 

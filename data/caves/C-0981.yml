@@ -1,17 +1,22 @@
 schema_version: 1
 id: C-0981
-name: tunel w Skrajnej Giewonckiej Baszcie
+name: Tunel w Skrajnej Giewonckiej Baszcie
 system_name: null
 external_refs: []
 bibliography_status: unknown
-notes: 'TPN length: 10
+notes: 'Wspólny rekord otworów N (MLW-0044, wcześniej C-0947) i S (MLW-0050).
+  Oznaczenia otworów pochodzą z archiwum TPN, arkusz Export, wiersze 612 i 874.
+  Arkusz podaje zera dla N oraz 10 m długości, 0 m głębokości i 2 m
+  deniwelacji dla S. Geoportal TATRY (odczyt 2026-11-07, OBJECTID 5782 i 5781)
+  potwierdza oznaczenia N i S oraz wymiary 10 m i 2 m dla S. W API obie
+  głębokości są puste.
+  Weryfikacja lokalizacji S w TPN: 15-11-2024 FF, orto.
 
-  TPN depth: 0
-
-  TPN denivelation: 2
-
-  TPN verification/location note: 15-11-2024 FF, orto'
+  KKTJ 2026-07, PDF 04, s. 2, lp. 28 podaje 10,1 m długości i 2,5 m
+  deniwelacji przy wysokości 1648 m n.p.m. Punkty N i S z TPN różnią się
+  wysokością o 8,75 m, a ich odległość przestrzenna wynosi 11,59 m.
+  Morfometria wymaga potwierdzenia z planem lub pomiarem tunelu.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-11-07T19:07:31Z'
+updated_by: maintenance:pr-46
