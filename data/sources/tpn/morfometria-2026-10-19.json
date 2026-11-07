@@ -1,0 +1,40 @@
+{
+  "source": {
+    "endpoint": "https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6",
+    "layer_name": "Jaskinie",
+    "started_at": "2026-10-19T16:39:29.750178Z",
+    "fetched_at": "2026-10-19T16:39:32.954639Z",
+    "snapshot_id": "pbi-101-live-20261019",
+    "snapshot_sha256": "481e83a1a113a0596947d40e30d7a186de0f0f51154957c5f48713c4ae3324d8",
+    "commit": "60afeca2d17bbc4b5aa690abc83da1d25d89a506",
+    "page_path": "data/sources/tpn/snapshots/pbi-101-live-20261019/page-1000.json",
+    "page_sha256": "a70d7e135e811b24410ed0df1cb9c7d1fb0e4123632f0820e36f6b8be2f3eb90",
+    "query": {
+      "f": "json",
+      "orderByFields": "OBJECTID",
+      "outFields": "*",
+      "outSR": 4326,
+      "resultOffset": 1000,
+      "resultRecordCount": 500,
+      "returnGeometry": true,
+      "where": "1=1"
+    }
+  },
+  "spatialReference": {
+    "wkid": 4326,
+    "latestWkid": 4326
+  },
+  "features": [
+    {"attributes":{"OBJECTID":6401,"NR_INWENT":null,"NAZWA":"Gawra w Sarniej Skale","DLUGOSC":3.3,"GLEBOKOSC":null,"PRZEWYZSZE":null,"DENIWELACJ":null,"SYSTEM":null,"OTWÓR":null,"OPIS":null,"WER_LOK":"FF NMT 04052026","UWAGI":null,"WERYF":1,"GENEZA":"jaskinia","FIELD":null,"CREATED_USER":"ffilar","CREATED_DATE":1777885339000,"LAST_EDITED_USER":"ffilar","LAST_EDITED_DATE":1777885384000,"GLOBALID":"{551DF3AD-F3E1-4920-BD23-D741AC938BA8}","TATER":null},"geometry":{"x":19.936818198902632,"y":49.265866302934562}},
+    {"attributes":{"OBJECTID":6405,"NR_INWENT":null,"NAZWA":"Nyża pod Szarą Turnią I","DLUGOSC":3.8,"GLEBOKOSC":null,"PRZEWYZSZE":null,"DENIWELACJ":null,"SYSTEM":null,"OTWÓR":null,"OPIS":null,"WER_LOK":"FF 27052026","UWAGI":null,"WERYF":1,"GENEZA":"jaskinia","FIELD":null,"CREATED_USER":"ffilar","CREATED_DATE":1779901846000,"LAST_EDITED_USER":"ffilar","LAST_EDITED_DATE":1781440933000,"GLOBALID":"{55ED69A3-9228-452B-87CE-8133710292B1}","TATER":null},"geometry":{"x":19.928103567508114,"y":49.253199850460867}},
+    {"attributes":{"OBJECTID":6406,"NR_INWENT":null,"NAZWA":"Schron nad Komorą w Kończystej Turni","DLUGOSC":3.0,"GLEBOKOSC":null,"PRZEWYZSZE":null,"DENIWELACJ":null,"SYSTEM":null,"OTWÓR":null,"OPIS":null,"WER_LOK":"FF 06062026","UWAGI":null,"WERYF":1,"GENEZA":"jaskinia","FIELD":null,"CREATED_USER":"ffilar","CREATED_DATE":1780749269000,"LAST_EDITED_USER":"ffilar","LAST_EDITED_DATE":1781442764000,"GLOBALID":"{2549106F-2EA9-477A-A5D3-77E6B920C8E5}","TATER":null},"geometry":{"x":19.879009340463949,"y":49.263853136765029}},
+    {"attributes":{"OBJECTID":6407,"NR_INWENT":null,"NAZWA":"Nyża za Jałowcem","DLUGOSC":3.0,"GLEBOKOSC":null,"PRZEWYZSZE":null,"DENIWELACJ":null,"SYSTEM":null,"OTWÓR":null,"OPIS":null,"WER_LOK":"FF 06062026","UWAGI":null,"WERYF":1,"GENEZA":"jaskinia","FIELD":null,"CREATED_USER":"ffilar","CREATED_DATE":1780749443000,"LAST_EDITED_USER":"ffilar","LAST_EDITED_DATE":1781442094000,"GLOBALID":"{9BEB2E85-ECB8-432A-90D4-623DF217C6DA}","TATER":null},"geometry":{"x":19.879551085758283,"y":49.263740247708881}},
+    {"attributes":{"OBJECTID":7042,"NR_INWENT":null,"NAZWA":"Nyża pod Szarą Turnią II","DLUGOSC":4.0,"GLEBOKOSC":null,"PRZEWYZSZE":null,"DENIWELACJ":null,"SYSTEM":null,"OTWÓR":null,"OPIS":null,"WER_LOK":"FF 27052026","UWAGI":null,"WERYF":1,"GENEZA":"jaskinia","FIELD":null,"CREATED_USER":"ffilar","CREATED_DATE":1779901969000,"LAST_EDITED_USER":"ffilar","LAST_EDITED_DATE":1781440961000,"GLOBALID":"{B51C01E8-271E-4AEF-802D-C87025A09845}","TATER":null},"geometry":{"x":19.927542287402037,"y":49.253470614329444}},
+    {"attributes":{"OBJECTID":7361,"NR_INWENT":null,"NAZWA":"Gawra w Bobrowcu","DLUGOSC":22.0,"GLEBOKOSC":null,"PRZEWYZSZE":6.0,"DENIWELACJ":null,"SYSTEM":null,"OTWÓR":null,"OPIS":null,"WER_LOK":"FF 27052026","UWAGI":null,"WERYF":1,"GENEZA":"jaskinia","FIELD":null,"CREATED_USER":"ffilar","CREATED_DATE":1779904134000,"LAST_EDITED_USER":"ffilar","LAST_EDITED_DATE":1781685120000,"GLOBALID":"{A32F96EB-2092-4974-9256-B1D26B3F35A3}","TATER":null},"geometry":{"x":19.801099619438673,"y":49.240859260920907}},
+    {"attributes":{"OBJECTID":7362,"NR_INWENT":null,"NAZWA":"Nyża we Wysrankach","DLUGOSC":4.0,"GLEBOKOSC":null,"PRZEWYZSZE":null,"DENIWELACJ":null,"SYSTEM":null,"OTWÓR":null,"OPIS":null,"WER_LOK":"FF 02062026","UWAGI":null,"WERYF":1,"GENEZA":"jaskinia","FIELD":null,"CREATED_USER":"ffilar","CREATED_DATE":1780409995000,"LAST_EDITED_USER":"ffilar","LAST_EDITED_DATE":1780409995000,"GLOBALID":"{FDD25A5F-1D27-4BAB-9BF7-EBB1C062746C}","TATER":null},"geometry":{"x":19.877003828090277,"y":49.24966207787314}},
+    {"attributes":{"OBJECTID":7363,"NR_INWENT":null,"NAZWA":"Nyża pod Szarą Turnią III","DLUGOSC":3.0,"GLEBOKOSC":null,"PRZEWYZSZE":null,"DENIWELACJ":null,"SYSTEM":null,"OTWÓR":null,"OPIS":null,"WER_LOK":"FF 14062026","UWAGI":null,"WERYF":1,"GENEZA":"jaskinia","FIELD":null,"CREATED_USER":"ffilar","CREATED_DATE":1781441806000,"LAST_EDITED_USER":"ffilar","LAST_EDITED_DATE":1781441881000,"GLOBALID":"{1792C71C-54B5-46CE-8E24-454F4A31E73F}","TATER":null},"geometry":{"x":19.927308030992126,"y":49.253266838681846}},
+    {"attributes":{"OBJECTID":7377,"NR_INWENT":null,"NAZWA":"Schron pod Gawrą w Bobrowcu","DLUGOSC":3.0,"GLEBOKOSC":null,"PRZEWYZSZE":null,"DENIWELACJ":null,"SYSTEM":null,"OTWÓR":null,"OPIS":null,"WER_LOK":"FF 27052026","UWAGI":null,"WERYF":1,"GENEZA":"jaskinia","FIELD":null,"CREATED_USER":"ffilar","CREATED_DATE":1779904273000,"LAST_EDITED_USER":"ffilar","LAST_EDITED_DATE":1781685152000,"GLOBALID":"{28BD775C-1B67-4AEA-9FFB-49C32EEF6BED}","TATER":null},"geometry":{"x":19.800939863529027,"y":49.240427943871047}},
+    {"attributes":{"OBJECTID":7379,"NR_INWENT":null,"NAZWA":"Nyża pod Szarą Turnią IV","DLUGOSC":3.0,"GLEBOKOSC":null,"PRZEWYZSZE":null,"DENIWELACJ":null,"SYSTEM":null,"OTWÓR":null,"OPIS":null,"WER_LOK":"FF 14062026","UWAGI":null,"WERYF":1,"GENEZA":"jaskinia","FIELD":null,"CREATED_USER":"ffilar","CREATED_DATE":1781441975000,"LAST_EDITED_USER":"ffilar","LAST_EDITED_DATE":1781442022000,"GLOBALID":"{70FC9CD8-57DE-4C66-A50F-674B3C6F5D55}","TATER":null},"geometry":{"x":19.927828378885028,"y":49.253047997405808}},
+    {"attributes":{"OBJECTID":7682,"NR_INWENT":null,"NAZWA":"Gawra w Grześkówkach","DLUGOSC":4.0,"GLEBOKOSC":null,"PRZEWYZSZE":null,"DENIWELACJ":null,"SYSTEM":null,"OTWÓR":null,"OPIS":null,"WER_LOK":"04102026","UWAGI":null,"WERYF":1,"GENEZA":"jaskinia","FIELD":null,"CREATED_USER":"ffilar","CREATED_DATE":1791111805000,"LAST_EDITED_USER":"ffilar","LAST_EDITED_DATE":1791111805000,"GLOBALID":"{C9DC792D-FDD9-4AD9-B024-26B8C795CDAF}","TATER":null},"geometry":{"x":19.936981261083442,"y":49.268889145683346}}
+  ]
+}
