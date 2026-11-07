@@ -960,8 +960,9 @@ Opis (`wpt/desc`) zawsze zawiera jawne `object <ID>`, ID wybranego pomiaru,
 źródło, datę i dostępne uwagi. Dostępne wymiary jaskini i ich źródło są
 częścią opisu. Przy części z `system_cave_id` opis podaje również nazwę i ID
 systemu oraz jego dostępne wymiary i źródło. Deniwelacja przybliżona ma
-przedrostek `~`. W opisie GPX znak podziału strony (`U+000C`) zastępuje
-spacja. Nazwy nie zastępują trwałych identyfikatorów.
+przedrostek `~`. W nazwie i opisie punktu GPX znaki niedozwolone w XML 1.0
+zastępujemy spacjami. Jeśli po tej zamianie nazwa zawiera tylko białe
+znaki, etykietą jest ID obiektu. Nazwy nie zastępują trwałych identyfikatorów.
 
 Pełny `best-measurements.gpx` pozostaje bez limitu 500. Trzy dodatkowe pliki
 razem zawierają dokładnie te same punkty, każdy w jednej grupie. Przypisanie

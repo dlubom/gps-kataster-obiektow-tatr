@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 import tempfile
 import zipfile
 from dataclasses import dataclass, replace
@@ -64,6 +65,8 @@ METADATA_FILENAME = "metadata.json"
 RELEASE_METADATA_SCHEMA_VERSION = 1
 DATA_SCHEMA_VERSION = 1
 GPX_NS = "http://www.topografix.com/GPX/1/1"
+# XML 1.0 Char production. ElementTree escapes markup but accepts invalid characters.
+XML_INVALID_CHARACTERS = re.compile(r"[^\t\n\r\x20-\ud7ff\ue000-\ufffd\U00010000-\U0010ffff]")
 EPSG_2180_PRJ = (
     'PROJCS["ETRF2000-PL_CS92",'
     'GEOGCS["GCS_ETRS_1989",'
@@ -302,11 +305,11 @@ def _write_gpx(
             ET.SubElement(waypoint, _gpx_tag("ele")).text = _float_text(row.elevation_m)
         if row.observed_at is not None:
             ET.SubElement(waypoint, _gpx_tag("time")).text = row.observed_at
-        ET.SubElement(waypoint, _gpx_tag("name")).text = (
-            row.name_local if row.name_local and row.name_local.strip() else row.object_id
+        label = XML_INVALID_CHARACTERS.sub(" ", row.name_local or "")
+        ET.SubElement(waypoint, _gpx_tag("name")).text = label if label.strip() else row.object_id
+        ET.SubElement(waypoint, _gpx_tag("desc")).text = XML_INVALID_CHARACTERS.sub(
+            " ", _gpx_description(row)
         )
-        # A page break copied from a PDF is not valid XML text.
-        ET.SubElement(waypoint, _gpx_tag("desc")).text = _gpx_description(row).replace("\f", " ")
         ET.SubElement(waypoint, _gpx_tag("type")).text = row.category
 
     tree = ET.ElementTree(gpx)
