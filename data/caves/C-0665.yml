@@ -22,7 +22,7 @@ external_refs:
   scope: cave
   notes: PIG catalog record link.
 bibliography_status: unknown
-notes: 'PIG:1665, stan 2013 podaje długość 11660 m, głębokość 300 m, deniwelacja 435 m dla systemu lub bez jednoznacznego zakresu tej części.
+notes: 'Opis PIG:1665 obejmuje cały system. Porównanie morfometrii w C-1053.
 
   PIG aliases: SYSTEM Jaskinia Wysoka
 
@@ -34,5 +34,5 @@ notes: 'PIG:1665, stan 2013 podaje długość 11660 m, głębokość 300 m, deni
   was added to KSW-0189 and kept on the existing Jaskinia Wysoka cave record.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-11-07T15:33:39Z'
+updated_at: '2026-11-07T17:59:49Z'
 updated_by: maintenance:kktj-systems
