@@ -6,7 +6,12 @@ length_m: 26.5
 denivelation_m: 1.9
 morphometry_source_ref: KKTJ 2026-07, PDF 09, s. 4, lp. 130
 external_refs: []
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2024-116-117-s49
+  locator: s. 49–50
+  name_in_source: Rura nad Okapami
+  purpose: description
 notes: 'TPN length: 27
 
   TPN depth: 0
@@ -21,5 +26,5 @@ notes: 'TPN length: 27
   TPN verification/location note: FF 23-09-2023 NMT. Scalono do C-0875 / MLZ-0089.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-11-07T08:09:37Z'
-updated_by: maintenance:kktj-morphometry
+updated_at: '2026-11-08T16:27:48Z'
+updated_by: maintenance:jaskinie-wielka-turnia

@@ -55,6 +55,11 @@ PL-EVRF2007-NH. Data weryfikacji Marka i dokładności punktów są nieznane.
   dwa połączone otwory oraz długość 10,1 m i deniwelację 2,5 m.
   Różnica wysokości punktów TPN przekracza deniwelację tunelu.
   Przypisanie odroczonego punktu TPN 6721 pozostaje nierozstrzygnięte.
+- [Tunel nad Kominem Flacha (C-0976)](../../data/caves/C-0976.yml) ma dwa
+  połączone otwory według Filara („Jaskinie” 3–4 (116–117), 2024, s. 49–50).
+  W katalogu jest jeden punkt TPN (MLZ-0103), około 15,8 m wyżej niż
+  wysokość podana w artykule. Przypisanie punktu do otworu I lub II
+  oraz lokalizacja drugiego otworu pozostają do ustalenia.
 - Rozbieżności i identyczne Best nie rozstrzygają błędu lokalizacji ani
   duplikatów; [ocena źródeł](reviews/data-decisions-2026-10.md).
 
