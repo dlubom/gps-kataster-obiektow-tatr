@@ -2,8 +2,20 @@ schema_version: 1
 id: C-0976
 name: Tunel nad Kominem Flacha
 system_name: null
+length_m: 7.4
+depth_m: 3.3
+denivelation_m: 3.3
+morphometry_source_ref: >-
+  length_m i denivelation_m — Filar 2024, „Uzupełnienia z NE ściany Wielkiej Turni”,
+  Jaskinie 3–4 (116–117), s. 49–50.
+  depth_m — KKTJ 2026-07, PDF 09, s. 4, lp. 131.
 external_refs: []
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2024-116-117-s49
+  locator: s. 49–50
+  name_in_source: Tunel nad Kominem Flacha
+  purpose: description
 notes: 'TPN length: 4
 
   TPN depth: 0
@@ -12,8 +24,14 @@ notes: 'TPN length: 4
 
   TPN verification/location note: 23-09-2023 FF, NMT
 
-  TPN notes: Dane morfometryczne orientacyjne'
+  TPN notes: Dane morfometryczne orientacyjne
+
+  Filar podaje deniwelację −3,3 m i wysokość 1564 m n.p.m. Plan
+  oraz fotografie dokumentują dwa połączone otwory (I i II). KKTJ
+  potwierdza długość 7,4 m, głębokość i deniwelację 3,3 m oraz
+  wysokość 1564 m n.p.m. Punkt TPN MLZ-0103 (m-001) ma 1579,81 m
+  i pozostaje bez przypisania do otworu I lub II.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-11-08T16:27:48Z'
+updated_by: maintenance:jaskinie-wielka-turnia
