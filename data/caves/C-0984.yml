@@ -5,9 +5,19 @@ system_name: null
 length_m: 3
 morphometry_source_ref: KKTJ 2026-07, PDF 04, s. 2, lp. 29
 external_refs: []
-bibliography_status: unknown
-notes: 'TPN verification/location note: 17-05-2025 FF NMT'
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-122-123-s36
+  locator: s. 38
+  name_in_source: Nyża pod Zachodem Pilotów
+  purpose: description
+notes: 'TPN verification/location note: 17-05-2025 FF NMT
+
+  Filar 2026 (s. 38) podaje 1502 m n.p.m. dla nienumerowanej nyży.
+  Dla STR-0028 starszy rekord TPN (m-001) podaje 1501,89 m, a nowszy
+  m-002 ma 1510,34 m z NMT TPN, czyli wysokość gruntu. Publikacja
+  nie rozstrzyga numeracji późniejszych wpisów II i III.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-11-07T09:15:38Z'
-updated_by: maintenance:kktj-morphometry
+updated_at: '2026-11-08T11:01:05Z'
+updated_by: maintenance:jaskinie-122-123

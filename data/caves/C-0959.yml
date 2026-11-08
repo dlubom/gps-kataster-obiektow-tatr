@@ -5,9 +5,17 @@ system_name: null
 length_m: 5
 morphometry_source_ref: KKTJ 2026-07, PDF 04, s. 2, lp. 27
 external_refs: []
-bibliography_status: unknown
-notes: 'TPN verification/location note: 19-10-2025 FF NMT'
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-122-123-s36
+  locator: s. 37
+  name_in_source: Schron w Skrajnej Giewonckiej Baszcie
+  purpose: description
+notes: 'TPN verification/location note: 19-10-2025 FF NMT
+
+  Filar 2026 (s. 37) podaje 1684 m n.p.m. Wysokość zapisana w TPN
+  dla MLW-0047 (m-001) wynosi 1682,31 m.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-11-07T09:15:38Z'
-updated_by: maintenance:kktj-morphometry
+updated_at: '2026-11-08T11:01:05Z'
+updated_by: maintenance:jaskinie-122-123

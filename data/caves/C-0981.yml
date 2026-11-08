@@ -2,8 +2,16 @@ schema_version: 1
 id: C-0981
 name: Tunel w Skrajnej Giewonckiej Baszcie
 system_name: null
+length_m: 10.1
+denivelation_m: 2.5
+morphometry_source_ref: Filar 2026, „Uzupełnienia z dolinek reglowych II”, Jaskinie 1–2 (122–123), s. 37
 external_refs: []
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-122-123-s36
+  locator: s. 37
+  name_in_source: Tunel w Skrajnej Giewonckiej Baszcie
+  purpose: description
 notes: 'Wspólny rekord otworów N (MLW-0044, wcześniej C-0947) i S (MLW-0050).
   Oznaczenia otworów pochodzą z archiwum TPN, arkusz Export, wiersze 612 i 874.
   Arkusz podaje zera dla N oraz 10 m długości, 0 m głębokości i 2 m
@@ -13,10 +21,17 @@ notes: 'Wspólny rekord otworów N (MLW-0044, wcześniej C-0947) i S (MLW-0050).
   Weryfikacja lokalizacji S w TPN: 15-11-2024 FF, orto.
 
   KKTJ 2026-07, PDF 04, s. 2, lp. 28 podaje 10,1 m długości i 2,5 m
-  deniwelacji przy wysokości 1648 m n.p.m. Punkty N i S z TPN różnią się
-  wysokością o 8,75 m, a ich odległość przestrzenna wynosi 11,59 m.
-  Morfometria wymaga potwierdzenia z planem lub pomiarem tunelu.'
+  deniwelacji przy wysokości 1648 m n.p.m.
+
+  Odległość przestrzenna między punktami TPN N i S wynosi 11,59 m.
+
+  Filar 2026 (s. 37) podaje 1648 m n.p.m. bez osobnych wysokości otworów.
+  Plan z 2024 r. pokazuje dwa połączone otwory. W TPN otwór N
+  (MLW-0044, m-001) ma 1658,48 m, a otwór S (MLW-0050, m-001) ma
+  1649,74 m. Różnica 8,75 m przekracza deniwelację opublikowaną dla
+  całego tunelu. Odroczony punkt TPN 6721 leży w poziomie ok. 2,2 m od
+  punktu S i 8,3 m od N. Identyfikacja punktu pozostaje otwarta.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-11-07T19:07:31Z'
-updated_by: maintenance:pr-46
+updated_at: '2026-11-08T11:01:05Z'
+updated_by: maintenance:jaskinie-122-123
