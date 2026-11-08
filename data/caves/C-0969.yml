@@ -6,15 +6,23 @@ length_m: 18.8
 denivelation_m: 10.4
 morphometry_source_ref: KKTJ 2026-07, PDF 04, s. 2, lp. 26
 external_refs: []
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-122-123-s36
+  locator: s. 36
+  name_in_source: Dziura w Małym Giewoncie
+  purpose: description
 notes: 'TPN length: 19
 
   TPN depth: 0
 
   TPN denivelation: 0
 
-  TPN verification/location note: 19-09-2024 FF NMT'
+  TPN verification/location note: 19-09-2024 FF NMT
+
+  Filar 2026 (s. 36) podaje 1687 m n.p.m. Wysokość zapisana w TPN
+  dla MLW-0048 (m-001) wynosi 1686,30 m.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-11-07T09:15:38Z'
-updated_by: maintenance:kktj-morphometry
+updated_at: '2026-11-08T11:01:05Z'
+updated_by: maintenance:jaskinie-122-123

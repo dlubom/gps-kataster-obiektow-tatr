@@ -6,10 +6,21 @@ depth_m: 352
 denivelation_m: 352
 morphometry_source_ref: KKTJ 2026-07, PDF 08, s. 3, lp. 68
 external_refs: []
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-122-123-s42
+  locator: s. 44
+  name_in_source: System Ptasiej Studni
+  purpose: description
+  notes: Długość systemu 7230 m po udokumentowaniu 77 m ciągów we Wlotówce.
+- publication_id: jaskinie-2026-122-123-s45
+  locator: s. 45
+  name_in_source: System Ptasiej Studni
+  purpose: description
+  notes: Długość systemu 7330 m po domierzeniu 100 m w rejonie LUX-a.
 notes: PIG:1473 (stan 2013) podaje 6283 m długości całego systemu wobec 7330 m w KKTJ.
   Głębokość i deniwelacja po 352 m są zgodne.
 created_at: '2026-11-07T15:33:39Z'
 created_by: maintenance:kktj-systems
-updated_at: '2026-11-07T17:59:49Z'
-updated_by: maintenance:kktj-systems
+updated_at: '2026-11-08T11:01:05Z'
+updated_by: maintenance:jaskinie-122-123

@@ -51,8 +51,10 @@ PL-EVRF2007-NH. Data weryfikacji Marka i dokładności punktów są nieznane.
 - Odroczone nowe obiekty TPN, w tym Schron nad Wielką Równią i Jaskinia
   w Kozim Grzbiecie, opisują [decyzje PBI-113](verification/PBI-113.md).
 - Tunel w Skrajnej Giewonckiej Baszcie (C-0981) grupuje otwory MLW-0044
-  i MLW-0050. Wymiary z KKTJ i wysokości otworów TPN wymagają porównania
-  z planem lub pomiarem tunelu. Szczegóły zapisano w uwagach jaskini.
+  i MLW-0050. Filar (2026, „Jaskinie” 1–2 (122–123), s. 37) dokumentuje
+  dwa połączone otwory oraz długość 10,1 m i deniwelację 2,5 m.
+  Różnica wysokości punktów TPN przekracza deniwelację tunelu.
+  Przypisanie odroczonego punktu TPN 6721 pozostaje nierozstrzygnięte.
 - Rozbieżności i identyczne Best nie rozstrzygają błędu lokalizacji ani
   duplikatów; [ocena źródeł](reviews/data-decisions-2026-10.md).
 
