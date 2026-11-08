@@ -6,6 +6,17 @@ udokumentowane w tym pliku.
 Format jest oparty o [Keep a Changelog](https://keepachangelog.com/), a
 wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
+## [v2.0.2] - 2026-11-08
+
+### Dodano
+
+- Długość 7,4 m, głębokość 3,3 m i deniwelację 3,3 m Tunelu nad Kominem
+  Flacha (`C-0976`) na podstawie publikacji Filipa Filara i zestawienia KKTJ.
+- Cztery cytowania opisów jaskiń Wielkiej Turni z „Jaskiń” 3–4 (116–117),
+  2024, oraz 1–2 (118–119), 2025.
+- Informację o dwóch otworach Tunelu nad Kominem Flacha i nierozstrzygniętym
+  przypisaniu punktu TPN do jednego z nich.
+
 ## [v2.0.1] - 2026-11-08
 
 ### Dodano
