@@ -6,6 +6,17 @@ udokumentowane w tym pliku.
 Format jest oparty o [Keep a Changelog](https://keepachangelog.com/), a
 wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
+## [v2.0.1] - 2026-11-08
+
+### Dodano
+
+- 14 cytowań z numerami stron do 11 rekordów jaskiń i systemów na podstawie
+  pięciu artykułów z „Jaskiń” 1–2 (122–123), 2026.
+- Długość 10,1 m i deniwelację 2,5 m Tunelu w Skrajnej Giewonckiej Baszcie
+  (`C-0981`) według opisu i planu Filipa Filara.
+- Uwagi porównujące opublikowane wysokości z zapisami TPN dla ośmiu jaskiń
+  z dolinek reglowych.
+
 ## [v2.0.0] - 2026-11-07
 
 ### Dodano
