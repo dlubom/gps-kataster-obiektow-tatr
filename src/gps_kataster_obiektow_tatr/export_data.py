@@ -146,6 +146,7 @@ class ExportData:
     history: tuple[ExportRecord, ...]
     selected: tuple[ExportRecord, ...]
     caves: tuple[ExportRecord, ...]
+    objects: tuple[ExportRecord, ...]
     relation_count: int
     generated_at: str
     gpx_regions: Mapping[str, str | None]
@@ -156,7 +157,7 @@ class ExportData:
 
 
 def prepare_export_data(dataset: LoadedDataset, *, generated_at: str | None = None) -> ExportData:
-    """Assemble once, retaining SQL's selected and computed Best and historical nulls."""
+    """Prepare complete catalogue rows and retain SQL's Best and measurement history."""
     caves = {r.data["id"]: r.data for r in dataset.caves}
     cave_rows = {}
     for cave_id, cave in sorted(caves.items()):
@@ -188,19 +189,31 @@ def prepare_export_data(dataset: LoadedDataset, *, generated_at: str | None = No
     for relation in dataset.relations:
         for oid in {relation.data["from_object_id"], relation.data["to_object_id"]}:
             relations.setdefault(oid, []).append(relation.data)
-    best, history, selected = [], [], []
+    best, history, selected, objects = [], [], [], []
     for obj_record in sorted(dataset.objects, key=lambda r: r.data["id"]):
         obj = obj_record.data
         oid = obj["id"]
-        cave = caves.get(obj.get("cave_id"), {})
+        cave_id = obj.get("cave_id")
+        cave = caves.get(cave_id, {})
+        objects.append(
+            MappingProxyType(
+                {
+                    "object_id": oid,
+                    "name": obj.get("name_local"),
+                    "cave_id": cave_id,
+                    "category": obj["category"],
+                }
+            )
+        )
         choice = obj["best_measurement"]
+        best_id = choice["measurement_id"]
         metadata = {
             "object_id": oid,
             "name_local": obj.get("name_local"),
             "category": obj["category"],
             "schema_version": obj["schema_version"],
-            "cave_id": obj.get("cave_id"),
-            **cave_rows.get(obj.get("cave_id"), empty_cave),
+            "cave_id": cave_id,
+            **cave_rows.get(cave_id, empty_cave),
             "object_notes": obj.get("notes"),
             "cave_notes": cave.get("notes"),
             "pig_id": _joined_values(_external_ids(cave, "PIG", "catalog_id")),
@@ -221,7 +234,7 @@ def prepare_export_data(dataset: LoadedDataset, *, generated_at: str | None = No
             "id_assignment_method": obj["id_assignment"]["method"],
             **{k: v for k, v in obj["id_assignment"].items() if k != "method"},
             "best_mode": choice["mode"],
-            "best_measurement_id": choice["measurement_id"],
+            "best_measurement_id": best_id,
             "computed_best_measurement_id": obj["computed_best_measurement_id"],
             "best_reason": choice.get("reason"),
             "best_updated_at": choice["updated_at"],
@@ -251,7 +264,7 @@ def prepare_export_data(dataset: LoadedDataset, *, generated_at: str | None = No
                         if k not in ("id", "notes", "created_at", "created_by")
                     },
                     "measurement_id": measurement["id"],
-                    "selected": "Tak" if measurement["id"] == choice["measurement_id"] else "Nie",
+                    "selected": "Tak" if measurement["id"] == best_id else "Nie",
                     "measurement_notes": measurement.get("notes"),
                     "measurement_created_at": measurement["created_at"],
                     "measurement_created_by": measurement["created_by"],
@@ -263,19 +276,19 @@ def prepare_export_data(dataset: LoadedDataset, *, generated_at: str | None = No
             if row["selected"] == "Tak":
                 selected.append(row)
                 best.append(BestMeasurementExportRow(**{key: row.get(key) for key in BEST_FIELDS}))
-        if not best or best[-1].object_id != oid:
+        if best_id is not None and (not best or best[-1].object_id != oid):
             raise ValueError(
-                f"Selected measurement {oid}/{choice['measurement_id']} "
-                "is missing from packaged history"
+                f"Selected measurement {oid}/{best_id} is missing from packaged history"
             )
     return ExportData(
-        tuple(best),
-        tuple(history),
-        tuple(selected),
-        tuple(cave_rows.values()),
-        len(dataset.relations),
-        generated_at or utc_timestamp(),
-        MappingProxyType(
+        best=tuple(best),
+        history=tuple(history),
+        selected=tuple(selected),
+        caves=tuple(cave_rows.values()),
+        objects=tuple(objects),
+        relation_count=len(dataset.relations),
+        generated_at=generated_at or utc_timestamp(),
+        gpx_regions=MappingProxyType(
             {row.object_id: regions.get((row.object_id, row.measurement_id)) for row in best}
         ),
     )
