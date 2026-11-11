@@ -1,6 +1,7 @@
 """Publication and history failures reproduced in the PostgreSQL migration review."""
 
 import sqlite3
+from contextlib import closing
 from datetime import datetime
 
 import pytest
@@ -8,6 +9,7 @@ from export_test_support import accept_source, source, write_yaml
 from export_test_support import excel_records as _excel_records
 from openpyxl import load_workbook
 
+from gps_kataster_obiektow_tatr import geopackage
 from gps_kataster_obiektow_tatr.best_measurements_export import export_best_measurements
 from gps_kataster_obiektow_tatr.release_artifacts import build_release_artifacts
 
@@ -101,3 +103,26 @@ def test_standalone_export_cannot_replace_a_complete_release(tmp_path):
     separate = tmp_path / "best-only"
     export_best_measurements(data_dir=data, output_dir=separate, **baseline)
     assert len(list(separate.iterdir())) == 8
+
+
+def test_catalogue_readback_failure_preserves_previous_artifact_set(
+    tmp_path, monkeypatch, copy_release_template
+):
+    data, baseline = source(tmp_path)
+    output = tmp_path / "exports"
+    copy_release_template(data, output)
+    before = {path.name: path.read_bytes() for path in output.iterdir()}
+    assert len(before) == 13
+
+    write_catalogue_tables = geopackage._write_catalogue_tables
+
+    def write_incomplete_catalogue(path, tables):
+        write_catalogue_tables(path, tables)
+        with closing(sqlite3.connect(path)) as db, db:
+            db.execute("DELETE FROM objects WHERE object_id = ?", ("KSW-0001",))
+
+    monkeypatch.setattr(geopackage, "_write_catalogue_tables", write_incomplete_catalogue)
+    with pytest.raises(ValueError, match="GeoPackage objects stored attributes differ"):
+        build_release_artifacts(data_dir=data, output_dir=output, **baseline)
+
+    assert {path.name: path.read_bytes() for path in output.iterdir()} == before

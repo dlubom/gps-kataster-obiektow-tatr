@@ -6,6 +6,15 @@ udokumentowane w tym pliku.
 Format jest oparty o [Keep a Changelog](https://keepachangelog.com/), a
 wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
+## [Niewydane]
+
+### Dodano
+
+- `katalog.gpkg` zawiera pełne tabele atrybutowe `caves` i `objects`.
+  Stabilne ID łączą obiekty z jaskiniami i jaskinie z ich systemami.
+  Odczyt kontrolny SQLite i GDAL obejmuje wszystkie rekordy obu tabel.
+  Dotychczasowy kontrakt warstw `best` i `measurements` obowiązuje nadal.
+
 ## [v2.0.2] - 2026-11-08
 
 ### Dodano
