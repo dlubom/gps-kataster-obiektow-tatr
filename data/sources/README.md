@@ -43,6 +43,14 @@ TPN `GLOBALID` jest identyfikatorem rekordu punktowego i trafia do
 `Obiekt.external_refs`. `NR_INWENT` opisuje zwykle jaskinię / pozycję
 katalogową i trafia do `Jaskinia.external_refs`.
 
+## Mnichowa Studnia Wyżnia — otwory i domiar JKTZ
+
+[Decyzja koordynatora i wyliczenie](jktz/mnichowa-2026-11-12/README.md)
+przypisują dotychczasowy punkt TPN górnemu otworowi `MLW-0054` i wyznaczają
+dolny `MLW-0009` z domiaru `0–B–11`, zachowując kotwicę modelu JKTZ.
+Dokument podaje rewizje źródeł, sposób obliczenia i warunek zmiany ID w
+szablonie JKTZ przy przejściu na ten katalog.
+
 ## KKTJ / Jaskinie Tatr
 
 [Tabela zbiorcza z lipca 2026](kktj/2026-07/jaskinie-tatr.md) to opracowanie

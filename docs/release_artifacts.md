@@ -212,6 +212,10 @@ Kolumny:
 - referencje katalogowe: `nr_inwent`, `pig_id`, `pig_url`, `tpn_globalid`,
 - notatki: `object_notes`, `cave_notes`, `measurement_notes`.
 
+`tpn_globalid` łączy referencje TPN obiektu z identyfikatorami z `source_ref`
+nieodrzuconych pomiarów. Pełna historia zachowuje `source_ref` również
+dla odrzuconych pomiarów.
+
 ## `best-measurements.geojson`
 
 Geometria jest punktem WGS84 w kolejnosci GeoJSON `[lon, lat]`. Wlasciwosci

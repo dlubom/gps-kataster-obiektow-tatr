@@ -8,6 +8,12 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Niewydane]
 
+### Zmieniono
+
+- Rozdzielono otwory Mnichowej Studni Wyżniej (`C-0288`) decyzją koordynatora:
+  punkt TPN przypisano do górnego `MLW-0054`, a dolny `MLW-0009` wyznaczono
+  z domiaru JKTZ. Zachowano historię pomiarów oraz dotychczasową kotwicę modelu.
+
 ## [v2.1.0] - 2026-11-12
 
 ### Dodano

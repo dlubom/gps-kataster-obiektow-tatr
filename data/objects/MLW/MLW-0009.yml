@@ -1,7 +1,7 @@
 schema_version: 1
 id: MLW-0009
 category: jaskinia_otwor
-name_local: Mnichowa Studnia Wyżnia
+name_local: Mnichowa Studnia Wyżnia - otwór dolny
 cave_id: C-0288
 membership_ordinal: 1
 id_assignment:
@@ -10,11 +10,13 @@ id_assignment:
   assigned_prefix: MLW
   prefix_override_reason: null
 external_refs:
-- system: TPN
-  ref_type: source_globalid
-  external_id: '{29508047-79F7-4739-BAD5-FC2D7E4CAD8B}'
+- system: inne
+  ref_type: url
+  external_id: JKTZ:77963f9ea8268556197a16e9b391cb0539b5a4ee:MnichStudniaWyz:11
+  url: https://github.com/dlubom/Jaskiniowy-Kataster-Tatr-Zachodnich/blob/77963f9ea8268556197a16e9b391cb0539b5a4ee/Poligony/D_Malej_Laki/Prawe_zb/Mnich_Studnia_Wyz/MSW1.SRV
   scope: object
-  notes: TPN GLOBALID belongs to the object/source feature.
+  notes: Dolny otwór, stacja MnichStudniaWyz:11, według decyzji koordynatora Dariusza Lubomskiego
+    z 2026-11-12. Domiar 0–B–11; kotwica górnego otworu to MLW-0054/m-001.
 measurements:
 - id: m-001
   input_srid: 4326
@@ -57,21 +59,61 @@ measurements:
   device: null
   tags:
   - tpn
-  verification_status: nieweryfikowany
+  verification_status: odrzucony
   verified_by: null
   verified_at: null
   notes: TPN source-record measurement imported after operator review; not field-verified.
+    Odrzucony dla tego obiektu decyzją koordynatora Dariusza Lubomskiego z 2026-11-12, ponieważ
+    dotyczy górnego otworu MnichStudniaWyz:0, obecnie MLW-0054/m-001. Odrzucenie dotyczy przypisania
+    do dolnego otworu, nie wartości współrzędnych. Zachowano źródłowe XY/Z, daty i source_ref.
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-003
+  input_srid: 4326
+  input_x: 19.9295483110
+  input_y: 49.2433268258
+  elevation_m: 1680.325745
+  elevation_datum: unknown
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: JKTZ:77963f9ea8268556197a16e9b391cb0539b5a4ee:MnichStudniaWyz:11:MLW-0054/m-001
+  observed_date: '2026-11-12'
+  source_date: null
+  method: siec_pomiarowa
+  device: null
+  tags:
+  - jktz
+  - survey_network
+  - mnichowa_upper_anchor
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: >-
+    Wynik wyznaczenia stacji 11 dnia 2026-11-12 z domiaru 0–B–11 w MSW1.SRV, z zachowaniem
+    skutecznego #DATE 2002-02-03 i orientacji modelu Survex 1.4.24. Kotwica 0 to dokładny punkt TPN
+    z GPS v2.1.0, teraz MLW-0054/m-001. Wektor UTM 34N wynosi E=-6.24870609 m, N=9.86874755 m;
+    H=1699.893361-19.567616144078105 m. Zaokrąglono XY do 10 miejsc po przecinku i H do 6 miejsc;
+    nie oznacza to znanej dokładności. Data wyznaczenia nie jest datą pomiaru terenowego.
+    Datum i dokładność kotwicy oraz domiaru są nieznane. Szczegóły i ograniczenia reprodukcji
+    w data/sources/jktz/mnichowa-2026-11-12/README.md. Wynik sieci nie stanowi niezależnego fixa.
+  created_at: '2026-11-12T10:02:46Z'
+  created_by: codex
 best_measurement:
-  mode: auto
-  reason: null
-  updated_at: '2026-05-16T10:41:53Z'
-  updated_by: dl
+  mode: manual
+  measurement_id: m-003
+  reason: Decyzja koordynatora z 2026-11-12 — MLW-0009 oznacza dolny otwór 11, wyznaczony domiarem
+    od górnego 0 (MLW-0054/m-001). Zachowano dotychczasową kotwicę i geometrię JKTZ; historyczny
+    punkt TPN m-002 dotyczy górnego otworu, a nie dolnego.
+  updated_at: '2026-11-12T10:02:46Z'
+  updated_by: codex
 attachments: []
 bibliography_status: unknown
-notes: Imported from PIG source record after operator review.
+notes: Dolny otwór C-0288, stacja MnichStudniaWyz:11, według decyzji koordynatora z 2026-11-12.
+  Zachowano historyczne pomiary PIG i TPN. Bieżąca referencja obiektowa GLOBALID TPN należy do
+  górnego MLW-0054; jej obecność w source_ref odrzuconego m-002 dokumentuje historię przypisania.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-05-16T10:41:53Z'
-updated_by: dl
+updated_at: '2026-11-12T10:02:46Z'
+updated_by: codex
