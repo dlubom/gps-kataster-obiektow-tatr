@@ -151,6 +151,12 @@ def test_real_managed_docker_startup_dump_restore_and_cleanup(monkeypatch, tmp_p
             postgres._server() as (dsn, owned),
         ):
             assert owned is not None
+            storage = subprocess.check_output(
+                ["docker", "exec", owned, "stat", "-f", "-c", "%T", "/var/lib/postgresql"],
+                text=True,
+                timeout=15,
+            )
+            assert storage.strip() == "tmpfs"
             monkeypatch.setenv("KATASTER_DATABASE_URL", dsn)
             monkeypatch.setenv("KATASTER_POSTGRES_CONTAINER", owned)
             path = tmp_path / "catalog.dump"
@@ -170,4 +176,4 @@ def test_real_managed_docker_startup_dump_restore_and_cleanup(monkeypatch, tmp_p
             result = subprocess.run(
                 ["docker", "inspect", owned], capture_output=True, text=True, timeout=15
             )
-            assert result.returncode != 0 and "No such" in result.stderr
+            assert result.returncode != 0 and "no such" in result.stderr.lower()

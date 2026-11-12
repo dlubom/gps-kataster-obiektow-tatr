@@ -70,6 +70,8 @@ def _server():
                 "--platform",
                 "linux/amd64",
                 "--rm",
+                "--tmpfs",
+                "/var/lib/postgresql",
                 "--name",
                 container,
                 "-e",

@@ -9,7 +9,8 @@ wyłącznie wygenerowane artefakty. [Model i diagramy](architecture/schema.md).
 Wspólny silnik to `postgis/postgis:18-3.6` przypięty digestem
 `sha256:4a43e3c3e5d55b9208240fc71db543b79c638766280c625a425bd0a2390989c4`.
 Obraz jest `linux/amd64`; ARM wymaga emulacji tej platformy. Dane PG18
-są w `/var/lib/postgresql`. Baza jest jednorazowa, bez wolumenu produkcyjnego.
+są w `/var/lib/postgresql`. Zarządzany kontener montuje ten katalog jako
+`tmpfs`, więc po jego usunięciu nie zostaje wolumen bazy.
 Wymagane: Python 3.12 (CI 3.12.13), uv (CI 0.11.8), GDAL z `ogr2ogr`
 (CI Ubuntu 24.04: `gdal-bin=3.8.4+dfsg-3ubuntu3`) oraz Node 24 (CI 24.22.2).
 Plik `.python-version` przypina lokalny interpreter 3.12.13.
@@ -84,7 +85,8 @@ unset KATASTER_POSTGRES_CONTAINER KATASTER_DATABASE_URL KATASTER_POSTGRES_PASSWO
 CI używa tego samego obrazu jako usługi na Ubuntu 24.04; `pg_dump` i
 `pg_restore` działają wewnątrz tej usługi. Oddzielny obowiązkowy test
 `KATASTER_DOCKER_SMOKE=1` uruchamia dodatkowy zarządzany kontener, odczytuje
-port, ładuje katalog, wykonuje dump/restore i sprawdza usunięcie po błędzie.
+port, sprawdza `tmpfs`, ładuje katalog, wykonuje dump/restore i sprawdza
+usunięcie kontenera po błędzie.
 Lokalnie test ten jest jawnie pomijany, gdy przełącznik nie jest ustawiony.
 
 Historia CI: PR używa `pull_request.base.sha`, push main — `before`, tag
