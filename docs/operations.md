@@ -618,8 +618,11 @@ czystego checkoutu po review zmian w YAML i osobnej zgodzie na wydanie:
    ```
 
    Jeśli odbiorcy `releases/latest` wymagają jeszcze poprzedniego wydania,
-   dodaj osobny akapit `Make-Latest: false` do adnotacji taga. Workflow
-   opublikuje pełne wydanie pod jego wersją i zachowa dotychczasowe `latest`.
+   oznacz poprzednie wydanie jako Latest poleceniem
+   `gh release edit <poprzedni-tag> --latest` i dodaj osobny akapit
+   `Make-Latest: false` do adnotacji nowego taga. Po publikacji potwierdź,
+   że `releases/latest` wskazuje poprzedni tag, a nowa paczka jest dostępna
+   pod adresem nowej wersji.
 
 8. Wypchnij tag:
 
