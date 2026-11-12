@@ -622,28 +622,56 @@ def test_cli_artifact_list_drives_release_workflow_without_publishing(tmp_path):
     assert (tmp_path / "build/release-artifacts.list").read_bytes() == result.stdout
     (output / "stale.zip").write_bytes(b"even a later extra must not be uploaded")
     publish = next(s for s in steps if s["name"] == "Publish GitHub Release")
-    script = publish["run"].replace("${{ steps.version.outputs.VERSION }}", "v1.2.3")
     capture = tmp_path / "gh-arguments"
-    completed = subprocess.run(
-        ["bash", "-e", "-c", 'gh() { printf "%s\\0" "$@" > "$GH_CAPTURE"; }\n' + script],
-        cwd=tmp_path,
-        env={**os.environ, "GH_CAPTURE": str(capture)},
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    assert completed.returncode == 0, completed.stdout + completed.stderr
-    expected = [
-        "release",
-        "create",
-        "v1.2.3",
-        *assets,
-        "--title",
-        "v1.2.3",
-        "--notes-file",
-        "release_notes.md",
-    ]
-    assert capture.read_bytes() == b"".join(os.fsencode(p) + b"\0" for p in expected)
+    for version, annotation, latest_args in (
+        ("v1.2.3", "Normal release", []),
+        ("v1.2.4", "Compatible release\n\nMake-Latest: false", ["--latest=false"]),
+    ):
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(baseline["history_repo"]),
+                "-c",
+                "user.name=Test",
+                "-c",
+                "user.email=test@example.invalid",
+                "tag",
+                "-a",
+                version,
+                "-m",
+                annotation,
+            ],
+            check=True,
+        )
+        script = publish["run"].replace("${{ steps.version.outputs.VERSION }}", version)
+        completed = subprocess.run(
+            ["bash", "-e", "-c", 'gh() { printf "%s\\0" "$@" > "$GH_CAPTURE"; }\n' + script],
+            cwd=tmp_path,
+            env={
+                **os.environ,
+                "GH_CAPTURE": str(capture),
+                "GITHUB_REF_NAME": version,
+                "GIT_DIR": str(baseline["history_repo"] / ".git"),
+            },
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert completed.returncode == 0, completed.stdout + completed.stderr
+        expected = [
+            "release",
+            "create",
+            version,
+            *assets,
+            "--title",
+            version,
+            "--notes-file",
+            "release_notes.md",
+            "--verify-tag",
+            *latest_args,
+        ]
+        assert capture.read_bytes() == b"".join(os.fsencode(p) + b"\0" for p in expected)
 
     previous = {p.name: p.read_bytes() for p in output.iterdir()}
     (data / "publications/.gitkeep").unlink()
