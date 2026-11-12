@@ -1,0 +1,58 @@
+schema_version: 1
+id: KSW-0265
+category: jaskinia_otwor
+name_local: Jaskinia Wysoka - otwór górny 02
+cave_id: C-0665
+membership_ordinal: 2
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: KSW
+  prefix_override_reason: null
+external_refs: []
+measurements:
+- id: m-001
+  input_srid: 4326
+  input_x: 19.8845320112
+  input_y: 49.2337881284
+  elevation_m: 1498.68
+  elevation_datum: unknown
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: JKTZ:77963f9ea8268556197a16e9b391cb0539b5a4ee:Wysoka7Progow:W-300
+  observed_date: '2026-11-12'
+  source_date: null
+  method: siec_pomiarowa
+  device: null
+  tags:
+  - jktz
+  - network_derived
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Wynik sieci JKTZ 77963f9ea8268556197a16e9b391cb0539b5a4ee, stacja Wysoka7Progow:W-300, Survex
+    1.4.24. Jedyna kotwica systemu: Wysoka7Progow:W7-0 = KSW-0189/m-003 z GPS v2.1.1. Współrzędne stacji
+    odczytano z niezmienionego modelu po wyrównaniu, UTM 34N, zapis .3d/CSV co 0,01 m; następnie przeliczono
+    do EPSG:4326. Dokładność terenowa i datum wysokości nieznane. Data 2026-11-12 oznacza wyznaczenie
+    wyniku, nie pomiar terenowy. Zachowano zastępcze DECL=0 i istniejące połączenia; brak oryginalnych
+    protokołów. Podstawa tożsamości: IV.SRV:64–65 i OTWORY.SRV:405–407; karta PIG 1665 other_entrances;
+    J01-09. Pełne pochodzenie: data/sources/jktz/wysoka-entrances-2026-11-12/README.md. Nie używać jako
+    niezależnego fixa tej samej sieci.'
+  created_at: '2026-11-12T12:02:59Z'
+  created_by: codex
+best_measurement:
+  mode: auto
+  reason: null
+  updated_at: '2026-11-12T12:02:59Z'
+  updated_by: codex
+attachments: []
+bibliography_status: unknown
+notes: 'Jaskinia Wysoka - otwór górny 02; Wysoka7Progow:W-300. IV.SRV:64–65 i OTWORY.SRV:405–407; karta
+  PIG 1665 other_entrances; J01-09. Otwór systemu C-1053 poprzez jaskinię C-0665. Nie dodano fixa JKTZ
+  ani niezależnego pomiaru terenowego. Pochodzenie i ograniczenia: data/sources/jktz/wysoka-entrances-2026-11-12/README.md.'
+created_at: '2026-11-12T12:02:59Z'
+created_by: codex
+updated_at: '2026-11-12T12:02:59Z'
+updated_by: codex

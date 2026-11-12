@@ -1,0 +1,80 @@
+{
+  "jktz_revision": "77963f9ea8268556197a16e9b391cb0539b5a4ee",
+  "gps_base": "d34bcb0868f636af2eaa9ddb702bb11a78c193ab",
+  "gps_release": "v2.1.1",
+  "gps_release_id": 442857930,
+  "gps_csv_sha256": "44f6f6e678b9255fe7ac7920828e64c05e004c91d06213770ac7e6b841685294",
+  "gps_gpkg_sha256": "46dc1b1777aeb3835c782931a4e49e0561ac6e7d50d428af9d0110c3f1089b62",
+  "survex_version": "1.4.24",
+  "coordinate_resolution_m": 0.01,
+  "input_sha256": {
+    "KATASTER.wpj": "fe883248f7e63212e87966c75a650ce73cfe7a5b6502f35985a517fb6aa4e829",
+    "Poligony/OTWORY.SRV": "ad2516accce935caba83cb6d23fd68e75a3eae2affbec55c180adae0a24038bc",
+    "Poligony/D_Koscieliska/Wys_Grzbiet/Wysoka-7_Progow/7PROGOW.SRV": "5fcfb126704f8b72ae40e1e5e06f6177fe188e5020d51e16307a1688adf5e1f7",
+    "Poligony/D_Koscieliska/Wys_Grzbiet/Wysoka-7_Progow/I.SRV": "b854904417d5f5c72b8cd792fc80acd2e38c1860437724b217584d9bdeb1dca4",
+    "Poligony/D_Koscieliska/Wys_Grzbiet/Wysoka-7_Progow/II.SRV": "0cf165f824440fb4b9c3dca60b440ea62b5abf8abc243eea564d8ac103d13696",
+    "Poligony/D_Koscieliska/Wys_Grzbiet/Wysoka-7_Progow/III.SRV": "57365541c78208fe889c970aaf2665af7a5f035e272bfa19dfd484f1d16a1aaa",
+    "Poligony/D_Koscieliska/Wys_Grzbiet/Wysoka-7_Progow/IV.SRV": "8bb54ba5818187be84d4bf2a2d91c13aff7735367d05e16e99f14a38bc538b68",
+    "Poligony/D_Koscieliska/Wys_Grzbiet/Wysoka-7_Progow/PIONY.SRV": "7cbee0e76889918aac4de9bb1b6b78e941e9133c44a072ad48fa04f43fd95180",
+    "Poligony/D_Koscieliska/Wys_Grzbiet/Wysoka-7_Progow/V.SRV": "15f709209bd66218aff18b629514b9299ac4114ca1531b8de1cb408260a84404"
+  },
+  "anchor": {
+    "object_id": "KSW-0189",
+    "measurement_id": "m-003",
+    "station": "Wysoka7Progow:W7-0",
+    "lon": 19.88454604,
+    "lat": 49.2336413,
+    "elevation_m": 1486.69,
+    "yaml_sha256": "133c54e9b23deb92b6a9e0f6fece2fd03defb4c4b102c11a85dcc5170e4ada31"
+  },
+  "entrances": [
+    {
+      "object_id": "KSW-0264",
+      "cave_id": "C-0412",
+      "station": "Wysoka7Progow:W7-500",
+      "easting": 418780.53,
+      "northing": 5454053.75,
+      "elevation_m": 1472.29,
+      "lon": 19.8843292794,
+      "lat": 49.2338725272,
+      "roundtrip_error_m": 3.0134106054902077e-06,
+      "identity_evidence": "III.SRV:45–46; karta PIG 1667 other_entrances i legenda PIG 1665; J01-08"
+    },
+    {
+      "object_id": "KSW-0265",
+      "cave_id": "C-0665",
+      "station": "Wysoka7Progow:W-300",
+      "easting": 418795.15,
+      "northing": 5454044.15,
+      "elevation_m": 1498.68,
+      "lon": 19.8845320112,
+      "lat": 49.2337881284,
+      "roundtrip_error_m": 4.319474101066589e-06,
+      "identity_evidence": "IV.SRV:64–65 i OTWORY.SRV:405–407; karta PIG 1665 other_entrances; J01-09"
+    },
+    {
+      "object_id": "KSW-0266",
+      "cave_id": "C-0499",
+      "station": "Wysoka7Progow:W7-P500",
+      "easting": 418792.35,
+      "northing": 5454030.84,
+      "elevation_m": 1486.77,
+      "lon": 19.8844962526,
+      "lat": 49.2336680529,
+      "roundtrip_error_m": 3.6079436540603638e-06,
+      "identity_evidence": "PIONY.SRV:535–536; przyjęta rekonstrukcja JKTZ PR #146; karta PIG 1668 other_entrances; J01-10"
+    },
+    {
+      "object_id": "KSW-0267",
+      "cave_id": "C-0499",
+      "station": "Wysoka7Progow:W7-P507",
+      "easting": 418791.31,
+      "northing": 5454042.41,
+      "elevation_m": 1488.18,
+      "lon": 19.8844796261,
+      "lat": 49.2337719703,
+      "roundtrip_error_m": 7.580965757369995e-07,
+      "identity_evidence": "III.SRV:85–92; przyjęta rekonstrukcja JKTZ PR #146; karta PIG 1668 other_entrances; J01-10"
+    }
+  ]
+}

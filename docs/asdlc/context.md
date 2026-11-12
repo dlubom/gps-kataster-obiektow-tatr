@@ -67,6 +67,7 @@ PL-EVRF2007-NH. Data weryfikacji Marka i dokładności punktów są nieznane.
 
 | Zakres | Dokument źródłowy |
 |---|---|
+| Cztery otwory systemu Wysoka–Za7–Pośrednia: rozpoznane stacje i wynik istniejącej sieci JKTZ, bez nowych fixów | [Tożsamość, kotwica i ograniczenia](../../data/sources/jktz/wysoka-entrances-2026-11-12/README.md) |
 | Mnichowa Studnia Wyżnia: punkt TPN przy górnym `0`, dolny `11` z domiaru; decyzja koordynatora z 2026-11-12 | [Przypisanie, wyliczenie i warunek integracji JKTZ](../../data/sources/jktz/mnichowa-2026-11-12/README.md) |
 | Raptawicka, kotwica ALS i osiem otworów systemu Pawlikowskiego | [PBI-117](verification/PBI-117.md) |
 | Usunięcie punktów reprezentujących systemy | [PBI-115](verification/PBI-115.md) |
