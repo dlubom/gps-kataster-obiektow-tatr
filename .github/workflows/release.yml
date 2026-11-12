@@ -71,10 +71,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          release_flags=(--verify-tag)
+          make_latest=$(git for-each-ref --format='%(contents:trailers:key=Make-Latest,valueonly)' "refs/tags/$GITHUB_REF_NAME")
+          case "$make_latest" in
+            "") ;;
+            false) release_flags+=(--latest=false) ;;
+            *) printf 'Invalid Make-Latest trailer. Expected false or no trailer.\n' >&2; exit 1 ;;
+          esac
           artifacts=()
           while IFS= read -r -d '' artifact; do
             artifacts+=("$artifact")
           done < build/release-artifacts.list
           gh release create "${{ steps.version.outputs.VERSION }}" "${artifacts[@]}" \
             --title "${{ steps.version.outputs.VERSION }}" \
-            --notes-file release_notes.md
+            --notes-file release_notes.md "${release_flags[@]}"

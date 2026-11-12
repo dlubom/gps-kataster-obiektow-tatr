@@ -617,6 +617,10 @@ czystego checkoutu po review zmian w YAML i osobnej zgodzie na wydanie:
    git tag -a vX.Y.Z -m "vX.Y.Z - krotki opis"
    ```
 
+   Jeśli odbiorcy `releases/latest` wymagają jeszcze poprzedniego wydania,
+   dodaj osobny akapit `Make-Latest: false` do adnotacji taga. Workflow
+   opublikuje pełne wydanie pod jego wersją i zachowa dotychczasowe `latest`.
+
 8. Wypchnij tag:
 
    ```bash

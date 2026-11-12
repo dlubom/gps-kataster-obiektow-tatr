@@ -8,11 +8,20 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Niewydane]
 
+## [v2.1.1] - 2026-11-12
+
 ### Zmieniono
 
 - Rozdzielono otwory Mnichowej Studni Wyżniej (`C-0288`) decyzją koordynatora:
   punkt TPN przypisano do górnego `MLW-0054`, a dolny `MLW-0009` wyznaczono
   z domiaru JKTZ. Zachowano historię pomiarów oraz dotychczasową kotwicę modelu.
+- W eksportach Best pole `tpn_globalid` pomija odrzucone pomiary. Pełna
+  historia zachowuje ich odnośniki `source_ref`.
+
+W szablonie JKTZ stacja `MnichStudniaWyz:0` wymaga zmiany ID z `MLW-0009`
+na `MLW-0054` przy przejściu na to wydanie. Do czasu migracji JKTZ adres
+`releases/latest` wskazuje `v2.1.0`. Artefakty `v2.1.1` są dostępne pod
+adresem tej wersji.
 
 ## [v2.1.0] - 2026-11-12
 
