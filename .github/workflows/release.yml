@@ -27,12 +27,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.ref }}
           fetch-depth: 0
           persist-credentials: false
 
       - name: Extract version from tag
         id: version
-        run: echo "VERSION=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+        run: |
+          test "$(git cat-file -t "$GITHUB_REF")" = tag
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          echo "VERSION=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
 
       - name: Set up catalogue runtime
         uses: ./.github/actions/setup-runtime
