@@ -5,6 +5,7 @@ from dataclasses import FrozenInstanceError, replace
 import pytest
 from export_test_support import initialize_source, source, valid_cave, valid_object, write_yaml
 
+from gps_kataster_obiektow_tatr.data_loader import DataKind, LoadedDataset, LoadedYamlRecord
 from gps_kataster_obiektow_tatr.export_data import prepare_export_data
 from gps_kataster_obiektow_tatr.postgres import open_catalog
 
@@ -97,6 +98,25 @@ def test_explicit_selection_missing_from_history_is_rejected(catalogue_dataset):
 
     with pytest.raises(ValueError, match="Selected measurement KSW-0001/m-999 is missing"):
         prepare_export_data(catalogue_dataset)
+
+
+@pytest.mark.parametrize(
+    ("status", "expected_guid"),
+    [("odrzucony", None), ("nieweryfikowany", "{38626571-CAA6-4317-8900-D61A995020E9}")],
+)
+def test_best_tpn_guid_fallback_excludes_rejected_measurements(tmp_path, status, expected_guid):
+    obj = valid_object()
+    obj.update(cave_id=None, membership_ordinal=None, external_refs=[])
+    obj["best_measurement"].update(mode="manual", measurement_id="m-001", reason="Keep PIG point")
+    obj["computed_best_measurement_id"] = "m-001" if status == "odrzucony" else "m-002"
+    tpn_source_ref = "TPN:{38626571-CAA6-4317-8900-D61A995020E9}"
+    obj["measurements"][1].update(source_ref=tpn_source_ref, verification_status=status)
+    record = LoadedYamlRecord(DataKind.OBJECT, tmp_path / "KSW-0001.yml", obj, obj)
+
+    prepared = prepare_export_data(LoadedDataset(objects=(record,), caves=(), relations=()))
+
+    assert prepared.best[0].tpn_globalid == expected_guid
+    assert prepared.history[1]["source_ref"] == tpn_source_ref
 
 
 def test_prepared_rows_keep_manual_best_and_cannot_change_the_shared_history(tmp_path):

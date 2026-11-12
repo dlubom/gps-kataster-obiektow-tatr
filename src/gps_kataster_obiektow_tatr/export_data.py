@@ -308,6 +308,8 @@ def _external_ids(data, system, ref_type=None):
 
 def _tpn_measurement_refs(obj):
     for measurement in obj["measurements"]:
+        if measurement.get("verification_status") == "odrzucony":
+            continue
         value = measurement.get("source_ref") or ""
         if value.startswith("TPN:{") and value.endswith("}"):
             yield value.removeprefix("TPN:")

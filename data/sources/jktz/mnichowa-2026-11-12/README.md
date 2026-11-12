@@ -76,9 +76,8 @@ Dolny obiekt zachowuje `m-001` PIG i `m-002` TPN w pierwotnej kolejności,
 z niezmienionymi źródłowymi współrzędnymi, wysokością i datami. `m-002`
 jest odrzucony tylko jako pomiar dolnego otworu. Jedyna bieżąca referencja
 obiektowa GLOBALID TPN należy do górnego `MLW-0054`. Historyczny `source_ref`
-pozostaje przy dolnym `m-002`; dlatego zbiorcze pole eksportowe `tpn_globalid`
-może nadal występować przy obu obiektach. Aktualną relację określa
-`object_external_refs`.
+pozostaje przy dolnym `m-002`. Best pokazuje ten `tpn_globalid` tylko przy
+górnym otworze, ponieważ pole pomija referencje z odrzuconych pomiarów.
 
 Przejście JKTZ na wydanie z tymi danymi wymaga równoczesnej zmiany wywołania
 `gps_fix('MnichStudniaWyz:0', 'MLW-0009')` na
@@ -86,11 +85,3 @@ Przejście JKTZ na wydanie z tymi danymi wymaga równoczesnej zmiany wywołania
 pozostają identyczne. **Nie dodawać niezależnego aktywnego fixa stacji `11`**
 na podstawie wyniku tej samej sieci. Samo pobranie nowego Best przy starym
 szablonie przesunęłoby model; wymaga to skoordynowanej aktualizacji JKTZ.
-
-Próbne przełączenie ID zachowało bajty całego renderu `OTWORY.SRV`.
-Izolowana kompilacja Mnichowej przed i po daje identyczne `.3d` przy
-`SOURCE_DATE_EPOCH=0`; wszystkie 15 stacji zgadzają się z dotychczasowym
-modelem całego JKTZ z dokładnością zapisu 0,01 m. Jest to dowód zachowania
-dotychczasowej geometrii Survex, nie potwierdzenie współrzędnych terenowych.
-Pełne porównanie projektu i natywne Walls należą do późniejszej integracji
-JKTZ. Ten zapis GPS sam nie zmienia źródeł JKTZ ani nie publikuje wydania.
