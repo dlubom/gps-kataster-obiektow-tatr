@@ -817,7 +817,8 @@ Kod PR działa bez sekretów publikacji. Zaufany publisher nie wykonuje kodu PR.
 
 Jedna zweryfikowana baza dostarcza Best i pełną historię do wszystkich
 formatów. `prepare_export_data` przygotowuje raz na build niezmienne Best,
-pełną historię, jej wybrane wiersze oraz wspólny czas generowania. Wiersz
+pełną historię, jej wybrane wiersze, pełny katalog jaskiń i obiektów oraz
+wspólny czas generowania. Wiersz
 historii składa się z metadanych obiektu/jaskini i konkretnego pomiaru;
 braków nie uzupełnia pomiar Best. Excel zachowuje prezentację, a nazwy
 i typy wspólnych pól GeoPackage określa neutralny moduł `export_data`.
@@ -858,10 +859,37 @@ geometrii. [DDL](schema/catalog.sql) jest wykonywalnym modelem danych.
 Pełny snapshot jest eksportowany przez `pg_dump` w formacie custom.
 Odbiór odtwarza go w nowej bazie i porównuje zawartość oraz wynik Best.
 
-GeoPackage jest pochodnym plikiem do GIS z warstwami Best i pełnej historii
-pomiarów. Zawiera jawne CRS; wysokość i datum pozostają osobnymi atrybutami.
-Jest ponownie odczytywany i porównywany z tym samym stanem PostgreSQL.
+GeoPackage jest pochodnym plikiem do GIS. Warstwa `best` zawiera wybrane
+pomiary, a `measurements` pełną historię. Obie warstwy mają geometrię
+dwuwymiarową Point w EPSG:2180. Wysokość i datum są osobnymi atrybutami.
 Pełny model relacyjny, w tym bibliografia, jest dostępny w dumpie.
+
+### Tabele katalogowe GeoPackage
+
+Tabele `caves` i `objects` powstają z tego samego zweryfikowanego snapshotu
+co warstwy punktowe. Zawierają wszystkie pozycje katalogowe, także jaskinie
+i systemy bez własnych otworów oraz obiekty bez wybranego pomiaru Best.
+
+| Tabela | Kolumny i ograniczenia |
+| --- | --- |
+| `caves` | `fid INTEGER PRIMARY KEY`, `cave_id TEXT NOT NULL UNIQUE`, `name TEXT NOT NULL`, `system_cave_id TEXT REFERENCES caves(cave_id)` |
+| `objects` | `fid INTEGER PRIMARY KEY`, `object_id TEXT NOT NULL UNIQUE`, `name TEXT`, `cave_id TEXT REFERENCES caves(cave_id)`, `category TEXT NOT NULL` |
+
+Nazwa jaskini pochodzi z pola YAML `name`, a nazwa obiektu z `name_local`.
+Nazwy zachowują diakrytykę, a brak wartości jest zapisywany jako SQL `NULL`.
+Rekordy są zapisywane w kolejności ID. `fid` jest kluczem technicznym
+GeoPackage. Integracje używają stabilnych `cave_id` i `object_id`.
+
+Plik deklaruje GeoPackage w wersji co najmniej 1.2. Obie tabele są
+zarejestrowane w `gpkg_contents` jako `attributes` z `NULL` w polach
+zasięgu i `srs_id`. Wpisy w `gpkg_geometry_columns` mają wyłącznie
+`best` i `measurements`.
+
+Odczyt kontrolny przez SQLite i GDAL porównuje komplet ID i wszystkie
+wartości ze snapshotem oraz sprawdza deklaracje, integralność SQLite,
+unikalność, klucze obce i brak cykli systemów. Kontrole obu warstw punktowych
+obejmują atrybuty, CRS i geometrię. Błąd odczytu blokuje podmianę całego
+zestawu 13 plików, zachowując poprzednie wyniki. [Przykład zapytania](docs/operations.md#odczyt-katalogu-z-geopackage).
 
 Python pozostaje odpowiedzialny za pliki, lifecycle bazy i zapis
 formatów konsumenckich. Walidacje, które dotyczą systemu plików lub źródła
@@ -920,7 +948,7 @@ Każdy release zawiera:
 | `katalog.xlsx` | Excel | Best: podstawowe pola wybranych punktów z CSV; Full: wszystkie pomiary z danymi obiektu z PostgreSQL, także starsze/odrzucone, z oznaczeniem wyboru. Filtry, typowane liczby i daty, polskie nagłówki. |
 | `best-measurements.shp.zip` | ESRI Shapefile | EPSG:2180, QGIS / TPN. |
 | `katalog.dump` | PostgreSQL custom | Pełny snapshot relacyjny; wymagany PostgreSQL/PostGIS do odtworzenia. |
-| `katalog.gpkg` | GeoPackage | Best i pełna historia pomiarów do GIS. |
+| `katalog.gpkg` | GeoPackage | Warstwy `best`, `measurements` i tabele atrybutowe `caves`, `objects`. |
 | `metadata.json` | JSON | Liczby obiektów, pomiarów, jaskiń, data buildu, wersja schematu. |
 | `statistics.md`, `statistics.json` | Markdown, JSON | Automatyczne statystyki tej samej paczki: obiekty, pozycje katalogowe, historia pomiarów, rodzaje, źródła, weryfikacja i dostępność dokładności. Wersja wydania, commit źródeł i czas generowania. |
 

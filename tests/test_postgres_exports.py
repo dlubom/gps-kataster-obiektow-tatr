@@ -318,7 +318,7 @@ def test_empty_geopackage_readback_rejects_wrong_declared_field_type(tmp_path, f
             (definition.replace(f'"{field}" {original}', f'"{field}" {changed}'),),
         )
     with pytest.raises(ValueError, match="field declarations"):
-        verify_geopackage(path, layers)
+        verify_geopackage(path, layers, catalogue_tables={"caves": (), "objects": ()})
 
 
 @pytest.mark.parametrize("damage", ["missing", "extra", "outside", "symlink", "duplicate"])

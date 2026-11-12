@@ -142,6 +142,33 @@ i `schema_version: 2` oraz czterech katalogów encji. Legacy bez znacznika
 jest odrzucane przed bazą i publikacją wyjścia; nie jest automatycznie migrowane.
 [Kontrakt paczkowania](release_artifacts.md#oficjalna-paczka-wydania).
 
+### Odczyt katalogu z GeoPackage
+
+`katalog.gpkg` udostępnia tabele atrybutowe `caves` i `objects` obok warstw
+punktowych `best` i `measurements` w EPSG:2180. Tabele obejmują pełny katalog,
+także pozycje bez otworów lub bez Best. Powiąż `objects.cave_id` z
+`caves.cave_id`, a `caves.system_cave_id` z ID bezpośredniego systemu.
+Używaj ID domenowych. `LEFT JOIN` zachowuje obiekt bez jaskini i jaskinię
+bez systemu. [Kontrakt kolumn](../specyfikacja_gps_kataster_obiektow_tatr_v_2.md#tabele-katalogowe-geopackage).
+
+```bash
+sqlite3 -readonly -header -column build/exports/katalog.gpkg <<'SQL'
+SELECT o.object_id, c.cave_id, c.name AS cave_name,
+       s.cave_id AS system_cave_id, s.name AS system_name
+FROM objects AS o
+LEFT JOIN caves AS c ON c.cave_id = o.cave_id
+LEFT JOIN caves AS s ON s.cave_id = c.system_cave_id
+WHERE o.object_id = 'MLZ-0068';
+SQL
+```
+
+Wynik dla tego obiektu to `MLZ-0068 → C-0648 → C-0295`. W QGIS obie tabele
+otwierają się jako atrybuty bez geometrii. Do porównania z CSV użyj plików
+z tej samej paczki. Klucze `object_id`, `measurement_id` identyfikują
+wiersz Best. Przed podmianą paczki builder odczytuje tabele i warstwy
+przez SQLite i GDAL. W razie błędu dotychczasowe 13 plików zachowuje nazwy
+i zawartość.
+
 ## Pobieranie jaskiń, lejów i sztolni z API TPN
 
 ```bash
