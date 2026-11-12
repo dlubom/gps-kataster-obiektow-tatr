@@ -8,6 +8,8 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Niewydane]
 
+## [v2.1.2] - 2026-11-12
+
 ### Dodano
 
 - Cztery odrębne otwory systemu Wysoka–Za Siedmiu Progami–Pośrednia
