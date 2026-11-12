@@ -8,6 +8,15 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Niewydane]
 
+## [v2.1.2] - 2026-11-12
+
+### Dodano
+
+- Cztery odrębne otwory systemu Wysoka–Za Siedmiu Progami–Pośrednia
+  (`KSW-0264`–`KSW-0267`) z pozycjami z istniejącej sieci JKTZ. Zachowano
+  kotwicę, geometrię, historię pomiarów i status rekonstrukcji Pośredniej;
+  nowe punkty nie są niezależnymi fixami.
+
 ## [v2.1.1] - 2026-11-12
 
 ### Zmieniono
