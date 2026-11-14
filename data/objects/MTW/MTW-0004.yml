@@ -65,15 +65,57 @@ measurements:
     TPN WER_LOK: 11-03-2020 FF'
   created_at: '2026-05-16T10:22:52Z'
   created_by: importer:tpn
+- id: m-003
+  input_srid: 2180
+  input_x: 565860.3737352465
+  input_y: 152987.89605939883
+  elevation_m: 1520.4333843008092
+  elevation_datum: PL-EVRF2007-NH
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: MJ:20261112:Zestawienie!A16:G16
+  observed_date: '2026-11-12'
+  method: siec_pomiarowa
+  device: GEO / E600 + BRIC4 SN 0143
+  tags:
+  - gnss_anchor
+  - bric4
+  verification_status: zweryfikowany
+  verified_by: Marek Jędrzejczak
+  verified_at: '2026-11-13T20:00:00Z'
+  notes: >-
+    Otwór domierzony ciągiem BRIC4 (4,97 m) od punktu GNSS.
+    Pomiary: Michał Bochynek i Sławomir Boruta; obliczył Marek Jędrzejczak
+    (Speleoclub Wrocław). Report!A399:N399.
+    ID MTW-004 w arkuszu odpowiada MTW-0004.
+  created_at: '2026-11-13T22:35:12Z'
+  created_by: dl
 best_measurement:
   mode: auto
   reason: null
   updated_at: '2026-05-16T14:00:00Z'
   updated_by: dl
-attachments: []
+attachments:
+- id: a-001
+  kind: raport_gnss
+  measurement_id: m-003
+  path: data/sources/marek-jedrzejczak/2026-11-12/TATRY_261017-261112.xls
+  caption: 'Raport Marka Jędrzejczaka: Zestawienie, wiersz 16.'
+  created_at: '2026-11-13T22:35:12Z'
+  created_by: dl
+- id: a-002
+  kind: raport_gnss
+  measurement_id: m-003
+  path: data/sources/marek-jedrzejczak/2026-11-12/Tatry.pdf
+  caption: 'Zestawienie pomiarów otworów, s. 1, wiersz 14.'
+  date: '2026-11-13'
+  created_at: '2026-11-14T06:53:45Z'
+  created_by: dl
 bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-11-14T07:16:55Z'
+updated_by: dl

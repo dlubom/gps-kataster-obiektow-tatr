@@ -8,6 +8,24 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Niewydane]
 
+## [v2.1.3] - 2026-11-13
+
+### Dodano
+
+- Trzy nowe pomiary z 12.11.2026, zweryfikowane przez Marka Jędrzejczaka.
+  Obejmują dolny otwór Ptasiej Studni (`MTZ-0066`), Jaskinię nad Dachem
+  (`MTW-0004`) i Jaskinię Lodową Litworową (`MTW-0023`). Pozycje otworów
+  wyznaczono domiarami BRIC4 od punktów GNSS. Automatyczny Best wybiera
+  nowe wyniki dla Jaskini nad Dachem i Lodowej Litworowej. Do raportu XLS
+  dołączono zestawienie wyników w PDF.
+
+### Zmieniono
+
+- Dla dolnego otworu Ptasiej Studni (`MTZ-0066`) wybrano ręcznie
+  zweryfikowany pomiar `m-004` jako Best. Wysokość otworu wynosi
+  1454,73 m w układzie PL-EVRF2007-NH.
+- Tymczasowa baza PostgreSQL/PostGIS przechowuje dane w pamięci (`tmpfs`).
+
 ## [v2.1.2] - 2026-11-12
 
 ### Dodano
