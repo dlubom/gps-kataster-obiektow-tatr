@@ -8,6 +8,41 @@ wersjonowanie od `v1.0.0` stosuje [Semantic Versioning](https://semver.org/).
 
 ## [Niewydane]
 
+## [v2.1.3] - 2026-11-16
+
+### Poprawiono
+
+- Skorygowano znak poprawki magnetycznej w opracowaniu domiarów.
+  Dopisano 20 pomiarów źródłowych, w tym poprawione pozycje Wysokiej
+  i dolnego otworu Bańdziocha Kominiarskiego.
+- Przeliczono cztery otwory systemu Wysoka–Za Siedmiu Progami–Pośrednia
+  (`KSW-0264`–`KSW-0267`) z poprawionej kotwicy `KSW-0189/m-004`.
+  Zachowano dane sieci JKTZ; przesunięcie poziome wynosi około 8,19 m.
+- Łącznie dopisano 24 rekordy, ustawiono 23 nowe ręczne Best i odrzucono
+  16 wcześniejszych błędnych wyników. Zachowano geometrię, daty i kolejność
+  starszych pomiarów; zmieniono tylko ich statusy i notatki.
+- Miętusia (`MTZ-0023`) zachowuje Best `m-002` i tryb auto. Nowy pomiar
+  statyczny, wykonany w słabych warunkach, pozostaje pomocniczy.
+  Pozycje Niebieskiej Studni i Pod Wantą nie zmieniły się; ich wcześniejsze
+  pomiary nie zostały odrzucone.
+- Tymczasowy PostgreSQL/PostGIS przechowuje dane w `tmpfs`; po usunięciu
+  kontenera nie pozostaje wolumen bazy.
+
+### Dodano
+
+- Oryginalne XLS i PDF otrzymane 16 listopada 2026 r., zachowane bajtowo
+  wraz z sumami SHA-256, oraz wyciągi wartości i opis korekt.
+
+Nowe pomiary pozostają `nieweryfikowany`, a dokładność końcowych punktów
+jest nieznana. Źródło Wysokiej i Bańdziocha zawiera tylko wyniki końcowe,
+bez obserwacji pozwalających niezależnie przeliczyć ich domiary.
+Wydanie obejmuje 1034 obiekty, 1026 pozycji katalogowych i 1976 pomiarów.
+
+Integracja JKTZ wymaga pobrania tego samego wydania GPS dla kotwicy W7-0
+i czterech otworów zależnych. Te cztery punkty służą jako `OBJECT_REF`,
+nie jako dodatkowe niezależne fixy. Wydanie GPS nie aktualizuje repozytorium
+ani opublikowanego modelu JKTZ.
+
 ## [v2.1.2] - 2026-11-12
 
 ### Dodano
