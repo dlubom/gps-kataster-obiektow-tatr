@@ -101,14 +101,51 @@ measurements:
     2026-11-02.'
   created_at: '2026-11-04T10:47:15Z'
   created_by: dl
+- id: m-004
+  input_srid: 2180
+  input_x: 566320.3733333334
+  input_y: 153074.55333333332
+  elevation_m: 1790.886666666667
+  elevation_datum: PL-EVRF2007-NH
+  elevation_source: gnss
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: MJ:correction-2026-11-16:Zestawienie!C14:E14
+  observed_at: null
+  observed_date: '2026-10-17'
+  source_date: null
+  method: gnss
+  device: GEO / E600
+  tags:
+  - gnss
+  - source_update
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Bezpośredni pomiar GNSS otworu, bez domiaru. Wartości końcowe nie zmieniły się; korekta znaku
+    uchylenia magnetycznego nie dotyczy tego punktu. Nowy rekord zachowuje aktualne źródło. Źródło otrzymane
+    2026-11-16: Zestawienie wiersz 14, Report wiersz 332. Przyjęty do Best przez Dariusza Lubomskiego
+    2026-11-16. Kontrola rachunkowa źródła nie jest nową weryfikacją terenową; status pozostaje nieweryfikowany.
+    Deklaracja źródła: dokładność GNSS < 0,10 m; nie określa osobno dokładności poziomej i pionowej końcowego
+    punktu otworu. Obie dokładności pozostają nieznane.'
+  created_at: '2026-11-16T08:50:53Z'
+  created_by: dl
 best_measurement:
   mode: manual
-  measurement_id: m-003
-  reason: Zweryfikowany przez Marka Jędrzejczaka pomiar z 2026-10-17; przyjęty jako obowiązujący na polecenie
-    Dariusza Lubomskiego z 2026-11-02.
-  updated_at: '2026-11-04T10:47:15Z'
+  measurement_id: m-004
+  reason: Aktualne opracowanie pomiaru GNSS bez domiaru; współrzędne bez zmiany. Przyjęte jako Best decyzją
+    Dariusza Lubomskiego z 2026-11-16.
+  updated_at: '2026-11-16T08:50:53Z'
   updated_by: dl
 attachments:
+- id: a-002
+  kind: raport_gnss
+  measurement_id: m-004
+  path: data/sources/marek-jedrzejczak/corrected-2026-11-16/Zestawienie.tsv
+  caption: 'Wyciąg wartości: Zestawienie, source_row 14; obliczenia i obserwacje w sąsiednim Report.tsv.'
+  created_at: '2026-11-16T08:50:53Z'
+  created_by: dl
 - id: a-001
   kind: raport_gnss
   measurement_id: m-003
@@ -120,5 +157,5 @@ bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-11-04T10:47:15Z'
+updated_at: '2026-11-16T08:50:53Z'
 updated_by: dl

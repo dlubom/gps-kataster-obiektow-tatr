@@ -1,5 +1,11 @@
 # Cztery otwory systemu Wysoka–Za Siedmiu Progami–Pośrednia
 
+Opis dokumentuje stan z 2026-11-12 i pochodzenie historycznych m-001.
+Po korekcie kotwicy odrzucono te wyniki i dopisano m-002 jako Best.
+[Aktualne współrzędne i warunek integracji](../wysoka-entrances-2026-11-16/README.md)
+opierają się na KSW-0189/m-004. Poniższa dawna instrukcja zachowania W7-0
+dotyczy stanu sprzed tej korekty.
+
 Pozycje pochodzą z istniejącej sieci JKTZ, nie z nowych pomiarów terenowych.
 Tożsamości otworów przyjęto na podstawach rozliczonych w J01-08–10 migracji
 CAVE_ID. Nie wyprowadzano ich ze zbieżności współrzędnych, nazw ani numerów ID.

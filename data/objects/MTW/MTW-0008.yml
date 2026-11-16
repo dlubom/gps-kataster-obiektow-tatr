@@ -95,21 +95,62 @@ measurements:
   tags:
   - gnss_anchor
   - bric4
-  verification_status: zweryfikowany
+  verification_status: odrzucony
   verified_by: Marek Jędrzejczak
   verified_at: null
   notes: 'Otwór domierzony BRIC4 od punktu GNSS. Obliczenia i weryfikacja: Marek Jędrzejczak; potwierdzenie
-    D. Lubomskiego z 2026-11-02.'
+    D. Lubomskiego z 2026-11-02. Odrzucono 2026-11-16 decyzją Dariusza Lubomskiego: błędny znak poprawki
+    magnetycznej w obliczeniu pozycji. Zastępuje go MTW-0008/m-004.'
   created_at: '2026-11-04T10:47:15Z'
+  created_by: dl
+- id: m-004
+  input_srid: 2180
+  input_x: 566601.2385452961
+  input_y: 152849.45095907984
+  elevation_m: 1919.5735630914646
+  elevation_datum: PL-EVRF2007-NH
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: MJ:correction-2026-11-16:Zestawienie!C12:E12
+  observed_at: null
+  observed_date: '2026-10-17'
+  source_date: null
+  method: siec_pomiarowa
+  device: GEO / E600 + BRIC4 SN 0143
+  tags:
+  - gnss_anchor
+  - bric4
+  - magnetic_correction
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Otwór domierzony od punktu GNSS; długość domiaru 4.70 m. Poprawny znak: azymut PL-1992 = azymut
+    magnetyczny + (deklinacja - zbieżność południków). Obliczył Marek Jędrzejczak (Speleoclub Wrocław).
+    Pomiary; Zespół: Michał Bochynek, Sławomir Boruta, Arkadiusz Kruk, Weronika Garlińska,  (Speleoclub
+    Wrocław); Sprzęt: BRIC4 SN: 0143. Korekta wcześniejszego m-003; dawny pomiar zachowano ze statusem odrzucony.
+    Źródło otrzymane 2026-11-16: Zestawienie wiersz 12, Report wiersz 298. Przyjęty do Best przez Dariusza
+    Lubomskiego 2026-11-16. Kontrola rachunkowa źródła nie jest nową weryfikacją terenową; status pozostaje
+    nieweryfikowany. Deklaracja źródła: dokładność GNSS < 0,10 m; nie określa osobno dokładności poziomej
+    i pionowej końcowego punktu otworu. Obie dokładności pozostają nieznane.'
+  created_at: '2026-11-16T08:50:53Z'
   created_by: dl
 best_measurement:
   mode: manual
-  measurement_id: m-003
-  reason: Zweryfikowany przez Marka Jędrzejczaka pomiar z 2026-10-17; przyjęty jako obowiązujący na polecenie
-    Dariusza Lubomskiego z 2026-11-02.
-  updated_at: '2026-11-04T10:47:15Z'
+  measurement_id: m-004
+  reason: Wynik GNSS z domiarem po korekcie znaku uchylenia magnetycznego, przyjęty jako Best decyzją
+    Dariusza Lubomskiego z 2026-11-16.
+  updated_at: '2026-11-16T08:50:53Z'
   updated_by: dl
 attachments:
+- id: a-002
+  kind: raport_gnss
+  measurement_id: m-004
+  path: data/sources/marek-jedrzejczak/corrected-2026-11-16/Zestawienie.tsv
+  caption: 'Wyciąg wartości: Zestawienie, source_row 12; obliczenia i obserwacje w sąsiednim Report.tsv.'
+  created_at: '2026-11-16T08:50:53Z'
+  created_by: dl
 - id: a-001
   kind: raport_gnss
   measurement_id: m-003
@@ -121,5 +162,5 @@ bibliography_status: unknown
 notes: Imported from PIG source record after operator review.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-11-04T10:47:15Z'
+updated_at: '2026-11-16T09:37:43Z'
 updated_by: dl

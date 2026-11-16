@@ -24,14 +24,41 @@ a [formaty wydania](../release_artifacts.md) — artefakty i odtworzenie dumpa.
 
 ## Pomiary Marka Jędrzejczaka — issue #43 / v1.3.3
 
-Dwanaście pomiarów z 2026-10-17 zapisano jako zweryfikowane przez Marka
-i wskazano jako ręczny Best. Źródłem jest poprawiony XLS z 2026-11-04.
+Dwanaście historycznych pomiarów z 2026-10-17 zapisano jako zweryfikowane
+przez Marka; dziesięć wyników domiarów odrzucono po rozpoznaniu błędu
+poprawki magnetycznej. Ich źródłem jest poprawiony XLS z 2026-11-04; bieżący Best
+wskazuje nowe rekordy z aktualizacji otrzymanej 2026-11-16 (poniżej).
 Wiersz 10 wskazuje Grzędę II (MTW-0016), wiersz 11 Grzędę I (MTW-0050).
 Dariusz Lubomski potwierdził Kozią 2026-11-04. Otwór I (MTW-0013) jest
 zachodni, otwór II (nowy MTW-0076) wschodni. Oba należą do C-0135, a ich
 wysokości z pomiarów Marka wynoszą odpowiednio 1836,99 i 1839,47 m
 PL-EVRF2007-NH. Data weryfikacji Marka i dokładności punktów są nieznane.
 [Pochodzenie i sumy kontrolne](../../data/sources/README.md#marek-jędrzejczak--pomiary-z-2026-10-17).
+
+## Korekta GNSS i domiarów — 2026-11-16
+
+W poprzednich obliczeniach odejmowano uchylenie magnetyczne; poprawne
+przejście do azymutu PL-1992 je dodaje. Dopisano 20 pomiarów, zachowując
+całą wcześniejszą historię. Decyzją Dariusza Lubomskiego 19 nowych rekordów
+wskazano ręcznie jako Best. Miętusia MTZ-0023 zachowuje dotychczasowy m-002
+i politykę auto: nowy pomiar statyczny miał słabe warunki i duże błędy
+po wyrównaniu, więc służy tylko jako potwierdzenie lokalizacji.
+Niebieska Studnia i Pod Wantą nie miały domiarów; ich wartości nie zmieniły się.
+
+[Wyciąg 18 punktów](../../data/sources/marek-jedrzejczak/corrected-2026-11-16/README.md)
+rozlicza daty źródłowe, mapowanie otworów, sprzęt i zespoły.
+[Wysoka i Bańdzioch](../../data/sources/wysoka-bandzioch/corrected-2026-11-16/README.md)
+mają zwięzły opis wyników i znanych ograniczeń. [Oryginalne XLS/PDF](../../data/sources/surveys/2026-11-16/README.md)
+zachowano bajtowo w repozytorium wraz z wyciągami wartości. Nowe wpisy nie poświadczają
+nowej weryfikacji terenowej, a dokładność końcowych punktów pozostaje nieznana.
+Cztery pozycje KSW-0264–KSW-0267 [przeliczono z nowej kotwicy](../../data/sources/jktz/wysoka-entrances-2026-11-16/README.md)
+KSW-0189/m-004, zachowując rewizję i dane sieci JKTZ. Dopisane m-002
+wskazano jako ręczne Best; historyczne m-001 odrzucono z powodu błędnej kotwicy.
+Łącznie aktualizacja obejmuje 24 nowe rekordy, 23 nowe wskazania Best oraz
+16 odrzuconych wcześniejszych wyników: 10 domiarów z 2026-10-17, Wysoką,
+Bańdziocha i cztery wyniki zależne JKTZ. Zmieniono tylko statusy i notatki
+tych starszych rekordów; ich geometria, daty i kolejność są zachowane.
+Punkty zależne nie mogą być dodatkowymi niezależnymi fixami JKTZ.
 
 ## Nierozstrzygnięte sprawy
 
@@ -67,7 +94,7 @@ PL-EVRF2007-NH. Data weryfikacji Marka i dokładności punktów są nieznane.
 
 | Zakres | Dokument źródłowy |
 |---|---|
-| Cztery otwory systemu Wysoka–Za7–Pośrednia: rozpoznane stacje i wynik istniejącej sieci JKTZ, bez nowych fixów | [Tożsamość, kotwica i ograniczenia](../../data/sources/jktz/wysoka-entrances-2026-11-12/README.md) |
+| Cztery otwory systemu Wysoka–Za7–Pośrednia: wynik istniejącej sieci JKTZ po korekcie kotwicy, bez nowych niezależnych fixów | [Bieżące dowiązanie](../../data/sources/jktz/wysoka-entrances-2026-11-16/README.md), [tożsamości i wcześniejszy wynik](../../data/sources/jktz/wysoka-entrances-2026-11-12/README.md) |
 | Mnichowa Studnia Wyżnia: punkt TPN przy górnym `0`, dolny `11` z domiaru; decyzja koordynatora z 2026-11-12 | [Przypisanie, wyliczenie i warunek integracji JKTZ](../../data/sources/jktz/mnichowa-2026-11-12/README.md) |
 | Raptawicka, kotwica ALS i osiem otworów systemu Pawlikowskiego | [PBI-117](verification/PBI-117.md) |
 | Usunięcie punktów reprezentujących systemy | [PBI-115](verification/PBI-115.md) |

@@ -102,19 +102,56 @@ measurements:
     observed_date oznacza datę ustalenia, nie pomiaru terenowego.
   created_at: '2026-10-22T07:05:23Z'
   created_by: dl
+- id: m-004
+  input_srid: 2180
+  input_x: 565801.7260112272
+  input_y: 152965.80290146085
+  elevation_m: 1454.7302477416224
+  elevation_datum: PL-EVRF2007-NH
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: MJ:correction-2026-11-16:Zestawienie!C15:E15
+  observed_at: null
+  observed_date: '2026-11-12'
+  source_date: null
+  method: siec_pomiarowa
+  device: GEO / E600 + BRIC4 SN 0143
+  tags:
+  - gnss_anchor
+  - bric4
+  - magnetic_correction
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Otwór domierzony od punktu GNSS; długość domiaru 10.73 m. Poprawny znak: azymut PL-1992 = azymut
+    magnetyczny + (deklinacja - zbieżność południków). Obliczył Marek Jędrzejczak (Speleoclub Wrocław).
+    Pomiary; Zespół: Michał Bochynek, Sławomir Boruta (Speleoclub Wrocław); Sprzęt: BRIC4 SN: 0143. Źródło
+    otrzymane 2026-11-16: Zestawienie wiersz 15, Report wiersz 366. Przyjęty do Best przez Dariusza Lubomskiego
+    2026-11-16. Kontrola rachunkowa źródła nie jest nową weryfikacją terenową; status pozostaje nieweryfikowany.
+    Deklaracja źródła: dokładność GNSS < 0,10 m; nie określa osobno dokładności poziomej i pionowej końcowego
+    punktu otworu. Obie dokładności pozostają nieznane.'
+  created_at: '2026-11-16T08:50:53Z'
+  created_by: dl
 best_measurement:
   mode: manual
-  measurement_id: m-003
-  reason: >-
-    Współrzędne Wojciecha Rolińskiego lepiej odpowiadają podnóżu ściany
-    na fotomapie i NMT TPN niż orientacyjny punkt TPN. Wysokość gruntu
-    z powtarzalnego odczytu NMT TPN; wysokość samego otworu do weryfikacji.
-  updated_at: '2026-10-22T07:17:19Z'
+  measurement_id: m-004
+  reason: Wynik GNSS z domiarem po korekcie znaku uchylenia magnetycznego, przyjęty jako Best decyzją
+    Dariusza Lubomskiego z 2026-11-16.
+  updated_at: '2026-11-16T08:50:53Z'
   updated_by: dl
-attachments: []
+attachments:
+- id: a-001
+  kind: raport_gnss
+  measurement_id: m-004
+  path: data/sources/marek-jedrzejczak/corrected-2026-11-16/Zestawienie.tsv
+  caption: 'Wyciąg wartości: Zestawienie, source_row 15; obliczenia i obserwacje w sąsiednim Report.tsv.'
+  created_at: '2026-11-16T08:50:53Z'
+  created_by: dl
 bibliography_status: unknown
 notes: Imported from TPN source record after operator review.
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-10-22T07:17:19Z'
+updated_at: '2026-11-16T08:50:53Z'
 updated_by: dl
