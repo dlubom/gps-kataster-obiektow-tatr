@@ -85,25 +85,63 @@ measurements:
   tags:
   - gnss
   - source_unknown
+  verification_status: odrzucony
+  verified_by: null
+  verified_at: null
+  notes: 'Source provided as unknown GNSS for Wysoka7Progow. The point lies on the existing Jaskinia
+    Wysoka object rather than creating a separate cave. Odrzucono 2026-11-16 decyzją Dariusza Lubomskiego:
+    błędny znak poprawki magnetycznej w obliczeniu pozycji. Zastępuje go KSW-0189/m-004.'
+  created_at: '2026-05-16T19:30:00Z'
+  created_by: dl
+- id: m-004
+  input_srid: 2180
+  input_x: 564379.3653697347
+  input_y: 152161.819801582
+  elevation_m: 1486.6914545149514
+  elevation_datum: PL-EVRF2007-NH
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: inne
+  source_ref: unknown:gnss:Wysoka7Progow:correction-2026-11-16
+  observed_at: null
+  observed_date: '2025-11-08'
+  source_date: null
+  method: siec_pomiarowa
+  device: null
+  tags:
+  - gnss_anchor
+  - source_unknown
+  - magnetic_correction
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: Source provided as unknown GNSS for Wysoka7Progow. The point lies on the
-    existing Jaskinia Wysoka object rather than creating a separate cave.
-  created_at: '2026-05-16T19:30:00Z'
+  notes: 'Wynik po korekcie obliczeń magnetycznych, przyjęty 2026-11-16. Pozycja
+    otworu z domiaru od punktu GNSS; długość domiaru 48.48 m. Zastępuje w Best m-003; dawny pomiar zachowano ze statusem odrzucony. Dostępne są końcowe współrzędne, bez obserwacji i obliczeń domiaru; nie wykonano niezależnego
+    przeliczenia ciągu. Deklaracja źródła: dokładność GNSS < 0,10 m; nie określa osobno dokładności poziomej
+    i pionowej końcowego punktu otworu. Obie dokładności pozostają nieznane.'
+  created_at: '2026-11-16T08:50:53Z'
   created_by: dl
 best_measurement:
   mode: manual
-  measurement_id: m-003
-  reason: Supplied Wysoka7Progow GNSS point is the reviewed current coordinate.
-  updated_at: '2026-05-16T19:30:00Z'
+  measurement_id: m-004
+  reason: Korekta pomiaru, przyjęta jako Best decyzją Dariusza Lubomskiego z 2026-11-16;
+    zastępuje m-003.
+  updated_at: '2026-11-16T08:50:53Z'
   updated_by: dl
-attachments: []
+attachments:
+- id: a-001
+  kind: raport_gnss
+  measurement_id: m-004
+  path: data/sources/wysoka-bandzioch/corrected-2026-11-16/measurements.json
+  caption: Wyciąg skorygowanych współrzędnych i parametrów pomiaru.
+  created_at: '2026-11-16T08:50:53Z'
+  created_by: dl
 bibliography_status: unknown
 notes: Imported from PIG source record after operator review. Multi-opening review
   2026-05-16 added supplied Wysoka7Progow unknown-GNSS point to this existing Jaskinia
   Wysoka object.
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-10-15T13:16:44Z'
-updated_by: maintenance:PBI-082
+updated_at: '2026-11-16T09:37:43Z'
+updated_by: dl

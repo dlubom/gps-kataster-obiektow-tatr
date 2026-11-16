@@ -3,3 +3,6 @@ tests/fixtures/tpn_elevation/metadata.xml -text -whitespace
 
 # Keep native Walls reports byte-for-byte, including their Windows line endings.
 docs/asdlc/verification/PBI-117/engines/walls-*.lst -text whitespace=cr-at-eol
+
+# Source TSV values retain empty cells (including trailing tab separators).
+data/sources/marek-jedrzejczak/corrected-2026-11-16/*.tsv -whitespace

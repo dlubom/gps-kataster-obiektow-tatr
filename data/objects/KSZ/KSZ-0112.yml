@@ -29,28 +29,63 @@ measurements:
   tags:
   - gnss
   - source_unknown
+  verification_status: odrzucony
+  verified_by: null
+  verified_at: null
+  notes: 'Source provided as unknown GNSS for Bandzioch Kominiarski Dolny. PIG dump places the lower/main
+    and upper openings separately for Jaskinia Bańdzioch Kominiarski. Odrzucono 2026-11-16 decyzją Dariusza
+    Lubomskiego: błędny znak poprawki magnetycznej w obliczeniu pozycji. Zastępuje go KSZ-0112/m-002.'
+  created_at: '2026-05-16T19:30:00Z'
+  created_by: dl
+- id: m-002
+  input_srid: 2180
+  input_x: 561815.8275548687
+  input_y: 153132.26259285465
+  elevation_m: 1451.063809292192
+  elevation_datum: PL-EVRF2007-NH
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: inne
+  source_ref: unknown:gnss:BandziochKominiarskiDolny:correction-2026-11-16
+  observed_at: null
+  observed_date: '2025-11-10'
+  source_date: null
+  method: siec_pomiarowa
+  device: null
+  tags:
+  - gnss_anchor
+  - source_unknown
+  - magnetic_correction
   verification_status: nieweryfikowany
   verified_by: null
   verified_at: null
-  notes: 'Source provided as unknown GNSS for Bandzioch Kominiarski Dolny.
-    PIG dump places the lower/main and upper openings separately for
-    Jaskinia Bańdzioch Kominiarski.'
-  created_at: '2026-05-16T19:30:00Z'
+  notes: 'Wynik po korekcie obliczeń magnetycznych, przyjęty 2026-11-16. Pozycja
+    otworu z domiaru od punktu GNSS; długość domiaru 19.35 m. Zastępuje w Best m-001; dawny pomiar zachowano ze statusem odrzucony. Dostępne są końcowe współrzędne, bez obserwacji i obliczeń domiaru; nie wykonano niezależnego
+    przeliczenia ciągu. Deklaracja źródła: dokładność GNSS < 0,10 m; nie określa osobno dokładności poziomej
+    i pionowej końcowego punktu otworu. Obie dokładności pozostają nieznane.'
+  created_at: '2026-11-16T08:50:53Z'
   created_by: dl
 best_measurement:
   mode: manual
-  measurement_id: m-001
-  reason: Operator retains the supplied GNSS point for the lower opening; future TPN
-    records must not replace this selection automatically. Source provenance and
-    verification status remain unchanged.
-  updated_at: '2026-10-23T13:20:59Z'
+  measurement_id: m-002
+  reason: Korekta pomiaru, przyjęta jako Best decyzją Dariusza Lubomskiego z 2026-11-16;
+    zastępuje m-001.
+  updated_at: '2026-11-16T08:50:53Z'
   updated_by: dl
-attachments: []
+attachments:
+- id: a-001
+  kind: raport_gnss
+  measurement_id: m-002
+  path: data/sources/wysoka-bandzioch/corrected-2026-11-16/measurements.json
+  caption: Wyciąg skorygowanych współrzędnych i parametrów pomiaru.
+  created_at: '2026-11-16T08:50:53Z'
+  created_by: dl
 bibliography_status: unknown
 notes: 'Created during multi-opening review from a supplied unknown-GNSS point.
   The existing LEJ-0002 object is treated as the upper opening; this object
   records the lower opening.'
 created_at: '2026-05-16T19:30:00Z'
 created_by: dl
-updated_at: '2026-10-23T13:20:59Z'
+updated_at: '2026-11-16T09:37:43Z'
 updated_by: dl

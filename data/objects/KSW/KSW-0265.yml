@@ -29,7 +29,7 @@ measurements:
   tags:
   - jktz
   - network_derived
-  verification_status: nieweryfikowany
+  verification_status: odrzucony
   verified_by: null
   verified_at: null
   notes: 'Wynik sieci JKTZ 77963f9ea8268556197a16e9b391cb0539b5a4ee, stacja Wysoka7Progow:W-300, Survex
@@ -39,20 +39,62 @@ measurements:
     wyniku, nie pomiar terenowy. Zachowano zastępcze DECL=0 i istniejące połączenia; brak oryginalnych
     protokołów. Podstawa tożsamości: IV.SRV:64–65 i OTWORY.SRV:405–407; karta PIG 1665 other_entrances;
     J01-09. Pełne pochodzenie: data/sources/jktz/wysoka-entrances-2026-11-12/README.md. Nie używać jako
-    niezależnego fixa tej samej sieci.'
+    niezależnego fixa tej samej sieci. Odrzucono 2026-11-16 decyzją Dariusza Lubomskiego: wynik zależny
+    od błędnej kotwicy KSW-0189/m-003. Zastępuje go KSW-0265/m-002, przeliczony z kotwicy KSW-0189/m-004.'
   created_at: '2026-11-12T12:02:59Z'
   created_by: codex
+- id: m-002
+  input_srid: 4326
+  input_x: 19.8845898928
+  input_y: 49.2337249092
+  elevation_m: 1498.68
+  elevation_datum: PL-EVRF2007-NH
+  elevation_source: other
+  horizontal_accuracy_m: null
+  vertical_accuracy_m: null
+  source: wlasne
+  source_ref: JKTZ:77963f9ea8268556197a16e9b391cb0539b5a4ee:Wysoka7Progow:W-300:anchor=KSW-0189/m-004
+  observed_date: '2026-11-16'
+  source_date: null
+  method: siec_pomiarowa
+  device: null
+  tags:
+  - jktz
+  - network_derived
+  - anchor_correction
+  verification_status: nieweryfikowany
+  verified_by: null
+  verified_at: null
+  notes: 'Ponowne wyznaczenie pozycji stacji Wysoka7Progow:W-300 z sieci JKTZ 77963f9ea8268556197a16e9b391cb0539b5a4ee
+    po zmianie jedynej kotwicy Wysoka7Progow:W7-0 na pomiar KSW-0189/m-004. Survex 1.4.24; pozostałe
+    źródła, połączenia, wyrównanie i zastępcze DECL=0 zachowane. Wynik .3d/CSV w EPSG:32634 co 0,01 m
+    przeliczono do EPSG:4326. Datum wysokości pochodzi z nowej kotwicy PL-EVRF2007-NH, nie z transformacji
+    poziomej. Dokładności terenowe i rzeczywista deklinacja podziemnych pomiarów pozostają nieznane. observed_date
+    oznacza datę obliczenia, nie nowego pomiaru terenowego. Tożsamość: IV.SRV:64–65 i OTWORY.SRV:405–407;
+    karta PIG 1665 other_entrances; J01-09. Pochodzenie: data/sources/jktz/wysoka-entrances-2026-11-16/README.md.
+    Wynik zależny od tej samej sieci; nie używać jako niezależnego fixa JKTZ.'
+  created_at: '2026-11-16T09:02:59Z'
+  created_by: dl
 best_measurement:
-  mode: auto
-  reason: null
-  updated_at: '2026-11-12T12:02:59Z'
-  updated_by: codex
-attachments: []
+  mode: manual
+  measurement_id: m-002
+  reason: Wynik istniejącej sieci po dowiązaniu do skorygowanego KSW-0189/m-004; ponowne przeliczenie
+    i wybór Best na polecenie Dariusza Lubomskiego z 2026-11-16.
+  updated_at: '2026-11-16T09:02:59Z'
+  updated_by: dl
+attachments:
+- id: a-001
+  kind: inne
+  measurement_id: m-002
+  path: data/sources/jktz/wysoka-entrances-2026-11-16/coordinates.json
+  caption: Pochodzenie i współrzędne wyniku JKTZ po zmianie kotwicy Wysokiej.
+  created_at: '2026-11-16T09:02:59Z'
+  created_by: dl
 bibliography_status: unknown
 notes: 'Jaskinia Wysoka - otwór górny 02; Wysoka7Progow:W-300. IV.SRV:64–65 i OTWORY.SRV:405–407; karta
   PIG 1665 other_entrances; J01-09. Otwór systemu C-1053 poprzez jaskinię C-0665. Nie dodano fixa JKTZ
   ani niezależnego pomiaru terenowego. Pochodzenie i ograniczenia: data/sources/jktz/wysoka-entrances-2026-11-12/README.md.'
 created_at: '2026-11-12T12:02:59Z'
 created_by: codex
-updated_at: '2026-11-12T12:02:59Z'
-updated_by: codex
+updated_at: '2026-11-16T09:37:43Z'
+updated_by: dl

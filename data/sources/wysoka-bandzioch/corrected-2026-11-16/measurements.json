@@ -1,0 +1,28 @@
+{
+  "description": "Wyniki po korekcie obliczeń magnetycznych; wyciąg wartości, nie oryginalny raport.",
+  "received_date": "2026-11-16",
+  "horizontal_crs": "EPSG:2180",
+  "vertical_datum": "PL-EVRF2007-NH",
+  "records": [
+    {
+      "object_id": "KSW-0189",
+      "name": "Jaskinia Wysoka (otwór)",
+      "observed_date": "2025-11-08",
+      "northing_m": 152161.819801582,
+      "easting_m": 564379.3653697347,
+      "elevation_m": 1486.6914545149514,
+      "gnss_accuracy_description": "< 0,10 m",
+      "traverse_length_m": 48.48
+    },
+    {
+      "object_id": "KSZ-0112",
+      "name": "Bandzioch Kominiarski (otwór)",
+      "observed_date": "2025-11-10",
+      "northing_m": 153132.26259285465,
+      "easting_m": 561815.8275548687,
+      "elevation_m": 1451.063809292192,
+      "gnss_accuracy_description": "< 0,10 m",
+      "traverse_length_m": 19.35
+    }
+  ]
+}

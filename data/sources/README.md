@@ -67,7 +67,7 @@ wysokości PL-EVRF2007-NH. Wszystkie pliki zachowano bajtowo.
 
 | Plik | Rola | SHA-256 |
 | --- | --- | --- |
-| [Poprawiony XLS](marek-jedrzejczak/2026-10-17/corrected-2026-11-04/20261017%20Tatry.xls) | Źródło pomiarów w katalogu | `516c650d0559e08bbcd1422ce92942c84ba962e52c3207057c1fb32c2868e1ae` |
+| [Poprawiony XLS](marek-jedrzejczak/2026-10-17/corrected-2026-11-04/20261017%20Tatry.xls) | Źródło historycznych pomiarów sprzed korekty magnetycznej | `516c650d0559e08bbcd1422ce92942c84ba962e52c3207057c1fb32c2868e1ae` |
 | [Pierwotny XLS](marek-jedrzejczak/2026-10-17/20261017%20Tatry.xls) | Archiwum | `7effcf02dd157ddf74b625958683243b602e8346a2272b61978ba6580f376b22` |
 | [Pierwotny PDF](marek-jedrzejczak/2026-10-17/20261017%20Tatry.pdf) | Archiwum | `f760fd017c790c8be295dd0f41d0f63f2f078f3ca62660b733b7d27e9199f95f` |
 
@@ -76,3 +76,29 @@ w Grzędzie II (`MTW-0016`), a wiersz 11 Dziurę w Grzędzie I (`MTW-0050`).
 Współrzędne wynikowe są identyczne w obu wersjach. Do katalogu wprowadzono
 pełne wartości z poprawionego arkusza. Zakres i porównanie wersji opisuje
 [issue #43](https://github.com/dlubom/gps-kataster-obiektow-tatr/issues/43).
+
+## Korekta GNSS i domiarów otrzymana 2026-11-16
+
+- [Wyciąg 18 punktów z obliczeń Marka Jędrzejczaka](marek-jedrzejczak/corrected-2026-11-16/README.md)
+  zachowuje wartości arkuszy Report i Zestawienie, przypisanie otworów,
+  poprawiony znak uchylenia magnetycznego oraz ograniczenia źródła.
+- [Wyniki Wysokiej i Bańdziocha](wysoka-bandzioch/corrected-2026-11-16/README.md)
+  zachowują końcowe współrzędne i znane parametry pomiarów.
+- [Oryginalne XLS i PDF](surveys/2026-11-16/README.md) zachowano bajtowo
+  z sumami SHA-256, formułami i metadanymi.
+
+Wyciągi TSV i JSON są opracowaniami wartości z archiwalnych XLS/PDF.
+Dopisano 20 pomiarów. Dziesięć poprzednich domiarów z 2026-10-17 oraz
+poprzednie Best Wysokiej i Bańdziocha oznaczono jako `odrzucony` z powodu
+błędnego znaku poprawki magnetycznej. Nowe
+wyniki są ręcznym Best dla 19 obiektów; Miętusia zachowuje dotychczasowy
+Best m-002. Daty źródłowe i nieznane dokładności opisano w obu wyciągach.
+
+Dodatkowo [przeliczono cztery otwory sieci JKTZ](jktz/wysoka-entrances-2026-11-16/README.md)
+z nową kotwicą Wysokiej KSW-0189/m-004. Ich nowe m-002 są ręcznymi Best;
+stare m-001 zachowano ze statusem `odrzucony` z powodu błędnej kotwicy.
+Cała aktualizacja obejmuje 24 nowe rekordy, 23 nowe wskazania Best i 16
+odrzuconych wcześniejszych wyników. W starszych rekordach zmieniono tylko
+status i notatkę z przyczyną oraz ID następcy; geometrię, daty i kolejność
+zachowano. Poprzednie pomiary Niebieskiej Studni i Pod Wantą nie są odrzucone,
+ponieważ nie obejmowały domiarów.

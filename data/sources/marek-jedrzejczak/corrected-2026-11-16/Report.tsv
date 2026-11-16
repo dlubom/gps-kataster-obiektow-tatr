@@ -1,0 +1,563 @@
+source_row	A	B	C	D	E	F	G	H	I	J	K	L	M	N	O	P	Q	R	S	T	U
+1	GNSS MEASUREMENT REPORT																				
+2																					
+3	Nazwa projektu:20261017 Tatry																				
+4																					
+5	Date:19-10-2026																				
+6																					
+7	Coordinate system:1992																				
+8	Geoid file:/storage/emulated/0/SurPad/Geoid/PL-EVRF2007-NHv2021artgeo,GGF																				
+9																					
+10	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+11	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H,ant
+12	Marmurowa 1	17-10-2026	08:49:07	06:49:07	FIXED	49.23937777	19.90072176	1810.72	3924262.25	1420619.78	4809352.13	152820.2	565544.69	1768.13	42.58999999999992	5	28	1.3	0.01	0.01	0.68
+13	Marmurowa 2	17-10-2026	08:56:28	06:56:28	FIXED	49.23937776	19.90072197	1810.72	3924263.47	1420620.31	4809354.24	152820.2	565544.71	1768.12	42.600000000000136	5	27	1.4	0.03	0.04	0.68
+14	Marmurowa 3	17-10-2026	08:58:44	06:58:44	FIXED	49.23937788	19.9007218	1810.73	3924263.32	1420620.22	4809354.14	152820.21	565544.7	1768.13	42.59999999999991	5	27	1.3	0.01	0.01	0.68
+15	Marmurowa 0 (GNSS)					49.23937780333333	19.900721843333333	1810.7233333333334	3924263.0133333337	1420620.1033333333	4809353.503333334	152820.20333333334	565544.7	1768.1266666666668							
+16	Odch. standardowe											0.005773502680470146	0.010000000009313226	0.00577350269202228							
+17												0.01154700538614495									
+18												0.012909944489518497									
+19	Obliczenie uchylenia magnetycznego																				
+20	B:	49.23937780333333	° N																		
+21	L:	19.900721843333333	° E																		
+22	Data:	2026-10-17																			
+23	Deklinacja:	6.17	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+24	Zbieżność południków:	0.6822463151264033	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+25	Uchylenie magnetyczne:	5.487753684873597	° E 																		
+26																					
+27	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+28	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+29	Marmurowa 0 (GNSS)	6.81	88.28	93.7677536848736	1.239	-0.44739629184995366	6.793692172383274	0.14725224934488587	152820.20333333334	565544.7	1768.1266666666668	"Pomiary
+Zespół: Michał Bochynek, Arkadiusz Kruk (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+30		1.252	162.24	167.72775368487362	-47.545	-0.8258017119518946	0.17963490647573488	-0.9237352612695773	152819.75593704148	565551.4936921723	1768.2739189160116										
+31	Marmurowa (otwór)								152818.93013532952	565551.6733270788	1767.350183654742										
+32																					
+33	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+34		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+35		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+36	Marmurowa (otwór)	152818.93013532952	565551.6733270788	1767.350183654742	MTZ-0018	2026-10-27	152819.77	565552.1	1768.449951	-0.8398646704736166	-0.42667292116675526	-1.0997673452579875	0.9420310219768395	1.4480713587605172							
+37																					
+38	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+39																					
+40																					
+41	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+42	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+43	Jaskinia w Szerokiem 1	17-10-2026	10:00:32	08:00:32	FIXED	49.23866192	19.89925681	1876.44	3924397.23	1420554.99	4809352.3	152739.38	565439.04	1833.85	42.590000000000146	5	32	1	0	0.01	0.66
+44	Jaskinia w Szerokiem 2	17-10-2026	10:03:07	08:03:07	FIXED	49.23866187	19.89925677	1876.45	3924397.42	1420555.24	4809352.44	152739.37	565439.03	1833.85	42.600000000000136	5	34	0.8	0.01	0.02	0.66
+45	Jaskinia w Szerokiem 3	17-10-2026	10:07:26	08:07:26	FIXED	49.23866179	19.89925678	1876.45	3924397.74	1420555.25	4809352.37	152739.36	565439.04	1833.85	42.600000000000136	5	36	0.8	0	0.01	0.66
+46	Jaskinia w Szerokiem 0 (GNSS)					49.23866186	19.89925678666667	1876.4466666666667	3924397.4633333334	1420555.1600000001	4809352.37	152739.37	565439.0366666667	1833.8499999999997							
+47	Odch. standardowe											0.010000000009313226	0.005773502697273251	2.7847474288855413e-13							
+48												0.011547005394546502									
+49												0.011547005394546502									
+50	Obliczenie uchylenia magnetycznego																				
+51	B:	49.23866186	° N																		
+52	L:	19.89925678666667	° E																		
+53	Data:	2026-10-17																			
+54	Deklinacja:	6.17	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+55	Zbieżność południków:	0.6811292802980512	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+56	Uchylenie magnetyczne:	5.488870719701949	° E 																		
+57																					
+58	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+59	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+60	Jaskinia w Szerokiem 0 (GNSS)	1.89	53.465	58.95387071970195	1.085	0.9745511930996844	1.6189716361009783	0.03578845524051727	152739.37	565439.0366666667	1833.8499999999997	"Pomiary
+Zespół: Michał Bochynek, Arkadiusz Kruk, Weronika Garlińska (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+61		7.102	306.338	311.82687071970196	-40.727	3.5892170448403613	-4.010533888713852	-4.6337396271807485	152740.3445511931	565440.6556383028	1833.8857884552401										
+62		0.961	134.326	139.81487071970193	-47.493	-0.49606347982036775	0.4189854960079982	-0.708444195489976	152743.93376823794	565436.6451044141	1829.2520488280593										
+63	Jaskinia w Szerokiem (otwór)								152743.4377047581	565437.0640899101	1828.5436046325692										
+64																					
+65	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+66		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+67		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+68	Jaskinia w Szerokiem (otwór)	152743.4377047581	565437.0640899101	1828.5436046325692	MTZ-0055	2026-10-27	152686.79	565434.5	1858.337752	56.64770475809928	2.5640899101272225	-29.794147367430696	56.70570528110906	64.05644564585344							
+69																					
+70	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+71																					
+72																					
+73	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+74	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+75	Jaskinia Lejbusiowa 1	17-10-2026	10:53:33	08:53:33	FIXED	49.23848357	19.90081945	1878.28	3924374.67	1420667.28	4809340.41	152720.91	565552.99	1835.68	42.59999999999991	5	32	0.9	0.01	0.01	0.69
+76	Jaskinia Lejbusiowa 2	17-10-2026	10:55:53	08:55:53	FIXED	49.23848363	19.90081953	1878.31	3924372.34	1420667.92	4809340.15	152720.92	565552.99	1835.71	42.59999999999991	5	27	1	0.01	0.01	0.69
+77	Jaskinia Lejbusiowa 3	17-10-2026	11:03:23	09:03:23	FIXED	49.23848359	19.90081954	1878.3	3924372.14	1420667.93	4809339.7	152720.91	565552.99	1835.69	42.6099999999999	5	33	0.9	0.01	0.01	0.69
+78	Jaskinia Lejbusiowa 0 (GNSS)					49.23848359666666	19.900819506666668	1878.2966666666669	3924373.0500000003	1420667.71	4809340.086666667	152720.91333333333	565552.99	1835.6933333333334							
+79	Odch. standardowe											0.00577350269727325	0.0	0.015275252316505573							
+80												0.00577350269727325									
+81												0.016329931620442578									
+82	Obliczenie uchylenia magnetycznego																				
+83	B:	49.23848359666666	° N																		
+84	L:	19.900819506666668	° E																		
+85	Data:	2026-10-17																			
+86	Deklinacja:	6.17	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+87	Zbieżność południków:	0.6823111104501215	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+88	Uchylenie magnetyczne:	5.4876888895498785	° E 																		
+89																					
+90	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+91	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+92	Jaskinia Lejbusiowa 0 (GNSS)	1.405	284.412	289.89968888954985	11.235	0.469061523359506	-1.295790137181397	0.2737411326181665	152720.91333333333	565552.99	1835.6933333333334	"Pomiary
+Zespół: Michał Bochynek, Arkadiusz Kruk (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+93		1.017	40.636	46.12368888954988	-75.83	0.1725560705051414	0.17946073431326565	-0.9860564118606846	152721.3823948567	565551.6942098628	1835.9670744659516										
+94	Jaskinia Lejbusiowa (otwór)								152721.55495092718	565551.8736705972	1834.9810180540908										
+95																					
+96	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+97		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+98		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+99	Jaskinia Lejbusiowa (otwór)	152721.55495092718	565551.8736705972	1834.9810180540908	MTZ-0013	2026-10-27	152729.12	565523.37	1838.365497	-7.5650490728148725	28.503670597216114	-3.3844789459092226	29.490493468043216	29.684068163309465							
+100																					
+101	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+102																					
+103																					
+104	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+105	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+106	Mała w Mułowej 1	17-10-2026	11:36:08	09:36:08	FIXED	49.23828659	19.90220589	1797.13	3924302.7	1420750.68	4809264.92	152700.22	565654.14	1754.53	42.600000000000136	5	17	1.3	0.01	0.01	0.7
+107	Mała w Mułowej 2	17-10-2026	11:38:10	09:38:10	FIXED	49.2382866	19.90220584	1797.09	3924301.52	1420749.89	4809262.87	152700.22	565654.13	1754.49	42.59999999999991	5	15	1.3	0.01	0.01	0.7
+108	Mała w Mułowej 3	17-10-2026	11:40:09	09:40:09	FIXED	49.23828658	19.9022058	1797.09	3924302.32	1420750.01	4809262.75	152700.22	565654.13	1754.49	42.59999999999991	5	16	1.36	0.01	0.02	0.7
+109	Mała w Mułowej 0 (GNSS)					49.23828659	19.902205843333334	1797.1033333333335	3924302.18	1420750.1933333334	4809263.513333333	152700.22	565654.1333333333	1754.5033333333333							
+110	Odch. standardowe											0.0	0.005773502697273251	0.023094010767564028							
+111												0.005773502697273251									
+112												0.023804761429759902									
+113	Obliczenie uchylenia magnetycznego																				
+114	B:	49.23828659	° N																		
+115	L:	19.902205843333334	° E																		
+116	Data:	2026-10-17																			
+117	Deklinacja:	6.17	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+118	Zbieżność południków:	0.6833591432106948	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+119	Uchylenie magnetyczne:	5.486640856789305	° E 																		
+120																					
+121	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+122	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+123	Mała w Mułowej 0 (GNSS)	4.324	155.499	160.9856408567893	-9.216	-4.035298869126656	1.3905961315641533	-0.692518184385034	152700.22	565654.1333333333	1754.5033333333333	"Pomiary
+Zespół: Michał Bochynek, Arkadiusz Kruk (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+124		1.369	315.266	320.7526408567893	-51.369	0.6618750190663046	-0.5407237032303477	-1.0694392623710978	152696.18470113087	565655.5239294649	1753.8108151489482										
+125	Mała w Mułowej (otwór)								152696.84657614992	565654.9832057616	1752.741375886577										
+126																					
+127	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+128		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+129		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+130	Mała w Mułowej (otwór)	152696.84657614992	565654.9832057616	1752.741375886577	MTZ-0027	2026-10-27	152695.09	565655.34	1755.390015	1.7565761499281507	-0.3567942383233458	-2.6486391134228597	1.79244578690602	3.198148066014232							
+131																					
+132	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+133																					
+134																					
+135	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+136	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+137	Kozia otwór I 1	17-10-2026	13:02:04	11:02:04	FIXED	49.23887439	19.90815763	1876.05	3924157.01	1421158.07	4809365.44	152770.73	566086.46	1833.45	42.59999999999991	5	15	1.34	0.01	0.01	0.8
+138	Kozia otwór I 2	17-10-2026	13:04:00	11:04:00	FIXED	49.23887437	19.90815753	1876.05	3924156.43	1421158.39	4809364.25	152770.73	566086.45	1833.46	42.58999999999992	5	23	1.2	0.01	0.01	0.8
+139	Kozia otwór I 3	17-10-2026	13:05:28	11:05:28	FIXED	49.23887426	19.90815758	1876.04	3924156.81	1421158.39	4809364.54	152770.71	566086.46	1833.45	42.58999999999992	5	28	1.2	0.01	0.01	0.8
+140	Kozia otwór I 0 (GNSS)					49.238874339999995	19.90815758	1876.0466666666664	3924156.75	1421158.2833333332	4809364.743333333	152770.72333333336	566086.4566666667	1833.4533333333331							
+141	Odch. standardowe											0.0115470053945465	0.005773502697273251	0.005773502691891007							
+142												0.012909944499381378									
+143												0.014142135634704546									
+144	Obliczenie uchylenia magnetycznego																				
+145	B:	49.238874339999995	° N																		
+146	L:	19.90815758	° E																		
+147	Data:	2026-10-17																			
+148	Deklinacja:	6.17	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+149	Zbieżność południków:	0.6878732587010694	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+150	Uchylenie magnetyczne:	5.482126741298931	° E 																		
+151																					
+152	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+153	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+154	Kozia otwór I 0 (GNSS)	9.937	186.285	191.76712674129894	31.543	-8.290811023962386	-1.7270768270365884	5.198425453775115	152770.72333333336	566086.4566666667	1833.4533333333331	"Pomiary
+Zespół: Michał Bochynek, Sławomir Boruta, Weronika Garlińska (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+155		1.719	10.805	16.28712674129893	-74.905	0.42969697586949673	0.125547395843012	-1.6596865247165344	152762.4325223094	566084.7295898396	1838.6517587871083										
+156	Kozia I (otwór)								152762.86221928525	566084.8551372354	1836.9920722623917										
+157																					
+158	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+159		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+160		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+161	Kozia I (otwór)	152762.86221928525	566084.8551372354	1836.9920722623917	MTW-0013	2026-10-27	152766.69	566079.71	1835.745891	-3.8277807147533167	5.145137235405855	1.2461812623917012	6.412826394921137	6.532787315544062							
+162																					
+163	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+164																					
+165																					
+166	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+167	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+168	Kozia otwór II 1	17-10-2026	13:29:38	11:29:38	FIXED	49.23879906	19.90948217	1882.42	3924133.54	1421252.57	4809363.74	152763.52	566182.95	1839.82	42.600000000000136	5	21	1.2	0.01	0.01	0.8
+169	Kozia otwór II 2	17-10-2026	13:31:38	11:31:38	FIXED	49.23879904	19.90948218	1882.41	3924133.57	1421252.68	4809364.12	152763.51	566182.95	1839.82	42.590000000000146	5	21	1.3	0.01	0.01	0.8
+170	Kozia otwór II 3	17-10-2026	13:33:17	11:33:17	FIXED	49.23879908	19.90948215	1882.42	3924133.21	1421252.83	4809364.24	152763.52	566182.94	1839.82	42.600000000000136	5	20	1.2	0.01	0.01	0.8
+171	Kozia otwór II 0 (GNSS)					49.23879906	19.909482166666667	1882.4166666666667	3924133.44	1421252.6933333334	4809364.033333333	152763.5166666667	566182.9466666667	1839.82							
+172	Odch. standardowe											0.005773502680470147	0.005773502697273251	0.0							
+173												0.00816496580499989									
+174												0.00816496580499989									
+175	Obliczenie uchylenia magnetycznego																				
+176	B:	49.23879906	° N																		
+177	L:	19.909482166666667	° E																		
+178	Data:	2026-10-17																			
+179	Deklinacja:	6.17	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+180	Zbieżność południków:	0.6888757710707338	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+181	Uchylenie magnetyczne:	5.481124228929266	° E 																		
+182																					
+183	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+184	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+185	Kozia otwór II 0 (GNSS)	1.718	248.089	253.57012422892927	43.368	-0.353244978077236	-1.1979169675925474	1.1797190022276869	152763.5166666667	566182.9466666667	1839.82	"Pomiary
+Zespół: Michał Bochynek, Arkadiusz Kruk, Sławomir Boruta (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+186		2.912	283.067	288.5481242289293	-8.721	0.9156006577494507	-2.728822783436845	-0.4415265021771185	152763.1634216886	566181.7487496991	1840.9997190022277										
+187		1.167	48.354	53.83512422892927	-69.003	0.24675978542648708	0.33758852892996943	-1.0895102539357642	152764.07902234636	566179.0199269156	1840.5581925000506										
+188	Kozia II (otwór)								152764.32578213178	566179.3575154446	1839.468682246115										
+189																					
+190	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+191		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+192		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+193	Kozia II (otwór)	152764.32578213178	566179.3575154446	1839.468682246115																	
+194																					
+195	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+196																					
+197																					
+198	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+199	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+200	Litworowa 1	17-10-2026	14:36:42	12:36:42	FIXED	49.23852656	19.91475625	1947.68	3924067.82	1421636.96	4809395.83	152737.86	566567.1	1905.08	42.600000000000136	5	19	1.1	0.03	0.05	0.5
+201	Litworowa 2	17-10-2026	14:43:40	12:43:40	FIXED	49.23852671	19.914756	1947.67	3924066.86	1421636.9	4809395.75	152737.88	566567.08	1905.08	42.590000000000146	5	20	1.1	0.01	0.01	0.5
+202	Litworowa 3	17-10-2026	14:45:03	12:45:03	FIXED	49.23852673	19.91475599	1947.68	3924066.24	1421636.96	4809395.2	152737.88	566567.08	1905.09	42.590000000000146	5	18	1.1	0.01	0.01	0.5
+203	Litworowa 0 (GNSS)					49.238526666666665	19.91475608	1947.676666666667	3924066.973333333	1421636.9400000002	4809395.593333334	152737.87333333332	566567.0866666666	1905.0833333333333							
+204	Odch. standardowe											0.011547005394546502	0.011547005394546502	0.005773502691891007							
+205												0.016329931633762954									
+206												0.017320508090025673									
+207	Obliczenie uchylenia magnetycznego																				
+208	B:	49.238526666666665	° N																		
+209	L:	19.91475608	° E																		
+210	Data:	2026-10-17																			
+211	Deklinacja:	6.17	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+212	Zbieżność południków:	0.6928675906246148	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+213	Uchylenie magnetyczne:	5.477132409375385	° E 																		
+214																					
+215	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+216	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+217	Litworowa 0 (GNSS)	1.011	137.488	142.96513240937537	20.306	-0.7568940197378388	0.5710830516645004	0.3508512376872246	152737.87333333332	566567.0866666666	1905.0833333333333	"Pomiary
+Zespół: Michał Bochynek, Sławomir Boruta (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+218		1.191	193.012	198.48913240937537	-9.828	-1.1129489008992441	-0.3721527757651312	-0.20329302860027718	152737.1164393136	566567.6577497182	1905.4341845710205										
+219		0.823	354.948	360.42513240937535	-37.334	0.6543605944814218	0.004855418739953102	-0.4991168573578535	152736.0034904127	566567.2855969424	1905.2308915424203										
+220	Litworowa (otwór)								152736.65785100718	566567.2904523611	1904.7317746850624										
+221																					
+222	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+223		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+224		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+225	Litworowa (otwór)	152736.65785100718	566567.2904523611	1904.7317746850624	MTW-0010	2026-10-27	152736.2	566567.66	1905.290951	0.4578510071733035	-0.36954763892572373	-0.5591763149375311	0.5883816807185498	0.8117087860755866							
+226																					
+227	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+228																					
+229																					
+230	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+231	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+232	Dziura w Grzędzie 1	17-10-2026	15:29:13	13:29:13	FIXED	49.23930804	19.91527695	1966.42	3924069.73	1421676.6	4809538.86	152825.17	566603.94	1923.83	42.590000000000146	5	23	1	0.01	0.01	0.69
+233	Dziura w Grzędzie 2	17-10-2026	15:31:17	13:31:17	FIXED	49.23930813	19.91527685	1966.38	3924005.93	1421654.49	4809463.06	152825.18	566603.93	1923.79	42.590000000000146	5	25	1.1	0.01	0.02	0.69
+234	Dziura w Grzędzie 3	17-10-2026	15:32:38	13:32:38	FIXED	49.23930809	19.91527679	1966.38	3924001.98	1421653.41	4809464.1	152825.17	566603.93	1923.8	42.580000000000155	5	24	1	0.01	0.01	0.69
+235	Dziura w Grzędzie 0 (GNSS)					49.23930808666666	19.915276863333336	1966.3933333333334	3924025.8800000004	1421661.5	4809488.673333333	152825.17333333334	566603.9333333335	1923.8066666666666							
+236	Odch. standardowe											0.005773502680470146	0.005773502630060836	0.020816659994642394							
+237												0.008164965757473533									
+238												0.022360679756064226									
+239	Obliczenie uchylenia magnetycznego																				
+240	B:	49.23930808666666	° N																		
+241	L:	19.915276863333336	° E																		
+242	Data:	2026-10-17																			
+243	Deklinacja:	6.17	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+244	Zbieżność południków:	0.6932701999038684	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+245	Uchylenie magnetyczne:	5.476729800096131	° E 																		
+246																					
+247	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+248	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+249	Dziura w Grzędzie 0 (GNSS)	1.832	68.499	73.97572980009613	16.67	0.48445984248610946	1.6868151879001212	0.5255256253388727	152825.17333333334	566603.9333333335	1923.8066666666666	"Pomiary
+Zespół: Michał Bochynek, Weronika Garlińska, Sławomir Boruta, Arkadiusz Kruk (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+250		1.59	286.622	292.0987298000961	-52.758	0.3619985388981553	-0.891551597184212	-1.2657775505174207	152825.65779317584	566605.6201485214	1924.3321922920054										
+251	Dziura w Grzędzie II (otwór)								152826.01979171473	566604.7285969242	1923.066414741488										
+252																					
+253	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+254		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+255		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+256	Dziura w Grzędzie II (otwór)	152826.01979171473	566604.7285969242	1923.066414741488	MTW-0016	2026-10-27	152826.2	566604.94	1924.184838	-0.180208285280969	-0.2114030757220462	-1.118423258511939	0.2777882044087695	1.152404821097652							
+257																					
+258	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+259	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+260	Dziura w Grzędzie 0 (GNSS)	4.819	171.045	176.52172980009613	34.633	-3.9578132030805624	0.24056361869198928	2.7387232052332324	152825.17333333334	566603.9333333335	1923.8066666666666	"Pomiary
+Zespół: Michał Bochynek, Weronika Garlińska, Sławomir Boruta, Arkadiusz Kruk (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+261		2.122	78.366	83.84272980009614	-47.174	0.1547174822891676	1.4341594929118247	-1.5563203556996221	152821.21552013027	566604.1738969522	1926.5453898719										
+262	Dziura w Grzędzie I (otwór)								152821.37023761254	566605.6080564451	1924.9890695162003										
+263																					
+264	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+265		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+266		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+267	Dziura w Grzędzie I (otwór)	152821.37023761254	566605.6080564451	1924.9890695162003	MTW-0050	2026-10-27	152820.82	566605.29	1926.954825	0.5502376125368755	0.3180564451031387	-1.9657554837997395	0.6355480568154753	2.0659419049457015							
+268																					
+269	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+270																					
+271																					
+272	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+273	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+274	Litworowa Wyżnia 1	17-10-2026	16:07:47	14:07:47	FIXED	49.23954286	19.91525806	1963.17	3923983.85	1421644.97	4809482.16	152851.25	566602.25	1920.58	42.590000000000146	5	29	1	0	0.01	0.72
+275	Litworowa Wyżnia 2	17-10-2026	16:09:25	14:09:25	FIXED	49.23954289	19.91525807	1963.17	3923981.9	1421644.59	4809479.51	152851.25	566602.25	1920.58	42.590000000000146	5	26	1	0	0.01	0.72
+276	Litworowa Wyżnia 3	17-10-2026	16:10:44	14:10:44	FIXED	49.23954289	19.91525805	1963.17	3923982.4	1421644.48	4809480.23	152851.25	566602.25	1920.59	42.580000000000155	5	24	1.2	0	0.01	0.72
+277	Litworowa Wyżnia 0 (GNSS)					49.239542879999995	19.91525806	1963.17	3923982.716666667	1421644.68	4809480.633333334	152851.25	566602.25	1920.5833333333333							
+278	Odch. standardowe											0.0	0.0	0.005773502691891007							
+279												0.0									
+280												0.005773502691891007									
+281	Obliczenie uchylenia magnetycznego																				
+282	B:	49.239542879999995	° N																		
+283	L:	19.91525806	° E																		
+284	Data:	2026-10-17																			
+285	Deklinacja:	6.17	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+286	Zbieżność południków:	0.6932584062462263	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+287	Uchylenie magnetyczne:	5.476741593753774	° E 																		
+288																					
+289	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+290	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+291	Litworowa Wyżnia 0 (GNSS)	3.007	193.815	199.29174159375378	6.504	-2.8198861907850574	-0.9870538292130179	0.340610641724034	152851.25	566602.25	1920.5833333333333	"Pomiary
+Zespół: Michał Bochynek, Sławomir Boruta, Arkadiusz Kruk, Weronika Garlińska,  (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+292		1.693	353.154	358.6307415937538	-52.904	1.0208452706192876	-0.024400874617352023	-1.3503808835925297	152848.4301138092	566601.2629461708	1920.9239439750572										
+293	Litworowa Wyżnia (otwór)								152849.45095907984	566601.2385452961	1919.5735630914646										
+294																					
+295	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+296		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+297		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+298	Litworowa Wyżnia (otwór)	152849.45095907984	566601.2385452961	1919.5735630914646	MTW-0008	2026-10-27	152850.65	566600.97	1920.381041	-1.199040920153493	0.2685452961595729	-0.8074779085354749	1.2287455815961121	1.470318427098291							
+299																					
+300	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+301																					
+302																					
+303	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+304	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+305	Niebieska Studnia 1	17-10-2026	16:48:18	14:48:18	FIXED	49.24316463	19.91359695	1895.79	3923697.02	1421412.56	4809694.36	153252.29	566476.51	1853.23	42.559999999999945	5	27	0.9	0	0.01	0.57
+306	Niebieska Studnia 2	17-10-2026	16:49:49	14:49:49	FIXED	49.24316463	19.91359692	1895.79	3923694.59	1421411.04	4809692.2	153252.29	566476.51	1853.23	42.559999999999945	5	26	0.9	0.01	0.01	0.57
+307	Niebieska Studnia 3	17-10-2026	16:51:24	14:51:24	FIXED	49.24316464	19.91359692	1895.8	3923698.32	1421413.29	4809693.76	153252.29	566476.51	1853.24	42.559999999999945	5	28	0.8	0.01	0.01	0.57
+308	Niebieska Studnia 0 (GNSS)					49.24316463333334	19.91359693	1895.7933333333333	3923696.643333333	1421412.2966666669	4809693.44	153252.29	566476.51	1853.2333333333333							
+309	Odch. standardowe											0.0	0.0	0.005773502691891007							
+310	UWAGA pomiar w otworze: Niebieska Studnia 0 (GNSS) = Niebieska Studnia (otwór)											0.0									
+311												0.005773502691891007									
+312	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+313		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+314		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+315	Niebieska Studnia (otwór)	153252.29	566476.51	1853.2333333333333	MTW-0036	2026-10-27	153252.41	566478.97	1851.119024	-0.11999999999534339	-2.459999999962747	2.114309333333267	2.4629250901754194	3.245967337610741							
+316																					
+317	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+318																					
+319																					
+320	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+321	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+322	Pod Wantą 1	17-10-2026	17:11:22	15:11:22	FIXED	49.2415825	19.91142197	1833.45	3923838.27	1421294.95	4809533.19	153074.55	566320.38	1790.88	42.569999999999936	5	20	1.1	0.01	0.01	1.07
+323	Pod Wantą 2	17-10-2026	17:15:19	15:15:19	FIXED	49.2415826	19.91142186	1833.47	3923837.04	1421293.56	4809531.7	153074.56	566320.37	1790.89	42.57999999999993	5	23	1.1	0.01	0.01	1.07
+324	Pod Wantą 3	17-10-2026	17:16:38	15:16:38	FIXED	49.24158254	19.9114219	1833.47	3923842.25	1421296.4	4809530.17	153074.55	566320.37	1790.89	42.57999999999993	5	22	1.1	0.01	0.01	1.07
+325	Pod Wantą 0 (GNSS)					49.24158254666667	19.911421909999998	1833.4633333333334	3923839.186666667	1421294.97	4809531.6866666665	153074.55333333332	566320.3733333334	1790.886666666667							
+326	Odch. standardowe											0.00577350269727325	0.005773502697273252	0.005773502691891007							
+327	UWAGA pomiar w otworze: Pod Wantą 0 (GNSS) = Pod Wantą (otwór)											0.008164965816881477									
+328												0.010000000006205784									
+329	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+330		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+331		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+332	Pod Wantą (otwór)	153074.55333333332	566320.3733333334	1790.886666666667	MTW-0054	2026-10-27	153075.02	566319.78	1790.525556	-0.4666666666744277	0.5933333333814517	0.3611106666669457	0.7548656981785344	0.8367933650951185							
+333																					
+334	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+335																					
+336																					
+337	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+338	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+339	Ptasia Studnia otwor dolny 1	12-11-2026	13:37:28	12:37:28	FIXED	49.24067383	19.90416302	1493.7	3923880.28	1420749.07	4809205.89	152967.23	565793.39	1451.11	42.590000000000146	5	12	2.7	0.02	0.02	2.07
+340	Ptasia Studnia otwor dolny 2	12-11-2026	13:39:34	12:39:34	FIXED	49.2406734	19.90416305	1493.67	3923879.62	1420749.25	4809208.48	152967.18	565793.39	1451.09	42.580000000000155	5	11	2.7	0.02	0.02	2.07
+341	Ptasia Studnia otwor dolny 3	12-11-2026	13:44:16	12:44:16	FIXED	49.24067365	19.90416324	1493.7	3923881.17	1420748.73	4809204.79	152967.21	565793.4	1451.11	42.590000000000146	5	11	3.5	0.04	0.04	2.07
+342	Ptasia Studnia otwor dolny 4	12-11-2026	13:47:10	12:47:10	FIXED	49.24067457	19.90416335	1493.73	3923934.77	1420809.07	4808942.62	152967.31	565793.41	1451.14	42.58999999999992	5	9	3.5	0.06	0.05	2.07
+343	Ptasia Studnia otwor dolny 5	12-11-2026	13:49:48	12:49:48	FIXED	49.2406738	19.90416258	1493.76	3923877.12	1420747.97	4809203.59	152967.22	565793.35	1451.18	42.57999999999993	5	12	2.7	0.02	0.03	2.07
+344	Ptasia Studnia otwor dolny 0 (GNSS)					49.24067385	19.904163048	1493.712	3923890.592	1420760.8180000002	4809153.074	152967.22999999998	565793.388	1451.126							
+345	Odch. standardowe											0.048476798575784276	0.022803508523220183	0.035071355833578684							
+346												0.053572380954422176									
+347												0.06403124238316191									
+348	Obliczenie uchylenia magnetycznego																				
+349	B:	49.24067385	° N																		
+350	L:	19.904163048	° E																		
+351	Data:	2026-11-12																			
+352	Deklinacja:	6.18	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+353	Zbieżność południków:	0.6848661880136069	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+354	Uchylenie magnetyczne:	5.495133811986393	° E 																		
+355																					
+356	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+357	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+358	Ptasia Studnia otwor dolny 0 (GNSS)	0.274	200.585	206.0801338119864	51.147	-0.15438538585354636	-0.07556625421249297	0.21337969411156377	152967.22999999998	565793.388	1451.126	"Pomiary
+Zespół: Michał Bochynek, Sławomir Boruta (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+359		9.516	89.804	95.2991338119864	26.166	-0.7887903578682761	8.504299703566302	4.196302220200084	152967.07561461412	565793.3124337458	1451.3393796941116										
+360		0.944	185.123	190.61813381198638	-58.563	-0.4839227953780252	-0.090722222072745	-0.8054341726893027	152966.28682425624	565801.8167334493	1455.5356819143117										
+361	Ptasia Studnia (dolny otwór)								152965.80290146085	565801.7260112272	1454.7302477416224										
+362																					
+363	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+364		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+365		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+366	Ptasia Studnia (dolny otwór)	152965.80290146085	565801.7260112272	1454.7302477416224	MTZ-0066	2026-10-27	152973.914671	565799.635944	1446.8	-8.111769539158558	2.0900672272546217	7.930247741622452	8.376704965012465	11.535077603309501							
+367																					
+368	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+369																					
+370																					
+371	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+372	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+373	Nad Dachem 1	12-11-2026	15:32:47	14:32:47	FIXED	49.24088219	19.90509208	1564.02	3923879.92	1420820.16	4809271.4	152991.19	565860.71	1521.43	42.58999999999992	5	13	2.4	0.01	0.01	2.07
+374	Nad Dachem 2	12-11-2026	15:35:03	14:35:03	FIXED	49.24088198	19.90509226	1564.02	3923880.15	1420820.2	4809274.57	152991.17	565860.73	1521.43	42.58999999999992	5	13	2.34	0.02	0.02	2.07
+375	Nad Dachem 3	12-11-2026	15:37:01	14:37:01	FIXED	49.24088178	19.90509226	1564.0	3923879.87	1420819.91	4809275.5	152991.14	565860.73	1521.42	42.57999999999993	5	13	2.3	0.01	0.01	2.07
+376	Nad Dachem 4	12-11-2026	15:39:12	14:39:12	FIXED	49.24088178	19.90509222	1563.98	3923881.75	1420821.04	4809274.2	152991.14	565860.72	1521.39	42.58999999999992	5	12	2.4	0.01	0.01	2.07
+377	Nad Dachem 5	12-11-2026	15:41:10	14:41:10	FIXED	49.24088193	19.90509217	1563.99	3923879.68	1420820.36	4809271.87	152991.16	565860.72	1521.41	42.57999999999993	5	15	2.1	0.02	0.02	2.07
+378	Nad Dachem 0 (GMSS)					49.24088193199999	19.905092198	1564.002	3923880.274	1420820.334	4809273.508	152991.16	565860.7219999998	1521.4160000000002							
+379	Odch. standardowe											0.021213203431343326	0.008366600273132761	0.016733200530666292							
+380												0.022803508500885153									
+381												0.028284271246567978									
+382	Obliczenie uchylenia magnetycznego																				
+383	B:	49.24088193199999	° N																		
+384	L:	19.905092198	° E																		
+385	Data:	2026-11-12																			
+386	Deklinacja:	6.18	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+387	Zbieżność południków:	0.6855721268331566	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+388	Uchylenie magnetyczne:	5.494427873166843	° E 																		
+389																					
+390	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+391	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+392	Nad Dachem 0 (GMSS)	3.28	192.918	198.41242787316685	12.356	-3.0400030385368315	-1.0120068334267118	0.7018715657329849	152991.16	565860.7219999998	1521.4160000000002	"Pomiary
+Zespół: Michał Bochynek, Sławomir Boruta (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+393		1.688	148.36	153.85442787316686	-86.303	-0.09770530290533315	0.047961735720017606	-1.6844872649239293	152988.11999696147	565859.7099931664	1522.1178715657331										
+394	Nad Dachem (otwór)								152988.02229165856	565859.7579549021	1520.4333843008092										
+395																					
+396	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+397		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+398		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+399	Nad Dachem (otwór)	152988.02229165856	565859.7579549021	1520.4333843008092	MTW-004	2026-10-27	152988.53	565859.45	1525.858298	-0.5077083414362278	0.3079549021786079	-5.424913699190938	0.5938046663169305	5.457315514555601							
+400																					
+401	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+402																					
+403																					
+404	GNSS measurements (Receiver: GEO, SN: E600312020415, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.220718)											Układ 1992		EVRF2007							
+405	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+406	Lodowa Litworowa 1	12-11-2026	16:33:39	15:33:39	FIXED	49.24079103	19.90551106	1617.01	3923908.66	1420862.91	4809306.54	152981.42	565891.32	1574.42	42.58999999999992	5	15	1.6	0.05	0.04	2.07
+407	Lodowa Litworowa 2	12-11-2026	16:35:36	15:35:36	FIXED	49.24079095	19.90551097	1617.01	3923902.7	1420878.02	4809421.03	152981.42	565891.32	1574.42	42.58999999999992	5	12	1.6	0.01	0.01	2.07
+408	Lodowa Litworowa 3	12-11-2026	16:37:48	15:37:48	FIXED	49.2407912	19.90551099	1617.01	3923909.31	1420862.9	4809305.97	152981.44	565891.32	1574.43	42.57999999999993	5	13	1.7	0.01	0.01	2.07
+409	Lodowa Litworowa 0 (GNSS)					49.24079105999999	19.905511006666668	1617.01	3923906.89	1420867.9433333334	4809344.513333333	152981.42666666667	565891.32	1574.4233333333334							
+410	Odch. standardowe											0.011547005377743398	0.0	0.005773502691891007							
+411												0.011547005377743398									
+412												0.012909944481945212									
+413	Obliczenie uchylenia magnetycznego																				
+414	B:	49.24079105999999	° N																		
+415	L:	19.905511006666668	° E																		
+416	Data:	2026-11-12																			
+417	Deklinacja:	6.18	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+418	Zbieżność południków:	0.6858884204662569	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+419	Uchylenie magnetyczne:	5.494111579533743	° E 																		
+420																					
+421	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+422	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+423	Lodowa Litworowa 0 (GNSS)	2.125	238.051	243.54511157953374	51.474	-0.5896537714713355	-1.184998077201601	1.6624418747186738	152981.42666666667	565891.32	1574.4233333333334	"Pomiary
+Zespół: Michał Bochynek, Sławomir Boruta (Speleoclub Wrocław)
+Sprzęt: BRIC4 SN: 0143"									
+424		2.712	153.293	158.78711157953376	-18.876	-2.392275070796571	0.9285214929701792	-0.8773892082409557	152980.8370128952	565890.1350019227	1576.0857752080522										
+425	Lodowa Litworowa (otwór)								152978.4447378244	565891.0635234157	1575.2083859998113										
+426																					
+427	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+428		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+429		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+430	Lodowa Litworowa (otwór)	152978.4447378244	565891.0635234157	1575.2083859998113	MTW-0023	2026-10-27	152979.93	565891.65	1574.186504	-1.485262175585376	-0.5864765843143687	1.021881999811285	1.5968589524982015	1.8958378980577333							
+431																					
+432	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+433																					
+434																					
+435	GNSS measurements (Receiver: GEO, SN: E600312020401, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.221026)											Układ 2000/7		EVRF2007							
+436	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+437	PM1_1	20-07-2024	09:13:44	07:13:44	FIXED	49.24464943	19.89744962	1434.208	3923696.624	1420160.832	4809451.321	5457000.526	7419727.191	1391.555	42.65300000000002	10	15	1.5	0.017	0.029	2.064
+438	PM1_2	20-07-2024	09:14:47	07:14:47	FIXED	49.24464931	19.89744965	1434.193	3923696.624	1420160.832	4809451.321	5457000.513	7419727.193	1391.541	42.652000000000044	10	14	1.3	0.01	0.02	2.064
+439	PM1_3	20-07-2024	09:15:32	07:15:32	FIXED	49.24464908	19.89744951	1434.2	3923696.624	1420160.832	4809451.321	5457000.488	7419727.183	1391.548	42.652000000000044	10	15	1.313	0.009	0.019	2.064
+440	PM1_4	20-07-2024	09:16:16	07:16:16	FIXED	49.24464911	19.89744925	1434.202	3923696.624	1420160.832	4809451.321	5457000.491	7419727.164	1391.549	42.65300000000002	10	15	1.5	0.012	0.021	2.064
+441	PM1 (GNSS)					49.24464923250001	19.8974495075	1434.20075	3923696.624	1420160.832	4809451.321	5457000.5045	7419727.182750001	1391.54825							
+442	Odch. standardowe											0.01815672493009533	0.013225606455342572	0.005737304826068776							
+443												0.022462932272941223									
+444												0.023184046087039605									
+445																					
+446												Układ 1992		EVRF2007							
+447												x	y	h							
+448												153403.212	565299.626	1391.54825							
+449	Obliczenie uchylenia magnetycznego																				
+450	B:	49.24464923250001	° N																		
+451	L:	19.8974495075	° E																		
+452	Data:	2025-11-10																			
+453	Deklinacja:	6.07	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+454	Zbieżność południków:	0.6798216104139077	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+455	Uchylenie magnetyczne:	5.390178389586093	° E 																		
+456																					
+457	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+458	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+459	PM1 (GNSS)	9.36	289.0	294.3901783895861	-11.8	3.7835145379826023	-8.34451339724506	-1.9140830452391575	153403.212	565299.626	1391.54825	"Pomiary
+Zespół: Stanisław Mielczarek, Agnieszka Samborska, Jan Grzeszek (Speleoklub Warszawski)
+Sprzęt: DistoX id 4027"									
+460		8.93	294.9	300.29017838958606	9.6	4.441034560876211	-7.602911391866835	1.4892449081747932	153406.995514538	565291.2814866028	1389.634166954761										
+461		4.74	181.4	186.7901783895861	21.6	-4.376227934984496	-0.5210727663081166	1.7449103797253733	153411.43654909887	565283.678575211	1391.1234118629359										
+462	Piwnica Miętusia (otwór)								153407.06032116388	565283.1575024447	1392.8683222426612										
+463																					
+464	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+465		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+466		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+467	Piwnica Miętusia (otwór)	153407.06032116388	565283.1575024447	1392.8683222426612	MTZ-0017	2026-10-27	153407.71	565283.36	1391.520085	-0.6496788361109793	-0.20249755529221147	1.348237242661071	0.6805055840989396	1.5102422032535598							
+468																					
+469	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+470																					
+471																					
+472	GNSS measurements (Receiver: GEO, SN: E600312020401, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.221026)											Układ 2000/7		EVRF2007							
+473	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+474	MW1_1	20-07-2024	10:18:20	08:18:20	FIXED	49.24538551	19.89478907	1428.029	3923701.788	1419956.553	4809501.894	5457085.208	7419534.686	1385.379	42.65000000000009	10	6	2.926	0.048	0.069	2.064
+475	MW1_2	20-07-2024	10:22:20	08:22:20	FIXED	49.24538529	19.89478919	1428.02	3923701.696	1419956.515	4809501.583	5457085.183	7419534.695	1385.37	42.65000000000009	10	7	3.1	0.087	0.113	2.064
+476	MW1_3	20-07-2024	10:27:07	08:27:07	FIXED	49.24538517	19.8947904	1428.177	3923701.696	1419956.515	4809501.583	5457085.169	7419534.782	1385.527	42.649999999999864	10	8	2.891	0.068	0.082	2.064
+477	MW1_4	20-07-2024	10:30:28	08:30:28	FIXED	49.24538523	19.89479091	1428.24	3923701.696	1419956.515	4809501.583	5457085.174	7419534.82	1385.59	42.65000000000009	10	8	2.935	0.041	0.048	2.064
+478	MW1 (GNSS)					49.245385299999995	19.8947898925	1428.1164999999999	3923701.719	1419956.5244999998	4809501.66075	5457085.183499999	7419534.745750001	1385.4665							
+479	Odch. standardowe											0.0173301278653193	0.06575902984518747	0.1093633088990128							
+480												0.06800428911479461									
+481												0.1287824392972484									
+482																					
+483												Układ 1992		EVRF2007							
+484												x	y	h							
+485												153482.722	565105.143	1385.4665							
+486	Obliczenie uchylenia magnetycznego																				
+487	B:	49.245385299999995	° N																		
+488	L:	19.8947898925	° E																		
+489	Data:	2025-11-10																			
+490	Deklinacja:	6.07	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+491	Zbieżność południków:	0.6778144457109674	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+492	Uchylenie magnetyczne:	5.392185554289033	° E 																		
+493																					
+494	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+495	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+496	MW1 (GNSS)	8.05	299.3	304.69218555428904	68.3	1.6941047574230217	-2.447311078117852	7.479517200849152	153482.722	565105.143	1385.4665	"Pomiary
+Zespół: Stanisław Mielczarek, Agnieszka Samborska, Jan Grzeszek (Speleoklub Warszawski)
+Sprzęt: DistoX id 4027"									
+497	Miętusia Wyżnia (otwór)								153484.41610475743	565102.695688922	1392.9460172008492										
+498																					
+499	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+500		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+501		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+502	Miętusia Wyżnia (otwór)	153484.41610475743	565102.695688922	1392.9460172008492	MTZ-0016	2026-10-27	153491.23	565113.0	1383.993046	-6.813895242579747	-10.304311078041792	8.952971200849106	12.353460857990594	15.256594918039188							
+503																					
+504	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+505																					
+506																					
+507	GNSS measurements (Receiver: GEO, SN: E600312020401, Antenna type: E600, L1 offset: 0,07, L2 offset: 0,06, Firmware: SurPad 4.0.221026)											Układ 1992		EVRF2007							
+508	Nr	Date	Time	GMT	Mode	B	L	H	X	Y	Z	x	y	h	H - h	E	Sat	PDOP	mp	mh	H.ant
+509	M2	20-07-2024	0.5247222222222222	0.4413888888888889	STATIC	"49°14'47.09340"""	"19°53'55.60776"""	1314.02				153600.581	565394.097	1271.37	42.65		15.0		3.360	1.673	2.064
+510																					
+511	Obliczenie uchylenia magnetycznego																				
+512	B:	49.2464148333	° N																		
+513	L:	19.8987799333	° E																		
+514	Data:	2025-11-10																			
+515	Deklinacja:	6.07	° E  ± 0.36°	Deklinacja z https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml  / Model: World Magnetic Model High Resolution (WMMHR 2024-2029).																	
+516	Zbieżność południków:	0.6808474940351947	° E 	Zbieżność południków. Południk osiowy dla układu 1992 to 19.																	
+517	Uchylenie magnetyczne:	5.389152505964805	° E 																		
+518																					
+519	Obliczenie współrzędnych otworu domierzonego ciągiem z punktu GNSS																				
+520	Punkt	Odległość	Az. Mag.	Az. 1992	Upad	dX	dY	dH	X (1992)	Y (1992)	H (EVRF2007)										
+521	MW1 (GNSS)	1.48	246.5	251.8891525059648	-14.7	-0.44500840108485346	-1.3606325326489639	-0.3755617579855123	153600.581	565394.097	1271.37	"Pomiary
+Zespół: Stanisław Mielczarek, Agnieszka Samborska, Jan Grzeszek (Speleoklub Warszawski)
+Sprzęt: DistoX id 4027"									
+522	Miętusia (otwór)								153600.13599159892	565392.7363674673	1270.9944382420144										
+523																					
+524	Porównanie z https://github.com/dlubom/gps-kataster-obiektow-tatr																				
+525		Ten pomiar			https://github.com/dlubom/gps-kataster-obiektow-tatr					Różnica											
+526		X (1992)	Y (1992)	H (EVRF2007)	object_id	Data odczytu	X (1992)	Y (1992)	H (EVRF2007)	dX	dY	dH	fL 2D	fl 3D							
+527	Miętusia (otwór)	153600.13599159892	565392.7363674673	1270.9944382420144	MTZ-0023	2026-10-27	153599.76	565391.38	1271.290985	0.375991598906694	1.3563674673205242	-0.2965467579856522	1.4075163902611953	1.4384166185516998							
+528																					
+529	Obliczył: Marek Jędrzejczak (Speleoclub Wrocław)																				
+530																					
