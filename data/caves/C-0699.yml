@@ -24,7 +24,13 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1445
   scope: cave
   notes: PIG catalog record link.
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-124-125-s59
+  locator: s. 60–61
+  name_in_source: Jaskinia Czarna
+  purpose: description
+  notes: Relacja z przejścia do Sali św. Bernarda w 1981 r. i archiwalne zdjęcie zespołu.
 notes: 'PIG:1445, stan 2013 podaje długość 6500 m wobec 7247 m w KKTJ.
 
   PIG sector: D. Kościeliska - Wsch.
@@ -38,5 +44,5 @@ notes: 'PIG:1445, stan 2013 podaje długość 6500 m wobec 7247 m w KKTJ.
   easting/northing to WGS84 with cs2cs.'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-11-07T08:09:37Z'
-updated_by: maintenance:kktj-morphometry
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125

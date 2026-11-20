@@ -2,8 +2,16 @@ schema_version: 1
 id: C-0879
 name: Gawra we Wysrankach
 system_name: null
+length_m: 3.4
+denivelation_m: 2
+morphometry_source_ref: Filar, Jaskinie 3–4 (124–125), 2026, s. 42
 external_refs: []
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-124-125-s41
+  locator: s. 42
+  name_in_source: Gawra we Wysrankach
+  purpose: description
 notes: 'TPN length: 5
 
   TPN depth: 1
@@ -12,8 +20,12 @@ notes: 'TPN length: 5
 
   TPN verification/location note: 21-03-2024 TZK
 
-  TPN notes: Dane morfometr. orientacyjnie'
+  TPN notes: Dane morfometr. orientacyjnie
+
+
+  TPN podaje orientacyjne wymiary: 5 m długości, 1 m głębokości i 3 m deniwelacji. Filar podaje otwór na 1218
+  m n.p.m. oraz deniwelację +2 m.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125

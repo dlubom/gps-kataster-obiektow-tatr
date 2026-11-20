@@ -2,19 +2,27 @@ schema_version: 1
 id: C-0941
 name: Schron w Nosalu
 system_name: null
-length_m: 6
-denivelation_m: 1
-morphometry_source_ref: TPN CSV, GLOBALID {0AFBFC7D-0BD3-4FE7-A7F2-1774398D7DD9}
+length_m: 6.3
+denivelation_m: 0.9
+morphometry_source_ref: Filar, Jaskinie 3–4 (124–125), 2026, s. 44
 external_refs: []
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-124-125-s41
+  locator: s. 44
+  name_in_source: Schron w Nosalu
+  purpose: description
 notes: 'TPN length: 6
 
   TPN depth: 0
 
   TPN denivelation: 1
 
-  TPN verification/location note: 17-05-2025 FF NMT'
+  TPN verification/location note: 17-05-2025 FF NMT
+
+
+  TPN podaje 6 m długości i 1 m deniwelacji. Filar podaje 1196 m n.p.m.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125

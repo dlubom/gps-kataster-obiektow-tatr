@@ -51,6 +51,12 @@ dolny `MLW-0009` z domiaru `0–B–11`, zachowując kotwicę modelu JKTZ.
 Dokument podaje rewizje źródeł, sposób obliczenia i warunek zmiany ID w
 szablonie JKTZ przy przejściu na ten katalog.
 
+## Jaskinie 3–4 (124–125), 2026
+
+[Porównanie z TPN](jaskinie/2026-124-125/README.md) dokumentuje
+dopasowania Nyż pod Zachodem Pilotów i Komory w Kończystej Turni,
+dowody w sprawie Koleby i Gawry w Bobrowcu oraz bibliografię.
+
 ## KKTJ / Jaskinie Tatr
 
 [Tabela zbiorcza z lipca 2026](kktj/2026-07/jaskinie-tatr.md) to opracowanie

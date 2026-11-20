@@ -77,6 +77,13 @@ Punkty zależne nie mogą być dodatkowymi niezależnymi fixami JKTZ.
   dla Goryczkowego wymaga pełnych bajtów PDF i kontroli wizualnej.
 - Odroczone nowe obiekty TPN, w tym Schron nad Wielką Równią i Jaskinia
   w Kozim Grzbiecie, opisują [decyzje PBI-113](verification/PBI-113.md).
+- Filar („Jaskinie” 3–4 (124–125), s. 41–47) dokumentuje odrębne
+  Nyże pod Zachodem Pilotów II–IV i Komorę w Kończystej Turni.
+  Rekord Dziury nad Zahradziskami (TPN 6722) jest prawdopodobnym
+  wcześniejszym zapisem Komory. Koleba w Zawracie Kasprowym ma jeden
+  otwór na planie, a wybór reprezentacji jej dwóch rekordów TPN jest
+  otwarty. Gawra w Bobrowcu ma dwa połączone otwory i wymaga przypisania
+  punktu TPN do konkretnego otworu. [Porównanie źródeł](../../data/sources/jaskinie/2026-124-125/README.md).
 - Tunel w Skrajnej Giewonckiej Baszcie (C-0981) grupuje otwory MLW-0044
   i MLW-0050. Filar (2026, „Jaskinie” 1–2 (122–123), s. 37) dokumentuje
   dwa połączone otwory oraz długość 10,1 m i deniwelację 2,5 m.

@@ -1,0 +1,63 @@
+schema_version: 1
+id: STR-0045
+category: jaskinia_otwor
+name_local: Nyża pod Zachodem Pilotów III
+cave_id: C-1058
+membership_ordinal: 1
+id_assignment:
+  method: auto
+  assigned_from_measurement_id: m-001
+  assigned_prefix: STR
+external_refs:
+- system: TPN
+  ref_type: source_globalid
+  external_id: '{DEC416BC-64F2-49E0-ABF9-CB2C5A040004}'
+  scope: object
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wektor_MIL1/MapServer/6
+  notes: 'Warstwa Jaskinie, odczyt 2026-11-20, OBJECTID 6403, nazwa TPN: Nyża pod Zachodem Pilotów II. TPN
+    DLUGOSC=5 m; WER_LOK=FF  24052026; WERYF=1 (kod źródłowy TPN).'
+- system: TPN
+  ref_type: url
+  external_id: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.929191894997533%2C49.25358290318176&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.929181894997534%2C49.253572903181755%2C19.929201894997533%2C49.25359290318176&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  url: https://gis.tpn.pl/server/rest/services/Topografia___wysoko%C5%9Bci_MIL1/MapServer/identify?f=json&geometry=19.929191894997533%2C49.25358290318176&geometryType=esriGeometryPoint&sr=4326&layers=all%3A0&tolerance=0&mapExtent=19.929181894997534%2C49.253572903181755%2C19.929201894997533%2C49.25359290318176&imageDisplay=1000%2C1000%2C96&returnGeometry=false
+  scope: object
+  notes: 'Wysokość gruntu dla m-001, NMT nmt_05m_mggp_2019 (piksel 0,5 m, nalot 14–15.10.2019). Odczyt 2026-11-20T20:06:40.552882Z,
+    1435.510010 m n.p.m. według legendy TPN. Datum i dokładność pionowa nieznane. SHA-256 odpowiedzi: 350a6c2b634ae472c49aaea4a5931cb55ea5b0fc6f7c32ad29c5c50be4f2db07.'
+measurements:
+- id: m-001
+  input_srid: 4326
+  input_x: 19.929191894997533
+  input_y: 49.25358290318176
+  elevation_m: 1435.51001
+  elevation_datum: unknown
+  elevation_source: dem
+  source: TPN
+  source_ref: TPN:{DEC416BC-64F2-49E0-ABF9-CB2C5A040004}
+  observed_date: '2026-05-24'
+  source_date: '2026-05-24'
+  method: source_record
+  tags:
+  - tpn
+  verification_status: nieweryfikowany
+  notes: Data stanu rekordu z LAST_EDITED_DATE (UTC). Metoda wyznaczenia XY nieznana. Wysokość gruntu z NMT
+    TPN.
+  created_at: '2026-11-20T20:14:32Z'
+  created_by: maintenance:jaskinie-124-125
+best_measurement:
+  mode: auto
+  reason: Jedyny dostępny punkt TPN.
+  updated_at: '2026-11-20T20:14:32Z'
+  updated_by: maintenance:jaskinie-124-125
+attachments: []
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-124-125-s41
+  locator: s. 46
+  name_in_source: Nyża pod Zachodem Pilotów III
+  purpose: identity
+  notes: Długość 5 m, położenie 3,25 m od punktu 7041 i wzajemny układ punktów odpowiadają planowi nyż III
+    i IV.
+created_at: '2026-11-20T20:14:32Z'
+created_by: maintenance:jaskinie-124-125
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125

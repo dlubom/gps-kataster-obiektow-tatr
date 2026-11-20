@@ -65,9 +65,15 @@ best_measurement:
   updated_at: '2026-10-23T18:10:08Z'
   updated_by: maintenance:PBI-113
 attachments: []
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-124-125-s41
+  locator: s. 47
+  name_in_source: Nyża pod Szarą Turnią II
+  purpose: description
+  notes: Plan, zdjęcie i opis otworu poniżej Szarego Żlebu.
 notes: null
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-24T08:42:28Z'
-updated_by: maintenance:descriptions
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125
