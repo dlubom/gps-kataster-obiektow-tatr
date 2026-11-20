@@ -3,15 +3,25 @@ id: C-0877
 name: Schron w Zawracie Kasprowym
 system_name: null
 length_m: 4
-morphometry_source_ref: TPN CSV, GLOBALID {A3228025-863C-4833-9DA9-2AC6337E1F66}
+denivelation_m: 2.1
+morphometry_source_ref: Filar, Jaskinie 3–4 (124–125), 2026, s. 44
 external_refs: []
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-124-125-s41
+  locator: s. 44
+  name_in_source: Schron w Zawracie Kasprowym
+  purpose: description
 notes: 'TPN length: 4
 
   TPN depth: 0
 
-  TPN denivelation: 0'
+  TPN denivelation: 0
+
+
+  TPN podaje przewyższenie 2 m. Filar podaje 1584 m n.p.m. i opisuje osobny schron ok. 550 m drogą od Koleby
+  w Zawracie Kasprowym.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125

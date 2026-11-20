@@ -1,10 +1,11 @@
 schema_version: 1
 id: C-1049
 name: System Ptasiej
-length_m: 7330
+length_m: 7445
 depth_m: 352
 denivelation_m: 352
-morphometry_source_ref: KKTJ 2026-07, PDF 08, s. 3, lp. 68
+morphometry_source_ref: length_m = Nowak, Gawęska, Jaskinie 3–4 (124–125), 2026, s. 50 | depth_m, denivelation_m = KKTJ 2026-07, PDF 08, s. 3,
+  lp. 68
 external_refs: []
 bibliography_status: known
 citations:
@@ -18,9 +19,14 @@ citations:
   name_in_source: System Ptasiej Studni
   purpose: description
   notes: Długość systemu 7330 m po domierzeniu 100 m w rejonie LUX-a.
-notes: PIG:1473 (stan 2013) podaje 6283 m długości całego systemu wobec 7330 m w KKTJ.
-  Głębokość i deniwelacja po 352 m są zgodne.
+- publication_id: jaskinie-2026-124-125-s48
+  locator: 's. 48–51 (długość: s. 50)'
+  name_in_source: System Ptasiej Studni
+  purpose: description
+  notes: 115 m Korytarza Pawełka po pomiarach z maja 2026 r. Wydrukowana długość całego systemu to 7445 m.
+notes: KKTJ 2026-07 podaje 7330 m, a PIG:1473 (stan 2013) 6283 m. Nowak i Gawęska podają 7445 m po doliczeniu
+  Korytarza Pawełka (115 m). Głębokość i deniwelacja po 352 m pochodzą z KKTJ i są zgodne z PIG.
 created_at: '2026-11-07T15:33:39Z'
 created_by: maintenance:kktj-systems
-updated_at: '2026-11-08T11:01:05Z'
-updated_by: maintenance:jaskinie-122-123
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125

@@ -1,0 +1,18 @@
+schema_version: 1
+id: C-1059
+name: Nyża pod Zachodem Pilotów IV
+length_m: 3
+morphometry_source_ref: Filar, Jaskinie 3–4 (124–125), 2026, s. 46
+external_refs: []
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-124-125-s41
+  locator: s. 46
+  name_in_source: Nyża pod Zachodem Pilotów IV
+  purpose: description
+notes: Filar podaje 1436 m n.p.m. i opisuje otwór tuż obok III. TPN używa numeru III dla punktu dopasowanego
+  tu do IV.
+created_at: '2026-11-20T20:14:32Z'
+created_by: maintenance:jaskinie-124-125
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125

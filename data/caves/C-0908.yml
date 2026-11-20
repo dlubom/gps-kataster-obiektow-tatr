@@ -2,8 +2,17 @@ schema_version: 1
 id: C-0908
 name: Dziura we Wysrankach
 system_name: null
+length_m: 3.6
+depth_m: 1.9
+denivelation_m: 1.9
+morphometry_source_ref: Filar, Jaskinie 3–4 (124–125), 2026, s. 42
 external_refs: []
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-124-125-s41
+  locator: s. 42
+  name_in_source: Dziura we Wysrankach
+  purpose: description
 notes: 'TPN length: 5
 
   TPN depth: 0
@@ -12,8 +21,11 @@ notes: 'TPN length: 5
 
   TPN verification/location note: 27-10-2024 TZK
 
-  TPN notes: Dane morfometr. orientacyjnie'
+  TPN notes: Dane morfometr. orientacyjnie
+
+
+  TPN podaje orientacyjną długość 5 m. Filar opisuje spadek 1,9 m i wysokość otworu 1087 m n.p.m.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125

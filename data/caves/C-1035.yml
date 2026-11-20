@@ -3,12 +3,16 @@ id: C-1035
 name: Nyża za Jałowcem
 system_name: null
 length_m: 3
-morphometry_source_ref: TPN Geoportal TATRY 2026-10-19, GLOBALID {9BEB2E85-ECB8-432A-90D4-623DF217C6DA}
+morphometry_source_ref: Filar, Jaskinie 3–4 (124–125), 2026, s. 43
 external_refs: []
-bibliography_status: unknown
-notes: |-
-  Długość 3 m (TPN). Publikacji opisowej nie ustalono.
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-124-125-s41
+  locator: s. 43
+  name_in_source: Nyża za Jałowcem
+  purpose: description
+notes: Filar podaje 1194 m n.p.m. i opisuje otwór ok. 10 m nad Schroniskiem Wschodnim. Deniwelacja niewielka.
 created_at: '2026-10-23T18:10:08Z'
 created_by: maintenance:PBI-113
-updated_at: '2026-10-24T08:42:28Z'
-updated_by: maintenance:descriptions
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125

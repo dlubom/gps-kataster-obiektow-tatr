@@ -2,18 +2,26 @@ schema_version: 1
 id: C-0927
 name: Kalacka Nyża III
 system_name: null
-length_m: 5
-morphometry_source_ref: TPN CSV, GLOBALID {E5C5FFD1-D57C-4529-9532-F70BDFA3B79F}
+length_m: 5.3
+morphometry_source_ref: Filar, Jaskinie 3–4 (124–125), 2026, s. 45
 external_refs: []
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: jaskinie-2026-124-125-s41
+  locator: s. 45
+  name_in_source: Kalacka Nyża III
+  purpose: description
 notes: 'TPN length: 5
 
   TPN depth: 0
 
   TPN denivelation: 0
 
-  TPN verification/location note: 21-10-2025 FF'
+  TPN verification/location note: 21-10-2025 FF
+
+
+  Długość TPN 5 m. Filar podaje 1336 m n.p.m. i niewielką deniwelację.'
 created_at: '2026-05-16T10:22:52Z'
 created_by: importer:tpn
-updated_at: '2026-05-16T10:22:52Z'
-updated_by: importer:tpn
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125

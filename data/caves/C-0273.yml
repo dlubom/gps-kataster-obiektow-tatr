@@ -25,7 +25,13 @@ external_refs:
   url: https://jaskiniepolski.pgi.gov.pl/Details/Information/1475
   scope: cave
   notes: PIG catalog record link.
-bibliography_status: unknown
+bibliography_status: known
+citations:
+- publication_id: antkiewicz-1999-ptasia-studnia
+  locator: s. 46–88 (cały rozdział)
+  name_in_source: Jaskinia Lodowa Litworowa E-11.10
+  purpose: description
+  notes: Pozycja przywołana przez Nowaka i Gawęską (Jaskinie 3–4 (124–125), s. 51).
 notes: 'PIG aliases: SYSTEM Ptasia Studnia
 
   PIG sector: D. Miętusia - Wsch.
@@ -33,5 +39,5 @@ notes: 'PIG aliases: SYSTEM Ptasia Studnia
   PIG source state year: 2013'
 created_at: '2026-05-16T10:22:49Z'
 created_by: importer:pig
-updated_at: '2026-11-07T15:33:39Z'
-updated_by: maintenance:kktj-systems
+updated_at: '2026-11-20T20:14:32Z'
+updated_by: maintenance:jaskinie-124-125
